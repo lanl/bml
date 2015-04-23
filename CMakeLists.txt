@@ -3,7 +3,7 @@ project( bml Fortran )
 
 set( PROJECT_VERSION "0.1" )
 set( PROJECT_DESCRIPTION
-  "A versatile matrix library for linear algebra operations."
+  "Basic Matrix Library (bml): A versatile matrix library for linear algebra operations"
   )
 
 if( NOT CMAKE_BUILD_TYPE )
