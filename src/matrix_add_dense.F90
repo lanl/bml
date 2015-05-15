@@ -1,3 +1,5 @@
+!> @copyright Los Alamos National Laboratory 2015
+
 !> Matrix addition for dense matrices.
 module matrix_add_dense
 

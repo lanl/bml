@@ -1,3 +1,5 @@
+!> @copyright Los Alamos National Laboratory 2015
+
 !> Matrix initialization.
 module matrix_initialize
 

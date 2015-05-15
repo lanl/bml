@@ -6,7 +6,7 @@ set( SOURCES
   matrix_multiply.F90
   matrix_multiply_dense.F90
   matrix_type.F90
-  matrixlib.F90
+  bml.F90
   )
 
 add_library( bml ${SOURCES} )

@@ -1,3 +1,5 @@
+!> @copyright Los Alamos National Laboratory 2015
+
 !> Matrix addition.
 module matrix_add
 

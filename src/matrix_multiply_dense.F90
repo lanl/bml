@@ -1,3 +1,5 @@
+!> @copyright Los Alamos National Laboratory 2015
+
 !> Matrix multiplication for dense matrices.
 module matrix_multiply_dense
 

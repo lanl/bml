@@ -1,3 +1,5 @@
+!> @copyright Los Alamos National Laboratory 2015
+
 !> Initialization of dense matrices.
 module matrix_initialize_dense
 
