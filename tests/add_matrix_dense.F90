@@ -1,6 +1,6 @@
 program test
 
-  use matrixlib
+  use bml
 
   implicit none
 
