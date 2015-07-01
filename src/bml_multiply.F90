@@ -18,29 +18,33 @@ contains
   !! @param beta The factor \f$ \beta \f$.
   subroutine multiply (A, B, C, alpha, beta)
 
-    class(matrix_t), intent(in) :: A, B
-    class(matrix_t), intent(inout) :: C
+    class(bml_matrix_t), allocatable, intent(in) :: A, B
+    class(bml_matrix_t), allocatable, intent(inout) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
+    if(.not. allocated(A) .or. .not. allocated(B)) then
+       call error(__FILE__, __LINE__, "either A or B are not allocated")
+    endif
+
     select type(A)
-    type is(matrix_dense_t)
+    type is(bml_matrix_dense_t)
        select type(B)
-       type is(matrix_dense_t)
+       type is(bml_matrix_dense_t)
+          if(.not. allocated(C)) then
+             allocate(bml_matrix_dense_t::C)
+          endif
           select type(C)
-          type is(matrix_dense_t)
+          type is(bml_matrix_dense_t)
              call multiply_dense(A, B, C)
           class default
-             write(*, *) "[Multiply] C matrix type mismatch"
-             error stop
+             call error(__FILE__, __LINE__, "C matrix type mismatch")
           end select
        class default
-          write(*, *) "[multiply] matrix type mismatch"
-          error stop
+          call error (__FILE__, __LINE__, "matrix type mismatch")
        end select
     class default
-       write(*, *) "[multiply] not implemented"
-       error stop
+       call error(__FILE__, __LINE__, "not implemented")
     end select
 
   end subroutine multiply

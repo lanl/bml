@@ -7,11 +7,11 @@ module bml_type_dense
 
   implicit none
 
-  type, extends(matrix_t) :: matrix_dense_t
+  type, extends(bml_matrix_t) :: bml_matrix_dense_t
 
      !> The dense matrix.
-     double precision, allocatable :: dense_matrix(:, :)
+     double precision, allocatable :: matrix(:, :)
 
-  end type matrix_dense_t
+  end type bml_matrix_dense_t
 
 end module bml_type_dense

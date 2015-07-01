@@ -4,6 +4,7 @@
 module bml_add
 
   use bml_add_dense
+  use bml_error
 
 contains
 
@@ -16,24 +17,22 @@ contains
   !! @param C Matrix \f$ C \f$.
   subroutine add (A, B, C)
 
-    use bml_error
-
-    class(matrix_t), allocatable, intent(in) :: A, B
-    class(matrix_t), allocatable, intent(inout) :: C
+    class(bml_matrix_t), allocatable, intent(in) :: A, B
+    class(bml_matrix_t), allocatable, intent(inout) :: C
 
     if(.not. allocated(A) .or. .not. allocated(B)) then
        call error(__FILE__, __LINE__, "either A or B are not allocated")
     endif
 
     select type(A)
-    type is(matrix_dense_t)
+    type is(bml_matrix_dense_t)
        select type(B)
-       type is(matrix_dense_t)
+       type is(bml_matrix_dense_t)
           if(.not. allocated(C)) then
-             allocate(matrix_dense_t::C)
+             allocate(bml_matrix_dense_t::C)
           endif
           select type(C)
-          type is(matrix_dense_t)
+          type is(bml_matrix_dense_t)
              call add_dense(A, B, C)
           class default
              call error(__FILE__, __LINE__, "C matrix type mismatch")

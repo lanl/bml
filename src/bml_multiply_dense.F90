@@ -18,8 +18,10 @@ contains
   !! @param C Matrix \f$ C \f$.
   subroutine multiply_dense (A, B, C)
 
-    type(matrix_dense_t), intent(in) :: A, B
-    type(matrix_dense_t), intent(inout) :: C
+    type(bml_matrix_dense_t), intent(in) :: A, B
+    type(bml_matrix_dense_t), intent(inout) :: C
+
+    C%matrix = matmul(A%matrix, B%matrix)
 
   end subroutine multiply_dense
 

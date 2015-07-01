@@ -1,6 +1,6 @@
 !> @copyright Los Alamos National Laboratory 2015
 
-!> \private Matrix addition for dense matrices.
+!> Matrix addition for dense matrices.
 module bml_add_dense
 
   use bml_type_dense
@@ -18,10 +18,10 @@ contains
   !! @param C Matrix \f$ C \f$.
   subroutine add_dense(A, B, C)
 
-    type(matrix_dense_t), intent(in) :: A, B
-    type(matrix_dense_t), intent(inout) :: C
+    type(bml_matrix_dense_t), intent(in) :: A, B
+    type(bml_matrix_dense_t), intent(inout) :: C
 
-    C%dense_matrix = A%dense_matrix+B%dense_matrix
+    C%matrix = A%matrix+B%matrix
 
   end subroutine add_dense
 

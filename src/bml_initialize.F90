@@ -18,13 +18,13 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), allocatable, intent(out) :: A
 
     select case(matrix_type)
-    case("dense")
-       allocate(matrix_dense_t::A)
+    case(MATRIX_TYPE_NAME_DENSE)
+       allocate(bml_matrix_dense_t::A)
        select type(A)
-       type is(matrix_dense_t)
+       type is(bml_matrix_dense_t)
           call allocate_matrix_dense(N, A)
        end select
     case default
@@ -42,13 +42,13 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), allocatable, intent(out) :: A
 
     select case(matrix_type)
-    case("dense")
-       allocate(matrix_dense_t::A)
+    case(MATRIX_TYPE_NAME_DENSE)
+       allocate(bml_matrix_dense_t::A)
        select type(A)
-       type is(matrix_dense_t)
+       type is(bml_matrix_dense_t)
           call zero_matrix_dense(N, A)
        end select
     case default
@@ -66,13 +66,13 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), allocatable, intent(out) :: A
 
     select case(matrix_type)
-    case("dense")
-       allocate(matrix_dense_t::A)
+    case(MATRIX_TYPE_NAME_DENSE)
+       allocate(bml_matrix_dense_t::A)
        select type(A)
-       type is(matrix_dense_t)
+       type is(bml_matrix_dense_t)
           call random_matrix_dense(N, A)
        end select
     case default
@@ -90,13 +90,13 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), allocatable, intent(out) :: A
 
     select case(matrix_type)
-    case("dense")
-       allocate(matrix_dense_t::A)
+    case(MATRIX_TYPE_NAME_DENSE)
+       allocate(bml_matrix_dense_t::A)
        select type(A)
-       type is(matrix_dense_t)
+       type is(bml_matrix_dense_t)
           call identity_matrix_dense(N, A)
        end select
     case default

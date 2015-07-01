@@ -16,13 +16,13 @@ contains
   subroutine allocate_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_t), intent(inout) :: A
 
     A%N = N
-    if(allocated(A%dense_matrix)) then
-       deallocate(A%dense_matrix)
+    if(allocated(A%matrix)) then
+       deallocate(A%matrix)
     endif
-    allocate(A%dense_matrix(N, N))
+    allocate(A%matrix(N, N))
 
   end subroutine allocate_matrix_dense
 
@@ -33,10 +33,10 @@ contains
   subroutine zero_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_t), intent(inout) :: A
 
     call allocate_matrix_dense(N, A)
-    A%dense_matrix = 0
+    A%matrix = 0
 
   end subroutine zero_matrix_dense
 
@@ -47,10 +47,10 @@ contains
   subroutine random_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_t), intent(inout) :: A
 
     call allocate_matrix_dense(N, A)
-    call random_number(A%dense_matrix)
+    call random_number(A%matrix)
 
   end subroutine random_matrix_dense
 
@@ -61,13 +61,13 @@ contains
   subroutine identity_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_t), intent(inout) :: A
 
     integer :: i
 
     call zero_matrix_dense(N, A)
     do i = 1, N
-       A%dense_matrix(i, i) = 1
+       A%matrix(i, i) = 1
     enddo
 
   end subroutine identity_matrix_dense

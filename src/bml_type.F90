@@ -9,11 +9,11 @@ module bml_type
   character(len=*), parameter :: MATRIX_TYPE_NAME_DENSE = "dense"
 
   !> The matrix type.
-  type, abstract :: matrix_t
+  type, abstract :: bml_matrix_t
 
      !> The matrix size, assumed square.
      integer :: N = -1
 
-  end type matrix_t
+  end type bml_matrix_t
 
 end module bml_type
