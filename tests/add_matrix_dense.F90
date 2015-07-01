@@ -22,8 +22,7 @@ program test
         select type(C)
         type is(matrix_dense_t)
            if(sum(abs(C%dense_matrix-(A%dense_matrix+B%dense_matrix))) > 1d-12) then
-              write(*, *) "matrix mismatch"
-              error stop
+              call error(__FILE__, __LINE__, "matrix mismatch")
            endif
         end select
      end select

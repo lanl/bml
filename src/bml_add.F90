@@ -29,6 +29,9 @@ contains
     type is(matrix_dense_t)
        select type(B)
        type is(matrix_dense_t)
+          if(.not. allocated(C)) then
+             allocate(matrix_dense_t::C)
+          endif
           select type(C)
           type is(matrix_dense_t)
              call add_dense(A, B, C)

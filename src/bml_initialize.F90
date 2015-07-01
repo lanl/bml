@@ -3,7 +3,9 @@
 !> Matrix initialization.
 module bml_initialize
 
+  use bml_error
   use bml_initialize_dense
+  use bml_type_dense
 
 contains
 
@@ -16,7 +18,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), allocatable, intent(inout) :: A
+    class(matrix_t), allocatable, intent(out) :: A
 
     select case(matrix_type)
     case("dense")
@@ -26,8 +28,7 @@ contains
           call allocate_matrix_dense(N, A)
        end select
     case default
-       write(*, *) "[initialize] unsupported matrix type"
-       error stop
+       call error(__FILE__, __LINE__, "unsupported matrix type")
     end select
 
   end subroutine allocate_matrix
@@ -41,7 +42,18 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), allocatable, intent(inout) :: A
+    class(matrix_t), allocatable, intent(out) :: A
+
+    select case(matrix_type)
+    case("dense")
+       allocate(matrix_dense_t::A)
+       select type(A)
+       type is(matrix_dense_t)
+          call zero_matrix_dense(N, A)
+       end select
+    case default
+       call error(__FILE__, __LINE__, "unsupported matrix type")
+    end select
 
   end subroutine zero_matrix
 
@@ -54,7 +66,18 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), intent(inout) :: A
+    class(matrix_t), allocatable, intent(out) :: A
+
+    select case(matrix_type)
+    case("dense")
+       allocate(matrix_dense_t::A)
+       select type(A)
+       type is(matrix_dense_t)
+          call random_matrix_dense(N, A)
+       end select
+    case default
+       call error(__FILE__, __LINE__, "unsupported matrix type")
+    end select
 
   end subroutine random_matrix
 
@@ -67,7 +90,18 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(matrix_t), intent(inout) :: A
+    class(matrix_t), allocatable, intent(out) :: A
+
+    select case(matrix_type)
+    case("dense")
+       allocate(matrix_dense_t::A)
+       select type(A)
+       type is(matrix_dense_t)
+          call identity_matrix_dense(N, A)
+       end select
+    case default
+       call error(__FILE__, __LINE__, "unsupported matrix type")
+    end select
 
   end subroutine identity_matrix
 
