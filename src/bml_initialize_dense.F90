@@ -1,13 +1,11 @@
 !> @copyright Los Alamos National Laboratory 2015
 
 !> Initialization of dense matrices.
-module matrix_initialize_dense
+module bml_initialize_dense
 
-  use matrix_type
+  use bml_type_dense
 
   implicit none
-
-  private :: allocate_matrix_dense
 
 contains
 
@@ -15,13 +13,12 @@ contains
   !!
   !! @param N The matrix size.
   !! @param A The matrix.
-  subroutine allocate_matrix_dense (N, A)
+  subroutine allocate_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_t), intent(inout) :: A
+    type(matrix_dense_t), intent(inout) :: A
 
     A%N = N
-    A%matrix_type = matrix_type_name_dense
     if(allocated(A%dense_matrix)) then
        deallocate(A%dense_matrix)
     endif
@@ -33,10 +30,10 @@ contains
   !!
   !! @param N The matrix size.
   !! @param A The matrix.
-  subroutine zero_matrix_dense (N, A)
+  subroutine zero_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_t), intent(inout) :: A
+    type(matrix_dense_t), intent(inout) :: A
 
     call allocate_matrix_dense(N, A)
     A%dense_matrix = 0
@@ -47,10 +44,10 @@ contains
   !!
   !! @param N The matrix size.
   !! @param A The matrix.
-  subroutine random_matrix_dense (N, A)
+  subroutine random_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_t), intent(inout) :: A
+    type(matrix_dense_t), intent(inout) :: A
 
     call allocate_matrix_dense(N, A)
     call random_number(A%dense_matrix)
@@ -61,10 +58,10 @@ contains
   !!
   !! @param N The matrix size.
   !! @param A The matrix.
-  subroutine identity_matrix_dense (N, A)
+  subroutine identity_matrix_dense(N, A)
 
     integer, intent(in) :: N
-    type(matrix_t), intent(inout) :: A
+    type(matrix_dense_t), intent(inout) :: A
 
     integer :: i
 
@@ -75,4 +72,4 @@ contains
 
   end subroutine identity_matrix_dense
 
-end module matrix_initialize_dense
+end module bml_initialize_dense

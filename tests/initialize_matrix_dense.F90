@@ -5,8 +5,8 @@ program test
   implicit none
 
   integer, parameter :: N = 12
-  type(matrix_t) :: A
+  class(matrix_t), allocatable :: A
 
-  call zero_matrix_dense(N, A)
+  call zero_matrix("dense", N, A)
 
 end program test

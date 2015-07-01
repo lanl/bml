@@ -6,18 +6,27 @@ program test
 
   integer, parameter :: N = 12
 
-  type(matrix_t) :: A
-  type(matrix_t) :: B
-  type(matrix_t) :: C
+  class(matrix_t), allocatable :: A
+  class(matrix_t), allocatable :: B
+  class(matrix_t), allocatable :: C
 
-  call random_matrix_dense(N, A)
-  call identity_matrix_dense(N, B)
+  call random_matrix("dense", N, A)
+  call identity_matrix("dense", N, B)
 
   call add(A, B, C)
 
-  if(sum(abs(C%dense_matrix-(A%dense_matrix+B%dense_matrix))) > 1d-12) then
-     write(*, *) "matrix mismatch"
-     error stop
-  endif
+  select type(A)
+  type is(matrix_dense_t)
+     select type(B)
+     type is(matrix_dense_t)
+        select type(C)
+        type is(matrix_dense_t)
+           if(sum(abs(C%dense_matrix-(A%dense_matrix+B%dense_matrix))) > 1d-12) then
+              write(*, *) "matrix mismatch"
+              error stop
+           endif
+        end select
+     end select
+  end select
 
 end program test

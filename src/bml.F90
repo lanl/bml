@@ -10,8 +10,8 @@
 !> Main matrix library module.
 module bml
 
-  use matrix_add
-  use matrix_initialize
-  use matrix_multiply
+  use bml_add
+  use bml_initialize
+  use bml_multiply
 
 end module bml

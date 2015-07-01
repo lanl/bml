@@ -1,9 +1,9 @@
 !> @copyright Los Alamos National Laboratory 2015
 
 !> Matrix multiplication.
-module matrix_multiply
+module bml_multiply
 
-  use matrix_multiply_dense
+  use bml_multiply_dense
 
 contains
 
@@ -18,25 +18,31 @@ contains
   !! @param beta The factor \f$ \beta \f$.
   subroutine multiply (A, B, C, alpha, beta)
 
-    type(matrix_t), intent(in) :: A, B
-    type(matrix_t), intent(inout) :: C
+    class(matrix_t), intent(in) :: A, B
+    class(matrix_t), intent(inout) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
-    select case(A%matrix_type)
-    case(matrix_type_name_dense)
-       select case(B%matrix_type)
-       case(matrix_type_name_dense)
-          call multiply_dense(A, B, C)
-       case default
+    select type(A)
+    type is(matrix_dense_t)
+       select type(B)
+       type is(matrix_dense_t)
+          select type(C)
+          type is(matrix_dense_t)
+             call multiply_dense(A, B, C)
+          class default
+             write(*, *) "[Multiply] C matrix type mismatch"
+             error stop
+          end select
+       class default
           write(*, *) "[multiply] matrix type mismatch"
           error stop
        end select
-    case default
+    class default
        write(*, *) "[multiply] not implemented"
        error stop
     end select
 
   end subroutine multiply
 
-end module matrix_multiply
+end module bml_multiply

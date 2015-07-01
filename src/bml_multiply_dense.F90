@@ -1,9 +1,9 @@
 !> @copyright Los Alamos National Laboratory 2015
 
 !> Matrix multiplication for dense matrices.
-module matrix_multiply_dense
+module bml_multiply_dense
 
-  use matrix_type
+  use bml_type_dense
 
   implicit none
 
@@ -18,9 +18,9 @@ contains
   !! @param C Matrix \f$ C \f$.
   subroutine multiply_dense (A, B, C)
 
-    type(matrix_t), intent(in) :: A, B
-    type(matrix_t), intent(inout) :: C
+    type(matrix_dense_t), intent(in) :: A, B
+    type(matrix_dense_t), intent(inout) :: C
 
   end subroutine multiply_dense
 
-end module matrix_multiply_dense
+end module bml_multiply_dense
