@@ -13,5 +13,6 @@ module bml
   use bml_add
   use bml_initialize
   use bml_multiply
+  use bml_print
 
 end module bml

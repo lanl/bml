@@ -3,6 +3,7 @@
 !> Matrix multiplication.
 module bml_multiply
 
+  use bml_error
   use bml_multiply_dense
 
 contains

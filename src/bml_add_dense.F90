@@ -3,6 +3,7 @@
 !> Matrix addition for dense matrices.
 module bml_add_dense
 
+  use bml_error
   use bml_type_dense
 
   implicit none

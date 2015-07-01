@@ -6,6 +6,8 @@ set(SOURCES
   bml_initialize_dense.F90
   bml_multiply.F90
   bml_multiply_dense.F90
+  bml_print.F90
+  bml_print_dense.F90
   bml_type.F90
   bml_type_dense.F90
   bml.F90)

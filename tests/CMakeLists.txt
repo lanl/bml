@@ -4,6 +4,7 @@ include_directories(${CMAKE_BINARY_DIR}/src)
 # script will automatically build and run the test.
 set(TESTS
   initialize_matrix_dense.F90
+  multiply_matrix_dense.F90
   add_matrix_dense.F90)
 
 # Scan the sources in TESTS and generate build rules to build and test
