@@ -4,8 +4,6 @@
 module bml_print
 
   use bml_error
-  use bml_print_dense
-  use bml_type_dense
 
   implicit none
 
@@ -16,6 +14,8 @@ contains
   !! @param name A tag to be printed before the matrix.
   !! @param A The matrix.
   subroutine print_matrix(name, A)
+
+    use bml_print_dense
 
     character(len=*), intent(in) :: name
     class(bml_matrix_t), allocatable, intent(in) :: A

@@ -1,4 +1,4 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix multiplication for dense matrices.
 module bml_multiply_dense
@@ -13,9 +13,9 @@ contains
   !!
   !! \f$ C \leftarrow A+B \f$
   !!
-  !! @param A Matrix \f$ A \f$.
-  !! @param B Matrix \f$ B \f$.
-  !! @param C Matrix \f$ C \f$.
+  !! \param A Matrix \f$ A \f$.
+  !! \param B Matrix \f$ B \f$.
+  !! \param C Matrix \f$ C \f$.
   subroutine multiply_dense (A, B, C)
 
     type(bml_matrix_dense_t), intent(in) :: A, B

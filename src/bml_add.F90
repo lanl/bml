@@ -1,9 +1,8 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix addition.
 module bml_add
 
-  use bml_add_dense
   use bml_error
 
 contains
@@ -12,10 +11,12 @@ contains
   !!
   !! \f$ C \leftarrow A+B \f$
   !!
-  !! @param A Matrix \f$ A \f$.
-  !! @param B Matrix \f$ B \f$.
-  !! @param C Matrix \f$ C \f$.
+  !! \param A Matrix \f$ A \f$.
+  !! \param B Matrix \f$ B \f$.
+  !! \param C Matrix \f$ C \f$.
   subroutine add (A, B, C)
+
+    use bml_add_dense
 
     class(bml_matrix_t), allocatable, intent(in) :: A, B
     class(bml_matrix_t), allocatable, intent(inout) :: C

@@ -1,20 +1,23 @@
 !> @copyright Los Alamos National Laboratory 2015
 
 !> Matrix initialization.
-module bml_initialize
+module bml_allocate
 
   use bml_error
-  use bml_initialize_dense
-  use bml_type_dense
 
 contains
 
+  !> \addtogroup allocate_group
+  !! @{
+
   !> Allocate a matrix.
   !!
-  !! @param matrix_type The matrix type.
-  !! @param N The matrix size.
-  !! @param A The matrix.
+  !! \param matrix_type The matrix type.
+  !! \param N The matrix size.
+  !! \param A The matrix.
   subroutine allocate_matrix(matrix_type, N, A)
+
+    use bml_allocate_dense
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
@@ -32,6 +35,35 @@ contains
     end select
 
   end subroutine allocate_matrix
+  !> @}
+
+  !> \addtogroup allocate_group
+  !! @{
+
+  !> Deallocate a matrix.
+  !!
+  !! @param A The matrix.
+  subroutine deallocate_matrix(A)
+
+    use bml_allocate_dense
+
+    class(bml_matrix_t), allocatable, intent(inout) :: A
+
+    if(allocated(A)) then
+       select type(A)
+       type is(bml_matrix_dense_t)
+          call deallocate_matrix_dense(A)
+       class default
+          call error(__FILE__, __LINE__, "unsupported matrix type")
+       end select
+       deallocate(A)
+    endif
+
+  end subroutine deallocate_matrix
+  !> @}
+
+  !> \addtogroup initialize_group
+  !! @{
 
   !> Initialize a zero matrix.
   !!
@@ -40,9 +72,15 @@ contains
   !! @param A The matrix.
   subroutine zero_matrix(matrix_type, N, A)
 
+    use bml_allocate_dense
+
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
+
+    if(allocated(A)) then
+       call deallocate_matrix(A)
+    endif
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE)
@@ -56,6 +94,10 @@ contains
     end select
 
   end subroutine zero_matrix
+  !> @}
+
+  !> \addtogroup initialize_group
+  !! @{
 
   !> Initialize a random matrix.
   !!
@@ -64,9 +106,15 @@ contains
   !! @param A The matrix.
   subroutine random_matrix(matrix_type, N, A)
 
+    use bml_allocate_dense
+
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
+
+    if(allocated(A)) then
+       call deallocate_matrix(A)
+    endif
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE)
@@ -80,6 +128,10 @@ contains
     end select
 
   end subroutine random_matrix
+  !> @}
+
+  !> \addtogroup initialize_group
+  !! @{
 
   !> Initialize a identity matrix.
   !!
@@ -88,9 +140,15 @@ contains
   !! @param A The matrix.
   subroutine identity_matrix(matrix_type, N, A)
 
+    use bml_allocate_dense
+
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
+
+    if(allocated(A)) then
+       call deallocate_matrix(A)
+    endif
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE)
@@ -104,5 +162,6 @@ contains
     end select
 
   end subroutine identity_matrix
+  !> @}
 
-end module bml_initialize
+end module bml_allocate

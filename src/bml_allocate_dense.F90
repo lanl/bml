@@ -1,7 +1,7 @@
 !> @copyright Los Alamos National Laboratory 2015
 
 !> Initialization of dense matrices.
-module bml_initialize_dense
+module bml_allocate_dense
 
   use bml_type_dense
 
@@ -25,6 +25,17 @@ contains
     allocate(A%matrix(N, N))
 
   end subroutine allocate_matrix_dense
+
+  !> Deallocate a dense matrix.
+  !!
+  !! @param A The matrix.
+  subroutine deallocate_matrix_dense(A)
+
+    type(bml_matrix_dense_t), intent(inout) :: A
+
+    deallocate(A%matrix)
+
+  end subroutine deallocate_matrix_dense
 
   !> Initialize a dense zero matrix.
   !!
@@ -72,4 +83,4 @@ contains
 
   end subroutine identity_matrix_dense
 
-end module bml_initialize_dense
+end module bml_allocate_dense

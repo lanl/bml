@@ -4,7 +4,6 @@
 module bml_multiply
 
   use bml_error
-  use bml_multiply_dense
 
 contains
 
@@ -12,12 +11,14 @@ contains
   !!
   !! \f$ C \leftarrow \alpha A \times B + \beta C \f$
   !!
-  !! @param A Matrix \f$ A \f$.
-  !! @param B Matrix \f$ B \f$.
-  !! @param C Matrix \f$ C \f$.
-  !! @param alpha The factor \f$ \alpha \f$.
-  !! @param beta The factor \f$ \beta \f$.
+  !! \param A Matrix \f$ A \f$.
+  !! \param B Matrix \f$ B \f$.
+  !! \param C Matrix \f$ C \f$.
+  !! \param alpha The factor \f$ \alpha \f$.
+  !! \param beta The factor \f$ \beta \f$.
   subroutine multiply (A, B, C, alpha, beta)
+
+    use bml_multiply_dense
 
     class(bml_matrix_t), allocatable, intent(in) :: A, B
     class(bml_matrix_t), allocatable, intent(inout) :: C
