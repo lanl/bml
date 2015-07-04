@@ -4,6 +4,7 @@ set(SOURCES
   bml_allocate.F90
   bml_allocate_dense.F90
   bml_convert.F90
+  bml_convert_dense.F90
   bml_error.F90
   bml_multiply.F90
   bml_multiply_dense.F90
