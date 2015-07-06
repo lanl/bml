@@ -5,31 +5,22 @@ program test
   implicit none
 
   integer, parameter :: N = 12
+  double precision, parameter :: alpha = 1.2
 
   class(bml_matrix_t), allocatable :: A
-  class(bml_matrix_t), allocatable :: B
   class(bml_matrix_t), allocatable :: C
 
   double precision, allocatable :: A_dense(:, :)
-  double precision, allocatable :: B_dense(:, :)
   double precision, allocatable :: C_dense(:, :)
 
   call random_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-  call identity_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, B)
+  call scale(alpha, A, C)
 
   call convert_to_dense(A, A_dense)
-  call convert_to_dense(B, B_dense)
-
-  call add(A, B, C)
-
   call convert_to_dense(C, C_dense)
 
-  if(maxval(A_dense+B_dense-C_dense) > 1e-12) then
-     call error(__FILE__, __LINE__, "incorrect matrix sum")
+  if(maxval(alpha*A_dense-C_dense) > 1e-12) then
+     call error(__FILE__, __LINE__, "matrix element mismatch")
   endif
-
-  call deallocate_matrix(A)
-  call deallocate_matrix(B)
-  call deallocate_matrix(C)
 
 end program test

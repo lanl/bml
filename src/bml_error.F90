@@ -1,4 +1,4 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> A module for error handling in bml.
 module bml_error

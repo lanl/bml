@@ -11,11 +11,16 @@
 !> Main matrix library module.
 module bml
 
+  ! Put this first.
+  use bml_type
+
+  ! Add all of the other modules.
   use bml_add
-  use bml_convert
   use bml_allocate
+  use bml_convert
+  use bml_error
   use bml_multiply
   use bml_print
-  use bml_type
+  use bml_scale
 
 end module bml

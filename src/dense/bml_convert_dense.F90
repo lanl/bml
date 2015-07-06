@@ -2,11 +2,7 @@
 
 !> Some format conversion functions.
 module bml_convert_dense
-
-  use bml_type_dense
-
   implicit none
-
 contains
 
   !> Convert a matrix into a dense matrix.
@@ -16,6 +12,8 @@ contains
   !! \param A The bml matrix.
   !! \param A_dense The dense matrix.
   subroutine convert_to_dense_dense(A, A_dense)
+
+    use bml_type_dense
 
     type(bml_matrix_dense_t), intent(in) :: A
     double precision, allocatable, intent(out) :: A_dense(:, :)
@@ -29,6 +27,8 @@ contains
   !! \param A_dense The dense matrix.
   !! \param A The bml matrix.
   subroutine convert_from_dense_dense(A_dense, A)
+
+    use bml_type_dense
 
     double precision, intent(in) :: A_dense(:, :)
     type(bml_matrix_dense_t), intent(inout) :: A

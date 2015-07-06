@@ -1,10 +1,8 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix initialization.
 module bml_allocate
-
-  use bml_error
-
+  implicit none
 contains
 
   !> \addtogroup allocate_group
@@ -18,13 +16,14 @@ contains
   subroutine allocate_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
+    use bml_error
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE)
+    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
        allocate(bml_matrix_dense_t::A)
        select type(A)
        type is(bml_matrix_dense_t)
@@ -73,6 +72,7 @@ contains
   subroutine zero_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
+    use bml_error
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
@@ -83,7 +83,7 @@ contains
     endif
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE)
+    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
        allocate(bml_matrix_dense_t::A)
        select type(A)
        type is(bml_matrix_dense_t)
@@ -117,7 +117,7 @@ contains
     endif
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE)
+    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
        allocate(bml_matrix_dense_t::A)
        select type(A)
        type is(bml_matrix_dense_t)
@@ -141,6 +141,7 @@ contains
   subroutine identity_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
+    use bml_error
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
@@ -151,7 +152,7 @@ contains
     endif
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE)
+    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
        allocate(bml_matrix_dense_t::A)
        select type(A)
        type is(bml_matrix_dense_t)

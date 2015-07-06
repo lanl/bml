@@ -1,4 +1,4 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Print a matrix.
 module bml_print
@@ -16,6 +16,7 @@ contains
   subroutine print_matrix(name, A)
 
     use bml_print_dense
+    use bml_error
 
     character(len=*), intent(in) :: name
     class(bml_matrix_t), allocatable, intent(in) :: A

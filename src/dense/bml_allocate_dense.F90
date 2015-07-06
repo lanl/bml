@@ -1,4 +1,4 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Initialization of dense matrices.
 module bml_allocate_dense

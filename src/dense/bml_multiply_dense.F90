@@ -2,11 +2,7 @@
 
 !> Matrix multiplication for dense matrices.
 module bml_multiply_dense
-
-  use bml_type_dense
-
   implicit none
-
 contains
 
   !> Multiply two dense matrices.
@@ -17,6 +13,8 @@ contains
   !! \param B Matrix \f$ B \f$.
   !! \param C Matrix \f$ C \f$.
   subroutine multiply_dense (A, B, C)
+
+    use bml_type_dense
 
     type(bml_matrix_dense_t), intent(in) :: A, B
     type(bml_matrix_dense_t), intent(inout) :: C

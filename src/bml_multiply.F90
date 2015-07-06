@@ -1,10 +1,8 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix multiplication.
 module bml_multiply
-
-  use bml_error
-
+  implicit none
 contains
 
   !> Multiply two matrices.
@@ -18,6 +16,9 @@ contains
   !! \param beta The factor \f$ \beta \f$.
   subroutine multiply (A, B, C, alpha, beta)
 
+    use bml_type_dense
+
+    use bml_error
     use bml_multiply_dense
 
     class(bml_matrix_t), allocatable, intent(in) :: A, B
