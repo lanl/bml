@@ -17,7 +17,6 @@ set(SOURCES
 set(HEADERS
   ${CMAKE_CURRENT_BINARY_DIR}/bml_add.mod
   ${CMAKE_CURRENT_BINARY_DIR}/bml_allocate.mod
-  ${CMAKE_CURRENT_BINARY_DIR}/bml_allocate.mod
   ${CMAKE_CURRENT_BINARY_DIR}/bml_convert.mod
   ${CMAKE_CURRENT_BINARY_DIR}/bml_error.mod
   ${CMAKE_CURRENT_BINARY_DIR}/bml_multiply.mod

@@ -1,4 +1,4 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Some format conversion functions.
 module bml_convert_dense
@@ -13,8 +13,8 @@ contains
   !!
   !! \f$ A \leftarrow A_{d} \f$
   !!
-  !! @param A The bml matrix.
-  !! @param A_dense The dense matrix.
+  !! \param A The bml matrix.
+  !! \param A_dense The dense matrix.
   subroutine convert_to_dense_dense(A, A_dense)
 
     type(bml_matrix_dense_t), intent(in) :: A

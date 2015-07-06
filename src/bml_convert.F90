@@ -1,4 +1,4 @@
-!> @copyright Los Alamos National Laboratory 2015
+!> \copyright Los Alamos National Laboratory 2015
 
 !> Some format conversion functions.
 module bml_convert
@@ -9,8 +9,8 @@ contains
 
   !> Convert a matrix into a dense matrix.
   !!
-  !! @param A The bml matrix.
-  !! @param A_dense The dense matrix.
+  !! \param A The bml matrix.
+  !! \param A_dense The dense matrix.
   subroutine convert_to_dense(A, A_dense)
 
     use bml_convert_dense
@@ -49,6 +49,7 @@ contains
     double precision, intent(in) :: A_dense(:, :)
     class(bml_matrix_t), allocatable, intent(out) :: A
 
+    call debug(__FILE__, __LINE__, "Allocating new matrix")
     call allocate_matrix(matrix_type, size(A_dense, 1), A)
 
     select type(A)

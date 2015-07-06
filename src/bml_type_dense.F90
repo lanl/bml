@@ -7,6 +7,7 @@ module bml_type_dense
 
   implicit none
 
+  !> The bml dense matrix type.
   type, extends(bml_matrix_t) :: bml_matrix_dense_t
 
      !> The dense matrix.

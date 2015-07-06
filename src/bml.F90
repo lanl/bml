@@ -1,7 +1,5 @@
 !> \mainpage Basic Matrix Library (bml)
 !!
-!! ...
-!!
 !! \author
 !! Nicolas Bock <nbock@lanl.gov>
 
