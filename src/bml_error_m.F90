@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> A module for error handling in bml.
-module bml_error
+module bml_error_m
   implicit none
   private
 
@@ -89,4 +89,4 @@ contains
 
   end subroutine debug
 
-end module bml_error
+end module bml_error_m

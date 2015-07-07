@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix initialization.
-module bml_allocate
+module bml_allocate_m
   implicit none
 contains
 
@@ -16,7 +16,7 @@ contains
   subroutine allocate_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
-    use bml_error
+    use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
@@ -45,6 +45,7 @@ contains
   subroutine deallocate_matrix(A)
 
     use bml_allocate_dense
+    use bml_error_m
 
     class(bml_matrix_t), allocatable, intent(inout) :: A
 
@@ -72,15 +73,11 @@ contains
   subroutine zero_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
-    use bml_error
+    use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
-
-    if(allocated(A)) then
-       call deallocate_matrix(A)
-    endif
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
@@ -107,14 +104,11 @@ contains
   subroutine random_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
+    use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
-
-    if(allocated(A)) then
-       call deallocate_matrix(A)
-    endif
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
@@ -141,15 +135,11 @@ contains
   subroutine identity_matrix(matrix_type, N, A)
 
     use bml_allocate_dense
-    use bml_error
+    use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
-
-    if(allocated(A)) then
-       call deallocate_matrix(A)
-    endif
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
@@ -165,4 +155,4 @@ contains
   end subroutine identity_matrix
   !> @}
 
-end module bml_allocate
+end module bml_allocate_m

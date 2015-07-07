@@ -26,14 +26,25 @@ contains
   !!
   !! \param A_dense The dense matrix.
   !! \param A The bml matrix.
-  subroutine convert_from_dense_dense(A_dense, A)
+  !! \param threshold The matrix element magnited threshold
+  subroutine convert_from_dense_dense(A_dense, A, threshold)
 
     use bml_type_dense
 
     double precision, intent(in) :: A_dense(:, :)
     type(bml_matrix_dense_t), intent(inout) :: A
+    double precision, optional, intent(in) :: threshold
+
+    integer :: i, j
 
     A%matrix = A_dense
+    if(present(threshold)) then
+       do i = 1, A%N
+          do j = 1, A%N
+             if(A%matrix(i, j) <= threshold) A%matrix(i, j) = 0
+          end do
+       end do
+    end if
 
   end subroutine convert_from_dense_dense
 

@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix scaling for matrices.
-module bml_scale
+module bml_scale_m
   implicit none
 contains
 
@@ -16,8 +16,8 @@ contains
 
     use bml_type_dense
 
-    use bml_allocate
-    use bml_error
+    use bml_allocate_m
+    use bml_error_m
     use bml_scale_dense
 
     double precision, intent(in) :: alpha
@@ -30,7 +30,6 @@ contains
 
     select type(A)
     type is(bml_matrix_dense_t)
-       call deallocate_matrix(C)
        call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
        select type(C)
        type is(bml_matrix_dense_t)
@@ -42,4 +41,4 @@ contains
 
   end subroutine scale
 
-end module bml_scale
+end module bml_scale_m

@@ -27,13 +27,13 @@ contains
        alpha_ = alpha
     else
        alpha_ = 1
-    endif
+    end if
 
     if(present(beta)) then
        beta_ = beta
     else
        beta_ = 1
-    endif
+    end if
 
     C%matrix = alpha_*A%matrix+beta_*B%matrix
 
@@ -47,7 +47,7 @@ contains
   !! \param C Matrix C
   !! \param alpha Factor \f$ \alpha \f$
   !! \param beta Factor \f$ \beta \f$
-  subroutine add_identity_dense(A, C, alpha, beta)
+  subroutine add_identity_two_dense(A, C, alpha, beta)
 
     use bml_type_dense
 
@@ -56,6 +56,59 @@ contains
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
-  end subroutine add_identity_dense
+    integer :: i
+    double precision :: beta_
+
+    if(present(alpha)) then
+       C%matrix = alpha*A%matrix
+    else
+       C%matrix = A%matrix
+    end if
+
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 1
+    end if
+
+    do i = 1, A%N
+       C%matrix(i, i) = C%matrix(i, i) + beta_
+    end do
+
+  end subroutine add_identity_two_dense
+
+  !> Add a scaled identity matrix to a bml matrix.
+  !!
+  !! \f$ A \leftarrow \alpha A + \beta \mathrm{Id} \f$
+  !!
+  !! \param A Matrix A
+  !! \param alpha Factor \f$ \alpha \f$
+  !! \param beta Factor \f$ \beta \f$
+  subroutine add_identity_self_dense(A, alpha, beta)
+
+    use bml_type_dense
+
+    type(bml_matrix_dense_t), intent(inout) :: A
+    double precision, optional, intent(in) :: alpha
+    double precision, optional, intent(in) :: beta
+
+    integer :: i
+    double precision :: beta_
+
+    if(present(alpha)) then
+       A%matrix = alpha*A%matrix
+    end if
+
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 1
+    end if
+
+    do i = 1, A%N
+       A%matrix(i, i) = A%matrix(i, i) + beta_
+    end do
+
+  end subroutine add_identity_self_dense
 
 end module bml_add_dense

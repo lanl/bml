@@ -3,7 +3,7 @@
 !> Print a dense matrix.
 module bml_print_dense
 
-  use bml_error
+  use bml_error_m
   use bml_type_dense
 
   implicit none

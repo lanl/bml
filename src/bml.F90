@@ -15,12 +15,13 @@ module bml
   use bml_type
 
   ! Add all of the other modules.
-  use bml_add
-  use bml_allocate
-  use bml_convert
-  use bml_error
-  use bml_multiply
-  use bml_print
-  use bml_scale
+  use bml_add_m
+  use bml_allocate_m
+  use bml_convert_m
+  use bml_error_m
+  use bml_multiply_m
+  use bml_print_m
+  use bml_scale_m
+  use bml_trace_m
 
 end module bml

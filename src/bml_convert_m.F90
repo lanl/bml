@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Some format conversion functions.
-module bml_convert
+module bml_convert_m
   implicit none
 contains
 
@@ -14,7 +14,7 @@ contains
     use bml_type_dense
 
     use bml_convert_dense
-    use bml_error
+    use bml_error_m
 
     class(bml_matrix_t), allocatable, intent(in) :: A
     double precision, allocatable, intent(out) :: A_dense(:, :)
@@ -42,9 +42,9 @@ contains
 
     use bml_type_dense
 
-    use bml_allocate
+    use bml_allocate_m
     use bml_convert_dense
-    use bml_error
+    use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
     double precision, intent(in) :: A_dense(:, :)
@@ -66,4 +66,4 @@ contains
 
   end subroutine convert_from_dense
 
-end module bml_convert
+end module bml_convert_m

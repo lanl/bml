@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix multiplication.
-module bml_multiply
+module bml_multiply_m
   implicit none
 contains
 
@@ -18,7 +18,8 @@ contains
 
     use bml_type_dense
 
-    use bml_error
+    use bml_allocate_m
+    use bml_error_m
     use bml_multiply_dense
 
     class(bml_matrix_t), allocatable, intent(in) :: A, B
@@ -34,9 +35,7 @@ contains
     type is(bml_matrix_dense_t)
        select type(B)
        type is(bml_matrix_dense_t)
-          if(.not. allocated(C)) then
-             allocate(bml_matrix_dense_t::C)
-          endif
+          call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
           select type(C)
           type is(bml_matrix_dense_t)
              call multiply_dense(A, B, C)
@@ -52,4 +51,4 @@ contains
 
   end subroutine multiply
 
-end module bml_multiply
+end module bml_multiply_m
