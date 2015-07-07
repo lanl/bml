@@ -15,6 +15,7 @@ contains
   !! \param A The matrix.
   subroutine allocate_matrix(matrix_type, N, A)
 
+    use bml_type_dense
     use bml_allocate_dense
     use bml_error_m
 
@@ -44,6 +45,7 @@ contains
   !! @param A The matrix.
   subroutine deallocate_matrix(A)
 
+    use bml_type_dense
     use bml_allocate_dense
     use bml_error_m
 
@@ -72,6 +74,7 @@ contains
   !! @param A The matrix.
   subroutine zero_matrix(matrix_type, N, A)
 
+    use bml_type_dense
     use bml_allocate_dense
     use bml_error_m
 
@@ -103,6 +106,7 @@ contains
   !! @param A The matrix.
   subroutine random_matrix(matrix_type, N, A)
 
+    use bml_type_dense
     use bml_allocate_dense
     use bml_error_m
 
@@ -134,6 +138,7 @@ contains
   !! @param A The matrix.
   subroutine identity_matrix(matrix_type, N, A)
 
+    use bml_type_dense
     use bml_allocate_dense
     use bml_error_m
 

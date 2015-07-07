@@ -2,11 +2,7 @@
 
 !> Initialization of dense matrices.
 module bml_allocate_dense
-
-  use bml_type_dense
-
   implicit none
-
 contains
 
   !> Allocate a dense matrix.
@@ -14,6 +10,8 @@ contains
   !! @param N The matrix size.
   !! @param A The matrix.
   subroutine allocate_matrix_dense(N, A)
+
+    use bml_type_dense
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A
@@ -31,6 +29,8 @@ contains
   !! @param A The matrix.
   subroutine deallocate_matrix_dense(A)
 
+    use bml_type_dense
+
     type(bml_matrix_dense_t), intent(inout) :: A
 
     deallocate(A%matrix)
@@ -42,6 +42,8 @@ contains
   !! @param N The matrix size.
   !! @param A The matrix.
   subroutine zero_matrix_dense(N, A)
+
+    use bml_type_dense
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A
@@ -57,6 +59,8 @@ contains
   !! @param A The matrix.
   subroutine random_matrix_dense(N, A)
 
+    use bml_type_dense
+
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A
 
@@ -70,6 +74,8 @@ contains
   !! @param N The matrix size.
   !! @param A The matrix.
   subroutine identity_matrix_dense(N, A)
+
+    use bml_type_dense
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A

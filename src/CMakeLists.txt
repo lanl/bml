@@ -8,13 +8,14 @@ set(SOURCES
   bml_print_m.F90
   bml_scale_m.F90
   bml_trace_m.F90
-  bml_type.F90
+  bml_type_m.F90
   dense/bml_add_dense.F90
   dense/bml_allocate_dense.F90
   dense/bml_convert_dense.F90
   dense/bml_multiply_dense.F90
   dense/bml_print_dense.F90
   dense/bml_scale_dense.F90
+  dense/bml_trace_dense_m.F90
   dense/bml_type_dense.F90)
 
 set(HEADERS
@@ -27,7 +28,7 @@ set(HEADERS
   ${CMAKE_CURRENT_BINARY_DIR}/bml_print_m.mod
   ${CMAKE_CURRENT_BINARY_DIR}/bml_scale_m.mod
   ${CMAKE_CURRENT_BINARY_DIR}/bml_trace_m.mod
-  ${CMAKE_CURRENT_BINARY_DIR}/bml_type.mod)
+  ${CMAKE_CURRENT_BINARY_DIR}/bml_type_m.mod)
 
 add_library(bml ${SOURCES})
 

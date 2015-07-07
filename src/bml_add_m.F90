@@ -4,6 +4,7 @@
 module bml_add_m
   implicit none
 
+  !> Add identity matrix to a matrix.
   interface add_identity
      module procedure add_identity_two
      module procedure add_identity_self

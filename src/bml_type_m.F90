@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> The matrix types.
-module bml_type
+module bml_type_m
 
   implicit none
 
@@ -19,4 +19,4 @@ module bml_type
 
   end type bml_matrix_t
 
-end module bml_type
+end module bml_type_m

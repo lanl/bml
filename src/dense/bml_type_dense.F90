@@ -3,7 +3,7 @@
 !> The matrix types.
 module bml_type_dense
 
-  use bml_type
+  use bml_type_m
 
   implicit none
 

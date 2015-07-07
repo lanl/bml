@@ -15,7 +15,6 @@ contains
   subroutine scale(alpha, A, C)
 
     use bml_type_dense
-
     use bml_allocate_m
     use bml_error_m
     use bml_scale_dense

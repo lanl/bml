@@ -12,7 +12,6 @@ contains
   subroutine convert_to_dense(A, A_dense)
 
     use bml_type_dense
-
     use bml_convert_dense
     use bml_error_m
 
@@ -41,7 +40,6 @@ contains
   subroutine convert_from_dense(matrix_type, A_dense, A, threshold)
 
     use bml_type_dense
-
     use bml_allocate_m
     use bml_convert_dense
     use bml_error_m

@@ -2,12 +2,7 @@
 
 !> Print a dense matrix.
 module bml_print_dense
-
-  use bml_error_m
-  use bml_type_dense
-
   implicit none
-
 contains
 
   !> Print a matrix.
@@ -15,6 +10,8 @@ contains
   !! @param name A tag to be printed before the matrix.
   !! @param A The matrix.
   subroutine print_matrix_dense(name, A)
+
+    use bml_type_dense
 
     character(len=*), intent(in) :: name
     type(bml_matrix_dense_t), intent(in) :: A

@@ -12,7 +12,7 @@
 module bml
 
   ! Put this first.
-  use bml_type
+  use bml_type_m
 
   ! Add all of the other modules.
   use bml_add_m

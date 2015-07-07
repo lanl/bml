@@ -17,7 +17,6 @@ contains
   subroutine multiply (A, B, C, alpha, beta)
 
     use bml_type_dense
-
     use bml_allocate_m
     use bml_error_m
     use bml_multiply_dense

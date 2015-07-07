@@ -12,6 +12,7 @@ contains
   !! @param A The matrix.
   subroutine print_matrix(name, A)
 
+    use bml_type_dense
     use bml_print_dense
     use bml_error_m
 
