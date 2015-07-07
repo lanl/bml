@@ -24,4 +24,14 @@ module bml
   use bml_scale_m
   use bml_trace_m
 
+contains
+
+  !> Get the library version string.
+  !!
+  !! \return The version string.
+  function bml_version()
+    character(len=100) :: bml_version
+    bml_version = PROJECT_VERSION
+  end function bml_version
+
 end module bml

@@ -21,9 +21,10 @@ contains
 
     trA = 0
     if(.not. allocated(A)) return
+
     select type(A)
     type is(bml_matrix_dense_t)
-       trA = trace_dense(A)
+       !trA = trace_dense(A)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select

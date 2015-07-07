@@ -31,6 +31,11 @@ set(HEADERS
   ${CMAKE_CURRENT_BINARY_DIR}/bml_type_m.mod)
 
 add_library(bml ${SOURCES})
+set_target_properties(bml
+  PROPERTIES
+  SOVERSION 0
+  VERSION 0.0.0)
+add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 install(TARGETS bml
   ARCHIVE DESTINATION lib
