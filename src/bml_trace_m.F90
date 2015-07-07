@@ -7,7 +7,7 @@ contains
 
   !> Calculate the trace of a matrix.
   !!
-  !! \f$ \leftarrow \mathrm{Tr} A \f$
+  !! \f$ \leftarrow \mathrm{Tr} \left[ A \right] \f$
   !!
   !! \param A The matrix.
   function trace(A) result(trA)

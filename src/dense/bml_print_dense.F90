@@ -12,6 +12,7 @@ contains
   subroutine print_matrix_dense(name, A)
 
     use bml_type_dense
+    use bml_error_m
 
     character(len=*), intent(in) :: name
     type(bml_matrix_dense_t), intent(in) :: A
