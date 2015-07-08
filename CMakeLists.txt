@@ -21,3 +21,9 @@ endif()
 
 enable_testing()
 add_subdirectory(tests)
+
+find_program(HAVE_ETAGS etags)
+if(HAVE_ETAGS)
+  add_custom_target(tags
+    ${HAVE_ETAGS} ${CMAKE_SOURCE_DIR}/src/*.F90)
+endif()
