@@ -7,19 +7,19 @@ contains
 
   !> Copy (assign) a matrix to another one.
   !!
-  !! This operation performs \f$ A \leftarrow B \f$.
+  !! This operation performs \f$ B \leftarrow A \f$.
   !!
-  !! \param A Matrix to copy to.
-  !! \param B Matrix to copy.
+  !! \param A Matrix to copy.
+  !! \param B Matrix to copy to.
   subroutine copy_dense(A, B)
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(inout) :: A
-    type(bml_matrix_dense_t), intent(in) :: B
+    type(bml_matrix_dense_t), intent(in) :: A
+    type(bml_matrix_dense_t), intent(inout) :: B
 
     ! This is an implicit re-allocation.
-    A%matrix = B%matrix
+    B%matrix = A%matrix
 
   end subroutine copy_dense
 

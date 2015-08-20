@@ -7,10 +7,10 @@ contains
 
   !> Copy (assign) a matrix to another one.
   !!
-  !! This operation performs \f$ A \leftarrow B \f$.
+  !! This operation performs \f$ B \leftarrow A \f$.
   !!
-  !! \param A Matrix to copy to.
-  !! \param B Matrix to copy.
+  !! \param A Matrix to copy.
+  !! \param B Matrix to copy to.
   subroutine copy(A, B)
 
     use bml_type_dense_m
@@ -18,13 +18,13 @@ contains
     use bml_copy_dense_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(inout) :: A
-    class(bml_matrix_t), intent(in) :: B
+    class(bml_matrix_t), intent(in) :: A
+    class(bml_matrix_t), allocatable, intent(inout) :: B
 
-    select type(B)
+    select type(A)
     type is(bml_matrix_dense_t)
-       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, B%N, A)
-       select type(A)
+       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, B)
+       select type(B)
        type is(bml_matrix_dense_t)
           call copy_dense(A, B)
        class default

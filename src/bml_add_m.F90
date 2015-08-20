@@ -2,7 +2,14 @@
 
 !> Matrix addition.
 module bml_add_m
+
   implicit none
+
+  !> Add two matrices.
+  interface add
+     module procedure add_three
+     module procedure add_two
+  end interface add
 
   !> Add identity matrix to a matrix.
   interface add_identity
@@ -24,7 +31,7 @@ contains
   !! \param C Matrix \f$ C \f$
   !! \param alpha Factor \f$ \alpha \f$
   !! \param beta Factor \f$ \beta \f$
-  subroutine add(A, B, C, alpha, beta)
+  subroutine add_three(A, B, C, alpha, beta)
 
     use bml_type_dense_m
     use bml_add_dense_m
@@ -59,7 +66,7 @@ contains
           call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
           select type(C)
           type is(bml_matrix_dense_t)
-             call add_dense(A, B, C, alpha_, beta_)
+             call add_three_dense(A, B, C, alpha_, beta_)
           class default
              call error(__FILE__, __LINE__, "C matrix type mismatch")
           end select
@@ -70,7 +77,60 @@ contains
        call error(__FILE__, __LINE__, "not implemented")
     end select
 
-  end subroutine add
+  end subroutine add_three
+
+  !> Add two matrices.
+  !!
+  !! \f$ A \leftarrow \alpha A + \beta B \f$
+  !!
+  !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
+  !! 1.
+  !!
+  !! \param A Matrix \f$ A \f$
+  !! \param B Matrix \f$ B \f$
+  !! \param alpha Factor \f$ \alpha \f$
+  !! \param beta Factor \f$ \beta \f$
+  subroutine add_two(A, B, alpha, beta)
+
+    use bml_type_dense_m
+    use bml_add_dense_m
+    use bml_allocate_m
+    use bml_error_m
+
+    class(bml_matrix_t), intent(inout) :: A
+    class(bml_matrix_t), intent(in) :: B
+    double precision, optional :: alpha, beta
+
+    double precision :: alpha_, beta_
+
+    if(A%N /= B%N) then
+       call error(__FILE__, __LINE__, "matrix dimension mismatch")
+    end if
+
+    if(present(alpha)) then
+       alpha_ = alpha
+    else
+       alpha_ = 1
+    end if
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 1
+    end if
+
+    select type(A)
+    type is(bml_matrix_dense_t)
+       select type(B)
+       type is(bml_matrix_dense_t)
+          call add_two_dense(A, B, alpha_, beta_)
+       class default
+          call error(__FILE__, __LINE__, "matrix type mismatch")
+       end select
+    class default
+       call error(__FILE__, __LINE__, "not implemented")
+    end select
+
+  end subroutine add_two
 
   !> Add a scaled identity matrix to a bml matrix.
   !!

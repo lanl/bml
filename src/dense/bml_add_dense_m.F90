@@ -14,7 +14,7 @@ contains
   !! \param C Matrix \f$ C \f$.
   !! \param alpha Factor \f$ \alpha \f$
   !! \param beta Factor \f$ \beta \f$
-  subroutine add_dense(A, B, C, alpha, beta)
+  subroutine add_three_dense(A, B, C, alpha, beta)
 
     use bml_type_dense_m
 
@@ -24,7 +24,27 @@ contains
 
     C%matrix = alpha*A%matrix+beta*B%matrix
 
-  end subroutine add_dense
+  end subroutine add_three_dense
+
+  !> Add two dense matrices.
+  !!
+  !! \f$ A \leftarrow \alpha A + \beta B \f$
+  !!
+  !! \param A Matrix \f$ A \f$.
+  !! \param B Matrix \f$ B \f$.
+  !! \param alpha Factor \f$ \alpha \f$
+  !! \param beta Factor \f$ \beta \f$
+  subroutine add_two_dense(A, B, alpha, beta)
+
+    use bml_type_dense_m
+
+    type(bml_matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_t), intent(in) :: B
+    double precision, intent(in) :: alpha, beta
+
+    A%matrix = alpha*A%matrix+beta*B%matrix
+
+  end subroutine add_two_dense
 
   !> Add a scaled identity matrix to a bml matrix.
   !!
