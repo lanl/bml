@@ -5,17 +5,25 @@ module bml_add_m
 
   implicit none
 
+  !> \addtogroup add_group
+  !! @{
+
   !> Add two matrices.
   interface add
      module procedure add_three
      module procedure add_two
   end interface add
+  !> @}
+
+  !> \addtogroup add_group
+  !! @{
 
   !> Add identity matrix to a matrix.
   interface add_identity
      module procedure add_identity_two
      module procedure add_identity_self
   end interface add_identity
+  !> @}
 
 contains
 

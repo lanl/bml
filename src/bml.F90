@@ -5,6 +5,8 @@
 
 !> \defgroup allocate_group Allocation and Deallocation Functions
 !> \defgroup initialize_group Initialization Functions for Matrices
+!> \defgroup add_group Adding Matrices
+!> \defgroup multiply_group Multiplying Matrices
 
 !> \copyright Los Alamos National Laboratory 2015
 

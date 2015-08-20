@@ -5,6 +5,9 @@ module bml_multiply_m
   implicit none
 contains
 
+  !> \addtogroup multiply_group
+  !! @{
+
   !> Multiply two matrices.
   !!
   !! \f$ C \leftarrow \alpha A \times B + \beta C \f$
@@ -69,5 +72,6 @@ contains
     end select
 
   end subroutine multiply
+  !> @}
 
 end module bml_multiply_m
