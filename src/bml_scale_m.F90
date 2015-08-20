@@ -14,18 +14,14 @@ contains
   !! \param C The matrix
   subroutine scale(alpha, A, C)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_m
     use bml_error_m
     use bml_scale_dense
 
     double precision, intent(in) :: alpha
-    class(bml_matrix_t), allocatable, intent(in) :: A
+    class(bml_matrix_t), intent(in) :: A
     class(bml_matrix_t), allocatable, intent(out) :: C
-
-    if(.not. allocated(A)) then
-       call error(__FILE__, __LINE__, "A is not allocated")
-    endif
 
     select type(A)
     type is(bml_matrix_dense_t)

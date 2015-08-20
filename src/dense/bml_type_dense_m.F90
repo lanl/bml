@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> The matrix types.
-module bml_type_dense
+module bml_type_dense_m
 
   use bml_type_m
 
@@ -15,4 +15,4 @@ module bml_type_dense
 
   end type bml_matrix_dense_t
 
-end module bml_type_dense
+end module bml_type_dense_m

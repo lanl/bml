@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Some format conversion functions.
-module bml_convert_dense
+module bml_convert_dense_m
   implicit none
 contains
 
@@ -13,7 +13,7 @@ contains
   !! \param A_dense The dense matrix.
   subroutine convert_to_dense_dense(A, A_dense)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     type(bml_matrix_dense_t), intent(in) :: A
     double precision, allocatable, intent(out) :: A_dense(:, :)
@@ -29,7 +29,7 @@ contains
   !! \param threshold The matrix element magnited threshold
   subroutine convert_from_dense_dense(A_dense, A, threshold)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     double precision, intent(in) :: A_dense(:, :)
     type(bml_matrix_dense_t), intent(inout) :: A
@@ -48,4 +48,4 @@ contains
 
   end subroutine convert_from_dense_dense
 
-end module bml_convert_dense
+end module bml_convert_dense_m

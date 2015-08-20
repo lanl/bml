@@ -14,11 +14,11 @@ contains
   !! \param C The matrix
   subroutine scale_dense(alpha, A, C)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     double precision, intent(in) :: alpha
     type(bml_matrix_dense_t), intent(in) :: A
-    type(bml_matrix_dense_t), intent(out) :: C
+    type(bml_matrix_dense_t), intent(inout) :: C
 
     C%matrix = alpha*A%matrix
 

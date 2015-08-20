@@ -11,16 +11,16 @@ contains
   !! @param A The matrix.
   subroutine allocate_matrix_dense(N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A
 
-    A%N = N
     if(allocated(A%matrix)) then
        deallocate(A%matrix)
     endif
     allocate(A%matrix(N, N))
+    A%N = N
 
   end subroutine allocate_matrix_dense
 
@@ -29,7 +29,7 @@ contains
   !! @param A The matrix.
   subroutine deallocate_matrix_dense(A)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     type(bml_matrix_dense_t), intent(inout) :: A
 
@@ -43,7 +43,7 @@ contains
   !! @param A The matrix.
   subroutine zero_matrix_dense(N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A
@@ -59,7 +59,7 @@ contains
   !! @param A The matrix.
   subroutine random_matrix_dense(N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A
@@ -75,7 +75,7 @@ contains
   !! @param A The matrix.
   subroutine identity_matrix_dense(N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
     integer, intent(in) :: N
     type(bml_matrix_dense_t), intent(inout) :: A

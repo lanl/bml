@@ -15,7 +15,7 @@ contains
   !! \param A The matrix.
   subroutine allocate_matrix(matrix_type, N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_dense
     use bml_error_m
 
@@ -45,7 +45,7 @@ contains
   !! @param A The matrix.
   subroutine deallocate_matrix(A)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_dense
     use bml_error_m
 
@@ -74,7 +74,7 @@ contains
   !! @param A The matrix.
   subroutine zero_matrix(matrix_type, N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_dense
     use bml_error_m
 
@@ -84,7 +84,7 @@ contains
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       allocate(bml_matrix_dense_t::A)
+       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
        select type(A)
        type is(bml_matrix_dense_t)
           call zero_matrix_dense(N, A)
@@ -106,7 +106,7 @@ contains
   !! @param A The matrix.
   subroutine random_matrix(matrix_type, N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_dense
     use bml_error_m
 
@@ -116,7 +116,7 @@ contains
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       allocate(bml_matrix_dense_t::A)
+       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
        select type(A)
        type is(bml_matrix_dense_t)
           call random_matrix_dense(N, A)
@@ -138,7 +138,7 @@ contains
   !! @param A The matrix.
   subroutine identity_matrix(matrix_type, N, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_dense
     use bml_error_m
 
@@ -148,7 +148,7 @@ contains
 
     select case(matrix_type)
     case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       allocate(bml_matrix_dense_t::A)
+       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
        select type(A)
        type is(bml_matrix_dense_t)
           call identity_matrix_dense(N, A)

@@ -1,7 +1,7 @@
 program test
 
   use bml
-  use bml_type_dense
+  use bml_type_dense_m
   use bml_print_dense
 
   implicit none

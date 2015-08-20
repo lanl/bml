@@ -12,9 +12,9 @@ contains
   !! \param A The matrix.
   function trace_dense(A) result(trA)
 
-    use bml_type_dense
+    use bml_type_dense_m
 
-    type(bml_matrix_dense_t), allocatable, intent(in) :: A
+    type(bml_matrix_dense_t), intent(in) :: A
     double precision :: trA
 
     integer :: i

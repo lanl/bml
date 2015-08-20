@@ -11,23 +11,19 @@ contains
   !! \param A_dense The dense matrix
   subroutine convert_to_dense(A, A_dense)
 
-    use bml_type_dense
-    use bml_convert_dense
+    use bml_type_dense_m
+    use bml_convert_dense_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(in) :: A
+    class(bml_matrix_t), intent(in) :: A
     double precision, allocatable, intent(out) :: A_dense(:, :)
 
-    if(.not. allocated(A)) then
-       call warning(__FILE__, __LINE__, "A is not allocated")
-    else
-       select type(A)
-       type is(bml_matrix_dense_t)
-          call convert_to_dense_dense(A, A_dense)
-       class default
-          call error(__FILE__, __LINE__, "unknown matrix type")
-       end select
-    endif
+    select type(A)
+    type is(bml_matrix_dense_t)
+       call convert_to_dense_dense(A, A_dense)
+    class default
+       call error(__FILE__, __LINE__, "unknown matrix type")
+    end select
 
   end subroutine convert_to_dense
 
@@ -39,9 +35,9 @@ contains
   !! \param threshold The matrix element magnited threshold
   subroutine convert_from_dense(matrix_type, A_dense, A, threshold)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_allocate_m
-    use bml_convert_dense
+    use bml_convert_dense_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -51,7 +47,7 @@ contains
 
     if(size(A_dense, 1) /= size(A_dense, 2)) then
        call error(__FILE__, __LINE__, "[FIXME] only square matrices")
-    endif
+    end if
 
     call allocate_matrix(matrix_type, size(A_dense, 1), A)
 

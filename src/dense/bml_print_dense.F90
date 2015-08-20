@@ -11,7 +11,7 @@ contains
   !! @param A The matrix.
   subroutine print_matrix_dense(name, A)
 
-    use bml_type_dense
+    use bml_type_dense_m
     use bml_error_m
 
     character(len=*), intent(in) :: name

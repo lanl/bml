@@ -16,6 +16,9 @@ contains
   !!
   !! \f$ C \leftarrow \alpha A + \beta B \f$
   !!
+  !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
+  !! 1.
+  !!
   !! \param A Matrix \f$ A \f$
   !! \param B Matrix \f$ B \f$
   !! \param C Matrix \f$ C \f$
@@ -23,17 +26,30 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add(A, B, C, alpha, beta)
 
-    use bml_type_dense
-    use bml_add_dense
+    use bml_type_dense_m
+    use bml_add_dense_m
     use bml_allocate_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(in) :: A, B
+    class(bml_matrix_t), intent(in) :: A, B
     class(bml_matrix_t), allocatable, intent(inout) :: C
     double precision, optional :: alpha, beta
 
-    if(.not. allocated(A) .or. .not. allocated(B)) then
-       call error(__FILE__, __LINE__, "either A or B are not allocated")
+    double precision :: alpha_, beta_
+
+    if(A%N /= B%N) then
+       call error(__FILE__, __LINE__, "matrix dimension mismatch")
+    end if
+
+    if(present(alpha)) then
+       alpha_ = alpha
+    else
+       alpha_ = 1
+    end if
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 1
     end if
 
     select type(A)
@@ -43,7 +59,7 @@ contains
           call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
           select type(C)
           type is(bml_matrix_dense_t)
-             call add_dense(A, B, C, alpha, beta)
+             call add_dense(A, B, C, alpha_, beta_)
           class default
              call error(__FILE__, __LINE__, "C matrix type mismatch")
           end select
@@ -66,26 +82,37 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add_identity_two(A, C, alpha, beta)
 
-    use bml_type_dense
-    use bml_add_dense
+    use bml_type_dense_m
+    use bml_add_dense_m
     use bml_allocate_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(in) :: A
+    class(bml_matrix_t), intent(in) :: A
     class(bml_matrix_t), allocatable, intent(out) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
-    if(.not. allocated(A)) then
-       call error(__FILE__, __LINE__, "A is not allocated")
+    double precision :: alpha_, beta_
+
+    if(present(alpha)) then
+       alpha_ = alpha
+    else
+       alpha_ = 1
+    end if
+
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 1
     end if
 
     select type(A)
     type is(bml_matrix_dense_t)
+       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
        select type(C)
-          type is(bml_matrix_dense_t)
-             call add_identity_two_dense(A, C, alpha, beta)
-          end select
+       type is(bml_matrix_dense_t)
+          call add_identity_two_dense(A, C, alpha_, beta_)
+       end select
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -101,17 +128,26 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add_identity_self(A, alpha, beta)
 
-    use bml_type_dense
-    use bml_add_dense
+    use bml_type_dense_m
+    use bml_add_dense_m
     use bml_allocate_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(inout) :: A
+    class(bml_matrix_t), intent(inout) :: A
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
-    if(.not. allocated(A)) then
-       call error(__FILE__, __LINE__, "A is not allocated")
+    double precision :: alpha_, beta_
+
+    if(present(alpha)) then
+       alpha_ = alpha
+    else
+       alpha_ = 1
+    end if
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 1
     end if
 
     select type(A)
