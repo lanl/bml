@@ -1,13 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
 project(bml Fortran)
 
-set(PROJECT_VERSION "0.1")
+# The library version is versioned off the major version. If the API
+# changes, the library version should be bumped.
+set(PROJECT_VERSION_MAJOR "0")
+set(PROJECT_VERSION_MINOR "1")
+set(PROJECT_VERSION_PATCH "0")
+
+set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_DESCRIPTION
   "Basic Matrix Library (bml): A versatile matrix library for linear algebra operations")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif()
+
+set(BUILD_SHARED_LIBS FALSE
+  CACHE BOOL "Whether to build shared libraries (the default is static).")
 
 add_subdirectory(src)
 

@@ -6,18 +6,15 @@ program test
 
   integer, parameter :: N = 12
   class(bml_matrix_t), allocatable :: A
-  double precision, allocatable :: A_dense(:, :)
 
-  call zero_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-  call convert_to_dense(A, A_dense)
+  real, allocatable :: A_dense_single(:, :)
+  double precision, allocatable :: A_dense_double(:, :)
 
-  if(maxval(A_dense) /= 0 .or. minval(A_dense) /= 0) then
-     call error(__FILE__, __LINE__, "incorrect zero matrix")
-  endif
+  call random_matrix(BML_MATRIX_DENSE, N, A, BML_PRECISION_DOUBLE)
+  call convert_to_dense(A, A_dense_double)
 
-  call random_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-
-  call identity_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
+  call random_matrix(BML_MATRIX_DENSE, N, A, BML_PRECISION_SINGLE)
+  call convert_to_dense(A, A_dense_single)
 
   call deallocate_matrix(A)
 

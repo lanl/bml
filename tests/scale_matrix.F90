@@ -13,7 +13,7 @@ program test
   double precision, allocatable :: A_dense(:, :)
   double precision, allocatable :: C_dense(:, :)
 
-  call random_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
+  call random_matrix(BML_MATRIX_DENSE, N, A)
   call scale(alpha, A, C)
 
   call convert_to_dense(A, A_dense)

@@ -23,7 +23,7 @@ contains
     if(.not. allocated(A)) return
 
     select type(A)
-    type is(bml_matrix_dense_t)
+    type is(bml_matrix_dense_double_t)
        trA = trace_dense(A)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")

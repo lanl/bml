@@ -5,6 +5,7 @@ set(SOURCES
   bml_convert_m.F90
   bml_copy_m.F90
   bml_error_m.F90
+  bml_get_m.F90
   bml_multiply_m.F90
   bml_print_m.F90
   bml_scale_m.F90
@@ -32,8 +33,8 @@ endforeach()
 
 set_target_properties(bml
   PROPERTIES
-  SOVERSION 0
-  VERSION 0.0.0)
+  SOVERSION ${PROJECT_VERSION_MAJOR}
+  VERSION ${PROJECT_VERSION})
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 install(TARGETS bml

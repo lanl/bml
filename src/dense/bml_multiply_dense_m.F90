@@ -18,8 +18,8 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(in) :: A, B
-    type(bml_matrix_dense_t), intent(inout) :: C
+    type(bml_matrix_dense_double_t), intent(in) :: A, B
+    type(bml_matrix_dense_double_t), intent(inout) :: C
     double precision, intent(in) :: alpha
     double precision, intent(in) :: beta
 

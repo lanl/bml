@@ -22,10 +22,10 @@ contains
     class(bml_matrix_t), allocatable, intent(inout) :: B
 
     select type(A)
-    type is(bml_matrix_dense_t)
-       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, B)
+    type is(bml_matrix_dense_double_t)
+       call allocate_matrix(BML_MATRIX_DENSE, A%N, B)
        select type(B)
-       type is(bml_matrix_dense_t)
+       type is(bml_matrix_dense_double_t)
           call copy_dense(A, B)
        class default
           call error(__FILE__, __LINE__, "unknown matrix type")

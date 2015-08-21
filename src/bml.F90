@@ -26,16 +26,12 @@
 !! "allocation functions". For instance,
 !!
 !! \code{.F90}
-!! call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, 100, A)
+!! call allocate_matrix(BML_MATRIX_DENSE, 100, A)
 !! \endcode
 !!
 !! will allocate a dense, double-precision, \f$ 100 \times 100 \f$
-!! matrix. Note, that the actual matrix data is not allocate through
-!! this call. In addition, the library offers functions that allocate
-!! and initialize a matrix,
-!!   - bml_allocate_m::zero_matrix Allocate and initialize a matrix to
-!!     zero (A plain allocate does not allocate the actual matrix
-!!     data).
+!! matrix which is initialized to zero. Additional functions allocate
+!! special matrices,
 !!   - bml_allocate_m::random_matrix Allocate and initialize a random
 !!     matrix.
 !!   - bml_allocate_m::identity_matrix Allocate and initialize the
@@ -50,12 +46,12 @@
 !! \author
 !! Nicolas Bock <nbock@lanl.gov>
 !!
+!! \copyright Los Alamos National Laboratory 2015
+!!
 !! \defgroup allocate_group Allocation and Deallocation Functions
 !! \defgroup add_group Adding Matrices
 !! \defgroup multiply_group Multiplying Matrices
 !! \defgroup convert_group Converting between Matrix Formats
-!!
-!! \copyright Los Alamos National Laboratory 2015
 
 !> \copyright Los Alamos National Laboratory 2015
 
@@ -71,6 +67,7 @@ module bml
   use bml_convert_m
   use bml_copy_m
   use bml_error_m
+  use bml_get_m
   use bml_multiply_m
   use bml_print_m
   use bml_scale_m

@@ -12,7 +12,9 @@ contains
   !! \param matrix_type The matrix type.
   !! \param N The matrix size.
   !! \param A The matrix.
-  subroutine allocate_matrix(matrix_type, N, A)
+  !! \param matrix_precision The precision of the matrix. The default
+  !! is double precision.
+  subroutine allocate_matrix(matrix_type, N, A, matrix_precision)
 
     use bml_type_dense_m
     use bml_allocate_dense_m
@@ -21,14 +23,19 @@ contains
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
+    character(len=*), optional, intent(in) :: matrix_precision
+
+    character(len=:), allocatable :: matrix_precision_
+
+    if(present(matrix_precision)) then
+       matrix_precision_ = matrix_precision
+    else
+       matrix_precision_ = BML_PRECISION_DOUBLE
+    end if
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       allocate(bml_matrix_dense_t::A)
-       select type(A)
-       type is(bml_matrix_dense_t)
-          call allocate_matrix_dense(N, A)
-       end select
+    case(BML_MATRIX_DENSE)
+       call allocate_matrix_dense(N, A, matrix_precision_)
     case default
        call error(__FILE__, __LINE__, "unsupported matrix type")
     end select
@@ -56,7 +63,7 @@ contains
 
     if(allocated(A)) then
        select type(A)
-       type is(bml_matrix_dense_t)
+       class is(bml_matrix_dense_t)
           call deallocate_matrix_dense(A)
        class default
           call error(__FILE__, __LINE__, "unsupported matrix type")
@@ -66,36 +73,6 @@ contains
 
   end subroutine deallocate_matrix
 
-  !> Initialize a zero matrix.
-  !!
-  !! \ingroup allocate_group
-  !!
-  !! \param matrix_type The matrix type.
-  !! \param N The matrix size.
-  !! \param A The matrix.
-  subroutine zero_matrix(matrix_type, N, A)
-
-    use bml_type_dense_m
-    use bml_allocate_dense_m
-    use bml_error_m
-
-    character(len=*), intent(in) :: matrix_type
-    integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(out) :: A
-
-    select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-       select type(A)
-       type is(bml_matrix_dense_t)
-          call zero_matrix_dense(N, A)
-       end select
-    case default
-       call error(__FILE__, __LINE__, "unsupported matrix type")
-    end select
-
-  end subroutine zero_matrix
-
   !> Initialize a random matrix.
   !!
   !! \ingroup allocate_group
@@ -103,7 +80,9 @@ contains
   !! \param matrix_type The matrix type.
   !! \param N The matrix size.
   !! \param A The matrix.
-  subroutine random_matrix(matrix_type, N, A)
+  !! \param matrix_precision The precision of the matrix. The default
+  !! is double precision.
+  subroutine random_matrix(matrix_type, N, A, matrix_precision)
 
     use bml_type_dense_m
     use bml_allocate_dense_m
@@ -112,14 +91,19 @@ contains
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
+    character(len=*), optional, intent(in) :: matrix_precision
+
+    character(len=:), allocatable :: matrix_precision_
+
+    if(present(matrix_precision)) then
+       matrix_precision_ = matrix_precision
+    else
+       matrix_precision_ = BML_PRECISION_DOUBLE
+    end if
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-       select type(A)
-       type is(bml_matrix_dense_t)
-          call random_matrix_dense(N, A)
-       end select
+    case(BML_MATRIX_DENSE)
+       call random_matrix_dense(N, A, matrix_precision_)
     case default
        call error(__FILE__, __LINE__, "unsupported matrix type")
     end select
@@ -133,7 +117,9 @@ contains
   !! \param matrix_type The matrix type.
   !! \param N The matrix size.
   !! \param A The matrix.
-  subroutine identity_matrix(matrix_type, N, A)
+  !! \param matrix_precision The precision of the matrix. The default
+  !! is double precision.
+  subroutine identity_matrix(matrix_type, N, A, matrix_precision)
 
     use bml_type_dense_m
     use bml_allocate_dense_m
@@ -142,14 +128,19 @@ contains
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
     class(bml_matrix_t), allocatable, intent(out) :: A
+    character(len=*), optional, intent(in) :: matrix_precision
+
+    character(len=:), allocatable :: matrix_precision_
+
+    if(present(matrix_precision)) then
+       matrix_precision_ = matrix_precision
+    else
+       matrix_precision_ = BML_PRECISION_DOUBLE
+    end if
 
     select case(matrix_type)
-    case(MATRIX_TYPE_NAME_DENSE_DOUBLE)
-       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-       select type(A)
-       type is(bml_matrix_dense_t)
-          call identity_matrix_dense(N, A)
-       end select
+    case(BML_MATRIX_DENSE)
+       call identity_matrix_dense(N, A, matrix_precision_)
     case default
        call error(__FILE__, __LINE__, "unsupported matrix type")
     end select

@@ -3,6 +3,13 @@
 !> Some format conversion functions.
 module bml_convert_m
   implicit none
+
+  !> Convert from bml to dense matrix.
+  interface convert_to_dense
+     module procedure :: convert_to_dense_single
+     module procedure :: convert_to_dense_double
+  end interface convert_to_dense
+
 contains
 
   !> Convert a matrix into a dense matrix.
@@ -11,7 +18,31 @@ contains
   !!
   !! \param A The bml matrix
   !! \param A_dense The dense matrix
-  subroutine convert_to_dense(A, A_dense)
+  subroutine convert_to_dense_single(A, A_dense)
+
+    use bml_type_dense_m
+    use bml_convert_dense_m
+    use bml_error_m
+
+    class(bml_matrix_t), intent(in) :: A
+    real, allocatable, intent(out) :: A_dense(:, :)
+
+    select type(A)
+    type is(bml_matrix_dense_single_t)
+       call convert_to_dense_dense(A, A_dense)
+    class default
+       call error(__FILE__, __LINE__, "unknown matrix type")
+    end select
+
+  end subroutine convert_to_dense_single
+
+  !> Convert a matrix into a dense matrix.
+  !!
+  !! \ingroup convert_group
+  !!
+  !! \param A The bml matrix
+  !! \param A_dense The dense matrix
+  subroutine convert_to_dense_double(A, A_dense)
 
     use bml_type_dense_m
     use bml_convert_dense_m
@@ -21,13 +52,13 @@ contains
     double precision, allocatable, intent(out) :: A_dense(:, :)
 
     select type(A)
-    type is(bml_matrix_dense_t)
+    type is(bml_matrix_dense_double_t)
        call convert_to_dense_dense(A, A_dense)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
-  end subroutine convert_to_dense
+  end subroutine convert_to_dense_double
 
   !> Convert a dense matrix into a bml matrix.
   !!
@@ -56,7 +87,7 @@ contains
     call allocate_matrix(matrix_type, size(A_dense, 1), A)
 
     select type(A)
-    type is(bml_matrix_dense_t)
+    type is(bml_matrix_dense_double_t)
        call convert_from_dense_dense(A_dense, A, threshold)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")

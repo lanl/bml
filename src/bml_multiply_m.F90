@@ -51,14 +51,14 @@ contains
     end if
 
     select type(A)
-    type is(bml_matrix_dense_t)
+    type is(bml_matrix_dense_double_t)
        select type(B)
-       type is(bml_matrix_dense_t)
+       type is(bml_matrix_dense_double_t)
           if(.not. allocated(C)) then
-             call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
+             call allocate_matrix(BML_MATRIX_DENSE, A%N, C)
           end if
           select type(C)
-          type is(bml_matrix_dense_t)
+          type is(bml_matrix_dense_double_t)
              call multiply_dense(A, B, C, alpha_, beta_)
           class default
              call error(__FILE__, __LINE__, "C matrix type mismatch")

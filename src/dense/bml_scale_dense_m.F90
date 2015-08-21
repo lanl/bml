@@ -16,7 +16,7 @@ contains
     use bml_type_dense_m
 
     double precision, intent(in) :: alpha
-    type(bml_matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_double_t), intent(inout) :: A
 
     A%matrix = alpha*A%matrix
 
@@ -34,8 +34,8 @@ contains
     use bml_type_dense_m
 
     double precision, intent(in) :: alpha
-    type(bml_matrix_dense_t), intent(in) :: A
-    type(bml_matrix_dense_t), intent(inout) :: C
+    type(bml_matrix_dense_double_t), intent(in) :: A
+    type(bml_matrix_dense_double_t), intent(inout) :: C
 
     C%matrix = alpha*A%matrix
 

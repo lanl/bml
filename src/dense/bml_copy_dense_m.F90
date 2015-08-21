@@ -15,8 +15,8 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(in) :: A
-    type(bml_matrix_dense_t), intent(inout) :: B
+    type(bml_matrix_dense_double_t), intent(in) :: A
+    type(bml_matrix_dense_double_t), intent(inout) :: B
 
     ! This is an implicit re-allocation.
     B%matrix = A%matrix

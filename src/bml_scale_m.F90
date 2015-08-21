@@ -30,7 +30,7 @@ contains
     class(bml_matrix_t), intent(inout) :: A
 
     select type(A)
-    type is(bml_matrix_dense_t)
+    type is(bml_matrix_dense_double_t)
        call scale_one_dense(alpha, A)
     class default
        call error(__FILE__, __LINE__, "unsupported matrix type")
@@ -57,10 +57,10 @@ contains
     class(bml_matrix_t), allocatable, intent(out) :: C
 
     select type(A)
-    type is(bml_matrix_dense_t)
-       call allocate_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, A%N, C)
+    type is(bml_matrix_dense_double_t)
+       call allocate_matrix(BML_MATRIX_DENSE, A%N, C)
        select type(C)
-       type is(bml_matrix_dense_t)
+       type is(bml_matrix_dense_double_t)
           call scale_two_dense(alpha, A, C)
        end select
     class default

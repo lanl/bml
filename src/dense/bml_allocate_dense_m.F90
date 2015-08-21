@@ -7,19 +7,47 @@ contains
 
   !> Allocate a dense matrix.
   !!
-  !! @param N The matrix size.
-  !! @param A The matrix.
-  subroutine allocate_matrix_dense(N, A)
+  !! \param N The matrix size.
+  !! \param A The matrix.
+  !! \param matrix_precision The precision of the matrix.
+  subroutine allocate_matrix_dense(N, A, matrix_precision)
 
     use bml_type_dense_m
+    use bml_error_m
 
     integer, intent(in) :: N
-    type(bml_matrix_dense_t), intent(inout) :: A
+    class(bml_matrix_t), allocatable, intent(inout) :: A
+    character(len=*), intent(in) :: matrix_precision
 
-    if(allocated(A%matrix)) then
-       deallocate(A%matrix)
-    endif
-    allocate(A%matrix(N, N))
+    if(allocated(A)) then
+       select type(A)
+       class is(bml_matrix_dense_t)
+          call deallocate_matrix_dense(A)
+       class default
+          call error(__FILE__, __LINE__, "unknow matrix type")
+       end select
+    end if
+
+    select case(matrix_precision)
+    case(BML_PRECISION_SINGLE)
+       allocate(bml_matrix_dense_single_t::A)
+    case(BML_PRECISION_DOUBLE)
+       allocate(bml_matrix_dense_double_t::A)
+    case default
+       call error(__FILE__, __LINE__, "unknown precision")
+    end select
+
+    select type(A)
+    type is(bml_matrix_dense_single_t)
+       allocate(A%matrix(N, N))
+       A%matrix = 0
+    type is(bml_matrix_dense_double_t)
+       allocate(A%matrix(N, N))
+       A%matrix = 0
+    class default
+       call error(__FILE__, __LINE__, "unknown type")
+    end select
+
     A%N = N
 
   end subroutine allocate_matrix_dense
@@ -30,62 +58,76 @@ contains
   subroutine deallocate_matrix_dense(A)
 
     use bml_type_dense_m
+    use bml_error_m
 
-    type(bml_matrix_dense_t), intent(inout) :: A
+    class(bml_matrix_dense_t), intent(inout) :: A
 
-    deallocate(A%matrix)
+    select type(A)
+    type is(bml_matrix_dense_single_t)
+       deallocate(A%matrix)
+    type is(bml_matrix_dense_double_t)
+       deallocate(A%matrix)
+    class default
+       call error(__FILE__, __LINE__, "unknown type")
+    end select
 
   end subroutine deallocate_matrix_dense
 
-  !> Initialize a dense zero matrix.
-  !!
-  !! @param N The matrix size.
-  !! @param A The matrix.
-  subroutine zero_matrix_dense(N, A)
-
-    use bml_type_dense_m
-
-    integer, intent(in) :: N
-    type(bml_matrix_dense_t), intent(inout) :: A
-
-    call allocate_matrix_dense(N, A)
-    A%matrix = 0
-
-  end subroutine zero_matrix_dense
-
   !> Initialize a dense random matrix.
   !!
-  !! @param N The matrix size.
-  !! @param A The matrix.
-  subroutine random_matrix_dense(N, A)
+  !! \param N The matrix size.
+  !! \param A The matrix.
+  !! \param matrix_precision The precision of the matrix.
+  subroutine random_matrix_dense(N, A, matrix_precision)
 
     use bml_type_dense_m
+    use bml_error_m
 
     integer, intent(in) :: N
-    type(bml_matrix_dense_t), intent(inout) :: A
+    class(bml_matrix_t), allocatable, intent(inout) :: A
+    character(len=*), intent(in) :: matrix_precision
 
-    call allocate_matrix_dense(N, A)
-    call random_number(A%matrix)
+    call allocate_matrix_dense(N, A, matrix_precision)
+    select type(A)
+    type is(bml_matrix_dense_single_t)
+       call random_number(A%matrix)
+    type is(bml_matrix_dense_double_t)
+       call random_number(A%matrix)
+    class default
+       call error(__FILE__, __LINE__, "unknown type")
+    end select
 
   end subroutine random_matrix_dense
 
   !> Initialize a dense identity matrix.
   !!
-  !! @param N The matrix size.
-  !! @param A The matrix.
-  subroutine identity_matrix_dense(N, A)
+  !! \param N The matrix size.
+  !! \param A The matrix.
+  !! \param matrix_precision The precision of the matrix.
+  subroutine identity_matrix_dense(N, A, matrix_precision)
 
     use bml_type_dense_m
+    use bml_error_m
 
     integer, intent(in) :: N
-    type(bml_matrix_dense_t), intent(inout) :: A
+    class(bml_matrix_t), allocatable, intent(inout) :: A
+    character(len=*), intent(in) :: matrix_precision
 
     integer :: i
 
-    call zero_matrix_dense(N, A)
-    do i = 1, N
-       A%matrix(i, i) = 1
-    enddo
+    call allocate_matrix_dense(N, A, matrix_precision)
+    select type(A)
+    type is(bml_matrix_dense_single_t)
+       do i = 1, N
+          A%matrix(i, i) = 1
+       end do
+    type is(bml_matrix_dense_double_t)
+       do i = 1, N
+          A%matrix(i, i) = 1
+       end do
+    class default
+       call error(__FILE__, __LINE__, "unknown type")
+    end select
 
   end subroutine identity_matrix_dense
 

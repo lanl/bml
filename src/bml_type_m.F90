@@ -5,17 +5,24 @@ module bml_type_m
 
   implicit none
 
-  !> The single-precision dense matrix type name.
+  !> The dense matrix type name.
   !!
   !! \ingroup allocate_group
-  !!
-  !! \bug This type is not yet implemented.
-  character(len=*), parameter :: MATRIX_TYPE_NAME_DENSE_SINGLE = "dense-single"
+  character(len=*), parameter :: BML_MATRIX_DENSE = "dense"
 
-  !> The double-precision dense matrix type name.
+  !> Matrix single precision.
   !!
   !! \ingroup allocate_group
-  character(len=*), parameter :: MATRIX_TYPE_NAME_DENSE_DOUBLE = "dense-double"
+  !!
+  !! This settings affects all matrix data.
+  character(len=*), parameter :: BML_PRECISION_SINGLE = "single"
+
+  !> Matrix double precision.
+  !!
+  !! \ingroup allocate_group
+  !!
+  !! This settings affects all matrix data.
+  character(len=*), parameter :: BML_PRECISION_DOUBLE = "double"
 
   !> The matrix type.
   !!

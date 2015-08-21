@@ -3,6 +3,13 @@
 !> Some format conversion functions.
 module bml_convert_dense_m
   implicit none
+
+  !> Convert bml to dense matrix.
+  interface convert_to_dense_dense
+     module procedure convert_to_dense_dense_single
+     module procedure convert_to_dense_dense_double
+  end interface convert_to_dense_dense
+
 contains
 
   !> Convert a matrix into a dense matrix.
@@ -11,16 +18,33 @@ contains
   !!
   !! \param A The bml matrix.
   !! \param A_dense The dense matrix.
-  subroutine convert_to_dense_dense(A, A_dense)
+  subroutine convert_to_dense_dense_single(A, A_dense)
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(in) :: A
+    type(bml_matrix_dense_single_t), intent(in) :: A
+    real, allocatable, intent(out) :: A_dense(:, :)
+
+    A_dense = A%matrix
+
+  end subroutine convert_to_dense_dense_single
+
+  !> Convert a matrix into a dense matrix.
+  !!
+  !! \f$ A \leftarrow A_{d} \f$
+  !!
+  !! \param A The bml matrix.
+  !! \param A_dense The dense matrix.
+  subroutine convert_to_dense_dense_double(A, A_dense)
+
+    use bml_type_dense_m
+
+    type(bml_matrix_dense_double_t), intent(in) :: A
     double precision, allocatable, intent(out) :: A_dense(:, :)
 
     A_dense = A%matrix
 
-  end subroutine convert_to_dense_dense
+  end subroutine convert_to_dense_dense_double
 
   !> Convert a dense matrix into a bml matrix.
   !!
@@ -32,7 +56,7 @@ contains
     use bml_type_dense_m
 
     double precision, intent(in) :: A_dense(:, :)
-    type(bml_matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_double_t), intent(inout) :: A
     double precision, optional, intent(in) :: threshold
 
     integer :: i, j

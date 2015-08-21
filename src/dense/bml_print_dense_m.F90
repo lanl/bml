@@ -15,7 +15,7 @@ contains
     use bml_error_m
 
     character(len=*), intent(in) :: name
-    type(bml_matrix_dense_t), intent(in) :: A
+    type(bml_matrix_dense_double_t), intent(in) :: A
 
     integer :: i, j
     character(len=10000) :: line_format

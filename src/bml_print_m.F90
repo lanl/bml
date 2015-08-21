@@ -23,7 +23,7 @@ contains
        write(*, "(A)") trim(name)//" not allocated"
     else
        select type(A)
-       type is(bml_matrix_dense_t)
+       type is(bml_matrix_dense_double_t)
           call print_matrix_dense(name, A)
        class default
           call error(__FILE__, __LINE__, "unknown matrix type")

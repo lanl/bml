@@ -18,8 +18,8 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(in) :: A, B
-    type(bml_matrix_dense_t), intent(inout) :: C
+    type(bml_matrix_dense_double_t), intent(in) :: A, B
+    type(bml_matrix_dense_double_t), intent(inout) :: C
     double precision, intent(in) :: alpha, beta
 
     C%matrix = alpha*A%matrix+beta*B%matrix
@@ -38,8 +38,8 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(inout) :: A
-    type(bml_matrix_dense_t), intent(in) :: B
+    type(bml_matrix_dense_double_t), intent(inout) :: A
+    type(bml_matrix_dense_double_t), intent(in) :: B
     double precision, intent(in) :: alpha, beta
 
     A%matrix = alpha*A%matrix+beta*B%matrix
@@ -58,8 +58,8 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(in) :: A
-    type(bml_matrix_dense_t), intent(out) :: C
+    type(bml_matrix_dense_double_t), intent(in) :: A
+    type(bml_matrix_dense_double_t), intent(out) :: C
     double precision, intent(in) :: alpha
     double precision, intent(in) :: beta
 
@@ -83,7 +83,7 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(inout) :: A
+    type(bml_matrix_dense_double_t), intent(inout) :: A
     double precision, intent(in) :: alpha
     double precision, intent(in) :: beta
 

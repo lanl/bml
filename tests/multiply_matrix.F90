@@ -14,8 +14,8 @@ program test
   double precision, allocatable :: B_dense(:, :)
   double precision, allocatable :: C_dense(:, :)
 
-  call random_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, A)
-  call identity_matrix(MATRIX_TYPE_NAME_DENSE_DOUBLE, N, B)
+  call random_matrix(BML_MATRIX_DENSE, N, A)
+  call identity_matrix(BML_MATRIX_DENSE, N, B)
 
   call convert_to_dense(A, A_dense)
   call convert_to_dense(B, B_dense)

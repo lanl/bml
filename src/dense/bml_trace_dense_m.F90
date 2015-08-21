@@ -14,7 +14,7 @@ contains
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_t), intent(in) :: A
+    type(bml_matrix_dense_double_t), intent(in) :: A
     double precision :: trA
 
     integer :: i
