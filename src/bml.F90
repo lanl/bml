@@ -48,6 +48,9 @@
 !!
 !! \copyright Los Alamos National Laboratory 2015
 !!
+!! \todo
+!! Add full support for dense matrix type for single precision.
+!!
 !! \defgroup allocate_group Allocation and Deallocation Functions
 !! \defgroup add_group Adding Matrices
 !! \defgroup multiply_group Multiplying Matrices

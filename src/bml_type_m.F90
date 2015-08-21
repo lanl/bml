@@ -28,10 +28,8 @@ module bml_type_m
   !!
   !! \ingroup allocate_group
   type, abstract :: bml_matrix_t
-
      !> The matrix size, assumed square.
      integer :: N = -1
-
   end type bml_matrix_t
 
 end module bml_type_m
