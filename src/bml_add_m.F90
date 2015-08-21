@@ -172,7 +172,7 @@ contains
 
     select type(A)
     type is(bml_matrix_dense_double_t)
-       call add_identity_self_dense(A, alpha, beta)
+       call add_identity_self_dense(A, alpha_, beta_)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
