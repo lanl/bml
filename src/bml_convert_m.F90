@@ -7,6 +7,8 @@ contains
 
   !> Convert a matrix into a dense matrix.
   !!
+  !! \ingroup convert_group
+  !!
   !! \param A The bml matrix
   !! \param A_dense The dense matrix
   subroutine convert_to_dense(A, A_dense)
@@ -28,6 +30,8 @@ contains
   end subroutine convert_to_dense
 
   !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group
   !!
   !! \param matrix_type The matrix type
   !! \param A_dense The dense matrix
@@ -55,7 +59,7 @@ contains
     type is(bml_matrix_dense_t)
        call convert_from_dense_dense(A_dense, A, threshold)
     class default
-       call error(__FILE__, __LINE__, "unknonw matrix type")
+       call error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
   end subroutine convert_from_dense

@@ -5,14 +5,13 @@ module bml_multiply_m
   implicit none
 contains
 
-  !> \addtogroup multiply_group
-  !! @{
-
   !> Multiply two matrices.
+  !!
+  !! \ingroup multiply_group
   !!
   !! \f$ C \leftarrow \alpha A \times B + \beta C \f$
   !!
-  !! The optional scaling factors \f$ alpha \f$ and \f$ \beta \f$
+  !! The optional scaling factors \f$ \alpha \f$ and \f$ \beta \f$
   !! default to \f$ \alpha = 1 \f$ and \f$ \beta = 0 \f$.
   !!
   !! \param A Matrix \f$ A \f$.
@@ -72,6 +71,5 @@ contains
     end select
 
   end subroutine multiply
-  !> @}
 
 end module bml_multiply_m

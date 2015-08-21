@@ -5,10 +5,9 @@ module bml_allocate_m
   implicit none
 contains
 
-  !> \addtogroup allocate_group
-  !! @{
-
   !> Allocate a matrix.
+  !!
+  !! \ingroup allocate_group
   !!
   !! \param matrix_type The matrix type.
   !! \param N The matrix size.
@@ -35,14 +34,12 @@ contains
     end select
 
   end subroutine allocate_matrix
-  !> @}
-
-  !> \addtogroup allocate_group
-  !! @{
 
   !> Deallocate a matrix.
   !!
-  !! @param A The matrix.
+  !! \ingroup allocate_group
+  !!
+  !! \param A The matrix.
   subroutine deallocate_matrix(A)
 
     use bml_type_dense_m
@@ -62,16 +59,14 @@ contains
     endif
 
   end subroutine deallocate_matrix
-  !> @}
-
-  !> \addtogroup initialize_group
-  !! @{
 
   !> Initialize a zero matrix.
   !!
-  !! @param matrix_type The matrix type.
-  !! @param N The matrix size.
-  !! @param A The matrix.
+  !! \ingroup allocate_group
+  !!
+  !! \param matrix_type The matrix type.
+  !! \param N The matrix size.
+  !! \param A The matrix.
   subroutine zero_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
@@ -94,16 +89,14 @@ contains
     end select
 
   end subroutine zero_matrix
-  !> @}
-
-  !> \addtogroup initialize_group
-  !! @{
 
   !> Initialize a random matrix.
   !!
-  !! @param matrix_type The matrix type.
-  !! @param N The matrix size.
-  !! @param A The matrix.
+  !! \ingroup allocate_group
+  !!
+  !! \param matrix_type The matrix type.
+  !! \param N The matrix size.
+  !! \param A The matrix.
   subroutine random_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
@@ -126,16 +119,14 @@ contains
     end select
 
   end subroutine random_matrix
-  !> @}
-
-  !> \addtogroup initialize_group
-  !! @{
 
   !> Initialize a identity matrix.
   !!
-  !! @param matrix_type The matrix type.
-  !! @param N The matrix size.
-  !! @param A The matrix.
+  !! \ingroup allocate_group
+  !!
+  !! \param matrix_type The matrix type.
+  !! \param N The matrix size.
+  !! \param A The matrix.
   subroutine identity_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
@@ -158,6 +149,5 @@ contains
     end select
 
   end subroutine identity_matrix
-  !> @}
 
 end module bml_allocate_m
