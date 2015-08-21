@@ -39,6 +39,12 @@ contains
   !!
   !! \ingroup allocate_group
   !!
+  !! \bug This procedure should be called even if the matrix object is
+  !! implicitly de-allocated, i.e. when it goes of out scope. This
+  !! behavior might depend on the complier, since it's a fairly recent
+  !! Fortran standard addition, and not all compilers implement such a
+  !! thing currently.
+  !!
   !! \param A The matrix.
   subroutine deallocate_matrix(A)
 
