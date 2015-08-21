@@ -43,6 +43,13 @@ program test
      call error(__FILE__, __LINE__, "incorrect matrix add identity")
   end if
 
+  call add_identity(A, alpha, beta)
+  call convert_to_dense(A, C_dense)
+
+  if(maxval(B_dense-C_dense) > 1e-12) then
+     call error(__FILE__, __LINE__, "incorrect matrix add identity")
+  end if
+
   call deallocate_matrix(A)
   call deallocate_matrix(B)
   call deallocate_matrix(C)
