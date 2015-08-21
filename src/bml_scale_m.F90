@@ -24,7 +24,7 @@ contains
     use bml_type_dense_m
     use bml_allocate_m
     use bml_error_m
-    use bml_scale_dense
+    use bml_scale_dense_m
 
     double precision, intent(in) :: alpha
     class(bml_matrix_t), intent(inout) :: A
@@ -50,7 +50,7 @@ contains
     use bml_type_dense_m
     use bml_allocate_m
     use bml_error_m
-    use bml_scale_dense
+    use bml_scale_dense_m
 
     double precision, intent(in) :: alpha
     class(bml_matrix_t), intent(in) :: A

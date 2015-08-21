@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Initialization of dense matrices.
-module bml_allocate_dense
+module bml_allocate_dense_m
   implicit none
 contains
 
@@ -89,4 +89,4 @@ contains
 
   end subroutine identity_matrix_dense
 
-end module bml_allocate_dense
+end module bml_allocate_dense_m

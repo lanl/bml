@@ -16,7 +16,7 @@ contains
   subroutine allocate_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
-    use bml_allocate_dense
+    use bml_allocate_dense_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -46,7 +46,7 @@ contains
   subroutine deallocate_matrix(A)
 
     use bml_type_dense_m
-    use bml_allocate_dense
+    use bml_allocate_dense_m
     use bml_error_m
 
     class(bml_matrix_t), allocatable, intent(inout) :: A
@@ -75,7 +75,7 @@ contains
   subroutine zero_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
-    use bml_allocate_dense
+    use bml_allocate_dense_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -107,7 +107,7 @@ contains
   subroutine random_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
-    use bml_allocate_dense
+    use bml_allocate_dense_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -139,7 +139,7 @@ contains
   subroutine identity_matrix(matrix_type, N, A)
 
     use bml_type_dense_m
-    use bml_allocate_dense
+    use bml_allocate_dense_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type

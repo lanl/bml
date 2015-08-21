@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Matrix scaling for dense matrices.
-module bml_scale_dense
+module bml_scale_dense_m
   implicit none
 contains
 
@@ -41,4 +41,4 @@ contains
 
   end subroutine scale_two_dense
 
-end module bml_scale_dense
+end module bml_scale_dense_m

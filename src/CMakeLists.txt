@@ -13,12 +13,12 @@ set(SOURCES
 
 set(SOURCES-DENSE
   dense/bml_add_dense_m.F90
-  dense/bml_allocate_dense.F90
-  dense/bml_convert_dense.F90
+  dense/bml_allocate_dense_m.F90
+  dense/bml_convert_dense_m.F90
   dense/bml_copy_dense_m.F90
-  dense/bml_multiply_dense.F90
-  dense/bml_print_dense.F90
-  dense/bml_scale_dense.F90
+  dense/bml_multiply_dense_m.F90
+  dense/bml_print_dense_m.F90
+  dense/bml_scale_dense_m.F90
   dense/bml_trace_dense_m.F90
   dense/bml_type_dense_m.F90)
 

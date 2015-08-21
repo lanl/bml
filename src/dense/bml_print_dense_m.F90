@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> Print a dense matrix.
-module bml_print_dense
+module bml_print_dense_m
   implicit none
 contains
 
@@ -34,4 +34,4 @@ contains
 
   end subroutine print_matrix_dense
 
-end module bml_print_dense
+end module bml_print_dense_m
