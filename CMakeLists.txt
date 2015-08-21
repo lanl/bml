@@ -9,7 +9,7 @@ set(PROJECT_VERSION_PATCH "0")
 
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_DESCRIPTION
-  "Basic Matrix Library (bml): A versatile matrix library for linear algebra operations")
+  "Basic Matrix Library (bml): A matrix library for linear algebra operations, supporting several data structures.")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
