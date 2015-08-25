@@ -43,6 +43,9 @@ set_target_properties(bml
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION})
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
+if(BLAS_FOUND)
+  add_definitions(-DBLAS_FOUND)
+endif()
 
 install(TARGETS bml
   ARCHIVE DESTINATION lib

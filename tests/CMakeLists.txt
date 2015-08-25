@@ -22,5 +22,8 @@ foreach(FILE ${TESTS})
 
   add_executable(${BASENAME} ${FILE})
   target_link_libraries(${BASENAME} bml)
+  if(BLAS_FOUND)
+    target_link_libraries(${BASENAME} ${BLAS_LIBRARIES})
+  endif()
   add_test(${BASENAME} ${BASENAME})
 endforeach()
