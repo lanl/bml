@@ -51,10 +51,11 @@
 !! \todo
 !! Add full support for dense matrix type for single precision.
 !!
-!! \defgroup allocate_group Allocation and Deallocation Functions
 !! \defgroup add_group Adding Matrices
-!! \defgroup multiply_group Multiplying Matrices
+!! \defgroup allocate_group Allocation and Deallocation Functions
 !! \defgroup convert_group Converting between Matrix Formats
+!! \defgroup matrix_types Matrix Data Types
+!! \defgroup multiply_group Multiplying Matrices
 
 !> \copyright Los Alamos National Laboratory 2015
 

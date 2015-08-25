@@ -8,20 +8,23 @@ module bml_type_m
   !> The dense matrix type name.
   !!
   !! \ingroup allocate_group
+  !! \ingroup matrix_types
   character(len=*), parameter :: BML_MATRIX_DENSE = "dense"
+
+  !> The sparse (ELLPACK \cite ellpack) matrix type name.
+  !!
+  !! \ingroup allocate_group
+  !! \ingroup matrix_types
+  character(len=*), parameter :: BML_MATRIX_ELLPACK = "ellpack"
 
   !> Matrix single precision.
   !!
   !! \ingroup allocate_group
-  !!
-  !! This settings affects all matrix data.
   character(len=*), parameter :: BML_PRECISION_SINGLE = "single"
 
   !> Matrix double precision.
   !!
   !! \ingroup allocate_group
-  !!
-  !! This settings affects all matrix data.
   character(len=*), parameter :: BML_PRECISION_DOUBLE = "double"
 
   !> The matrix type.

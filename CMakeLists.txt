@@ -23,7 +23,7 @@ add_subdirectory(src)
 include(FindDoxygen)
 
 if(DOXYGEN_FOUND)
-  configure_file(Doxyfile.in Doxyfile)
+  configure_file(docs/Doxyfile.in Doxyfile)
   add_custom_target(doc
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 endif()
