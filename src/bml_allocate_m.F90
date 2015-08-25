@@ -16,8 +16,9 @@ contains
   !! is double precision.
   subroutine allocate_matrix(matrix_type, N, A, matrix_precision)
 
-    use bml_type_dense_m
+    use bml_type_m
     use bml_allocate_dense_m
+    use bml_allocate_ellpack_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -36,6 +37,8 @@ contains
     select case(matrix_type)
     case(BML_MATRIX_DENSE)
        call allocate_matrix_dense(N, A, matrix_precision_)
+    case(BML_MATRIX_ELLPACK)
+       call allocate_matrix_ellpack(N, A, matrix_precision_)
     case default
        call error(__FILE__, __LINE__, "unsupported matrix type")
     end select
@@ -56,7 +59,9 @@ contains
   subroutine deallocate_matrix(A)
 
     use bml_type_dense_m
+    use bml_type_ellpack_m
     use bml_allocate_dense_m
+    use bml_allocate_ellpack_m
     use bml_error_m
 
     class(bml_matrix_t), allocatable, intent(inout) :: A
@@ -65,6 +70,8 @@ contains
        select type(A)
        class is(bml_matrix_dense_t)
           call deallocate_matrix_dense(A)
+       class is(bml_matrix_ellpack_t)
+          call deallocate_matrix_ellpack(A)
        class default
           call error(__FILE__, __LINE__, "unsupported matrix type")
        end select

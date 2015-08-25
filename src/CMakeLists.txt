@@ -23,7 +23,14 @@ set(SOURCES-DENSE
   dense/bml_trace_dense_m.F90
   dense/bml_type_dense_m.F90)
 
-add_library(bml ${SOURCES} ${SOURCES-DENSE})
+set(SOURCES-ELLPACK
+  ellpack/bml_allocate_ellpack_m.F90
+  ellpack/bml_type_ellpack_m.F90)
+
+add_library(bml
+  ${SOURCES}
+  ${SOURCES-DENSE}
+  ${SOURCES-ELLPACK})
 
 unset(HEADERS)
 foreach(f ${SOURCES})

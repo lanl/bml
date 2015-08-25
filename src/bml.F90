@@ -3,7 +3,8 @@
 !! This library implements a common API for linear algebra and matrix
 !! functions. It offers several data structures for matrix storage and
 !! algorithms. Currently the following are implemented:
-!!   - dense
+!!   - dense @ref bml_type_m::bml_matrix_dense
+!!   - sparse (ELLPACK) @ref bml_type_m::bml_matrix_ellpack
 !!
 !! The use of this library is pretty straightforward. In the
 !! application code, `use` the bml main module,
@@ -51,10 +52,9 @@
 !! \todo
 !! Add full support for dense matrix type for single precision.
 !!
-!! \defgroup add_group Adding Matrices
 !! \defgroup allocate_group Allocation and Deallocation Functions
 !! \defgroup convert_group Converting between Matrix Formats
-!! \defgroup matrix_types Matrix Data Types
+!! \defgroup add_group Adding Matrices
 !! \defgroup multiply_group Multiplying Matrices
 
 !> \copyright Los Alamos National Laboratory 2015
