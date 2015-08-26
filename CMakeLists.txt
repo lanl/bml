@@ -28,10 +28,17 @@ if(DOXYGEN_FOUND)
   configure_file(docs/Doxyfile.in Doxyfile)
   add_custom_target(doc
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
+else()
+  add_custom_target(doc)
 endif()
 
-enable_testing()
-add_subdirectory(tests)
+set(BML_TESTING FALSE
+  CACHE BOOL "Whether to build the test suite.")
+
+if(BML_TESTING)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
 
 find_program(HAVE_ETAGS etags)
 if(HAVE_ETAGS)
