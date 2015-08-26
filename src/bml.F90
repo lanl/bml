@@ -16,7 +16,7 @@
 !! A matrix is of type
 !!
 !! \code{.F90}
-!! class(bml_matrix_t), allocatable :: A
+!! class(bml_matrix_t), allocatable :: a
 !! \endcode
 !!
 !! There are two important things to note. First, we use a polymorphic
@@ -27,7 +27,7 @@
 !! "allocation functions". For instance,
 !!
 !! \code{.F90}
-!! call allocate_matrix(BML_MATRIX_DENSE, 100, A)
+!! call allocate_matrix(BML_MATRIX_DENSE, 100, a)
 !! \endcode
 !!
 !! will allocate a dense, double-precision, \f$ 100 \times 100 \f$
@@ -41,7 +41,7 @@
 !! A matrix is deallocated by calling
 !!
 !! \code{.F90}
-!! call deallocate_matrix(A)
+!! call deallocate_matrix(a)
 !! \endcode
 !!
 !! \author
