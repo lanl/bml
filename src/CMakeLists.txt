@@ -4,6 +4,7 @@ set(SOURCES
   bml_allocate_m.F90
   bml_convert_m.F90
   bml_copy_m.F90
+  bml_diagonalize_m.F90
   bml_error_m.F90
   bml_get_m.F90
   bml_multiply_m.F90
@@ -25,6 +26,7 @@ set(SOURCES-DENSE
 
 set(SOURCES-ELLPACK
   ellpack/bml_allocate_ellpack_m.F90
+  ellpack/bml_convert_ellpack_m.F90
   ellpack/bml_type_ellpack_m.F90)
 
 add_library(bml

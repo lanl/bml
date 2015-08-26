@@ -34,7 +34,7 @@ contains
     case(BML_PRECISION_DOUBLE)
        allocate(bml_matrix_dense_double_t::A)
     case default
-       call error(__FILE__, __LINE__, "unknown precision")
+       call error(__FILE__, __LINE__, "unknown precision "//trim(matrix_precision))
     end select
 
     select type(A)

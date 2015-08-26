@@ -21,7 +21,9 @@ contains
   subroutine convert_to_dense_single(A, A_dense)
 
     use bml_type_dense_m
+    use bml_type_ellpack_m
     use bml_convert_dense_m
+    use bml_convert_ellpack_m
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A
@@ -30,6 +32,8 @@ contains
     select type(A)
     type is(bml_matrix_dense_single_t)
        call convert_to_dense_dense(A, A_dense)
+    type is(bml_matrix_ellpack_single_t)
+       call convert_to_dense_ellpack(A, A_dense)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -45,7 +49,9 @@ contains
   subroutine convert_to_dense_double(A, A_dense)
 
     use bml_type_dense_m
+    use bml_type_ellpack_m
     use bml_convert_dense_m
+    use bml_convert_ellpack_m
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A
@@ -54,6 +60,8 @@ contains
     select type(A)
     type is(bml_matrix_dense_double_t)
        call convert_to_dense_dense(A, A_dense)
+    type is(bml_matrix_ellpack_double_t)
+       call convert_to_dense_ellpack(A, A_dense)
     class default
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select

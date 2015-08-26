@@ -70,6 +70,7 @@ module bml
   use bml_allocate_m
   use bml_convert_m
   use bml_copy_m
+  use bml_diagonalize_m
   use bml_error_m
   use bml_get_m
   use bml_multiply_m

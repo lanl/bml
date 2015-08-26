@@ -40,7 +40,7 @@ contains
     case(BML_MATRIX_ELLPACK)
        call allocate_matrix_ellpack(N, A, matrix_precision_)
     case default
-       call error(__FILE__, __LINE__, "unsupported matrix type")
+       call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select
 
   end subroutine allocate_matrix
@@ -91,8 +91,9 @@ contains
   !! is double precision.
   subroutine random_matrix(matrix_type, N, A, matrix_precision)
 
-    use bml_type_dense_m
+    use bml_type_m
     use bml_allocate_dense_m
+    use bml_allocate_ellpack_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -110,9 +111,11 @@ contains
 
     select case(matrix_type)
     case(BML_MATRIX_DENSE)
-       call random_matrix_dense(N, A, matrix_precision_)
+       call random_matrix_dense(n, a, matrix_precision_)
+    case(BML_MATRIX_ELLPACK)
+       call random_matrix_ellpack(n, a, matrix_precision_)
     case default
-       call error(__FILE__, __LINE__, "unsupported matrix type")
+       call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select
 
   end subroutine random_matrix
@@ -128,8 +131,9 @@ contains
   !! is double precision.
   subroutine identity_matrix(matrix_type, N, A, matrix_precision)
 
-    use bml_type_dense_m
+    use bml_type_m
     use bml_allocate_dense_m
+    use bml_allocate_ellpack_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -147,9 +151,11 @@ contains
 
     select case(matrix_type)
     case(BML_MATRIX_DENSE)
-       call identity_matrix_dense(N, A, matrix_precision_)
+       call identity_matrix_dense(n, a, matrix_precision_)
+    case(BML_MATRIX_ELLPACK)
+       call identity_matrix_ellpack(n, a, matrix_precision_)
     case default
-       call error(__FILE__, __LINE__, "unsupported matrix type")
+       call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select
 
   end subroutine identity_matrix
