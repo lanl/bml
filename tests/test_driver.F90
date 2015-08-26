@@ -7,11 +7,39 @@ program test
 
   implicit none
 
-  integer, parameter :: N = 12
+  interface
+     function test_function(n, matrix_type, matrix_precision)
+       integer, intent(in) :: n
+       character(len=*), intent(in) :: matrix_type
+       character(len=*), intent(in) :: matrix_precision
+       logical :: test_function
+     end function test_function
+  end interface
 
-  call test_function(N, BML_MATRIX_DENSE, BML_PRECISION_SINGLE)
-  call test_function(N, BML_MATRIX_DENSE, BML_PRECISION_DOUBLE)
-  call test_function(N, BML_MATRIX_ELLPACK, BML_PRECISION_SINGLE)
-  call test_function(N, BML_MATRIX_ELLPACK, BML_PRECISION_DOUBLE)
+  integer, parameter :: N = 129
+
+  write(*, "(A)") "Testing "//BML_MATRIX_DENSE//":"//BML_PRECISION_SINGLE
+  if(.not. test_function(N, BML_MATRIX_DENSE, BML_PRECISION_SINGLE)) then
+     write(*, "(A)") "Test failed"
+     error stop
+  end if
+
+  write(*, "(A)") "Testing "//BML_MATRIX_DENSE//":"//BML_PRECISION_DOUBLE
+  if(.not. test_function(N, BML_MATRIX_DENSE, BML_PRECISION_DOUBLE)) then
+     write(*, "(A)") "Test failed"
+     error stop
+  end if
+
+  write(*, "(A)") "Testing "//BML_MATRIX_ELLPACK//":"//BML_PRECISION_SINGLE
+  if(.not. test_function(N, BML_MATRIX_ELLPACK, BML_PRECISION_SINGLE)) then
+     write(*, "(A)") "Test failed"
+     error stop
+  end if
+
+  write(*, "(A)") "Testing "//BML_MATRIX_ELLPACK//":"//BML_PRECISION_DOUBLE
+  if(.not. test_function(N, BML_MATRIX_ELLPACK, BML_PRECISION_DOUBLE)) then
+     write(*, "(A)") "Test failed"
+     error stop
+  end if
 
 end program test
