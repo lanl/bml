@@ -16,16 +16,25 @@ contains
   !!
   !! \f$ A \leftarrow A_{d} \f$
   !!
-  !! \param A The bml matrix.
-  !! \param A_dense The dense matrix.
-  subroutine convert_to_dense_ellpack_single(A, A_dense)
+  !! \param a The bml matrix.
+  !! \param a_dense The dense matrix.
+  subroutine convert_to_dense_ellpack_single(a, a_dense)
 
     use bml_type_ellpack_m
 
     type(bml_matrix_ellpack_single_t), intent(in) :: A
     real, allocatable, intent(out) :: A_dense(:, :)
 
-    A_dense = A%matrix
+    integer :: i, j
+
+    allocate(a_dense(a%n, a%n))
+    a_dense = 0
+
+    do i = 1, a%n
+       do j = 1, a%number_entries(i)
+          a_dense(i, a%column_index(i, j)) = a%matrix(i, j)
+       end do
+    end do
 
   end subroutine convert_to_dense_ellpack_single
 
@@ -42,7 +51,16 @@ contains
     type(bml_matrix_ellpack_double_t), intent(in) :: A
     double precision, allocatable, intent(out) :: A_dense(:, :)
 
-    A_dense = A%matrix
+    integer :: i, j
+
+    allocate(a_dense(a%n, a%n))
+    a_dense = 0
+
+    do i = 1, a%n
+       do j = 1, a%number_entries(i)
+          a_dense(i, a%column_index(i, j)) = a%matrix(i, j)
+       end do
+    end do
 
   end subroutine convert_to_dense_ellpack_double
 

@@ -18,7 +18,11 @@ function test_function(n, matrix_type, matrix_precision)
 
   test_function = .true.
 
-  call random_matrix(matrix_type, n, a, matrix_precision)
+  if(matrix_type == BML_MATRIX_DENSE) then
+     call random_matrix(matrix_type, n, a, matrix_precision)
+  else
+     write(*, *) "Random matrix not supported for matrix type "//matrix_type
+  end if
 
   call identity_matrix(matrix_type, n, a, matrix_precision)
   select case(matrix_precision)

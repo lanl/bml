@@ -93,7 +93,6 @@ contains
 
     use bml_type_m
     use bml_allocate_dense_m
-    use bml_allocate_ellpack_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
@@ -112,8 +111,6 @@ contains
     select case(matrix_type)
     case(BML_MATRIX_DENSE)
        call random_matrix_dense(n, a, matrix_precision_)
-    case(BML_MATRIX_ELLPACK)
-       call random_matrix_ellpack(n, a, matrix_precision_)
     case default
        call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select

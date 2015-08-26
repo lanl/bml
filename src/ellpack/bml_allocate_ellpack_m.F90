@@ -85,32 +85,6 @@ contains
 
   end subroutine deallocate_matrix_ellpack
 
-  !> Initialize a sparse random matrix.
-  !!
-  !! \param n The matrix size.
-  !! \param a The matrix.
-  !! \param matrix_precision The precision of the matrix.
-  subroutine random_matrix_ellpack(n, a, matrix_precision)
-
-    use bml_type_ellpack_m
-    use bml_error_m
-
-    integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(inout) :: A
-    character(len=*), intent(in) :: matrix_precision
-
-    call allocate_matrix_ellpack(N, A, matrix_precision)
-    select type(A)
-    type is(bml_matrix_ellpack_single_t)
-       call random_number(A%matrix)
-    type is(bml_matrix_ellpack_double_t)
-       call random_number(A%matrix)
-    class default
-       call error(__FILE__, __LINE__, "unknown type")
-    end select
-
-  end subroutine random_matrix_ellpack
-
   !> Initialize a sparse identity matrix.
   !!
   !! \param N The matrix size.
@@ -131,11 +105,15 @@ contains
     select type(A)
     type is(bml_matrix_ellpack_single_t)
        do i = 1, N
-          A%matrix(i, i) = 1
+          A%matrix(i, 1) = 1
+          A%number_entries(i) = 1
+          A%column_index(i, 1) = i
        end do
     type is(bml_matrix_ellpack_double_t)
        do i = 1, N
-          A%matrix(i, i) = 1
+          A%matrix(i, 1) = 1
+          A%number_entries(i) = 1
+          A%column_index(i, 1) = i
        end do
     class default
        call error(__FILE__, __LINE__, "unknown type")
