@@ -3,8 +3,8 @@
 BUILD_DIR=${PWD}/build
 INSTALL_DIR=${PWD}/install
 
-mkdir "${BUILD_DIR}" || exit
-mkdir "${INSTALL_DIR}" || exit
+mkdir -p "${BUILD_DIR}" || exit
+mkdir -p "${INSTALL_DIR}" || exit
 
 cd "${BUILD_DIR}"
 cmake .. \
