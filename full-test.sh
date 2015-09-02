@@ -14,6 +14,6 @@ cmake .. \
   -DBML_TESTING=yes
 
 make || exit
-make doc || exit
+make docs || exit
 make test || exit
 make install || exit

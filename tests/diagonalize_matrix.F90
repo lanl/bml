@@ -33,7 +33,7 @@ contains
        a_dense_double = (a_dense_double+transpose(a_dense_double))/2
        call convert_from_dense(matrix_type, a_dense_double, a)
        call diagonalize(a, eigenvectors_double, eigenvalues_double)
-       call print_matrix("A", a_dense_double)
+       call print_matrix("A", a_dense_double, .true.)
        call print_vector("eval", eigenvalues_double)
        call print_matrix("evec", eigenvectors_double)
     case default

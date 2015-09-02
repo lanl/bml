@@ -41,7 +41,7 @@ include(FindDoxygen)
 
 if(DOXYGEN_FOUND)
   configure_file(docs/Doxyfile.in Doxyfile)
-  add_custom_target(doc
+  add_custom_target(docs
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 else()
   add_custom_target(doc)
