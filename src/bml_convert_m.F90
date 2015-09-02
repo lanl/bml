@@ -10,6 +10,12 @@ module bml_convert_m
      module procedure :: convert_to_dense_double
   end interface convert_to_dense
 
+  !> Convert from dense matrix to bml.
+  interface convert_from_dense
+     module procedure :: convert_from_dense_single
+     module procedure :: convert_from_dense_double
+  end interface convert_from_dense
+
 contains
 
   !> Convert a matrix into a dense matrix.
@@ -76,7 +82,46 @@ contains
   !! \param A_dense The dense matrix
   !! \param A The bml matrix
   !! \param threshold The matrix element magnited threshold
-  subroutine convert_from_dense(matrix_type, A_dense, A, threshold)
+  subroutine convert_from_dense_single(matrix_type, A_dense, A, threshold)
+
+    use bml_type_dense_m
+    use bml_type_ellpack_m
+    use bml_allocate_m
+    use bml_convert_dense_m
+    use bml_convert_ellpack_m
+    use bml_error_m
+
+    character(len=*), intent(in) :: matrix_type
+    real, intent(in) :: A_dense(:, :)
+    class(bml_matrix_t), allocatable, intent(out) :: A
+    real, optional, intent(in) :: threshold
+
+    if(size(A_dense, 1) /= size(A_dense, 2)) then
+       call error(__FILE__, __LINE__, "[FIXME] only square matrices")
+    end if
+
+    call allocate_matrix(matrix_type, size(A_dense, 1), A, BML_PRECISION_SINGLE)
+
+    select type(A)
+    type is(bml_matrix_dense_single_t)
+       call convert_from_dense_dense(A_dense, A, threshold)
+    type is(bml_matrix_ellpack_single_t)
+       call convert_from_dense_ellpack(A_dense, A, threshold)
+    class default
+       call error(__FILE__, __LINE__, "unknown matrix type")
+    end select
+
+  end subroutine convert_from_dense_single
+
+  !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group
+  !!
+  !! \param matrix_type The matrix type
+  !! \param A_dense The dense matrix
+  !! \param A The bml matrix
+  !! \param threshold The matrix element magnited threshold
+  subroutine convert_from_dense_double(matrix_type, A_dense, A, threshold)
 
     use bml_type_dense_m
     use bml_allocate_m
@@ -92,7 +137,7 @@ contains
        call error(__FILE__, __LINE__, "[FIXME] only square matrices")
     end if
 
-    call allocate_matrix(matrix_type, size(A_dense, 1), A)
+    call allocate_matrix(matrix_type, size(A_dense, 1), A, BML_PRECISION_DOUBLE)
 
     select type(A)
     type is(bml_matrix_dense_double_t)
@@ -101,6 +146,6 @@ contains
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
-  end subroutine convert_from_dense
+  end subroutine convert_from_dense_double
 
 end module bml_convert_m

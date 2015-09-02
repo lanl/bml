@@ -14,6 +14,20 @@ set(PROJECT_DESCRIPTION
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif()
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+
+set(GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all")
+set(GNU_Fortran_FLAGS_RELEASE "-O2 -g")
+set(Intel_Fortran_FLAGS_DEBUG "-O0 -g")
+set(Intel_Fortran_FLAGS_RELEASE "-O2 -g")
+
+if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR
+    CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+  set(CMAKE_Fortran_FLAGS_DEBUG ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_DEBUG})
+  set(CMAKE_Fortran_FLAGS_RELEASE ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_RELEASE})
+else()
+  message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
+endif()
 
 set(BUILD_SHARED_LIBS FALSE
   CACHE BOOL "Whether to build shared libraries (the default is static).")
