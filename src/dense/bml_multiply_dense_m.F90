@@ -40,7 +40,7 @@ contains
     double precision, intent(in) :: alpha
     double precision, intent(in) :: beta
 
-#ifdef BLAS_FOUND
+#ifdef HAVE_BLAS
     call dgemm("N", "N", A%N, A%N, A%N, alpha, A%matrix, A%N, B%matrix, A%N, beta, C%matrix, A%N)
 #else
     C%matrix = alpha*matmul(A%matrix, B%matrix)+beta*C%matrix

@@ -18,6 +18,7 @@ set(SOURCES-DENSE
   dense/bml_allocate_dense_m.F90
   dense/bml_convert_dense_m.F90
   dense/bml_copy_dense_m.F90
+  dense/bml_diagonalize_dense_m.F90
   dense/bml_multiply_dense_m.F90
   dense/bml_print_dense_m.F90
   dense/bml_scale_dense_m.F90
@@ -46,7 +47,10 @@ set_target_properties(bml
   VERSION ${PROJECT_VERSION})
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 if(BLAS_FOUND)
-  add_definitions(-DBLAS_FOUND)
+  add_definitions(-DHAVE_BLAS)
+endif()
+if(LAPACK_FOUND)
+  add_definitions(-DHAVE_LAPACK)
 endif()
 
 install(TARGETS bml

@@ -33,6 +33,7 @@ set(BUILD_SHARED_LIBS FALSE
   CACHE BOOL "Whether to build shared libraries (the default is static).")
 
 include(FindBLAS)
+include(FindLAPACK)
 
 add_subdirectory(src)
 

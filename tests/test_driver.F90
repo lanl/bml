@@ -7,7 +7,7 @@ program test
 
   implicit none
 
-  integer, parameter :: N = 129
+  integer, parameter :: N = 7
   type(TEST_TYPE) :: tester
 
   write(*, "(A)") "Testing "//MATRIX_TYPE//":"//PRECISION

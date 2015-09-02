@@ -8,8 +8,13 @@ module bml_print_m
   !> Print a matrix.
   interface print_matrix
      module procedure :: print_bml_matrix
-     module procedure :: print_dense_matrix
+     module procedure :: print_matrix_dense
   end interface print_matrix
+
+  !> Print a vector.
+  interface print_vector
+     module procedure :: print_vector_dense
+  end interface print_vector
 
 contains
 
@@ -45,27 +50,54 @@ contains
   !! module here. It prints out a dense matrix.
   !!
   !! \param name A tag to be printed before the matrix.
-  !! \param A The matrix.
-  subroutine print_dense_matrix(name, A)
+  !! \param a The matrix.
+  subroutine print_matrix_dense(name, a)
 
     character(len=*), intent(in) :: name
-    double precision, allocatable, intent(in) :: A(:, :)
+    double precision, allocatable, intent(in) :: a(:, :)
 
     integer :: i, j
     character(len=10000) :: line_format
 
-    if(.not. allocated(A)) then
+    if(.not. allocated(a)) then
        write(*, "(A)") trim(name)//" not allocated"
     else
        write(*, "(A)") trim(adjustl(name))//" ="
-       write(line_format, *) size(A, 2)
+       write(line_format, *) size(a, 2)
        line_format = trim(adjustl(line_format))
        write(line_format, "(A)") "("//trim(line_format)//"es12.2)"
-       do i = 1, size(A, 1)
-          write(*, line_format) (A(i, j), j = 1, size(A, 2))
+       do i = 1, size(a, 1)
+          write(*, line_format) (a(i, j), j = 1, size(a, 2))
        end do
     end if
 
-  end subroutine print_dense_matrix
+  end subroutine print_matrix_dense
+
+  !> Print a vector.
+  !!
+  !! This is a utility function, that really does not belong into any
+  !! module here. It prints out a dense vector.
+  !!
+  !! \param name A tag to be printed before the matrix.
+  !! \param a The vector.
+  subroutine print_vector_dense(name, a)
+
+    character(len=*), intent(in) :: name
+    double precision, allocatable, intent(in) :: a(:)
+
+    integer :: i
+    character(len=10000) :: line_format
+
+    if(.not. allocated(a)) then
+       write(*, "(A)") trim(name)//" not allocated"
+    else
+       write(*, "(A)") trim(adjustl(name))//" ="
+       write(line_format, *) size(a, 1)
+       line_format = trim(adjustl(line_format))
+       write(line_format, "(A)") "("//trim(line_format)//"es12.2)"
+       write(*, line_format) (a(i), i = 1, size(a, 1))
+    end if
+
+  end subroutine print_vector_dense
 
 end module bml_print_m
