@@ -26,17 +26,29 @@ foreach(FILE ${TESTS})
 
   message(STATUS "Adding test ${BASENAME}")
 
-  add_executable(${BASENAME}
-    ${FILE}
-    test_m.F90
-    #${CMAKE_CURRENT_BINARY_DIR}/test_modules.F90
-    test_driver.F90)
-  set_target_properties(${BASENAME}
-    PROPERTIES
-    COMPILE_DEFINITIONS "TEST_MODULE=${BASENAME}_m;TEST_TYPE=${BASENAME}_t")
-  target_link_libraries(${BASENAME} bml)
-  if(BLAS_FOUND)
-    target_link_libraries(${BASENAME} ${BLAS_LIBRARIES})
-  endif()
-  add_test(${BASENAME} ${BASENAME})
+  foreach(type DENSE ELLPACK)
+    set(MATRIX_TYPE BML_MATRIX_${type})
+    foreach(precision SINGLE DOUBLE)
+      set(PRECISION BML_PRECISION_${precision})
+      set(TESTNAME ${BASENAME}-${type}-${precision})
+      string(TOLOWER ${TESTNAME} TESTNAME)
+      unset(COMPILE_DEFINITIONS)
+      list(APPEND COMPILE_DEFINITIONS "TEST_MODULE=${BASENAME}_m")
+      list(APPEND COMPILE_DEFINITIONS "TEST_TYPE=${BASENAME}_t")
+      list(APPEND COMPILE_DEFINITIONS "PRECISION=${PRECISION}")
+      list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE=${MATRIX_TYPE}")
+      add_executable(${TESTNAME}
+        ${FILE}
+        test_m.F90
+        test_driver.F90)
+      set_target_properties(${TESTNAME}
+        PROPERTIES
+        COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}")
+      target_link_libraries(${TESTNAME} bml)
+      if(BLAS_FOUND)
+        target_link_libraries(${TESTNAME} ${BLAS_LIBRARIES})
+      endif()
+      add_test(${TESTNAME} ${TESTNAME})
+    endforeach()
+  endforeach()
 endforeach()
