@@ -17,10 +17,10 @@ contains
     use bml_error_m
 
     integer, intent(in) :: n
-    class(bml_matrix_t), allocatable, intent(inout) :: a
+    class(bml_matrix_t), pointer, intent(inout) :: a
     character(len=*), intent(in) :: matrix_precision
 
-    if(allocated(a)) then
+    if(associated(a)) then
        select type(a)
        class is(bml_matrix_ellpack_t)
           call deallocate_matrix_ellpack(a)
@@ -98,7 +98,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(inout) :: A
+    class(bml_matrix_t), pointer, intent(inout) :: A
     character(len=*), intent(in) :: matrix_precision
 
     integer :: i

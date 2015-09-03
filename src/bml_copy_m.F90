@@ -20,7 +20,7 @@ contains
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A
-    class(bml_matrix_t), allocatable, intent(inout) :: B
+    class(bml_matrix_t), pointer, intent(inout) :: B
 
     select type(A)
     type is(bml_matrix_dense_double_t)

@@ -21,7 +21,7 @@ contains
     character(len=*), intent(in) :: matrix_precision
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
+    class(bml_matrix_t), pointer :: a
 
     real, allocatable :: a_real(:, :)
     double precision, allocatable :: a_double(:, :)

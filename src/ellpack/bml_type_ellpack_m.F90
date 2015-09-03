@@ -15,15 +15,15 @@ module bml_type_ellpack_m
   !> The dense matrix type.
   type, abstract, public, extends(bml_matrix_t) :: bml_matrix_ellpack_t
      !> The number of entries per row.
-     integer, allocatable :: number_entries(:)
+     integer, pointer :: number_entries(:)
      !> Column indices.
-     integer, allocatable :: column_index(:, :)
+     integer, pointer :: column_index(:, :)
   end type bml_matrix_ellpack_t
 
   !> The bml dense matrix type.
   type, public, extends(bml_matrix_ellpack_t) :: bml_matrix_ellpack_double_t
      !> Non-zero matrix elements.
-     double precision, allocatable :: matrix(:, :)
+     double precision, pointer :: matrix(:, :)
    contains
      procedure, nopass :: get_type => get_type_ellpack_double
   end type bml_matrix_ellpack_double_t
@@ -31,7 +31,7 @@ module bml_type_ellpack_m
   !> The bml dense matrix type.
   type, public, extends(bml_matrix_ellpack_t) :: bml_matrix_ellpack_single_t
      !> Non-zero matrix elements.
-     real, allocatable :: matrix(:, :)
+     real, pointer :: matrix(:, :)
    contains
      procedure, nopass :: get_type => get_type_ellpack_single
   end type bml_matrix_ellpack_single_t
@@ -39,12 +39,12 @@ module bml_type_ellpack_m
 contains
 
   function get_type_ellpack_double() result(type_name)
-    character(len=:), allocatable :: type_name
+    character(len=:), pointer :: type_name
     type_name = "ellpack:double"
   end function get_type_ellpack_double
 
   function get_type_ellpack_single() result(type_name)
-    character(len=:), allocatable :: type_name
+    character(len=:), pointer :: type_name
     type_name = "ellpack:single"
   end function get_type_ellpack_single
 

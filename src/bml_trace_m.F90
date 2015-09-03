@@ -17,11 +17,11 @@ contains
     use bml_trace_dense_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(in) :: A
+    class(bml_matrix_t), pointer, intent(in) :: A
     double precision :: trA
 
     trA = 0
-    if(.not. allocated(A)) return
+    if(.not. associated(A)) return
 
     select type(A)
     type is(bml_matrix_dense_double_t)

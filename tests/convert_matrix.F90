@@ -23,8 +23,8 @@ contains
     character(len=*), intent(in) :: matrix_precision
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
-    class(bml_matrix_t), allocatable :: b
+    class(bml_matrix_t), pointer :: a
+    class(bml_matrix_t), pointer :: b
     double precision, allocatable :: a_dense_double(:, :)
     double precision, allocatable :: b_dense_double(:, :)
     real, allocatable :: a_dense_real(:, :)

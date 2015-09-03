@@ -37,10 +37,10 @@ contains
     use bml_error_m
 
     character(len=*), intent(in) :: name
-    class(bml_matrix_t), allocatable, intent(in) :: A
+    class(bml_matrix_t), pointer, intent(in) :: A
 
-    if(.not. allocated(A)) then
-       write(*, "(A)") trim(name)//" not allocated"
+    if(.not. associated(A)) then
+       write(*, "(A)") trim(name)//" not associated"
     else
        select type(A)
        type is(bml_matrix_dense_double_t)
@@ -72,7 +72,7 @@ contains
     character(len=10000) :: line_format
 
     if(.not. allocated(a)) then
-       write(*, "(A)") trim(name)//" not allocated"
+       write(*, "(A)") trim(name)//" not associated"
     else
        if(present(python_format)) then
           if(python_format) then
@@ -123,7 +123,7 @@ contains
     character(len=10000) :: line_format
 
     if(.not. allocated(a)) then
-       write(*, "(A)") trim(name)//" not allocated"
+       write(*, "(A)") trim(name)//" not associated"
     else
        write(*, "(A)") trim(adjustl(name))//" ="
        write(line_format, *) size(a, 1)

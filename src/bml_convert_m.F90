@@ -28,9 +28,9 @@ contains
   !!
   !! \ingroup convert_group
   !!
-  !! \param A The bml matrix
-  !! \param A_dense The dense matrix
-  subroutine convert_to_dense_single(A, A_dense)
+  !! \param a The bml matrix
+  !! \param a_dense The dense matrix
+  subroutine convert_to_dense_single(a, a_dense)
 
     use bml_type_m
     use bml_type_dense_m
@@ -39,14 +39,14 @@ contains
     use bml_convert_ellpack_m
     use bml_error_m
 
-    class(bml_matrix_t), intent(in) :: A
-    real, allocatable, intent(out) :: A_dense(:, :)
+    class(bml_matrix_t), intent(in) :: a
+    real, allocatable, intent(out) :: a_dense(:, :)
 
-    select type(A)
+    select type(a)
     type is(bml_matrix_dense_single_t)
-       call convert_to_dense_dense(A, A_dense)
+       call convert_to_dense_dense(a, a_dense)
     type is(bml_matrix_ellpack_single_t)
-       call convert_to_dense_ellpack(A, A_dense)
+       call convert_to_dense_ellpack(a, a_dense)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -57,9 +57,9 @@ contains
   !!
   !! \ingroup convert_group
   !!
-  !! \param A The bml matrix
-  !! \param A_dense The dense matrix
-  subroutine convert_to_dense_double(A, A_dense)
+  !! \param a The bml matrix
+  !! \param a_dense The dense matrix
+  subroutine convert_to_dense_double(a, a_dense)
 
     use bml_type_m
     use bml_type_dense_m
@@ -68,8 +68,8 @@ contains
     use bml_convert_ellpack_m
     use bml_error_m
 
-    class(bml_matrix_t), intent(in) :: A
-    double precision, allocatable, intent(out) :: A_dense(:, :)
+    class(bml_matrix_t), intent(in) :: a
+    double precision, allocatable, intent(out) :: a_dense(:, :)
 
     select type(A)
     type is(bml_matrix_dense_double_t)
@@ -102,7 +102,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     real, intent(in) :: A_dense(:, :)
-    class(bml_matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), pointer, intent(out) :: A
     real, optional, intent(in) :: threshold
 
     if(size(A_dense, 1) /= size(A_dense, 2)) then
@@ -140,7 +140,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     double precision, intent(in) :: A_dense(:, :)
-    class(bml_matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), pointer, intent(out) :: A
     double precision, optional, intent(in) :: threshold
 
     if(size(A_dense, 1) /= size(A_dense, 2)) then

@@ -23,10 +23,10 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), pointer, intent(out) :: A
     character(len=*), optional, intent(in) :: matrix_precision
 
-    character(len=:), allocatable :: matrix_precision_
+    character(len=:), pointer :: matrix_precision_
 
     if(present(matrix_precision)) then
        matrix_precision_ = matrix_precision
@@ -50,7 +50,7 @@ contains
   !! \ingroup allocate_group
   !!
   !! \bug This procedure should be called even if the matrix object is
-  !! implicitly de-allocated, i.e. when it goes of out scope. This
+  !! implicitly de-associated, i.e. when it goes of out scope. This
   !! behavior might depend on the complier, since it's a fairly recent
   !! Fortran standard addition, and not all compilers implement such a
   !! thing currently.
@@ -65,9 +65,9 @@ contains
     use bml_allocate_ellpack_m
     use bml_error_m
 
-    class(bml_matrix_t), allocatable, intent(inout) :: A
+    class(bml_matrix_t), pointer, intent(inout) :: A
 
-    if(allocated(A)) then
+    if(associated(A)) then
        select type(A)
        class is(bml_matrix_dense_t)
           call deallocate_matrix_dense(A)
@@ -98,10 +98,10 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), pointer, intent(out) :: A
     character(len=*), optional, intent(in) :: matrix_precision
 
-    character(len=:), allocatable :: matrix_precision_
+    character(len=:), pointer :: matrix_precision_
 
     if(present(matrix_precision)) then
        matrix_precision_ = matrix_precision
@@ -136,10 +136,10 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(out) :: A
+    class(bml_matrix_t), pointer, intent(out) :: A
     character(len=*), optional, intent(in) :: matrix_precision
 
-    character(len=:), allocatable :: matrix_precision_
+    character(len=:), pointer :: matrix_precision_
 
     if(present(matrix_precision)) then
        matrix_precision_ = matrix_precision

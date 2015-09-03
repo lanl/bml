@@ -103,7 +103,7 @@ contains
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A, B
-    class(bml_matrix_t), allocatable, intent(inout) :: C
+    class(bml_matrix_t), pointer, intent(inout) :: C
     double precision, optional :: alpha, beta
 
     double precision :: alpha_, beta_
@@ -207,7 +207,7 @@ contains
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A
-    class(bml_matrix_t), allocatable, intent(out) :: C
+    class(bml_matrix_t), pointer, intent(out) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 

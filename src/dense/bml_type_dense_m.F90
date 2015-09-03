@@ -16,7 +16,7 @@ module bml_type_dense_m
   !> The bml dense matrix type.
   type, public, extends(bml_matrix_dense_t) :: bml_matrix_dense_double_t
      !> The dense matrix.
-     double precision, allocatable :: matrix(:, :)
+     double precision, pointer :: matrix(:, :)
    contains
      procedure, nopass :: get_type => get_type_dense_double
   end type bml_matrix_dense_double_t
@@ -24,7 +24,7 @@ module bml_type_dense_m
   !> The bml dense matrix type.
   type, public, extends(bml_matrix_dense_t) :: bml_matrix_dense_single_t
      !> The dense matrix.
-     real, allocatable :: matrix(:, :)
+     real, pointer :: matrix(:, :)
    contains
      procedure, nopass :: get_type => get_type_dense_single
   end type bml_matrix_dense_single_t
@@ -32,12 +32,12 @@ module bml_type_dense_m
 contains
 
   function get_type_dense_double() result(type_name)
-    character(len=:), allocatable :: type_name
+    character(len=:), pointer :: type_name
     type_name = "dense:double"
   end function get_type_dense_double
 
   function get_type_dense_single() result(type_name)
-    character(len=:), allocatable :: type_name
+    character(len=:), pointer :: type_name
     type_name = "dense:single"
   end function get_type_dense_single
 

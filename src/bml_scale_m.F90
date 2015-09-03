@@ -60,7 +60,7 @@ contains
 
     double precision, intent(in) :: alpha
     class(bml_matrix_t), intent(in) :: A
-    class(bml_matrix_t), allocatable, intent(out) :: C
+    class(bml_matrix_t), pointer, intent(out) :: C
 
     select type(A)
     type is(bml_matrix_dense_double_t)

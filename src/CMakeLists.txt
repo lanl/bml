@@ -11,6 +11,7 @@ set(SOURCES
   bml_print_m.F90
   bml_scale_m.F90
   bml_trace_m.F90
+  bml_transpose_m.F90
   bml_type_m.F90)
 
 set(SOURCES-DENSE

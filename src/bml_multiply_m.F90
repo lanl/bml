@@ -28,7 +28,7 @@ contains
     use bml_multiply_dense_m
 
     class(bml_matrix_t), intent(in) :: A, B
-    class(bml_matrix_t), allocatable, intent(inout) :: C
+    class(bml_matrix_t), pointer, intent(inout) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
@@ -45,7 +45,7 @@ contains
        beta_ = 0
     end if
 
-    if(allocated(C)) then
+    if(associated(C)) then
        if(A%N /= C%N) then
           call error(__FILE__, __LINE__, "matrix dimension mismatch")
        end if
@@ -55,7 +55,7 @@ contains
     type is(bml_matrix_dense_double_t)
        select type(B)
        type is(bml_matrix_dense_double_t)
-          if(.not. allocated(C)) then
+          if(.not. associated(C)) then
              call allocate_matrix(BML_MATRIX_DENSE, A%N, C)
           end if
           select type(C)

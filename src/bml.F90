@@ -16,14 +16,14 @@
 !! A matrix is of type
 !!
 !! \code{.F90}
-!! class(bml_matrix_t), allocatable :: a
+!! class(bml_matrix_t), pointer :: a
 !! \endcode
 !!
 !! There are two important things to note. First, we use a polymorphic
 !! type for matrices in order to simplify the bml code, hence class
-!! instead of type. Second, the matrix needs to be allocatable since
-!! it has to be allocated by the library using the desired actual
-!! type. A matrix is allocated through one of the \ref allocate_group
+!! instead of type. Second, the matrix needs to be pointer since
+!! it has to be associated by the library using the desired actual
+!! type. A matrix is associated through one of the \ref allocate_group
 !! "allocation functions". For instance,
 !!
 !! \code{.F90}
@@ -38,7 +38,7 @@
 !!   - bml_allocate_m::bml_identity_matrix Allocate and initialize the
 !!     identity matrix.
 !!
-!! A matrix is deallocated by calling
+!! A matrix is deassociated by calling
 !!
 !! \code{.F90}
 !! call bml_deallocate(a)

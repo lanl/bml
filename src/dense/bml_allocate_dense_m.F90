@@ -7,20 +7,20 @@ contains
 
   !> Allocate a dense matrix.
   !!
-  !! \param N The matrix size.
-  !! \param A The matrix.
+  !! \param n The matrix size.
+  !! \param a The matrix.
   !! \param matrix_precision The precision of the matrix.
-  subroutine allocate_matrix_dense(N, A, matrix_precision)
+  subroutine allocate_matrix_dense(n, a, matrix_precision)
 
     use bml_type_m
     use bml_type_dense_m
     use bml_error_m
 
-    integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(inout) :: A
+    integer, intent(in) :: n
+    class(bml_matrix_t), pointer, intent(inout) :: a
     character(len=*), intent(in) :: matrix_precision
 
-    if(allocated(A)) then
+    if(associated(A)) then
        select type(A)
        class is(bml_matrix_dense_t)
           call deallocate_matrix_dense(A)
@@ -86,7 +86,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(inout) :: A
+    class(bml_matrix_t), pointer, intent(inout) :: A
     character(len=*), intent(in) :: matrix_precision
 
     call allocate_matrix_dense(N, A, matrix_precision)
@@ -113,7 +113,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: N
-    class(bml_matrix_t), allocatable, intent(inout) :: A
+    class(bml_matrix_t), pointer, intent(inout) :: A
     character(len=*), intent(in) :: matrix_precision
 
     integer :: i

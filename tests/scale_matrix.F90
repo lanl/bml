@@ -23,8 +23,8 @@ contains
 
     double precision, parameter :: alpha = 1.2
 
-    class(bml_matrix_t), allocatable :: A
-    class(bml_matrix_t), allocatable :: C
+    class(bml_matrix_t), pointer :: A
+    class(bml_matrix_t), pointer :: C
 
     double precision, allocatable :: A_dense(:, :)
     double precision, allocatable :: C_dense(:, :)
