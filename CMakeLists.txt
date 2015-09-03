@@ -35,6 +35,17 @@ set(BUILD_SHARED_LIBS FALSE
 include(FindBLAS)
 include(FindLAPACK)
 
+include(CheckFortranFunctionExists)
+if(BLAS_FOUND)
+  set(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
+  check_fortran_function_exists(dgemm HAVE_DGEMM)
+  check_fortran_function_exists(sgemm HAVE_SGEMM)
+endif()
+if(LAPACK_FOUND)
+  set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
+  check_fortran_function_exists(dsyev HAVE_DSYEV)
+endif()
+
 add_subdirectory(src)
 
 include(FindDoxygen)

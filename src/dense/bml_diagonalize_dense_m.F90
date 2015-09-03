@@ -2,6 +2,7 @@
 module bml_diagonalize_dense_m
   implicit none
 
+#ifdef HAVE_DSYEV
   interface dsyev
      subroutine dsyev(JOBZ, UPLO, N, A, LDA, W, WORK, LWORK, INFO)
        character :: JOBZ
@@ -15,6 +16,7 @@ module bml_diagonalize_dense_m
        integer :: INFO
      end subroutine dsyev
   end interface dsyev
+#endif
 
 contains
 
@@ -40,7 +42,7 @@ contains
 
     select type(a)
     class is(bml_matrix_dense_double_t)
-#ifdef HAVE_LAPACK
+#ifdef HAVE_DSYEV
        eigenvectors = a%matrix
        allocate(eigenvalues(a%n))
        lwork = max(1, 3*a%n-1)
@@ -51,7 +53,7 @@ contains
        end if
        deallocate(work)
 #else
-       call error(__FILE__, __LINE__, "could not find LAPACK during configuration")
+       call error(__FILE__, __LINE__, "could not find LAPACK(dsyev) during configuration")
 #endif
     class default
        call error(__FILE__, __LINE__, "unknow matrix type")

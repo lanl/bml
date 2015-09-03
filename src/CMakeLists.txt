@@ -52,6 +52,15 @@ endif()
 if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 endif()
+if(HAVE_DGEMM)
+  add_definitions(-DHAVE_DGEMM)
+endif()
+if(HAVE_SGEMM)
+  add_definitions(-DHAVE_SGEMM)
+endif()
+if(HAVE_DSYEV)
+  add_definitions(-DHAVE_DSYEV)
+endif()
 
 install(TARGETS bml
   ARCHIVE DESTINATION lib

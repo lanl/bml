@@ -6,18 +6,22 @@ module bml_multiply_dense_m
 
   !> Interface to BLAS {s,d}gemm functions.
   interface
+#ifdef HAVE_DGEMM
      subroutine dgemm(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc)
        double precision :: alpha, beta
        integer :: k, lda, ldb, ldc, m, n
        character :: transa, transb
        double precision :: a(lda,*), b(ldb,*), c(ldc,*)
      end subroutine dgemm
+#endif
+#ifdef HAVE_SGEMM
      subroutine sgemm(transa, transb, m, n, k, alpha, a, lda, b, ldb, beta, c, ldc)
        real :: alpha, beta
        integer :: k, lda, ldb, ldc, m, n
        character :: transa, transb
        real :: a(lda,*), b(ldb,*), c(ldc,*)
      end subroutine sgemm
+#endif
   end interface
 
 contains
