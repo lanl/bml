@@ -18,7 +18,7 @@ message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
 set(GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all")
 set(GNU_Fortran_FLAGS_RELEASE "-O2 -g")
-set(Intel_Fortran_FLAGS_DEBUG "-O0 -g")
+set(Intel_Fortran_FLAGS_DEBUG "-O0 -g -check all -traceback")
 set(Intel_Fortran_FLAGS_RELEASE "-O2 -g")
 
 if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR
