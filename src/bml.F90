@@ -27,21 +27,21 @@
 !! "allocation functions". For instance,
 !!
 !! \code{.F90}
-!! call allocate_matrix(BML_MATRIX_DENSE, 100, a)
+!! call bml_allocate(BML_MATRIX_DENSE, 100, a)
 !! \endcode
 !!
 !! will allocate a dense, double-precision, \f$ 100 \times 100 \f$
 !! matrix which is initialized to zero. Additional functions allocate
 !! special matrices,
-!!   - bml_allocate_m::random_matrix Allocate and initialize a random
-!!     matrix.
-!!   - bml_allocate_m::identity_matrix Allocate and initialize the
+!!   - bml_allocate_m::bml_random_matrix Allocate and initialize a
+!!     random matrix.
+!!   - bml_allocate_m::bml_identity_matrix Allocate and initialize the
 !!     identity matrix.
 !!
 !! A matrix is deallocated by calling
 !!
 !! \code{.F90}
-!! call deallocate_matrix(a)
+!! call bml_deallocate(a)
 !! \endcode
 !!
 !! \author

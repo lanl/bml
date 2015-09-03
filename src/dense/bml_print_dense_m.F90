@@ -28,7 +28,7 @@ contains
     character(len=10000) :: line_format
 
     if(A%N > 20) then
-       call warning(__FILE__, __LINE__, "matrix is rather large")
+       call bml_warning(__FILE__, __LINE__, "matrix is rather large")
     else
        write(*, "(A)") trim(adjustl(name))//" ="
        write(line_format, *) A%N
@@ -57,7 +57,7 @@ contains
     character(len=10000) :: line_format
 
     if(A%N > 20) then
-       call warning(__FILE__, __LINE__, "matrix is rather large")
+       call bml_warning(__FILE__, __LINE__, "matrix is rather large")
     else
        write(*, "(A)") trim(adjustl(name))//" ="
        write(line_format, *) A%N

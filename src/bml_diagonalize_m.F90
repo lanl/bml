@@ -8,7 +8,7 @@ contains
   !! @param a The matrix.
   !! @param eigenvectors The set of eigenvectors.
   !! @param eigenvalues The corresponding eigenvalues.
-  subroutine diagonalize(a, eigenvectors, eigenvalues)
+  subroutine bml_diagonalize(a, eigenvectors, eigenvalues)
 
     use bml_type_m
     use bml_type_dense_m
@@ -23,9 +23,9 @@ contains
     class is(bml_matrix_dense_t)
        call diagonalize_dense(a, eigenvectors, eigenvalues)
     class default
-       call error(__FILE__, __LINE__, "unknow matrix type")
+       call bml_error(__FILE__, __LINE__, "unknow matrix type")
     end select
 
-  end subroutine diagonalize
+  end subroutine bml_diagonalize
 
 end module bml_diagonalize_m

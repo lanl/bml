@@ -5,21 +5,26 @@ module bml_add_m
 
   implicit none
 
+  private
+
   !> \addtogroup add_group
   !! @{
 
   !> Add two matrices.
-  interface add
+  interface bml_add
      module procedure add_two
      module procedure add_three
-  end interface add
+  end interface bml_add
 
   !> Add identity matrix to a matrix.
-  interface add_identity
+  interface bml_add_identity
      module procedure add_identity_one
      module procedure add_identity_two
-  end interface add_identity
+  end interface bml_add_identity
   !> @}
+
+  public :: bml_add
+  public :: bml_add_identity
 
 contains
 
@@ -36,6 +41,7 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add_two(A, B, alpha, beta)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_add_dense_m
     use bml_allocate_m
@@ -48,7 +54,7 @@ contains
     double precision :: alpha_, beta_
 
     if(A%N /= B%N) then
-       call error(__FILE__, __LINE__, "matrix dimension mismatch")
+       call bml_error(__FILE__, __LINE__, "matrix dimension mismatch")
     end if
 
     if(present(alpha)) then
@@ -68,10 +74,10 @@ contains
        type is(bml_matrix_dense_double_t)
           call add_two_dense(A, B, alpha_, beta_)
        class default
-          call error(__FILE__, __LINE__, "matrix type mismatch")
+          call bml_error(__FILE__, __LINE__, "matrix type mismatch")
        end select
     class default
-       call error(__FILE__, __LINE__, "not implemented")
+       call bml_error(__FILE__, __LINE__, "not implemented")
     end select
 
   end subroutine add_two
@@ -90,6 +96,7 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add_three(A, B, C, alpha, beta)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_add_dense_m
     use bml_allocate_m
@@ -102,7 +109,7 @@ contains
     double precision :: alpha_, beta_
 
     if(A%N /= B%N) then
-       call error(__FILE__, __LINE__, "matrix dimension mismatch")
+       call bml_error(__FILE__, __LINE__, "matrix dimension mismatch")
     end if
 
     if(present(alpha)) then
@@ -120,18 +127,18 @@ contains
     type is(bml_matrix_dense_double_t)
        select type(B)
        type is(bml_matrix_dense_double_t)
-          call allocate_matrix(BML_MATRIX_DENSE, A%N, C)
+          call bml_allocate(BML_MATRIX_DENSE, A%N, C)
           select type(C)
           type is(bml_matrix_dense_double_t)
              call add_three_dense(A, B, C, alpha_, beta_)
           class default
-             call error(__FILE__, __LINE__, "C matrix type mismatch")
+             call bml_error(__FILE__, __LINE__, "C matrix type mismatch")
           end select
        class default
-          call error(__FILE__, __LINE__, "matrix type mismatch")
+          call bml_error(__FILE__, __LINE__, "matrix type mismatch")
        end select
     class default
-       call error(__FILE__, __LINE__, "not implemented")
+       call bml_error(__FILE__, __LINE__, "not implemented")
     end select
 
   end subroutine add_three
@@ -148,6 +155,7 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add_identity_one(A, alpha, beta)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_add_dense_m
     use bml_allocate_m
@@ -174,7 +182,7 @@ contains
     type is(bml_matrix_dense_double_t)
        call add_identity_self_dense(A, alpha_, beta_)
     class default
-       call error(__FILE__, __LINE__, "unknown matrix type")
+       call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
   end subroutine add_identity_one
@@ -192,6 +200,7 @@ contains
   !! \param beta Factor \f$ \beta \f$
   subroutine add_identity_two(A, C, alpha, beta)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_add_dense_m
     use bml_allocate_m
@@ -218,13 +227,13 @@ contains
 
     select type(A)
     type is(bml_matrix_dense_double_t)
-       call allocate_matrix(BML_MATRIX_DENSE, A%N, C)
+       call bml_allocate(BML_MATRIX_DENSE, A%N, C)
        select type(C)
        type is(bml_matrix_dense_double_t)
           call add_identity_two_dense(A, C, alpha_, beta_)
        end select
     class default
-       call error(__FILE__, __LINE__, "unknown matrix type")
+       call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
   end subroutine add_identity_two

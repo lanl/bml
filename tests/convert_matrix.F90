@@ -36,8 +36,8 @@ contains
     case(BML_PRECISION_SINGLE)
        allocate(a_dense_real(n, n))
        call random_number(a_dense_real)
-       call convert_from_dense(matrix_type, a_dense_real, a)
-       call convert_to_dense(a, b_dense_real)
+       call bml_convert_from_dense(matrix_type, a_dense_real, a)
+       call bml_convert_to_dense(a, b_dense_real)
        if(maxval(a_dense_real-b_dense_real) > 1e-12) then
           print *, "Matrix element mismatch"
           test_result = .false.
@@ -45,8 +45,8 @@ contains
     case(BML_PRECISION_DOUBLE)
        allocate(a_dense_double(n, n))
        call random_number(a_dense_double)
-       call convert_from_dense(matrix_type, a_dense_double, a)
-       call convert_to_dense(a, b_dense_double)
+       call bml_convert_from_dense(matrix_type, a_dense_double, a)
+       call bml_convert_to_dense(a, b_dense_double)
        if(maxval(a_dense_double-b_dense_double) > 1e-12) then
           print *, "Matrix element mismatch"
           test_result = .false.

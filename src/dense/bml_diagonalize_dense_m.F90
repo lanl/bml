@@ -49,14 +49,14 @@ contains
        allocate(work(lwork))
        call dsyev("V", "U", a%n, eigenvectors, a%n, eigenvalues, work, lwork, info)
        if(info /= 0) then
-          call error(__FILE__, __LINE__, "dsyev returned an error")
+          call bml_error(__FILE__, __LINE__, "dsyev returned an error")
        end if
        deallocate(work)
 #else
        call error(__FILE__, __LINE__, "could not find LAPACK(dsyev) during configuration")
 #endif
     class default
-       call error(__FILE__, __LINE__, "unknow matrix type")
+       call bml_error(__FILE__, __LINE__, "unknow matrix type")
     end select
 
   end subroutine diagonalize_dense

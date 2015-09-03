@@ -11,8 +11,9 @@ contains
   !!
   !! \param A Matrix to copy.
   !! \param B Matrix to copy to.
-  subroutine copy(A, B)
+  subroutine bml_copy(A, B)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_allocate_m
     use bml_copy_dense_m
@@ -34,6 +35,6 @@ contains
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
-  end subroutine copy
+  end subroutine bml_copy
 
 end module bml_copy_m

@@ -31,15 +31,15 @@ contains
     test_result = .true.
 
     if(matrix_type == BML_MATRIX_DENSE) then
-       call random_matrix(matrix_type, n, a, matrix_precision)
+       call bml_random_matrix(matrix_type, n, a, matrix_precision)
     else
        print *, "Random matrix not supported for matrix type "//matrix_type
     end if
 
-    call identity_matrix(matrix_type, n, a, matrix_precision)
+    call bml_identity_matrix(matrix_type, n, a, matrix_precision)
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
-       call convert_to_dense(a, a_real)
+       call bml_convert_to_dense(a, a_real)
        do i = 1, n
           do j = 1, n
              if(i == j) then
@@ -58,7 +58,7 @@ contains
           end do
        end do
     case(BML_PRECISION_DOUBLE)
-       call convert_to_dense(a, a_double)
+       call bml_convert_to_dense(a, a_double)
        do i = 1, n
           do j = 1, n
              if(i == j) then
@@ -79,8 +79,8 @@ contains
     end select
     print *, "Test passed"
 
-    call allocate_matrix(matrix_type, n, a, matrix_precision)
-    call deallocate_matrix(a)
+    call bml_allocate(matrix_type, n, a, matrix_precision)
+    call bml_deallocate(a)
 
   end function test_function
 

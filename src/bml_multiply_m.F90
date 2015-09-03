@@ -19,8 +19,9 @@ contains
   !! \param C Matrix \f$ C \f$.
   !! \param alpha The factor \f$ \alpha \f$.
   !! \param beta The factor \f$ \beta \f$.
-  subroutine multiply(A, B, C, alpha, beta)
+  subroutine bml_multiply(A, B, C, alpha, beta)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_allocate_m
     use bml_error_m
@@ -70,6 +71,6 @@ contains
        call error(__FILE__, __LINE__, "not implemented")
     end select
 
-  end subroutine multiply
+  end subroutine bml_multiply
 
 end module bml_multiply_m

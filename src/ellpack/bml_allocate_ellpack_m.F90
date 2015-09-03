@@ -12,6 +12,7 @@ contains
   !! \param matrix_precision The precision of the matrix.
   subroutine allocate_matrix_ellpack(n, a, matrix_precision)
 
+    use bml_type_m
     use bml_type_ellpack_m
     use bml_error_m
 
@@ -24,7 +25,7 @@ contains
        class is(bml_matrix_ellpack_t)
           call deallocate_matrix_ellpack(a)
        class default
-          call error(__FILE__, __LINE__, "unknow matrix type")
+          call bml_error(__FILE__, __LINE__, "unknow matrix type")
        end select
     end if
 
@@ -34,7 +35,7 @@ contains
     case(BML_PRECISION_DOUBLE)
        allocate(bml_matrix_ellpack_double_t::a)
     case default
-       call error(__FILE__, __LINE__, "unknown precision")
+       call bml_error(__FILE__, __LINE__, "unknown precision")
     end select
 
     select type(a)
@@ -42,7 +43,7 @@ contains
        allocate(a%number_entries(n))
        allocate(a%column_index(n, ELLPACK_M))
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
     select type(a)
@@ -53,7 +54,7 @@ contains
        allocate(a%matrix(n, ELLPACK_M))
        a%matrix = 0
        class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
     a%n = n
@@ -80,7 +81,7 @@ contains
        deallocate(a%column_index)
        deallocate(a%matrix)
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
   end subroutine deallocate_matrix_ellpack
@@ -92,6 +93,7 @@ contains
   !! \param matrix_precision The precision of the matrix.
   subroutine identity_matrix_ellpack(n, a, matrix_precision)
 
+    use bml_type_m
     use bml_type_ellpack_m
     use bml_error_m
 
@@ -116,7 +118,7 @@ contains
           A%column_index(i, 1) = i
        end do
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
   end subroutine identity_matrix_ellpack

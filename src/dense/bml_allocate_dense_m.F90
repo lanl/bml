@@ -12,6 +12,7 @@ contains
   !! \param matrix_precision The precision of the matrix.
   subroutine allocate_matrix_dense(N, A, matrix_precision)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_error_m
 
@@ -24,7 +25,7 @@ contains
        class is(bml_matrix_dense_t)
           call deallocate_matrix_dense(A)
        class default
-          call error(__FILE__, __LINE__, "unknow matrix type")
+          call bml_error(__FILE__, __LINE__, "unknow matrix type")
        end select
     end if
 
@@ -34,7 +35,7 @@ contains
     case(BML_PRECISION_DOUBLE)
        allocate(bml_matrix_dense_double_t::A)
     case default
-       call error(__FILE__, __LINE__, "unknown precision "//trim(matrix_precision))
+       call bml_error(__FILE__, __LINE__, "unknown precision "//trim(matrix_precision))
     end select
 
     select type(A)
@@ -45,7 +46,7 @@ contains
        allocate(A%matrix(N, N))
        A%matrix = 0
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
     A%N = N
@@ -68,7 +69,7 @@ contains
     type is(bml_matrix_dense_double_t)
        deallocate(A%matrix)
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
   end subroutine deallocate_matrix_dense
@@ -80,6 +81,7 @@ contains
   !! \param matrix_precision The precision of the matrix.
   subroutine random_matrix_dense(N, A, matrix_precision)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_error_m
 
@@ -94,7 +96,7 @@ contains
     type is(bml_matrix_dense_double_t)
        call random_number(A%matrix)
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
   end subroutine random_matrix_dense
@@ -106,6 +108,7 @@ contains
   !! \param matrix_precision The precision of the matrix.
   subroutine identity_matrix_dense(N, A, matrix_precision)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_error_m
 
@@ -126,7 +129,7 @@ contains
           A%matrix(i, i) = 1
        end do
     class default
-       call error(__FILE__, __LINE__, "unknown type")
+       call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
   end subroutine identity_matrix_dense

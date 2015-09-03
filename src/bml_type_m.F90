@@ -31,6 +31,20 @@ module bml_type_m
   type, abstract :: bml_matrix_t
      !> The matrix size, assumed square.
      integer :: N = -1
+   contains
+     !> Returns the matrix type as a string.
+     !!
+     !! The strings is composed of "type":"precision".
+     procedure(get_type), deferred, nopass :: get_type
   end type bml_matrix_t
+
+  !> Returns the matrix type as a string.
+  !!
+  !! The strings is composed of "type":"precision".
+  abstract interface
+     function get_type() result(type_name)
+       character(len=:), allocatable :: type_name
+     end function get_type
+  end interface
 
 end module bml_type_m

@@ -10,8 +10,9 @@ contains
   !! \f$ \leftarrow \mathrm{Tr} \left[ A \right] \f$
   !!
   !! \param A The matrix.
-  function trace(A) result(trA)
+  function bml_trace(A) result(trA)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_trace_dense_m
     use bml_error_m
@@ -29,6 +30,6 @@ contains
        call error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
-  end function trace
+  end function bml_trace
 
 end module bml_trace_m

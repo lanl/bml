@@ -14,7 +14,7 @@ contains
   !! \param A The matrix.
   !! \param matrix_precision The precision of the matrix. The default
   !! is double precision.
-  subroutine allocate_matrix(matrix_type, N, A, matrix_precision)
+  subroutine bml_allocate(matrix_type, N, A, matrix_precision)
 
     use bml_type_m
     use bml_allocate_dense_m
@@ -40,10 +40,10 @@ contains
     case(BML_MATRIX_ELLPACK)
        call allocate_matrix_ellpack(N, A, matrix_precision_)
     case default
-       call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
+       call bml_error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select
 
-  end subroutine allocate_matrix
+  end subroutine bml_allocate
 
   !> Deallocate a matrix.
   !!
@@ -56,8 +56,9 @@ contains
   !! thing currently.
   !!
   !! \param A The matrix.
-  subroutine deallocate_matrix(A)
+  subroutine bml_deallocate(A)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_type_ellpack_m
     use bml_allocate_dense_m
@@ -73,12 +74,12 @@ contains
        class is(bml_matrix_ellpack_t)
           call deallocate_matrix_ellpack(A)
        class default
-          call error(__FILE__, __LINE__, "unsupported matrix type")
+          call bml_error(__FILE__, __LINE__, "unsupported matrix type")
        end select
        deallocate(A)
     endif
 
-  end subroutine deallocate_matrix
+  end subroutine bml_deallocate
 
   !> Initialize a random matrix.
   !!
@@ -89,7 +90,7 @@ contains
   !! \param A The matrix.
   !! \param matrix_precision The precision of the matrix. The default
   !! is double precision.
-  subroutine random_matrix(matrix_type, N, A, matrix_precision)
+  subroutine bml_random_matrix(matrix_type, N, A, matrix_precision)
 
     use bml_type_m
     use bml_allocate_dense_m
@@ -112,10 +113,10 @@ contains
     case(BML_MATRIX_DENSE)
        call random_matrix_dense(n, a, matrix_precision_)
     case default
-       call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
+       call bml_error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select
 
-  end subroutine random_matrix
+  end subroutine bml_random_matrix
 
   !> Initialize a identity matrix.
   !!
@@ -126,7 +127,7 @@ contains
   !! \param A The matrix.
   !! \param matrix_precision The precision of the matrix. The default
   !! is double precision.
-  subroutine identity_matrix(matrix_type, N, A, matrix_precision)
+  subroutine bml_identity_matrix(matrix_type, N, A, matrix_precision)
 
     use bml_type_m
     use bml_allocate_dense_m
@@ -152,9 +153,9 @@ contains
     case(BML_MATRIX_ELLPACK)
        call identity_matrix_ellpack(n, a, matrix_precision_)
     case default
-       call error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
+       call bml_error(__FILE__, __LINE__, "unsupported matrix type ("//trim(matrix_type)//")")
     end select
 
-  end subroutine identity_matrix
+  end subroutine bml_identity_matrix
 
 end module bml_allocate_m

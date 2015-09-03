@@ -2,19 +2,26 @@
 
 !> Print a matrix.
 module bml_print_m
+
   use bml_error_m
+
   implicit none
 
+  private
+
   !> Print a matrix.
-  interface print_matrix
+  interface bml_print_matrix
      module procedure :: print_bml_matrix
      module procedure :: print_matrix_dense
-  end interface print_matrix
+  end interface bml_print_matrix
 
   !> Print a vector.
-  interface print_vector
+  interface bml_print_vector
      module procedure :: print_vector_dense
-  end interface print_vector
+  end interface bml_print_vector
+
+  public :: bml_print_matrix
+  public :: bml_print_vector
 
 contains
 
@@ -24,6 +31,7 @@ contains
   !! \param A The matrix.
   subroutine print_bml_matrix(name, A)
 
+    use bml_type_m
     use bml_type_dense_m
     use bml_print_dense_m
     use bml_error_m
@@ -38,7 +46,7 @@ contains
        type is(bml_matrix_dense_double_t)
           call print_matrix_dense(name, A)
        class default
-          call error(__FILE__, __LINE__, "unknown matrix type")
+          call bml_error(__FILE__, __LINE__, "unknown matrix type")
        end select
     end if
 

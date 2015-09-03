@@ -29,14 +29,14 @@ contains
     double precision, allocatable :: A_dense(:, :)
     double precision, allocatable :: C_dense(:, :)
 
-    call random_matrix(BML_MATRIX_DENSE, N, A)
-    call scale(alpha, A, C)
+    call bml_random_matrix(BML_MATRIX_DENSE, N, A)
+    call bml_scale(alpha, A, C)
 
-    call convert_to_dense(A, A_dense)
-    call convert_to_dense(C, C_dense)
+    call bml_convert_to_dense(A, A_dense)
+    call bml_convert_to_dense(C, C_dense)
 
     if(maxval(alpha*A_dense-C_dense) > 1e-12) then
-       call error(__FILE__, __LINE__, "matrix element mismatch")
+       call bml_error(__FILE__, __LINE__, "matrix element mismatch")
     endif
 
   end function test_function
