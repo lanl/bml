@@ -5,7 +5,8 @@ include_directories(${CMAKE_BINARY_DIR}/src)
 set(TESTS
   allocate_matrix.F90
   convert_matrix.F90
-  diagonalize_matrix.F90)
+  diagonalize_matrix.F90
+  scale_matrix.F90)
 
 # Generate the test_modules module.
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/test_modules.F90 "module test_modules\n")

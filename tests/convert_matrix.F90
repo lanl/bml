@@ -7,14 +7,16 @@ module convert_matrix_m
 
   implicit none
 
-  type, extends(test_t) :: convert_matrix_t
+  private
+
+  type, public, extends(test_t) :: convert_matrix_t
    contains
-     procedure, nopass :: test_function => convert_test_function
+     procedure, nopass :: test_function
   end type convert_matrix_t
 
 contains
 
-  function convert_test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(n, matrix_type, matrix_precision) result(test_result)
 
     integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
@@ -52,6 +54,6 @@ contains
     end select
     print *, "Test passed"
 
-  end function convert_test_function
+  end function test_function
 
 end module convert_matrix_m

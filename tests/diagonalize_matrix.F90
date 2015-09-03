@@ -5,14 +5,16 @@ module diagonalize_matrix_m
 
   implicit none
 
-  type, extends(test_t) :: diagonalize_matrix_t
+  private
+
+  type, public, extends(test_t) :: diagonalize_matrix_t
    contains
-     procedure, nopass :: test_function => diagonalize_test_function
+     procedure, nopass :: test_function
   end type diagonalize_matrix_t
 
 contains
 
-  function diagonalize_test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(n, matrix_type, matrix_precision) result(test_result)
 
     integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
@@ -40,6 +42,6 @@ contains
        print *, "unknown matrix type"
     end select
 
-  end function diagonalize_test_function
+  end function test_function
 
 end module diagonalize_matrix_m

@@ -1,26 +1,44 @@
-program test
+module scale_matrix_m
 
   use bml
+  use test_m
 
   implicit none
 
-  integer, parameter :: N = 12
-  double precision, parameter :: alpha = 1.2
+  private
 
-  class(bml_matrix_t), allocatable :: A
-  class(bml_matrix_t), allocatable :: C
+  type, public, extends(test_t) :: scale_matrix_t
+   contains
+     procedure, nopass :: test_function
+  end type scale_matrix_t
 
-  double precision, allocatable :: A_dense(:, :)
-  double precision, allocatable :: C_dense(:, :)
+contains
 
-  call random_matrix(BML_MATRIX_DENSE, N, A)
-  call scale(alpha, A, C)
+  function test_function(n, matrix_type, matrix_precision) result(test_result)
 
-  call convert_to_dense(A, A_dense)
-  call convert_to_dense(C, C_dense)
+    integer, intent(in) :: n
+    character(len=*), intent(in) :: matrix_type
+    character(len=*), intent(in) :: matrix_precision
+    logical :: test_result
 
-  if(maxval(alpha*A_dense-C_dense) > 1e-12) then
-     call error(__FILE__, __LINE__, "matrix element mismatch")
-  endif
+    double precision, parameter :: alpha = 1.2
 
-end program test
+    class(bml_matrix_t), allocatable :: A
+    class(bml_matrix_t), allocatable :: C
+
+    double precision, allocatable :: A_dense(:, :)
+    double precision, allocatable :: C_dense(:, :)
+
+    call random_matrix(BML_MATRIX_DENSE, N, A)
+    call scale(alpha, A, C)
+
+    call convert_to_dense(A, A_dense)
+    call convert_to_dense(C, C_dense)
+
+    if(maxval(alpha*A_dense-C_dense) > 1e-12) then
+       call error(__FILE__, __LINE__, "matrix element mismatch")
+    endif
+
+  end function test_function
+
+end module scale_matrix_m

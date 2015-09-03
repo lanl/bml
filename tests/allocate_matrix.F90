@@ -5,14 +5,16 @@ module allocate_matrix_m
 
   implicit none
 
-  type, extends(test_t) :: allocate_matrix_t
+  private
+
+  type, public, extends(test_t) :: allocate_matrix_t
    contains
-     procedure, nopass :: test_function => allocate_test_function
+     procedure, nopass :: test_function
   end type allocate_matrix_t
 
 contains
 
-  function allocate_test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(n, matrix_type, matrix_precision) result(test_result)
 
     integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
@@ -80,6 +82,6 @@ contains
     call allocate_matrix(matrix_type, n, a, matrix_precision)
     call deallocate_matrix(a)
 
-  end function allocate_test_function
+  end function test_function
 
 end module allocate_matrix_m
