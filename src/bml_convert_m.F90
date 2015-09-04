@@ -39,8 +39,12 @@ contains
     use bml_convert_ellpack_m
     use bml_error_m
 
-    class(bml_matrix_t), intent(in) :: a
+    class(bml_matrix_t), pointer, intent(in) :: a
     real, allocatable, intent(out) :: a_dense(:, :)
+
+    if(.not. associated(a)) then
+       call bml_error(__FILE__, __LINE__, "matrix is not associated")
+    end if
 
     select type(a)
     type is(bml_matrix_dense_single_t)
@@ -68,14 +72,18 @@ contains
     use bml_convert_ellpack_m
     use bml_error_m
 
-    class(bml_matrix_t), intent(in) :: a
+    class(bml_matrix_t), pointer, intent(in) :: a
     double precision, allocatable, intent(out) :: a_dense(:, :)
 
-    select type(A)
+    if(.not. associated(a)) then
+       call bml_error(__FILE__, __LINE__, "matrix is not associated")
+    end if
+
+    select type(a)
     type is(bml_matrix_dense_double_t)
-       call convert_to_dense_dense(A, A_dense)
+       call convert_to_dense_dense(a, a_dense)
     type is(bml_matrix_ellpack_double_t)
-       call convert_to_dense_ellpack(A, A_dense)
+       call convert_to_dense_ellpack(a, a_dense)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -127,31 +135,35 @@ contains
   !! \ingroup convert_group
   !!
   !! \param matrix_type The matrix type
-  !! \param A_dense The dense matrix
-  !! \param A The bml matrix
+  !! \param a_dense The dense matrix
+  !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
-  subroutine convert_from_dense_double(matrix_type, A_dense, A, threshold)
+  subroutine convert_from_dense_double(matrix_type, a_dense, a, threshold)
 
     use bml_type_m
     use bml_type_dense_m
+    use bml_type_ellpack_m
     use bml_allocate_m
     use bml_convert_dense_m
+    use bml_convert_ellpack_m
     use bml_error_m
 
     character(len=*), intent(in) :: matrix_type
-    double precision, intent(in) :: A_dense(:, :)
-    class(bml_matrix_t), pointer, intent(out) :: A
+    double precision, intent(in) :: a_dense(:, :)
+    class(bml_matrix_t), pointer, intent(out) :: a
     double precision, optional, intent(in) :: threshold
 
-    if(size(A_dense, 1) /= size(A_dense, 2)) then
+    if(size(a_dense, 1) /= size(a_dense, 2)) then
        call bml_error(__FILE__, __LINE__, "[FIXME] only square matrices")
     end if
 
-    call bml_allocate(matrix_type, size(A_dense, 1), A, BML_PRECISION_DOUBLE)
+    call bml_allocate(matrix_type, size(a_dense, 1), a, BML_PRECISION_DOUBLE)
 
-    select type(A)
+    select type(a)
     type is(bml_matrix_dense_double_t)
-       call convert_from_dense_dense(A_dense, A, threshold)
+       call convert_from_dense_dense(a_dense, a, threshold)
+    type is(bml_matrix_ellpack_double_t)
+       call convert_from_dense_ellpack(a_dense, a, threshold)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select

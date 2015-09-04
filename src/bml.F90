@@ -77,6 +77,7 @@ module bml
   use bml_print_m
   use bml_scale_m
   use bml_trace_m
+  use bml_transpose_m
 
 contains
 

@@ -37,6 +37,7 @@ contains
     type(bml_matrix_dense_single_t), intent(in) :: a
     real, allocatable, intent(out) :: a_dense(:, :)
 
+    allocate(a_dense(a%n, a%n))
     a_dense = a%matrix
 
   end subroutine convert_to_dense_dense_single
@@ -54,6 +55,7 @@ contains
     type(bml_matrix_dense_double_t), intent(in) :: a
     double precision, allocatable, intent(out) :: a_dense(:, :)
 
+    allocate(a_dense(a%n, a%n))
     a_dense = a%matrix
 
   end subroutine convert_to_dense_dense_double

@@ -17,17 +17,17 @@ contains
     use bml_error_m
 
     integer, intent(in) :: n
-    class(bml_matrix_t), pointer, intent(inout) :: a
+    class(bml_matrix_t), pointer, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
-    if(associated(a)) then
-       select type(a)
-       class is(bml_matrix_ellpack_t)
-          call deallocate_matrix_ellpack(a)
-       class default
-          call bml_error(__FILE__, __LINE__, "unknow matrix type")
-       end select
-    end if
+    !> if(associated(a)) then
+    !>    select type(a)
+    !>    class is(bml_matrix_ellpack_t)
+    !>       call deallocate_matrix_ellpack(a)
+    !>    class default
+    !>       call bml_error(__FILE__, __LINE__, "unknow matrix type")
+    !>    end select
+    !> end if
 
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
@@ -80,7 +80,7 @@ contains
        deallocate(a%number_entries)
        deallocate(a%column_index)
        deallocate(a%matrix)
-    class default
+       class default
        call bml_error(__FILE__, __LINE__, "unknown type")
     end select
 
@@ -98,7 +98,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: N
-    class(bml_matrix_t), pointer, intent(inout) :: A
+    class(bml_matrix_t), pointer, intent(out) :: A
     character(len=*), intent(in) :: matrix_precision
 
     integer :: i

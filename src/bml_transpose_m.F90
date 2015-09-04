@@ -1,3 +1,6 @@
+!> \copyright Los Alamos National Laboratory 2015
+
+!> Tranpose functions.
 module bml_transpose_m
   implicit none
 contains

@@ -43,7 +43,7 @@ module bml_type_m
   !! The strings is composed of "type":"precision".
   abstract interface
      function get_type() result(type_name)
-       character(len=:), pointer :: type_name
+       character(len=:), allocatable :: type_name
      end function get_type
   end interface
 

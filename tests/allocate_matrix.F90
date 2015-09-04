@@ -36,6 +36,8 @@ contains
        print *, "Random matrix not supported for matrix type "//matrix_type
     end if
 
+    stop
+
     call bml_identity_matrix(matrix_type, n, a, matrix_precision)
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
