@@ -24,6 +24,7 @@ set(SOURCES-DENSE
   dense/bml_print_dense_m.F90
   dense/bml_scale_dense_m.F90
   dense/bml_trace_dense_m.F90
+  dense/bml_transpose_dense_m.F90
   dense/bml_type_dense_m.F90)
 
 set(SOURCES-ELLPACK
