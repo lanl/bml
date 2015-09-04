@@ -47,7 +47,7 @@ contains
 
     if(allocated(c)) then
        if(a%n /= c%n) then
-          call error(__FILE__, __LINE__, "matrix dimension mismatch")
+          call bml_error(__FILE__, __LINE__, "matrix dimension mismatch")
        end if
     end if
 
@@ -56,19 +56,19 @@ contains
        select type(b)
        type is(bml_matrix_dense_double_t)
           if(.not. allocated(c)) then
-             call allocate_matrix(BML_MATRIX_DENSE, a%n, c)
+             call bml_allocate(BML_MATRIX_DENSE, a%n, c)
           end if
           select type(c)
           type is(bml_matrix_dense_double_t)
              call multiply_dense(a, b, c, alpha_, beta_)
           class default
-             call error(__FILE__, __LINE__, "C matrix type mismatch")
+             call bml_error(__FILE__, __LINE__, "C matrix type mismatch")
           end select
        class default
-          call error (__FILE__, __LINE__, "matrix type mismatch")
+          call bml_error (__FILE__, __LINE__, "matrix type mismatch")
        end select
     class default
-       call error(__FILE__, __LINE__, "not implemented")
+       call bml_error(__FILE__, __LINE__, "not implemented")
     end select
 
   end subroutine bml_multiply

@@ -1,35 +1,68 @@
-program test
+module multiply_matrix_m
 
   use bml
+  use test_m
 
   implicit none
 
-  integer, parameter :: N = 12
+  private
 
-  class(bml_matrix_t), allocatable :: A
-  class(bml_matrix_t), allocatable :: B
-  class(bml_matrix_t), allocatable :: C
+  type, public, extends(test_t) :: multiply_matrix_t
+   contains
+     procedure, nopass :: test_function
+  end type multiply_matrix_t
 
-  double precision, allocatable :: A_dense(:, :)
-  double precision, allocatable :: B_dense(:, :)
-  double precision, allocatable :: C_dense(:, :)
+contains
 
-  call random_matrix(BML_MATRIX_DENSE, N, A)
-  call identity_matrix(BML_MATRIX_DENSE, N, B)
+  function test_function(n, matrix_type, matrix_precision) result(test_result)
 
-  call convert_to_dense(A, A_dense)
-  call convert_to_dense(B, B_dense)
+    integer, intent(in) :: n
+    character(len=*), intent(in) :: matrix_type
+    character(len=*), intent(in) :: matrix_precision
+    logical :: test_result
 
-  call multiply(A, B, C)
+    class(bml_matrix_t), allocatable :: a
+    class(bml_matrix_t), allocatable :: b
+    class(bml_matrix_t), allocatable :: c
 
-  call convert_to_dense(C, C_dense)
+    real, allocatable :: a_real(:, :)
+    real, allocatable :: b_real(:, :)
+    real, allocatable :: c_real(:, :)
 
-  if(maxval(matmul(A_dense, B_dense)-C_dense) > 1e-12) then
-     call error(__FILE__, __LINE__, "incorrect matrix product")
-  endif
+    double precision, allocatable :: a_double(:, :)
+    double precision, allocatable :: b_double(:, :)
+    double precision, allocatable :: c_double(:, :)
 
-  call deallocate_matrix(A)
-  call deallocate_matrix(B)
-  call deallocate_matrix(C)
+    call bml_random_matrix(matrix_type, n, a, matrix_precision)
+    call bml_identity_matrix(matrix_type, n, b, matrix_precision)
 
-end program test
+    call bml_multiply(a, b, c)
+
+    test_result = .true.
+
+    select case(matrix_precision)
+    case(BML_PRECISION_SINGLE)
+       call bml_convert_to_dense(a, a_double)
+       call bml_convert_to_dense(b, b_double)
+       call bml_convert_to_dense(c, c_double)
+       if(maxval(matmul(a_double, b_double)-c_double) > 1e-12) then
+          test_result = .false.
+          print *, "incorrect matrix product"
+       endif
+    case(BML_PRECISION_DOUBLE)
+       call bml_convert_to_dense(a, a_double)
+       call bml_convert_to_dense(b, b_double)
+       call bml_convert_to_dense(c, c_double)
+       if(maxval(matmul(a_double, b_double)-c_double) > 1e-12) then
+          test_result = .false.
+          print *, "incorrect matrix product"
+       endif
+    end select
+
+    call bml_deallocate(a)
+    call bml_deallocate(b)
+    call bml_deallocate(c)
+
+  end function test_function
+
+end module multiply_matrix_m
