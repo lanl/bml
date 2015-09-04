@@ -8,19 +8,19 @@ module bml_convert_dense_m
   private
 
   !> Convert bml to dense matrix.
-  interface convert_to_dense_dense
+  interface bml_convert_to_dense_dense
      module procedure convert_to_dense_dense_single
      module procedure convert_to_dense_dense_double
-  end interface convert_to_dense_dense
+  end interface bml_convert_to_dense_dense
 
   !> Convert bml to dense matrix.
-  interface convert_from_dense_dense
+  interface bml_convert_from_dense_dense
      module procedure convert_from_dense_dense_single
      module procedure convert_from_dense_dense_double
-  end interface convert_from_dense_dense
+  end interface bml_convert_from_dense_dense
 
-  public :: convert_to_dense_dense
-  public :: convert_from_dense_dense
+  public :: bml_convert_to_dense_dense
+  public :: bml_convert_from_dense_dense
 
 contains
 

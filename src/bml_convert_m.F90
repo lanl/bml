@@ -44,9 +44,9 @@ contains
 
     select type(a)
     type is(bml_matrix_dense_single_t)
-       call convert_to_dense_dense(a, a_dense)
+       call bml_convert_to_dense_dense(a, a_dense)
     type is(bml_matrix_ellpack_single_t)
-       call convert_to_dense_ellpack(a, a_dense)
+       call bml_convert_to_dense_ellpack(a, a_dense)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -73,9 +73,9 @@ contains
 
     select type(a)
     type is(bml_matrix_dense_double_t)
-       call convert_to_dense_dense(a, a_dense)
+       call bml_convert_to_dense_dense(a, a_dense)
     type is(bml_matrix_ellpack_double_t)
-       call convert_to_dense_ellpack(a, a_dense)
+       call bml_convert_to_dense_ellpack(a, a_dense)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -113,9 +113,9 @@ contains
 
     select type(a)
     type is(bml_matrix_dense_single_t)
-       call convert_from_dense_dense(a_dense, a, threshold)
+       call bml_convert_from_dense_dense(a_dense, a, threshold)
     type is(bml_matrix_ellpack_single_t)
-       call convert_from_dense_ellpack(a_dense, a, threshold)
+       call bml_convert_from_dense_ellpack(a_dense, a, threshold)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -153,9 +153,9 @@ contains
 
     select type(a)
     type is(bml_matrix_dense_double_t)
-       call convert_from_dense_dense(a_dense, a, threshold)
+       call bml_convert_from_dense_dense(a_dense, a, threshold)
     type is(bml_matrix_ellpack_double_t)
-       call convert_from_dense_ellpack(a_dense, a, threshold)
+       call bml_convert_from_dense_ellpack(a_dense, a, threshold)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select

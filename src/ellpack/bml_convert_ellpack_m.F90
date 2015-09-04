@@ -8,19 +8,19 @@ module bml_convert_ellpack_m
   private
 
   !> Convert bml to dense matrix.
-  interface convert_to_dense_ellpack
+  interface bml_convert_to_dense_ellpack
      module procedure convert_to_dense_ellpack_single
      module procedure convert_to_dense_ellpack_double
-  end interface convert_to_dense_ellpack
+  end interface bml_convert_to_dense_ellpack
 
   !> Convert bml to dense matrix.
-  interface convert_from_dense_ellpack
+  interface bml_convert_from_dense_ellpack
      module procedure convert_from_dense_ellpack_single
      module procedure convert_from_dense_ellpack_double
-  end interface convert_from_dense_ellpack
+  end interface bml_convert_from_dense_ellpack
 
-  public :: convert_to_dense_ellpack
-  public :: convert_from_dense_ellpack
+  public :: bml_convert_to_dense_ellpack
+  public :: bml_convert_from_dense_ellpack
 
 contains
 
