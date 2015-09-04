@@ -15,5 +15,5 @@ cmake .. \
 
 make || exit
 make docs || exit
-make test || exit
-make install || exit
+ctest --output-on-failure
+make install
