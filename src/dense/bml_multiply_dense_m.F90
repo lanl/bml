@@ -2,7 +2,10 @@
 
 !> Matrix multiplication for dense matrices.
 module bml_multiply_dense_m
+
   implicit none
+
+  private
 
   !> Interface to BLAS {s,d}gemm functions.
   interface
@@ -24,32 +27,71 @@ module bml_multiply_dense_m
 #endif
   end interface
 
+  interface bml_multiply_dense
+     module procedure multiply_dense_single
+     module procedure multiply_dense_double
+  end interface bml_multiply_dense
+
+  public :: bml_multiply_dense
+
 contains
 
   !> Multiply two matrices.
   !!
   !! \f$ C \leftarrow \alpha A \times B + \beta C \f$
   !!
-  !! \param A Matrix \f$ A \f$.
-  !! \param B Matrix \f$ B \f$.
-  !! \param C Matrix \f$ C \f$.
+  !! \param a Matrix \f$ A \f$.
+  !! \param b Matrix \f$ B \f$.
+  !! \param c Matrix \f$ C \f$.
   !! \param alpha The factor \f$ \alpha \f$.
   !! \param beta The factor \f$ \beta \f$.
-  subroutine multiply_dense(A, B, C, alpha, beta)
+  subroutine multiply_dense_single(a, b, c, alpha, beta)
 
     use bml_type_dense_m
 
-    type(bml_matrix_dense_double_t), intent(in) :: A, B
-    type(bml_matrix_dense_double_t), intent(inout) :: C
+    type(bml_matrix_dense_single_t), intent(in) :: a, b
+    type(bml_matrix_dense_single_t), intent(inout) :: c
     double precision, intent(in) :: alpha
     double precision, intent(in) :: beta
 
-#ifdef HAVE_BLAS
-    call dgemm("N", "N", A%N, A%N, A%N, alpha, A%matrix, A%N, B%matrix, A%N, beta, C%matrix, A%N)
+    real :: alpha_
+    real :: beta_
+
+    alpha_ = alpha
+    beta_ = beta
+
+#ifdef HAVE_SGEMM
+    call sgemm("N", "N", a%n, a%n, a%n, alpha_, a%matrix, a%n, b%matrix, a%n, beta_, c%matrix, a%n)
 #else
-    C%matrix = alpha*matmul(A%matrix, B%matrix)+beta*C%matrix
+    c%matrix = alpha*matmul(a%matrix, b%matrix)+beta*c%matrix
 #endif
 
-  end subroutine multiply_dense
+  end subroutine multiply_dense_single
+
+  !> Multiply two matrices.
+  !!
+  !! \f$ C \leftarrow \alpha A \times B + \beta C \f$
+  !!
+  !! \param a Matrix \f$ A \f$.
+  !! \param b Matrix \f$ B \f$.
+  !! \param c Matrix \f$ C \f$.
+  !! \param alpha The factor \f$ \alpha \f$.
+  !! \param beta The factor \f$ \beta \f$.
+  subroutine multiply_dense_double(a, b, c, alpha, beta)
+
+    use bml_type_dense_m
+
+    type(bml_matrix_dense_double_t), intent(in) :: a, b
+    type(bml_matrix_dense_double_t), intent(inout) :: c
+    double precision, intent(in) :: alpha
+    double precision, intent(in) :: beta
+
+#ifdef HAVE_DGEMM
+    call dgemm("N", "N", a%n, a%n, a%n, alpha, a%matrix, a%n, b%matrix, a%n, beta, c%matrix, a%n)
+#else
+    c%matrix = alpha*matmul(a%matrix, b%matrix)+beta*c%matrix
+#endif
+
+  end subroutine multiply_dense_double
 
 end module bml_multiply_dense_m

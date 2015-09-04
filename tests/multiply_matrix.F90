@@ -42,10 +42,10 @@ contains
 
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_double)
-       call bml_convert_to_dense(b, b_double)
-       call bml_convert_to_dense(c, c_double)
-       if(maxval(matmul(a_double, b_double)-c_double) > 1e-12) then
+       call bml_convert_to_dense(a, a_real)
+       call bml_convert_to_dense(b, b_real)
+       call bml_convert_to_dense(c, c_real)
+       if(maxval(matmul(a_real, b_real)-c_real) > 1e-12) then
           test_result = .false.
           print *, "incorrect matrix product"
        endif

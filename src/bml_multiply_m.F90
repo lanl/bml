@@ -52,15 +52,30 @@ contains
     end if
 
     select type(a)
+    type is(bml_matrix_dense_single_t)
+       select type(b)
+       type is(bml_matrix_dense_single_t)
+          if(.not. allocated(c)) then
+             call bml_allocate(BML_MATRIX_DENSE, a%n, c, BML_PRECISION_SINGLE)
+          end if
+          select type(c)
+          type is(bml_matrix_dense_single_t)
+             call bml_multiply_dense(a, b, c, alpha_, beta_)
+          class default
+             call bml_error(__FILE__, __LINE__, "C matrix type mismatch")
+          end select
+       class default
+          call bml_error (__FILE__, __LINE__, "matrix type mismatch")
+       end select
     type is(bml_matrix_dense_double_t)
        select type(b)
        type is(bml_matrix_dense_double_t)
           if(.not. allocated(c)) then
-             call bml_allocate(BML_MATRIX_DENSE, a%n, c)
+             call bml_allocate(BML_MATRIX_DENSE, a%n, c, BML_PRECISION_DOUBLE)
           end if
           select type(c)
           type is(bml_matrix_dense_double_t)
-             call multiply_dense(a, b, c, alpha_, beta_)
+             call bml_multiply_dense(a, b, c, alpha_, beta_)
           class default
              call bml_error(__FILE__, __LINE__, "C matrix type mismatch")
           end select
