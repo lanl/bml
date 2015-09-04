@@ -10,15 +10,15 @@ contains
   !! \f$ A \leftarrow \alpha A \f$
   !!
   !! \param alpha The factor
-  !! \param A The matrix
-  subroutine scale_one_dense(alpha, A)
+  !! \param a The matrix
+  subroutine scale_one_dense(alpha, a)
 
     use bml_type_dense_m
 
     double precision, intent(in) :: alpha
-    type(bml_matrix_dense_double_t), intent(inout) :: A
+    type(bml_matrix_dense_double_t), intent(inout) :: a
 
-    A%matrix = alpha*A%matrix
+    a%matrix = alpha*a%matrix
 
   end subroutine scale_one_dense
 
@@ -27,17 +27,17 @@ contains
   !! \f$ C \leftarrow \alpha A \f$
   !!
   !! \param alpha The factor
-  !! \param A The matrix
-  !! \param C The matrix
-  subroutine scale_two_dense(alpha, A, C)
+  !! \param a The matrix
+  !! \param c The matrix
+  subroutine scale_two_dense(alpha, a, c)
 
     use bml_type_dense_m
 
     double precision, intent(in) :: alpha
-    type(bml_matrix_dense_double_t), intent(in) :: A
-    type(bml_matrix_dense_double_t), intent(inout) :: C
+    type(bml_matrix_dense_double_t), intent(in) :: a
+    type(bml_matrix_dense_double_t), intent(inout) :: c
 
-    C%matrix = alpha*A%matrix
+    c%matrix = alpha*a%matrix
 
   end subroutine scale_two_dense
 

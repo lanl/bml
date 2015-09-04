@@ -22,8 +22,8 @@ contains
   !! \f$ A \leftarrow \alpha A \f$
   !!
   !! \param alpha The factor
-  !! \param A The matrix
-  subroutine scale_one(alpha, A)
+  !! \param a The matrix
+  subroutine scale_one(alpha, a)
 
     use bml_type_m
     use bml_type_dense_m
@@ -32,11 +32,11 @@ contains
     use bml_scale_dense_m
 
     double precision, intent(in) :: alpha
-    class(bml_matrix_t), intent(inout) :: A
+    class(bml_matrix_t), intent(inout) :: a
 
-    select type(A)
+    select type(a)
     type is(bml_matrix_dense_double_t)
-       call scale_one_dense(alpha, A)
+       call scale_one_dense(alpha, a)
     class default
        call bml_error(__FILE__, __LINE__, "unsupported matrix type")
     end select
@@ -48,9 +48,9 @@ contains
   !! \f$ C \leftarrow \alpha A \f$
   !!
   !! \param alpha The factor
-  !! \param A The matrix
-  !! \param C The matrix
-  subroutine scale_two(alpha, A, C)
+  !! \param a The matrix
+  !! \param c The matrix
+  subroutine scale_two(alpha, a, c)
 
     use bml_type_m
     use bml_type_dense_m
@@ -59,15 +59,15 @@ contains
     use bml_scale_dense_m
 
     double precision, intent(in) :: alpha
-    class(bml_matrix_t), intent(in) :: A
-    class(bml_matrix_t), pointer, intent(out) :: C
+    class(bml_matrix_t), pointer, intent(in) :: a
+    class(bml_matrix_t), pointer, intent(out) :: c
 
-    select type(A)
+    select type(a)
     type is(bml_matrix_dense_double_t)
-       call bml_allocate(BML_MATRIX_DENSE, A%N, C)
-       select type(C)
+       call bml_allocate(BML_MATRIX_DENSE, a%n, c)
+       select type(c)
        type is(bml_matrix_dense_double_t)
-          call scale_two_dense(alpha, A, C)
+          call scale_two_dense(alpha, a, c)
        end select
     class default
        call bml_error(__FILE__, __LINE__, "unsupported matrix type")
