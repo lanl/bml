@@ -103,7 +103,7 @@ contains
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A, B
-    class(bml_matrix_t), pointer, intent(inout) :: C
+    class(bml_matrix_t), allocatable, intent(inout) :: C
     double precision, optional :: alpha, beta
 
     double precision :: alpha_, beta_
@@ -207,7 +207,7 @@ contains
     use bml_error_m
 
     class(bml_matrix_t), intent(in) :: A
-    class(bml_matrix_t), pointer, intent(out) :: C
+    class(bml_matrix_t), allocatable, intent(out) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
@@ -227,7 +227,7 @@ contains
 
     select type(A)
     type is(bml_matrix_dense_double_t)
-       call bml_allocate(BML_MATRIX_DENSE, A%N, C)
+       call bml_allocate(BML_MATRIX_DENSE, A%N, C, BML_PRECISION_DOUBLE)
        select type(C)
        type is(bml_matrix_dense_double_t)
           call add_identity_two_dense(A, C, alpha_, beta_)

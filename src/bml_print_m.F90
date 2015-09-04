@@ -28,8 +28,8 @@ contains
   !> Print a matrix.
   !!
   !! \param name A tag to be printed before the matrix.
-  !! \param A The matrix.
-  subroutine print_bml_matrix(name, A)
+  !! \param a The matrix.
+  subroutine print_bml_matrix(name, a)
 
     use bml_type_m
     use bml_type_dense_m
@@ -37,18 +37,14 @@ contains
     use bml_error_m
 
     character(len=*), intent(in) :: name
-    class(bml_matrix_t), pointer, intent(in) :: A
+    class(bml_matrix_t), intent(in) :: a
 
-    if(.not. associated(A)) then
-       write(*, "(A)") trim(name)//" not associated"
-    else
-       select type(A)
-       type is(bml_matrix_dense_double_t)
-          call print_matrix_dense(name, A)
-       class default
-          call bml_error(__FILE__, __LINE__, "unknown matrix type")
-       end select
-    end if
+    select type(a)
+    type is(bml_matrix_dense_double_t)
+       call print_matrix_dense(name, a)
+    class default
+       call bml_error(__FILE__, __LINE__, "unknown matrix type")
+    end select
 
   end subroutine print_bml_matrix
 

@@ -9,9 +9,9 @@ contains
   !!
   !! This operation performs \f$ B \leftarrow A \f$.
   !!
-  !! \param A Matrix to copy.
-  !! \param B Matrix to copy to.
-  subroutine bml_copy(A, B)
+  !! \param a Matrix to copy.
+  !! \param b Matrix to copy to.
+  subroutine bml_copy(a, b)
 
     use bml_type_m
     use bml_type_dense_m
@@ -19,20 +19,24 @@ contains
     use bml_copy_dense_m
     use bml_error_m
 
-    class(bml_matrix_t), intent(in) :: A
-    class(bml_matrix_t), pointer, intent(inout) :: B
+    class(bml_matrix_t), intent(in) :: a
+    class(bml_matrix_t), allocatable, intent(out) :: b
 
-    select type(A)
+    select type(a)
+    type is(bml_matrix_dense_single_t)
+       call bml_allocate(BML_MATRIX_DENSE, a%n, b, BML_PRECISION_SINGLE)
+       select type(b)
+       type is(bml_matrix_dense_single_t)
+          call bml_copy_dense(a, b)
+       end select
     type is(bml_matrix_dense_double_t)
-       call allocate_matrix(BML_MATRIX_DENSE, A%N, B)
-       select type(B)
+       call bml_allocate(BML_MATRIX_DENSE, a%n, b, BML_PRECISION_DOUBLE)
+       select type(b)
        type is(bml_matrix_dense_double_t)
-          call copy_dense(A, B)
-       class default
-          call error(__FILE__, __LINE__, "unknown matrix type")
+          call bml_copy_dense(a, b)
        end select
     class default
-       call error(__FILE__, __LINE__, "unknown matrix type")
+       call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
   end subroutine bml_copy

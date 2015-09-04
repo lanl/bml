@@ -91,15 +91,6 @@ contains
 
     integer :: i, j
 
-    a%matrix = a_dense
-    if(present(threshold)) then
-       do i = 1, a%n
-          do j = 1, a%n
-             if(a%matrix(i, j) <= threshold) a%matrix(i, j) = 0
-          end do
-       end do
-    end if
-
   end subroutine convert_from_dense_ellpack_single
 
   !> Convert a dense matrix into a bml matrix.
@@ -116,15 +107,6 @@ contains
     double precision, optional, intent(in) :: threshold
 
     integer :: i, j
-
-    a%matrix = a_dense
-    if(present(threshold)) then
-       do i = 1, a%n
-          do j = 1, a%n
-             if(a%matrix(i, j) <= threshold) a%matrix(i, j) = 0
-          end do
-       end do
-    end if
 
   end subroutine convert_from_dense_ellpack_double
 

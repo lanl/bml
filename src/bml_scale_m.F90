@@ -59,8 +59,8 @@ contains
     use bml_scale_dense_m
 
     double precision, intent(in) :: alpha
-    class(bml_matrix_t), pointer, intent(in) :: a
-    class(bml_matrix_t), pointer, intent(out) :: c
+    class(bml_matrix_t), intent(in) :: a
+    class(bml_matrix_t), allocatable, intent(out) :: c
 
     select type(a)
     type is(bml_matrix_dense_double_t)

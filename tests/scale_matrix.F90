@@ -23,8 +23,8 @@ contains
 
     double precision, parameter :: alpha = 1.2
 
-    class(bml_matrix_t), pointer :: A
-    class(bml_matrix_t), pointer :: C
+    class(bml_matrix_t), allocatable :: A
+    class(bml_matrix_t), allocatable :: C
 
     double precision, allocatable :: A_dense(:, :)
     double precision, allocatable :: C_dense(:, :)
@@ -36,7 +36,10 @@ contains
     call bml_convert_to_dense(C, C_dense)
 
     if(maxval(alpha*A_dense-C_dense) > 1e-12) then
-       call bml_error(__FILE__, __LINE__, "matrix element mismatch")
+       test_result = .false.
+       print *, "matrix element mismatch"
+    else
+       test_result = .true.
     endif
 
   end function test_function

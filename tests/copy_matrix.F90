@@ -1,4 +1,4 @@
-module transpose_matrix_m
+module copy_matrix_m
 
   use bml
   use test_m
@@ -7,10 +7,10 @@ module transpose_matrix_m
 
   private
 
-  type, public, extends(test_t) :: transpose_matrix_t
+  type, public, extends(test_t) :: copy_matrix_t
    contains
      procedure, nopass :: test_function
-  end type transpose_matrix_t
+  end type copy_matrix_t
 
 contains
 
@@ -30,24 +30,24 @@ contains
     double precision, allocatable :: b_double(:, :)
 
     call bml_random_matrix(matrix_type, n, a, matrix_precision)
-    call bml_transpose(a, b)
+    call bml_copy(a, b)
 
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        call bml_convert_to_dense(a, a_real)
        call bml_convert_to_dense(b, b_real)
-       if(maxval(a_real-transpose(b_real)) > 1e-12) then
+       if(maxval(a_real-b_real) > 1e-12) then
           test_result = .false.
-          print *, "matrices are not transposes"
+          print *, "matrices are not identical"
        else
           test_result = .true.
        end if
     case(BML_PRECISION_DOUBLE)
        call bml_convert_to_dense(a, a_double)
        call bml_convert_to_dense(b, b_double)
-       if(maxval(a_double-transpose(b_double)) > 1e-12) then
+       if(maxval(a_double-b_double) > 1e-12) then
           test_result = .false.
-          print *, "matrices are not transposes"
+          print *, "matrices are not identical"
        else
           test_result = .true.
        end if
@@ -55,4 +55,4 @@ contains
 
   end function test_function
 
-end module transpose_matrix_m
+end module copy_matrix_m

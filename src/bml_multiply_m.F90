@@ -28,7 +28,7 @@ contains
     use bml_multiply_dense_m
 
     class(bml_matrix_t), intent(in) :: A, B
-    class(bml_matrix_t), pointer, intent(inout) :: C
+    class(bml_matrix_t), allocatable, intent(inout) :: C
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
 
@@ -45,22 +45,22 @@ contains
        beta_ = 0
     end if
 
-    if(associated(C)) then
-       if(A%N /= C%N) then
+    if(allocated(c)) then
+       if(a%n /= c%n) then
           call error(__FILE__, __LINE__, "matrix dimension mismatch")
        end if
     end if
 
-    select type(A)
+    select type(a)
     type is(bml_matrix_dense_double_t)
-       select type(B)
+       select type(b)
        type is(bml_matrix_dense_double_t)
-          if(.not. associated(C)) then
-             call allocate_matrix(BML_MATRIX_DENSE, A%N, C)
+          if(.not. allocated(c)) then
+             call allocate_matrix(BML_MATRIX_DENSE, a%n, c)
           end if
-          select type(C)
+          select type(c)
           type is(bml_matrix_dense_double_t)
-             call multiply_dense(A, B, C, alpha_, beta_)
+             call multiply_dense(a, b, c, alpha_, beta_)
           class default
              call error(__FILE__, __LINE__, "C matrix type mismatch")
           end select

@@ -1,4 +1,4 @@
-module transpose_matrix_m
+module trace_matrix_m
 
   use bml
   use test_m
@@ -7,10 +7,10 @@ module transpose_matrix_m
 
   private
 
-  type, public, extends(test_t) :: transpose_matrix_t
+  type, public, extends(test_t) :: trace_matrix_t
    contains
      procedure, nopass :: test_function
-  end type transpose_matrix_t
+  end type trace_matrix_t
 
 contains
 
@@ -22,37 +22,41 @@ contains
     logical :: test_result
 
     class(bml_matrix_t), allocatable :: a
-    class(bml_matrix_t), allocatable :: b
 
     real, allocatable :: a_real(:, :)
-    real, allocatable :: b_real(:, :)
     double precision, allocatable :: a_double(:, :)
-    double precision, allocatable :: b_double(:, :)
+
+    double precision :: tr_a
+    double precision :: tr_reference
+
+    integer :: i
 
     call bml_random_matrix(matrix_type, n, a, matrix_precision)
-    call bml_transpose(a, b)
+    tr_a = bml_trace(a)
 
+    tr_reference = 0
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        call bml_convert_to_dense(a, a_real)
-       call bml_convert_to_dense(b, b_real)
-       if(maxval(a_real-transpose(b_real)) > 1e-12) then
-          test_result = .false.
-          print *, "matrices are not transposes"
-       else
-          test_result = .true.
-       end if
+       do i = 1, n
+          tr_reference = tr_reference+a_real(i, i)
+       end do
     case(BML_PRECISION_DOUBLE)
        call bml_convert_to_dense(a, a_double)
-       call bml_convert_to_dense(b, b_double)
-       if(maxval(a_double-transpose(b_double)) > 1e-12) then
-          test_result = .false.
-          print *, "matrices are not transposes"
-       else
-          test_result = .true.
-       end if
+       do i = 1, n
+          tr_reference = tr_reference+a_double(i, i)
+       end do
+    case default
+       print *, "unknown precision"
     end select
+
+    if(abs(tr_a-tr_reference) > 1e-12) then
+       test_result = .false.
+       print *, "trace incorrect"
+    else
+       test_result = .true.
+    end if
 
   end function test_function
 
-end module transpose_matrix_m
+end module trace_matrix_m

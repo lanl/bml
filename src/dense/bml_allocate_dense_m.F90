@@ -17,7 +17,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: n
-    class(bml_matrix_t), pointer, intent(out) :: a
+    class(bml_matrix_t), allocatable, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
     !> if(associated(a)) then
@@ -86,7 +86,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: n
-    class(bml_matrix_t), pointer, intent(out) :: a
+    class(bml_matrix_t), allocatable, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
     call allocate_matrix_dense(n, a, matrix_precision)
@@ -113,7 +113,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: n
-    class(bml_matrix_t), pointer, intent(out) :: a
+    class(bml_matrix_t), allocatable, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
     integer :: i

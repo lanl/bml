@@ -17,7 +17,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: n
-    class(bml_matrix_t), pointer, intent(out) :: a
+    class(bml_matrix_t), allocatable, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
     !> if(associated(a)) then
@@ -98,7 +98,7 @@ contains
     use bml_error_m
 
     integer, intent(in) :: N
-    class(bml_matrix_t), pointer, intent(out) :: A
+    class(bml_matrix_t), allocatable, intent(out) :: A
     character(len=*), intent(in) :: matrix_precision
 
     integer :: i

@@ -9,25 +9,26 @@ contains
   !!
   !! \f$ \leftarrow \mathrm{Tr} \left[ A \right] \f$
   !!
-  !! \param A The matrix.
-  function bml_trace(A) result(trA)
+  !! \param a The matrix.
+  function bml_trace(a) result(tr_a)
 
     use bml_type_m
     use bml_type_dense_m
     use bml_trace_dense_m
     use bml_error_m
 
-    class(bml_matrix_t), pointer, intent(in) :: A
-    double precision :: trA
+    class(bml_matrix_t), intent(in) :: a
+    double precision :: tr_a
 
-    trA = 0
-    if(.not. associated(A)) return
+    tr_a = 0
 
-    select type(A)
+    select type(a)
+    type is(bml_matrix_dense_single_t)
+       tr_a = bml_trace_dense(a)
     type is(bml_matrix_dense_double_t)
-       trA = trace_dense(A)
+       tr_a = bml_trace_dense(a)
     class default
-       call error(__FILE__, __LINE__, "unknown matrix type")
+       call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
   end function bml_trace

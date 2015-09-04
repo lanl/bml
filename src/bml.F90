@@ -16,15 +16,16 @@
 !! A matrix is of type
 !!
 !! \code{.F90}
-!! class(bml_matrix_t), pointer :: a
+!! class(bml_matrix_t), allocatable :: a
 !! \endcode
 !!
 !! There are two important things to note. First, we use a polymorphic
-!! type for matrices in order to simplify the bml code, hence class
-!! instead of type. Second, the matrix needs to be pointer since
-!! it has to be associated by the library using the desired actual
-!! type. A matrix is associated through one of the \ref allocate_group
-!! "allocation functions". For instance,
+!! type for matrices in order to simplify the bml code, hence the
+!! matrix type is specified with the `class` keyword instead of
+!! `type`. Second, the matrix needs to be allocatable since it has to
+!! be allocated by the library using the desired type,
+!! e.g. dense:double. A matrix is allocated through one of the \ref
+!! allocate_group "allocation functions". For instance,
 !!
 !! \code{.F90}
 !! call bml_allocate(BML_MATRIX_DENSE, 100, a)
