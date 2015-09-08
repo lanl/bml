@@ -1,7 +1,7 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> The ELLPACK matrix types.
-module bml_type_ellpack_m
+module bml_type_cuda_csr_m
 
   use bml_type_m
 
@@ -48,4 +48,4 @@ contains
     type_name = "ellpack:single"
   end function get_type_ellpack_single
 
-end module bml_type_ellpack_m
+end module bml_type_cuda_csr_m

@@ -15,6 +15,16 @@ module bml_type_m
   !! @ingroup allocate_group
   character(len=*), parameter :: BML_MATRIX_ELLPACK = "ellpack"
 
+  !> The dense matrix type with CUDA name.
+  !!
+  !! @ingroup allocate_group
+  character(len=*), parameter :: BML_MATRIX_CUDA_DENSE = "cuda-dense"
+
+  !> The sparse CSR matrix type with CUDA name.
+  !!
+  !! @ingroup allocate_group
+  character(len=*), parameter :: BML_MATRIX_CUDA_CSR = "cuda-csr"
+
   !> Matrix single precision.
   !!
   !! @ingroup allocate_group
