@@ -23,44 +23,22 @@ contains
 
     class(bml_matrix_t), allocatable :: a
 
-    integer :: i, j
+    integer :: i
 
-    real, allocatable :: a_real(:, :)
-    double precision, allocatable :: a_double(:, :)
-
-    real :: a_ij_real
-    double precision :: a_ij_double
-
-    call bml_random_matrix(matrix_type, n, a, matrix_precision)
+    call bml_identity_matrix(matrix_type, n, a, matrix_precision)
 
     test_result = .true.
 
-    select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_real)
-       do i = 1, a%n
-          do j = 1, a%n
-             a_ij_real = bml_get(a, i, j)
-             if(abs(a_ij_real-a_real(i, j)) > 1e-12) then
-                test_result = .false.
-                print *, "matrix element mismatch"
-                return
-             end if
-          end do
-       end do
-    case(BML_PRECISION_DOUBLE)
-       call bml_convert_to_dense(a, a_double)
-       do i = 1, a%n
-          do j = 1, a%n
-             a_ij_double = bml_get(a, i, j)
-             if(abs(a_ij_double-a_double(i, j)) > 1e-12) then
-                test_result = .false.
-                print *, "matrix element mismatch"
-                return
-             end if
-          end do
-       end do
-    end select
+    do i = 1, n
+       if(bml_get_bandwidth(a, i) /= 1) then
+          print *, "Wrong bandwidth on row ", i
+          print *, "Should be 1, but is ", bml_get_bandwidth(a, i)
+          call bml_print_matrix("A", a)
+          test_result = .false.
+          return
+       end if
+    end do
+    print *, "Test passed"
 
     call bml_deallocate(a)
 

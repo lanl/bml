@@ -34,7 +34,7 @@ contains
     class(bml_matrix_t), intent(in) :: a
 
     select type(a)
-    type is(bml_matrix_dense_double_t)
+    class is(bml_matrix_dense_t)
        call bml_print_matrix_dense(name, a)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")

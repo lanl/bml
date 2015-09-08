@@ -7,6 +7,8 @@ module bml_get_bandwidth_m
 
   private
 
+  public :: bml_get_bandwidth
+
 contains
 
   !> Get the number of non-zero elements in a given row.

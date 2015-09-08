@@ -1,3 +1,6 @@
+!> \copyright Los Alamos National Laboratory 2015
+
+!> Utility functions.
 module bml_utility_m
 
   implicit none

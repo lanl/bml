@@ -7,15 +7,30 @@ module bml_print_dense_m
 
   private
 
-  !> Print a matrix.
-  interface bml_print_matrix_dense
-     module procedure print_matrix_dense_single
-     module procedure print_matrix_dense_double
-  end interface bml_print_matrix_dense
-
   public :: bml_print_matrix_dense
 
 contains
+
+  !> Print a matrix.
+  !!
+  !! @param name A tag to be printed before the matrix.
+  !! @param a The matrix.
+  subroutine bml_print_matrix_dense(name, a)
+
+    use bml_type_dense_m
+    use bml_error_m
+
+    character(len=*), intent(in) :: name
+    class(bml_matrix_dense_t), intent(in) :: a
+
+    select type(a)
+    type is(bml_matrix_dense_single_t)
+       call print_matrix_dense_single(name, a)
+    type is(bml_matrix_dense_double_t)
+       call print_matrix_dense_double(name, a)
+    end select
+
+  end subroutine bml_print_matrix_dense
 
   !> Print a matrix.
   !!
