@@ -20,15 +20,6 @@ contains
     class(bml_matrix_t), allocatable, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
-    !> if(associated(a)) then
-    !>    select type(a)
-    !>    class is(bml_matrix_ellpack_t)
-    !>       call deallocate_matrix_ellpack(a)
-    !>    class default
-    !>       call bml_error(__FILE__, __LINE__, "unknow matrix type")
-    !>    end select
-    !> end if
-
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        allocate(bml_matrix_ellpack_single_t::a)
@@ -42,6 +33,7 @@ contains
     class is(bml_matrix_ellpack_t)
        allocate(a%number_entries(n))
        allocate(a%column_index(n, ELLPACK_M))
+       a%number_entries = 0
     class default
        call bml_error(__FILE__, __LINE__, "unknown type")
     end select

@@ -79,6 +79,7 @@ module bml
   use bml_scale_m
   use bml_trace_m
   use bml_transpose_m
+  use bml_utility_m
 
 contains
 

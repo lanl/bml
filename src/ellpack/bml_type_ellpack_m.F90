@@ -1,6 +1,8 @@
 !> \copyright Los Alamos National Laboratory 2015
 
 !> The ELLPACK matrix types.
+!!
+!! The ELLPACK data type was first used in @ref ellpack.
 module bml_type_ellpack_m
 
   use bml_type_m
@@ -18,6 +20,8 @@ module bml_type_ellpack_m
      integer, allocatable :: number_entries(:)
      !> Column indices.
      integer, allocatable :: column_index(:, :)
+     !> The maximum bandwidth.
+     integer :: max_bandwidth = -1
   end type bml_matrix_ellpack_t
 
   !> The bml dense matrix type.

@@ -71,18 +71,22 @@ contains
 
     real, intent(in) :: a_dense(:, :)
     type(bml_matrix_dense_single_t), intent(inout) :: a
-    real, optional, intent(in) :: threshold
+    real, intent(in) :: threshold
 
     integer :: i, j
 
-    a%matrix = a_dense
-    if(present(threshold)) then
-       do i = 1, a%n
-          do j = 1, a%n
-             if(a%matrix(i, j) <= threshold) a%matrix(i, j) = 0
-          end do
+    a%matrix = 0
+    do i = 1, a%n
+       do j = 1, a%n
+          if(a_dense(i, j) > threshold) then
+             a%matrix(i, j) = a_dense(i, j)
+          end if
        end do
-    end if
+    end do
+
+    !> where(a%matrix > threshold)
+    !>    a%matrix = a_dense
+    !> end where
 
   end subroutine convert_from_dense_dense_single
 
@@ -97,18 +101,22 @@ contains
 
     double precision, intent(in) :: a_dense(:, :)
     type(bml_matrix_dense_double_t), intent(inout) :: a
-    double precision, optional, intent(in) :: threshold
+    double precision, intent(in) :: threshold
 
     integer :: i, j
 
-    a%matrix = a_dense
-    if(present(threshold)) then
-       do i = 1, a%n
-          do j = 1, a%n
-             if(a%matrix(i, j) <= threshold) a%matrix(i, j) = 0
-          end do
+    a%matrix = 0
+    do i = 1, a%n
+       do j = 1, a%n
+          if(a_dense(i, j) > threshold) then
+             a%matrix(i, j) = a_dense(i, j)
+          end if
        end do
-    end if
+    end do
+
+    !> where(a%matrix > threshold)
+    !>    a%matrix = a_dense
+    !> end where
 
   end subroutine convert_from_dense_dense_double
 

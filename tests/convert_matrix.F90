@@ -1,8 +1,6 @@
 module convert_matrix_m
 
   use bml
-  use bml_type_dense_m
-  use bml_print_m
   use test_m
 
   implicit none
@@ -40,6 +38,8 @@ contains
        call bml_convert_to_dense(a, b_dense_real)
        if(maxval(a_dense_real-b_dense_real) > 1e-12) then
           print *, "Matrix element mismatch"
+          call bml_print_dense("A", a_dense_real)
+          call bml_print_dense("B", b_dense_real)
           test_result = .false.
        end if
     case(BML_PRECISION_DOUBLE)
@@ -49,10 +49,14 @@ contains
        call bml_convert_to_dense(a, b_dense_double)
        if(maxval(a_dense_double-b_dense_double) > 1e-12) then
           print *, "Matrix element mismatch"
+          call bml_print_dense("A", a_dense_double)
+          call bml_print_dense("B", b_dense_double)
           test_result = .false.
        end if
     end select
-    print *, "Test passed"
+    if(test_result) then
+       print *, "Test passed"
+    end if
 
   end function test_function
 

@@ -105,17 +105,25 @@ contains
     class(bml_matrix_t), allocatable, intent(out) :: a
     real, optional, intent(in) :: threshold
 
+    real :: threshold_
+
     if(size(a_dense, 1) /= size(a_dense, 2)) then
        call bml_error(__FILE__, __LINE__, "[FIXME] only square matrices")
+    end if
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
     end if
 
     call bml_allocate(matrix_type, size(a_dense, 1), a, BML_PRECISION_SINGLE)
 
     select type(a)
     type is(bml_matrix_dense_single_t)
-       call bml_convert_from_dense_dense(a_dense, a, threshold)
+       call bml_convert_from_dense_dense(a_dense, a, threshold_)
     type is(bml_matrix_ellpack_single_t)
-       call bml_convert_from_dense_ellpack(a_dense, a, threshold)
+       call bml_convert_from_dense_ellpack(a_dense, a, threshold_)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
@@ -129,7 +137,8 @@ contains
   !! \param matrix_type The matrix type
   !! \param a_dense The dense matrix
   !! \param a The bml matrix
-  !! \param threshold The matrix element magnited threshold
+  !! \param threshold The matrix element magnitude threshold. The
+  !! default is 0, i.e. no thresholding.
   subroutine convert_from_dense_double(matrix_type, a_dense, a, threshold)
 
     use bml_type_m
@@ -145,17 +154,25 @@ contains
     class(bml_matrix_t), allocatable, intent(out) :: a
     double precision, optional, intent(in) :: threshold
 
+    double precision :: threshold_
+
     if(size(a_dense, 1) /= size(a_dense, 2)) then
        call bml_error(__FILE__, __LINE__, "[FIXME] only square matrices")
+    end if
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
     end if
 
     call bml_allocate(matrix_type, size(a_dense, 1), a, BML_PRECISION_DOUBLE)
 
     select type(a)
     type is(bml_matrix_dense_double_t)
-       call bml_convert_from_dense_dense(a_dense, a, threshold)
+       call bml_convert_from_dense_dense(a_dense, a, threshold_)
     type is(bml_matrix_ellpack_double_t)
-       call bml_convert_from_dense_ellpack(a_dense, a, threshold)
+       call bml_convert_from_dense_ellpack(a_dense, a, threshold_)
     class default
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select

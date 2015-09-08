@@ -46,10 +46,6 @@ contains
        matrix_precision_ = BML_PRECISION_DOUBLE
     end if
 
-    !> if(associated(a)) then
-    !>    call bml_deallocate(a)
-    !> end if
-
     select case(matrix_type)
     case(BML_MATRIX_DENSE)
        call allocate_matrix_dense(n, a, matrix_precision_)
