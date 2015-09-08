@@ -2,13 +2,15 @@
 
 !> Tranpose functions.
 module bml_transpose_m
+
   implicit none
+
 contains
 
   !> Return the transpose of a matrix.
   !!
   !! @param a The matrix.
-  !! @return a_t The transpose.
+  !! @param a_t The transpose.
   subroutine bml_transpose(a, a_t)
 
     use bml_type_m

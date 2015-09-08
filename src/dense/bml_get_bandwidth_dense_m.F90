@@ -1,3 +1,6 @@
+!> \copyright Los Alamos National Laboratory 2015
+
+!> Getter functions for matrix elements.
 module bml_get_bandwidth_dense_m
 
   implicit none
