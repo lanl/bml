@@ -151,6 +151,18 @@ contains
        call bml_error(__FILE__, __LINE__, "exceeding maximum bandwidth")
     end if
 
+    do i = 1, a%n
+       do j = 1, a%n
+          if(a_dense(i, j) > threshold) then
+             associate(nnon0 => a%number_entries(i))
+               nnon0 = nnon0+1
+               a%column_index(i, nnon0) = j
+               a%matrix(i, nnon0) = a_dense(i, j)
+             end associate
+          end if
+       end do
+    end do
+
   end subroutine convert_from_dense_ellpack_single
 
   !> Convert a dense matrix into a bml matrix.
@@ -161,12 +173,30 @@ contains
   subroutine convert_from_dense_ellpack_double(a_dense, a, threshold)
 
     use bml_type_ellpack_m
+    use bml_error_m
 
     double precision, intent(in) :: a_dense(:, :)
     type(bml_matrix_ellpack_double_t), intent(inout) :: a
     double precision, optional, intent(in) :: threshold
 
     integer :: i, j
+
+    a%max_bandwidth = get_max_bandwidth(a_dense)
+    if(a%max_bandwidth > ELLPACK_M) then
+       call bml_error(__FILE__, __LINE__, "exceeding maximum bandwidth")
+    end if
+
+    do i = 1, a%n
+       do j = 1, a%n
+          if(a_dense(i, j) > threshold) then
+             associate(nnon0 => a%number_entries(i))
+               nnon0 = nnon0+1
+               a%column_index(i, nnon0) = j
+               a%matrix(i, nnon0) = a_dense(i, j)
+             end associate
+          end if
+       end do
+    end do
 
   end subroutine convert_from_dense_ellpack_double
 
