@@ -7,6 +7,7 @@ set(TESTS
   convert_matrix.F90
   copy_matrix.F90
   diagonalize_matrix.F90
+  get_bandwidth.F90
   get_matrix.F90
   multiply_matrix.F90
   scale_matrix.F90

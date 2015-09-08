@@ -7,6 +7,7 @@ set(SOURCES
   bml_diagonalize_m.F90
   bml_error_m.F90
   bml_get_m.F90
+  bml_get_bandwidth_m.F90
   bml_multiply_m.F90
   bml_print_m.F90
   bml_scale_m.F90
@@ -21,6 +22,7 @@ set(SOURCES-DENSE
   dense/bml_convert_dense_m.F90
   dense/bml_copy_dense_m.F90
   dense/bml_diagonalize_dense_m.F90
+  dense/bml_get_bandwidth_dense_m.F90
   dense/bml_multiply_dense_m.F90
   dense/bml_print_dense_m.F90
   dense/bml_scale_dense_m.F90
@@ -31,6 +33,7 @@ set(SOURCES-DENSE
 set(SOURCES-ELLPACK
   ellpack/bml_allocate_ellpack_m.F90
   ellpack/bml_convert_ellpack_m.F90
+  ellpack/bml_get_bandwidth_ellpack_m.F90
   ellpack/bml_type_ellpack_m.F90)
 
 add_library(bml

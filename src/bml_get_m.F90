@@ -2,7 +2,13 @@
 
 !> Getter functions for matrix elements.
 module bml_get_m
+
   implicit none
+
+  private
+
+  public :: bml_get
+
 contains
 
   !> Get a matrix element.

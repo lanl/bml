@@ -47,6 +47,8 @@ if(LAPACK_FOUND)
   check_fortran_function_exists(dsyev HAVE_DSYEV)
 endif()
 
+include(FindCUDA)
+
 add_subdirectory(src)
 
 include(FindDoxygen)
