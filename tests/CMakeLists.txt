@@ -3,6 +3,7 @@ include_directories(${CMAKE_BINARY_DIR}/src)
 # To add more tests, simply add the source to this variable. The CMake
 # script will automatically build and run the test.
 set(TESTS
+  add_matrix.F90
   allocate_matrix.F90
   convert_matrix.F90
   copy_matrix.F90

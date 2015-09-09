@@ -16,8 +16,13 @@ set(SOURCES
   bml_type_m.F90
   bml_utility_m.F90)
 
+set(SOURCES-PREC
+  bml_add_generic_m.F90)
+
+set(SOURCES-DENSE-PREC
+  dense/bml_add_dense_generic_m.F90)
+
 set(SOURCES-DENSE
-  dense/bml_add_dense_m.F90
   dense/bml_allocate_dense_m.F90
   dense/bml_convert_dense_m.F90
   dense/bml_copy_dense_m.F90
@@ -36,37 +41,91 @@ set(SOURCES-ELLPACK
   ellpack/bml_get_bandwidth_ellpack_m.F90
   ellpack/bml_type_ellpack_m.F90)
 
-add_library(bml
-  ${SOURCES}
-  ${SOURCES-DENSE}
-  ${SOURCES-ELLPACK})
+list(APPEND COMPILE_DEFINITIONS PROJECT_VERSION="${PROJECT_VERSION}")
+if(BLAS_FOUND)
+  list(APPEND COMPILE_DEFINITIONS HAVE_BLAS)
+endif()
+if(LAPACK_FOUND)
+  list(APPEND COMPILE_DEFINITIONS HAVE_LAPACK)
+endif()
+if(HAVE_DGEMM)
+  list(APPEND COMPILE_DEFINITIONS HAVE_DGEMM)
+endif()
+if(HAVE_SGEMM)
+  list(APPEND COMPILE_DEFINITIONS HAVE_SGEMM)
+endif()
+if(HAVE_DSYEV)
+  list(APPEND COMPILE_DEFINITIONS HAVE_DSYEV)
+endif()
+
+foreach(S ${SOURCES-PREC})
+  string(REPLACE "generic_m.F90" "single_m.F90" S_PREC ${S})
+  get_filename_component(S_PREC ${S_PREC} NAME)
+  add_custom_command(OUTPUT ${S_PREC}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+    -DBML_REAL=real
+    -DBML_PRECISION_NAME=single
+    -o ${S_PREC}
+    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
+  list(APPEND SOURCES-single ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
+
+  string(REPLACE "generic_m.F90" "double_m.F90" S_PREC ${S})
+  get_filename_component(S_PREC ${S_PREC} NAME)
+  add_custom_command(OUTPUT ${S_PREC}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+    -DBML_REAL=\"double precision\"
+    -DBML_PRECISION_NAME=double
+    -o ${S_PREC}
+    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
+  list(APPEND SOURCES-double ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
+endforeach()
+
+foreach(S ${SOURCES-DENSE-PREC})
+  string(REPLACE "generic_m.F90" "single_m.F90" S_PREC ${S})
+  get_filename_component(S_PREC ${S_PREC} NAME)
+  add_custom_command(OUTPUT ${S_PREC}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+    -DBML_REAL=real
+    -DBML_PRECISION_NAME=single
+    -o ${S_PREC}
+    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
+  list(APPEND SOURCES-DENSE-single ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
+
+  string(REPLACE "generic_m.F90" "double_m.F90" S_PREC ${S})
+  get_filename_component(S_PREC ${S_PREC} NAME)
+  add_custom_command(OUTPUT ${S_PREC}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+    -DBML_REAL=\"double precision\"
+    -DBML_PRECISION_NAME=double
+    -o ${S_PREC}
+    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
+  list(APPEND SOURCES-DENSE-double ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
+endforeach()
 
 unset(HEADERS)
-foreach(f ${SOURCES})
+foreach(f ${SOURCES} ${SOURCES-single} ${SOURCES-double})
   get_filename_component(f_mod ${f} NAME_WE)
   list(APPEND HEADERS ${CMAKE_CURRENT_BINARY_DIR}/${f_mod}.mod)
 endforeach()
 
+add_library(bml
+  ${SOURCES}
+  ${SOURCES-single}
+  ${SOURCES-double}
+  ${SOURCES-DENSE}
+  ${SOURCES-DENSE-single}
+  ${SOURCES-DENSE-double}
+  ${SOURCES-ELLPACK})
+
 set_target_properties(bml
   PROPERTIES
+  COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}"
   SOVERSION ${PROJECT_VERSION_MAJOR}
   VERSION ${PROJECT_VERSION})
-add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
-if(BLAS_FOUND)
-  add_definitions(-DHAVE_BLAS)
-endif()
-if(LAPACK_FOUND)
-  add_definitions(-DHAVE_LAPACK)
-endif()
-if(HAVE_DGEMM)
-  add_definitions(-DHAVE_DGEMM)
-endif()
-if(HAVE_SGEMM)
-  add_definitions(-DHAVE_SGEMM)
-endif()
-if(HAVE_DSYEV)
-  add_definitions(-DHAVE_DSYEV)
-endif()
 
 install(TARGETS bml
   ARCHIVE DESTINATION lib

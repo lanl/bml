@@ -20,15 +20,6 @@ contains
     class(bml_matrix_t), allocatable, intent(out) :: a
     character(len=*), intent(in) :: matrix_precision
 
-    !> if(associated(a)) then
-    !>    select type(a)
-    !>    class is(bml_matrix_dense_t)
-    !>       call deallocate_matrix_dense(a)
-    !>    class default
-    !>       call bml_error(__FILE__, __LINE__, "unknow matrix type")
-    !>    end select
-    !> end if
-
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        allocate(bml_matrix_dense_single_t::a)
