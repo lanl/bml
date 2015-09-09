@@ -46,7 +46,9 @@
 !! \endcode
 !!
 !! \author
+!! Jamaludin Mohd-Yusof <jamal@lanl.gov>
 !! Nicolas Bock <nbock@lanl.gov>
+!! Susan M. Mniszewski <smm@lanl.gov>
 !!
 !! \copyright Los Alamos National Laboratory 2015
 !!
