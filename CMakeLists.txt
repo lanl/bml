@@ -11,10 +11,10 @@ set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT
 set(PROJECT_DESCRIPTION
   "Basic Matrix Library (bml): A matrix library for linear algebra operations, supporting several data structures.")
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
-endif()
-message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+# if(NOT CMAKE_BUILD_TYPE)
+#   set(CMAKE_BUILD_TYPE Debug)
+# endif()
+# message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
 list(APPEND GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all")
 list(APPEND GNU_Fortran_FLAGS_RELEASE "-O2 -g")
