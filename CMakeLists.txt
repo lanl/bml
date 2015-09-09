@@ -39,6 +39,8 @@ set(BUILD_SHARED_LIBS FALSE
 include(FindThreads)
 include(FindBLAS)
 include(FindLAPACK)
+include(FindCUDA)
+include(FindOpenCL)
 
 include(CheckFortranFunctionExists)
 if(BLAS_FOUND)
@@ -50,8 +52,6 @@ if(LAPACK_FOUND)
   set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
   check_fortran_function_exists(dsyev HAVE_DSYEV)
 endif()
-
-include(FindCUDA)
 
 add_subdirectory(src)
 
