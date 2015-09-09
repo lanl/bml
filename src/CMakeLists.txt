@@ -17,7 +17,8 @@ set(SOURCES
   bml_utility_m.F90)
 
 set(SOURCES-PREC
-  bml_add_generic_m.F90)
+  bml_add_generic_m.F90
+  bml_utility_generic_m.F90)
 
 set(SOURCES-DENSE-PREC
   dense/bml_add_dense_generic_m.F90)

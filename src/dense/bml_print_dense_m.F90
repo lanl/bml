@@ -40,7 +40,7 @@ contains
 
     use bml_type_dense_m
     use bml_error_m
-    use bml_utility_m
+    use bml_utility_single_m
 
     character(len=*), intent(in) :: name
     type(bml_matrix_dense_single_t), intent(in) :: a
@@ -60,7 +60,7 @@ contains
 
     use bml_type_dense_m
     use bml_error_m
-    use bml_utility_m
+    use bml_utility_double_m
 
     character(len=*), intent(in) :: name
     type(bml_matrix_dense_double_t), intent(in) :: a
