@@ -36,8 +36,8 @@ contains
 
     test_result = .true.
 
-    call bml_random_matrix(matrix_type, n, a)
-    call bml_identity_matrix(matrix_type, n, b)
+    call bml_random_matrix(matrix_type, n, a, matrix_precision)
+    call bml_identity_matrix(matrix_type, n, b, matrix_precision)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(b, b_dense)
@@ -45,7 +45,7 @@ contains
     call bml_add(1.0, a, 1.0, b, c)
     call bml_convert_to_dense(c, c_dense)
 
-    if(maxval(a_dense+b_dense-c_dense) > 1e-12) then
+    if(maxval(ALPHA*a_dense+BETA*b_dense-c_dense) > 1e-12) then
        call bml_error(__FILE__, __LINE__, "incorrect matrix sum")
     endif
 

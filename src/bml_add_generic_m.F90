@@ -104,7 +104,7 @@ contains
     type is(bml_matrix_dense_BML_PRECISION_NAME_t)
        select type(b)
        type is(bml_matrix_dense_BML_PRECISION_NAME_t)
-          call bml_allocate(BML_MATRIX_DENSE, a%n, c)
+          call bml_allocate(BML_MATRIX_DENSE, a%n, c, BML_PRECISION_BML_PRECISION_NAME)
           select type(c)
           type is(bml_matrix_dense_BML_PRECISION_NAME_t)
              call add_three_dense(a, b, c, alpha, beta)
@@ -176,7 +176,7 @@ contains
 
     select type(a)
     type is(bml_matrix_dense_BML_PRECISION_NAME_t)
-       call bml_allocate(BML_MATRIX_DENSE, a%n, c, BML_PRECISION_DOUBLE)
+       call bml_allocate(BML_MATRIX_DENSE, a%n, c, BML_PRECISION_BML_PRECISION_NAME)
        select type(c)
        type is(bml_matrix_dense_BML_PRECISION_NAME_t)
           call add_identity_two_dense(alpha, a, c, beta)

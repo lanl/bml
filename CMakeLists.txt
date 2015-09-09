@@ -36,6 +36,7 @@ endif()
 set(BUILD_SHARED_LIBS FALSE
   CACHE BOOL "Whether to build shared libraries (the default is static).")
 
+include(FindThreads)
 include(FindBLAS)
 include(FindLAPACK)
 
