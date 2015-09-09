@@ -78,7 +78,7 @@ contains
     a%matrix = 0
     do i = 1, a%n
        do j = 1, a%n
-          if(a_dense(i, j) > threshold) then
+          if(abs(a_dense(i, j)) > threshold) then
              a%matrix(i, j) = a_dense(i, j)
           end if
        end do
@@ -108,7 +108,7 @@ contains
     a%matrix = 0
     do i = 1, a%n
        do j = 1, a%n
-          if(a_dense(i, j) > threshold) then
+          if(abs(a_dense(i, j)) > threshold) then
              a%matrix(i, j) = a_dense(i, j)
           end if
        end do

@@ -153,7 +153,7 @@ contains
 
     do i = 1, a%n
        do j = 1, a%n
-          if(a_dense(i, j) > threshold) then
+          if(abs(a_dense(i, j)) > threshold) then
              associate(nnon0 => a%number_entries(i))
                nnon0 = nnon0+1
                a%column_index(i, nnon0) = j
@@ -188,7 +188,7 @@ contains
 
     do i = 1, a%n
        do j = 1, a%n
-          if(a_dense(i, j) > threshold) then
+          if(abs(a_dense(i, j)) > threshold) then
              associate(nnon0 => a%number_entries(i))
                nnon0 = nnon0+1
                a%column_index(i, nnon0) = j
