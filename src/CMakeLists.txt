@@ -59,53 +59,38 @@ if(HAVE_DSYEV)
   list(APPEND COMPILE_DEFINITIONS HAVE_DSYEV)
 endif()
 
-foreach(S ${SOURCES-PREC})
-  string(REPLACE "generic_m.F90" "single_m.F90" S_PREC ${S})
-  get_filename_component(S_PREC ${S_PREC} NAME)
-  add_custom_command(OUTPUT ${S_PREC}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
-    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
-    -DBML_REAL=real
-    -DBML_PRECISION_NAME=single
-    -o ${S_PREC}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
-  list(APPEND SOURCES-single ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
+macro(convert_template SOURCES SOURCES-single SOURCES-double)
+  if(DEFINED ${SOURCES-single} OR DEFINED ${SOURCES-double})
+    message(WARNING "Output variables are already defined")
+  else()
+    foreach(S ${SOURCES})
+      string(REPLACE "generic_m.F90" "single_m.F90" S_PREC ${S})
+      get_filename_component(S_PREC ${S_PREC} NAME)
+      add_custom_command(OUTPUT ${S_PREC}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
+        COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+        -DBML_REAL=real
+        -DBML_PRECISION_NAME=single
+        -o ${S_PREC}
+        ${CMAKE_CURRENT_SOURCE_DIR}/${S})
+      list(APPEND ${SOURCES-single} ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
 
-  string(REPLACE "generic_m.F90" "double_m.F90" S_PREC ${S})
-  get_filename_component(S_PREC ${S_PREC} NAME)
-  add_custom_command(OUTPUT ${S_PREC}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
-    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
-    -DBML_REAL=\"double precision\"
-    -DBML_PRECISION_NAME=double
-    -o ${S_PREC}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
-  list(APPEND SOURCES-double ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
-endforeach()
+      string(REPLACE "generic_m.F90" "double_m.F90" S_PREC ${S})
+      get_filename_component(S_PREC ${S_PREC} NAME)
+      add_custom_command(OUTPUT ${S_PREC}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
+        COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
+        -DBML_REAL=\"double precision\"
+        -DBML_PRECISION_NAME=double
+        -o ${S_PREC}
+        ${CMAKE_CURRENT_SOURCE_DIR}/${S})
+      list(APPEND ${SOURCES-double} ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
+    endforeach()
+  endif()
+endmacro()
 
-foreach(S ${SOURCES-DENSE-PREC})
-  string(REPLACE "generic_m.F90" "single_m.F90" S_PREC ${S})
-  get_filename_component(S_PREC ${S_PREC} NAME)
-  add_custom_command(OUTPUT ${S_PREC}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
-    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
-    -DBML_REAL=real
-    -DBML_PRECISION_NAME=single
-    -o ${S_PREC}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
-  list(APPEND SOURCES-DENSE-single ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
-
-  string(REPLACE "generic_m.F90" "double_m.F90" S_PREC ${S})
-  get_filename_component(S_PREC ${S_PREC} NAME)
-  add_custom_command(OUTPUT ${S_PREC}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
-    COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
-    -DBML_REAL=\"double precision\"
-    -DBML_PRECISION_NAME=double
-    -o ${S_PREC}
-    ${CMAKE_CURRENT_SOURCE_DIR}/${S})
-  list(APPEND SOURCES-DENSE-double ${CMAKE_CURRENT_BINARY_DIR}/${S_PREC})
-endforeach()
+convert_template("${SOURCES-PREC}" SOURCES-single SOURCES-double)
+convert_template("${SOURCES-DENSE-PREC}" SOURCES-DENSE-single SOURCES-DENSE-double)
 
 unset(HEADERS)
 foreach(f ${SOURCES} ${SOURCES-single} ${SOURCES-double})
