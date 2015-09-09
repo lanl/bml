@@ -7,6 +7,14 @@ Simply run:
 
     $ ./full-test.sh
 
+## If the build fails ##
+
+In case the build fails for some reason, please email the developers
+at <qmmd-all@lanl.gov> and attach the files
+
+    build/CMakeFiles/CMakeOutput.log
+    build/CMakeFiles/CMakeError.log
+
 # Developer Suggested Workflow #
 
 We try to preserve a linear history in our main (master)
