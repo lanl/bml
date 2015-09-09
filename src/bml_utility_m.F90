@@ -8,12 +8,12 @@ module bml_utility_m
   private
 
   !> Utility interfaces for dense matrices.
-  interface bml_print_dense
+  interface bml_print_matrix
      module procedure print_dense_single
      module procedure print_dense_double
-  end interface bml_print_dense
+  end interface bml_print_matrix
 
-  public :: bml_print_dense
+  public :: bml_print_matrix
 
 contains
 

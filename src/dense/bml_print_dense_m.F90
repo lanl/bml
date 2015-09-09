@@ -48,7 +48,7 @@ contains
     integer :: i, j
     character(len=10000) :: line_format
 
-    call bml_print_dense(name, a%matrix)
+    call bml_print_matrix(name, a%matrix)
 
   end subroutine print_matrix_dense_single
 
@@ -65,7 +65,7 @@ contains
     character(len=*), intent(in) :: name
     type(bml_matrix_dense_double_t), intent(in) :: a
 
-    call bml_print_dense(name, a%matrix)
+    call bml_print_matrix(name, a%matrix)
 
   end subroutine print_matrix_dense_double
 

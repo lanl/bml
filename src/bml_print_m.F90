@@ -14,6 +14,11 @@ module bml_print_m
      module procedure :: print_vector_dense
   end interface bml_print_vector
 
+  !> Print a matrix.
+  interface bml_print_matrix
+     module procedure :: print_bml_matrix
+  end interface bml_print_matrix
+
   public :: bml_print_matrix
   public :: bml_print_vector
 
@@ -23,7 +28,7 @@ contains
   !!
   !! \param name A tag to be printed before the matrix.
   !! \param a The matrix.
-  subroutine bml_print_matrix(name, a)
+  subroutine print_bml_matrix(name, a)
 
     use bml_type_m
     use bml_type_dense_m
@@ -40,7 +45,7 @@ contains
        call bml_error(__FILE__, __LINE__, "unknown matrix type")
     end select
 
-  end subroutine bml_print_matrix
+  end subroutine print_bml_matrix
 
   !> Print a vector.
   !!

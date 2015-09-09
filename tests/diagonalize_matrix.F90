@@ -35,9 +35,9 @@ contains
        a_dense_double = (a_dense_double+transpose(a_dense_double))/2
        call bml_convert_from_dense(matrix_type, a_dense_double, a)
        call bml_diagonalize(a, eigenvectors_double, eigenvalues_double)
-       call bml_print_dense("A", a_dense_double, .true.)
+       call bml_print_matrix("A", a_dense_double, .true.)
        call bml_print_vector("eval", eigenvalues_double)
-       call bml_print_dense("evec", eigenvectors_double)
+       call bml_print_matrix("evec", eigenvectors_double)
     case default
        print *, "unknown matrix type"
     end select
