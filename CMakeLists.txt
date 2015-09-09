@@ -54,6 +54,7 @@ if(LAPACK_FOUND)
 endif()
 
 add_subdirectory(src)
+add_subdirectory(src-new)
 
 include(FindDoxygen)
 
@@ -71,6 +72,7 @@ set(BML_TESTING FALSE
 if(BML_TESTING)
   enable_testing()
   add_subdirectory(tests)
+  add_subdirectory(tests-new)
 endif()
 
 find_program(HAVE_ETAGS etags)
