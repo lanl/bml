@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(bml Fortran)
+project(bml C CXX Fortran)
 
 # The library version is versioned off the major version. If the API
 # changes, the library version should be bumped.
@@ -11,23 +11,26 @@ set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT
 set(PROJECT_DESCRIPTION
   "Basic Matrix Library (bml): A matrix library for linear algebra operations, supporting several data structures.")
 
-# if(NOT CMAKE_BUILD_TYPE)
-#   set(CMAKE_BUILD_TYPE Debug)
-# endif()
-# message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Debug)
+  message(STATUS "No user specified build type, using default...")
+endif()
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
 list(APPEND GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all")
 list(APPEND GNU_Fortran_FLAGS_RELEASE "-O2 -g")
 list(APPEND Intel_Fortran_FLAGS_DEBUG "-O0 -g -check all -traceback")
 list(APPEND Intel_Fortran_FLAGS_RELEASE "-O2 -g")
 
-if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR
-    CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-  string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
-  set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${BUILD_TYPE}})
-  string(REPLACE ";" " " "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}" CMAKE_Fortran_FLAGS_${BUILD_TYPE})
-else()
-  message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
+if(CMAKE_BUILD_TYPE)
+  if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR
+      CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+    string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+    set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${BUILD_TYPE}})
+    string(REPLACE ";" " " "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}" CMAKE_Fortran_FLAGS_${BUILD_TYPE})
+  else()
+    message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
+  endif()
 endif()
 
 set(BUILD_SHARED_LIBS FALSE
