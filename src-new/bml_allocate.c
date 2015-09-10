@@ -13,7 +13,7 @@ void *bml_allocate_memory(const size_t size)
 {
     void *ptr = calloc(1, size);
     if(ptr == NULL) {
-        bml_log(BML_ERROR, "error allocating memory\n");
+        bml_log(BML_LOG_ERROR, "error allocating memory\n");
     }
     return ptr;
 }
@@ -49,7 +49,7 @@ void bml_allocate(const bml_matrix_type_t matrix_type,
     case dense:
         bml_allocate_dense(matrix_precision, A, N);
     default:
-        bml_log(BML_ERROR, "unknown matrix type\n");
+        bml_log(BML_LOG_ERROR, "unknown matrix type\n");
     }
 }
 
@@ -68,7 +68,7 @@ void bml_deallocate(bml_matrix_t **A)
         case dense:
             bml_deallocate_dense(*A);
         default:
-            bml_log(BML_ERROR, "unknown matrix type\n");
+            bml_log(BML_LOG_ERROR, "unknown matrix type\n");
         }
     }
     A = NULL;

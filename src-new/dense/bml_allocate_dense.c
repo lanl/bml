@@ -33,6 +33,6 @@ void bml_allocate_dense(const bml_matrix_precision_t matrix_precision,
  */
 void bml_deallocate_dense(bml_matrix_dense_t *A)
 {
-    bml_deallocate_memory(A->matrix);
-    bml_deallocate_memory(A);
+    bml_free_memory(A->matrix);
+    bml_free_memory(A);
 }
