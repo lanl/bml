@@ -2,6 +2,7 @@
 #define __BML_LOGGER_H
 
 typedef enum bml_log_level_t {
+    BML_INFO,
     BML_ERROR
 } bml_log_level_t;
 
