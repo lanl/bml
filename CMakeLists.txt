@@ -17,12 +17,25 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
+list(APPEND GNU_C_FLAGS_DEBUG "-O0 -g -Wall")
+list(APPEND GNU_C_FLAGS_RELEASE "-O2 -g")
 list(APPEND GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all -ffree-line-length-none")
 list(APPEND GNU_Fortran_FLAGS_RELEASE "-O2 -g -ffree-line-length-none")
+list(APPEND Intel_C_FLAGS_DEBUG "-O0 -g -check conversions, stack, uninit -traceback")
+list(APPEND Intel_C_FLAGS_RELEASE "-O2 -g")
 list(APPEND Intel_Fortran_FLAGS_DEBUG "-O0 -g -check all -traceback")
 list(APPEND Intel_Fortran_FLAGS_RELEASE "-O2 -g")
 
 if(CMAKE_BUILD_TYPE)
+  if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
+      CMAKE_C_COMPILER_ID STREQUAL "Intel")
+    string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+    set(CMAKE_C_FLAGS_${BUILD_TYPE} ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${BUILD_TYPE}})
+    string(REPLACE ";" " " "${CMAKE_C_FLAGS_${BUILD_TYPE}}" CMAKE_C_FLAGS_${BUILD_TYPE})
+  else()
+    message(STATUS "Unknown C compiler ${CMAKE_C_COMPILER_ID}")
+  endif()
+
   if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR
       CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
     string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
