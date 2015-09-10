@@ -42,23 +42,6 @@ set(SOURCES-ELLPACK
   ellpack/bml_get_bandwidth_ellpack_m.F90
   ellpack/bml_type_ellpack_m.F90)
 
-list(APPEND COMPILE_DEFINITIONS PROJECT_VERSION="${PROJECT_VERSION}")
-if(BLAS_FOUND)
-  list(APPEND COMPILE_DEFINITIONS HAVE_BLAS)
-endif()
-if(LAPACK_FOUND)
-  list(APPEND COMPILE_DEFINITIONS HAVE_LAPACK)
-endif()
-if(HAVE_DGEMM)
-  list(APPEND COMPILE_DEFINITIONS HAVE_DGEMM)
-endif()
-if(HAVE_SGEMM)
-  list(APPEND COMPILE_DEFINITIONS HAVE_SGEMM)
-endif()
-if(HAVE_DSYEV)
-  list(APPEND COMPILE_DEFINITIONS HAVE_DSYEV)
-endif()
-
 macro(convert_template SOURCES SOURCES-single SOURCES-double)
   if(DEFINED ${SOURCES-single} OR DEFINED ${SOURCES-double})
     message(WARNING "Output variables are already defined")

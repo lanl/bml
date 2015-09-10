@@ -1,6 +1,6 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 /** Allocate a matrix.
@@ -13,16 +13,17 @@
  *
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
- *  \param A The matrix.
  *  \param N The matrix size.
+ *  \return The matrix.
  */
-void bml_allocate_dense(const bml_matrix_precision_t matrix_precision,
-                        bml_matrix_dense_t *A,
-                        const int N)
+bml_matrix_dense_t *bml_allocate_dense(const bml_matrix_precision_t matrix_precision,
+                                       const int N)
 {
+    bml_matrix_dense_t *A = NULL;
     A = bml_allocate_memory(sizeof(bml_matrix_dense_t));
     A->matrix_type = dense;
     A->matrix = bml_allocate_memory(sizeof(double)*N*N);
+    return A;
 }
 
 /** Deallocate a matrix.

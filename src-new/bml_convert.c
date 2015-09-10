@@ -1,4 +1,8 @@
 #include "bml_convert.h"
+#include "bml_logger.h"
+#include "dense/bml_convert_dense.h"
+
+#include <stdlib.h>
 
 /** Convert a dense matrix into a bml matrix.
  *
@@ -17,8 +21,9 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
     case dense:
         return bml_convert_from_dense_dense(A, threshold);
     default:
-        bml_log(BML_ERROR, "unknown matrix type\n");
+        bml_log(BML_LOG_ERROR, "unknown matrix type\n");
     }
+    return NULL;
 }
 
 /** Convert a bml matrix into a dense matrix.
@@ -28,14 +33,15 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
  * \param A The bml matrix
  * \return The dense matrix
  */
-double *convert_to_dense(const bml_matrix_t *A)
+double *bml_convert_to_dense(const bml_matrix_t *A)
 {
-    bml_matrix_type_t *matrix_type = A;
+    const bml_matrix_type_t *matrix_type = A;
 
     switch(*matrix_type) {
     case dense:
-        return convert_to_dense_dense(A);
+        return bml_convert_to_dense_dense(A);
     default:
-        bml_log(BML_ERROR, "unknown matrix type\n");
+        bml_log(BML_LOG_ERROR, "unknown matrix type\n");
     }
+    return NULL;
 }

@@ -29,7 +29,7 @@ void bml_free_memory(void *ptr)
 
 /** Allocate a matrix.
  *
- *  Note that the matrix \f$ a \f$ will be newly allocated. The
+ *  Note that the matrix \f$ A \f$ will be newly allocated. The
  *  function does not check whether the matrix is already allocated.
  *
  *  \ingroup allocate_group
@@ -37,20 +37,21 @@ void bml_free_memory(void *ptr)
  *  \param matrix_type The matrix type.
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
- *  \param A The matrix.
  *  \param N The matrix size.
+ *  \return The matrix.
  */
-void bml_allocate(const bml_matrix_type_t matrix_type,
-                  const bml_matrix_precision_t matrix_precision,
-                  bml_matrix_t *A,
-                  const int N)
+bml_matrix_t *bml_allocate(const bml_matrix_type_t matrix_type,
+                           const bml_matrix_precision_t matrix_precision,
+                           const int N)
 {
+    bml_matrix_t *A = NULL;
     switch(matrix_type) {
     case dense:
-        bml_allocate_dense(matrix_precision, A, N);
+        A = bml_allocate_dense(matrix_precision, A, N);
     default:
         bml_log(BML_LOG_ERROR, "unknown matrix type\n");
     }
+    return A;
 }
 
 /** Deallocate a matrix.
