@@ -115,7 +115,7 @@ if(DOXYGEN_FOUND)
   add_custom_target(docs
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 else()
-  add_custom_target(doc)
+  add_custom_target(docs)
 endif()
 
 set(BML_TESTING FALSE
