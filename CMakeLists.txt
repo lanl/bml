@@ -17,8 +17,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
-list(APPEND GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all")
-list(APPEND GNU_Fortran_FLAGS_RELEASE "-O2 -g")
+list(APPEND GNU_Fortran_FLAGS_DEBUG "-O0 -g -fcheck=all -ffree-line-length-none")
+list(APPEND GNU_Fortran_FLAGS_RELEASE "-O2 -g -ffree-line-length-none")
 list(APPEND Intel_Fortran_FLAGS_DEBUG "-O0 -g -check all -traceback")
 list(APPEND Intel_Fortran_FLAGS_RELEASE "-O2 -g")
 
