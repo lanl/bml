@@ -9,23 +9,45 @@ int test_function(const int N,
                   const bml_matrix_precision_t matrix_precision)
 {
     bml_matrix_t *A;
-    REAL_TYPE *A_dense;
-    REAL_TYPE *B_dense;
+    float *A_float;
+    float *B_float;
+    double *A_double;
+    double *B_double;
 
-    A_dense = bml_allocate_memory(sizeof(REAL_TYPE)*N*N);
-    for(int i = 0; i < N*N; i++) {
-        A_dense[i] = rand()/(REAL_TYPE) RAND_MAX;
-    }
-    bml_print_matrix(N, 0, N, 0, N, A_dense);
-    A = bml_convert_from_dense(matrix_type, N, A_dense, 0);
-    B_dense = bml_convert_to_dense(A);
-    for(int i = 0; i < N*N; i++) {
-        if(fabs(A_dense[i]-B_dense[i]) > 1e-12) {
-            bml_log(BML_LOG_ERROR, "matrix element mismatch\n");
+    switch(matrix_precision) {
+    case single_precision:
+        A_float = bml_allocate_memory(sizeof(float)*N*N);
+        for(int i = 0; i < N*N; i++) {
+            A_float[i] = rand()/(float) RAND_MAX;
         }
+        bml_print_matrix(N, 0, N, 0, N, matrix_precision, A_float);
+        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_float, 0);
+        B_float = bml_convert_to_dense(A);
+        for(int i = 0; i < N*N; i++) {
+            if(fabs(A_float[i]-B_float[i]) > 1e-12) {
+                LOG_ERROR("matrix element mismatch\n");
+            }
+        }
+        bml_free_memory(A_float);
+        bml_free_memory(B_float);
+        break;
+    case double_precision:
+        A_double = bml_allocate_memory(sizeof(double)*N*N);
+        for(int i = 0; i < N*N; i++) {
+            A_double[i] = rand()/(double) RAND_MAX;
+        }
+        bml_print_matrix(N, 0, N, 0, N, matrix_precision, A_double);
+        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_double, 0);
+        B_double = bml_convert_to_dense(A);
+        for(int i = 0; i < N*N; i++) {
+            if(fabs(A_double[i]-B_double[i]) > 1e-12) {
+                LOG_ERROR("matrix element mismatch\n");
+            }
+        }
+        bml_free_memory(A_double);
+        bml_free_memory(B_double);
+        break;
     }
     bml_deallocate(&A);
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
     return 0;
 }
