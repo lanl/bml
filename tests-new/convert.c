@@ -16,6 +16,7 @@ int test_function(const int N,
     for(int i = 0; i < N*N; i++) {
         A_dense[i] = rand()/(REAL_TYPE) RAND_MAX;
     }
+    bml_print_matrix(N, 0, N, 0, N, A_dense);
     A = bml_convert_from_dense(matrix_type, N, A_dense, 0);
     B_dense = bml_convert_to_dense(A);
     for(int i = 0; i < N*N; i++) {
