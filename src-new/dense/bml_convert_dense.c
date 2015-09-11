@@ -22,7 +22,7 @@ bml_matrix_dense_t *bml_convert_from_dense_dense(const bml_matrix_precision_t ma
                                                  const void *A,
                                                  const double threshold)
 {
-    bml_matrix_dense_t *A_bml = bml_allocate_dense(matrix_precision, N);
+    bml_matrix_dense_t *A_bml = bml_zero_matrix_dense(matrix_precision, N);
 
     switch(matrix_precision) {
     case single_precision:

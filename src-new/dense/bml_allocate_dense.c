@@ -3,7 +3,19 @@
 #include "bml_allocate_dense.h"
 #include "bml_types_dense.h"
 
-/** Allocate a matrix.
+/** Deallocate a matrix.
+ *
+ * \ingroup allocate_group
+ *
+ * \param A The matrix.
+ */
+void bml_deallocate_dense(bml_matrix_dense_t *A)
+{
+    bml_free_memory(A->matrix);
+    bml_free_memory(A);
+}
+
+/** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
  *  already allocated then the matrix will be deallocated in the
@@ -16,8 +28,8 @@
  *  \param N The matrix size.
  *  \return The matrix.
  */
-bml_matrix_dense_t *bml_allocate_dense(const bml_matrix_precision_t matrix_precision,
-                                       const int N)
+bml_matrix_dense_t *bml_zero_matrix_dense(const bml_matrix_precision_t matrix_precision,
+                                          const int N)
 {
     bml_matrix_dense_t *A = NULL;
 
@@ -34,16 +46,4 @@ bml_matrix_dense_t *bml_allocate_dense(const bml_matrix_precision_t matrix_preci
         break;
     }
     return A;
-}
-
-/** Deallocate a matrix.
- *
- * \ingroup allocate_group
- *
- * \param A The matrix.
- */
-void bml_deallocate_dense(bml_matrix_dense_t *A)
-{
-    bml_free_memory(A->matrix);
-    bml_free_memory(A);
 }

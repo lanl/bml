@@ -36,8 +36,8 @@ contains
 
     test_result = .true.
 
-    call bml_random_matrix(matrix_type, n, a, matrix_precision)
-    call bml_identity_matrix(matrix_type, n, b, matrix_precision)
+    call bml_random_matrix(matrix_type, matrix_precision, n, a)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, b)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(b, b_dense)

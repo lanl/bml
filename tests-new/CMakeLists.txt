@@ -3,7 +3,7 @@ include_directories(
   ${CMAKE_BINARY_DIR}/src-new/fortran-interface)
 
 set(C-TESTS
-  convert.c)
+  convert_matrix.c)
 
 # Scan the sources in C-TESTS and generate build rules to build and
 # test them. All tests are assumed to be functions using the
@@ -92,8 +92,9 @@ foreach(FILE ${FORTRAN-TESTS})
     set(MATRIX_TYPE BML_MATRIX_${type})
     foreach(precision SINGLE DOUBLE)
       set(PRECISION BML_PRECISION_${precision})
-      set(TESTNAME Fortran-${BASENAME}-${type}-${precision})
+      set(TESTNAME ${BASENAME}-${type}-${precision})
       string(TOLOWER ${TESTNAME} TESTNAME)
+      set(TESTNAME Fortran-${TESTNAME})
       unset(COMPILE_DEFINITIONS)
       list(APPEND COMPILE_DEFINITIONS "TEST_MODULE=${BASENAME}_m")
       list(APPEND COMPILE_DEFINITIONS "TEST_TYPE=${BASENAME}_t")

@@ -1,8 +1,6 @@
 program test
 
   use bml
-  use bml_type_dense_m
-  use bml_print_dense_m
   use TEST_MODULE
 
   implicit none
