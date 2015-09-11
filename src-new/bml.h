@@ -4,10 +4,13 @@
 /** \mainpage Basic Matrix Library (bml)
  *
  * This library implements a common API for linear algebra and matrix
- * functions. It offers several data structures for matrix storage and
- * algorithms. Currently the following are implemented:
- *   - dense @ref bml_type_m::bml_matrix_dense
- *   - sparse (ELLPACK) @ref bml_type_m::bml_matrix_ellpack
+ * functions in C and Fortran. It offers several data structures for
+ * matrix storage and algorithms. Currently the following matrix data
+ * types are implemented:
+ *   - dense
+ *   - sparse (ELLPACK)
+ *
+ * \section fortran_usage Fortran Usage
  *
  * The use of this library is pretty straightforward. In the
  * application code, `use` the bml main module,
@@ -19,34 +22,37 @@
  * A matrix is of type
  *
  * \code{.F90}
- * class(bml_matrix_t), allocatable :: a
+ * type(bml_matrix_t) :: a
  * \endcode
  *
- * There are two important things to note. First, we use a polymorphic
- * type for matrices in order to simplify the bml code, hence the
- * matrix type is specified with the `class` keyword instead of
- * `type`. Second, the matrix needs to be allocatable since it has to
- * be allocated by the library using the desired type,
- * e.g. dense:double. A matrix is allocated through one of the \ref
- * allocate_group "allocation functions". For instance,
+ * There are two important things to note. First, although not
+ * explicitly state in the above example, the matrix is not yet
+ * allocated. Hence, the matrix needs to be allocated through an
+ * allocation procedure with the desired type and precision,
+ * e.g. dense:double, see the page on \ref allocate_group_Fortran
+ * "allocation functions" for a complete list. For instance,
  *
  * \code{.F90}
- * call bml_allocate(BML_MATRIX_DENSE, 100, a)
+ * call bml_zero_matrix(BML_MATRIX_DENSE, BML_PRECISION_DOUBLE, 100, a)
  * \endcode
  *
  * will allocate a dense, double-precision, \f$ 100 \times 100 \f$
  * matrix which is initialized to zero. Additional functions allocate
  * special matrices,
- *   - bml_allocate_m::bml_random_matrix Allocate and initialize a
+ *   - bml_allocate::bml_random_matrix Allocate and initialize a
  *     random matrix.
- *   - bml_allocate_m::bml_identity_matrix Allocate and initialize the
+ *   - bml_allocate::bml_identity_matrix Allocate and initialize the
  *     identity matrix.
  *
- * A matrix is deassociated by calling
+ * A matrix is deallocated by calling
  *
  * \code{.F90}
  * call bml_deallocate(a)
  * \endcode
+ *
+ * \section C_usage C Usage
+ *
+ * \todo Write something here.
  *
  * \author Jamaludin Mohd-Yusof <jamal@lanl.gov>
  * \author Nicolas Bock <nbock@lanl.gov>
@@ -57,7 +63,8 @@
  * \todo
  * Add full support for dense matrix type for single precision.
  *
- * \defgroup allocate_group Allocation and Deallocation Functions
+ * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
+ * \defgroup allocate_group_Fortran Allocation and Deallocation Functions (Fortran interface)
  * \defgroup convert_group Converting between Matrix Formats
  * \defgroup add_group Adding Matrices
  * \defgroup multiply_group Multiplying Matrices
