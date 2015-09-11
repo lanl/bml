@@ -23,7 +23,7 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
     case dense:
         return bml_convert_from_dense_dense(N, A, threshold);
     default:
-        bml_log(BML_LOG_ERROR, "unknown matrix type\n");
+        LOG_ERROR("unknown matrix type\n");
     }
     return NULL;
 }
@@ -43,7 +43,7 @@ double *bml_convert_to_dense(const bml_matrix_t *A)
     case dense:
         return bml_convert_to_dense_dense(A);
     default:
-        bml_log(BML_LOG_ERROR, "unknown matrix type\n");
+        LOG_ERROR("unknown matrix type\n");
     }
     return NULL;
 }
