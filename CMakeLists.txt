@@ -61,8 +61,16 @@ endif()
 include(FindThreads)
 include(FindBLAS)
 include(FindLAPACK)
-include(FindCUDA)
-include(FindOpenCL)
+
+set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
+if(BML_CUDA)
+  include(FindCUDA)
+endif()
+
+set(BML_OPENCL FALSE CACHE BOOL "Whether to compiler with OpenCL support")
+if(BML_OPENCL)
+  include(FindOpenCL)
+endif()
 
 include(CheckFortranFunctionExists)
 if(BLAS_FOUND)
