@@ -9,17 +9,19 @@
  * \ingroup convert_group
  *
  * \param matrix_type The matrix type
+ * \param N The number of rows/columns.
  * \param A The dense matrix
  * \param threshold The matrix element magnited threshold
  * \return The bml matrix
  */
 bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
+                                     const int N,
                                      const double *A,
                                      const double threshold)
 {
     switch(matrix_type) {
     case dense:
-        return bml_convert_from_dense_dense(A, threshold);
+        return bml_convert_from_dense_dense(N, A, threshold);
     default:
         bml_log(BML_LOG_ERROR, "unknown matrix type\n");
     }

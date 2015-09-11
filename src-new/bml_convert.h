@@ -4,6 +4,7 @@
 #include "bml_types.h"
 
 bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
+                                     const int N,
                                      const double *A,
                                      const double threshold);
 

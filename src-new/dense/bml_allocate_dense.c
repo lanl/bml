@@ -22,6 +22,7 @@ bml_matrix_dense_t *bml_allocate_dense(const bml_matrix_precision_t matrix_preci
     bml_matrix_dense_t *A = NULL;
     A = bml_allocate_memory(sizeof(bml_matrix_dense_t));
     A->matrix_type = dense;
+    A->N = N;
     A->matrix = bml_allocate_memory(sizeof(double)*N*N);
     return A;
 }

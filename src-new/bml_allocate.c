@@ -47,7 +47,7 @@ bml_matrix_t *bml_allocate(const bml_matrix_type_t matrix_type,
     bml_matrix_t *A = NULL;
     switch(matrix_type) {
     case dense:
-        A = bml_allocate_dense(matrix_precision, A, N);
+        A = bml_allocate_dense(matrix_precision, N);
     default:
         bml_log(BML_LOG_ERROR, "unknown matrix type\n");
     }

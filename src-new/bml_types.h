@@ -5,14 +5,14 @@
 typedef void bml_matrix_t;
 
 /** The supported matrix types. */
-typedef enum bml_matrix_type_t {
+typedef enum {
     dense,
     ellpack,
     csr
 } bml_matrix_type_t;
 
 /** The supported real precisions. */
-typedef enum bml_matrix_precision_t {
+typedef enum {
     single_precision,
     double_precision
 } bml_matrix_precision_t;
