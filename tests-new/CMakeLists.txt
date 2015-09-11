@@ -12,8 +12,6 @@ foreach(FILE ${TESTS})
   endif()
   get_filename_component(BASENAME ${FILE} NAME_WE)
 
-  message(STATUS "Adding test ${BASENAME}")
-
   foreach(TYPE dense)
     set(MATRIX_TYPE bml_matrix_${TYPE}_t)
     foreach(PRECISION single double)
@@ -39,6 +37,14 @@ foreach(FILE ${TESTS})
         COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}")
       target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
+      if(VALGRIND)
+        add_test(valgrind-${TESTNAME}
+          ${VALGRIND}
+          --error-exitcode=1
+          --leak-check=full
+          --track-origins=yes
+          ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME})
+      endif()
     endforeach()
   endforeach()
 endforeach()

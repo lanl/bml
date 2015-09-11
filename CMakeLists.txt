@@ -111,6 +111,15 @@ endif()
 include(FindDoxygen)
 
 if(DOXYGEN_FOUND)
+  if(BML_NEW)
+    set(DOXYGEN_INPUT
+      ${CMAKE_SOURCE_DIR}/src-new)
+  else()
+    set(DOXYGEN_INPUT
+      ${CMAKE_SOURCE_DIR}/src
+      ${CMAKE_BINARY_DIR}/src)
+  endif()
+  string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(docs/Doxyfile.in Doxyfile)
   add_custom_target(docs
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
@@ -122,6 +131,9 @@ set(BML_TESTING FALSE
   CACHE BOOL "Whether to build the test suite.")
 
 if(BML_TESTING)
+  message(STATUS "Setting up test suite.")
+  find_program(VALGRIND valgrind
+    DOC "valgrind - a suite of tools for debugging and profiling programs")
   enable_testing()
   if(BML_NEW)
     add_subdirectory(tests-new)
