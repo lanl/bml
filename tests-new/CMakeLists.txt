@@ -55,17 +55,18 @@ endforeach()
 # To add more tests, simply add the source to this variable. The CMake
 # script will automatically build and run the test.
 set(FORTRAN-TESTS
-  add_matrix.F90
-  allocate_matrix.F90
-  convert_matrix.F90
-  copy_matrix.F90
-  diagonalize_matrix.F90
-  get_bandwidth.F90
-  get_matrix.F90
-  multiply_matrix.F90
-  scale_matrix.F90
-  trace_matrix.F90
-  transpose_matrix.F90)
+  allocate_matrix.F90)
+
+  # add_matrix.F90
+  # convert_matrix.F90
+  # copy_matrix.F90
+  # diagonalize_matrix.F90
+  # get_bandwidth.F90
+  # get_matrix.F90
+  # multiply_matrix.F90
+  # scale_matrix.F90
+  # trace_matrix.F90
+  # transpose_matrix.F90
 
 # Generate the test_modules module.
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/test_modules.F90 "module test_modules\n")
@@ -88,7 +89,7 @@ foreach(FILE ${FORTRAN-TESTS})
 
   message(STATUS "Adding test ${BASENAME}")
 
-  foreach(type DENSE ELLPACK)
+  foreach(type DENSE)
     set(MATRIX_TYPE BML_MATRIX_${type})
     foreach(precision SINGLE DOUBLE)
       set(PRECISION BML_PRECISION_${precision})
@@ -107,7 +108,7 @@ foreach(FILE ${FORTRAN-TESTS})
       set_target_properties(${TESTNAME}
         PROPERTIES
         COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}")
-      target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
+      target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
     endforeach()
   endforeach()

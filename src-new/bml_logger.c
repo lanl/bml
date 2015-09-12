@@ -3,7 +3,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-static bml_log_level_t global_log_level = BML_LOG_INFO;
+//static bml_log_level_t global_log_level = BML_LOG_INFO;
+static bml_log_level_t global_log_level = BML_LOG_DEBUG;
 
 /** Log a message.
  *
@@ -13,8 +14,15 @@ static bml_log_level_t global_log_level = BML_LOG_INFO;
  */
 void bml_log_real(const bml_log_level_t log_level, const char *format, va_list ap)
 {
+    char new_format[10000];
+
     if(log_level >= global_log_level) {
-        vprintf(format, ap);
+        if(log_level == BML_LOG_DEBUG) {
+            snprintf(new_format, 10000, "[DEBUG] %s", format);
+        } else {
+            strncpy(new_format, format, 10000);
+        }
+        vprintf(new_format, ap);
     }
 }
 

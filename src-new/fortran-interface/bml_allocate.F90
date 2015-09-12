@@ -11,21 +11,31 @@ module bml_allocate
        type(C_PTR) :: a
      end subroutine bml_deallocate_C
 
-     function bml_zero_matrix_C(matrix_type, matrix_precision, n) bind(C, name="bml_allocate")
+     function bml_zero_matrix_C(matrix_type, matrix_precision, n) bind(C, name="bml_zero_matrix")
        use, intrinsic :: iso_C_binding
-       integer(C_INT), intent(in) :: matrix_type
-       integer(C_INT), intent(in) :: matrix_precision
-       integer(C_INT), intent(in) :: n
+       integer(C_INT), value, intent(in) :: matrix_type
+       integer(C_INT), value, intent(in) :: matrix_precision
+       integer(C_INT), value, intent(in) :: n
        type(C_PTR) :: bml_zero_matrix_C
      end function bml_zero_matrix_C
 
-  end interface
+     function bml_random_matrix_C(matrix_type, matrix_precision, n) bind(C, name="bml_random_matrix")
+       use, intrinsic :: iso_C_binding
+       integer(C_INT), value, intent(in) :: matrix_type
+       integer(C_INT), value, intent(in) :: matrix_precision
+       integer(C_INT), value, intent(in) :: n
+       type(C_PTR) :: bml_random_matrix_C
+     end function bml_random_matrix_C
 
-  !> The enum values of the C API. Keep this synchronized with the
-  !! enum in bml_types.h.
-  integer, parameter :: bml_matrix_type_dense_enum_id = 0
-  integer, parameter :: bml_matrix_precision_single_enum_id = 0
-  integer, parameter :: bml_matrix_precision_double_enum_id = 1
+     function bml_identity_matrix_C(matrix_type, matrix_precision, n) bind(C, name="bml_identity_matrix")
+       use, intrinsic :: iso_C_binding
+       integer(C_INT), value, intent(in) :: matrix_type
+       integer(C_INT), value, intent(in) :: matrix_precision
+       integer(C_INT), value, intent(in) :: n
+       type(C_PTR) :: bml_identity_matrix_C
+     end function bml_identity_matrix_C
+
+  end interface
 
   public :: bml_deallocate
   public :: bml_random_matrix
@@ -33,28 +43,6 @@ module bml_allocate
   public :: bml_zero_matrix
 
 contains
-
-  !> Convert the matrix type and precisions strings into enum values.
-  function get_enum_id(type_string) result(id)
-
-    use bml_types
-
-    character(len=*), intent(in) :: type_string
-    integer :: id
-
-    select case(type_string)
-    case(BML_PRECISION_SINGLE)
-       id = bml_matrix_precision_single_enum_id
-    case(BML_PRECISION_DOUBLE)
-       id = bml_matrix_precision_double_enum_id
-    case(BML_MATRIX_DENSE)
-       id = bml_matrix_type_dense_enum_id
-    case default
-       print *, "unknown type string "//trim(type_string)
-       error stop
-    end select
-
-  end function get_enum_id
 
   !> Deallocate a matrix.
   !!
@@ -78,12 +66,16 @@ contains
   subroutine bml_zero_matrix(matrix_type, matrix_precision, n, a)
 
     use bml_types
+    use bml_interface
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer, intent(in) :: n
     type(bml_matrix_t), intent(inout) :: a
 
+    if(c_associated(a%ptr)) then
+       call bml_deallocate_C(a%ptr)
+    end if
     a%ptr = bml_zero_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n)
 
   end subroutine bml_zero_matrix
@@ -97,11 +89,20 @@ contains
   !! \param n The matrix size.
   !! \param a The matrix.
   subroutine bml_random_matrix(matrix_type, matrix_precision, n, a)
+
     use bml_types
+    use bml_interface
+
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer, intent(in) :: n
     type(bml_matrix_t), intent(inout) :: a
+
+    if(c_associated(a%ptr)) then
+       call bml_deallocate_C(a%ptr)
+    end if
+    a%ptr = bml_random_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n)
+
   end subroutine bml_random_matrix
 
   !> Create the identity matrix.
@@ -113,11 +114,20 @@ contains
   !! \param n The matrix size.
   !! \param a The matrix.
   subroutine bml_identity_matrix(matrix_type, matrix_precision, n, a)
+
     use bml_types
+    use bml_interface
+
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer, intent(in) :: n
     type(bml_matrix_t), intent(inout) :: a
+
+    if(c_associated(a%ptr)) then
+       call bml_deallocate_C(a%ptr)
+    end if
+    a%ptr = bml_identity_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n)
+
   end subroutine bml_identity_matrix
 
 end module bml_allocate

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
 project(bml C CXX Fortran)
 
 # The library version is versioned off the major version. If the API

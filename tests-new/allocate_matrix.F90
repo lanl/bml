@@ -21,7 +21,7 @@ contains
     character(len=*), intent(in) :: matrix_precision
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
+    type(bml_matrix_t) :: a
 
     real, allocatable :: a_real(:, :)
     double precision, allocatable :: a_double(:, :)
@@ -31,14 +31,12 @@ contains
     test_result = .true.
 
     if(matrix_type == BML_MATRIX_DENSE) then
-       call bml_random_matrix(matrix_type, n, a, matrix_precision)
+       call bml_random_matrix(matrix_type, matrix_precision, n, a)
     else
        print *, "Random matrix not supported for matrix type "//matrix_type
     end if
 
-    stop
-
-    call bml_identity_matrix(matrix_type, n, a, matrix_precision)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, a)
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        call bml_convert_to_dense(a, a_real)
@@ -81,7 +79,7 @@ contains
     end select
     print *, "Test passed"
 
-    call bml_zero_matrix(matrix_type, n, a, matrix_precision)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, a)
     call bml_deallocate(a)
 
   end function test_function

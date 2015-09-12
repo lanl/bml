@@ -41,11 +41,13 @@ void bml_deallocate(bml_matrix_t **A)
         switch(*matrix_type) {
         case dense:
             bml_deallocate_dense(*A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
+            break;
         }
     }
-    A = NULL;
+    *A = NULL;
 }
 
 /** Allocate the zero matrix.
@@ -67,11 +69,75 @@ bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
 {
     bml_matrix_t *A = NULL;
 
+    LOG_DEBUG("zero matrix of size %d\n", N);
     switch(matrix_type) {
     case dense:
         A = bml_zero_matrix_dense(matrix_precision, N);
+        break;
     default:
         LOG_ERROR("unknown matrix type\n");
+        break;
+    }
+    return A;
+}
+
+/** Allocate a random matrix.
+ *
+ *  Note that the matrix \f$ A \f$ will be newly allocated. The
+ *  function does not check whether the matrix is already allocated.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_type The matrix type.
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \return The matrix.
+ */
+bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
+                                const bml_matrix_precision_t matrix_precision,
+                                const int N)
+{
+    bml_matrix_t *A = NULL;
+
+    LOG_DEBUG("random matrix of size %d\n", N);
+    switch(matrix_type) {
+    case dense:
+        A = bml_random_matrix_dense(matrix_precision, N);
+        break;
+    default:
+        LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+        break;
+    }
+    return A;
+}
+
+/** Allocate the identity matrix.
+ *
+ *  Note that the matrix \f$ A \f$ will be newly allocated. The
+ *  function does not check whether the matrix is already allocated.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_type The matrix type.
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \return The matrix.
+ */
+bml_matrix_t *bml_identity_matrix(const bml_matrix_type_t matrix_type,
+                                  const bml_matrix_precision_t matrix_precision,
+                                  const int N)
+{
+    bml_matrix_t *A = NULL;
+
+    switch(matrix_type) {
+    case dense:
+        A = bml_identity_matrix_dense(matrix_precision, N);
+        break;
+    default:
+        LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+        break;
     }
     return A;
 }

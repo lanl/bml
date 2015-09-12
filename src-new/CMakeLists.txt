@@ -7,16 +7,17 @@ set(HEADERS
   bml_utilities.h)
 install(FILES ${HEADERS} DESTINATION include)
 
+add_subdirectory(dense)
+add_subdirectory(fortran-interface)
+
 add_library(bml-new
+  $<TARGET_OBJECTS:bml-dense>
+  $<TARGET_OBJECTS:bml-fortran>
   bml_allocate.c
   bml_convert.c
   bml_logger.c
   bml_utilities.c)
 
-add_subdirectory(dense)
-add_subdirectory(fortran-interface)
-
-target_link_libraries(bml-new bml-dense bml-fortran)
 install(TARGETS bml-new
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib)
