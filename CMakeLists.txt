@@ -152,6 +152,7 @@ if(BML_TESTING)
 endif()
 
 find_program(HAVE_ETAGS etags)
+mark_as_advanced(HAVE_ETAGS)
 if(HAVE_ETAGS)
   add_custom_target(tags
     ${HAVE_ETAGS} ${CMAKE_SOURCE_DIR}/src/*.F90)
