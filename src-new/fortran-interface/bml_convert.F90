@@ -115,6 +115,8 @@ contains
     type(bml_matrix_t), intent(in) :: a
     real, allocatable, intent(out) :: a_dense(:, :)
 
+    allocate(a_dense(bml_get_size(a), bml_get_size(a)))
+    call bml_convert_to_dense(a, a_dense)
 
   end subroutine bml_convert_to_dense_single
 

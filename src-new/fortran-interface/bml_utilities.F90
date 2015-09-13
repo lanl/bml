@@ -6,6 +6,7 @@ module bml_utilities
   private
 
   interface
+
      subroutine bml_print_matrix_single_C(n, a, i_l, i_u, j_l, j_u, matrix_precision) &
           bind(C, name="bml_print_matrix_single")
        use, intrinsic :: iso_C_binding
@@ -16,6 +17,18 @@ module bml_utilities
        integer(C_INT), value, intent(in) :: j_l
        integer(C_INT), value, intent(in) :: j_u
      end subroutine bml_print_matrix_single_C
+
+     subroutine bml_print_matrix_double_C(n, a, i_l, i_u, j_l, j_u, matrix_precision) &
+          bind(C, name="bml_print_matrix_double")
+       use, intrinsic :: iso_C_binding
+       integer(C_INT), value, intent(in) :: n
+       real(C_DOUBLE), intent(in) :: a(:, :)
+       integer(C_INT), value, intent(in) :: i_l
+       integer(C_INT), value, intent(in) :: i_u
+       integer(C_INT), value, intent(in) :: j_l
+       integer(C_INT), value, intent(in) :: j_u
+     end subroutine bml_print_matrix_double_C
+
   end interface
 
   interface bml_print_matrix
