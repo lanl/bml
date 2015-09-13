@@ -1,8 +1,18 @@
+!> Matrix allocation functions.
 module bml_allocate
 
   implicit none
 
   private
+
+  ! Note: According to Sec. 15.3.7.2.6: "any dummy argument without
+  ! the value attribute corresponds to a formal parameter of the
+  ! prototype that is of a pointer type, and the dummy argument is
+  ! interoperable with an entity of the referenced type (ISO/IEC
+  ! 9899:1999, 6.2.5, 7.17, and 7.18.1) of the formal parameter, ..."
+  !
+  ! In other words, a type(C_PTR) dummy argument is interoperable with
+  ! the void** type.
 
   !> The interfaces to the C API.
   interface

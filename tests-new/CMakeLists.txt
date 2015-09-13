@@ -55,10 +55,10 @@ endforeach()
 # To add more tests, simply add the source to this variable. The CMake
 # script will automatically build and run the test.
 set(FORTRAN-TESTS
-  allocate_matrix.F90)
+  allocate_matrix.F90
+  convert_matrix.F90)
 
   # add_matrix.F90
-  # convert_matrix.F90
   # copy_matrix.F90
   # diagonalize_matrix.F90
   # get_bandwidth.F90

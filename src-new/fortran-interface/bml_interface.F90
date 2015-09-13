@@ -10,6 +10,11 @@ module bml_interface
 contains
 
   !> Convert the matrix type and precisions strings into enum values.
+  !!
+  !! @param type_string The string used in the Fortran API to identify
+  !! the matrix type and precision.
+  !! @return The corresponding integer value matching the enum values
+  !! in bml_matrix_types_t and bml_matrix_precision_t.
   function get_enum_id(type_string) result(id)
 
     use bml_types
