@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BUILD_DIR=${PWD}/build
+BUILD_DIR=${PWD}/build-new
 INSTALL_DIR=${PWD}/install
 
 mkdir -p "${BUILD_DIR}" || exit
