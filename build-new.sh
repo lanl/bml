@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BUILD_DIR=${PWD}/build-new
-INSTALL_DIR=${PWD}/install
+INSTALL_DIR=${PWD}/install-new
 
 mkdir -p "${BUILD_DIR}" || exit
 mkdir -p "${INSTALL_DIR}" || exit
