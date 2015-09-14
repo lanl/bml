@@ -2,6 +2,7 @@ set(HEADERS
   bml.h
   bml_allocate.h
   bml_convert.h
+  bml_introspection.h
   bml_logger.h
   bml_types.h
   bml_utilities.h)
@@ -15,6 +16,7 @@ add_library(bml-new
   $<TARGET_OBJECTS:bml-fortran>
   bml_allocate.c
   bml_convert.c
+  bml_introspection.c
   bml_logger.c
   bml_utilities.c)
 

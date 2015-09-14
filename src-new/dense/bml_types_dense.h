@@ -12,7 +12,7 @@ struct bml_matrix_dense_t {
     /** The number of rows/columns. */
     int N;
     /** The dense matrix. */
-    double *matrix;
+    void *matrix;
 };
 typedef struct bml_matrix_dense_t bml_matrix_dense_t;
 

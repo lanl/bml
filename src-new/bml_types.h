@@ -6,8 +6,13 @@ typedef void bml_matrix_t;
 
 /** The supported matrix types. */
 typedef enum {
+    /** The matrix is not initialized. */
+    uninitialized,
+    /** Dense matrix. */
     dense,
+    /** ELLPACK matrix. */
     ellpack,
+    /** CSR matrix. */
     csr
 } bml_matrix_type_t;
 

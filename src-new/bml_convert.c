@@ -1,4 +1,5 @@
 #include "bml_convert.h"
+#include "bml_introspection.h"
 #include "bml_logger.h"
 #include "dense/bml_convert_dense.h"
 
@@ -39,9 +40,7 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
  */
 void *bml_convert_to_dense(const bml_matrix_t *A)
 {
-    const bml_matrix_type_t *matrix_type = A;
-
-    switch(*matrix_type) {
+    switch(bml_get_type(A)) {
     case dense:
         return bml_convert_to_dense_dense(A);
     default:

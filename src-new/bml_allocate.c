@@ -1,4 +1,5 @@
 #include "bml_allocate.h"
+#include "bml_introspection.h"
 #include "bml_logger.h"
 #include "dense/bml_allocate_dense.h"
 
@@ -35,17 +36,13 @@ void bml_free_memory(void *ptr)
  */
 void bml_deallocate(bml_matrix_t **A)
 {
-    bml_matrix_type_t *matrix_type = *A;
-
-    if(*A != NULL) {
-        switch(*matrix_type) {
-        case dense:
-            bml_deallocate_dense(*A);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
-            break;
-        }
+    switch(bml_get_type(*A)) {
+    case dense:
+        bml_deallocate_dense(*A);
+        break;
+    default:
+        LOG_ERROR("unknown matrix type\n");
+        break;
     }
     *A = NULL;
 }
