@@ -47,8 +47,8 @@ bml_matrix_dense_t *bml_convert_from_dense_dense(const bml_matrix_precision_t ma
  */
 void *bml_convert_to_dense_dense(const bml_matrix_dense_t *A)
 {
-    float *A_float;
-    double *A_double;
+    float *A_float = NULL;
+    double *A_double = NULL;
 
     switch(A->matrix_precision) {
     case single_precision:

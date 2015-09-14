@@ -3,7 +3,8 @@ module bml_interface
 
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
-  integer, parameter :: bml_matrix_type_dense_enum_id = 0
+  integer, parameter :: bml_matrix_type_uninitialized_enum_id = 0
+  integer, parameter :: bml_matrix_type_dense_enum_id = 1
   integer, parameter :: bml_matrix_precision_single_enum_id = 0
   integer, parameter :: bml_matrix_precision_double_enum_id = 1
 

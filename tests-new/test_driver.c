@@ -12,7 +12,9 @@ int main(int argc, char **argv)
             STRINGIFY(MATRIX_TYPE_NAME),
             STRINGIFY(MATRIX_PRECISION));
     if(test_function(N, MATRIX_TYPE_NAME, MATRIX_PRECISION) != 0) {
-        bml_log(BML_LOG_ERROR, "test failed\n");
+        LOG_ERROR("test failed\n");
+        return -1;
     }
-    bml_log(BML_LOG_INFO, "test passed\n");
+    LOG_INFO("test passed\n");
+    return 0;
 }

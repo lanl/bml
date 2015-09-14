@@ -30,12 +30,7 @@ contains
 
     test_result = .true.
 
-    if(matrix_type == BML_MATRIX_DENSE) then
-       call bml_random_matrix(matrix_type, matrix_precision, n, a)
-    else
-       print *, "Random matrix not supported for matrix type "//matrix_type
-    end if
-
+    call bml_random_matrix(matrix_type, matrix_precision, n, a)
     call bml_identity_matrix(matrix_type, matrix_precision, n, a)
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
@@ -77,7 +72,7 @@ contains
           end do
        end do
     end select
-    print *, "Test passed"
+    print *, "Identity matrix test passed"
 
     call bml_zero_matrix(matrix_type, matrix_precision, n, a)
     call bml_deallocate(a)

@@ -3,6 +3,7 @@ include_directories(
   ${CMAKE_BINARY_DIR}/src-new/fortran-interface)
 
 set(C-TESTS
+  allocate_matrix.c
   convert_matrix.c)
 
 # Scan the sources in C-TESTS and generate build rules to build and
