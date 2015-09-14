@@ -7,27 +7,17 @@ module bml_utilities
 
   interface
 
-     subroutine bml_print_matrix_single_C(n, a, i_l, i_u, j_l, j_u) &
-          bind(C, name="bml_print_matrix_single")
+     subroutine bml_print_matrix_C(n, matrix_precision, a, i_l, i_u, j_l, j_u) &
+          bind(C, name="bml_print_matrix")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: n
-       real(C_FLOAT), intent(in) :: a(:, :)
+       integer(C_INT), value, intent(in) :: matrix_precision
+       type(C_PTR), value, intent(in) :: a
        integer(C_INT), value, intent(in) :: i_l
        integer(C_INT), value, intent(in) :: i_u
        integer(C_INT), value, intent(in) :: j_l
        integer(C_INT), value, intent(in) :: j_u
-     end subroutine bml_print_matrix_single_C
-
-     subroutine bml_print_matrix_double_C(n, a, i_l, i_u, j_l, j_u) &
-          bind(C, name="bml_print_matrix_double")
-       use, intrinsic :: iso_C_binding
-       integer(C_INT), value, intent(in) :: n
-       real(C_DOUBLE), intent(in) :: a(:, :)
-       integer(C_INT), value, intent(in) :: i_l
-       integer(C_INT), value, intent(in) :: i_u
-       integer(C_INT), value, intent(in) :: j_l
-       integer(C_INT), value, intent(in) :: j_u
-     end subroutine bml_print_matrix_double_C
+     end subroutine bml_print_matrix_C
 
   end interface
 
@@ -42,27 +32,41 @@ contains
 
   subroutine bml_print_matrix_single(tag, a, i_l, i_u, j_l, j_u)
 
+    use, intrinsic :: iso_C_binding
+    use bml_types
+    use bml_interface
+
     character(len=*), intent(in) :: tag
-    real, intent(in) :: a(:, :)
+    real, target, intent(in) :: a(:, :)
     integer, intent(in) :: i_l
     integer, intent(in) :: i_u
     integer, intent(in) :: j_l
     integer, intent(in) :: j_u
 
-    call bml_print_matrix_single_C(size(a, 1), a, i_l, i_u, j_l, j_u)
+    associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
+      call bml_print_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_SINGLE), &
+           c_loc(a_ptr), i_l-1, i_u, j_l-1, j_u)
+    end associate
 
   end subroutine bml_print_matrix_single
 
   subroutine bml_print_matrix_double(tag, a, i_l, i_u, j_l, j_u)
 
+    use, intrinsic :: iso_C_binding
+    use bml_types
+    use bml_interface
+
     character(len=*), intent(in) :: tag
-    double precision, intent(in) :: a(:, :)
+    double precision, target, intent(in) :: a(:, :)
     integer, intent(in) :: i_l
     integer, intent(in) :: i_u
     integer, intent(in) :: j_l
     integer, intent(in) :: j_u
 
-    call bml_print_matrix_double_C(size(a, 1), a, i_l, i_u, j_l, j_u)
+    associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
+      call bml_print_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_DOUBLE), &
+           c_loc(a_ptr), i_l-1, i_u, j_l-1, j_u)
+    end associate
 
   end subroutine bml_print_matrix_double
 

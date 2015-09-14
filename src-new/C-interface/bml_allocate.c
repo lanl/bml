@@ -128,6 +128,7 @@ bml_matrix_t *bml_identity_matrix(const bml_matrix_type_t matrix_type,
 {
     bml_matrix_t *A = NULL;
 
+    LOG_DEBUG("identity matrix of size %d\n", N);
     switch(matrix_type) {
     case dense:
         A = bml_identity_matrix_dense(matrix_precision, N);

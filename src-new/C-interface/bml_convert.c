@@ -22,6 +22,7 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
                                      const void *A,
                                      const double threshold)
 {
+    LOG_DEBUG("Converting dense matrix to bml format\n");
     switch(matrix_type) {
     case dense:
         return bml_convert_from_dense_dense(matrix_precision, N, A, threshold);

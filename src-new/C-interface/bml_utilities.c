@@ -22,6 +22,7 @@ void bml_print_matrix(const int N,
     const float *A_float;
     const double *A_double;
 
+    LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
     switch(matrix_precision) {
     case single_precision:
     {
