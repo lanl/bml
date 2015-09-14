@@ -44,10 +44,10 @@ contains
 
     character(len=*), intent(in) :: tag
     real, intent(in) :: a(:, :)
-    integer, optional, intent(in) :: i_l
-    integer, optional, intent(in) :: i_u
-    integer, optional, intent(in) :: j_l
-    integer, optional, intent(in) :: j_u
+    integer, intent(in) :: i_l
+    integer, intent(in) :: i_u
+    integer, intent(in) :: j_l
+    integer, intent(in) :: j_u
 
     call bml_print_matrix_single_C(size(a, 1), a, i_l, i_u, j_l, j_u)
 
@@ -57,10 +57,10 @@ contains
 
     character(len=*), intent(in) :: tag
     double precision, intent(in) :: a(:, :)
-    integer, optional, intent(in) :: i_l
-    integer, optional, intent(in) :: i_u
-    integer, optional, intent(in) :: j_l
-    integer, optional, intent(in) :: j_u
+    integer, intent(in) :: i_l
+    integer, intent(in) :: i_u
+    integer, intent(in) :: j_l
+    integer, intent(in) :: j_u
 
     call bml_print_matrix_double_C(size(a, 1), a, i_l, i_u, j_l, j_u)
 

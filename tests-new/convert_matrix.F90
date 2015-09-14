@@ -38,8 +38,10 @@ contains
        call bml_convert_to_dense(a, b_real)
        if(maxval(a_real-b_real) > 1e-12) then
           print *, "Matrix element mismatch"
-          call bml_print_matrix("A", a_real)
-          call bml_print_matrix("B", b_real)
+          call bml_print_matrix("A", a_real, lbound(a_real, 1), ubound(a_real, 1), &
+               lbound(a_real, 2), ubound(a_real, 2))
+          call bml_print_matrix("B", b_real, lbound(b_real, 1), ubound(b_real, 1), &
+               lbound(b_real, 2), ubound(b_real, 2))
           test_result = .false.
        end if
     case(BML_PRECISION_DOUBLE)
@@ -49,8 +51,10 @@ contains
        call bml_convert_to_dense(a, b_double)
        if(maxval(a_double-b_double) > 1e-12) then
           print *, "Matrix element mismatch"
-          call bml_print_matrix("A", a_double)
-          call bml_print_matrix("B", b_double)
+          call bml_print_matrix("A", a_double, lbound(a_double, 1), ubound(a_double, 1), &
+               lbound(a_double, 2), ubound(a_double, 2))
+          call bml_print_matrix("B", b_double, lbound(b_double, 1), ubound(b_double, 1), &
+               lbound(b_double, 2), ubound(b_double, 2))
           test_result = .false.
        end if
     end select

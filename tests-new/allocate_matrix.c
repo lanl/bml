@@ -19,7 +19,8 @@ int test_function(const int N,
     switch(matrix_precision) {
     case single_precision:
         A_float = bml_convert_to_dense(A);
-        for(int i = 0; i < N; i++) {
+        bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
+       for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
                 if(i == j) {
                     if(fabs(A_float[i+j*N]-1) > 1e-12) {
@@ -38,6 +39,7 @@ int test_function(const int N,
         break;
     case double_precision:
         A_double = bml_convert_to_dense(A);
+        bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
                 if(i == j) {

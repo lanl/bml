@@ -35,6 +35,8 @@ contains
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        call bml_convert_to_dense(a, a_real)
+       call bml_print_matrix("A", a_real, lbound(a_real, 1), ubound(a_real, 1), &
+            lbound(a_real, 2), ubound(a_real, 2))
        do i = 1, n
           do j = 1, n
              if(i == j) then
@@ -54,6 +56,8 @@ contains
        end do
     case(BML_PRECISION_DOUBLE)
        call bml_convert_to_dense(a, a_double)
+       call bml_print_matrix("A", a_double, lbound(a_double, 1), ubound(a_double, 1), &
+            lbound(a_double, 2), ubound(a_double, 2))
        do i = 1, n
           do j = 1, n
              if(i == j) then
