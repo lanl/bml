@@ -23,8 +23,8 @@ contains
 
     type(bml_matrix_t) :: a
 
-    real, allocatable :: a_real(:, :)
-    double precision, allocatable :: a_double(:, :)
+    real, pointer :: a_real(:, :)
+    double precision, pointer :: a_double(:, :)
 
     integer :: i, j
 

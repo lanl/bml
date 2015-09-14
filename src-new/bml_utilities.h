@@ -1,6 +1,8 @@
 #ifndef __BML_UTILITIES_H
 #define __BML_UTILITIES_H
 
+#include "bml_types.h"
+
 void bml_print_matrix(const int N,
                       bml_matrix_precision_t matrix_precision,
                       const void *A,

@@ -111,12 +111,15 @@ contains
   subroutine bml_convert_to_dense_single(a, a_dense)
 
     use bml_types
+    use bml_introspection
 
     type(bml_matrix_t), intent(in) :: a
-    real, allocatable, intent(out) :: a_dense(:, :)
+    real, pointer, intent(out) :: a_dense(:, :)
 
-    !allocate(a_dense(bml_get_size(a), bml_get_size(a)))
-    !!call bml_convert_to_dense(a, a_dense)
+    type(C_PTR) :: a_ptr
+
+    a_ptr = bml_convert_to_dense_C(a%ptr)
+    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
 
   end subroutine bml_convert_to_dense_single
 
@@ -129,9 +132,15 @@ contains
   subroutine bml_convert_to_dense_double(a, a_dense)
 
     use bml_types
+    use bml_introspection
 
     type(bml_matrix_t), intent(in) :: a
-    double precision, allocatable, intent(out) :: a_dense(:, :)
+    double precision, pointer, intent(out) :: a_dense(:, :)
+
+    type(C_PTR) :: a_ptr
+
+    a_ptr = bml_convert_to_dense_C(a%ptr)
+    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
 
   end subroutine bml_convert_to_dense_double
 

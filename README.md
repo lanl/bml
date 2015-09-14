@@ -18,9 +18,9 @@ at <qmmd-all@lanl.gov> and attach the files
 # Developer Suggested Workflow #
 
 We try to preserve a linear history in our main (master)
-branch. Instead of pulling, we suggest you use:
+branch. Instead of pulling (i.e. merging), we suggest you use:
 
-    $ git pull --rebase=preserve
+    $ git pull --rebase
 
 And then
 

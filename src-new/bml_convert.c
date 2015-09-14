@@ -40,6 +40,7 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
  */
 void *bml_convert_to_dense(const bml_matrix_t *A)
 {
+    LOG_DEBUG("Converting bml matrix to dense\n");
     switch(bml_get_type(A)) {
     case dense:
         return bml_convert_to_dense_dense(A);

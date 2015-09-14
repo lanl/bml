@@ -7,7 +7,7 @@ module bml_utilities
 
   interface
 
-     subroutine bml_print_matrix_single_C(n, a, i_l, i_u, j_l, j_u, matrix_precision) &
+     subroutine bml_print_matrix_single_C(n, a, i_l, i_u, j_l, j_u) &
           bind(C, name="bml_print_matrix_single")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: n
@@ -18,7 +18,7 @@ module bml_utilities
        integer(C_INT), value, intent(in) :: j_u
      end subroutine bml_print_matrix_single_C
 
-     subroutine bml_print_matrix_double_C(n, a, i_l, i_u, j_l, j_u, matrix_precision) &
+     subroutine bml_print_matrix_double_C(n, a, i_l, i_u, j_l, j_u) &
           bind(C, name="bml_print_matrix_double")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: n
@@ -49,6 +49,8 @@ contains
     integer, optional, intent(in) :: j_l
     integer, optional, intent(in) :: j_u
 
+    call bml_print_matrix_single_C(size(a, 1), a, i_l, i_u, j_l, j_u)
+
   end subroutine bml_print_matrix_single
 
   subroutine bml_print_matrix_double(tag, a, i_l, i_u, j_l, j_u)
@@ -59,6 +61,8 @@ contains
     integer, optional, intent(in) :: i_u
     integer, optional, intent(in) :: j_l
     integer, optional, intent(in) :: j_u
+
+    call bml_print_matrix_double_C(size(a, 1), a, i_l, i_u, j_l, j_u)
 
   end subroutine bml_print_matrix_double
 

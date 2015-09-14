@@ -2,6 +2,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml.F90
   bml_allocate.F90
   bml_convert.F90
+  bml_introspection.F90
   bml_types.F90
   bml_utilities.F90)
 set(FORTRAN-SOURCES-PRIVATE

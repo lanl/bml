@@ -23,10 +23,10 @@ contains
 
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b
-    double precision, allocatable :: a_double(:, :)
-    double precision, allocatable :: b_double(:, :)
-    real, allocatable :: a_real(:, :)
-    real, allocatable :: b_real(:, :)
+    double precision, pointer :: a_double(:, :)
+    double precision, pointer :: b_double(:, :)
+    real, pointer :: a_real(:, :)
+    real, pointer :: b_real(:, :)
 
     test_result = .true.
 
