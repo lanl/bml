@@ -1,6 +1,6 @@
 include_directories(
-  ${CMAKE_SOURCE_DIR}/src-new
-  ${CMAKE_BINARY_DIR}/src-new/fortran-interface)
+  ${CMAKE_SOURCE_DIR}/src-new/C-interface
+  ${CMAKE_BINARY_DIR}/src-new/Fortran-interface)
 
 set(C-TESTS
   allocate_matrix.c

@@ -1,4 +1,4 @@
-#include "../bml_utilities.h"
+#include "bml_utilities.h"
 
 void bml_print_matrix_single(const int N,
                              const float *A,

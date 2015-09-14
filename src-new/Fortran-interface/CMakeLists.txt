@@ -1,3 +1,4 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../C-interface)
 set(FORTRAN-SOURCES-PUBLIC
   bml.F90
   bml_allocate.F90
