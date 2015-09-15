@@ -6,7 +6,6 @@ module bml_utilities
   private
 
   interface
-
      subroutine bml_print_matrix_C(n, matrix_precision, a, i_l, i_u, j_l, j_u) &
           bind(C, name="bml_print_matrix")
        use, intrinsic :: iso_C_binding
@@ -18,9 +17,9 @@ module bml_utilities
        integer(C_INT), value, intent(in) :: j_l
        integer(C_INT), value, intent(in) :: j_u
      end subroutine bml_print_matrix_C
-
   end interface
 
+  !> Print a dense matrix.
   interface bml_print_matrix
      module procedure bml_print_matrix_single
      module procedure bml_print_matrix_double
@@ -30,6 +29,14 @@ module bml_utilities
 
 contains
 
+  !> Print a dense matrix.
+  !!
+  !! \param tag A string to print before the matrix.
+  !! \param a The matrix.
+  !! \param i_l The lower row bound.
+  !! \param i_u The upper row bound.
+  !! \param j_l The lower column bound.
+  !! \param j_u The upper column bound.
   subroutine bml_print_matrix_single(tag, a, i_l, i_u, j_l, j_u)
 
     use, intrinsic :: iso_C_binding
@@ -54,6 +61,14 @@ contains
 
   end subroutine bml_print_matrix_single
 
+  !> Print a dense matrix.
+  !!
+  !! \param tag A string to print before the matrix.
+  !! \param a The matrix.
+  !! \param i_l The lower row bound.
+  !! \param i_u The upper row bound.
+  !! \param j_l The lower column bound.
+  !! \param j_u The upper column bound.
   subroutine bml_print_matrix_double(tag, a, i_l, i_u, j_l, j_u)
 
     use, intrinsic :: iso_C_binding
