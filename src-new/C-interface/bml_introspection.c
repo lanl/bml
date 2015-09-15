@@ -37,4 +37,5 @@ int bml_get_size(const bml_matrix_t *A)
         LOG_ERROR("unknown matrix type\n");
         break;
     }
+    return -1;
 }

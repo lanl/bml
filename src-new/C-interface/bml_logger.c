@@ -2,6 +2,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 //static bml_log_level_t global_log_level = BML_LOG_INFO;
 static bml_log_level_t global_log_level = BML_LOG_DEBUG;
