@@ -1,3 +1,5 @@
+/** \file */
+
 #ifndef __BML_ALLOCATE_H
 #define __BML_ALLOCATE_H
 

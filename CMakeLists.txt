@@ -121,8 +121,8 @@ include(FindDoxygen)
 if(DOXYGEN_FOUND)
   if(BML_NEW)
     set(DOXYGEN_INPUT
-      ${CMAKE_SOURCE_DIR}/src-new
-      ${CMAKE_SOURCE_DIR}/src-new/fortran-interface)
+      ${CMAKE_SOURCE_DIR}/src-new/C-interface
+      ${CMAKE_SOURCE_DIR}/src-new/Fortran-interface)
   else()
     set(DOXYGEN_INPUT
       ${CMAKE_SOURCE_DIR}/src

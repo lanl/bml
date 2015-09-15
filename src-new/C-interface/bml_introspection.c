@@ -8,7 +8,7 @@
  *
  * If the matrix is not initialized yet, a type of "unitialized" is returned.
  *
- * \param The matrix.
+ * \param A The matrix.
  * \return The matrix type.
  */
 bml_matrix_type_t bml_get_type(const bml_matrix_t *A)

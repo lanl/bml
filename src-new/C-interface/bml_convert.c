@@ -7,7 +7,7 @@
 
 /** Convert a dense matrix into a bml matrix.
  *
- * \ingroup convert_group
+ * \ingroup convert_group_C
  *
  * \param matrix_type The matrix type
  * \param matrix_precision The real precision
@@ -34,7 +34,21 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
 
 /** Convert a bml matrix into a dense matrix.
  *
- * \ingroup convert_group
+ * The returned pointer has to be typecase into the proper real
+ * type. If the bml matrix is a single precision matrix, then the
+ * following should be used:
+ *
+ * \code{.c}
+ * float *A_dense = bml_convert_to_dense(A_bml);
+ * \endcode
+ *
+ * The matrix size can be queried with
+ *
+ * \code{.c}
+ * int N = bml_get_size(A_bml);
+ * \endcode
+ *
+ * \ingroup convert_group_C
  *
  * \param A The bml matrix
  * \return The dense matrix

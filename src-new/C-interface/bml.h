@@ -1,6 +1,3 @@
-#ifndef __BML_H
-#define __BML_H
-
 /** \mainpage Basic Matrix Library (bml)
  *
  * This library implements a common API for linear algebra and matrix
@@ -52,7 +49,14 @@
  *
  * \section C_usage C Usage
  *
- * \todo Write something here.
+ * In C, the following example code does the same as the above Fortran code:
+ *
+ * \code{.c}
+ * #include <bml.h>
+ *
+ * bml_matrix_t *A = bml_zero_matrix(dense, single_precision, 100);
+ * bml_deallocate(&A);
+ * \endcode
  *
  * \author Jamaludin Mohd-Yusof <jamal@lanl.gov>
  * \author Nicolas Bock <nbock@lanl.gov>
@@ -64,13 +68,17 @@
  * Add full support for dense matrix type for single precision.
  *
  * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
+ * \defgroup convert_group_C Converting between Matrix Formats (C interface)
  * \defgroup allocate_group_Fortran Allocation and Deallocation Functions (Fortran interface)
- * \defgroup convert_group Converting between Matrix Formats
- * \defgroup add_group Adding Matrices
- * \defgroup multiply_group Multiplying Matrices
+ * \defgroup convert_group_Fortran Converting between Matrix Formats (Fortran interface)
  */
 
 /** \copyright Los Alamos National Laboratory 2015 */
+
+/** \file */
+
+#ifndef __BML_H
+#define __BML_H
 
 #include "bml_allocate.h"
 #include "bml_convert.h"

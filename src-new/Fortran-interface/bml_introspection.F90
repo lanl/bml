@@ -4,13 +4,12 @@ module bml_introspection
   implicit none
 
   interface
-
+     !> Return the matrix size.
      function bml_get_size_C(a) result(n) bind(C, name="bml_get_size")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
        integer(C_INT) :: n
      end function bml_get_size_C
-
   end interface
 
 contains

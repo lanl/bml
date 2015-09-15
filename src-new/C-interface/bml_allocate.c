@@ -7,6 +7,8 @@
 
 /** Allocate and zero a chunk of memory.
  *
+ * \ingroup allocate_group_C
+ *
  * \param size The size of the memory.
  * \return A pointer to the allocated chunk.
  */
@@ -21,6 +23,8 @@ void *bml_allocate_memory(const size_t size)
 
 /** Deallocate a chunk of memory.
  *
+ * \ingroup allocate_group_C
+ *
  * \param ptr A pointer to the previously allocated chunk.
  */
 void bml_free_memory(void *ptr)
@@ -30,7 +34,7 @@ void bml_free_memory(void *ptr)
 
 /** Deallocate a matrix.
  *
- * \ingroup allocate_group
+ * \ingroup allocate_group_C
  *
  * \param A The matrix.
  */
@@ -52,7 +56,7 @@ void bml_deallocate(bml_matrix_t **A)
  *  Note that the matrix \f$ A \f$ will be newly allocated. The
  *  function does not check whether the matrix is already allocated.
  *
- *  \ingroup allocate_group
+ *  \ingroup allocate_group_C
  *
  *  \param matrix_type The matrix type.
  *  \param matrix_precision The precision of the matrix. The default
@@ -83,7 +87,7 @@ bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
  *  Note that the matrix \f$ A \f$ will be newly allocated. The
  *  function does not check whether the matrix is already allocated.
  *
- *  \ingroup allocate_group
+ *  \ingroup allocate_group_C
  *
  *  \param matrix_type The matrix type.
  *  \param matrix_precision The precision of the matrix. The default
@@ -114,7 +118,7 @@ bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
  *  Note that the matrix \f$ A \f$ will be newly allocated. The
  *  function does not check whether the matrix is already allocated.
  *
- *  \ingroup allocate_group
+ *  \ingroup allocate_group_C
  *
  *  \param matrix_type The matrix type.
  *  \param matrix_precision The precision of the matrix. The default

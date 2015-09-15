@@ -5,6 +5,7 @@ module bml_types
 
   !> The bml matrix type.
   type :: bml_matrix_t
+     !> The C pointer to the matrix.
      type(C_PTR) :: ptr = C_NULL_PTR
   end type bml_matrix_t
 

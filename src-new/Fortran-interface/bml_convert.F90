@@ -43,7 +43,7 @@ contains
 
   !> Convert a dense matrix into a bml matrix.
   !!
-  !! \ingroup convert_group
+  !! \ingroup convert_group_Fortran
   !!
   !! \param matrix_type The matrix type
   !! \param a_dense The dense matrix
@@ -70,9 +70,10 @@ contains
 
   !> Convert a dense matrix into a bml matrix.
   !!
-  !! \ingroup convert_group
+  !! \ingroup convert_group_Fortran
   !!
   !! \param matrix_type The matrix type
+  !! \param matrix_precision The matrix precision
   !! \param a_dense The dense matrix
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
@@ -97,7 +98,7 @@ contains
 
   !> Convert a matrix into a dense matrix.
   !!
-  !! \ingroup convert_group
+  !! \ingroup convert_group_Fortran
   !!
   !! \param a The bml matrix
   !! \param a_dense The dense matrix
@@ -118,7 +119,7 @@ contains
 
   !> Convert a matrix into a dense matrix.
   !!
-  !! \ingroup convert_group
+  !! \ingroup convert_group_Fortran
   !!
   !! \param a The bml matrix
   !! \param a_dense The dense matrix
