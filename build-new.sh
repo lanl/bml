@@ -1,10 +1,12 @@
 #!/bin/sh
 
-BUILD_DIR=${PWD}/build-new
-INSTALL_DIR=${PWD}/install-new
+TOP_DIR="${PWD}"
+BUILD_DIR="${TOP_DIR}"/build-new
+INSTALL_DIR="${TOP_DIR}"/install-new
+LOG_FILE="${TOP_DIR}"/build-new.log
 
-mkdir -p "${BUILD_DIR}" || exit
-mkdir -p "${INSTALL_DIR}" || exit
+mkdir -v -p "${BUILD_DIR}" || exit
+mkdir -v -p "${INSTALL_DIR}" || exit
 
 cd "${BUILD_DIR}"
 cmake .. \
@@ -15,8 +17,13 @@ cmake .. \
   -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
   -DBML_TESTING=yes \
   -DBML_NEW=yes
+cd "${TOP_DIR}"
 
-make || exit
-make docs || exit
-ctest --output-on-failure
-make install
+make -C "${BUILD_DIR}" VERBOSE=1 2>&1 | tee --append "${LOG_FILE}" || exit
+make -C "${BUILD_DIR}" docs 2>&1 | tee --append "${LOG_FILE}" || exit
+cd "${BUILD_DIR}"
+ctest --output-on-failure 2>&1 | tee --append "${LOG_FILE}"
+cd "${TOP_DIR}"
+make -C "${BUILD_DIR}" install 2>&1 | tee --append "${LOG_FILE}"
+
+echo "The output was written to ${LOG_FILE}"
