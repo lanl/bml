@@ -44,8 +44,12 @@ contains
     integer, intent(in) :: j_u
 
     associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
+      ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
+      ! exclusive in the upper bound in the C code.
       call bml_print_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_SINGLE), &
-           c_loc(a_ptr), i_l-1, i_u, j_l-1, j_u)
+           c_loc(a_ptr), &
+           i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
+           j_l-lbound(a, 2), j_u-lbound(a, 2)+1)
     end associate
 
   end subroutine bml_print_matrix_single
@@ -65,7 +69,9 @@ contains
 
     associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
       call bml_print_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_DOUBLE), &
-           c_loc(a_ptr), i_l-1, i_u, j_l-1, j_u)
+           c_loc(a_ptr), &
+           i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
+           j_l-lbound(a, 2), j_u-lbound(a, 2)+1)
     end associate
 
   end subroutine bml_print_matrix_double
