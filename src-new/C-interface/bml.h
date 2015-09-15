@@ -5,7 +5,8 @@
  * matrix storage and algorithms. Currently the following matrix data
  * types are implemented:
  *   - dense
- *   - sparse (ELLPACK)
+ *   - ellpack (sparse)
+ *   - csr (sparse)
  *
  * \section fortran_usage Fortran Usage
  *
@@ -47,6 +48,37 @@
  * call bml_deallocate(a)
  * \endcode
  *
+ * \subsection supported_functions Supported Functions
+ *
+ * The library supports the following matrix operations:
+ *     - Addition
+ *         - \f$ \alpha A + \beta B \f$: bml_add::bml_add
+ *         - \f$ \alpha A + \beta \f$: bml_add::bml_add_identity
+ *     - Copy
+ *         - \f$ B \leftarrow A \f$: bml_copy::bml_copy
+ *     - Diagonalize
+ *         - bml_diagonalize::bml_diagonalize
+ *     - Introspection
+ *         - bml_introspection::bml_get_type
+ *         - bml_introspection::bml_get_size
+ *         - bml_introspection::bml_get_bandwidth
+ *     - Matrix manipulation:
+ *         - bml_get::bml_get
+ *     - Multiplication
+ *         - \f$ \alpha A \times B + \beta C \f$: bml_multiply::bml_multiply
+ *     - Printing
+ *         - bml_utilities::bml_print_matrix
+ *     - Scaling
+ *         - \f$ A \leftarrow \alpha A \f$: bml_scale::bml_scale_one
+ *         - \f$ B \leftarrow \alpha A \f$: bml_scale::bml_scale_two
+ *     - Matrix trace
+ *         - bml_trace::bml_trace
+ *     - Matrix transpose
+ *         - bml_transpose::bml_transpose
+ *     - Matrix commutator/anticommutator
+ *         - bml_commutator::bml_commutator
+ *         - bml_commutator::bml_anticommutator
+ *
  * \section C_usage C Usage
  *
  * In C, the following example code does the same as the above Fortran code:
@@ -63,9 +95,6 @@
  * \author Susan M. Mniszewski <smm@lanl.gov>
  *
  * \copyright Los Alamos National Laboratory 2015
- *
- * \todo
- * Add full support for dense matrix type for single precision.
  *
  * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
  * \defgroup convert_group_C Converting between Matrix Formats (C interface)
