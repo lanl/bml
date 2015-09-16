@@ -21,6 +21,9 @@ cd "${TOP_DIR}"
 
 make -C "${BUILD_DIR}" VERBOSE=1 2>&1 | tee --append "${LOG_FILE}" || exit
 make -C "${BUILD_DIR}" docs 2>&1 | tee --append "${LOG_FILE}" || exit
+if test -f "${BUILD_DIR}/doc/latex/refman.pdf"; then
+    cp -v "${BUILD_DIR}/doc/latex/refman.pdf" "${TOP_DIR}/manual.pdf"
+fi
 cd "${BUILD_DIR}"
 ctest --output-on-failure 2>&1 | tee --append "${LOG_FILE}"
 cd "${TOP_DIR}"
