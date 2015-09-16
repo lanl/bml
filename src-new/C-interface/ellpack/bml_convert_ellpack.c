@@ -4,6 +4,7 @@
 #include "bml_allocate_ellpack.h"
 #include "bml_convert_ellpack.h"
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

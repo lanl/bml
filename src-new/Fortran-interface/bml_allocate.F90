@@ -138,6 +138,7 @@ contains
     character(len=*), intent(in) :: matrix_precision
     integer, intent(in) :: n
     type(bml_matrix_t), intent(inout) :: a
+    integer, intent(in) :: m
 
     if(c_associated(a%ptr)) then
        call bml_deallocate_C(a%ptr)
