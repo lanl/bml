@@ -6,6 +6,8 @@ set(C-TESTS
   allocate_matrix.c
   convert_matrix.c)
 
+set(TYPES dense ellpack)
+
 # Scan the sources in C-TESTS and generate build rules to build and
 # test them. All tests are assumed to be functions using the
 # bml_test.h test framework.
@@ -16,7 +18,7 @@ foreach(FILE ${C-TESTS})
   endif()
   get_filename_component(BASENAME ${FILE} NAME_WE)
 
-  foreach(TYPE dense ellpack)
+  foreach(TYPE ${TYPES})
     set(MATRIX_TYPE bml_matrix_${TYPE}_t)
     foreach(PRECISION single double)
       set(MATRIX_PRECISION ${PRECISION}_precision)
@@ -42,10 +44,11 @@ foreach(FILE ${C-TESTS})
       target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
       if(VALGRIND)
-        add_test(valgrind-${TESTNAME}
+        add_test(${TESTNAME}-valgrind
           ${VALGRIND}
           --error-exitcode=1
           --leak-check=full
+          --read-var-info=yes
           --track-origins=yes
           ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME})
       endif()
@@ -90,7 +93,7 @@ foreach(FILE ${FORTRAN-TESTS})
 
   message(STATUS "Adding test ${BASENAME}")
 
-  foreach(type DENSE)
+  foreach(type ${TYPES})
     set(MATRIX_TYPE BML_MATRIX_${type})
     foreach(precision SINGLE DOUBLE)
       set(PRECISION BML_PRECISION_${precision})
