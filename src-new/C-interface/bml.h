@@ -48,9 +48,32 @@
  * call bml_deallocate(a)
  * \endcode
  *
+ * \subsection supported_type Supported Matrix Types
+ *
+ * Support types:
+ *     - bml_matrix_t
+ *     - Colinear
+ *     - Noncolinear
+ *     - Blocked Bloch Matrix
+ *
+ * \subsection supported_precisions Supported Precisions
+ *
+ * The bml supports the following precisions:
+ *     - logical (for matrix masks)
+ *     - single real
+ *     - double real
+ *     - single complex
+ *     - double complex
+ *
  * \subsection supported_functions Supported Functions
  *
  * The library supports the following matrix operations:
+ *     - Format Conversion
+ *         - bml_convert::bml_convert_from_dense
+ *         - bml_convert::bml_convert_to_dense
+ *         - bml_convert::bml_convert
+ *     - Masking
+ *         - Masked operations (restricted to a subgraph)
  *     - Addition
  *         - \f$ \alpha A + \beta B \f$: bml_add::bml_add
  *         - \f$ \alpha A + \beta \f$: bml_add::bml_add_identity
@@ -62,6 +85,8 @@
  *         - bml_introspection::bml_get_type
  *         - bml_introspection::bml_get_size
  *         - bml_introspection::bml_get_bandwidth
+ *         - bml_introspection::bml_get_spectral_range
+ *         - bml_introspection::bml_get_HOMO_LUMO
  *     - Matrix manipulation:
  *         - bml_get::bml_get
  *         - bml_get::bml_get_rows
@@ -75,7 +100,11 @@
  *         - \f$ A \leftarrow \alpha A \f$: bml_scale::bml_scale_one
  *         - \f$ B \leftarrow \alpha A \f$: bml_scale::bml_scale_two
  *     - Matrix trace
- *         - bml_trace::bml_trace
+ *         - \f$ \mathrm{Tr} [ A ] \f$: bml_trace::bml_trace
+ *         - \f$ \mathrm{Tr} [ A B ] \f$: bml_trace::bml_product_trace
+ *     - Matrix norm
+ *         - 2-norm
+ *         - Frobenius norm
  *     - Matrix transpose
  *         - bml_transpose::bml_transpose
  *     - Matrix commutator/anticommutator
