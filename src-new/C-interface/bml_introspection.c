@@ -1,6 +1,8 @@
 #include "bml_introspection.h"
 #include "bml_logger.h"
 #include "bml_types.h"
+#include "dense/bml_introspection_dense.h"
+#include "ellpack/bml_introspection_ellpack.h"
 
 #include <stdlib.h>
 
@@ -32,6 +34,9 @@ int bml_get_size(const bml_matrix_t *A)
     case uninitialized:
     case dense:
         return bml_get_size_dense(A);
+        break;
+    case ellpack:
+        return bml_get_size_ellpack(A);
         break;
     default:
         LOG_ERROR("unknown matrix type\n");

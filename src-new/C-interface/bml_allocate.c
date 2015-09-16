@@ -66,11 +66,12 @@ void bml_deallocate(bml_matrix_t **A)
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
 bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
                               const bml_matrix_precision_t matrix_precision,
-                              const int N)
+                              const int N, const int M)
 {
     bml_matrix_t *A = NULL;
 
@@ -80,7 +81,7 @@ bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
         A = bml_zero_matrix_dense(matrix_precision, N);
         break;
     case ellpack:
-        A = bml_zero_matrix_ellpack(matrix_precision, N);
+        A = bml_zero_matrix_ellpack(matrix_precision, N, M);
         break;
     default:
         LOG_ERROR("unknown matrix type\n");
@@ -100,11 +101,12 @@ bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
 bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
                                 const bml_matrix_precision_t matrix_precision,
-                                const int N)
+                                const int N, const int M)
 {
     bml_matrix_t *A = NULL;
 
@@ -114,7 +116,7 @@ bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
         A = bml_random_matrix_dense(matrix_precision, N);
         break;
     case ellpack:
-        A = bml_random_matrix_ellpack(matrix_precision, N);
+        A = bml_random_matrix_ellpack(matrix_precision, N, M);
         break;
     default:
         LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -134,11 +136,12 @@ bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
 bml_matrix_t *bml_identity_matrix(const bml_matrix_type_t matrix_type,
                                   const bml_matrix_precision_t matrix_precision,
-                                  const int N)
+                                  const int N, const int M)
 {
     bml_matrix_t *A = NULL;
 
@@ -148,7 +151,7 @@ bml_matrix_t *bml_identity_matrix(const bml_matrix_type_t matrix_type,
         A = bml_identity_matrix_dense(matrix_precision, N);
         break;
     case ellpack:
-        A = bml_identity_matrix_ellpack(matrix_precision, N);
+        A = bml_identity_matrix_ellpack(matrix_precision, N, M);
         break;
     default:
         LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);

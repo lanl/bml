@@ -14,9 +14,9 @@ module allocate_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(n, matrix_type, matrix_precision, m) result(test_result)
 
-    integer, intent(in) :: n
+    integer, intent(in) :: n, m
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     logical :: test_result
@@ -30,8 +30,8 @@ contains
 
     test_result = .true.
 
-    call bml_random_matrix(matrix_type, matrix_precision, n, a)
-    call bml_identity_matrix(matrix_type, matrix_precision, n, a)
+    call bml_random_matrix(matrix_type, matrix_precision, n, a, m)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, a, m)
     select case(matrix_precision)
     case(BML_PRECISION_SINGLE)
        call bml_convert_to_dense(a, a_real)
@@ -78,7 +78,7 @@ contains
     end select
     print *, "Identity matrix test passed"
 
-    call bml_zero_matrix(matrix_type, matrix_precision, n, a)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, a, m)
     call bml_deallocate(a)
 
   end function test_function

@@ -14,9 +14,9 @@ module get_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(n, matrix_type, matrix_precision, m) result(test_result)
 
-    integer, intent(in) :: n
+    integer, intent(in) :: n. m
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     logical :: test_result
@@ -31,7 +31,7 @@ contains
     real :: a_ij_real
     double precision :: a_ij_double
 
-    call bml_random_matrix(matrix_type, n, a, matrix_precision)
+    call bml_random_matrix(matrix_type, n, a, matrix_precision, m)
 
     test_result = .true.
 

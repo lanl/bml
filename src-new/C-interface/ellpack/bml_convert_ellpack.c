@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 /** Convert a dense matrix into a bml matrix.
  *
@@ -23,31 +24,43 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack(const bml_matrix_precision_
                                                  const double threshold,
                                                  const int M)
 {
-    bml_matrix_ellpack_t *A_bml = bml_zero_matrix_ellpack(matrix_precision, N);
+    float *float_A = NULL;
+    double *double_A = NULL;
+
+    float *float_value = NULL;
+    double *double_value = NULL;
+
+    bml_matrix_ellpack_t *A_bml = bml_zero_matrix_ellpack(matrix_precision, N, M);
 
     switch(matrix_precision) {
     case single_precision:
-        for (int i = 0; i < N) {
+        float_A = (float*)A;
+        float_value = A_bml->value;
+        for (int i = 0; i < N; i++) {
             int jind = 0;
-            for (int j = 0; j < N) {
-                if (fabs(A[i*N+j]) > (float)0.0) {
-                    A_bml->value[i*N+jind] = A[i*N+j];
-                    A_bml->index[i*N+jind] = j;
+            for (int j = 0; j < N; j++) {
+                if (fabs(float_A[i*N+j]) > (float)threshold) {
+                    float_value[i*M+jind] = float_A[i*N+j];
+                    A_bml->index[i*M+jind] = j;
                     jind++;
                 }
             }
+            A_bml->nnz[i] = jind;
         }
         break;
     case double_precision:
-        for (int i = 0; i < N) {
+        double_A = (double*)A;
+        double_value = A_bml->value;
+        for (int i = 0; i < N; i++) {
             int jind = 0;
-            for (int j = 0; j < N) {
-                if (fabs(A[i*N+j]) > (double)0.0) {
-                    A_bml->value[i*N+jind] = A[i*N+j];
-                    A_bml->index[i*N+jind] = j;
+            for (int j = 0; j < N; j++) {
+                if (fabs(double_A[i*N+j]) > (double)0.0) {
+                    double_value[i*M+jind] = double_A[i*N+j];
+                    A_bml->index[i*M+jind] = j;
                     jind++;
                 }
             }
+            A_bml->nnz[i] = jind;
         }
         break;
     default:
@@ -69,21 +82,28 @@ void *bml_convert_to_dense_ellpack(const bml_matrix_ellpack_t *A)
     float *A_float = NULL;
     double *A_double = NULL;
 
+    float *float_value = NULL;
+    double *double_value = NULL;
+    int N = A->N;
+    int M = A->M;
+
     switch(A->matrix_precision) {
     case single_precision:
-        A_float = bml_allocate_memory(sizeof(float)*A->N*A->N);
+        A_float = bml_allocate_memory(sizeof(float)*N*N);
+        float_value = A->value;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < A->nnz[i]; j++) {
-                A_float[i*N+A->index[i*N+j]] = A->value[i*N+j];
+                A_float[i*N+A->index[i*M+j]] = float_value[i*M+j];
             }
         }
         return A_float;
         break;
     case double_precision:
-        A_double = bml_allocate_memory(sizeof(double)*A->N*A->N);
+        A_double = bml_allocate_memory(sizeof(double)*N*N);
+        double_value = A->value;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < A->nnz[i]; j++) {
-                A_double[i*N+A->index[i*N+j]] = A->value[i*N+j];
+                A_double[i*N+A->index[i*M+j]] = double_value[i*M+j];
             }
         }
         return A_double;

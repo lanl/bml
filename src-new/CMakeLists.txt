@@ -3,6 +3,7 @@ add_subdirectory(C-interface)
 
 add_library(bml-new
   $<TARGET_OBJECTS:bml-dense>
+  $<TARGET_OBJECTS:bml-ellpack>
   $<TARGET_OBJECTS:bml-fortran>
   $<TARGET_OBJECTS:bml-c>)
 

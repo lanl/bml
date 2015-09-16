@@ -7,12 +7,12 @@ module bml_convert
   !> The interfaces to the C API.
   interface
 
-     function bml_convert_from_dense_C(matrix_type, matrix_precision, n, a, threshold) &
+     function bml_convert_from_dense_C(matrix_type, matrix_precision, n, a, threshold, m) &
           bind(C, name="bml_convert_from_dense")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: matrix_type
        integer(C_INT), value, intent(in) :: matrix_precision
-       integer(C_INT), value, intent(in) :: n
+       integer(C_INT), value, intent(in) :: n, m
        type(C_PTR), value, intent(in) :: a
        real(C_DOUBLE), value, intent(in) :: threshold
        type(C_PTR) :: bml_convert_from_dense_C
@@ -49,13 +49,15 @@ contains
   !! \param a_dense The dense matrix
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
-  subroutine bml_convert_from_dense_single(matrix_type, matrix_precision, a_dense, a, threshold)
+  !! \param m The extra arg
+  subroutine bml_convert_from_dense_single(matrix_type, matrix_precision, a_dense, a, threshold, m)
 
     use bml_types
     use bml_interface
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: m
     real, target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
     double precision, intent(in) :: threshold
@@ -63,7 +65,7 @@ contains
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
            get_enum_id(matrix_precision), &
-           size(a_dense, 1), c_loc(a_ptr), threshold)
+           size(a_dense, 1), c_loc(a_ptr), threshold, m)
     end associate
 
   end subroutine bml_convert_from_dense_single
@@ -77,13 +79,15 @@ contains
   !! \param a_dense The dense matrix
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
-  subroutine bml_convert_from_dense_double(matrix_type, matrix_precision, a_dense, a, threshold)
+  !! \param m the extra arg
+  subroutine bml_convert_from_dense_double(matrix_type, matrix_precision, a_dense, a, threshold, m)
 
     use bml_types
     use bml_interface
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: m
     double precision, target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
     double precision, intent(in) :: threshold
@@ -91,7 +95,7 @@ contains
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
            get_enum_id(matrix_precision), &
-           size(a_dense, 1), c_loc(a_ptr), threshold)
+           size(a_dense, 1), c_loc(a_ptr), threshold, m)
     end associate
 
   end subroutine bml_convert_from_dense_double

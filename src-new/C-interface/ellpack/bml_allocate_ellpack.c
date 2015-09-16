@@ -30,6 +30,7 @@ void bml_deallocate_ellpack(bml_matrix_ellpack_t *A)
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *bml_zero_matrix_ellpack(const bml_matrix_precision_t matrix_precision,
@@ -72,6 +73,7 @@ bml_matrix_ellpack_t *bml_zero_matrix_ellpack(const bml_matrix_precision_t matri
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *bml_random_matrix_ellpack(const bml_matrix_precision_t matrix_precision,
@@ -129,6 +131,7 @@ bml_matrix_ellpack_t *bml_random_matrix_ellpack(const bml_matrix_precision_t mat
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *bml_identity_matrix_ellpack(const bml_matrix_precision_t matrix_precision,
@@ -145,17 +148,17 @@ bml_matrix_ellpack_t *bml_identity_matrix_ellpack(const bml_matrix_precision_t m
     case single_precision:
         A_float = A->value;
         for(int i = 0; i < N; i++) {
-            A_float[N*i] = 1;
-            A_index[N*i] = i;
+            A_float[i*M] = 1;
+            A_index[i*M] = i;
             A_nnz[i] = 1;
         }
         break;
     case double_precision:
-        A_double = A->matrix;
+        A_double = A->value;
         for(int i = 0; i < N; i++) {
-            A_double[N*i] = 1;
-            A_index[N*i] = i;
-            A_nnx[i] = 1;
+            A_double[i*M] = 1;
+            A_index[i*M] = i;
+            A_nnz[i] = 1;
         }
     }
     return A;

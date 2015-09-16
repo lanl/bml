@@ -6,7 +6,8 @@
 
 int test_function(const int N,
                   const bml_matrix_type_t matrix_type,
-                  const bml_matrix_precision_t matrix_precision)
+                  const bml_matrix_precision_t matrix_precision,
+                  const int M)
 {
     bml_matrix_t *A;
     float *A_float;
@@ -20,12 +21,12 @@ int test_function(const int N,
         for(int i = 0; i < N*N; i++) {
             A_float[i] = rand()/(float) RAND_MAX;
         }
-        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_float, 0);
+        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_float, 0, M);
         B_float = bml_convert_to_dense(A);
-        bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
-        bml_print_matrix(N, matrix_precision, B_float, 0, N, 0, N);
         for(int i = 0; i < N*N; i++) {
             if(fabs(A_float[i]-B_float[i]) > 1e-12) {
+                bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
+                bml_print_matrix(N, matrix_precision, B_float, 0, N, 0, N);
                 LOG_ERROR("matrix element mismatch\n");
             }
         }
@@ -37,12 +38,12 @@ int test_function(const int N,
         for(int i = 0; i < N*N; i++) {
             A_double[i] = rand()/(double) RAND_MAX;
         }
-        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_double, 0);
+        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_double, 0, M);
         B_double = bml_convert_to_dense(A);
-        bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
-        bml_print_matrix(N, matrix_precision, B_double, 0, N, 0, N);
         for(int i = 0; i < N*N; i++) {
             if(fabs(A_double[i]-B_double[i]) > 1e-12) {
+                bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
+                bml_print_matrix(N, matrix_precision, B_double, 0, N, 0, N);
                 LOG_ERROR("matrix element mismatch\n");
             }
         }

@@ -16,7 +16,7 @@ foreach(FILE ${C-TESTS})
   endif()
   get_filename_component(BASENAME ${FILE} NAME_WE)
 
-  foreach(TYPE dense)
+  foreach(TYPE dense ellpack)
     set(MATRIX_TYPE bml_matrix_${TYPE}_t)
     foreach(PRECISION single double)
       set(MATRIX_PRECISION ${PRECISION}_precision)

@@ -2,6 +2,7 @@
 #include "bml_introspection.h"
 #include "bml_logger.h"
 #include "dense/bml_convert_dense.h"
+#include "ellpack/bml_convert_ellpack.h"
 
 #include <stdlib.h>
 
@@ -14,20 +15,22 @@
  * \param N The number of rows/columns
  * \param A The dense matrix
  * \param threshold The matrix element magnited threshold
+ * \param M The number of non-zeroes per row
  * \return The bml matrix
  */
 bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
                                      const bml_matrix_precision_t matrix_precision,
                                      const int N,
                                      const void *A,
-                                     const double threshold)
+                                     const double threshold,
+                                     const int M)
 {
     LOG_DEBUG("Converting dense matrix to bml format\n");
     switch(matrix_type) {
     case dense:
         return bml_convert_from_dense_dense(matrix_precision, N, A, threshold);
     case ellpack:
-        return bml_convert_from_dense_ellpack(matrix_precision, N, A, threshold);
+        return bml_convert_from_dense_ellpack(matrix_precision, N, A, threshold, M);
     default:
         LOG_ERROR("unknown matrix type\n");
     }
