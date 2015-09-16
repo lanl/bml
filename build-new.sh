@@ -1,9 +1,9 @@
 #!/bin/sh
 
 TOP_DIR="${PWD}"
-BUILD_DIR="${TOP_DIR}"/build-new
-INSTALL_DIR="${TOP_DIR}"/install-new
-LOG_FILE="${TOP_DIR}"/build-new.log
+BUILD_DIR="${TOP_DIR}/build-new"
+INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install-new}"
+LOG_FILE="${TOP_DIR}/build-new.log"
 
 mkdir -v -p "${BUILD_DIR}" || exit
 mkdir -v -p "${INSTALL_DIR}" || exit
