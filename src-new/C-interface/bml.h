@@ -64,6 +64,9 @@
  *         - bml_introspection::bml_get_bandwidth
  *     - Matrix manipulation:
  *         - bml_get::bml_get
+ *         - bml_get::bml_get_rows
+ *         - bml_set::bml_set
+ *         - bml_set::bml_set_rows
  *     - Multiplication
  *         - \f$ \alpha A \times B + \beta C \f$: bml_multiply::bml_multiply
  *     - Printing
