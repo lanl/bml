@@ -27,3 +27,9 @@ And then
     $ git push
 
 To push your changes back to the server.
+
+## Coding Style ##
+
+Please indent your C code using
+
+    $ indent -kr
