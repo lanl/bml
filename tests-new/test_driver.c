@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
     const int N = 7;
-    const int M = 4;
+    const int M = 7;
 
     bml_log(BML_LOG_INFO, "testing %s:%s\n",
             STRINGIFY(MATRIX_TYPE_NAME),
