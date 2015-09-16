@@ -1,4 +1,4 @@
-set(HEADERS
+set(HEADERS-C
   bml.h
   bml_allocate.h
   bml_convert.h
@@ -6,14 +6,15 @@ set(HEADERS
   bml_logger.h
   bml_types.h
   bml_utilities.h)
-install(FILES ${HEADERS} DESTINATION include)
+install(FILES ${HEADERS-C} DESTINATION include)
 
-add_library(bml-c OBJECT
+set(SOURCES-C
   bml_allocate.c
   bml_convert.c
   bml_introspection.c
   bml_logger.c
   bml_utilities.c)
+add_library(bml-c OBJECT ${SOURCES-C})
 
 add_subdirectory(dense)
 add_subdirectory(ellpack)
