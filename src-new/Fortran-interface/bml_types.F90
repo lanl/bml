@@ -12,6 +12,9 @@ module bml_types
   !> The bml-dense matrix type identifier.
   character(len=*), parameter :: BML_MATRIX_DENSE = "dense"
 
+  !> The bml-ellpack matrix type identifier.
+  character(len=*), parameter :: BML_MATRIX_ELLPACK = "ellpack"
+
   !> The single precision identifier.
   character(len=*), parameter :: BML_PRECISION_SINGLE = "single-precision"
 

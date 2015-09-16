@@ -8,5 +8,4 @@
 bml_matrix_type_t bml_get_type(const bml_matrix_t *A);
 
 int bml_get_size(const bml_matrix_t *A);
-
 #endif

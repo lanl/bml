@@ -16,3 +16,4 @@ add_library(bml-c OBJECT
   bml_utilities.c)
 
 add_subdirectory(dense)
+add_subdirectory(ellpack)

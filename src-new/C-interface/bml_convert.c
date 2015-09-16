@@ -26,6 +26,8 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
     switch(matrix_type) {
     case dense:
         return bml_convert_from_dense_dense(matrix_precision, N, A, threshold);
+    case ellpack:
+        return bml_convert_from_dense_ellpack(matrix_precision, N, A, threshold);
     default:
         LOG_ERROR("unknown matrix type\n");
     }
@@ -59,6 +61,8 @@ void *bml_convert_to_dense(const bml_matrix_t *A)
     switch(bml_get_type(A)) {
     case dense:
         return bml_convert_to_dense_dense(A);
+    case ellpack:
+        return bml_convert_to_dense_ellpack(A);
     default:
         LOG_ERROR("unknown matrix type\n");
     }

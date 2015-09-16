@@ -2,6 +2,7 @@
 #include "bml_introspection.h"
 #include "bml_logger.h"
 #include "dense/bml_allocate_dense.h"
+#include "ellpack/bml_allocate_ellpack.h"
 
 #include <stdlib.h>
 
@@ -44,6 +45,9 @@ void bml_deallocate(bml_matrix_t **A)
     case dense:
         bml_deallocate_dense(*A);
         break;
+    case ellpack:
+        bml_deallocate_ellpack(*A);
+        break;
     default:
         LOG_ERROR("unknown matrix type\n");
         break;
@@ -74,6 +78,9 @@ bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
     switch(matrix_type) {
     case dense:
         A = bml_zero_matrix_dense(matrix_precision, N);
+        break;
+    case ellpack:
+        A = bml_zero_matrix_ellpack(matrix_precision, N);
         break;
     default:
         LOG_ERROR("unknown matrix type\n");
@@ -106,6 +113,9 @@ bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
     case dense:
         A = bml_random_matrix_dense(matrix_precision, N);
         break;
+    case ellpack:
+        A = bml_random_matrix_ellpack(matrix_precision, N);
+        break;
     default:
         LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
         break;
@@ -136,6 +146,9 @@ bml_matrix_t *bml_identity_matrix(const bml_matrix_type_t matrix_type,
     switch(matrix_type) {
     case dense:
         A = bml_identity_matrix_dense(matrix_precision, N);
+        break;
+    case ellpack:
+        A = bml_identity_matrix_ellpack(matrix_precision, N);
         break;
     default:
         LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
