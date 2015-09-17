@@ -49,7 +49,7 @@ endif()
 find_program(INDENT indent)
 if(INDENT)
   message(STATUS "Setting up indent target")
-  set(INDENT_ARGS -gnu -nut)
+  set(INDENT_ARGS -gnu -nut -i4 -bli0)
   add_custom_target(indent
     DEPENDS
     indent-C-interface

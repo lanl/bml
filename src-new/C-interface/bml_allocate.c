@@ -16,12 +16,12 @@
 void *
 bml_allocate_memory (const size_t size)
 {
-  void *ptr = calloc (1, size);
-  if (ptr == NULL)
+    void *ptr = calloc (1, size);
+    if (ptr == NULL)
     {
-      LOG_ERROR ("error allocating memory\n");
+        LOG_ERROR ("error allocating memory\n");
     }
-  return ptr;
+    return ptr;
 }
 
 /** Deallocate a chunk of memory.
@@ -33,7 +33,7 @@ bml_allocate_memory (const size_t size)
 void
 bml_free_memory (void *ptr)
 {
-  free (ptr);
+    free (ptr);
 }
 
 /** Deallocate a matrix.
@@ -45,19 +45,19 @@ bml_free_memory (void *ptr)
 void
 bml_deallocate (bml_matrix_t ** A)
 {
-  switch (bml_get_type (*A))
+    switch (bml_get_type (*A))
     {
     case dense:
-      bml_deallocate_dense (*A);
-      break;
+        bml_deallocate_dense (*A);
+        break;
     case ellpack:
-      bml_deallocate_ellpack (*A);
-      break;
+        bml_deallocate_ellpack (*A);
+        break;
     default:
-      LOG_ERROR ("unknown matrix type\n");
-      break;
+        LOG_ERROR ("unknown matrix type\n");
+        break;
     }
-  *A = NULL;
+    *A = NULL;
 }
 
 /** Allocate the zero matrix.
@@ -79,22 +79,22 @@ bml_zero_matrix (const bml_matrix_type_t matrix_type,
                  const bml_matrix_precision_t matrix_precision,
                  const int N, const int M)
 {
-  bml_matrix_t *A = NULL;
+    bml_matrix_t *A = NULL;
 
-  LOG_DEBUG ("zero matrix of size %d\n", N);
-  switch (matrix_type)
+    LOG_DEBUG ("zero matrix of size %d\n", N);
+    switch (matrix_type)
     {
     case dense:
-      A = bml_zero_matrix_dense (matrix_precision, N);
-      break;
+        A = bml_zero_matrix_dense (matrix_precision, N);
+        break;
     case ellpack:
-      A = bml_zero_matrix_ellpack (matrix_precision, N, M);
-      break;
+        A = bml_zero_matrix_ellpack (matrix_precision, N, M);
+        break;
     default:
-      LOG_ERROR ("unknown matrix type\n");
-      break;
+        LOG_ERROR ("unknown matrix type\n");
+        break;
     }
-  return A;
+    return A;
 }
 
 /** Allocate a random matrix.
@@ -116,22 +116,22 @@ bml_random_matrix (const bml_matrix_type_t matrix_type,
                    const bml_matrix_precision_t matrix_precision,
                    const int N, const int M)
 {
-  bml_matrix_t *A = NULL;
+    bml_matrix_t *A = NULL;
 
-  LOG_DEBUG ("random matrix of size %d\n", N);
-  switch (matrix_type)
+    LOG_DEBUG ("random matrix of size %d\n", N);
+    switch (matrix_type)
     {
     case dense:
-      A = bml_random_matrix_dense (matrix_precision, N);
-      break;
+        A = bml_random_matrix_dense (matrix_precision, N);
+        break;
     case ellpack:
-      A = bml_random_matrix_ellpack (matrix_precision, N, M);
-      break;
+        A = bml_random_matrix_ellpack (matrix_precision, N, M);
+        break;
     default:
-      LOG_ERROR ("unknown matrix type (type ID %d)\n", matrix_type);
-      break;
+        LOG_ERROR ("unknown matrix type (type ID %d)\n", matrix_type);
+        break;
     }
-  return A;
+    return A;
 }
 
 /** Allocate the identity matrix.
@@ -153,20 +153,20 @@ bml_identity_matrix (const bml_matrix_type_t matrix_type,
                      const bml_matrix_precision_t matrix_precision,
                      const int N, const int M)
 {
-  bml_matrix_t *A = NULL;
+    bml_matrix_t *A = NULL;
 
-  LOG_DEBUG ("identity matrix of size %d\n", N);
-  switch (matrix_type)
+    LOG_DEBUG ("identity matrix of size %d\n", N);
+    switch (matrix_type)
     {
     case dense:
-      A = bml_identity_matrix_dense (matrix_precision, N);
-      break;
+        A = bml_identity_matrix_dense (matrix_precision, N);
+        break;
     case ellpack:
-      A = bml_identity_matrix_ellpack (matrix_precision, N, M);
-      break;
+        A = bml_identity_matrix_ellpack (matrix_precision, N, M);
+        break;
     default:
-      LOG_ERROR ("unknown matrix type (type ID %d)\n", matrix_type);
-      break;
+        LOG_ERROR ("unknown matrix type (type ID %d)\n", matrix_type);
+        break;
     }
-  return A;
+    return A;
 }
