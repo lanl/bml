@@ -1,3 +1,5 @@
+include_directories(..)
+
 set(SOURCES-ELLPACK
   bml_allocate_ellpack.c
   bml_convert_ellpack.c

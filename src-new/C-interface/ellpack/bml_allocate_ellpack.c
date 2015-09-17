@@ -1,6 +1,6 @@
-#include "../bml_allocate.h"
-#include "../bml_types.h"
+#include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
+#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <math.h>

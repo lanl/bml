@@ -1,7 +1,7 @@
 #ifndef __BML_TYPES_DENSE_H
 #define __BML_TYPES_DENSE_H
 
-#include "../bml_types.h"
+#include "bml_types.h"
 
 /** Dense matrix type. */
 struct bml_matrix_dense_t {

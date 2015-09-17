@@ -1,3 +1,5 @@
+include_directories(..)
+
 set(SOURCES-DENSE
   bml_allocate_dense.c
   bml_convert_dense.c

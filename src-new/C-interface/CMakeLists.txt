@@ -1,3 +1,5 @@
+include_directories(.)
+
 set(HEADERS-C
   bml.h
   bml_allocate.h

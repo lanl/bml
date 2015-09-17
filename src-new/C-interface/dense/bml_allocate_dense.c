@@ -1,6 +1,6 @@
-#include "../bml_allocate.h"
-#include "../bml_types.h"
+#include "bml_allocate.h"
 #include "bml_allocate_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 /** Deallocate a matrix.
