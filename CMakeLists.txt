@@ -157,3 +157,9 @@ if(HAVE_ETAGS)
   add_custom_target(tags
     ${HAVE_ETAGS} ${CMAKE_SOURCE_DIR}/src/*.F90)
 endif()
+
+find_program(INDENT indent)
+if(INDENT)
+  message(STATUS "Setting up indent target")
+  set(INDENT_ARGS -kr -bfda)
+endif()
