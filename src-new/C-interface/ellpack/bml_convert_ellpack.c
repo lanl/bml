@@ -37,7 +37,7 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack(const bml_matrix_precision_
     int *nnz = A_bml->nnz;
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         float_A = (float*)A;
         float_value = A_bml->value;
         for (int i = 0; i < N; i++) {
@@ -50,7 +50,7 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack(const bml_matrix_precision_
             }
         }
         break;
-    case double_precision:
+    case double_real:
         double_A = (double*)A;
         double_value = A_bml->value;
         for (int i = 0; i < N; i++) {
@@ -90,7 +90,7 @@ void *bml_convert_to_dense_ellpack(const bml_matrix_ellpack_t *A)
     int M = A->M;
 
     switch(A->matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = bml_allocate_memory(sizeof(float)*N*N);
         float_value = A->value;
         for (int i = 0; i < M; i++) {
@@ -102,7 +102,7 @@ void *bml_convert_to_dense_ellpack(const bml_matrix_ellpack_t *A)
         }
         return A_float;
         break;
-    case double_precision:
+    case double_real:
         A_double = bml_allocate_memory(sizeof(double)*N*N);
         double_value = A->value;
         for (int i = 0; i < M; i++) {

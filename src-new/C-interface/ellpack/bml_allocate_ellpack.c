@@ -52,10 +52,10 @@ bml_matrix_ellpack_t *bml_zero_matrix_ellpack(const bml_matrix_precision_t matri
     }
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A->value = bml_allocate_memory(sizeof(float)*N*M);
         break;
-    case double_precision:
+    case double_real:
         A->value = bml_allocate_memory(sizeof(double)*N*M);
         break;
     }
@@ -87,7 +87,7 @@ bml_matrix_ellpack_t *bml_random_matrix_ellpack(const bml_matrix_precision_t mat
     int *A_nnz = A->nnz;
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = A->value;
         for(int i = 0; i < N; i++) {
             int jind = 0;
@@ -102,7 +102,7 @@ bml_matrix_ellpack_t *bml_random_matrix_ellpack(const bml_matrix_precision_t mat
             A_nnz[i] = jind;
         }
         break;
-    case double_precision:
+    case double_real:
         A_double = A->value;
         for(int i = 0; i < N; i++) {
             int jind = 0;
@@ -145,7 +145,7 @@ bml_matrix_ellpack_t *bml_identity_matrix_ellpack(const bml_matrix_precision_t m
     int *A_nnz = A->nnz;
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = A->value;
         for(int i = 0; i < N; i++) {
             A_float[i*M] = 1;
@@ -153,7 +153,7 @@ bml_matrix_ellpack_t *bml_identity_matrix_ellpack(const bml_matrix_precision_t m
             A_nnz[i] = 1;
         }
         break;
-    case double_precision:
+    case double_real:
         A_double = A->value;
         for(int i = 0; i < N; i++) {
             A_double[i*M] = 1;

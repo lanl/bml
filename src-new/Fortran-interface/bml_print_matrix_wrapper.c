@@ -7,7 +7,7 @@ void bml_print_matrix_single(const int N,
                              const int j_l,
                              const int j_u)
 {
-    bml_print_matrix(N, single_precision, A, i_l, i_u, j_l, j_u);
+    bml_print_matrix(N, single_real, A, i_l, i_u, j_l, j_u);
 }
 
 void bml_print_matrix_double(const int N,
@@ -17,5 +17,5 @@ void bml_print_matrix_double(const int N,
                              const int j_l,
                              const int j_u)
 {
-    bml_print_matrix(N, double_precision, A, i_l, i_u, j_l, j_u);
+    bml_print_matrix(N, double_real, A, i_l, i_u, j_l, j_u);
 }

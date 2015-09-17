@@ -118,7 +118,7 @@
  * \code{.c}
  * #include <bml.h>
  *
- * bml_matrix_t *A = bml_zero_matrix(dense, single_precision, 100);
+ * bml_matrix_t *A = bml_zero_matrix(dense, single_real, 100);
  * bml_deallocate(&A);
  * \endcode
  *

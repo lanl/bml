@@ -25,10 +25,10 @@ bml_matrix_dense_t *bml_convert_from_dense_dense(const bml_matrix_precision_t ma
     bml_matrix_dense_t *A_bml = bml_zero_matrix_dense(matrix_precision, N);
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         memcpy(A_bml->matrix, A, sizeof(float)*N*N);
         break;
-    case double_precision:
+    case double_real:
         memcpy(A_bml->matrix, A, sizeof(double)*N*N);
         break;
     default:
@@ -51,12 +51,12 @@ void *bml_convert_to_dense_dense(const bml_matrix_dense_t *A)
     double *A_double = NULL;
 
     switch(A->matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = bml_allocate_memory(sizeof(float)*A->N*A->N);
         memcpy(A_float, A->matrix, sizeof(float)*A->N*A->N);
         return A_float;
         break;
-    case double_precision:
+    case double_real:
         A_double = bml_allocate_memory(sizeof(double)*A->N*A->N);
         memcpy(A_double, A->matrix, sizeof(double)*A->N*A->N);
         return A_double;

@@ -16,7 +16,7 @@ int test_function(const int N,
     double *B_double;
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = bml_allocate_memory(sizeof(float)*N*N);
         for(int i = 0; i < N*N; i++) {
             A_float[i] = rand()/(float) RAND_MAX;
@@ -33,7 +33,7 @@ int test_function(const int N,
         bml_free_memory(A_float);
         bml_free_memory(B_float);
         break;
-    case double_precision:
+    case double_real:
         A_double = bml_allocate_memory(sizeof(double)*N*N);
         for(int i = 0; i < N*N; i++) {
             A_double[i] = rand()/(double) RAND_MAX;

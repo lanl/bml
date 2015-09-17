@@ -18,7 +18,7 @@ int test_function(const int N,
     bml_deallocate(&A);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = bml_convert_to_dense(A);
         bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
        for(int i = 0; i < N; i++) {
@@ -38,7 +38,7 @@ int test_function(const int N,
         }
         bml_free_memory(A_float);
         break;
-    case double_precision:
+    case double_real:
         A_double = bml_convert_to_dense(A);
         bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
         for(int i = 0; i < N; i++) {
