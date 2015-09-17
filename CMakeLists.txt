@@ -50,7 +50,11 @@ find_program(INDENT indent)
 if(INDENT)
   message(STATUS "Setting up indent target")
   set(INDENT_ARGS -kr -bfda -nut)
-  add_custom_target(indent DEPENDS indent-C-interface indent-dense)
+  add_custom_target(indent
+    DEPENDS
+    indent-C-interface
+    indent-dense
+    indent-ellpack)
 else()
   add_custom_target(indent)
 endif()
