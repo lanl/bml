@@ -19,7 +19,7 @@ int test_function(const int N,
     B = bml_copy(A);
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = bml_convert_to_dense(A);
         B_float = bml_convert_to_dense(B);
         bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
@@ -35,7 +35,7 @@ int test_function(const int N,
         bml_free_memory(A_float);
         bml_free_memory(B_float);
         break;
-    case double_precision:
+    case double_real:
         A_double = bml_convert_to_dense(A);
         B_double = bml_convert_to_dense(B);
         bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);

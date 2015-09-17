@@ -29,10 +29,10 @@ bml_matrix_ellpack_t *bml_copy_ellpack(const bml_matrix_ellpack_t *A)
     memcpy(B->nnz, A->nnz, sizeof(int)*A->N);
 
     switch(B->matrix_precision) {
-    case single_precision:
+    case single_real:
         memcpy(B->value, A->value, sizeof(float)*A->N*A->M);
         break;
-    case double_precision:
+    case double_real:
         memcpy(B->value, A->value, sizeof(double)*A->N*A->M);
         break;
     }
