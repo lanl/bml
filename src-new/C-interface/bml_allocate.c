@@ -13,10 +13,11 @@
  * \param size The size of the memory.
  * \return A pointer to the allocated chunk.
  */
-void *bml_allocate_memory(const size_t size)
+void *bml_allocate_memory(
+    const size_t size)
 {
     void *ptr = calloc(1, size);
-    if(ptr == NULL) {
+    if (ptr == NULL) {
         LOG_ERROR("error allocating memory\n");
     }
     return ptr;
@@ -28,7 +29,8 @@ void *bml_allocate_memory(const size_t size)
  *
  * \param ptr A pointer to the previously allocated chunk.
  */
-void bml_free_memory(void *ptr)
+void bml_free_memory(
+    void *ptr)
 {
     free(ptr);
 }
@@ -39,9 +41,10 @@ void bml_free_memory(void *ptr)
  *
  * \param A The matrix.
  */
-void bml_deallocate(bml_matrix_t **A)
+void bml_deallocate(
+    bml_matrix_t ** A)
 {
-    switch(bml_get_type(*A)) {
+    switch (bml_get_type(*A)) {
     case dense:
         bml_deallocate_dense(*A);
         break;
@@ -69,14 +72,16 @@ void bml_deallocate(bml_matrix_t **A)
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
-bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
-                              const bml_matrix_precision_t matrix_precision,
-                              const int N, const int M)
+bml_matrix_t *bml_zero_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
 {
     bml_matrix_t *A = NULL;
 
     LOG_DEBUG("zero matrix of size %d\n", N);
-    switch(matrix_type) {
+    switch (matrix_type) {
     case dense:
         A = bml_zero_matrix_dense(matrix_precision, N);
         break;
@@ -104,14 +109,16 @@ bml_matrix_t *bml_zero_matrix(const bml_matrix_type_t matrix_type,
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
-bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
-                                const bml_matrix_precision_t matrix_precision,
-                                const int N, const int M)
+bml_matrix_t *bml_random_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
 {
     bml_matrix_t *A = NULL;
 
     LOG_DEBUG("random matrix of size %d\n", N);
-    switch(matrix_type) {
+    switch (matrix_type) {
     case dense:
         A = bml_random_matrix_dense(matrix_precision, N);
         break;
@@ -139,14 +146,16 @@ bml_matrix_t *bml_random_matrix(const bml_matrix_type_t matrix_type,
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
-bml_matrix_t *bml_identity_matrix(const bml_matrix_type_t matrix_type,
-                                  const bml_matrix_precision_t matrix_precision,
-                                  const int N, const int M)
+bml_matrix_t *bml_identity_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
 {
     bml_matrix_t *A = NULL;
 
     LOG_DEBUG("identity matrix of size %d\n", N);
-    switch(matrix_type) {
+    switch (matrix_type) {
     case dense:
         A = bml_identity_matrix_dense(matrix_precision, N);
         break;

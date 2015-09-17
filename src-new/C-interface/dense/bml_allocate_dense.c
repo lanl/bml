@@ -1,6 +1,6 @@
-#include "../bml_allocate.h"
-#include "../bml_types.h"
+#include "bml_allocate.h"
 #include "bml_allocate_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 /** Deallocate a matrix.
@@ -38,10 +38,10 @@ bml_matrix_dense_t *bml_zero_matrix_dense(const bml_matrix_precision_t matrix_pr
     A->matrix_precision = matrix_precision;
     A->N = N;
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A->matrix = bml_allocate_memory(sizeof(float)*N*N);
         break;
-    case double_precision:
+    case double_real:
         A->matrix = bml_allocate_memory(sizeof(double)*N*N);
         break;
     }
@@ -69,7 +69,7 @@ bml_matrix_dense_t *bml_random_matrix_dense(const bml_matrix_precision_t matrix_
     double *A_double = NULL;
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = A->matrix;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
@@ -77,7 +77,7 @@ bml_matrix_dense_t *bml_random_matrix_dense(const bml_matrix_precision_t matrix_
             }
         }
         break;
-    case double_precision:
+    case double_real:
         A_double = A->matrix;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
@@ -109,13 +109,13 @@ bml_matrix_dense_t *bml_identity_matrix_dense(const bml_matrix_precision_t matri
     double *A_double = NULL;
 
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
         A_float = A->matrix;
         for(int i = 0; i < N; i++) {
             A_float[i+N*i] = 1;
         }
         break;
-    case double_precision:
+    case double_real:
         A_double = A->matrix;
         for(int i = 0; i < N; i++) {
             A_double[i+N*i] = 1;

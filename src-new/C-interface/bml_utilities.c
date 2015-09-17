@@ -24,7 +24,7 @@ void bml_print_matrix(const int N,
 
     LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
     switch(matrix_precision) {
-    case single_precision:
+    case single_real:
     {
         A_float = A;
         for(int i = i_l; i < i_u; i++) {
@@ -35,7 +35,7 @@ void bml_print_matrix(const int N,
         }
         break;
     }
-    case double_precision:
+    case double_real:
     {
         A_double = A;
         for(int i = i_l; i < i_u; i++) {

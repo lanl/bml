@@ -7,6 +7,8 @@ set(C-TESTS
   convert_matrix.c
   copy_matrix.c)
 
+set(TYPES dense ellpack)
+
 # Scan the sources in C-TESTS and generate build rules to build and
 # test them. All tests are assumed to be functions using the
 # bml_test.h test framework.
@@ -17,20 +19,19 @@ foreach(FILE ${C-TESTS})
   endif()
   get_filename_component(BASENAME ${FILE} NAME_WE)
 
-  foreach(TYPE dense ellpack)
+  foreach(TYPE ${TYPES})
     set(MATRIX_TYPE bml_matrix_${TYPE}_t)
-    foreach(PRECISION single double)
-      set(MATRIX_PRECISION ${PRECISION}_precision)
-      if(PRECISION STREQUAL single)
+    foreach(PRECISION single_real double_real)
+      if(PRECISION STREQUAL single_real)
         set(REAL_TYPE float)
-      elseif(PRECISION STREQUAL double)
+      elseif(PRECISION STREQUAL double_real)
         set(REAL_TYPE double)
       else()
         message(FATAL_ERROR "Unknown type")
       endif()
       set(TESTNAME C-${BASENAME}-${TYPE}-${PRECISION})
       unset(COMPILE_DEFINITIONS)
-      list(APPEND COMPILE_DEFINITIONS "MATRIX_PRECISION=${MATRIX_PRECISION}")
+      list(APPEND COMPILE_DEFINITIONS "MATRIX_PRECISION=${PRECISION}")
       list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE=${MATRIX_TYPE}")
       list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE_NAME=${TYPE}")
       #list(APPEND COMPILE_DEFINITIONS "REAL_TYPE=${REAL_TYPE}")
@@ -43,10 +44,11 @@ foreach(FILE ${C-TESTS})
       target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
       if(VALGRIND)
-        add_test(valgrind-${TESTNAME}
+        add_test(${TESTNAME}-valgrind
           ${VALGRIND}
           --error-exitcode=1
           --leak-check=full
+          --read-var-info=yes
           --track-origins=yes
           ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME})
       endif()
@@ -91,7 +93,7 @@ foreach(FILE ${FORTRAN-TESTS})
 
   message(STATUS "Adding test ${BASENAME}")
 
-  foreach(type DENSE)
+  foreach(type ${TYPES})
     set(MATRIX_TYPE BML_MATRIX_${type})
     foreach(precision SINGLE DOUBLE)
       set(PRECISION BML_PRECISION_${precision})
