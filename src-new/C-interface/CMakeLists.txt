@@ -20,3 +20,14 @@ add_library(bml-c OBJECT ${SOURCES-C})
 
 add_subdirectory(dense)
 add_subdirectory(ellpack)
+
+if(INDENT)
+  unset(INDENT-C)
+  foreach(f ${HEADERS-C} ${SOURCES-C})
+    list(APPEND INDENT-C ${CMAKE_CURRENT_SOURCE_DIR}/${f})
+  endforeach()
+  add_custom_target(indent-C-interface
+    ${INDENT} ${INDENT_ARGS} ${INDENT-C})
+else()
+  add_custom_target(indent-C-interface)
+endif()

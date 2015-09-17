@@ -46,6 +46,15 @@ if(CMAKE_BUILD_TYPE)
   endif()
 endif()
 
+find_program(INDENT indent)
+if(INDENT)
+  message(STATUS "Setting up indent target")
+  set(INDENT_ARGS -kr -bfda -nut)
+  add_custom_target(indent DEPENDS indent-C-interface indent-dense)
+else()
+  add_custom_target(indent)
+endif()
+
 set(BUILD_SHARED_LIBS FALSE
   CACHE BOOL "Whether to build shared libraries (the default is static).")
 
@@ -156,10 +165,4 @@ mark_as_advanced(HAVE_ETAGS)
 if(HAVE_ETAGS)
   add_custom_target(tags
     ${HAVE_ETAGS} ${CMAKE_SOURCE_DIR}/src/*.F90)
-endif()
-
-find_program(INDENT indent)
-if(INDENT)
-  message(STATUS "Setting up indent target")
-  set(INDENT_ARGS -kr -bfda)
 endif()
