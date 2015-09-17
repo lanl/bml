@@ -114,6 +114,7 @@
 
 #include "bml_allocate.h"
 #include "bml_convert.h"
+#include "bml_copy.h"
 #include "bml_logger.h"
 #include "bml_utilities.h"
 

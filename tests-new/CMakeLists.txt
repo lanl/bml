@@ -4,7 +4,8 @@ include_directories(
 
 set(C-TESTS
   allocate_matrix.c
-  convert_matrix.c)
+  convert_matrix.c
+  copy_matrix.c)
 
 # Scan the sources in C-TESTS and generate build rules to build and
 # test them. All tests are assumed to be functions using the
