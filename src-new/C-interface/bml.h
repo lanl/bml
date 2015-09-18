@@ -20,7 +20,27 @@
  * have a look at the
  * \ref developer_documentation "Developer Documentation".
  *
- * \section supported_type Supported Matrix Types
+ * \section planned_features Planned Features
+ *
+ * We are planning to eventually support different matrix types and
+ * matrix operations on a variety of hardware platforms. For details,
+ * please have a look at our \ref future_plans "future plans".
+ *
+ * \author Jamaludin Mohd-Yusof <jamal@lanl.gov>
+ * \author Nicolas Bock <nbock@lanl.gov>
+ * \author Susan M. Mniszewski <smm@lanl.gov>
+ *
+ * \copyright Los Alamos National Laboratory 2015
+ *
+ * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
+ * \defgroup convert_group_C Converting between Matrix Formats (C interface)
+ * \defgroup allocate_group_Fortran Allocation and Deallocation Functions (Fortran interface)
+ * \defgroup convert_group_Fortran Converting between Matrix Formats (Fortran interface)
+ */
+
+/** \page future_plans "Future Plans"
+ *
+ * \section planned_type Matrix Types
  *
  * Support types:
  *     - bml_matrix_t
@@ -28,7 +48,7 @@
  *     - Noncolinear
  *     - Blocked Bloch Matrix
  *
- * \subsection supported_precisions Supported Precisions
+ * \section planned_precisions Precisions
  *
  * The bml supports the following precisions:
  *     - logical (for matrix masks)
@@ -37,7 +57,7 @@
  *     - single complex
  *     - double complex
  *
- * \subsection supported_functions Supported Functions
+ * \section planned_functions Functions
  *
  * The library supports the following matrix operations:
  *     - Format Conversion
@@ -83,16 +103,7 @@
  *         - bml_commutator::bml_commutator
  *         - bml_commutator::bml_anticommutator
  *
- * \author Jamaludin Mohd-Yusof <jamal@lanl.gov>
- * \author Nicolas Bock <nbock@lanl.gov>
- * \author Susan M. Mniszewski <smm@lanl.gov>
- *
- * \copyright Los Alamos National Laboratory 2015
- *
- * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
- * \defgroup convert_group_C Converting between Matrix Formats (C interface)
- * \defgroup allocate_group_Fortran Allocation and Deallocation Functions (Fortran interface)
- * \defgroup convert_group_Fortran Converting between Matrix Formats (Fortran interface)
+ * Back to the \ref index "main page".
  */
 
 /** \page C_usage C Usage
@@ -153,6 +164,25 @@
  */
 
 /** \page developer_documentation Developer Documentation
+ *
+ * \section workflow Developer Suggested Workflow
+ *
+ * We try to preserve a linear history in our main (master)
+ * branch. Instead of pulling (i.e. merging), we suggest you use:
+ *
+ *     $ git pull --rebase
+ *
+ * And then
+ *
+ *     $ git push
+ *
+ * To push your changes back to the server.
+ *
+ * \section coding_style Coding Style
+ *
+ * Please indent your C code using
+ *
+ *     $ indent -gnu -nut -i4 -bli0
  *
  * Back to the \ref index "main page".
  */
