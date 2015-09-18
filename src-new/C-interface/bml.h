@@ -38,7 +38,7 @@
  * \defgroup convert_group_Fortran Converting between Matrix Formats (Fortran interface)
  */
 
-/** \page future_plans "Future Plans"
+/** \page future_plans Future Plans
  *
  * \section planned_type Matrix Types
  *
