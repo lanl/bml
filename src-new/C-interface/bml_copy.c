@@ -13,19 +13,21 @@
  * \param A Matrix to copy
  * \return  A Copy of A
  */
-bml_matrix_t *bml_copy(const bml_matrix_t *A)
+bml_matrix_t *
+bml_copy (const bml_matrix_t * A)
 {
     bml_matrix_t *B = NULL;
 
-    switch(bml_get_type(A)) {
+    switch (bml_get_type (A))
+    {
     case dense:
-        B = bml_copy_dense(A);
+        B = bml_copy_dense (A);
         break;
     case ellpack:
-        B = bml_copy_ellpack(A);
+        B = bml_copy_ellpack (A);
         break;
     default:
-        LOG_ERROR("unknown matrix type\n");
+        LOG_ERROR ("unknown matrix type\n");
         break;
     }
     return B;

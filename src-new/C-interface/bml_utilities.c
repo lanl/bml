@@ -13,41 +13,46 @@
  * \param j_l The lower column index.
  * \param j_u The upper column index.
  */
-void bml_print_matrix(const int N,
-                      bml_matrix_precision_t matrix_precision,
-                      const void *A,
-                      const int i_l, const int i_u,
-                      const int j_l, const int j_u)
+void
+bml_print_matrix (const int N,
+                  bml_matrix_precision_t matrix_precision,
+                  const void *A,
+                  const int i_l, const int i_u, const int j_l, const int j_u)
 {
     const float *A_float;
     const double *A_double;
 
-    LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
-    switch(matrix_precision) {
+    LOG_DEBUG ("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
+    switch (matrix_precision)
+    {
     case single_real:
-    {
-        A_float = A;
-        for(int i = i_l; i < i_u; i++) {
-            for(int j = j_l; j < j_u; j++) {
-                printf("% 1.3f", A_float[i+j*N]);
+        {
+            A_float = A;
+            for (int i = i_l; i < i_u; i++)
+            {
+                for (int j = j_l; j < j_u; j++)
+                {
+                    printf ("% 1.3f", A_float[i + j * N]);
+                }
+                printf ("\n");
             }
-            printf("\n");
+            break;
         }
-        break;
-    }
     case double_real:
-    {
-        A_double = A;
-        for(int i = i_l; i < i_u; i++) {
-            for(int j = j_l; j < j_u; j++) {
-                printf("% 1.3f", A_double[i+j*N]);
+        {
+            A_double = A;
+            for (int i = i_l; i < i_u; i++)
+            {
+                for (int j = j_l; j < j_u; j++)
+                {
+                    printf ("% 1.3f", A_double[i + j * N]);
+                }
+                printf ("\n");
             }
-            printf("\n");
+            break;
         }
-        break;
-    }
     default:
-        LOG_ERROR("unknown matrix precision\n");
+        LOG_ERROR ("unknown matrix precision\n");
         break;
     }
 }
