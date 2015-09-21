@@ -37,7 +37,7 @@ bml_matrix_t *bml_copy_new(const bml_matrix_t *A)
  * \param A Matrix to copy
  * \param B Copy of Matrix A
  */
-void bml_copy(const bml_matrix_t *A, bml_matrix_t *B)
+void bml_copy(const bml_matrix_t *A, const bml_matrix_t *B)
 {
     switch(bml_get_type(A)) {
     case dense:

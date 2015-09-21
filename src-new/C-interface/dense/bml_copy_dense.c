@@ -39,7 +39,7 @@ bml_matrix_dense_t *bml_copy_dense_new(const bml_matrix_dense_t *A)
  *  \param A The matrix to be copied
  *  \param B Copy of matrix A
  */
-void bml_copy_dense(const bml_matrix_dense_t *A, bml_matrix_dense_t *B)
+void bml_copy_dense(const bml_matrix_dense_t *A, const bml_matrix_dense_t *B)
 {
  
     switch(A->matrix_precision) {

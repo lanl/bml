@@ -42,7 +42,7 @@ bml_matrix_ellpack_t *bml_copy_ellpack_new(const bml_matrix_ellpack_t *A)
  *  \param A The matrix to be copied
  *  \param B Copy of matrix A
  */
-void bml_copy_ellpack(const bml_matrix_ellpack_t *A, bml_matrix_ellpack_t *B)
+void bml_copy_ellpack(const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B)
 {
 
     memcpy(B->index, A->index, sizeof(int)*A->N*A->M);
