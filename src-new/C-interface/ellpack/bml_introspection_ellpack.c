@@ -7,11 +7,15 @@
  * \param A The matrix.
  * \return The matrix size.
  */
-int bml_get_size_ellpack(const bml_matrix_ellpack_t *A)
+int
+bml_get_size_ellpack (const bml_matrix_ellpack_t * A)
 {
-    if(A != NULL) {
+    if (A != NULL)
+    {
         return A->N;
-    } else {
+    }
+    else
+    {
         return -1;
     }
 }

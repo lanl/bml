@@ -4,7 +4,8 @@
 #include "bml_types.h"
 
 /** ELLPACK matrix type. */
-struct bml_matrix_ellpack_t {
+struct bml_matrix_ellpack_t
+{
     /** The matrix type identifier. */
     bml_matrix_type_t matrix_type;
     /** The real precision. */

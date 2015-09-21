@@ -3,6 +3,6 @@
 
 #include "bml_types_ellpack.h"
 
-int bml_get_size_ellpack(const bml_matrix_ellpack_t *A);
+int bml_get_size_ellpack (const bml_matrix_ellpack_t * A);
 
 #endif

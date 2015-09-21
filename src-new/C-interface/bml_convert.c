@@ -18,21 +18,23 @@
  * \param M The number of non-zeroes per row
  * \return The bml matrix
  */
-bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
-                                     const bml_matrix_precision_t matrix_precision,
-                                     const int N,
-                                     const void *A,
-                                     const double threshold,
-                                     const int M)
+bml_matrix_t *
+bml_convert_from_dense (const bml_matrix_type_t matrix_type,
+                        const bml_matrix_precision_t matrix_precision,
+                        const int N,
+                        const void *A, const double threshold, const int M)
 {
-    LOG_DEBUG("Converting dense matrix to bml format\n");
-    switch(matrix_type) {
+    LOG_DEBUG ("Converting dense matrix to bml format\n");
+    switch (matrix_type)
+    {
     case dense:
-        return bml_convert_from_dense_dense(matrix_precision, N, A, threshold);
+        return bml_convert_from_dense_dense (matrix_precision, N, A,
+                                             threshold);
     case ellpack:
-        return bml_convert_from_dense_ellpack(matrix_precision, N, A, threshold, M);
+        return bml_convert_from_dense_ellpack (matrix_precision, N, A,
+                                               threshold, M);
     default:
-        LOG_ERROR("unknown matrix type\n");
+        LOG_ERROR ("unknown matrix type\n");
     }
     return NULL;
 }
@@ -58,16 +60,18 @@ bml_matrix_t *bml_convert_from_dense(const bml_matrix_type_t matrix_type,
  * \param A The bml matrix
  * \return The dense matrix
  */
-void *bml_convert_to_dense(const bml_matrix_t *A)
+void *
+bml_convert_to_dense (const bml_matrix_t * A)
 {
-    LOG_DEBUG("Converting bml matrix to dense\n");
-    switch(bml_get_type(A)) {
+    LOG_DEBUG ("Converting bml matrix to dense\n");
+    switch (bml_get_type (A))
+    {
     case dense:
-        return bml_convert_to_dense_dense(A);
+        return bml_convert_to_dense_dense (A);
     case ellpack:
-        return bml_convert_to_dense_ellpack(A);
+        return bml_convert_to_dense_ellpack (A);
     default:
-        LOG_ERROR("unknown matrix type\n");
+        LOG_ERROR ("unknown matrix type\n");
     }
     return NULL;
 }

@@ -4,7 +4,8 @@
 #define __BML_TYPES_H
 
 /** The supported matrix types. */
-typedef enum {
+typedef enum
+{
     /** The matrix is not initialized. */
     uninitialized,
     /** Dense matrix. */
@@ -16,7 +17,8 @@ typedef enum {
 } bml_matrix_type_t;
 
 /** The supported real precisions. */
-typedef enum {
+typedef enum
+{
     /** Matrix data is stored in single precision (float). */
     single_real,
     /** Matrix data is stored in double precision (double). */

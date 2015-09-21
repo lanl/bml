@@ -15,21 +15,23 @@
  *  \param A The matrix to be copied
  *  \return A copy of matrix A.
  */
-bml_matrix_ellpack_t *bml_copy_ellpack(const bml_matrix_ellpack_t *A)
+bml_matrix_ellpack_t *
+bml_copy_ellpack (const bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B = NULL;
 
-    B = bml_zero_matrix_ellpack(A->matrix_precision, A->N, A->M);
-    
-    memcpy(B->index, A->index, sizeof(int)*A->N*A->M);
-    memcpy(B->nnz, A->nnz, sizeof(int)*A->N);
+    B = bml_zero_matrix_ellpack (A->matrix_precision, A->N, A->M);
 
-    switch(B->matrix_precision) {
+    memcpy (B->index, A->index, sizeof (int) * A->N * A->M);
+    memcpy (B->nnz, A->nnz, sizeof (int) * A->N);
+
+    switch (B->matrix_precision)
+    {
     case single_real:
-        memcpy(B->value, A->value, sizeof(float)*A->N*A->M);
+        memcpy (B->value, A->value, sizeof (float) * A->N * A->M);
         break;
     case double_real:
-        memcpy(B->value, A->value, sizeof(double)*A->N*A->M);
+        memcpy (B->value, A->value, sizeof (double) * A->N * A->M);
         break;
     }
     return B;
