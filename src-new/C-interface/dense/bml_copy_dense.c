@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/** Copy a dense matrix.
+/** Copy a dense matrix - result in new matrix.
  *
  *  \ingroup copy_group
  *
@@ -30,4 +30,25 @@ bml_matrix_dense_t *bml_copy_dense(const bml_matrix_dense_t *A)
         break;
     }
     return B;
+}
+
+/** Copy a dense matrix - result in existing matrix.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be copied
+ *  \param B Copy of matrix A
+ */
+void bml_copy_dense(const bml_matrix_dense_t *A, const bml_matrix_dense_t *B)
+{
+    B->N = A->N;
+
+    switch(A->matrix_precision) {
+    case single_real:
+        memcpy(B->matrix, A->matrix, sizeof(float)*A->N*A->N);
+        break;
+    case double_real:
+        memcpy(B->matrix, A->matrix, sizeof(double)*A->N*A->N);
+        break;
+    }
 }

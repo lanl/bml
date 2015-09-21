@@ -8,11 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/** Copy an ellpackmatrix.
- *
- *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
- *  already allocated then the matrix will be deallocated in the
- *  process.
+/** Copy an ellpack matrix - result is a new matrix.
  *
  *  \ingroup copy_group
  *
@@ -37,4 +33,26 @@ bml_matrix_ellpack_t *bml_copy_ellpack(const bml_matrix_ellpack_t *A)
         break;
     }
     return B;
+}
+
+/** Copy an ellpack matrix - result is an existing matrix.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be copied
+ *  \param B Copy of matrix A
+ */
+void bml_copy_ellpack(const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B)
+{
+    memcpy(B->index, A->index, sizeof(int)*A->N*A->M);
+    memcpy(B->nnz, A->nnz, sizeof(int)*A->N);
+
+    switch(B->matrix_precision) {
+    case single_real:
+        memcpy(B->value, A->value, sizeof(float)*A->N*A->M);
+        break;
+    case double_real:
+        memcpy(B->value, A->value, sizeof(double)*A->N*A->M);
+        break;
+    }
 }

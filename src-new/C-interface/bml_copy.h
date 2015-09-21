@@ -5,6 +5,10 @@
 
 #include "bml_types.h"
 
+// Copy A to a new matrix
 bml_matrix_t *bml_copy(const bml_matrix_t *A);
+
+// Copy A to an existing matrix
+void bml_copy(const bml_matrix_t *A, const bml_matrix_t *B);
 
 #endif

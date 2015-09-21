@@ -4,5 +4,6 @@
 #include "bml_types_ellpack.h"
 
 bml_matrix_ellpack_t *bml_copy_ellpack(const bml_matrix_ellpack_t *A);
+void bml_copy_ellpack(const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B);
 
 #endif
