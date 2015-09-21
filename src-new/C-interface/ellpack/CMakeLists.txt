@@ -3,14 +3,17 @@ include_directories(..)
 set(HEADERS-ELLPACK
   bml_allocate_ellpack.h
   bml_convert_ellpack.h
+  bml_copy_ellpack.h
   bml_introspection_ellpack.h
+  bml_scale_ellpack.h
   bml_types_ellpack.h)
 
 set(SOURCES-ELLPACK
   bml_allocate_ellpack.c
   bml_convert_ellpack.c
   bml_copy_ellpack.c
-  bml_introspection_ellpack.c)
+  bml_introspection_ellpack.c
+  bml_scale_ellpack.c)
 add_library(bml-ellpack OBJECT ${SOURCES-ELLPACK})
 
 if(INDENT)

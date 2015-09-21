@@ -1,3 +1,4 @@
+#include "bml_allocate.h"
 #include "bml_copy.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
@@ -13,36 +14,31 @@
  * \param A Matrix to copy
  * \return  A Copy of A
  */
-bml_matrix_t *
-bml_copy (const bml_matrix_t * A)
+bml_matrix_t *bml_copy_new(const bml_matrix_t *A)
 {
     bml_matrix_t *B = NULL;
 
-    switch (bml_get_type (A))
-    {
+    switch(bml_get_type(A)) {
     case dense:
-        B = bml_copy_dense (A);
+        B = bml_copy_dense_new(A);
         break;
     case ellpack:
-        B = bml_copy_ellpack (A);
+        B = bml_copy_ellpack_new(A);
         break;
     default:
-        LOG_ERROR ("unknown matrix type\n");
+        LOG_ERROR("unknown matrix type\n");
         break;
     }
     return B;
 }
 
-/** Copy a matrix - result is an existing matrix.
- *
- * \ingroup copy_group_C
+/** Copy a matrix.
  *
  * \param A Matrix to copy
  * \param B Copy of Matrix A
  */
-void bml_copy(const bml_matrix_t *A, const bml_matrix_t *B)
+void bml_copy(const bml_matrix_t *A, bml_matrix_t *B)
 {
-
     switch(bml_get_type(A)) {
     case dense:
         bml_copy_dense(A, B);
