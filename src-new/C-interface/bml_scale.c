@@ -40,7 +40,7 @@ bml_matrix_t *bml_scale_new(const double scale_factor, const bml_matrix_t *A)
  * \param A Matrix to scale
  * \param B Scaled Matrix
  */
-void bml_scale(const double scale_factor, const bml_matrix_t *A, bml_matrix_t *B)
+void bml_scale(const double scale_factor, const bml_matrix_t *A, const bml_matrix_t *B)
 {
     switch(bml_get_type(A)) {
     case dense:

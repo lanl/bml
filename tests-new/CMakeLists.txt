@@ -5,7 +5,8 @@ include_directories(
 set(C-TESTS
   allocate_matrix.c
   convert_matrix.c
-  copy_matrix.c)
+  copy_matrix.c
+  scale_matrix.c)
 
 if(INDENT)
   message(STATUS "Setting up indent-tests")

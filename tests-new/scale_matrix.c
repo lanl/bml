@@ -16,10 +16,13 @@ int test_function(const int N,
     float *A_float = NULL, *B_float = NULL, *C_float = NULL;
     double *A_double = NULL, *B_double = NULL, *C_double = NULL;
 
+    double scale_factor = 2.0;
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    B = bml_copy_new(A);
+    B = bml_scale_new(scale_factor, A);
     C = bml_zero_matrix(matrix_type, matrix_precision, N, M);
-    bml_copy(B, C);
+    bml_scale(scale_factor, A, C);
+    bml_scale(scale_factor, A, A);
 
     switch(matrix_precision) {
     case single_real:
@@ -63,7 +66,7 @@ int test_function(const int N,
     bml_deallocate(&B);
     bml_deallocate(&C);
 
-    LOG_INFO("copy matrix test passed\n");
+    LOG_INFO("scale matrix test passed\n");
 
     return 0;
 }

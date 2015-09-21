@@ -2,11 +2,13 @@
 #include "../bml_scale.h"
 #include "../bml_types.h"
 #include "bml_allocate_ellpack.h"
+#include "bml_copy_ellpack.h"
 #include "bml_scale_ellpack.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
 #include <string.h>
+#include <mkl.h>
 
 /** Scale an ellpack matrix - result is a new matrix.
  *
@@ -17,19 +19,20 @@
  */
 bml_matrix_ellpack_t *bml_scale_ellpack_new(const double scale_factor, const bml_matrix_ellpack_t *A)
 {
-    bml_matrix_ellpack_t *B = NULL;
+    float scale_factor_s;
 
-    B = bml_zero_matrix_ellpack(A->matrix_precision, A->N, A->M);
+    bml_matrix_ellpack_t *B = bml_copy_ellpack_new(A);
+
+    int nElems = B->N * B->M;
+    int inc = 1;
     
-    memcpy(B->index, A->index, sizeof(int)*A->N*A->M);
-    memcpy(B->nnz, A->nnz, sizeof(int)*A->N);
-
     switch(B->matrix_precision) {
     case single_real:
-        memcpy(B->value, A->value, sizeof(float)*A->N*A->M);
+        scale_factor_s = (float)scale_factor;
+        sscal(&nElems, &scale_factor_s, B->value, &inc);
         break;
     case double_real:
-        memcpy(B->value, A->value, sizeof(double)*A->N*A->M);
+        dscal(&nElems, &scale_factor, B->value, &inc);
         break;
     }
     return B;
@@ -42,12 +45,22 @@ bml_matrix_ellpack_t *bml_scale_ellpack_new(const double scale_factor, const bml
  *  \param A The matrix to be scaled
  *  \param B Scaled version of matrix A
  */
-void bml_scale_ellpack(const double scale_factor, const bml_matrix_ellpack_t *A, bml_matrix_ellpack_t *B)
+void bml_scale_ellpack(const double scale_factor, const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B)
 {
+    float scale_factor_s;
+
+    if (A != B) bml_copy_ellpack(A, B);
+
+    int nElems = B->N * B->M;
+    int inc = 1;
+    
     switch(A->matrix_precision) {
     case single_real:
+        scale_factor_s = (float)scale_factor;
+        sscal(&nElems, &scale_factor_s, B->value, &inc);
         break;
     case double_real:
+        dscal(&nElems, &scale_factor, B->value, &inc);
         break;
     }
 }
