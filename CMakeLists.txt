@@ -186,7 +186,7 @@ else()
 endif()
 
 if(INDENT AND BML_NEW)
-  message(STATUS "Setting up indent target")
+  message(STATUS "Creating indent target")
   add_custom_target(indent
     DEPENDS
     indent-C-interface
@@ -211,6 +211,7 @@ list(APPEND DIST_FILES
 
 find_program(TAR tar)
 if(TAR)
+  message(STATUS "Creating dist target")
   add_custom_target(dist
     ${TAR}
     -C ${CMAKE_SOURCE_DIR}
