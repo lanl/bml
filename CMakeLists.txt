@@ -47,6 +47,7 @@ if(CMAKE_BUILD_TYPE)
 endif()
 
 find_program(INDENT indent)
+mark_as_advanced(INDENT)
 if(INDENT)
   message(STATUS "Setting up indent target")
   set(INDENT_ARGS -gnu -nut -i4 -bli0)
@@ -59,8 +60,8 @@ else()
   add_custom_target(indent)
 endif()
 
-set(BUILD_SHARED_LIBS FALSE
-  CACHE BOOL "Whether to build shared libraries (the default is static).")
+# set(BUILD_SHARED_LIBS FALSE
+#   CACHE BOOL "Whether to build shared libraries (the default is static).")
 
 include(CheckFunctionExists)
 set(CMAKE_REQUIRED_LIBRARIES "-lm")
