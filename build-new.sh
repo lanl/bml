@@ -19,7 +19,7 @@ configure() {
           -DCMAKE_Fortran_COMPILER=${FC:=gfortran} \
           -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
           -DBML_OPENMP=${BML_OPENMP:=yes} \
-          -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:=yes} \
+          -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:=no} \
           -DBML_TESTING=${BML_TESTIND:=yes} \
           -DBML_NEW=yes
     cd "${TOP_DIR}"
