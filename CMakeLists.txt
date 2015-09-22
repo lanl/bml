@@ -189,3 +189,19 @@ if(HAVE_ETAGS)
   add_custom_target(tags
     ${HAVE_ETAGS} ${CMAKE_SOURCE_DIR}/src/*.F90)
 endif()
+
+list(APPEND DIST_FILES
+  ${CMAKE_SOURCE_DIR}/CMakeLists.txt
+  ${CMAKE_SOURCE_DIR}/README.md
+  ${CMAKE_SOURCE_DIR}/bml-manual.pdf)
+
+find_program(TAR tar)
+if(TAR)
+  add_custom_target(dist
+    ${TAR}
+    -C ${CMAKE_SOURCE_DIR}
+    -cvf ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}-${PROJECT_VERSION}.tar
+    ${DIST_FILES})
+else()
+  add_custom_target(dist)
+endif()
