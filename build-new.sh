@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TOP_DIR="${PWD}"
 BUILD_DIR="${TOP_DIR}/build-new"
@@ -47,10 +47,40 @@ testing() {
     cd "${TOP_DIR}"
 }
 
-create_directories
-configure
-docs
-install
-testing
+if [[ $# -gt 0 ]]; then
+    if [[ "$1" = "create_directories" ]]; then
+        create_directories
+    elif [[ "$1" = "configure" ]]; then
+        create_directories
+        configure
+    elif [[ "$1" = "docs" ]]; then
+        create_directories
+        configure
+        docs
+    elif [[ "$1" = "compile" ]]; then
+        create_directories
+        configure
+        compile
+    elif [[ "$1" = "install" ]]; then
+        create_directories
+        configure
+        install
+    elif [[ "$1" = "testing" ]]; then
+        create_directories
+        configure
+        compile
+        testing
+    else
+        echo "unknown command $1"
+        exit 1
+    fi
+else
+    create_directories
+    configure
+    docs
+    compile
+    install
+    testing
+fi
 
 echo "The output was written to ${LOG_FILE}"
