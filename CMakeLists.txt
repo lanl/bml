@@ -46,23 +46,6 @@ if(CMAKE_BUILD_TYPE)
   endif()
 endif()
 
-find_program(INDENT indent)
-mark_as_advanced(INDENT)
-if(INDENT)
-  message(STATUS "Setting up indent target")
-  set(INDENT_ARGS -gnu -nut -i4 -bli0)
-  add_custom_target(indent
-    DEPENDS
-    indent-C-interface
-    indent-dense
-    indent-ellpack)
-else()
-  add_custom_target(indent)
-endif()
-
-# set(BUILD_SHARED_LIBS FALSE
-#   CACHE BOOL "Whether to build shared libraries (the default is static).")
-
 include(CheckFunctionExists)
 set(CMAKE_REQUIRED_LIBRARIES "-lm")
 check_function_exists(fabs HAVE_FABS)
@@ -135,6 +118,10 @@ if(LAPACK_FOUND)
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
+find_program(INDENT indent)
+message(STATUS "Found indent: ${INDENT}")
+mark_as_advanced(INDENT)
+
 set(BML_NEW FALSE
   CACHE BOOL "Whether to build the new version of the library")
 
@@ -177,6 +164,23 @@ if(BML_TESTING)
   else()
     add_subdirectory(tests)
   endif()
+else()
+  if(BML_NEW)
+    add_custom_target(indent-tests)
+  endif()
+endif()
+
+if(INDENT AND BML_NEW)
+  message(STATUS "Setting up indent target")
+  set(INDENT_ARGS -gnu -nut -i4 -bli0)
+  add_custom_target(indent
+    DEPENDS
+    indent-C-interface
+    indent-dense
+    indent-ellpack
+    indent-tests)
+else()
+  add_custom_target(indent)
 endif()
 
 find_program(HAVE_ETAGS etags)

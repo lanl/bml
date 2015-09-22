@@ -7,6 +7,18 @@ set(C-TESTS
   convert_matrix.c
   copy_matrix.c)
 
+if(INDENT)
+  message(STATUS "Setting up indent-tests")
+  unset(INDENT-TESTS)
+  foreach(f ${C-TESTS} test_driver.c bml_test.h)
+    list(APPEND INDENT-TESTS ${CMAKE_CURRENT_SOURCE_DIR}/${f})
+  endforeach()
+  add_custom_target(indent-tests
+    ${INDENT} ${INDENT_ARGS} ${INDENT-TESTS})
+else()
+  add_custom_target(indent-tests)
+endif()
+
 set(TYPES dense ellpack)
 
 # Scan the sources in C-TESTS and generate build rules to build and

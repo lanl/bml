@@ -19,6 +19,7 @@ set_target_properties(bml-dense
   PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 if(INDENT)
+  message(STATUS "Setting up indent-dense")
   unset(INDENT-DENSE)
   foreach(f ${HEADERS-DENSE} ${SOURCES-DENSE})
     list(APPEND INDENT-DENSE ${CMAKE_CURRENT_SOURCE_DIR}/${f})

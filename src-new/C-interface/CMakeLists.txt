@@ -1,5 +1,6 @@
 include_directories(.)
 
+# Public headers.
 set(HEADERS-C
   bml.h
   bml_allocate.h
@@ -17,8 +18,8 @@ set(SOURCES-C
   bml_convert.c
   bml_copy.c
   bml_introspection.c
-  bml_scale.c
   bml_logger.c
+  bml_scale.c
   bml_utilities.c)
 add_library(bml-c OBJECT ${SOURCES-C})
 set_target_properties(bml-c
@@ -28,6 +29,7 @@ add_subdirectory(dense)
 add_subdirectory(ellpack)
 
 if(INDENT)
+  message(STATUS "Setting up indent-C-interface")
   unset(INDENT-C)
   foreach(f ${HEADERS-C} ${SOURCES-C})
     list(APPEND INDENT-C ${CMAKE_CURRENT_SOURCE_DIR}/${f})

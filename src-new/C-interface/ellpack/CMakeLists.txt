@@ -19,6 +19,7 @@ set_target_properties(bml-ellpack
   PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 if(INDENT)
+  message(STATUS "Setting up indent-ellpack")
   unset(INDENT-ELLPACK)
   foreach(f ${HEADERS-ELLPACK} ${SOURCES-ELLPACK})
     list(APPEND INDENT-ELLPACK ${CMAKE_CURRENT_SOURCE_DIR}/${f})
