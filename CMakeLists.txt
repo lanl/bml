@@ -72,6 +72,19 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
+set(BLAS_VENDOR ""
+  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,ACML}")
+
+if(BLAS_VENDOR STREQUAL "Intel")
+  message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
+  set(BLA_VENDOR Intel10_64lp)
+elseif(BLAS_VENDOR STREQUAL "ACML")
+  message(STATUS "Attempting to use AMD's BLAS/LAPACK (ACML)")
+  set(BLA_VENDOR ACML)
+else()
+  message(STATUS "Using first BLAS/LAPACK found")
+endif()
+
 include(FindBLAS)
 include(FindLAPACK)
 

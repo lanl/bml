@@ -21,6 +21,7 @@ configure() {
           -DBML_OPENMP=${BML_OPENMP:=yes} \
           -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:=no} \
           -DBML_TESTING=${BML_TESTIND:=yes} \
+          -DBLAS_VENDOR=${BLAS_VENDOR:=} \
           -DBML_NEW=yes
     cd "${TOP_DIR}"
 }
