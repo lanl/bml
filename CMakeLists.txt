@@ -131,7 +131,7 @@ if(LAPACK_FOUND)
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
-set(INDENT_ARGS -gnu -nut -i4 -bli0)
+set(INDENT_ARGS -gnu -nut -i4 -bli0 -npcs -bfda)
 
 find_program(INDENT indent)
 message(STATUS "Found indent: ${INDENT}")

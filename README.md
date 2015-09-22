@@ -32,4 +32,4 @@ To push your changes back to the server.
 
 Please indent your C code using
 
-    $ indent -gnu -nut -i4 -bli0
+    $ indent -gnu -nut -i4 -bli0 -npcs -bfda
