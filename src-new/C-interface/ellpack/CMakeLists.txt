@@ -15,6 +15,8 @@ set(SOURCES-ELLPACK
   bml_introspection_ellpack.c
   bml_scale_ellpack.c)
 add_library(bml-ellpack OBJECT ${SOURCES-ELLPACK})
+set_target_properties(bml-ellpack
+  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 if(INDENT)
   unset(INDENT-ELLPACK)

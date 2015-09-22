@@ -73,6 +73,11 @@ endif()
 
 include(FindThreads)
 
+set(BML_OPENMP TRUE CACHE BOOL "Whether to compile with OpenMP support")
+if(BML_OPENMP)
+  include(FindOpenMP)
+endif()
+
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
 if(BML_CUDA)
   include(FindCUDA)

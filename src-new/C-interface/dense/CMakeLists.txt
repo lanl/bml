@@ -15,6 +15,8 @@ set(SOURCES-DENSE
   bml_introspection_dense.c
   bml_scale_dense.c)
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
+set_target_properties(bml-dense
+  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 if(INDENT)
   unset(INDENT-DENSE)

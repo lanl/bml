@@ -21,6 +21,8 @@ set(SOURCES-C
   bml_logger.c
   bml_utilities.c)
 add_library(bml-c OBJECT ${SOURCES-C})
+set_target_properties(bml-c
+  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 add_subdirectory(dense)
 add_subdirectory(ellpack)
