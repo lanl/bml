@@ -131,6 +131,8 @@ if(LAPACK_FOUND)
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
+set(INDENT_ARGS -gnu -nut -i4 -bli0)
+
 find_program(INDENT indent)
 message(STATUS "Found indent: ${INDENT}")
 mark_as_advanced(INDENT)
@@ -185,7 +187,6 @@ endif()
 
 if(INDENT AND BML_NEW)
   message(STATUS "Setting up indent target")
-  set(INDENT_ARGS -gnu -nut -i4 -bli0)
   add_custom_target(indent
     DEPENDS
     indent-C-interface
