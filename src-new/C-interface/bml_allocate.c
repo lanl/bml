@@ -71,8 +71,7 @@ bml_deallocate(
  *  \ingroup allocate_group_C
  *
  *  \param matrix_type The matrix type.
- *  \param matrix_precision The precision of the matrix. The default
- *  is double precision.
+ *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
@@ -110,8 +109,7 @@ bml_zero_matrix(
  *  \ingroup allocate_group_C
  *
  *  \param matrix_type The matrix type.
- *  \param matrix_precision The precision of the matrix. The default
- *  is double precision.
+ *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
@@ -149,8 +147,7 @@ bml_random_matrix(
  *  \ingroup allocate_group_C
  *
  *  \param matrix_type The matrix type.
- *  \param matrix_precision The precision of the matrix. The default
- *  is double precision.
+ *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
