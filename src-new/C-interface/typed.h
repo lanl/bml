@@ -1,5 +1,3 @@
-/** \file */
-
 #ifndef __TYPED_H
 #define __TYPED_H
 

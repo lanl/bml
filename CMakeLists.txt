@@ -113,10 +113,10 @@ if(BLAS_FOUND)
 
   check_fortran_function_exists(dgemm HAVE_DGEMM)
   check_fortran_function_exists(sgemm HAVE_SGEMM)
-  if(NOT HAVE_DGEMM OR NOT HAVE_SGEMM)
+  if(NOT HAVE_SGEMM OR NOT HAVE_DGEMM)
     message(FATAL_ERROR "Could not find {s,d}gemm")
   endif()
-  add_definitions(-DHAVE_DGEMM -DHAVE_SGEMM)
+  add_definitions(-DHAVE_SGEMM -DHAVE_DGEMM)
 
   check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
   check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
@@ -136,8 +136,18 @@ if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
+  check_fortran_function_exists(dsyev HAVE_SSYEV)
   check_fortran_function_exists(dsyev HAVE_DSYEV)
-  add_definitions(-DHAVE_DSYEV)
+  if(NOT HAVE_SSYEV OR NOT HAVE_DSYEV)
+    message(FATAL_ERROR "Could not find {s,d}syev")
+  endif()
+  add_definitions(-DHAVE_SSYEV -DHAVE_DSYEV)
+
+  check_C_Fortran_function_exists(dsyev C_SSYEV REQUIRED)
+  check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
+  add_definitions(
+    -DC_SSYEV=${C_SSYEV}
+    -DC_DSYEV=${C_DSYEV})
 endif()
 
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
