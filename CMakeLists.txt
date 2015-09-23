@@ -122,11 +122,15 @@ if(BLAS_FOUND)
   check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
   check_C_Fortran_function_exists(sscal C_SSCAL REQUIRED)
   check_C_Fortran_function_exists(dscal C_DSCAL REQUIRED)
+  check_C_Fortran_function_exists(saxpy C_SAXPY REQUIRED)
+  check_C_Fortran_function_exists(daxpy C_DAXPY REQUIRED)
   add_definitions(
     -DC_SGEMM=${C_SGEMM}
     -DC_DGEMM=${C_DGEMM}
     -DC_SSCAL=${C_SSCAL}
     -DC_DSCAL=${C_DSCAL})
+    -DC_SAXPY=${C_SAXPY}
+    -DC_DAXPY=${C_DAXPY})
 endif()
 if(LAPACK_FOUND)
   set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
