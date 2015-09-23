@@ -47,6 +47,7 @@ if(CMAKE_BUILD_TYPE)
 endif()
 
 include(FindThreads)
+list(APPEND LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 
 set(BML_OPENMP TRUE CACHE BOOL "Whether to compile with OpenMP support")
 if(BML_OPENMP)
@@ -76,6 +77,16 @@ else()
   message(STATUS "Using first BLAS/LAPACK found")
 endif()
 
+include(CheckFunctionExists)
+include(CheckFortranFunctionExists)
+
+set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} -lm)
+check_function_exists(fabs HAVE_FABS)
+if(NOT HAVE_FABS)
+  message(FATAL_ERROR "Could not find the fabs() function")
+endif()
+list(APPEND LINK_LIBRARIES -lm)
+
 include(FindBLAS)
 include(FindLAPACK)
 
@@ -87,14 +98,11 @@ if(NOT LAPACK_FOUND)
   message(FATAL_ERROR "Could not find LAPACK library.")
 endif()
 
-include(CheckFunctionExists)
-include(CheckFortranFunctionExists)
 include(${CMAKE_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
-  set(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
-
+  set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} ${BLAS_LIBRARIES})
   check_fortran_function_exists(dgemm HAVE_DGEMM)
   check_fortran_function_exists(sgemm HAVE_SGEMM)
   if(NOT HAVE_SGEMM OR NOT HAVE_DGEMM)
@@ -115,11 +123,13 @@ if(BLAS_FOUND)
     -DC_DSCAL=${C_DSCAL}
     -DC_SAXPY=${C_SAXPY}
     -DC_DAXPY=${C_DAXPY})
+
+  list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
 endif()
 if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 
-  set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
+  set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} ${LAPACK_LIBRARIES})
   check_fortran_function_exists(dsyev HAVE_SSYEV)
   check_fortran_function_exists(dsyev HAVE_DSYEV)
   if(NOT HAVE_SSYEV OR NOT HAVE_DSYEV)
@@ -132,24 +142,11 @@ if(LAPACK_FOUND)
   add_definitions(
     -DC_SSYEV=${C_SSYEV}
     -DC_DSYEV=${C_DSYEV})
+
+  list(APPEND CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
-
-if(BLAS_FOUND)
-  list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
-endif()
-if(LAPACK_FOUND)
-  list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
-endif()
-
-set(CMAKE_REQUIRED_LIBRARIES "-lm")
-check_function_exists(fabs HAVE_FABS)
-if(NOT HAVE_FABS)
-  message(FATAL_ERROR "Could not find the fabs() function")
-else()
-  list(APPEND LINK_LIBRARIES "-lm")
-endif()
 
 set(INDENT_ARGS -gnu -nut -i4 -bli0 -npcs -bfda)
 
