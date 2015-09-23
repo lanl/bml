@@ -15,7 +15,8 @@ install(FILES ${HEADERS-C} DESTINATION include)
 
 # Private headers.
 set(HEADERS-C-PRIVATE
-  blas.h)
+  blas.h
+  typed.h)
 
 set(SOURCES-C
   bml_allocate.c

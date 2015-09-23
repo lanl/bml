@@ -20,10 +20,12 @@
  * \return The bml matrix
  */
 bml_matrix_ellpack_t *
-bml_convert_from_dense_ellpack (const bml_matrix_precision_t matrix_precision,
-                                const int N,
-                                const void *A,
-                                const double threshold, const int M)
+bml_convert_from_dense_ellpack(
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const void *A,
+    const double threshold,
+    const int M)
 {
     float *float_A = NULL;
     double *double_A = NULL;
@@ -32,7 +34,7 @@ bml_convert_from_dense_ellpack (const bml_matrix_precision_t matrix_precision,
     double *double_value = NULL;
 
     bml_matrix_ellpack_t *A_bml =
-        bml_zero_matrix_ellpack (matrix_precision, N, M);
+        bml_zero_matrix_ellpack(matrix_precision, N, M);
 
     int *A_index = A_bml->index;
     int *nnz = A_bml->nnz;
@@ -46,7 +48,7 @@ bml_convert_from_dense_ellpack (const bml_matrix_precision_t matrix_precision,
         {
             for (int j = 0; j < N; j++)
             {
-                if (fabs (float_A[i + j * N]) > (float) threshold)
+                if (fabs(float_A[i + j * N]) > (float) threshold)
                 {
                     float_value[nnz[j] + j * M] = float_A[i + j * N];
                     A_index[nnz[j] + j * M] = i;
@@ -62,7 +64,7 @@ bml_convert_from_dense_ellpack (const bml_matrix_precision_t matrix_precision,
         {
             for (int j = 0; j < N; j++)
             {
-                if (fabs (double_A[i + j * N]) > (double) 0.0)
+                if (fabs(double_A[i + j * N]) > (double) 0.0)
                 {
                     double_value[nnz[j] + j * M] = double_A[i + j * N];
                     A_index[nnz[j] + j * M] = i;
@@ -72,7 +74,7 @@ bml_convert_from_dense_ellpack (const bml_matrix_precision_t matrix_precision,
         }
         break;
     default:
-        LOG_ERROR ("unknown precision\n");
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return A_bml;
@@ -86,7 +88,8 @@ bml_convert_from_dense_ellpack (const bml_matrix_precision_t matrix_precision,
  * \return The dense matrix
  */
 void *
-bml_convert_to_dense_ellpack (const bml_matrix_ellpack_t * A)
+bml_convert_to_dense_ellpack(
+    const bml_matrix_ellpack_t * A)
 {
     float *A_float = NULL;
     double *A_double = NULL;
@@ -101,7 +104,7 @@ bml_convert_to_dense_ellpack (const bml_matrix_ellpack_t * A)
     switch (A->matrix_precision)
     {
     case single_real:
-        A_float = bml_allocate_memory (sizeof (float) * N * N);
+        A_float = bml_allocate_memory(sizeof(float) * N * N);
         float_value = A->value;
         for (int i = 0; i < M; i++)
         {
@@ -117,7 +120,7 @@ bml_convert_to_dense_ellpack (const bml_matrix_ellpack_t * A)
         return A_float;
         break;
     case double_real:
-        A_double = bml_allocate_memory (sizeof (double) * N * N);
+        A_double = bml_allocate_memory(sizeof(double) * N * N);
         double_value = A->value;
         for (int i = 0; i < M; i++)
         {
@@ -133,7 +136,7 @@ bml_convert_to_dense_ellpack (const bml_matrix_ellpack_t * A)
         return A_double;
         break;
     default:
-        LOG_ERROR ("unknown precision\n");
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return NULL;

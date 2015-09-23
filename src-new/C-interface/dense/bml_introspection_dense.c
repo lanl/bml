@@ -8,7 +8,8 @@
  * \return The matrix size.
  */
 int
-bml_get_size_dense (const bml_matrix_dense_t * A)
+bml_get_size_dense(
+    const bml_matrix_dense_t * A)
 {
     if (A != NULL)
     {

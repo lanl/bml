@@ -17,7 +17,10 @@
  *  \param A The matrix to be scaled
  *  \return A scale version of matrix A.
  */
-bml_matrix_ellpack_t *bml_scale_ellpack_new(const double scale_factor, const bml_matrix_ellpack_t *A)
+bml_matrix_ellpack_t *
+bml_scale_ellpack_new(
+    const double scale_factor,
+    const bml_matrix_ellpack_t * A)
 {
     float scale_factor_s;
 
@@ -26,9 +29,10 @@ bml_matrix_ellpack_t *bml_scale_ellpack_new(const double scale_factor, const bml
     int nElems = B->N * B->M;
     int inc = 1;
 
-    switch(B->matrix_precision) {
+    switch (B->matrix_precision)
+    {
     case single_real:
-        scale_factor_s = (float)scale_factor;
+        scale_factor_s = (float) scale_factor;
         C_SSCAL(&nElems, &scale_factor_s, B->value, &inc);
         break;
     case double_real:
@@ -45,18 +49,24 @@ bml_matrix_ellpack_t *bml_scale_ellpack_new(const double scale_factor, const bml
  *  \param A The matrix to be scaled
  *  \param B Scaled version of matrix A
  */
-void bml_scale_ellpack(const double scale_factor, const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B)
+void
+bml_scale_ellpack(
+    const double scale_factor,
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B)
 {
     float scale_factor_s;
 
-    if (A != B) bml_copy_ellpack(A, B);
+    if (A != B)
+        bml_copy_ellpack(A, B);
 
     int nElems = B->N * B->M;
     int inc = 1;
 
-    switch(A->matrix_precision) {
+    switch (A->matrix_precision)
+    {
     case single_real:
-        scale_factor_s = (float)scale_factor;
+        scale_factor_s = (float) scale_factor;
         C_SSCAL(&nElems, &scale_factor_s, B->value, &inc);
         break;
     case double_real:

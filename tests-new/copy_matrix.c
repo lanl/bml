@@ -4,10 +4,12 @@
 #include <math.h>
 #include <stdlib.h>
 
-int test_function(const int N,
-                  const bml_matrix_type_t matrix_type,
-                  const bml_matrix_precision_t matrix_precision,
-                  const int M)
+int
+test_function(
+    const int N,
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int M)
 {
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
@@ -21,7 +23,8 @@ int test_function(const int N,
     C = bml_zero_matrix(matrix_type, matrix_precision, N, M);
     bml_copy(B, C);
 
-    switch(matrix_precision) {
+    switch (matrix_precision)
+    {
     case single_real:
         A_float = bml_convert_to_dense(A);
         B_float = bml_convert_to_dense(B);
@@ -29,11 +32,14 @@ int test_function(const int N,
         bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
         bml_print_matrix(N, matrix_precision, B_float, 0, N, 0, N);
         bml_print_matrix(N, matrix_precision, C_float, 0, N, 0, N);
-       for(int i = 0; i < N*N; i++) {
-            if(fabs(A_float[i] - B_float[i]) > 1e-12 ||
-               fabs(A_float[i] - C_float[i]) > 1e-12) {
-               LOG_ERROR("matrices are not identical; A[%d] = %e\n", i, A_float[i]);
-               return -1;
+        for (int i = 0; i < N * N; i++)
+        {
+            if (fabs(A_float[i] - B_float[i]) > 1e-12 ||
+                fabs(A_float[i] - C_float[i]) > 1e-12)
+            {
+                LOG_ERROR("matrices are not identical; A[%d] = %e\n", i,
+                          A_float[i]);
+                return -1;
             }
         }
         bml_free_memory(A_float);
@@ -47,10 +53,13 @@ int test_function(const int N,
         bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
         bml_print_matrix(N, matrix_precision, B_double, 0, N, 0, N);
         bml_print_matrix(N, matrix_precision, C_double, 0, N, 0, N);
-        for(int i = 0; i < N*N; i++) {
-            if(fabs(A_double[i] - B_double[i]) > 1e-12 ||
-               fabs(A_double[i] - C_double[i]) > 1e-12) {
-                LOG_ERROR("matrices are not identical; A[%d] = %e\n", i, A_double[i]);
+        for (int i = 0; i < N * N; i++)
+        {
+            if (fabs(A_double[i] - B_double[i]) > 1e-12 ||
+                fabs(A_double[i] - C_double[i]) > 1e-12)
+            {
+                LOG_ERROR("matrices are not identical; A[%d] = %e\n", i,
+                          A_double[i]);
                 return -1;
             }
         }

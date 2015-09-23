@@ -8,7 +8,8 @@
  * \return The matrix size.
  */
 int
-bml_get_size_ellpack (const bml_matrix_ellpack_t * A)
+bml_get_size_ellpack(
+    const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {

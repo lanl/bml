@@ -12,12 +12,13 @@
  * \param A The matrix.
  */
 void
-bml_deallocate_ellpack (bml_matrix_ellpack_t * A)
+bml_deallocate_ellpack(
+    bml_matrix_ellpack_t * A)
 {
-    bml_free_memory (A->value);
-    bml_free_memory (A->index);
-    bml_free_memory (A->nnz);
-    bml_free_memory (A);
+    bml_free_memory(A->value);
+    bml_free_memory(A->index);
+    bml_free_memory(A->nnz);
+    bml_free_memory(A);
 }
 
 /** Allocate the zero matrix.
@@ -35,18 +36,20 @@ bml_deallocate_ellpack (bml_matrix_ellpack_t * A)
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
-bml_zero_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
-                         const int N, const int M)
+bml_zero_matrix_ellpack(
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
 {
     bml_matrix_ellpack_t *A = NULL;
 
-    A = bml_allocate_memory (sizeof (bml_matrix_ellpack_t));
+    A = bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
     A->matrix_type = ellpack;
     A->matrix_precision = matrix_precision;
     A->N = N;
     A->M = M;
-    A->index = bml_allocate_memory (sizeof (int) * N * M);
-    A->nnz = bml_allocate_memory (sizeof (int) * N);
+    A->index = bml_allocate_memory(sizeof(int) * N * M);
+    A->nnz = bml_allocate_memory(sizeof(int) * N);
 
     // No values
     for (int i = 0; i < N; i++)
@@ -57,10 +60,10 @@ bml_zero_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
     switch (matrix_precision)
     {
     case single_real:
-        A->value = bml_allocate_memory (sizeof (float) * N * M);
+        A->value = bml_allocate_memory(sizeof(float) * N * M);
         break;
     case double_real:
-        A->value = bml_allocate_memory (sizeof (double) * N * M);
+        A->value = bml_allocate_memory(sizeof(double) * N * M);
         break;
     }
     return A;
@@ -81,11 +84,12 @@ bml_zero_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
-bml_random_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
-                           const int N, const int M)
+bml_random_matrix_ellpack(
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
 {
-    bml_matrix_ellpack_t *A =
-        bml_zero_matrix_ellpack (matrix_precision, N, M);
+    bml_matrix_ellpack_t *A = bml_zero_matrix_ellpack(matrix_precision, N, M);
     float *A_float = NULL;
     double *A_double = NULL;
 
@@ -101,8 +105,8 @@ bml_random_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
             int jind = 0;
             for (int j = 0; j < M; j++)
             {
-                float fvalue = rand () / (float) RAND_MAX;
-                if (fabs (fvalue) > (float) 0.0)
+                float fvalue = rand() / (float) RAND_MAX;
+                if (fabs(fvalue) > (float) 0.0)
                 {
                     A_float[i * M + jind] = fvalue;
                     A_index[i * M + jind] = j;
@@ -119,8 +123,8 @@ bml_random_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
             int jind = 0;
             for (int j = 0; j < M; j++)
             {
-                double dvalue = rand () / (double) RAND_MAX;
-                if (fabs (dvalue) > (double) 0.0)
+                double dvalue = rand() / (double) RAND_MAX;
+                if (fabs(dvalue) > (double) 0.0)
                 {
                     A_double[i * M + jind] = dvalue;
                     A_index[i * M + jind] = j;
@@ -148,11 +152,12 @@ bml_random_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
-bml_identity_matrix_ellpack (const bml_matrix_precision_t matrix_precision,
-                             const int N, const int M)
+bml_identity_matrix_ellpack(
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
 {
-    bml_matrix_ellpack_t *A =
-        bml_zero_matrix_ellpack (matrix_precision, N, M);
+    bml_matrix_ellpack_t *A = bml_zero_matrix_ellpack(matrix_precision, N, M);
     float *A_float = NULL;
     double *A_double = NULL;
 

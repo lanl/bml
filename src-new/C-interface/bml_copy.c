@@ -14,11 +14,14 @@
  * \param A Matrix to copy
  * \return  A Copy of A
  */
-bml_matrix_t *bml_copy_new(const bml_matrix_t *A)
+bml_matrix_t *
+bml_copy_new(
+    const bml_matrix_t * A)
 {
     bml_matrix_t *B = NULL;
 
-    switch(bml_get_type(A)) {
+    switch (bml_get_type(A))
+    {
     case dense:
         B = bml_copy_dense_new(A);
         break;
@@ -37,9 +40,13 @@ bml_matrix_t *bml_copy_new(const bml_matrix_t *A)
  * \param A Matrix to copy
  * \param B Copy of Matrix A
  */
-void bml_copy(const bml_matrix_t *A, const bml_matrix_t *B)
+void
+bml_copy(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B)
 {
-    switch(bml_get_type(A)) {
+    switch (bml_get_type(A))
+    {
     case dense:
         bml_copy_dense(A, B);
         break;
