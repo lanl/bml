@@ -87,25 +87,9 @@ if(NOT LAPACK_FOUND)
   message(FATAL_ERROR "Could not find LAPACK library.")
 endif()
 
-macro(check_C_Fortran_function_exists FUNCTION VARIABLE)
-  # Test various naming schemes for calling a Fortran function from C.
-  set(${VARIABLE} ${FUNCTION}-NOTFOUND)
-  foreach(FUNC ${FUNCTION} ${FUNCTION}_ ${FUNCTION}__)
-    check_function_exists(${FUNC} HAVE_${FUNC})
-    if(HAVE_${FUNC})
-      set(${VARIABLE} ${FUNC})
-      break()
-    endif()
-  endforeach()
-  if(${ARGC} GREATER 2)
-    if(${ARGV2} STREQUAL REQUIRED AND NOT ${VARIABLE})
-      message(FATAL_ERROR "Can not find function ${FUNCTION}")
-    endif()
-  endif()
-endmacro()
-
 include(CheckFunctionExists)
 include(CheckFortranFunctionExists)
+include(${CMAKE_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
@@ -118,12 +102,12 @@ if(BLAS_FOUND)
   endif()
   add_definitions(-DHAVE_SGEMM -DHAVE_DGEMM)
 
-  check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
-  check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
-  check_C_Fortran_function_exists(sscal C_SSCAL REQUIRED)
-  check_C_Fortran_function_exists(dscal C_DSCAL REQUIRED)
-  check_C_Fortran_function_exists(saxpy C_SAXPY REQUIRED)
-  check_C_Fortran_function_exists(daxpy C_DAXPY REQUIRED)
+  bml_check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
+  bml_check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
+  bml_check_C_Fortran_function_exists(sscal C_SSCAL REQUIRED)
+  bml_check_C_Fortran_function_exists(dscal C_DSCAL REQUIRED)
+  bml_check_C_Fortran_function_exists(saxpy C_SAXPY REQUIRED)
+  bml_check_C_Fortran_function_exists(daxpy C_DAXPY REQUIRED)
   add_definitions(
     -DC_SGEMM=${C_SGEMM}
     -DC_DGEMM=${C_DGEMM}
@@ -143,8 +127,8 @@ if(LAPACK_FOUND)
   endif()
   add_definitions(-DHAVE_SSYEV -DHAVE_DSYEV)
 
-  check_C_Fortran_function_exists(dsyev C_SSYEV REQUIRED)
-  check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
+  bml_check_C_Fortran_function_exists(dsyev C_SSYEV REQUIRED)
+  bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
   add_definitions(
     -DC_SSYEV=${C_SSYEV}
     -DC_DSYEV=${C_DSYEV})
