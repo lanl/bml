@@ -22,7 +22,7 @@ configure() {
           -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:=no} \
           -DBML_TESTING=${BML_TESTIND:=yes} \
           -DBLAS_VENDOR=${BLAS_VENDOR:=} \
-          -DBML_NEW=yes
+          -DBML_NEW=yes | tee -a "${LOG_FILE}" || exit
     cd "${TOP_DIR}"
 }
 
