@@ -17,21 +17,21 @@
  *  \param A The matrix to be scaled
  *  \return A scaled version of matrix A.
  */
-bml_matrix_dense_t *bml_scale_dense_new(const double scale_factor, const bml_matrix_dense_t *A)
+bml_matrix_dense_t *
+bml_scale_dense_new(
+    const double scale_factor,
+    const bml_matrix_dense_t * A)
 {
     float scale_factor_s;
-
-    bml_matrix_dense_t *B = NULL;
-
-    B = bml_copy_dense_new(A);
-
+    bml_matrix_dense_t *B = bml_copy_dense_new(A);
     int nElems = B->N * B->N;
     int inc = 1;
 
-    switch(A->matrix_precision) {
+    switch (A->matrix_precision)
+    {
     case single_real:
         // Use BLAS sscal
-        scale_factor_s = (float)scale_factor;
+        scale_factor_s = (float) scale_factor;
         C_SSCAL(&nElems, &scale_factor_s, B->matrix, &inc);
         break;
     case double_real:
@@ -49,19 +49,25 @@ bml_matrix_dense_t *bml_scale_dense_new(const double scale_factor, const bml_mat
  *  \param A The matrix to be scaled
  *  \param B Scaled version of matrix A
  */
-void bml_scale_dense(const double scale_factor, const bml_matrix_dense_t *A, const bml_matrix_dense_t *B)
+void
+bml_scale_dense(
+    const double scale_factor,
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B)
 {
     float scale_factor_s;
 
-    if (A != B) bml_copy_dense(A, B);
+    if (A != B)
+        bml_copy_dense(A, B);
 
     int nElems = B->N * B->N;
     int inc = 1;
 
-    switch(A->matrix_precision) {
+    switch (A->matrix_precision)
+    {
     case single_real:
         // Use BLAS sscal
-        scale_factor_s = (float)scale_factor;
+        scale_factor_s = (float) scale_factor;
         C_SSCAL(&nElems, &scale_factor_s, B->matrix, &inc);
         break;
     case double_real:

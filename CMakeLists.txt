@@ -128,7 +128,7 @@ if(BLAS_FOUND)
     -DC_SGEMM=${C_SGEMM}
     -DC_DGEMM=${C_DGEMM}
     -DC_SSCAL=${C_SSCAL}
-    -DC_DSCAL=${C_DSCAL})
+    -DC_DSCAL=${C_DSCAL}
     -DC_SAXPY=${C_SAXPY}
     -DC_DAXPY=${C_DAXPY})
 endif()
