@@ -1,3 +1,4 @@
+#include "../blas.h"
 #include "../bml_allocate.h"
 #include "../bml_scale.h"
 #include "../bml_types.h"
@@ -8,7 +9,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <mkl.h>
 
 /** Scale an ellpack matrix - result is a new matrix.
  *
@@ -25,14 +25,14 @@ bml_matrix_ellpack_t *bml_scale_ellpack_new(const double scale_factor, const bml
 
     int nElems = B->N * B->M;
     int inc = 1;
-    
+
     switch(B->matrix_precision) {
     case single_real:
         scale_factor_s = (float)scale_factor;
-        sscal(&nElems, &scale_factor_s, B->value, &inc);
+        C_SSCAL(&nElems, &scale_factor_s, B->value, &inc);
         break;
     case double_real:
-        dscal(&nElems, &scale_factor, B->value, &inc);
+        C_DSCAL(&nElems, &scale_factor, B->value, &inc);
         break;
     }
     return B;
@@ -53,14 +53,14 @@ void bml_scale_ellpack(const double scale_factor, const bml_matrix_ellpack_t *A,
 
     int nElems = B->N * B->M;
     int inc = 1;
-    
+
     switch(A->matrix_precision) {
     case single_real:
         scale_factor_s = (float)scale_factor;
-        sscal(&nElems, &scale_factor_s, B->value, &inc);
+        C_SSCAL(&nElems, &scale_factor_s, B->value, &inc);
         break;
     case double_real:
-        dscal(&nElems, &scale_factor, B->value, &inc);
+        C_DSCAL(&nElems, &scale_factor, B->value, &inc);
         break;
     }
 }

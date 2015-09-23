@@ -1,3 +1,4 @@
+#include "../blas.h"
 #include "../bml_allocate.h"
 #include "../bml_scale.h"
 #include "../bml_types.h"
@@ -8,7 +9,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <mkl.h>
 
 /** Scale a dense matrix - result in new matrix.
  *
@@ -32,11 +32,11 @@ bml_matrix_dense_t *bml_scale_dense_new(const double scale_factor, const bml_mat
     case single_real:
         // Use BLAS sscal
         scale_factor_s = (float)scale_factor;
-        sscal(&nElems, &scale_factor_s, B->matrix, &inc);
+        C_SSCAL(&nElems, &scale_factor_s, B->matrix, &inc);
         break;
     case double_real:
         // Use BLAS dscal
-        dscal(&nElems, &scale_factor, B->matrix, &inc);
+        C_DSCAL(&nElems, &scale_factor, B->matrix, &inc);
         break;
     }
     return B;
@@ -46,7 +46,7 @@ bml_matrix_dense_t *bml_scale_dense_new(const double scale_factor, const bml_mat
  *
  *  \ingroup scale_group
  *
- *  \param A The matrix to be scaled 
+ *  \param A The matrix to be scaled
  *  \param B Scaled version of matrix A
  */
 void bml_scale_dense(const double scale_factor, const bml_matrix_dense_t *A, const bml_matrix_dense_t *B)
@@ -54,7 +54,7 @@ void bml_scale_dense(const double scale_factor, const bml_matrix_dense_t *A, con
     float scale_factor_s;
 
     if (A != B) bml_copy_dense(A, B);
- 
+
     int nElems = B->N * B->N;
     int inc = 1;
 
@@ -62,11 +62,11 @@ void bml_scale_dense(const double scale_factor, const bml_matrix_dense_t *A, con
     case single_real:
         // Use BLAS sscal
         scale_factor_s = (float)scale_factor;
-        sscal(&nElems, &scale_factor_s, B->matrix, &inc);
+        C_SSCAL(&nElems, &scale_factor_s, B->matrix, &inc);
         break;
     case double_real:
         // Use BLAS dscal
-        dscal(&nElems, &scale_factor, B->matrix, &inc);
+        C_DSCAL(&nElems, &scale_factor, B->matrix, &inc);
         break;
     }
 }

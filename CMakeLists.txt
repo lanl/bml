@@ -96,11 +96,37 @@ if(NOT LAPACK_FOUND)
   message(FATAL_ERROR "Could not find LAPACK library.")
 endif()
 
+macro(check_C_Fortran_function_exists FUNCTION VARIABLE)
+  # Test various naming schemes for calling a Fortran function from C.
+  set(${VARIABLE} ${FUNCTION}-NOTFOUND)
+  foreach(FUNC ${FUNCTION} ${FUNCTION}_ ${FUNCTION}__)
+    check_function_exists(${FUNC} HAVE_${FUNC})
+    if(HAVE_${FUNC})
+      set(${VARIABLE} ${FUNC})
+      break()
+    endif()
+  endforeach()
+  if(${ARGC} GREATER 2)
+    if(${ARGV2} STREQUAL REQUIRED AND NOT ${VARIABLE})
+      message(FATAL_ERROR "Can not find function ${FUNCTION}")
+    endif()
+  endif()
+endmacro()
+
 include(CheckFortranFunctionExists)
 if(BLAS_FOUND)
   set(CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
   check_fortran_function_exists(dgemm HAVE_DGEMM)
   check_fortran_function_exists(sgemm HAVE_SGEMM)
+  check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
+  check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
+  check_C_Fortran_function_exists(sscal C_SSCAL REQUIRED)
+  check_C_Fortran_function_exists(dscal C_DSCAL REQUIRED)
+  add_definitions(
+    -DC_SGEMM=${C_SGEMM}
+    -DC_DGEMM=${C_DGEMM}
+    -DC_SSCAL=${C_SSCAL}
+    -DC_DSCAL=${C_DSCAL})
 endif()
 if(LAPACK_FOUND)
   set(CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})

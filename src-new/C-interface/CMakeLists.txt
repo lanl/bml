@@ -13,6 +13,10 @@ set(HEADERS-C
   bml_utilities.h)
 install(FILES ${HEADERS-C} DESTINATION include)
 
+# Private headers.
+set(HEADERS-C-PRIVATE
+  blas.h)
+
 set(SOURCES-C
   bml_allocate.c
   bml_convert.c
@@ -31,7 +35,7 @@ add_subdirectory(ellpack)
 if(INDENT)
   message(STATUS "Setting up indent-C-interface")
   unset(INDENT-C)
-  foreach(f ${HEADERS-C} ${SOURCES-C})
+  foreach(f ${HEADERS-C} ${HEADERS-C-PRIVATE} ${SOURCES-C})
     list(APPEND INDENT-C ${CMAKE_CURRENT_SOURCE_DIR}/${f})
   endforeach()
   add_custom_target(indent-C-interface
