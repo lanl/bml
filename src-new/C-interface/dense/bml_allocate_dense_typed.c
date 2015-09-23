@@ -15,8 +15,7 @@
  *  \param N The matrix size.
  *  \return The matrix.
  */
-bml_matrix_dense_t *TYPED_FUNC(
-    bml_zero_matrix_dense) (
+bml_matrix_dense_t *TYPED_FUNC(bml_zero_matrix_dense) (
     const int N)
 {
     bml_matrix_dense_t *A = NULL;
@@ -40,8 +39,7 @@ bml_matrix_dense_t *TYPED_FUNC(
  *  \param N The matrix size.
  *  \return The matrix.
  */
-bml_matrix_dense_t *TYPED_FUNC(
-    bml_random_matrix_dense) (
+bml_matrix_dense_t *TYPED_FUNC(bml_random_matrix_dense) (
     const int N)
 {
     bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense)(N);
@@ -69,8 +67,7 @@ bml_matrix_dense_t *TYPED_FUNC(
  *  \param N The matrix size.
  *  \return The matrix.
  */
-bml_matrix_dense_t *TYPED_FUNC(
-    bml_identity_matrix_dense) (
+bml_matrix_dense_t *TYPED_FUNC(bml_identity_matrix_dense) (
     const int N)
 {
     bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense)(N);
