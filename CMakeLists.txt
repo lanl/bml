@@ -137,6 +137,8 @@ find_program(INDENT indent)
 message(STATUS "Found indent: ${INDENT}")
 mark_as_advanced(INDENT)
 
+set(DIST_FILES CMakeLists.txt)
+
 set(BML_NEW FALSE
   CACHE BOOL "Whether to build the new version of the library")
 
