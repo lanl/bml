@@ -1,6 +1,6 @@
-#include "../bml_allocate.h"
-#include "../bml_copy.h"
-#include "../bml_types.h"
+#include "bml_allocate.h"
+#include "bml_copy.h"
+#include "bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
 #include "bml_types_dense.h"
@@ -21,15 +21,17 @@ bml_copy_dense_new(
 {
     bml_matrix_dense_t *B = NULL;
 
-    B = bml_zero_matrix_dense(A->matrix_precision, A->N);
-
+    //B = bml_zero_matrix_dense(A->matrix_precision, A->N);
+    
     switch (A->matrix_precision)
     {
     case single_real:
-        memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
+        //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
+        B = bml_copy_dense_new_single_real(A);
         break;
     case double_real:
-        memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
+        //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
+        B = bml_copy_dense_new_double_real(A);
         break;
     }
     return B;
@@ -47,14 +49,15 @@ bml_copy_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B)
 {
-
     switch (A->matrix_precision)
     {
     case single_real:
-        memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
+        //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
+        bml_copy_dense_single_real(A, B);
         break;
     case double_real:
-        memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
+        //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
+        bml_copy_dense_double_real(A, B);
         break;
     }
 }

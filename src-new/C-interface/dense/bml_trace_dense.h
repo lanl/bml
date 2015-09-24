@@ -1,0 +1,8 @@
+#ifndef __BML_TRACE_DENSE_H
+#define __BML_TRACE_DENSE_H
+
+#include "bml_types_dense.h"
+
+double bml_trace_dense(const bml_matrix_dense_t *A);
+
+#endif

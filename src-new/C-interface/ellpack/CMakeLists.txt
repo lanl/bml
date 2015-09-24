@@ -8,6 +8,7 @@ set(HEADERS-ELLPACK
   bml_introspection_ellpack.h
   bml_multiply_ellpack.h
   bml_scale_ellpack.h
+  bml_trace_ellpack.h
   bml_types_ellpack.h)
 
 set(SOURCES-ELLPACK
@@ -17,7 +18,8 @@ set(SOURCES-ELLPACK
   bml_copy_ellpack.c
   bml_introspection_ellpack.c
   bml_multiply_ellpack.c
-  bml_scale_ellpack.c)
+  bml_scale_ellpack.c
+  bml_trace_ellpack.c)
 
 add_library(bml-ellpack OBJECT ${SOURCES-ELLPACK})
 set_target_properties(bml-ellpack

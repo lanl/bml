@@ -8,6 +8,7 @@ set(HEADERS-DENSE
   bml_introspection_dense.h
   bml_multiply_dense.h
   bml_scale_dense.h
+  bml_trace_dense.h
   bml_types_dense.h)
 
 set(SOURCES-DENSE
@@ -17,14 +18,16 @@ set(SOURCES-DENSE
   bml_copy_dense.c
   bml_introspection_dense.c
   bml_multiply_dense.c
-  bml_scale_dense.c)
+  bml_scale_dense.c
+  bml_trace_dense.c)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
 set_target_properties(bml-dense
   PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 set(SOURCES-DENSE-TYPED
-  bml_allocate_dense_typed.c)
+  bml_allocate_dense_typed.c
+  bml_copy_dense_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-dense single_real ${SOURCES-DENSE-TYPED})
