@@ -5,7 +5,7 @@ BUILD_DIR="${TOP_DIR}/build-new"
 INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install-new}"
 LOG_FILE="${TOP_DIR}/build-new.log"
 
-create_directories() {
+create() {
     mkdir -v -p "${BUILD_DIR}" || exit
     mkdir -v -p "${INSTALL_DIR}" || exit
 }
@@ -48,26 +48,61 @@ testing() {
     cd "${TOP_DIR}"
 }
 
+commands=("create" "configure" "compile" "install" "testing" "docs")
+
 if [[ $# -gt 0 ]]; then
-    if [[ "$1" = "create_directories" ]]; then
-        create_directories
+    if [[ "$1" = "-h" || "$1" = "--help" ]]; then
+        cat <<EOF
+Usage:
+
+This script can be used to build and test the bml library. When run
+without arguments, it will create the subdirectories 'build' and
+'install', configure and build the library in 'build', run all tests,
+and install it in 'install'. If called with a command, each step can
+be executed separately, including all necessary previous steps. Known
+commands are:
+
+create
+configure
+compile
+install
+testing
+docs
+EOF
+        exit 0
+    fi
+
+    is_legal=0
+    for c in ${commands[@]}; do
+        if [[ "$1" = "${c}" ]]; then
+            is_legal=1
+            break
+        fi
+    done
+    if [[ ${is_legal} -ne 1 ]]; then
+        echo "unknown command $1"
+        exit 1
+    fi
+
+    if [[ "$1" = "create" ]]; then
+        create
     elif [[ "$1" = "configure" ]]; then
-        create_directories
+        create
         configure
     elif [[ "$1" = "docs" ]]; then
-        create_directories
+        create
         configure
         docs
     elif [[ "$1" = "compile" ]]; then
-        create_directories
+        create
         configure
         compile
     elif [[ "$1" = "install" ]]; then
-        create_directories
+        create
         configure
         install
     elif [[ "$1" = "testing" ]]; then
-        create_directories
+        create
         configure
         compile
         testing
@@ -76,7 +111,7 @@ if [[ $# -gt 0 ]]; then
         exit 1
     fi
 else
-    create_directories
+    create
     configure
     docs
     compile
