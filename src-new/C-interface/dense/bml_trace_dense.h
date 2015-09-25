@@ -5,4 +5,8 @@
 
 double bml_trace_dense(const bml_matrix_dense_t *A);
 
+double bml_trace_dense_single_real(const bml_matrix_dense_t *A);
+
+double bml_trace_dense_double_real(const bml_matrix_dense_t *A);
+
 #endif

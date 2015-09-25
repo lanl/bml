@@ -1,3 +1,5 @@
+#include "../typed.h"
+#include "../blas.h"
 #include "bml_trace.h"
 #include "bml_types.h"
 #include "bml_trace_dense.h"
@@ -14,17 +16,16 @@
  *  \param A The matrix to calculate a trace for
  *  \return The trace of A
  */
-double bml_trace_dense(const bml_matrix_dense_t *A)
+double TYPED_FUNC(bml_trace_dense) (const bml_matrix_dense_t *A)
 {
     double trace = 0.0;
+    int N = A->N;
+    REAL_T *A_matrix= A->matrix;
 
-    switch(A->matrix_precision) {
-    case single_real:
-        bml_trace_dense_single_real(A);
-        break;
-    case double_real:
-        bml_trace_dense_double_real(A);
-        break;
+    for (int i = 0; i < N; i++)
+    {
+        trace += A_matrix[i+i*N];
     }
+
     return trace;
 }
