@@ -29,10 +29,7 @@ TYPED_FUNC(bml_scale_dense_new) (
     int nElems = B->N * B->N;
     int inc = 1;
 
-    // Use BLAS sscal/dscal
-    C_SSCAL(&nElems, &sfactor, B->matrix, &inc);
-        //C_DSCAL(&nElems, &scale_factor, B->matrix, &inc);
-        
+    C_BLAS(SCAL)(&nElems, &sfactor, B->matrix, &inc);
     return B;
 }
 
@@ -57,6 +54,5 @@ TYPED_FUNC(bml_scale_dense) (
     int nElems = B->N * B->N;
     int inc = 1;
 
-    C_SSCAL(&nElems, &sfactor, B->matrix, &inc);
-        //C_DSCAL(&nElems, &scale_factor, B->matrix, &inc);
+    C_BLAS(SCAL)(&nElems, &sfactor, B->matrix, &inc);
 }
