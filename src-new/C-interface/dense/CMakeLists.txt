@@ -27,7 +27,8 @@ set_target_properties(bml-dense
 
 set(SOURCES-DENSE-TYPED
   bml_allocate_dense_typed.c
-  bml_copy_dense_typed.c)
+  bml_copy_dense_typed.c
+  bml_scale_dense_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-dense single_real "${SOURCES-DENSE-TYPED}")
