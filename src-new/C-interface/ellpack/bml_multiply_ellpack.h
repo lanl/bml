@@ -3,10 +3,18 @@
 
 #include "bml_types_ellpack.h"
 
-// Matrix multiply - C = alpha *A * B + beta * C
+// Matrix multiply - C = alpha * A * B + beta * C
 void bml_multiply_ellpack(const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B, const bml_matrix_ellpack_t *C, const double alpha, const double beta, const double threshold);
 
-// Sparse X^2
-void bml_multiplyX2_ellpack_double(const bml_matrix_ellpack_t *xmatrix, const bml_matrix_ellpack_t *x2matrix, double trX, double trX2, const double threshold);
+void bml_multiply_ellpack_single_real(const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B, const bml_matrix_ellpack_t *C, const double alpha, const double beta, const double threshold);
+
+void bml_multiply_ellpack_double_real(const bml_matrix_ellpack_t *A, const bml_matrix_ellpack_t *B, const bml_matrix_ellpack_t *C, const double alpha, const double beta, const double threshold);
+
+// Sparse X^2 - X2 = X * X
+void bml_multiply_x2_ellpack(const bml_matrix_ellpack_t *X, const bml_matrix_ellpack_t *X2, const double threshold);
+
+void bml_multiply_x2_ellpack_single_real(const bml_matrix_ellpack_t *X, const bml_matrix_ellpack_t *X2, const double threshold);
+
+void bml_multiply_x2_ellpack_double_real(const bml_matrix_ellpack_t *X, const bml_matrix_ellpack_t *X2, const double threshold);
 
 #endif

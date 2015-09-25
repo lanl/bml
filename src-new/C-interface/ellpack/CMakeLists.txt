@@ -26,8 +26,10 @@ set_target_properties(bml-ellpack
   PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 set(SOURCES-ELLPACK-TYPED
+  bml_add_ellpack_typed.c
   bml_allocate_ellpack_typed.c
   bml_copy_ellpack_typed.c
+  bml_multiply_ellpack_typed.c
   bml_scale_ellpack_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)

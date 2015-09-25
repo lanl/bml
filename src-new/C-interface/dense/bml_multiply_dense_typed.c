@@ -30,3 +30,24 @@ void TYPED_FUNC(bml_multiply_dense) (const bml_matrix_dense_t *A, const bml_matr
 
     C_BLAS(GEMM)(&trans, &trans, &hdim, &hdim, &hdim, &salpha, A->matrix, &hdim, B->matrix, &hdim, &sbeta, C->matrix, &hdim);
 }
+
+/** Matrix multiply.
+ *
+ * X2 = X * X
+ *
+ *  \ingroup multiply_group
+ *
+ *  \param X Matrix X
+ *  \param X2 MatrixX2 
+ */
+void TYPED_FUNC(bml_multiply_x2_dense) (const bml_matrix_dense_t *X, const bml_matrix_dense_t *X2)
+{
+    REAL_T salpha = (REAL_T)1.0;
+    REAL_T sbeta = (REAL_T)1.0;
+    char trans = 'N';
+
+    int hdim = X->N;
+
+    C_BLAS(GEMM)(&trans, &trans, &hdim, &hdim, &hdim, &salpha, X->matrix, &hdim, X->matrix, &hdim, &sbeta, X2->matrix, &hdim);
+}
+

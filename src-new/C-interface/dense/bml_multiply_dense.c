@@ -29,3 +29,25 @@ void bml_multiply_dense(const bml_matrix_dense_t *A, const bml_matrix_dense_t *B
         break;
     }
 }
+
+/** Matrix multiply.
+ *
+ * X2 = X * X
+ *
+ *  \ingroup multiply_group
+ *
+ *  \param X Matrix X
+ *  \param X2 Matrix X2
+ */
+void bml_multiply_x2_dense(const bml_matrix_dense_t *X, const bml_matrix_dense_t *X2)
+{
+    switch(X->matrix_precision) {
+    case single_real:
+        bml_multiply_x2_dense_single_real(X, X2);
+        break;
+    case double_real:
+        bml_multiply_x2_dense_double_real(X, X2);
+        break;
+    }
+}
+
