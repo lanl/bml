@@ -30,8 +30,8 @@ set(SOURCES-DENSE-TYPED
   bml_copy_dense_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
-bml_add_typed_library(bml-dense single_real ${SOURCES-DENSE-TYPED})
-bml_add_typed_library(bml-dense double_real ${SOURCES-DENSE-TYPED})
+bml_add_typed_library(bml-dense single_real "${SOURCES-DENSE-TYPED}")
+bml_add_typed_library(bml-dense double_real "${SOURCES-DENSE-TYPED}")
 
 if(INDENT)
   message(STATUS "Setting up indent-dense")
