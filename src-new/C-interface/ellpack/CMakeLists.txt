@@ -25,10 +25,19 @@ add_library(bml-ellpack OBJECT ${SOURCES-ELLPACK})
 set_target_properties(bml-ellpack
   PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
+set(SOURCES-ELLPACK-TYPED
+  bml_allocate_ellpack_typed.c
+  bml_copy_ellpack_typed.c
+  bml_scale_ellpack_typed.c)
+
+include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+bml_add_typed_library(bml-ellpack single_real "${SOURCES-ELLPACK-TYPED}")
+bml_add_typed_library(bml-ellpack double_real "${SOURCES-ELLPACK-TYPED}")
+
 if(INDENT)
   message(STATUS "Setting up indent-ellpack")
   unset(INDENT-ELLPACK)
-  foreach(f ${HEADERS-ELLPACK} ${SOURCES-ELLPACK})
+  foreach(f ${HEADERS-ELLPACK} ${SOURCES-ELLPACK} ${SOURCES-ELLPACK-TYPED})
     list(APPEND INDENT-ELLPACK ${CMAKE_CURRENT_SOURCE_DIR}/${f})
   endforeach()
   add_custom_target(indent-ellpack

@@ -1,23 +1,10 @@
+#include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
 
-/** Deallocate a matrix.
- *
- * \ingroup allocate_group
- *
- * \param A The matrix.
- */
-void
-bml_deallocate_ellpack(
-    bml_matrix_ellpack_t * A)
-{
-    bml_free_memory(A->value);
-    bml_free_memory(A->index);
-    bml_free_memory(A->nnz);
-    bml_free_memory(A);
-}
+#include <math.h>
 
 /** Allocate the zero matrix.
  *
@@ -34,22 +21,26 @@ bml_deallocate_ellpack(
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
-bml_zero_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
+TYPED_FUNC(bml_zero_matrix_ellpack) (
     const int N,
     const int M)
 {
-    bml_matrix_ellpack_t *A = NULL;
+    bml_matrix_ellpack_t *A = bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
+    A->matrix_type = ellpack;
+    A->matrix_precision = MATRIX_PRECISION;
+    A->N = N;
+    A->M = M;
+    A->index = bml_allocate_memory(sizeof(int) * N * M);
+    A->nnz = bml_allocate_memory(sizeof(int) * N);
 
-    switch (matrix_precision)
+    // No values
+    for (int i = 0; i < N; i++)
     {
-    case single_real:
-        A = bml_zero_matrix_ellpack_single_real(N, M);
-        break;
-    case double_real:
-        A = bml_zero_matrix_ellpack_double_real(N, M);
-        break;
+        A->nnz[i] = 0;
     }
+
+    A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
+
     return A;
 }
 
@@ -68,22 +59,32 @@ bml_zero_matrix_ellpack(
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
-bml_random_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
+TYPED_FUNC(bml_random_matrix_ellpack) (
     const int N,
     const int M)
 {
-    bml_matrix_ellpack_t *A = NULL;
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
 
-    switch (matrix_precision)
+    REAL_T *A_value = A->value;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+
+    for (int i = 0; i < N; i++)
     {
-    case single_real:
-        A = bml_random_matrix_ellpack_single_real(N, M);        
-        break;
-    case double_real:
-        A = bml_random_matrix_ellpack_double_real(N, M);
-        break;
+        int jind = 0;
+        for (int j = 0; j < M; j++)
+        {
+            REAL_T rvalue = rand() / (REAL_T) RAND_MAX;
+            if (fabs(rvalue) > (REAL_T) 0.0)
+            {
+                A_value[i * M + jind] = rvalue;
+                A_index[i * M + jind] = j;
+                jind++;
+            }
+        }
+        A_nnz[i] = jind;
     }
+
     return A;
 }
 
@@ -102,21 +103,22 @@ bml_random_matrix_ellpack(
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
-bml_identity_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
+TYPED_FUNC(bml_identity_matrix_ellpack) (
     const int N,
     const int M)
 {
-    bml_matrix_ellpack_t *A = NULL;
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
 
-    switch (matrix_precision)
+    REAL_T *A_value = A->value;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+
+    for (int i = 0; i < N; i++)
     {
-    case single_real:
-        A = bml_identity_matrix_ellpack_single_real(N, M);
-        break;
-    case double_real:
-        A = bml_identity_matrix_ellpack_double_real(N, M);
-        break;
+        A_value[i * M] = (REAL_T)1.0;
+        A_index[i * M] = i;
+        A_nnz[i] = 1;
     }
+
     return A;
 }

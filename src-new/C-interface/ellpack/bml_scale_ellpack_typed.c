@@ -1,5 +1,10 @@
+#include "../typed.h"
+#include "../blas.h"
+#include "bml_allocate.h"
 #include "bml_scale.h"
 #include "bml_types.h"
+#include "bml_allocate_ellpack.h"
+#include "bml_copy_ellpack.h"
 #include "bml_scale_ellpack.h"
 #include "bml_types_ellpack.h"
 
@@ -14,21 +19,19 @@
  *  \return A scale version of matrix A.
  */
 bml_matrix_ellpack_t *
-bml_scale_ellpack_new(
+TYPED_FUNC(bml_scale_ellpack_new) (
     const double scale_factor,
     const bml_matrix_ellpack_t * A)
 {
-    bml_matrix_ellpack_t *B = NULL;
+    REAL_T sfactor = (REAL_T) scale_factor;
 
-    switch (A->matrix_precision)
-    {
-    case single_real:
-        B = bml_scale_ellpack_new_single_real(scale_factor, A);
-        break;
-    case double_real:
-        B = bml_scale_ellpack_new_double_real(scale_factor, A);
-        break;
-    }
+    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_copy_ellpack_new)(A);
+
+    int nElems = B->N * B->M;
+    int inc = 1;
+
+    C_BLAS(SCAL)(&nElems, &sfactor, B->value, &inc);
+
     return B;
 }
 
@@ -40,18 +43,18 @@ bml_scale_ellpack_new(
  *  \param B Scaled version of matrix A
  */
 void
-bml_scale_ellpack(
+TYPED_FUNC(bml_scale_ellpack) (
     const double scale_factor,
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
 {
-    switch (A->matrix_precision)
-    {
-    case single_real:
-        bml_scale_ellpack_single_real(scale_factor, A, B);
-        break;
-    case double_real:
-        bml_scale_ellpack_double_real(scale_factor, A, B);
-        break;
-    }
+    REAL_T sfactor = (REAL_T) scale_factor;
+
+    if (A != B)
+        TYPED_FUNC(bml_copy_ellpack)(A, B);
+
+    int nElems = B->N * B->M;
+    int inc = 1;
+
+    C_BLAS(SCAL)(&nElems, &sfactor, B->value, &inc);
 }

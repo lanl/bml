@@ -6,6 +6,8 @@ add_library(bml-new
   $<TARGET_OBJECTS:bml-dense-single_real>
   $<TARGET_OBJECTS:bml-dense-double_real>
   $<TARGET_OBJECTS:bml-ellpack>
+  $<TARGET_OBJECTS:bml-ellpack-single_real>
+  $<TARGET_OBJECTS:bml-ellpack-double_real>
   $<TARGET_OBJECTS:bml-fortran>
   $<TARGET_OBJECTS:bml-c>)
 

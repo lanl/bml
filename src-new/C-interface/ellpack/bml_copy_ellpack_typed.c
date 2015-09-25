@@ -1,5 +1,8 @@
+#include "../typed.h"
+#include "bml_allocate.h"
 #include "bml_copy.h"
 #include "bml_types.h"
+#include "bml_allocate_ellpack.h"
 #include "bml_copy_ellpack.h"
 #include "bml_types_ellpack.h"
 
@@ -14,20 +17,16 @@
  *  \return A copy of matrix A.
  */
 bml_matrix_ellpack_t *
-bml_copy_ellpack_new(
+TYPED_FUNC(bml_copy_ellpack_new) (
     const bml_matrix_ellpack_t * A)
 {
-    bml_matrix_ellpack_t *B = NULL;
+    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_zero_matrix_ellpack)(A->N, A->M);
 
-    switch (B->matrix_precision)
-    {
-    case single_real:
-        B = bml_copy_ellpack_new_single_real(A);
-        break;
-    case double_real:
-        B = bml_copy_ellpack_new_double_real(A);
-        break;
-    }
+    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
+    memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
+
+    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+
     return B;
 }
 
@@ -39,18 +38,13 @@ bml_copy_ellpack_new(
  *  \param B Copy of matrix A
  */
 void
-bml_copy_ellpack(
+TYPED_FUNC(bml_copy_ellpack) (
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
 {
 
-    switch (A->matrix_precision)
-    {
-    case single_real:
-        bml_copy_ellpack_single_real(A, B);
-        break;
-    case double_real:
-        bml_copy_ellpack_double_real(A, B);
-        break;
-    }
+    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
+    memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
+
+    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
 }
