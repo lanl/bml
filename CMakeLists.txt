@@ -52,6 +52,15 @@ list(APPEND LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 set(BML_OPENMP TRUE CACHE BOOL "Whether to compile with OpenMP support")
 if(BML_OPENMP)
   include(FindOpenMP)
+  if(CMAKE_VERSION VERSION_LESS 3.1)
+    # There is not Fortran support in FindOpenMP before version 3.1. We will
+    # have to hack this.
+    message(WARNING "Versions of <cmake-3.1 can not detect Fortran "
+      "compiler OpenMP flags. We will assume that the flags found for "
+      "the C compiler also work for the Fortran compiler. If this is "
+      "not the case, please send email to <nbock@lanl.gov>.")
+    set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
+  endif()
 endif()
 
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")

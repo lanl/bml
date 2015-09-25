@@ -12,7 +12,7 @@ create() {
 
 configure() {
     cd "${BUILD_DIR}"
-    cmake .. \
+    ${CMAKE:=cmake} .. \
           -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Debug} \
           -DCMAKE_C_COMPILER=${CC:=gcc} \
           -DCMAKE_CXX_COMPILER=${CXX:=g++} \
