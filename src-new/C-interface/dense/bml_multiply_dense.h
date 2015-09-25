@@ -6,4 +6,8 @@
 // Matrix multiply - C = alpha * A * B + beta * C
 void bml_multiply_dense(const bml_matrix_dense_t *A, const bml_matrix_dense_t *B, const bml_matrix_dense_t *C, const double alpha, const double beta);
 
+void bml_multiply_dense_single_real(const bml_matrix_dense_t *A, const bml_matrix_dense_t *B, const bml_matrix_dense_t *C, const double alpha, const double beta);
+
+void bml_multiply_dense_double_real(const bml_matrix_dense_t *A, const bml_matrix_dense_t *B, const bml_matrix_dense_t *C, const double alpha, const double beta);
+
 #endif

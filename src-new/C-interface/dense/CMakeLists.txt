@@ -26,8 +26,10 @@ set_target_properties(bml-dense
   PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 set(SOURCES-DENSE-TYPED
+  bml_add_dense_typed.c
   bml_allocate_dense_typed.c
   bml_copy_dense_typed.c
+  bml_multiply_dense_typed.c
   bml_scale_dense_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
