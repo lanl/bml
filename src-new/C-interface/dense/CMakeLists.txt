@@ -36,6 +36,10 @@ set(SOURCES-DENSE-TYPED
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-dense single_real "${SOURCES-DENSE-TYPED}")
 bml_add_typed_library(bml-dense double_real "${SOURCES-DENSE-TYPED}")
+set_target_properties(bml-dense-single_real
+  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+set_target_properties(bml-dense-double_real
+  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 
 if(INDENT)
   message(STATUS "Setting up indent-dense")
