@@ -30,7 +30,8 @@ set(SOURCES-ELLPACK-TYPED
   bml_allocate_ellpack_typed.c
   bml_copy_ellpack_typed.c
   bml_multiply_ellpack_typed.c
-  bml_scale_ellpack_typed.c)
+  bml_scale_ellpack_typed.c
+  bml_trace_ellpack_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellpack single_real "${SOURCES-ELLPACK-TYPED}")

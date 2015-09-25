@@ -1,11 +1,10 @@
-#include "../bml_trace.h"
-#include "../bml_types.h"
+#include "bml_trace.h"
+#include "bml_types.h"
 #include "bml_trace_ellpack.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
 #include <string.h>
-#include <omp.h>
 
 /** Calculate the trace of a matrix.
  *
@@ -20,10 +19,10 @@ double bml_trace_ellpack(const bml_matrix_ellpack_t *A)
 
     switch(A->matrix_precision) {
     case single_real:
-
+        trace = bml_trace_ellpack_single_real(A);
         break;
     case double_real:
-
+        trace = bml_trace_ellpack_double_real(A);
         break;
     }
     return trace;
