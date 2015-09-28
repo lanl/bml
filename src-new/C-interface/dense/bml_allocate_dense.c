@@ -1,5 +1,6 @@
 #include "bml_allocate.h"
 #include "bml_allocate_dense.h"
+#include "bml_logger.h"
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
@@ -45,6 +46,9 @@ bml_zero_matrix_dense(
     case double_real:
         A = bml_zero_matrix_dense_double_real(N);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        break;
     }
     return A;
 }
@@ -77,6 +81,9 @@ bml_random_matrix_dense(
     case double_real:
         A = bml_random_matrix_dense_double_real(N);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        break;
     }
     return A;
 }
@@ -108,6 +115,9 @@ bml_identity_matrix_dense(
         break;
     case double_real:
         A = bml_identity_matrix_dense_double_real(N);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return A;

@@ -1,8 +1,9 @@
 #include "bml_allocate.h"
-#include "bml_copy.h"
-#include "bml_types.h"
 #include "bml_allocate_dense.h"
+#include "bml_copy.h"
 #include "bml_copy_dense.h"
+#include "bml_logger.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -22,7 +23,7 @@ bml_copy_dense_new(
     bml_matrix_dense_t *B = NULL;
 
     //B = bml_zero_matrix_dense(A->matrix_precision, A->N);
-    
+
     switch (A->matrix_precision)
     {
     case single_real:
@@ -32,6 +33,9 @@ bml_copy_dense_new(
     case double_real:
         //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
         B = bml_copy_dense_new_double_real(A);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return B;
@@ -58,6 +62,9 @@ bml_copy_dense(
     case double_real:
         //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
         bml_copy_dense_double_real(A, B);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
 }

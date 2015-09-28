@@ -18,9 +18,16 @@
  * \param beta Scalar factor multiplied by B
  * \param threshold Threshold for matrix addition
  */
-void bml_add(const bml_matrix_t *A, const bml_matrix_t *B, const double alpha, const double beta, const double threshold)
+void
+bml_add(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B,
+    const double alpha,
+    const double beta,
+    const double threshold)
 {
-    switch(bml_get_type(A)) {
+    switch (bml_get_type(A))
+    {
     case dense:
         bml_add_dense(A, B, alpha, beta);
         break;
@@ -43,9 +50,14 @@ void bml_add(const bml_matrix_t *A, const bml_matrix_t *B, const double alpha, c
  * \param beta Scalar factor multiplied by A
  * \param threshold Threshold for matrix addition
  */
-void bml_add_identity(const bml_matrix_t *A, const double beta, const double threshold)
+void
+bml_add_identity(
+    const bml_matrix_t * A,
+    const double beta,
+    const double threshold)
 {
-    switch(bml_get_type(A)) {
+    switch (bml_get_type(A))
+    {
     case dense:
         bml_add_identity_dense(A, beta);
         break;

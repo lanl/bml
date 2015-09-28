@@ -1,6 +1,7 @@
+#include "bml_logger.h"
 #include "bml_scale.h"
-#include "bml_types.h"
 #include "bml_scale_ellpack.h"
+#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
@@ -28,6 +29,9 @@ bml_scale_ellpack_new(
     case double_real:
         B = bml_scale_ellpack_new_double_real(scale_factor, A);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        break;
     }
     return B;
 }
@@ -52,6 +56,9 @@ bml_scale_ellpack(
         break;
     case double_real:
         bml_scale_ellpack_double_real(scale_factor, A, B);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
 }

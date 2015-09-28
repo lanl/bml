@@ -6,6 +6,7 @@
 #include "bml_types.h"
 
 // Calculate trace of A
-double bml_trace(const bml_matrix_t *A);
+double bml_trace(
+    const bml_matrix_t * A);
 
 #endif

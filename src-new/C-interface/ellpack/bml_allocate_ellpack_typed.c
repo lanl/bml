@@ -20,12 +20,13 @@
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
-bml_matrix_ellpack_t *
-TYPED_FUNC(bml_zero_matrix_ellpack) (
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_zero_matrix_ellpack) (
     const int N,
     const int M)
 {
-    bml_matrix_ellpack_t *A = bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
+    bml_matrix_ellpack_t *A =
+        bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
     A->matrix_type = ellpack;
     A->matrix_precision = MATRIX_PRECISION;
     A->N = N;
@@ -58,12 +59,12 @@ TYPED_FUNC(bml_zero_matrix_ellpack) (
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
-bml_matrix_ellpack_t *
-TYPED_FUNC(bml_random_matrix_ellpack) (
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_random_matrix_ellpack) (
     const int N,
     const int M)
 {
-    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;
@@ -102,12 +103,12 @@ TYPED_FUNC(bml_random_matrix_ellpack) (
  *  \param M The number of non-zeroes per row.
  *  \return The matrix.
  */
-bml_matrix_ellpack_t *
-TYPED_FUNC(bml_identity_matrix_ellpack) (
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_identity_matrix_ellpack) (
     const int N,
     const int M)
 {
-    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;
@@ -115,7 +116,7 @@ TYPED_FUNC(bml_identity_matrix_ellpack) (
 
     for (int i = 0; i < N; i++)
     {
-        A_value[i * M] = (REAL_T)1.0;
+        A_value[i * M] = (REAL_T) 1.0;
         A_index[i * M] = i;
         A_nnz[i] = 1;
     }

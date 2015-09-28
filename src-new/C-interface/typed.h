@@ -11,6 +11,16 @@
 #define FUNC_SUFFIX double_real
 #define MATRIX_PRECISION double_real
 #define BLAS_PREFIX D
+#elif defined(SINGLE_COMPLEX)
+#define REAL_T float complex
+#define FUNC_SUFFIX single_complex
+#define MATRIX_PRECISION single_complex
+#define BLAS_PREFIX C
+#elif defined(DOUBLE_COMPLEX)
+#define REAL_T double complex
+#define FUNC_SUFFIX double_complex
+#define MATRIX_PRECISION double_complex
+#define BLAS_PREFIX Z
 #else
 #error Unknown precision type
 #endif

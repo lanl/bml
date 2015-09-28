@@ -22,7 +22,11 @@ typedef enum
     /** Matrix data is stored in single precision (float). */
     single_real,
     /** Matrix data is stored in double precision (double). */
-    double_real
+    double_real,
+    /** Matrix data is stored in single-complex precision (float). */
+    single_complex,
+    /** Matrix data is stored in double-complex precision (double). */
+    double_complex
 } bml_matrix_precision_t;
 
 /** The matrix type. */

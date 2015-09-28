@@ -22,16 +22,21 @@
  *  \param alpha Scalar factor multiplied by A
  *  \param beta Scalar factor multiplied by B
  */
-void TYPED_FUNC(bml_add_dense) (const bml_matrix_dense_t *A, const bml_matrix_dense_t *B, const double alpha, const double beta)
+void TYPED_FUNC(
+    bml_add_dense) (
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    const double alpha,
+    const double beta)
 {
-    REAL_T salpha = (REAL_T)alpha;
-    REAL_T sbeta = (REAL_T)beta;
+    REAL_T salpha = (REAL_T) alpha;
+    REAL_T sbeta = (REAL_T) beta;
     int nElems = B->N * B->N;
     int inc = 1;
 
     // Use BLAS saxpy
-    C_BLAS(SCAL)(&nElems, &salpha, A->matrix, &inc);
-    C_BLAS(AXPY)(&nElems, &sbeta, B->matrix, &inc, A->matrix, &inc);
+    C_BLAS(SCAL) (&nElems, &salpha, A->matrix, &inc);
+    C_BLAS(AXPY) (&nElems, &sbeta, B->matrix, &inc, A->matrix, &inc);
 }
 
 /** Matrix addition.
@@ -43,13 +48,16 @@ void TYPED_FUNC(bml_add_dense) (const bml_matrix_dense_t *A, const bml_matrix_de
  *  \param A Matrix A
  *  \param beta Scalar factor multiplied by A
  */
-void TYPED_FUNC(bml_add_identity_dense) (const bml_matrix_dense_t *A, const double beta)
+void TYPED_FUNC(
+    bml_add_identity_dense) (
+    const bml_matrix_dense_t * A,
+    const double beta)
 {
     REAL_T sbeta = (REAL_T) beta;
     int nElems = A->N * A->N;
     int inc = 1;
 
-    bml_matrix_dense_t *I = TYPED_FUNC(bml_identity_matrix_dense)(A->N);
+    bml_matrix_dense_t *I = TYPED_FUNC(bml_identity_matrix_dense) (A->N);
 
-    C_BLAS(AXPY)(&nElems, &sbeta, I->matrix, &inc, A->matrix, &inc);
+    C_BLAS(AXPY) (&nElems, &sbeta, I->matrix, &inc, A->matrix, &inc);
 }

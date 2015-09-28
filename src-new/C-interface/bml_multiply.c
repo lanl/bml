@@ -19,9 +19,17 @@
  * \param beta Scalar factor that multiplies C
  * \param threshold Threshold for multiplication
  */
-void bml_multiply(const bml_matrix_t *A, const bml_matrix_t *B, const bml_matrix_t *C, const double alpha, const double beta, const double threshold)
+void
+bml_multiply(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B,
+    const bml_matrix_t * C,
+    const double alpha,
+    const double beta,
+    const double threshold)
 {
-    switch(bml_get_type(A)) {
+    switch (bml_get_type(A))
+    {
     case dense:
         bml_multiply_dense(A, B, C, alpha, beta);
         break;
@@ -46,9 +54,14 @@ void bml_multiply(const bml_matrix_t *A, const bml_matrix_t *B, const bml_matrix
  * \param trX2 Trace of X2
  * \param threshold Threshold for multiplication
  */
-void bml_multiply_x2(const bml_matrix_t *X, const bml_matrix_t *X2, const double threshold)
+void
+bml_multiply_x2(
+    const bml_matrix_t * X,
+    const bml_matrix_t * X2,
+    const double threshold)
 {
-    switch(bml_get_type(X)) {
+    switch (bml_get_type(X))
+    {
     case dense:
         bml_multiply_x2_dense(X, X2);
         break;
@@ -60,4 +73,3 @@ void bml_multiply_x2(const bml_matrix_t *X, const bml_matrix_t *X2, const double
         break;
     }
 }
-

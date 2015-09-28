@@ -16,8 +16,8 @@
  *  \param A The matrix to be copied
  *  \return A copy of matrix A.
  */
-bml_matrix_dense_t *
-TYPED_FUNC(bml_copy_dense_new) (
+bml_matrix_dense_t *TYPED_FUNC(
+    bml_copy_dense_new) (
     const bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense) (A->N);
@@ -34,8 +34,8 @@ TYPED_FUNC(bml_copy_dense_new) (
  *  \param A The matrix to be copied
  *  \param B Copy of matrix A
  */
-void
-TYPED_FUNC(bml_copy_dense) (
+void TYPED_FUNC(
+    bml_copy_dense) (
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B)
 {

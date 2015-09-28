@@ -13,11 +13,14 @@
  * \param A Matrix tocalculate trace for 
  * \return  Trace of A
  */
-double bml_trace(const bml_matrix_t *A)
+double
+bml_trace(
+    const bml_matrix_t * A)
 {
     double trace = 0.0;
 
-    switch(bml_get_type(A)) {
+    switch (bml_get_type(A))
+    {
     case dense:
         trace = bml_trace_dense(A);
         break;

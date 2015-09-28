@@ -1,6 +1,7 @@
 #include "bml_copy.h"
-#include "bml_types.h"
 #include "bml_copy_ellpack.h"
+#include "bml_logger.h"
+#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
@@ -27,6 +28,9 @@ bml_copy_ellpack_new(
     case double_real:
         B = bml_copy_ellpack_new_double_real(A);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        break;
     }
     return B;
 }
@@ -51,6 +55,9 @@ bml_copy_ellpack(
         break;
     case double_real:
         bml_copy_ellpack_double_real(A, B);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
 }

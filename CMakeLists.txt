@@ -112,26 +112,40 @@ if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
   set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} ${BLAS_LIBRARIES})
-  check_fortran_function_exists(dgemm HAVE_DGEMM)
   check_fortran_function_exists(sgemm HAVE_SGEMM)
-  if(NOT HAVE_SGEMM OR NOT HAVE_DGEMM)
-    message(FATAL_ERROR "Could not find {s,d}gemm")
+  check_fortran_function_exists(dgemm HAVE_DGEMM)
+  check_fortran_function_exists(cgemm HAVE_CGEMM)
+  check_fortran_function_exists(zgemm HAVE_ZGEMM)
+  if(NOT (HAVE_SGEMM AND HAVE_DGEMM AND HAVE_CGEMM AND HAVE_ZGEMM))
+    message(FATAL_ERROR "Could not find {s,d,c,z}gemm")
   endif()
   add_definitions(-DHAVE_SGEMM -DHAVE_DGEMM)
 
   bml_check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
+  bml_check_C_Fortran_function_exists(cgemm C_CGEMM REQUIRED)
+  bml_check_C_Fortran_function_exists(zgemm C_ZGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(sscal C_SSCAL REQUIRED)
   bml_check_C_Fortran_function_exists(dscal C_DSCAL REQUIRED)
+  bml_check_C_Fortran_function_exists(cscal C_CSCAL REQUIRED)
+  bml_check_C_Fortran_function_exists(zscal C_ZSCAL REQUIRED)
   bml_check_C_Fortran_function_exists(saxpy C_SAXPY REQUIRED)
   bml_check_C_Fortran_function_exists(daxpy C_DAXPY REQUIRED)
+  bml_check_C_Fortran_function_exists(caxpy C_CAXPY REQUIRED)
+  bml_check_C_Fortran_function_exists(zaxpy C_ZAXPY REQUIRED)
   add_definitions(
     -DC_SGEMM=${C_SGEMM}
     -DC_DGEMM=${C_DGEMM}
+    -DC_CGEMM=${C_CGEMM}
+    -DC_ZGEMM=${C_ZGEMM}
     -DC_SSCAL=${C_SSCAL}
     -DC_DSCAL=${C_DSCAL}
+    -DC_CSCAL=${C_CSCAL}
+    -DC_ZSCAL=${C_ZSCAL}
     -DC_SAXPY=${C_SAXPY}
-    -DC_DAXPY=${C_DAXPY})
+    -DC_DAXPY=${C_DAXPY}
+    -DC_CAXPY=${C_CAXPY}
+    -DC_ZAXPY=${C_ZAXPY})
 
   list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
 endif()

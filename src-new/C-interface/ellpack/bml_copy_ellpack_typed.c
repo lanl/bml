@@ -16,11 +16,12 @@
  *  \param A The matrix to be copied
  *  \return A copy of matrix A.
  */
-bml_matrix_ellpack_t *
-TYPED_FUNC(bml_copy_ellpack_new) (
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_copy_ellpack_new) (
     const bml_matrix_ellpack_t * A)
 {
-    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_zero_matrix_ellpack)(A->N, A->M);
+    bml_matrix_ellpack_t *B =
+        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M);
 
     memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
@@ -37,8 +38,8 @@ TYPED_FUNC(bml_copy_ellpack_new) (
  *  \param A The matrix to be copied
  *  \param B Copy of matrix A
  */
-void
-TYPED_FUNC(bml_copy_ellpack) (
+void TYPED_FUNC(
+    bml_copy_ellpack) (
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
 {

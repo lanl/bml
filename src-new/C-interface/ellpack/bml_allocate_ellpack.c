@@ -1,5 +1,6 @@
 #include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
+#include "bml_logger.h"
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
 
@@ -49,6 +50,9 @@ bml_zero_matrix_ellpack(
     case double_real:
         A = bml_zero_matrix_ellpack_double_real(N, M);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        break;
     }
     return A;
 }
@@ -78,10 +82,13 @@ bml_random_matrix_ellpack(
     switch (matrix_precision)
     {
     case single_real:
-        A = bml_random_matrix_ellpack_single_real(N, M);        
+        A = bml_random_matrix_ellpack_single_real(N, M);
         break;
     case double_real:
         A = bml_random_matrix_ellpack_double_real(N, M);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return A;
@@ -116,6 +123,9 @@ bml_identity_matrix_ellpack(
         break;
     case double_real:
         A = bml_identity_matrix_ellpack_double_real(N, M);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return A;

@@ -1,9 +1,10 @@
 #include "bml_allocate.h"
-#include "bml_scale.h"
-#include "bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
+#include "bml_logger.h"
+#include "bml_scale.h"
 #include "bml_scale_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -31,6 +32,9 @@ bml_scale_dense_new(
     case double_real:
         B = bml_scale_dense_new_double_real(scale_factor, A);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        break;
     }
     return B;
 }
@@ -55,6 +59,9 @@ bml_scale_dense(
         break;
     case double_real:
         bml_scale_dense_single_real(scale_factor, A, B);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
 }

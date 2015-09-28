@@ -1,6 +1,7 @@
+#include "bml_logger.h"
 #include "bml_trace.h"
-#include "bml_types.h"
 #include "bml_trace_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
@@ -14,16 +15,22 @@
  *  \param A The matrix to calculate a trace for
  *  \return The trace of A
  */
-double bml_trace_dense(const bml_matrix_dense_t *A)
+double
+bml_trace_dense(
+    const bml_matrix_dense_t * A)
 {
     double trace = 0.0;
 
-    switch(A->matrix_precision) {
+    switch (A->matrix_precision)
+    {
     case single_real:
         bml_trace_dense_single_real(A);
         break;
     case double_real:
         bml_trace_dense_double_real(A);
+        break;
+    default:
+        LOG_ERROR("unknown precision\n");
         break;
     }
     return trace;

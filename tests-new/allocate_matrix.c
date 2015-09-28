@@ -83,6 +83,10 @@ test_function(
         }
         bml_free_memory(A_double);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        return -1;
+        break;
     }
     LOG_INFO("identity matrix test passed\n");
 

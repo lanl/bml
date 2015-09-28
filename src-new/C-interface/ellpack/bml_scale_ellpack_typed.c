@@ -18,19 +18,19 @@
  *  \param A The matrix to be scaled
  *  \return A scale version of matrix A.
  */
-bml_matrix_ellpack_t *
-TYPED_FUNC(bml_scale_ellpack_new) (
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_scale_ellpack_new) (
     const double scale_factor,
     const bml_matrix_ellpack_t * A)
 {
     REAL_T sfactor = (REAL_T) scale_factor;
 
-    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_copy_ellpack_new)(A);
+    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_copy_ellpack_new) (A);
 
     int nElems = B->N * B->M;
     int inc = 1;
 
-    C_BLAS(SCAL)(&nElems, &sfactor, B->value, &inc);
+    C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
 
     return B;
 }
@@ -42,8 +42,8 @@ TYPED_FUNC(bml_scale_ellpack_new) (
  *  \param A The matrix to be scaled
  *  \param B Scaled version of matrix A
  */
-void
-TYPED_FUNC(bml_scale_ellpack) (
+void TYPED_FUNC(
+    bml_scale_ellpack) (
     const double scale_factor,
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
@@ -51,10 +51,10 @@ TYPED_FUNC(bml_scale_ellpack) (
     REAL_T sfactor = (REAL_T) scale_factor;
 
     if (A != B)
-        TYPED_FUNC(bml_copy_ellpack)(A, B);
+        TYPED_FUNC(bml_copy_ellpack) (A, B);
 
     int nElems = B->N * B->M;
     int inc = 1;
 
-    C_BLAS(SCAL)(&nElems, &sfactor, B->value, &inc);
+    C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
 }
