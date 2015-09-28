@@ -77,7 +77,7 @@ contains
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_zero_matrix(matrix_type, matrix_precision, n, a, m)
+  subroutine bml_zero_matrix(matrix_type, matrix_precision, n, m, a)
 
     use bml_types_m
     use bml_interface_m
@@ -103,7 +103,7 @@ contains
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_random_matrix(matrix_type, matrix_precision, n, a, m)
+  subroutine bml_random_matrix(matrix_type, matrix_precision, n, m, a)
 
     use bml_types_m
     use bml_interface_m
@@ -129,16 +129,15 @@ contains
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_identity_matrix(matrix_type, matrix_precision, n, a, m)
+  subroutine bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
 
     use bml_types_m
     use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n
+    integer, intent(in) :: n, m
     type(bml_matrix_t), intent(inout) :: a
-    integer, intent(in) :: m
 
     if(c_associated(a%ptr)) then
        call bml_deallocate_C(a%ptr)

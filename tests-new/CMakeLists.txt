@@ -81,18 +81,17 @@ endforeach()
 # To add more tests, simply add the source to this variable. The CMake
 # script will automatically build and run the test.
 set(FORTRAN-TESTS
+  add_matrix.F90
   allocate_matrix.F90
-  convert_matrix.F90)
-
-  # add_matrix.F90
-  # copy_matrix.F90
-  # diagonalize_matrix.F90
-  # get_bandwidth.F90
-  # get_matrix.F90
-  # multiply_matrix.F90
-  # scale_matrix.F90
-  # trace_matrix.F90
-  # transpose_matrix.F90
+  convert_matrix.F90
+  copy_matrix.F90
+  diagonalize_matrix.F90
+  get_bandwidth.F90
+  get_matrix.F90
+  multiply_matrix.F90
+  scale_matrix.F90
+  trace_matrix.F90
+  transpose_matrix.F90)
 
 # Generate the test_modules module.
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/test_modules.F90 "module test_modules\n")
@@ -125,7 +124,7 @@ foreach(FILE ${FORTRAN-TESTS})
       unset(COMPILE_DEFINITIONS)
       list(APPEND COMPILE_DEFINITIONS "TEST_MODULE=${BASENAME}_m")
       list(APPEND COMPILE_DEFINITIONS "TEST_TYPE=${BASENAME}_t")
-      list(APPEND COMPILE_DEFINITIONS "PRECISION=${PRECISION}")
+      list(APPEND COMPILE_DEFINITIONS "MATRIX_PRECISION=${PRECISION}")
       list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE=${MATRIX_TYPE}")
       add_executable(${TESTNAME}
         ${FILE}

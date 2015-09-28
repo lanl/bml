@@ -33,8 +33,10 @@
  * \copyright Los Alamos National Laboratory 2015
  *
  * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
+ * \defgroup add_group_C Add Functions (C interface)
  * \defgroup convert_group_C Converting between Matrix Formats (C interface)
  * \defgroup allocate_group_Fortran Allocation and Deallocation Functions (Fortran interface)
+ * \defgroup add_group_Fortran Add Functions (Fortran interface)
  * \defgroup convert_group_Fortran Converting between Matrix Formats (Fortran interface)
  */
 

@@ -14,14 +14,15 @@ module diagonalize_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision, m) result(test_result)
+  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
 
-    integer, intent(in) :: n, m
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
+    type(bml_matrix_t) :: a
+
     double precision, allocatable :: a_dense_double(:, :)
     double precision, allocatable :: eigenvectors_double(:, :)
     double precision, allocatable :: eigenvalues_double(:)

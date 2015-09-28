@@ -5,7 +5,8 @@ program test
   implicit none
 
   integer, parameter :: N = 12, M = 8
-  class(bml_matrix_t), allocatable :: A
+
+  type(bml_matrix_t) :: A
 
   real, allocatable :: A_dense_single(:, :)
   double precision, allocatable :: A_dense_double(:, :)

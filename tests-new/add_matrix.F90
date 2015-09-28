@@ -14,30 +14,30 @@ module add_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
 
-    integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
     logical :: test_result
 
     double precision, parameter :: ALPHA = 1.2
     double precision, parameter :: BETA = 0.8
 
-    class(bml_matrix_t), allocatable :: a
-    class(bml_matrix_t), allocatable :: b
-    class(bml_matrix_t), allocatable :: c
+    type(bml_matrix_t) :: a
+    type(bml_matrix_t) :: b
+    type(bml_matrix_t) :: c
 
-    double precision, allocatable :: a_dense(:, :)
-    double precision, allocatable :: b_dense(:, :)
-    double precision, allocatable :: c_dense(:, :)
+    double precision, pointer :: a_dense(:, :)
+    double precision, pointer :: b_dense(:, :)
+    double precision, pointer :: c_dense(:, :)
 
     integer :: i
 
     test_result = .true.
 
-    call bml_random_matrix(matrix_type, matrix_precision, n, a)
-    call bml_identity_matrix(matrix_type, matrix_precision, n, b)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, m, b)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(b, b_dense)
