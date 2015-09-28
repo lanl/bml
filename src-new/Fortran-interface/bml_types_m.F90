@@ -1,5 +1,5 @@
 !> The basic bml types.
-module bml_types
+module bml_types_m
 
   use, intrinsic :: iso_C_binding
 
@@ -21,4 +21,10 @@ module bml_types
   !> The double-precision identifier.
   character(len=*), parameter :: BML_PRECISION_DOUBLE = "double-precision"
 
-end module bml_types
+  !> The single precision identifier.
+  character(len=*), parameter :: BML_PRECISION_SINGLE_COMPLEX = "single-complex"
+
+  !> The double-precision identifier.
+  character(len=*), parameter :: BML_PRECISION_DOUBLE_COMPLEX = "double-complex"
+
+end module bml_types_m

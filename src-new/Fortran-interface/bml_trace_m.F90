@@ -10,7 +10,7 @@ contains
   !! \param a The matrix.
   function bml_trace(a) result(tr_a)
 
-    use bml_types
+    use bml_types_m
 
     class(bml_matrix_t), intent(in) :: a
     double precision :: tr_a

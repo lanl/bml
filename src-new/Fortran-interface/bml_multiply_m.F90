@@ -19,7 +19,7 @@ contains
   !! \param beta The factor \f$ \beta \f$.
   subroutine bml_multiply(A, B, C, alpha, beta)
 
-    use bml_types
+    use bml_types_m
 
     class(bml_matrix_t), intent(in) :: A, B
     class(bml_matrix_t), allocatable, intent(inout) :: C

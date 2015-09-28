@@ -1,5 +1,5 @@
 !> Introspection procedures.
-module bml_introspection
+module bml_introspection_m
 
   implicit none
 
@@ -20,7 +20,7 @@ contains
   !!\return The matrix size.
   function bml_get_size(a)
 
-    use bml_types
+    use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
     integer :: bml_get_size
@@ -29,4 +29,4 @@ contains
 
   end function bml_get_size
 
-end module bml_introspection
+end module bml_introspection_m

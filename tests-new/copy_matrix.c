@@ -67,6 +67,10 @@ test_function(
         bml_free_memory(B_double);
         bml_free_memory(C_double);
         break;
+    default:
+        LOG_ERROR("unknown precision\n");
+        return -1;
+        break;
     }
     bml_deallocate(&A);
     bml_deallocate(&B);

@@ -9,7 +9,7 @@ contains
   !! @param a_t The transpose.
   subroutine bml_transpose(a, a_t)
 
-    use bml_types
+    use bml_types_m
 
     class(bml_matrix_t), intent(in) :: a
     class(bml_matrix_t), allocatable, intent(out) :: a_t

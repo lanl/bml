@@ -1,5 +1,5 @@
-  !> Utility matrix functions.
-module bml_utilities
+!> Utility matrix functions.
+module bml_utilities_m
 
   implicit none
 
@@ -40,8 +40,8 @@ contains
   subroutine bml_print_matrix_single(tag, a, i_l, i_u, j_l, j_u)
 
     use, intrinsic :: iso_C_binding
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: tag
     real, target, intent(in) :: a(:, :)
@@ -72,8 +72,8 @@ contains
   subroutine bml_print_matrix_double(tag, a, i_l, i_u, j_l, j_u)
 
     use, intrinsic :: iso_C_binding
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: tag
     double precision, target, intent(in) :: a(:, :)
@@ -91,4 +91,4 @@ contains
 
   end subroutine bml_print_matrix_double
 
-end module bml_utilities
+end module bml_utilities_m

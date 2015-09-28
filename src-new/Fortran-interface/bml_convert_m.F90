@@ -1,4 +1,4 @@
-module bml_convert
+module bml_convert_m
 
   implicit none
 
@@ -52,8 +52,8 @@ contains
   !! \param m The extra arg
   subroutine bml_convert_from_dense_single(matrix_type, matrix_precision, a_dense, a, threshold, m)
 
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
@@ -82,8 +82,8 @@ contains
   !! \param m the extra arg
   subroutine bml_convert_from_dense_double(matrix_type, matrix_precision, a_dense, a, threshold, m)
 
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
@@ -108,8 +108,8 @@ contains
   !! \param a_dense The dense matrix
   subroutine bml_convert_to_dense_single(a, a_dense)
 
-    use bml_types
-    use bml_introspection
+    use bml_types_m
+    use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
     real, pointer, intent(out) :: a_dense(:, :)
@@ -129,8 +129,8 @@ contains
   !! \param a_dense The dense matrix
   subroutine bml_convert_to_dense_double(a, a_dense)
 
-    use bml_types
-    use bml_introspection
+    use bml_types_m
+    use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
     double precision, pointer, intent(out) :: a_dense(:, :)
@@ -142,4 +142,4 @@ contains
 
   end subroutine bml_convert_to_dense_double
 
-end module bml_convert
+end module bml_convert_m

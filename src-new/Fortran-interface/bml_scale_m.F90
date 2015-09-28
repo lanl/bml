@@ -23,7 +23,7 @@ contains
   !! \param a The matrix
   subroutine scale_one(alpha, a)
 
-    use bml_types
+    use bml_types_m
 
     double precision, intent(in) :: alpha
     class(bml_matrix_t), intent(inout) :: a
@@ -39,7 +39,7 @@ contains
   !! \param c The matrix
   subroutine scale_two(alpha, a, c)
 
-    use bml_types
+    use bml_types_m
 
     double precision, intent(in) :: alpha
     class(bml_matrix_t), intent(in) :: a

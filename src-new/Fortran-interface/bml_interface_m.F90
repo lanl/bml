@@ -1,5 +1,5 @@
 !> Interface module.
-module bml_interface
+module bml_interface_m
 
   implicit none
 
@@ -24,7 +24,7 @@ contains
   !! in bml_matrix_types_t and bml_matrix_precision_t.
   function get_enum_id(type_string) result(id)
 
-    use bml_types
+    use bml_types_m
 
     character(len=*), intent(in) :: type_string
     integer :: id
@@ -43,4 +43,4 @@ contains
 
   end function get_enum_id
 
-end module bml_interface
+end module bml_interface_m

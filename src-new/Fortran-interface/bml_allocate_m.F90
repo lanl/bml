@@ -1,5 +1,5 @@
 !> Matrix allocation functions.
-module bml_allocate
+module bml_allocate_m
 
   implicit none
 
@@ -63,7 +63,7 @@ contains
   !!
   !! \param a The matrix.
   subroutine bml_deallocate(a)
-    use bml_types
+    use bml_types_m
     type(bml_matrix_t) :: a
     call bml_deallocate_C(a%ptr)
   end subroutine bml_deallocate
@@ -79,8 +79,8 @@ contains
   !! \param m The extra arg.
   subroutine bml_zero_matrix(matrix_type, matrix_precision, n, a, m)
 
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
@@ -105,8 +105,8 @@ contains
   !! \param m The extra arg.
   subroutine bml_random_matrix(matrix_type, matrix_precision, n, a, m)
 
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
@@ -131,8 +131,8 @@ contains
   !! \param m The extra arg.
   subroutine bml_identity_matrix(matrix_type, matrix_precision, n, a, m)
 
-    use bml_types
-    use bml_interface
+    use bml_types_m
+    use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
@@ -147,4 +147,4 @@ contains
 
   end subroutine bml_identity_matrix
 
-end module bml_allocate
+end module bml_allocate_m

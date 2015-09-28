@@ -10,7 +10,7 @@ contains
   !! @param eigenvalues The corresponding eigenvalues.
   subroutine bml_diagonalize(a, eigenvectors, eigenvalues)
 
-    use bml_types
+    use bml_types_m
 
     class(bml_matrix_t), intent(in) :: a
     double precision, allocatable, intent(out) :: eigenvectors(:, :)
