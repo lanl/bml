@@ -23,25 +23,21 @@ contains
 
     type(bml_matrix_t) :: a
 
-    double precision, allocatable :: a_dense_double(:, :)
-    double precision, allocatable :: eigenvectors_double(:, :)
-    double precision, allocatable :: eigenvalues_double(:)
+    REAL_TYPE, allocatable :: a_dense(:, :)
+    REAL_TYPE, allocatable :: eigenvectors(:, :)
+    REAL_TYPE, allocatable :: eigenvalues(:)
 
     test_result = .false.
 
-    select case(matrix_precision)
-    case(BML_PRECISION_DOUBLE)
-       allocate(a_dense_double(n, n))
-       call random_number(a_dense_double)
-       a_dense_double = (a_dense_double+transpose(a_dense_double))/2
-       call bml_convert_from_dense(matrix_type, a_dense_double, a)
-       call bml_diagonalize(a, eigenvectors_double, eigenvalues_double)
-       call bml_print_matrix("A", a_dense_double, python_format=.true.)
-       call bml_print_vector("eval", eigenvalues_double)
-       call bml_print_matrix("evec", eigenvectors_double)
-    case default
-       print *, "unknown matrix type"
-    end select
+    allocate(a_dense(n, n))
+    a_dense = 0
+    call random_number(a_dense)
+    a_dense = (a_dense+transpose(a_dense))/2
+    call bml_convert_from_dense(matrix_type, a_dense, a)
+    call bml_diagonalize(a, eigenvectors, eigenvalues)
+    call bml_print_matrix("A", a_dense, python_format=.true.)
+    call bml_print_vector("eval", eigenvalues)
+    call bml_print_matrix("evec", eigenvectors)
 
   end function test_function
 

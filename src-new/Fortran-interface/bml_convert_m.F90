@@ -29,11 +29,15 @@ module bml_convert_m
   interface bml_convert_from_dense
      module procedure bml_convert_from_dense_single
      module procedure bml_convert_from_dense_double
+     module procedure bml_convert_from_dense_single_complex
+     module procedure bml_convert_from_dense_double_complex
   end interface bml_convert_from_dense
 
   interface bml_convert_to_dense
      module procedure bml_convert_to_dense_single
      module procedure bml_convert_to_dense_double
+     module procedure bml_convert_to_dense_single_complex
+     module procedure bml_convert_to_dense_double_complex
   end interface bml_convert_to_dense
 
   public :: bml_convert_from_dense
@@ -100,6 +104,67 @@ contains
 
   end subroutine bml_convert_from_dense_double
 
+  !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param matrix_type The matrix type
+  !! \param a_dense The dense matrix
+  !! \param a The bml matrix
+  !! \param threshold The matrix element magnited threshold
+  !! \param m The extra arg
+  subroutine bml_convert_from_dense_single_complex(matrix_type, matrix_precision, &
+    a_dense, a, threshold, m)
+
+    use bml_types_m
+    use bml_interface_m
+
+    character(len=*), intent(in) :: matrix_type
+    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: m
+    complex, target, intent(in) :: a_dense(:, :)
+    type(bml_matrix_t), intent(inout) :: a
+    double precision, intent(in) :: threshold
+
+    associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
+      a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
+           get_enum_id(matrix_precision), &
+           size(a_dense, 1), c_loc(a_ptr), threshold, m)
+    end associate
+
+  end subroutine bml_convert_from_dense_single_complex
+
+  !> Convert a dense matrix into a bml matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param matrix_type The matrix type
+  !! \param matrix_precision The matrix precision
+  !! \param a_dense The dense matrix
+  !! \param a The bml matrix
+  !! \param threshold The matrix element magnited threshold
+  !! \param m the extra arg
+  subroutine bml_convert_from_dense_double_complex(matrix_type, matrix_precision, &
+       a_dense, a, threshold, m)
+
+    use bml_types_m
+    use bml_interface_m
+
+    character(len=*), intent(in) :: matrix_type
+    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: m
+    complex(kind(0.0d0)), target, intent(in) :: a_dense(:, :)
+    type(bml_matrix_t), intent(inout) :: a
+    double precision, intent(in) :: threshold
+
+    associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
+      a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
+           get_enum_id(matrix_precision), &
+           size(a_dense, 1), c_loc(a_ptr), threshold, m)
+    end associate
+
+  end subroutine bml_convert_from_dense_double_complex
+
   !> Convert a matrix into a dense matrix.
   !!
   !! \ingroup convert_group_Fortran
@@ -141,5 +206,47 @@ contains
     call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
 
   end subroutine bml_convert_to_dense_double
+
+  !> Convert a matrix into a dense matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param a The bml matrix
+  !! \param a_dense The dense matrix
+  subroutine bml_convert_to_dense_single_complex(a, a_dense)
+
+    use bml_types_m
+    use bml_introspection_m
+
+    type(bml_matrix_t), intent(in) :: a
+    complex, pointer, intent(out) :: a_dense(:, :)
+
+    type(C_PTR) :: a_ptr
+
+    a_ptr = bml_convert_to_dense_C(a%ptr)
+    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
+
+  end subroutine bml_convert_to_dense_single_complex
+
+  !> Convert a matrix into a dense matrix.
+  !!
+  !! \ingroup convert_group_Fortran
+  !!
+  !! \param a The bml matrix
+  !! \param a_dense The dense matrix
+  subroutine bml_convert_to_dense_double_complex(a, a_dense)
+
+    use bml_types_m
+    use bml_introspection_m
+
+    type(bml_matrix_t), intent(in) :: a
+    complex(kind(0d0)), pointer, intent(out) :: a_dense(:, :)
+
+    type(C_PTR) :: a_ptr
+
+    a_ptr = bml_convert_to_dense_C(a%ptr)
+    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
+
+  end subroutine bml_convert_to_dense_double_complex
 
 end module bml_convert_m

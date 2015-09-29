@@ -23,6 +23,8 @@ module bml_utilities_m
   interface bml_print_matrix
      module procedure bml_print_matrix_single
      module procedure bml_print_matrix_double
+     module procedure bml_print_matrix_single_complex
+     module procedure bml_print_matrix_double_complex
   end interface bml_print_matrix
 
   public :: bml_print_matrix
@@ -90,5 +92,67 @@ contains
     end associate
 
   end subroutine bml_print_matrix_double
+
+  !> Print a dense matrix.
+  !!
+  !! \param tag A string to print before the matrix.
+  !! \param a The matrix.
+  !! \param i_l The lower row bound.
+  !! \param i_u The upper row bound.
+  !! \param j_l The lower column bound.
+  !! \param j_u The upper column bound.
+  subroutine bml_print_matrix_single_complex(tag, a, i_l, i_u, j_l, j_u)
+
+    use, intrinsic :: iso_C_binding
+    use bml_types_m
+    use bml_interface_m
+
+    character(len=*), intent(in) :: tag
+    complex, target, intent(in) :: a(:, :)
+    integer, intent(in) :: i_l
+    integer, intent(in) :: i_u
+    integer, intent(in) :: j_l
+    integer, intent(in) :: j_u
+
+    associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
+      ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
+      ! exclusive in the upper bound in the C code.
+      call bml_print_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_SINGLE), &
+           c_loc(a_ptr), &
+           i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
+           j_l-lbound(a, 2), j_u-lbound(a, 2)+1)
+    end associate
+
+  end subroutine bml_print_matrix_single_complex
+
+  !> Print a dense matrix.
+  !!
+  !! \param tag A string to print before the matrix.
+  !! \param a The matrix.
+  !! \param i_l The lower row bound.
+  !! \param i_u The upper row bound.
+  !! \param j_l The lower column bound.
+  !! \param j_u The upper column bound.
+  subroutine bml_print_matrix_double_complex(tag, a, i_l, i_u, j_l, j_u)
+
+    use, intrinsic :: iso_C_binding
+    use bml_types_m
+    use bml_interface_m
+
+    character(len=*), intent(in) :: tag
+    complex(kind(0d0)), target, intent(in) :: a(:, :)
+    integer, intent(in) :: i_l
+    integer, intent(in) :: i_u
+    integer, intent(in) :: j_l
+    integer, intent(in) :: j_u
+
+    associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
+      call bml_print_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_DOUBLE), &
+           c_loc(a_ptr), &
+           i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
+           j_l-lbound(a, 2), j_u-lbound(a, 2)+1)
+    end associate
+
+  end subroutine bml_print_matrix_double_complex
 
 end module bml_utilities_m

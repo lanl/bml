@@ -13,8 +13,8 @@ contains
 
     use bml_types_m
 
-    class(bml_matrix_t), intent(in) :: a
-    class(bml_matrix_t), allocatable, intent(out) :: b
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: b
 
   end subroutine bml_copy
 

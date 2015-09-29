@@ -52,7 +52,7 @@ contains
     end do
     print *, "Identity matrix test passed"
 
-    call bml_zero_matrix(matrix_type, matrix_precision, n, a, m)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_deallocate(a)
 
   end function test_function
