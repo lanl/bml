@@ -23,59 +23,33 @@ contains
 
     type(bml_matrix_t) :: a
 
-    real, pointer :: a_real(:, :)
-    double precision, pointer :: a_double(:, :)
-
+    REAL_TYPE, pointer :: a_dense(:, :)
     integer :: i, j
 
     test_result = .true.
 
-    call bml_random_matrix(matrix_type, matrix_precision, n, a, m)
-    call bml_identity_matrix(matrix_type, matrix_precision, n, a, m)
-    select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_real)
-       call bml_print_matrix("A", a_real, lbound(a_real, 1), ubound(a_real, 1), &
-            lbound(a_real, 2), ubound(a_real, 2))
-       do i = 1, n
-          do j = 1, n
-             if(i == j) then
-                if(abs(a_real(i, j)-1) > 1e-12) then
-                   print *, "Incorrect value on diagonal", a_real(i, j)
-                   test_result = .false.
-                   return
-                end if
-             else
-                if(abs(a_real(i, j)) > 1e-12) then
-                   print *, "Incorrect value off diagonal", a_real(i, j)
-                   test_result = .false.
-                   return
-                end if
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_convert_to_dense(a, a_dense)
+    call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
+         lbound(a_dense, 2), ubound(a_dense, 2))
+    do i = 1, n
+       do j = 1, n
+          if(i == j) then
+             if(abs(a_dense(i, j)-1) > 1e-12) then
+                print *, "Incorrect value on diagonal", a_dense(i, j)
+                test_result = .false.
+                return
              end if
-          end do
-       end do
-    case(BML_PRECISION_DOUBLE)
-       call bml_convert_to_dense(a, a_double)
-       call bml_print_matrix("A", a_double, lbound(a_double, 1), ubound(a_double, 1), &
-            lbound(a_double, 2), ubound(a_double, 2))
-       do i = 1, n
-          do j = 1, n
-             if(i == j) then
-                if(abs(a_double(i, j)-1) > 1e-12) then
-                   print *, "Incorrect value on diagonal", a_double(i, j)
-                   test_result = .false.
-                   return
-                end if
-             else
-                if(abs(a_double(i, j)) > 1e-12) then
-                   print *, "Incorrect value off diagonal", a_double(i, j)
-                   test_result = .false.
-                   return
-                end if
+          else
+             if(abs(a_dense(i, j)) > 1e-12) then
+                print *, "Incorrect value off diagonal", a_dense(i, j)
+                test_result = .false.
+                return
              end if
-          end do
+          end if
        end do
-    end select
+    end do
     print *, "Identity matrix test passed"
 
     call bml_zero_matrix(matrix_type, matrix_precision, n, a, m)

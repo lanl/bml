@@ -2,11 +2,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../C-interface)
 
 set(FORTRAN-SOURCES-PUBLIC
   bml.F90
-  bml_allocate_m.F90
   bml_add_m.F90
+  bml_allocate_m.F90
   bml_convert_m.F90
   bml_copy_m.F90
   bml_diagonalize_m.F90
+  bml_error_m.F90
   bml_introspection_m.F90
   bml_multiply_m.F90
   bml_scale_m.F90
@@ -17,24 +18,24 @@ set(FORTRAN-SOURCES-PUBLIC
 
 set(FORTRAN-SOURCES-PRIVATE
   bml_interface_m.F90
+  bml_typed_m.F90
   bml_print_matrix_wrapper.c
   bml_convert_from_dense_wrapper.c)
 
 set(FORTRAN-SOURCES-TYPED
   bml_add_typed_m.F90)
 
-set(MATRIX_TYPES single_real double_real single_complex double_complex)
-list(LENGTH MATRIX_TYPES NUMBER_TYPES)
-math(EXPR NUMBER_TYPES_MAX "${NUMBER_TYPES}-1")
+include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 foreach(i RANGE ${NUMBER_TYPES_MAX})
-  list(GET MATRIX_TYPES ${i} MATRIX_TYPE)
+  get_Fortran_types(${i} MATRIX_TYPE REAL_TYPE)
   foreach(S ${FORTRAN-SOURCES-TYPED})
     string(REPLACE "typed" ${MATRIX_TYPE} S_TYPED ${S})
     get_filename_component(S_TYPED ${S_TYPED} NAME)
     add_custom_command(OUTPUT ${S_TYPED}
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
       COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
-      -DMATRIX_TYPE=${MATRIX_TYPE}
+      -DMATRIX_TYPE="${MATRIX_TYPE}"
+      -DREAL_TYPE="${REAL_TYPE}"
       -o ${S_TYPED}
       ${CMAKE_CURRENT_SOURCE_DIR}/${S})
     list(APPEND FORTRAN-SOURCES-PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/${S_TYPED})

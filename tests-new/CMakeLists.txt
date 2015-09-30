@@ -22,6 +22,8 @@ endif()
 
 set(TYPES dense ellpack)
 
+include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
+
 # Scan the sources in C-TESTS and generate build rules to build and
 # test them. All tests are assumed to be functions using the
 # bml_test.h test framework.
@@ -32,26 +34,18 @@ foreach(FILE ${C-TESTS})
   endif()
   get_filename_component(BASENAME ${FILE} NAME_WE)
 
+  message(STATUS "Adding test ${BASENAME}")
+
   foreach(TYPE ${TYPES})
     set(MATRIX_TYPE bml_matrix_${TYPE}_t)
-    foreach(PRECISION single_real double_real single_complex double_complex)
-      if(PRECISION STREQUAL single_real)
-        set(REAL_TYPE float)
-      elseif(PRECISION STREQUAL double_real)
-        set(REAL_TYPE double)
-      elseif(PRECISION STREQUAL single_complex)
-        set(REAL_TYPE float complex)
-      elseif(PRECISION STREQUAL double_complex)
-        set(REAL_TYPE double complex)
-      else()
-        message(FATAL_ERROR "Unknown type")
-      endif()
-      set(TESTNAME C-${BASENAME}-${TYPE}-${PRECISION})
+    foreach(i RANGE ${NUMBER_TYPES_MAX})
+      get_C_types(${i} MATRIX_PRECISION REAL_TYPE)
+      set(TESTNAME C-${BASENAME}-${TYPE}-${MATRIX_PRECISION})
       unset(COMPILE_DEFINITIONS)
-      list(APPEND COMPILE_DEFINITIONS "MATRIX_PRECISION=${PRECISION}")
-      list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE=${MATRIX_TYPE}")
-      list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE_NAME=${TYPE}")
-      #list(APPEND COMPILE_DEFINITIONS "REAL_TYPE=${REAL_TYPE}")
+      list(APPEND COMPILE_DEFINITIONS MATRIX_PRECISION=${MATRIX_PRECISION})
+      list(APPEND COMPILE_DEFINITIONS MATRIX_TYPE=${MATRIX_TYPE})
+      list(APPEND COMPILE_DEFINITIONS MATRIX_TYPE_NAME=${TYPE})
+      list(APPEND COMPILE_DEFINITIONS REAL_TYPE=${REAL_TYPE})
       add_executable(${TESTNAME}
         ${FILE}
         test_driver.c)
@@ -114,18 +108,20 @@ foreach(FILE ${FORTRAN-TESTS})
 
   message(STATUS "Adding test ${BASENAME}")
 
-  foreach(type ${TYPES})
-    set(MATRIX_TYPE BML_MATRIX_${type})
-    foreach(precision SINGLE DOUBLE)
-      set(PRECISION BML_PRECISION_${precision})
-      set(TESTNAME ${BASENAME}-${type}-${precision})
+  foreach(TYPE ${TYPES})
+    set(MATRIX_TYPE BML_MATRIX_${TYPE})
+    foreach(i RANGE ${NUMBER_TYPES_MAX})
+      get_Fortran_types(${i} MATRIX_PRECISION REAL_TYPE)
+      set(PRECISION BML_PRECISION_${MATRIX_PRECISION})
+      set(TESTNAME ${BASENAME}-${TYPE}-${MATRIX_PRECISION})
       string(TOLOWER ${TESTNAME} TESTNAME)
       set(TESTNAME Fortran-${TESTNAME})
       unset(COMPILE_DEFINITIONS)
-      list(APPEND COMPILE_DEFINITIONS "TEST_MODULE=${BASENAME}_m")
-      list(APPEND COMPILE_DEFINITIONS "TEST_TYPE=${BASENAME}_t")
-      list(APPEND COMPILE_DEFINITIONS "MATRIX_PRECISION=${PRECISION}")
-      list(APPEND COMPILE_DEFINITIONS "MATRIX_TYPE=${MATRIX_TYPE}")
+      list(APPEND COMPILE_DEFINITIONS TEST_MODULE=${BASENAME}_m)
+      list(APPEND COMPILE_DEFINITIONS TEST_TYPE=${BASENAME}_t)
+      list(APPEND COMPILE_DEFINITIONS MATRIX_PRECISION="${MATRIX_PRECISION}")
+      list(APPEND COMPILE_DEFINITIONS MATRIX_TYPE=${MATRIX_TYPE})
+      list(APPEND COMPILE_DEFINITIONS REAL_TYPE=${REAL_TYPE})
       add_executable(${TESTNAME}
         ${FILE}
         test_m.F90
