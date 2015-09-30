@@ -22,8 +22,10 @@ set(SOURCES-ELLPACK
   bml_trace_ellpack.c)
 
 add_library(bml-ellpack OBJECT ${SOURCES-ELLPACK})
-set_target_properties(bml-ellpack
-  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+if(OPENMP_FOUND)
+  set_target_properties(bml-ellpack
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+endif()
 
 set(SOURCES-ELLPACK-TYPED
   bml_add_ellpack_typed.c
@@ -36,10 +38,12 @@ set(SOURCES-ELLPACK-TYPED
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellpack single_real "${SOURCES-ELLPACK-TYPED}")
 bml_add_typed_library(bml-ellpack double_real "${SOURCES-ELLPACK-TYPED}")
-set_target_properties(bml-ellpack-single_real
-  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
-set_target_properties(bml-ellpack-double_real
-  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+if(OPENMP_FOUND)
+  set_target_properties(bml-ellpack-single_real
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  set_target_properties(bml-ellpack-double_real
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+endif()
 
 if(INDENT)
   message(STATUS "Setting up indent-ellpack")

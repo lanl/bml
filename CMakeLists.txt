@@ -9,7 +9,9 @@ set(PROJECT_VERSION_PATCH "0")
 
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_DESCRIPTION
-  "Basic Matrix Library (bml): A matrix library for linear algebra operations, supporting several data structures.")
+  "Basic Matrix Library (bml): "
+  "A matrix library for linear algebra operations, "
+  "supporting several data structures.")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
@@ -27,10 +29,15 @@ set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99)
 set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -traceback)
 set(Intel_Fortran_FLAGS_RELEASE -O2 -g)
 
+set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
+set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
+
 if(CMAKE_BUILD_TYPE)
   string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
   if(BUILD_TYPE STREQUAL "DEBUG" OR BUILD_TYPE STREQUAL "RELEASE")
-    if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Intel")
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
+        OR CMAKE_C_COMPILER_ID STREQUAL "Intel"
+        OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
       set(CMAKE_C_FLAGS_${BUILD_TYPE} ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${BUILD_TYPE}})
       string(REPLACE ";" " " CMAKE_C_FLAGS_${BUILD_TYPE} "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
       message(STATUS "Setting C compiler flags to ${CMAKE_C_FLAGS_${BUILD_TYPE}}")
@@ -54,14 +61,19 @@ list(APPEND LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 set(BML_OPENMP TRUE CACHE BOOL "Whether to compile with OpenMP support")
 if(BML_OPENMP)
   include(FindOpenMP)
-  if(CMAKE_VERSION VERSION_LESS 3.1)
-    # There is not Fortran support in FindOpenMP before version 3.1. We will
-    # have to hack this.
-    message(WARNING "Versions of <cmake-3.1 can not detect Fortran "
-      "compiler OpenMP flags. We will assume that the flags found for "
-      "the C compiler also work for the Fortran compiler. If this is "
-      "not the case, please send email to <nbock@lanl.gov>.")
-    set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
+  if(OPENMP_FOUND)
+    if(CMAKE_VERSION VERSION_LESS 3.1)
+      # There is not Fortran support in FindOpenMP before version 3.1. We will
+      # have to hack this.
+      message(WARNING "Versions of <cmake-3.1 can not detect Fortran "
+        "compiler OpenMP flags. We will assume that the flags found for "
+        "the C compiler also work for the Fortran compiler. If this is "
+        "not the case, please send email to <nbock@lanl.gov>.")
+      set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
+    endif()
+  else()
+    unset(OpenMP_C_FLAGS)
+    unset(OpenMP_Fortran_FLAGS)
   endif()
 endif()
 

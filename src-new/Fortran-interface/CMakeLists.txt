@@ -20,8 +20,10 @@ set(FORTRAN-SOURCES-PRIVATE
   bml_print_matrix_wrapper.c
   bml_convert_from_dense_wrapper.c)
 add_library(bml-fortran OBJECT ${FORTRAN-SOURCES-PUBLIC} ${FORTRAN-SOURCES-PRIVATE})
-set_target_properties(bml-fortran
-  PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+if(OPENMP_FOUND)
+  set_target_properties(bml-fortran
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+endif()
 
 foreach(S ${FORTRAN-SOURCES-PUBLIC})
   get_filename_component(MODFILE ${S} NAME_WE)

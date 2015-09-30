@@ -57,8 +57,12 @@ foreach(FILE ${C-TESTS})
         test_driver.c)
       set_target_properties(${TESTNAME}
         PROPERTIES
-        COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}"
-        COMPILE_FLAGS ${OpenMP_C_FLAGS})
+        COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}")
+      if(OPENMP_FOUND)
+        set_target_properties(${TESTNAME}
+          PROPERTIES
+          COMPILE_FLAGS ${OpenMP_C_FLAGS})
+      endif()
       target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
       if(VALGRIND)
@@ -129,8 +133,12 @@ foreach(FILE ${FORTRAN-TESTS})
         test_driver.F90)
       set_target_properties(${TESTNAME}
         PROPERTIES
-        COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}"
-        COMPILE_FLAGS ${OpenMP_Fortran_FLAGS})
+        COMPILE_DEFINITIONS "${COMPILE_DEFINITIONS}")
+      if(OPENMP_FOUND)
+        set_target_properties(${TESTNAME}
+          PROPERTIES
+          COMPILE_FLAGS ${OpenMP_Fortran_FLAGS})
+      endif()
       target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
     endforeach()
