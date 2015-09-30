@@ -25,7 +25,7 @@ contains
 
     integer :: i
 
-    call bml_identity_matrix(matrix_type, n, a, matrix_precision, m)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
 
     test_result = .true.
 

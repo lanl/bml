@@ -14,7 +14,7 @@
  * \param j_u The upper column index.
  */
 void
-bml_print_matrix(
+bml_print_dense_matrix(
     const int N,
     bml_matrix_precision_t matrix_precision,
     const void *A,
@@ -29,7 +29,7 @@ bml_print_matrix(
     LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
     switch (matrix_precision)
     {
-    case single_real:
+        case single_real:
         {
             A_float = A;
             for (int i = i_l; i < i_u; i++)
@@ -42,7 +42,7 @@ bml_print_matrix(
             }
             break;
         }
-    case double_real:
+        case double_real:
         {
             A_double = A;
             for (int i = i_l; i < i_u; i++)
@@ -55,8 +55,8 @@ bml_print_matrix(
             }
             break;
         }
-    default:
-        LOG_ERROR("unknown matrix precision\n");
-        break;
+        default:
+            LOG_ERROR("unknown matrix precision\n");
+            break;
     }
 }

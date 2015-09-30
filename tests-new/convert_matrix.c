@@ -32,8 +32,8 @@ test_function(
         {
             if (fabs(A_float[i] - B_float[i]) > 1e-12)
             {
-                bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
-                bml_print_matrix(N, matrix_precision, B_float, 0, N, 0, N);
+                bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
+                bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
                 LOG_ERROR("matrix element mismatch\n");
             }
         }
@@ -53,8 +53,8 @@ test_function(
         {
             if (fabs(A_double[i] - B_double[i]) > 1e-12)
             {
-                bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
-                bml_print_matrix(N, matrix_precision, B_double, 0, N, 0, N);
+                bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
+                bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
                 LOG_ERROR("matrix element mismatch\n");
             }
         }

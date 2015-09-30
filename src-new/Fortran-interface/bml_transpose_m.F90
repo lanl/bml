@@ -11,8 +11,8 @@ contains
 
     use bml_types_m
 
-    class(bml_matrix_t), intent(in) :: a
-    class(bml_matrix_t), allocatable, intent(out) :: a_t
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: a_t
 
   end subroutine bml_transpose
 

@@ -23,7 +23,8 @@ set(FORTRAN-SOURCES-PRIVATE
   bml_convert_from_dense_wrapper.c)
 
 set(FORTRAN-SOURCES-TYPED
-  bml_add_typed_m.F90)
+  bml_add_typed_m.F90
+  bml_utilities_typed_m.F90)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 foreach(i RANGE ${NUMBER_TYPES_MAX})

@@ -19,7 +19,7 @@ test_function(
     bml_deallocate(&A);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
     A_dense = bml_convert_to_dense(A);
-    bml_print_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)

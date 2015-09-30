@@ -12,9 +12,9 @@ contains
 
     use bml_types_m
 
-    class(bml_matrix_t), intent(in) :: a
-    double precision, allocatable, intent(out) :: eigenvectors(:, :)
-    double precision, allocatable, intent(out) :: eigenvalues(:)
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: eigenvectors
+    type(bml_vector_t), intent(inout) :: eigenvalues
 
   end subroutine bml_diagonalize
 

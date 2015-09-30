@@ -22,22 +22,19 @@ contains
     logical :: test_result
 
     type(bml_matrix_t) :: a
-
-    REAL_TYPE, allocatable :: a_dense(:, :)
-    REAL_TYPE, allocatable :: eigenvectors(:, :)
-    REAL_TYPE, allocatable :: eigenvalues(:)
+    type(bml_matrix_t) :: a_t
+    type(bml_matrix_t) :: eigenvectors
+    type(bml_vector_t) :: eigenvalues
 
     test_result = .false.
 
-    allocate(a_dense(n, n))
-    a_dense = 0
-    call random_number(a_dense)
-    a_dense = (a_dense+transpose(a_dense))/2
-    call bml_convert_from_dense(matrix_type, a_dense, a)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_transpose(a, a_t)
+    call bml_add(0.5, a, 0.5, a_t)
     call bml_diagonalize(a, eigenvectors, eigenvalues)
-    call bml_print_matrix("A", a_dense, python_format=.true.)
-    call bml_print_vector("eval", eigenvalues)
-    call bml_print_matrix("evec", eigenvectors)
+    call bml_print_matrix(a)
+    call bml_print_matrix(eigenvectors)
+    call bml_print_vector(eigenvalues)
 
   end function test_function
 

@@ -29,9 +29,9 @@ test_function(
         A_float = bml_convert_to_dense(A);
         B_float = bml_convert_to_dense(B);
         C_float = bml_convert_to_dense(C);
-        bml_print_matrix(N, matrix_precision, A_float, 0, N, 0, N);
-        bml_print_matrix(N, matrix_precision, B_float, 0, N, 0, N);
-        bml_print_matrix(N, matrix_precision, C_float, 0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, C_float, 0, N, 0, N);
         for (int i = 0; i < N * N; i++)
         {
             if (fabs(A_float[i] - B_float[i]) > 1e-12 ||
@@ -50,9 +50,9 @@ test_function(
         A_double = bml_convert_to_dense(A);
         B_double = bml_convert_to_dense(B);
         C_double = bml_convert_to_dense(C);;
-        bml_print_matrix(N, matrix_precision, A_double, 0, N, 0, N);
-        bml_print_matrix(N, matrix_precision, B_double, 0, N, 0, N);
-        bml_print_matrix(N, matrix_precision, C_double, 0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, C_double, 0, N, 0, N);
         for (int i = 0; i < N * N; i++)
         {
             if (fabs(A_double[i] - B_double[i]) > 1e-12 ||

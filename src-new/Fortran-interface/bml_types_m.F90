@@ -3,6 +3,12 @@ module bml_types_m
 
   use, intrinsic :: iso_C_binding
 
+  !> The bml vector type.
+  type :: bml_vector_t
+     !> The C pointer to the vector.
+     type(C_PTR) :: ptr = C_NULL_PTR
+  end type bml_vector_t
+
   !> The bml matrix type.
   type :: bml_matrix_t
      !> The C pointer to the matrix.

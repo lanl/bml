@@ -5,7 +5,7 @@
 
 #include "bml_types.h"
 
-void bml_print_matrix(
+void bml_print_dense_matrix(
     const int N,
     bml_matrix_precision_t matrix_precision,
     const void *A,
