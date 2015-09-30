@@ -72,6 +72,9 @@ if(BML_OPENMP)
       set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
     endif()
   else()
+    message(WARNING "Could not get the compilers to use OpenMP. "
+      "Will pretend that this never happened and compile the library "
+      "without OpenMP.")
     unset(OpenMP_C_FLAGS)
     unset(OpenMP_Fortran_FLAGS)
   endif()
