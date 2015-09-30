@@ -14,4 +14,16 @@ void bml_print_dense_matrix(
     const int j_l,
     const int j_u);
 
+void bml_print_bml_vector(
+    const bml_vector_t * v,
+    const int i_l,
+    const int i_u);
+
+void bml_print_bml_matrix(
+    const bml_matrix_t * A,
+    const int i_l,
+    const int i_u,
+    const int j_l,
+    const int j_u);
+
 #endif

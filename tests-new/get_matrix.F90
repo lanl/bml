@@ -18,50 +18,31 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n. m
+    integer, intent(in) :: n, m
     logical :: test_result
 
     type(bml_matrix_t) :: a
 
     integer :: i, j
 
-    real, allocatable :: a_real(:, :)
-    double precision, allocatable :: a_double(:, :)
+    REAL_TYPE, pointer :: a_dense(:, :)
+    REAL_TYPE :: a_ij
 
-    real :: a_ij_real
-    double precision :: a_ij_double
-
-    call bml_random_matrix(matrix_type, n, a, matrix_precision, m)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
 
     test_result = .true.
 
-    select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_real)
-       do i = 1, a%n
-          do j = 1, a%n
-             a_ij_real = bml_get(a, i, j)
-             if(abs(a_ij_real-a_real(i, j)) > 1e-12) then
-                test_result = .false.
-                print *, "matrix element mismatch"
-                return
-             end if
-          end do
+    call bml_convert_to_dense(a, a_dense)
+    do i = 1, n
+       do j = 1, n
+          a_ij = bml_get(a, i, j)
+          if(abs(a_ij-a_dense(i, j)) > 1e-12) then
+             test_result = .false.
+             print *, "matrix element mismatch"
+             return
+          end if
        end do
-    case(BML_PRECISION_DOUBLE)
-       call bml_convert_to_dense(a, a_double)
-       do i = 1, a%n
-          do j = 1, a%n
-             a_ij_double = bml_get(a, i, j)
-             if(abs(a_ij_double-a_double(i, j)) > 1e-12) then
-                test_result = .false.
-                print *, "matrix element mismatch"
-                return
-             end if
-          end do
-       end do
-    end select
-
+    end do
     call bml_deallocate(a)
 
   end function test_function

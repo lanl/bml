@@ -29,6 +29,9 @@ typedef enum
     double_complex
 } bml_matrix_precision_t;
 
+/** The vector type. */
+typedef void bml_vector_t;
+
 /** The matrix type. */
 typedef void bml_matrix_t;
 

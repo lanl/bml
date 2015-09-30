@@ -33,7 +33,7 @@ contains
        if(bml_get_bandwidth(a, i) /= 1) then
           print *, "Wrong bandwidth on row ", i
           print *, "Should be 1, but is ", bml_get_bandwidth(a, i)
-          call bml_print_matrix("A", a)
+          call bml_print_matrix("A", a, 1, n, 1, n)
           test_result = .false.
           return
        end if

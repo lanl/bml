@@ -14,7 +14,8 @@ module bml_introspection_m
      end function bml_get_size_C
   end interface
 
-  public :: bml_get_size, bml_get_bandwidth
+  public :: bml_get_size
+  public :: bml_get_bandwidth
 
 contains
 

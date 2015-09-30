@@ -40,6 +40,7 @@ module bml_utilities_m
      module procedure bml_print_bml_matrix
   end interface bml_print_matrix
 
+  public :: bml_print_vector
   public :: bml_print_matrix
 
 contains

@@ -3,6 +3,44 @@
 
 #include <stdio.h>
 
+/** Print a bml vector.
+ *
+ * \param N The number of rows/columns.
+ * \param matrix_precision The real precision.
+ * \param v The vector.
+ * \param i_l The lower row index.
+ * \param i_u The upper row index.
+ */
+void
+bml_print_bml_vector(
+    const bml_vector_t * v,
+    const int i_l,
+    const int i_u)
+{
+    LOG_ERROR("[FIXME]\n");
+}
+
+/** Print a dense matrix.
+ *
+ * \param N The number of rows/columns.
+ * \param matrix_precision The real precision.
+ * \param A The matrix.
+ * \param i_l The lower row index.
+ * \param i_u The upper row index.
+ * \param j_l The lower column index.
+ * \param j_u The upper column index.
+ */
+void
+bml_print_bml_matrix(
+    const bml_matrix_t * A,
+    const int i_l,
+    const int i_u,
+    const int j_l,
+    const int j_u)
+{
+    LOG_ERROR("[FIXME]\n");
+}
+
 /** Print a dense matrix.
  *
  * \param N The number of rows/columns.

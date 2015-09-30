@@ -7,6 +7,7 @@ set(HEADERS-C
   bml_allocate.h
   bml_convert.h
   bml_copy.h
+  bml_elemental.h
   bml_introspection.h
   bml_logger.h
   bml_multiply.h
@@ -26,6 +27,7 @@ set(SOURCES-C
   bml_allocate.c
   bml_convert.c
   bml_copy.c
+  bml_elemental.c
   bml_introspection.c
   bml_logger.c
   bml_multiply.c
