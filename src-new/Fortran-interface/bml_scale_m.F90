@@ -26,7 +26,7 @@ contains
     use bml_types_m
 
     double precision, intent(in) :: alpha
-    class(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(inout) :: a
 
   end subroutine scale_one
 
@@ -42,8 +42,8 @@ contains
     use bml_types_m
 
     double precision, intent(in) :: alpha
-    class(bml_matrix_t), intent(in) :: a
-    class(bml_matrix_t), allocatable, intent(out) :: c
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: c
 
   end subroutine scale_two
 

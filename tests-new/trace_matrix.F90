@@ -23,32 +23,21 @@ contains
 
     type(bml_matrix_t) :: a
 
-    real, allocatable :: a_real(:, :)
-    double precision, allocatable :: a_double(:, :)
+    REAL_TYPE, pointer :: a_dense(:, :)
 
     double precision :: tr_a
     double precision :: tr_reference
 
     integer :: i
 
-    call bml_random_matrix(matrix_type, n, a, matrix_precision, m)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     tr_a = bml_trace(a)
 
     tr_reference = 0
-    select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_real)
-       do i = 1, n
-          tr_reference = tr_reference+a_real(i, i)
-       end do
-    case(BML_PRECISION_DOUBLE)
-       call bml_convert_to_dense(a, a_double)
-       do i = 1, n
-          tr_reference = tr_reference+a_double(i, i)
-       end do
-    case default
-       print *, "unknown precision"
-    end select
+    call bml_convert_to_dense(a, a_dense)
+    do i = 1, n
+       tr_reference = tr_reference+a_dense(i, i)
+    end do
 
     if(abs(tr_a-tr_reference) > 1e-12) then
        test_result = .false.

@@ -23,19 +23,19 @@ contains
 
     double precision, parameter :: alpha = 1.2
 
-    type(bml_matrix_t) :: A
-    type(bml_matrix_t) :: C
+    type(bml_matrix_t) :: a
+    type(bml_matrix_t) :: c
 
-    double precision, allocatable :: A_dense(:, :)
-    double precision, allocatable :: C_dense(:, :)
+    REAL_TYPE, pointer :: a_dense(:, :)
+    REAL_TYPE, pointer :: c_dense(:, :)
 
-    call bml_random_matrix(BML_MATRIX_DENSE, N, A, M)
-    call bml_scale(alpha, A, C)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_scale(alpha, a, c)
 
-    call bml_convert_to_dense(A, A_dense)
-    call bml_convert_to_dense(C, C_dense)
+    call bml_convert_to_dense(a, a_dense)
+    call bml_convert_to_dense(c, c_dense)
 
-    if(maxval(alpha*A_dense-C_dense) > 1e-12) then
+    if(maxval(alpha*a_dense-c_dense) > 1e-12) then
        test_result = .false.
        print *, "matrix element mismatch"
     else
