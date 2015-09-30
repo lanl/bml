@@ -10,7 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Matrix multiply.
  *
@@ -52,7 +55,7 @@ void TYPED_FUNC(
  *  \ingroup multiply_group
  *
  *  \param X Matrix X
- *  \param X2 Matrix X2 
+ *  \param X2 Matrix X2
  *  \param threshold Used for sparse multiply
  */
 void TYPED_FUNC(

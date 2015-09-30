@@ -32,9 +32,9 @@ contains
     call bml_transpose(a, a_t)
     call bml_add(0.5, a, 0.5, a_t)
     call bml_diagonalize(a, eigenvectors, eigenvalues)
-    call bml_print_matrix(a)
-    call bml_print_matrix(eigenvectors)
-    call bml_print_vector(eigenvalues)
+    call bml_print_matrix("A", a, 1, n, 1, n)
+    call bml_print_matrix("eigenvectors", eigenvectors, 1, n, 1, n)
+    call bml_print_vector("eigenvalues", eigenvalues, 1, n)
 
   end function test_function
 
