@@ -22,15 +22,15 @@ bml_copy_ellpack_new(
 
     switch (B->matrix_precision)
     {
-    case single_real:
-        B = bml_copy_ellpack_new_single_real(A);
-        break;
-    case double_real:
-        B = bml_copy_ellpack_new_double_real(A);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            B = bml_copy_ellpack_new_single_real(A);
+            break;
+        case double_real:
+            B = bml_copy_ellpack_new_double_real(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return B;
 }
@@ -50,14 +50,14 @@ bml_copy_ellpack(
 
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_copy_ellpack_single_real(A, B);
-        break;
-    case double_real:
-        bml_copy_ellpack_double_real(A, B);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_copy_ellpack_single_real(A, B);
+            break;
+        case double_real:
+            bml_copy_ellpack_double_real(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }

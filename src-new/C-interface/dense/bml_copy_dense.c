@@ -26,17 +26,17 @@ bml_copy_dense_new(
 
     switch (A->matrix_precision)
     {
-    case single_real:
-        //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
-        B = bml_copy_dense_new_single_real(A);
-        break;
-    case double_real:
-        //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
-        B = bml_copy_dense_new_double_real(A);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
+            B = bml_copy_dense_new_single_real(A);
+            break;
+        case double_real:
+            //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
+            B = bml_copy_dense_new_double_real(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return B;
 }
@@ -55,16 +55,16 @@ bml_copy_dense(
 {
     switch (A->matrix_precision)
     {
-    case single_real:
-        //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
-        bml_copy_dense_single_real(A, B);
-        break;
-    case double_real:
-        //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
-        bml_copy_dense_double_real(A, B);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
+            bml_copy_dense_single_real(A, B);
+            break;
+        case double_real:
+            //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
+            bml_copy_dense_double_real(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }

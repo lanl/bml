@@ -28,15 +28,15 @@ bml_add(
 {
     switch (bml_get_type(A))
     {
-    case dense:
-        bml_add_dense(A, B, alpha, beta);
-        break;
-    case ellpack:
-        bml_add_ellpack(A, B, alpha, beta, threshold);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_add_dense(A, B, alpha, beta);
+            break;
+        case ellpack:
+            bml_add_ellpack(A, B, alpha, beta, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
 }
 
@@ -58,14 +58,14 @@ bml_add_identity(
 {
     switch (bml_get_type(A))
     {
-    case dense:
-        bml_add_identity_dense(A, beta);
-        break;
-    case ellpack:
-        bml_add_identity_ellpack(A, beta, threshold);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_add_identity_dense(A, beta);
+            break;
+        case ellpack:
+            bml_add_identity_ellpack(A, beta, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
 }

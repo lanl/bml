@@ -23,15 +23,15 @@ bml_scale_new(
 
     switch (bml_get_type(A))
     {
-    case dense:
-        B = bml_scale_dense_new(scale_factor, A);
-        break;
-    case ellpack:
-        B = bml_scale_ellpack_new(scale_factor, A);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            B = bml_scale_dense_new(scale_factor, A);
+            break;
+        case ellpack:
+            B = bml_scale_ellpack_new(scale_factor, A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
     return B;
 }
@@ -52,14 +52,14 @@ bml_scale(
 {
     switch (bml_get_type(A))
     {
-    case dense:
-        bml_scale_dense(scale_factor, A, B);
-        break;
-    case ellpack:
-        bml_scale_ellpack(scale_factor, A, B);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_scale_dense(scale_factor, A, B);
+            break;
+        case ellpack:
+            bml_scale_ellpack(scale_factor, A, B);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
 }

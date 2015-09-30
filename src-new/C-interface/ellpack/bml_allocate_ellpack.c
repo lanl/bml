@@ -44,15 +44,15 @@ bml_zero_matrix_ellpack(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A = bml_zero_matrix_ellpack_single_real(N, M);
-        break;
-    case double_real:
-        A = bml_zero_matrix_ellpack_double_real(N, M);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            A = bml_zero_matrix_ellpack_single_real(N, M);
+            break;
+        case double_real:
+            A = bml_zero_matrix_ellpack_double_real(N, M);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return A;
 }
@@ -81,15 +81,15 @@ bml_random_matrix_ellpack(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A = bml_random_matrix_ellpack_single_real(N, M);
-        break;
-    case double_real:
-        A = bml_random_matrix_ellpack_double_real(N, M);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            A = bml_random_matrix_ellpack_single_real(N, M);
+            break;
+        case double_real:
+            A = bml_random_matrix_ellpack_double_real(N, M);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return A;
 }
@@ -118,15 +118,15 @@ bml_identity_matrix_ellpack(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A = bml_identity_matrix_ellpack_single_real(N, M);
-        break;
-    case double_real:
-        A = bml_identity_matrix_ellpack_double_real(N, M);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            A = bml_identity_matrix_ellpack_single_real(N, M);
+            break;
+        case double_real:
+            A = bml_identity_matrix_ellpack_double_real(N, M);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return A;
 }

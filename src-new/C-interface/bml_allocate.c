@@ -50,15 +50,15 @@ bml_deallocate(
 {
     switch (bml_get_type(*A))
     {
-    case dense:
-        bml_deallocate_dense(*A);
-        break;
-    case ellpack:
-        bml_deallocate_ellpack(*A);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_deallocate_dense(*A);
+            break;
+        case ellpack:
+            bml_deallocate_ellpack(*A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
     *A = NULL;
 }
@@ -88,15 +88,15 @@ bml_zero_matrix(
     LOG_DEBUG("zero matrix of size %d\n", N);
     switch (matrix_type)
     {
-    case dense:
-        A = bml_zero_matrix_dense(matrix_precision, N);
-        break;
-    case ellpack:
-        A = bml_zero_matrix_ellpack(matrix_precision, N, M);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            A = bml_zero_matrix_dense(matrix_precision, N);
+            break;
+        case ellpack:
+            A = bml_zero_matrix_ellpack(matrix_precision, N, M);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
     return A;
 }
@@ -126,15 +126,15 @@ bml_random_matrix(
     LOG_DEBUG("random matrix of size %d\n", N);
     switch (matrix_type)
     {
-    case dense:
-        A = bml_random_matrix_dense(matrix_precision, N);
-        break;
-    case ellpack:
-        A = bml_random_matrix_ellpack(matrix_precision, N, M);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
-        break;
+        case dense:
+            A = bml_random_matrix_dense(matrix_precision, N);
+            break;
+        case ellpack:
+            A = bml_random_matrix_ellpack(matrix_precision, N, M);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+            break;
     }
     return A;
 }
@@ -164,15 +164,15 @@ bml_identity_matrix(
     LOG_DEBUG("identity matrix of size %d\n", N);
     switch (matrix_type)
     {
-    case dense:
-        A = bml_identity_matrix_dense(matrix_precision, N);
-        break;
-    case ellpack:
-        A = bml_identity_matrix_ellpack(matrix_precision, N, M);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
-        break;
+        case dense:
+            A = bml_identity_matrix_dense(matrix_precision, N);
+            break;
+        case ellpack:
+            A = bml_identity_matrix_ellpack(matrix_precision, N, M);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+            break;
     }
     return A;
 }

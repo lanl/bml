@@ -21,15 +21,15 @@ bml_trace(
 
     switch (bml_get_type(A))
     {
-    case dense:
-        trace = bml_trace_dense(A);
-        break;
-    case ellpack:
-        trace = bml_trace_ellpack(A);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            trace = bml_trace_dense(A);
+            break;
+        case ellpack:
+            trace = bml_trace_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
     return trace;
 }

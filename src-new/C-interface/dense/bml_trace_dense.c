@@ -26,15 +26,15 @@ bml_trace_dense(
 
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_trace_dense_single_real(A);
-        break;
-    case double_real:
-        bml_trace_dense_double_real(A);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_trace_dense_single_real(A);
+            break;
+        case double_real:
+            bml_trace_dense_double_real(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return trace;
 }

@@ -22,15 +22,15 @@ bml_trace_ellpack(
 
     switch (A->matrix_precision)
     {
-    case single_real:
-        trace = bml_trace_ellpack_single_real(A);
-        break;
-    case double_real:
-        trace = bml_trace_ellpack_double_real(A);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            trace = bml_trace_ellpack_single_real(A);
+            break;
+        case double_real:
+            trace = bml_trace_ellpack_double_real(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return trace;
 }

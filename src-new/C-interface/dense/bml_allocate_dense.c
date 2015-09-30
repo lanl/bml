@@ -40,15 +40,15 @@ bml_zero_matrix_dense(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A = bml_zero_matrix_dense_single_real(N);
-        break;
-    case double_real:
-        A = bml_zero_matrix_dense_double_real(N);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            A = bml_zero_matrix_dense_single_real(N);
+            break;
+        case double_real:
+            A = bml_zero_matrix_dense_double_real(N);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return A;
 }
@@ -75,15 +75,15 @@ bml_random_matrix_dense(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A = bml_random_matrix_dense_single_real(N);
-        break;
-    case double_real:
-        A = bml_random_matrix_dense_double_real(N);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            A = bml_random_matrix_dense_single_real(N);
+            break;
+        case double_real:
+            A = bml_random_matrix_dense_double_real(N);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return A;
 }
@@ -110,15 +110,15 @@ bml_identity_matrix_dense(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A = bml_identity_matrix_dense_single_real(N);
-        break;
-    case double_real:
-        A = bml_identity_matrix_dense_double_real(N);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            A = bml_identity_matrix_dense_single_real(N);
+            break;
+        case double_real:
+            A = bml_identity_matrix_dense_double_real(N);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return A;
 }

@@ -30,14 +30,14 @@ bml_convert_from_dense(
     LOG_DEBUG("Converting dense matrix to bml format\n");
     switch (matrix_type)
     {
-    case dense:
-        return bml_convert_from_dense_dense(matrix_precision, N, A,
-                                            threshold);
-    case ellpack:
-        return bml_convert_from_dense_ellpack(matrix_precision, N, A,
-                                              threshold, M);
-    default:
-        LOG_ERROR("unknown matrix type\n");
+        case dense:
+            return bml_convert_from_dense_dense(matrix_precision, N, A,
+                                                threshold);
+        case ellpack:
+            return bml_convert_from_dense_ellpack(matrix_precision, N, A,
+                                                  threshold, M);
+        default:
+            LOG_ERROR("unknown matrix type\n");
     }
     return NULL;
 }
@@ -70,12 +70,12 @@ bml_convert_to_dense(
     LOG_DEBUG("Converting bml matrix to dense\n");
     switch (bml_get_type(A))
     {
-    case dense:
-        return bml_convert_to_dense_dense(A);
-    case ellpack:
-        return bml_convert_to_dense_ellpack(A);
-    default:
-        LOG_ERROR("unknown matrix type\n");
+        case dense:
+            return bml_convert_to_dense_dense(A);
+        case ellpack:
+            return bml_convert_to_dense_ellpack(A);
+        default:
+            LOG_ERROR("unknown matrix type\n");
     }
     return NULL;
 }

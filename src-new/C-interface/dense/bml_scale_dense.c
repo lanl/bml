@@ -26,15 +26,15 @@ bml_scale_dense_new(
 
     switch (A->matrix_precision)
     {
-    case single_real:
-        B = bml_scale_dense_new_single_real(scale_factor, A);
-        break;
-    case double_real:
-        B = bml_scale_dense_new_double_real(scale_factor, A);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            B = bml_scale_dense_new_single_real(scale_factor, A);
+            break;
+        case double_real:
+            B = bml_scale_dense_new_double_real(scale_factor, A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
     return B;
 }
@@ -54,14 +54,14 @@ bml_scale_dense(
 {
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_scale_dense_single_real(scale_factor, A, B);
-        break;
-    case double_real:
-        bml_scale_dense_single_real(scale_factor, A, B);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_scale_dense_single_real(scale_factor, A, B);
+            break;
+        case double_real:
+            bml_scale_dense_single_real(scale_factor, A, B);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }

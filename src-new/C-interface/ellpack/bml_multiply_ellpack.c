@@ -34,15 +34,15 @@ bml_multiply_ellpack(
 {
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_multiply_ellpack_single_real(A, B, C, alpha, beta, threshold);
-        break;
-    case double_real:
-        bml_multiply_ellpack_double_real(A, B, C, alpha, beta, threshold);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_multiply_ellpack_single_real(A, B, C, alpha, beta, threshold);
+            break;
+        case double_real:
+            bml_multiply_ellpack_double_real(A, B, C, alpha, beta, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }
 
@@ -64,14 +64,14 @@ bml_multiply_x2_ellpack(
 {
     switch (X->matrix_precision)
     {
-    case single_real:
-        bml_multiply_x2_ellpack_single_real(X, X2, threshold);
-        break;
-    case double_real:
-        bml_multiply_x2_ellpack_double_real(X, X2, threshold);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_multiply_x2_ellpack_single_real(X, X2, threshold);
+            break;
+        case double_real:
+            bml_multiply_x2_ellpack_double_real(X, X2, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }

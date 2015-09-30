@@ -29,15 +29,15 @@ bml_multiply_dense(
 {
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_multiply_dense_single_real(A, B, C, alpha, beta);
-        break;
-    case double_real:
-        bml_multiply_dense_double_real(A, B, C, alpha, beta);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_multiply_dense_single_real(A, B, C, alpha, beta);
+            break;
+        case double_real:
+            bml_multiply_dense_double_real(A, B, C, alpha, beta);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }
 
@@ -57,14 +57,14 @@ bml_multiply_x2_dense(
 {
     switch (X->matrix_precision)
     {
-    case single_real:
-        bml_multiply_x2_dense_single_real(X, X2);
-        break;
-    case double_real:
-        bml_multiply_x2_dense_double_real(X, X2);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_multiply_x2_dense_single_real(X, X2);
+            break;
+        case double_real:
+            bml_multiply_x2_dense_double_real(X, X2);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }

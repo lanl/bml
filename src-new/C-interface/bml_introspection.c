@@ -39,16 +39,16 @@ bml_get_size(
 {
     switch (bml_get_type(A))
     {
-    case uninitialized:
-    case dense:
-        return bml_get_size_dense(A);
-        break;
-    case ellpack:
-        return bml_get_size_ellpack(A);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case uninitialized:
+        case dense:
+            return bml_get_size_dense(A);
+            break;
+        case ellpack:
+            return bml_get_size_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
     return -1;
 }

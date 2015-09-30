@@ -22,15 +22,15 @@ bml_copy_new(
 
     switch (bml_get_type(A))
     {
-    case dense:
-        B = bml_copy_dense_new(A);
-        break;
-    case ellpack:
-        B = bml_copy_ellpack_new(A);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            B = bml_copy_dense_new(A);
+            break;
+        case ellpack:
+            B = bml_copy_ellpack_new(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
     return B;
 }
@@ -47,14 +47,14 @@ bml_copy(
 {
     switch (bml_get_type(A))
     {
-    case dense:
-        bml_copy_dense(A, B);
-        break;
-    case ellpack:
-        bml_copy_ellpack(A, B);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_copy_dense(A, B);
+            break;
+        case ellpack:
+            bml_copy_ellpack(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
 }

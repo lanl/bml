@@ -30,15 +30,15 @@ bml_multiply(
 {
     switch (bml_get_type(A))
     {
-    case dense:
-        bml_multiply_dense(A, B, C, alpha, beta);
-        break;
-    case ellpack:
-        bml_multiply_ellpack(A, B, C, alpha, beta, threshold);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_multiply_dense(A, B, C, alpha, beta);
+            break;
+        case ellpack:
+            bml_multiply_ellpack(A, B, C, alpha, beta, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
 }
 
@@ -62,14 +62,14 @@ bml_multiply_x2(
 {
     switch (bml_get_type(X))
     {
-    case dense:
-        bml_multiply_x2_dense(X, X2);
-        break;
-    case ellpack:
-        bml_multiply_x2_ellpack(X, X2, threshold);
-        break;
-    default:
-        LOG_ERROR("unknown matrix type\n");
-        break;
+        case dense:
+            bml_multiply_x2_dense(X, X2);
+            break;
+        case ellpack:
+            bml_multiply_x2_ellpack(X, X2, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
     }
 }

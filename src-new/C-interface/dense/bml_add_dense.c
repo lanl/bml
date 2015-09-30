@@ -27,15 +27,15 @@ bml_add_dense(
 {
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_add_dense_single_real(A, B, alpha, beta);
-        break;
-    case double_real:
-        bml_add_dense_double_real(A, B, alpha, beta);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_add_dense_single_real(A, B, alpha, beta);
+            break;
+        case double_real:
+            bml_add_dense_double_real(A, B, alpha, beta);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }
 
@@ -55,14 +55,14 @@ bml_add_identity_dense(
 {
     switch (A->matrix_precision)
     {
-    case single_real:
-        bml_add_identity_dense_single_real(A, beta);
-        break;
-    case double_real:
-        bml_add_identity_dense_double_real(A, beta);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        break;
+        case single_real:
+            bml_add_identity_dense_single_real(A, beta);
+            break;
+        case double_real:
+            bml_add_identity_dense_double_real(A, beta);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
     }
 }
