@@ -44,15 +44,3 @@ if(OPENMP_FOUND)
   set_target_properties(bml-dense-double_real
     PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
-
-if(INDENT)
-  message(STATUS "Setting up indent-dense")
-  unset(INDENT-DENSE)
-  foreach(f ${HEADERS-DENSE} ${SOURCES-DENSE} ${SOURCES-DENSE-TYPED})
-    list(APPEND INDENT-DENSE ${CMAKE_CURRENT_SOURCE_DIR}/${f})
-  endforeach()
-  add_custom_target(indent-dense
-    ${INDENT} ${INDENT_ARGS} ${INDENT-DENSE})
-else()
-  add_custom_target(indent-dense)
-endif()

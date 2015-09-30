@@ -209,12 +209,6 @@ endif()
 
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
-set(INDENT_ARGS -gnu -nut -i4 -bli0 -npcs -bfda)
-
-find_program(INDENT indent)
-message(STATUS "Found indent: ${INDENT}")
-mark_as_advanced(INDENT)
-
 set(DIST_FILES CMakeLists.txt)
 
 set(BML_NEW FALSE
@@ -259,29 +253,6 @@ if(BML_TESTING)
   else()
     add_subdirectory(tests)
   endif()
-else()
-  if(BML_NEW)
-    add_custom_target(indent-tests)
-  endif()
-endif()
-
-if(INDENT AND BML_NEW)
-  message(STATUS "Creating indent target")
-  add_custom_target(indent
-    DEPENDS
-    indent-C-interface
-    indent-dense
-    indent-ellpack
-    indent-tests)
-else()
-  add_custom_target(indent)
-endif()
-
-find_program(HAVE_ETAGS etags)
-mark_as_advanced(HAVE_ETAGS)
-if(HAVE_ETAGS)
-  add_custom_target(tags
-    ${HAVE_ETAGS} ${CMAKE_SOURCE_DIR}/src/*.F90)
 endif()
 
 list(APPEND DIST_FILES

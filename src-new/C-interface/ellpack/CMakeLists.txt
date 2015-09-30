@@ -44,15 +44,3 @@ if(OPENMP_FOUND)
   set_target_properties(bml-ellpack-double_real
     PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
-
-if(INDENT)
-  message(STATUS "Setting up indent-ellpack")
-  unset(INDENT-ELLPACK)
-  foreach(f ${HEADERS-ELLPACK} ${SOURCES-ELLPACK} ${SOURCES-ELLPACK-TYPED})
-    list(APPEND INDENT-ELLPACK ${CMAKE_CURRENT_SOURCE_DIR}/${f})
-  endforeach()
-  add_custom_target(indent-ellpack
-    ${INDENT} ${INDENT_ARGS} ${INDENT-ELLPACK})
-else()
-  add_custom_target(indent-ellpack)
-endif()

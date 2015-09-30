@@ -42,15 +42,3 @@ endif()
 
 add_subdirectory(dense)
 add_subdirectory(ellpack)
-
-if(INDENT)
-  message(STATUS "Setting up indent-C-interface")
-  unset(INDENT-C)
-  foreach(f ${HEADERS-C} ${HEADERS-C-PRIVATE} ${SOURCES-C})
-    list(APPEND INDENT-C ${CMAKE_CURRENT_SOURCE_DIR}/${f})
-  endforeach()
-  add_custom_target(indent-C-interface
-    ${INDENT} ${INDENT_ARGS} ${INDENT-C})
-else()
-  add_custom_target(indent-C-interface)
-endif()
