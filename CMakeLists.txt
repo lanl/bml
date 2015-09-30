@@ -35,24 +35,40 @@ set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
 if(CMAKE_BUILD_TYPE)
   string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
   if(BUILD_TYPE STREQUAL "DEBUG" OR BUILD_TYPE STREQUAL "RELEASE")
-    if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
-        OR CMAKE_C_COMPILER_ID STREQUAL "Intel"
-        OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
-      set(CMAKE_C_FLAGS_${BUILD_TYPE} ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${BUILD_TYPE}})
-      string(REPLACE ";" " " CMAKE_C_FLAGS_${BUILD_TYPE} "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
-      message(STATUS "Setting C compiler flags to ${CMAKE_C_FLAGS_${BUILD_TYPE}}")
-    else()
-      message(STATUS "Unknown C compiler ${CMAKE_C_COMPILER_ID}")
+    if(NOT DEFINED CMAKE_C_FLAGS)
+      if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
+          OR CMAKE_C_COMPILER_ID STREQUAL "Intel"
+          OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+        set(CMAKE_C_FLAGS_${BUILD_TYPE}
+          ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${BUILD_TYPE}})
+        string(REPLACE ";" " "
+          CMAKE_C_FLAGS_${BUILD_TYPE}
+          "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
+        message(STATUS "Setting C compiler flags to ${CMAKE_C_FLAGS_${BUILD_TYPE}}")
+      else()
+        message(STATUS "Unknown C compiler ${CMAKE_C_COMPILER_ID}")
+      endif()
     endif()
 
-    if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU" OR CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-      set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${BUILD_TYPE}})
-      string(REPLACE ";" " " CMAKE_Fortran_FLAGS_${BUILD_TYPE} "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
-      message(STATUS "Setting Fortran compiler flags to ${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
-    else()
-      message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
+    if(NOT DEFINED CMAKE_Fortran_FLAGS)
+      if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU"
+          OR CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+        set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${BUILD_TYPE}})
+        string(REPLACE ";" " " CMAKE_Fortran_FLAGS_${BUILD_TYPE} "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
+        message(STATUS "Setting Fortran compiler flags to ${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
+      else()
+        message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
+      endif()
     endif()
   endif()
+endif()
+
+if(DEFINED CMAKE_C_FLAGS)
+  message(STATUS "Using user supplied C compiler flags ${CMAKE_C_FLAGS}")
+endif()
+
+if(DEFINED CMAKE_Fortran_FLAGS)
+  message(STATUS "Using user supplied Fortran compiler flags ${CMAKE_Fortran_FLAGS}")
 endif()
 
 include(FindThreads)
