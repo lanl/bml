@@ -45,7 +45,7 @@ foreach(FILE ${C-TESTS})
           PROPERTIES
           COMPILE_FLAGS ${OpenMP_C_FLAGS})
       endif()
-      target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
+      target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
       if(VALGRIND)
         add_test(${TESTNAME}-valgrind
@@ -122,7 +122,7 @@ foreach(FILE ${FORTRAN-TESTS})
           PROPERTIES
           COMPILE_FLAGS ${OpenMP_Fortran_FLAGS})
       endif()
-      target_link_libraries(${TESTNAME} bml-new ${LINK_LIBRARIES})
+      target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
     endforeach()
   endforeach()
