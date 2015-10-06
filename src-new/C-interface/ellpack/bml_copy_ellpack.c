@@ -20,7 +20,7 @@ bml_copy_ellpack_new(
 {
     bml_matrix_ellpack_t *B = NULL;
 
-    switch (B->matrix_precision)
+    switch (A->matrix_precision)
     {
         case single_real:
             B = bml_copy_ellpack_new_single_real(A);
