@@ -119,4 +119,6 @@ void TYPED_FUNC(
         TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M);
 
     TYPED_FUNC(bml_add_ellpack) (A, I, alpha, beta, threshold);
+
+    bml_deallocate_ellpack(I);
 }

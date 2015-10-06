@@ -60,4 +60,6 @@ void TYPED_FUNC(
     bml_matrix_dense_t *I = TYPED_FUNC(bml_identity_matrix_dense) (A->N);
 
     C_BLAS(AXPY) (&nElems, &sbeta, I->matrix, &inc, A->matrix, &inc);
+
+    bml_deallocate_dense(I);
 }

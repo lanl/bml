@@ -196,6 +196,7 @@
 #ifndef __BML_H
 #define __BML_H
 
+#include "bml_add.h"
 #include "bml_allocate.h"
 #include "bml_convert.h"
 #include "bml_copy.h"

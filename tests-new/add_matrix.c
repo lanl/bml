@@ -18,14 +18,15 @@ test_function(
     float *A_float = NULL, *B_float = NULL, *C_float = NULL;
     double *A_double = NULL, *B_double = NULL, *C_double = NULL;
 
-    double scale_factor = 2.0;
+    double alpha_factor = 1.0;
+    double beta_factor = 1.0;
+    double threshold = 0.0;
 
-    //A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
-    B = bml_scale_new(scale_factor, A);
-    C = bml_zero_matrix(matrix_type, matrix_precision, N, M);
-    bml_scale(scale_factor, A, C);
-    bml_scale(scale_factor, A, A);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    C = bml_copy_new(A);
+    B = bml_identity_matrix(matrix_type, matrix_precision, N, M);
+    bml_add(A, B, alpha_factor, beta_factor, threshold);
+    bml_add_identity(C, beta_factor, threshold);
 
     switch (matrix_precision)
     {
@@ -38,10 +39,9 @@ test_function(
         bml_print_dense_matrix(N, matrix_precision, C_float, 0, N, 0, N);
         for (int i = 0; i < N * N; i++)
         {
-            if (fabs(A_float[i] - B_float[i]) > 1e-12 ||
-                fabs(A_float[i] - C_float[i]) > 1e-12)
+            if (fabs(A_float[i] - C_float[i]) > 1e-12)
             {
-                LOG_ERROR("matrices are not identical; A[%d] = %e B[%d] = %e C[%d] = %e\n", i, A_float[i], i, B_float[i], i, C_float[i]);
+                LOG_ERROR("matrices are not identical; A[%d] = %e C[%d] = %e\n", i, A_float[i], i, C_float[i]);
                 return -1;
             }
         }
@@ -58,10 +58,9 @@ test_function(
         bml_print_dense_matrix(N, matrix_precision, C_double, 0, N, 0, N);
         for (int i = 0; i < N * N; i++)
         {
-            if (fabs(A_double[i] - B_double[i]) > 1e-12 ||
-                fabs(A_double[i] - C_double[i]) > 1e-12)
+            if (fabs(A_double[i] - C_double[i]) > 1e-12)
             {
-                LOG_ERROR("matrices are not identical; A[%d] = %e B[%d] = %e C[%d] = %e\n", i, A_double[i], i, B_double[i], i, C_double[i]);
+                LOG_ERROR("matrices are not identical; A[%d] = %e C[%d] = %e\n", i, A_double[i], i, C_double[i]);
                 return -1;
             }
         }
@@ -78,7 +77,7 @@ test_function(
     bml_deallocate(&B);
     bml_deallocate(&C);
 
-    LOG_INFO("scale matrix test passed\n");
+    LOG_INFO("add matrix test passed\n");
 
     return 0;
 }

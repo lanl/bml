@@ -3,6 +3,7 @@ include_directories(
   ${CMAKE_BINARY_DIR}/src-new/Fortran-interface)
 
 set(C-TESTS
+  add_matrix.c
   allocate_matrix.c
   convert_matrix.c
   copy_matrix.c
