@@ -24,18 +24,18 @@ contains
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b
 
-    double precision, pointer :: a_double(:, :)
-    double precision, pointer :: b_double(:, :)
-    real, pointer :: a_real(:, :)
-    real, pointer :: b_real(:, :)
+    double precision, allocatable :: a_double(:, :)
+    double precision, allocatable :: b_double(:, :)
+    real, allocatable :: a_real(:, :)
+    real, allocatable :: b_real(:, :)
 
     test_result = .true.
 
     select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
+    case(BML_PRECISION_SINGLE_REAL)
        allocate(a_real(n, n))
        call random_number(a_real)
-       call bml_convert_from_dense(matrix_type, matrix_precision, a_real, a, 0.0d0, m)
+       call bml_convert_from_dense(matrix_type, a_real, a, 0.0d0, m)
        call bml_convert_to_dense(a, b_real)
        if(maxval(a_real-b_real) > 1e-12) then
           print *, "Matrix element mismatch"
@@ -45,10 +45,10 @@ contains
                lbound(b_real, 2), ubound(b_real, 2))
           test_result = .false.
        end if
-    case(BML_PRECISION_DOUBLE)
+    case(BML_PRECISION_DOUBLE_REAL)
        allocate(a_double(n, n))
        call random_number(a_double)
-       call bml_convert_from_dense(matrix_type, matrix_precision, a_double, a, 0.0d0, m)
+       call bml_convert_from_dense(matrix_type, a_double, a, 0.0d0, m)
        call bml_convert_to_dense(a, b_double)
        if(maxval(a_double-b_double) > 1e-12) then
           print *, "Matrix element mismatch"

@@ -52,7 +52,7 @@ contains
     associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
       ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
       ! exclusive in the upper bound in the C code.
-      call bml_print_dense_matrix_C(size(a, 1), get_enum_id(BML_PRECISION_SINGLE), &
+      call bml_print_dense_matrix_C(size(a, 1), get_enum_id(PRECISION_NAME), &
            c_loc(a_ptr), &
            i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
            j_l-lbound(a, 2), j_u-lbound(a, 2)+1)

@@ -28,9 +28,9 @@ contains
     type(bml_matrix_t) :: b
     type(bml_matrix_t) :: c
 
-    double precision, pointer :: a_dense(:, :)
-    double precision, pointer :: b_dense(:, :)
-    double precision, pointer :: c_dense(:, :)
+    double precision, allocatable :: a_dense(:, :)
+    double precision, allocatable :: b_dense(:, :)
+    double precision, allocatable :: c_dense(:, :)
 
     integer :: i
 

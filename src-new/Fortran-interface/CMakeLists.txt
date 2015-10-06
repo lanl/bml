@@ -27,15 +27,16 @@ set(FORTRAN-SOURCES-TYPED
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 foreach(i RANGE ${NUMBER_TYPES_MAX})
-  get_Fortran_types(${i} MATRIX_TYPE REAL_TYPE)
+  get_Fortran_types(${i} MATRIX_TYPE PRECISION_NAME REAL_TYPE)
   foreach(S ${FORTRAN-SOURCES-TYPED})
     string(REPLACE "typed" ${MATRIX_TYPE} S_TYPED ${S})
     get_filename_component(S_TYPED ${S_TYPED} NAME)
     add_custom_command(OUTPUT ${S_TYPED}
       DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${S}
       COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
-      -DMATRIX_TYPE="${MATRIX_TYPE}"
+      -DMATRIX_TYPE=${MATRIX_TYPE}
       -DREAL_TYPE="${REAL_TYPE}"
+      -DPRECISION_NAME=${PRECISION_NAME}
       -o ${S_TYPED}
       ${CMAKE_CURRENT_SOURCE_DIR}/${S})
     list(APPEND FORTRAN-SOURCES-PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/${S_TYPED})

@@ -54,22 +54,36 @@ contains
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
   !! \param m The extra arg
-  subroutine bml_convert_from_dense_single(matrix_type, matrix_precision, a_dense, a, threshold, m)
+  subroutine bml_convert_from_dense_single(matrix_type, a_dense, a, threshold, m)
 
     use bml_types_m
     use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: m
     real, target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: threshold
+    double precision, optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+
+    integer :: m_
+    double precision :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+
+    if(present(m)) then
+       m_ = m
+    else
+       m_ = 0
+    end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(matrix_precision), &
-           size(a_dense, 1), c_loc(a_ptr), threshold, m)
+           get_enum_id(BML_PRECISION_SINGLE_REAL), &
+           size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_single
@@ -79,27 +93,40 @@ contains
   !! \ingroup convert_group_Fortran
   !!
   !! \param matrix_type The matrix type
-  !! \param matrix_precision The matrix precision
   !! \param a_dense The dense matrix
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
   !! \param m the extra arg
-  subroutine bml_convert_from_dense_double(matrix_type, matrix_precision, a_dense, a, threshold, m)
+  subroutine bml_convert_from_dense_double(matrix_type, a_dense, a, threshold, m)
 
     use bml_types_m
     use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: m
     double precision, target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: threshold
+    double precision, optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+
+    integer :: m_
+    double precision :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+
+    if(present(m)) then
+       m_ = m
+    else
+       m_ = 0
+    end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(matrix_precision), &
-           size(a_dense, 1), c_loc(a_ptr), threshold, m)
+           get_enum_id(BML_PRECISION_DOUBLE_REAL), &
+           size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_double
@@ -113,23 +140,36 @@ contains
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
   !! \param m The extra arg
-  subroutine bml_convert_from_dense_single_complex(matrix_type, matrix_precision, &
-    a_dense, a, threshold, m)
+  subroutine bml_convert_from_dense_single_complex(matrix_type, a_dense, a, threshold, m)
 
     use bml_types_m
     use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: m
     complex, target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: threshold
+    double precision, optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+
+    integer :: m_
+    double precision :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+
+    if(present(m)) then
+       m_ = m
+    else
+       m_ = 0
+    end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(matrix_precision), &
-           size(a_dense, 1), c_loc(a_ptr), threshold, m)
+           get_enum_id(BML_PRECISION_SINGLE_COMPLEX), &
+           size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_single_complex
@@ -139,28 +179,40 @@ contains
   !! \ingroup convert_group_Fortran
   !!
   !! \param matrix_type The matrix type
-  !! \param matrix_precision The matrix precision
   !! \param a_dense The dense matrix
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
   !! \param m the extra arg
-  subroutine bml_convert_from_dense_double_complex(matrix_type, matrix_precision, &
-       a_dense, a, threshold, m)
+  subroutine bml_convert_from_dense_double_complex(matrix_type, a_dense, a, threshold, m)
 
     use bml_types_m
     use bml_interface_m
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: m
     complex(kind(0.0d0)), target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: threshold
+    double precision, optional, intent(in) :: threshold
+    integer, optional, intent(in) :: m
+
+    integer :: m_
+    double precision :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+
+    if(present(m)) then
+       m_ = m
+    else
+       m_ = 0
+    end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(matrix_precision), &
-           size(a_dense, 1), c_loc(a_ptr), threshold, m)
+           get_enum_id(BML_PRECISION_DOUBLE_COMPLEX), &
+           size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_double_complex
@@ -177,12 +229,14 @@ contains
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
-    real, pointer, intent(out) :: a_dense(:, :)
+    real, allocatable, intent(inout) :: a_dense(:, :)
 
     type(C_PTR) :: a_ptr
+    real, pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_single
 
@@ -198,12 +252,14 @@ contains
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
-    double precision, pointer, intent(out) :: a_dense(:, :)
+    double precision, allocatable, intent(inout) :: a_dense(:, :)
 
     type(C_PTR) :: a_ptr
+    double precision, pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_double
 
@@ -219,12 +275,14 @@ contains
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
-    complex, pointer, intent(out) :: a_dense(:, :)
+    complex, allocatable, intent(out) :: a_dense(:, :)
 
     type(C_PTR) :: a_ptr
+    complex, pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_single_complex
 
@@ -240,12 +298,14 @@ contains
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
-    complex(kind(0d0)), pointer, intent(out) :: a_dense(:, :)
+    complex(kind(0d0)), allocatable, intent(out) :: a_dense(:, :)
 
     type(C_PTR) :: a_ptr
+    complex(kind(0d0)), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_double_complex
 

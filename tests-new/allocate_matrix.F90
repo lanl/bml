@@ -23,7 +23,7 @@ contains
 
     type(bml_matrix_t) :: a
 
-    REAL_TYPE, pointer :: a_dense(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
     integer :: i, j
 
     test_result = .true.

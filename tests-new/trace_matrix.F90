@@ -23,7 +23,7 @@ contains
 
     type(bml_matrix_t) :: a
 
-    REAL_TYPE, pointer :: a_dense(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
 
     double precision :: tr_a
     double precision :: tr_reference

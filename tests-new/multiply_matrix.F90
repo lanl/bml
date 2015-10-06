@@ -25,9 +25,9 @@ contains
     type(bml_matrix_t) :: b
     type(bml_matrix_t) :: c
 
-    REAL_TYPE, pointer :: a_dense(:, :)
-    REAL_TYPE, pointer :: b_dense(:, :)
-    REAL_TYPE, pointer :: c_dense(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
+    REAL_TYPE, allocatable :: b_dense(:, :)
+    REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, b)
