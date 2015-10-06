@@ -106,15 +106,12 @@ bml_convert_to_dense_ellpack(
         case single_real:
             A_float = bml_allocate_memory(sizeof(float) * N * N);
             float_value = A->value;
-            for (int i = 0; i < M; i++)
+            for (int i = 0; i < N; i++)
             {
-                for (int j = 0; j < N; j++)
+                for (int j = 0; j < nnz[i]; j++)
                 {
-                    if (i < nnz[j])
-                    {
-                        A_float[A_index[i + j * M] + j * N] =
-                            float_value[i + j * M];
-                    }
+                    A_float[A_index[j + i * M] + i * N] =
+                        float_value[j + i * M];
                 }
             }
             return A_float;
@@ -122,15 +119,12 @@ bml_convert_to_dense_ellpack(
         case double_real:
             A_double = bml_allocate_memory(sizeof(double) * N * N);
             double_value = A->value;
-            for (int i = 0; i < M; i++)
+            for (int i = 0; i < N; i++)
             {
-                for (int j = 0; j < N; j++)
+                for (int j = 0; j < nnz[i]; j++)
                 {
-                    if (i < nnz[j])
-                    {
-                        A_double[A_index[i + j * M] + j * N] =
-                            double_value[i + j * M];
-                    }
+                    A_double[A_index[j + i * M] + i * N] =
+                        double_value[j + i * M];
                 }
             }
             return A_double;
