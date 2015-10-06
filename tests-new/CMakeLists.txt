@@ -44,7 +44,8 @@ foreach(FILE ${C-TESTS})
       if(OPENMP_FOUND)
         set_target_properties(${TESTNAME}
           PROPERTIES
-          COMPILE_FLAGS ${OpenMP_C_FLAGS})
+          COMPILE_FLAGS ${OpenMP_C_FLAGS}
+          LINK_FLAGS ${OpenMP_C_FLAGS})
       endif()
       target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
@@ -122,7 +123,8 @@ foreach(FILE ${FORTRAN-TESTS})
       if(OPENMP_FOUND)
         set_target_properties(${TESTNAME}
           PROPERTIES
-          COMPILE_FLAGS ${OpenMP_Fortran_FLAGS})
+          COMPILE_FLAGS ${OpenMP_Fortran_FLAGS}
+          LINK_FLAGS ${OpenMP_Fortran_FLAGS})
       endif()
       target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
