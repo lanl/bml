@@ -1,8 +1,10 @@
 #include "../typed.h"
 #include "bml_add.h"
+#include "bml_allocate.h"
 #include "bml_multiply.h"
 #include "bml_types.h"
 #include "bml_add_ellpack.h"
+#include "bml_allocate_ellpack.h"
 #include "bml_multiply_ellpack.h"
 #include "bml_types_ellpack.h"
 
@@ -41,11 +43,15 @@ void TYPED_FUNC(
     REAL_T sbeta = (REAL_T) beta;
     REAL_T sthreshold = (REAL_T) threshold;
 
+    bml_matrix_ellpack_t * A2 = TYPED_FUNC(bml_zero_matrix_ellpack)(A->N, A->M);
+
     if (A != NULL && A == B)
     {
-        TYPED_FUNC(bml_multiply_x2_ellpack) (A, C, sthreshold);
-        TYPED_FUNC(bml_add_ellpack) (A, C, salpha, sbeta, sthreshold);
+        TYPED_FUNC(bml_multiply_x2_ellpack) (A, A2, sthreshold);
+        TYPED_FUNC(bml_add_ellpack) (C, A2, sbeta, salpha, sthreshold);
     }
+
+    bml_deallocate_ellpack(A2);
 }
 
 /** Matrix multiply.
@@ -79,7 +85,7 @@ void TYPED_FUNC(
     memset(ix, 0, hsize * sizeof(int));
     memset(x, 0.0, hsize * sizeof(REAL_T));
 
-#pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
+    #pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
     for (int i = 0; i < hsize; i++)     // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
@@ -116,7 +122,7 @@ void TYPED_FUNC(
         for (int j = 0; j < l; j++)
         {
             int jp = X2->index[i * msize + j];
-            double xtmp = x[jp];
+            REAL_T xtmp = x[jp];
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;

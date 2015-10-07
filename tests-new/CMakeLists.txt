@@ -7,7 +7,9 @@ set(C-TESTS
   allocate_matrix.c
   convert_matrix.c
   copy_matrix.c
-  scale_matrix.c)
+  multiply_matrix.c
+  scale_matrix.c
+  trace_matrix.c)
 
 set(TYPES dense ellpack)
 
