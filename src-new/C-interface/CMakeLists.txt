@@ -8,6 +8,8 @@ set(HEADERS-C
   bml_convert.h
   bml_copy.h
   bml_elemental.h
+  bml_export.h
+  bml_import.h
   bml_introspection.h
   bml_logger.h
   bml_multiply.h
@@ -28,6 +30,8 @@ set(SOURCES-C
   bml_convert.c
   bml_copy.c
   bml_elemental.c
+  bml_export.c
+  bml_import.c
   bml_introspection.c
   bml_logger.c
   bml_multiply.c
