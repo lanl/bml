@@ -9,6 +9,7 @@ set(C-TESTS
   copy_matrix.c
   multiply_matrix.c
   scale_matrix.c
+  threshold_matrix.c
   trace_matrix.c)
 
 set(TYPES dense ellpack)
