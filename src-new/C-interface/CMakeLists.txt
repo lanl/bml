@@ -14,6 +14,7 @@ set(HEADERS-C
   bml_logger.h
   bml_multiply.h
   bml_scale.h
+  bml_threshold.h
   bml_trace.h
   bml_types.h
   bml_utilities.h)
@@ -36,6 +37,7 @@ set(SOURCES-C
   bml_logger.c
   bml_multiply.c
   bml_scale.c
+  bml_threshold.c
   bml_trace.c
   bml_utilities.c)
 add_library(bml-c OBJECT ${SOURCES-C})

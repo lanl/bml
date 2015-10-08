@@ -205,6 +205,7 @@
 #include "bml_logger.h"
 #include "bml_multiply.h"
 #include "bml_scale.h"
+#include "bml_threshold.h"
 #include "bml_trace.h"
 #include "bml_utilities.h"
 
