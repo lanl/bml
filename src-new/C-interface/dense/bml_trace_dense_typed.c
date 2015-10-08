@@ -27,6 +27,7 @@ double TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
+    #pragma omp parallel for reduction(+:trace)
     for (int i = 0; i < N; i++)
     {
         trace += A_matrix[i + i * N];

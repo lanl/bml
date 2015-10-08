@@ -29,7 +29,7 @@ double TYPED_FUNC(
     int N = A->N;
     int M = A->M;
 
-#pragma omp parallel for reduction(+:trace)
+    #pragma omp parallel for reduction(+:trace)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A->nnz[i]; j++)

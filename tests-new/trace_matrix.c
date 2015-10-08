@@ -18,15 +18,15 @@ test_function(
     float *A_float = NULL, *B_float = NULL, *C_float = NULL;
     double *A_double = NULL, *B_double = NULL, *C_double = NULL;
 
-    double alpha_factor = 1.0;
-    double beta_factor = 1.0;
-    double threshold = 0.0;
+    double traceA, traceB, traceC;
+    double scalar = 5.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    C = bml_copy_new(A);
-    B = bml_identity_matrix(matrix_type, matrix_precision, N, M);
-    bml_add(A, B, alpha_factor, beta_factor, threshold);
-    bml_add_identity(C, beta_factor, threshold);
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
+    traceA = bml_trace(A);
+    B = bml_scale_new(scalar, A);
+    traceB = bml_trace(B);
+    C = bml_scale_new(scalar, B);
+    traceC = bml_trace(C);
 
     switch (matrix_precision)
     {
@@ -37,13 +37,13 @@ test_function(
         bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
         bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
         bml_print_dense_matrix(N, matrix_precision, C_float, 0, N, 0, N);
-        for (int i = 0; i < N * N; i++)
+    
+        if (fabs(traceA - (double)(N)) > 1e-12 ||
+            fabs(traceB - (double)(scalar * N)) > 1e-12 || 
+            fabs(traceC - (double)(scalar * scalar * N)) > 1e-12) 
         {
-            if (fabs(A_float[i] - C_float[i]) > 1e-12)
-            {
-                LOG_ERROR("matrices are not identical; A[%d] = %e C[%d] = %e\n", i, A_float[i], i, C_float[i]);
+                LOG_ERROR("traces are not correct; traceA = %e traceB = %e traceC = %e\n", traceA, traceB, traceC);
                 return -1;
-            }
         }
         bml_free_memory(A_float);
         bml_free_memory(B_float);
@@ -56,13 +56,13 @@ test_function(
         bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
         bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
         bml_print_dense_matrix(N, matrix_precision, C_double, 0, N, 0, N);
-        for (int i = 0; i < N * N; i++)
+ 
+        if (fabs(traceA - (double)(N)) > 1e-12 ||
+            fabs(traceB - (double)(scalar * N)) > 1e-12 ||
+            fabs(traceC - (double)(scalar * scalar * N)) > 1e-12)
         {
-            if (fabs(A_double[i] - C_double[i]) > 1e-12)
-            {
-                LOG_ERROR("matrices are not identical; A[%d] = %e C[%d] = %e\n", i, A_double[i], i, C_double[i]);
+                LOG_ERROR("traces are not correct; traceA = %e traceB = %e traceC = %e\n", traceA, traceB, traceC);
                 return -1;
-            }
         }
         bml_free_memory(A_double);
         bml_free_memory(B_double);
@@ -77,7 +77,7 @@ test_function(
     bml_deallocate(&B);
     bml_deallocate(&C);
 
-    LOG_INFO("add matrix test passed\n");
+    LOG_INFO("trace matrix test passed\n");
 
     return 0;
 }
