@@ -30,6 +30,7 @@ endif()
 set(SOURCES-ELLPACK-TYPED
   bml_add_ellpack_typed.c
   bml_allocate_ellpack_typed.c
+  bml_convert_ellpack_typed.c
   bml_copy_ellpack_typed.c
   bml_multiply_ellpack_typed.c
   bml_scale_ellpack_typed.c

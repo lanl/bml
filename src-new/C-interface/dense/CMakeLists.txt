@@ -30,6 +30,7 @@ endif()
 set(SOURCES-DENSE-TYPED
   bml_add_dense_typed.c
   bml_allocate_dense_typed.c
+  bml_convert_dense_typed.c
   bml_copy_dense_typed.c
   bml_multiply_dense_typed.c
   bml_scale_dense_typed.c

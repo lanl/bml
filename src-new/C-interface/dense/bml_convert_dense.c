@@ -1,8 +1,10 @@
 #include "bml_allocate.h"
 #include "bml_allocate_dense.h"
+#include "bml_convert.h"
 #include "bml_convert_dense.h"
 #include "bml_logger.h"
 #include "bml_types.h"
+#include "bml_types_dense.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -24,15 +26,15 @@ bml_convert_from_dense_dense(
     const void *A,
     const double threshold)
 {
-    bml_matrix_dense_t *A_bml = bml_zero_matrix_dense(matrix_precision, N);
+    bml_matrix_dense_t *A_bml = NULL;
 
     switch (matrix_precision)
     {
         case single_real:
-            memcpy(A_bml->matrix, A, sizeof(float) * N * N);
+            A_bml = bml_convert_from_dense_dense_single_real(N, A);
             break;
         case double_real:
-            memcpy(A_bml->matrix, A, sizeof(double) * N * N);
+            A_bml = bml_convert_from_dense_dense_double_real(N, A);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -58,13 +60,11 @@ bml_convert_to_dense_dense(
     switch (A->matrix_precision)
     {
         case single_real:
-            A_float = bml_allocate_memory(sizeof(float) * A->N * A->N);
-            memcpy(A_float, A->matrix, sizeof(float) * A->N * A->N);
+            A_float = bml_convert_to_dense_dense_single_real(A);
             return A_float;
             break;
         case double_real:
-            A_double = bml_allocate_memory(sizeof(double) * A->N * A->N);
-            memcpy(A_double, A->matrix, sizeof(double) * A->N * A->N);
+            A_double = bml_convert_to_dense_dense_double_real(A);
             return A_double;
             break;
         default:
