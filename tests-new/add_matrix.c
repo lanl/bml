@@ -1,6 +1,7 @@
 #include "bml.h"
 #include "bml_test.h"
 
+#include <complex.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -30,48 +31,52 @@ test_function(
 
     switch (matrix_precision)
     {
-    case single_real:
-        A_float = bml_convert_to_dense(A);
-        B_float = bml_convert_to_dense(B);
-        C_float = bml_convert_to_dense(C);
-        bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, C_float, 0, N, 0, N);
-        for (int i = 0; i < N * N; i++)
-        {
-            if (fabs(A_float[i] - C_float[i]) > 1e-12)
+        case single_real:
+            A_float = bml_convert_to_dense(A);
+            B_float = bml_convert_to_dense(B);
+            C_float = bml_convert_to_dense(C);
+            bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
+            bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
+            bml_print_dense_matrix(N, matrix_precision, C_float, 0, N, 0, N);
+            for (int i = 0; i < N * N; i++)
             {
-                LOG_ERROR("matrices are not identical; A[%d] = %e C[%d] = %e\n", i, A_float[i], i, C_float[i]);
-                return -1;
+                if (fabs(A_float[i] - C_float[i]) > 1e-12)
+                {
+                    LOG_ERROR
+                        ("matrices are not identical; A[%d] = %e C[%d] = %e\n",
+                         i, A_float[i], i, C_float[i]);
+                    return -1;
+                }
             }
-        }
-        bml_free_memory(A_float);
-        bml_free_memory(B_float);
-        bml_free_memory(C_float);
-        break;
-    case double_real:
-        A_double = bml_convert_to_dense(A);
-        B_double = bml_convert_to_dense(B);
-        C_double = bml_convert_to_dense(C);;
-        bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, C_double, 0, N, 0, N);
-        for (int i = 0; i < N * N; i++)
-        {
-            if (fabs(A_double[i] - C_double[i]) > 1e-12)
+            bml_free_memory(A_float);
+            bml_free_memory(B_float);
+            bml_free_memory(C_float);
+            break;
+        case double_real:
+            A_double = bml_convert_to_dense(A);
+            B_double = bml_convert_to_dense(B);
+            C_double = bml_convert_to_dense(C);;
+            bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
+            bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
+            bml_print_dense_matrix(N, matrix_precision, C_double, 0, N, 0, N);
+            for (int i = 0; i < N * N; i++)
             {
-                LOG_ERROR("matrices are not identical; A[%d] = %e C[%d] = %e\n", i, A_double[i], i, C_double[i]);
-                return -1;
+                if (fabs(A_double[i] - C_double[i]) > 1e-12)
+                {
+                    LOG_ERROR
+                        ("matrices are not identical; A[%d] = %e C[%d] = %e\n",
+                         i, A_double[i], i, C_double[i]);
+                    return -1;
+                }
             }
-        }
-        bml_free_memory(A_double);
-        bml_free_memory(B_double);
-        bml_free_memory(C_double);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        return -1;
-        break;
+            bml_free_memory(A_double);
+            bml_free_memory(B_double);
+            bml_free_memory(C_double);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            return -1;
+            break;
     }
     bml_deallocate(&A);
     bml_deallocate(&B);

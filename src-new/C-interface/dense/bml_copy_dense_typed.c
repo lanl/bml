@@ -6,6 +6,7 @@
 #include "bml_copy_dense.h"
 #include "bml_types_dense.h"
 
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -20,10 +21,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_copy_dense_new) (
     const bml_matrix_dense_t * A)
 {
-    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense) (A->N);
-
+    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense)(A->N);
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
-
     return B;
 }
 

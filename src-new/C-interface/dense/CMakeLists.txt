@@ -42,9 +42,15 @@ set(SOURCES-DENSE-TYPED
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-dense single_real "${SOURCES-DENSE-TYPED}")
 bml_add_typed_library(bml-dense double_real "${SOURCES-DENSE-TYPED}")
+bml_add_typed_library(bml-dense single_complex "${SOURCES-DENSE-TYPED}")
+bml_add_typed_library(bml-dense double_complex "${SOURCES-DENSE-TYPED}")
 if(OPENMP_FOUND)
   set_target_properties(bml-dense-single_real
     PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-dense-double_real
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  set_target_properties(bml-dense-single_complex
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  set_target_properties(bml-dense-double_complex
     PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()

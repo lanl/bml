@@ -21,18 +21,19 @@ bml_copy_dense_new(
     const bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = NULL;
-
-    //B = bml_zero_matrix_dense(A->matrix_precision, A->N);
-
     switch (A->matrix_precision)
     {
         case single_real:
-            //memcpy(B->matrix, A->matrix, sizeof(float) * A->N * A->N);
             B = bml_copy_dense_new_single_real(A);
             break;
         case double_real:
-            //memcpy(B->matrix, A->matrix, sizeof(double) * A->N * A->N);
             B = bml_copy_dense_new_double_real(A);
+            break;
+        case single_complex:
+            B = bml_copy_dense_new_single_complex(A);
+            break;
+        case double_complex:
+            B = bml_copy_dense_new_double_complex(A);
             break;
         default:
             LOG_ERROR("unknown precision\n");

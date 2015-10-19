@@ -7,6 +7,7 @@
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -27,7 +28,6 @@ TYPED_FUNC(bml_convert_from_dense_dense)(
     bml_matrix_dense_t *A_bml = TYPED_FUNC(bml_zero_matrix_dense)(N);
 
     memcpy(A_bml->matrix, A, sizeof(REAL_T) * N * N);
-    
     return A_bml;
 }
 

@@ -16,6 +16,12 @@ bml_matrix_dense_t *bml_zero_matrix_dense_single_real(
 bml_matrix_dense_t *bml_zero_matrix_dense_double_real(
     const int N);
 
+bml_matrix_dense_t *bml_zero_matrix_dense_single_complex(
+    const int N);
+
+bml_matrix_dense_t *bml_zero_matrix_dense_double_complex(
+    const int N);
+
 bml_matrix_dense_t *bml_random_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
     const int N);
@@ -26,6 +32,12 @@ bml_matrix_dense_t *bml_random_matrix_dense_single_real(
 bml_matrix_dense_t *bml_random_matrix_dense_double_real(
     const int N);
 
+bml_matrix_dense_t *bml_random_matrix_dense_single_complex(
+    const int N);
+
+bml_matrix_dense_t *bml_random_matrix_dense_double_complex(
+    const int N);
+
 bml_matrix_dense_t *bml_identity_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
     const int N);
@@ -34,6 +46,12 @@ bml_matrix_dense_t *bml_identity_matrix_dense_single_real(
     const int N);
 
 bml_matrix_dense_t *bml_identity_matrix_dense_double_real(
+    const int N);
+
+bml_matrix_dense_t *bml_identity_matrix_dense_single_complex(
+    const int N);
+
+bml_matrix_dense_t *bml_identity_matrix_dense_double_complex(
     const int N);
 
 #endif

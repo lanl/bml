@@ -81,6 +81,12 @@ bml_random_matrix_dense(
         case double_real:
             A = bml_random_matrix_dense_double_real(N);
             break;
+        case single_complex:
+            A = bml_random_matrix_dense_single_complex(N);
+            break;
+        case double_complex:
+            A = bml_random_matrix_dense_double_complex(N);
+            break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -115,6 +121,12 @@ bml_identity_matrix_dense(
             break;
         case double_real:
             A = bml_identity_matrix_dense_double_real(N);
+            break;
+        case single_complex:
+            A = bml_identity_matrix_dense_single_complex(N);
+            break;
+        case double_complex:
+            A = bml_identity_matrix_dense_double_complex(N);
             break;
         default:
             LOG_ERROR("unknown precision\n");

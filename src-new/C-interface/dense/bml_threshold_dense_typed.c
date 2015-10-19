@@ -6,6 +6,7 @@
 #include "bml_threshold_dense.h"
 #include "bml_types_dense.h"
 
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -27,20 +28,16 @@ bml_matrix_dense_t* TYPED_FUNC(
     const bml_matrix_dense_t * A, const double threshold)
 {
     int N = A->N;
-
     bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense)(N);
-
-    REAL_T athreshold = (REAL_T) threshold;
-
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < N*N; i++)
     {
-        if (fabs(A_matrix[i]) > athreshold)
+        if (fabs(A_matrix[i]) > threshold)
         {
-            B_matrix[i] = A_matrix[i];    
+            B_matrix[i] = A_matrix[i];
         }
     }
 
@@ -60,15 +57,12 @@ void TYPED_FUNC(
     const bml_matrix_dense_t * A, const double threshold)
 {
     int N = A->N;
-
-    REAL_T athreshold = (REAL_T) threshold;
-
     REAL_T *A_matrix = A->matrix;
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < N*N; i++)
     {
-        if (fabs(A_matrix[i]) < athreshold)
+        if (fabs(A_matrix[i]) < threshold)
         {
             A_matrix[i] = (REAL_T) 0.0;
         }

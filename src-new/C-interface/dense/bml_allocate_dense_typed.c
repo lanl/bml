@@ -4,6 +4,8 @@
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
+#include <complex.h>
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is

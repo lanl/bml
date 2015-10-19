@@ -17,6 +17,14 @@ bml_matrix_dense_t *bml_convert_from_dense_dense_double_real(
     const int N,
     const void *A);
 
+bml_matrix_dense_t *bml_convert_from_dense_dense_single_complex(
+    const int N,
+    const void *A);
+
+bml_matrix_dense_t *bml_convert_from_dense_dense_double_complex(
+    const int N,
+    const void *A);
+
 void *bml_convert_to_dense_dense(
     const bml_matrix_dense_t * A);
 
