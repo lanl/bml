@@ -22,9 +22,7 @@ bml_copy_dense_new(
     const bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = NULL;
-
     assert(A != NULL);
-
     switch (A->matrix_precision)
     {
         case single_real:
@@ -59,7 +57,7 @@ bml_copy_dense(
     bml_matrix_dense_t * B)
 {
     assert(A != NULL);
-
+    assert(B != NULL);
     switch (A->matrix_precision)
     {
         case single_real:

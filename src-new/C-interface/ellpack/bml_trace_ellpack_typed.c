@@ -4,6 +4,7 @@
 #include "bml_trace_ellpack.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 

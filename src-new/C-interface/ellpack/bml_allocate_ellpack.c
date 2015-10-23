@@ -50,6 +50,12 @@ bml_zero_matrix_ellpack(
         case double_real:
             A = bml_zero_matrix_ellpack_double_real(N, M);
             break;
+        case single_complex:
+            A = bml_zero_matrix_ellpack_single_complex(N, M);
+            break;
+        case double_complex:
+            A = bml_zero_matrix_ellpack_double_complex(N, M);
+            break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -87,6 +93,12 @@ bml_random_matrix_ellpack(
         case double_real:
             A = bml_random_matrix_ellpack_double_real(N, M);
             break;
+        case single_complex:
+            A = bml_random_matrix_ellpack_single_complex(N, M);
+            break;
+        case double_complex:
+            A = bml_random_matrix_ellpack_double_complex(N, M);
+            break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -123,6 +135,12 @@ bml_identity_matrix_ellpack(
             break;
         case double_real:
             A = bml_identity_matrix_ellpack_double_real(N, M);
+            break;
+        case single_complex:
+            A = bml_identity_matrix_ellpack_single_complex(N, M);
+            break;
+        case double_complex:
+            A = bml_identity_matrix_ellpack_double_complex(N, M);
             break;
         default:
             LOG_ERROR("unknown precision\n");

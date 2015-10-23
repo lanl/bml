@@ -23,7 +23,7 @@ test_function(
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
     B = bml_copy_new(A);
     C = bml_zero_matrix(matrix_type, matrix_precision, N, M);
-    bml_copy(B, &C);
+    bml_copy(B, C);
 
     A_dense = bml_convert_to_dense(A);
     B_dense = bml_convert_to_dense(B);

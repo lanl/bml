@@ -4,6 +4,7 @@
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
 #include <math.h>
 
 /** Allocate the zero matrix.
@@ -76,12 +77,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         for (int j = 0; j < M; j++)
         {
             REAL_T rvalue = rand() / (REAL_T) RAND_MAX;
-            if (fabs(rvalue) > (REAL_T) 0.0)
-            {
-                A_value[i * M + jind] = rvalue;
-                A_index[i * M + jind] = j;
-                jind++;
-            }
+            A_value[i * M + jind] = rvalue;
+            A_index[i * M + jind] = j;
+            jind++;
         }
         A_nnz[i] = jind;
     }

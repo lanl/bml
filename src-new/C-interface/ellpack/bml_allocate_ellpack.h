@@ -19,6 +19,14 @@ bml_matrix_ellpack_t *bml_zero_matrix_ellpack_double_real(
     const int N,
     const int M);
 
+bml_matrix_ellpack_t *bml_zero_matrix_ellpack_single_complex(
+    const int N,
+    const int M);
+
+bml_matrix_ellpack_t *bml_zero_matrix_ellpack_double_complex(
+    const int N,
+    const int M);
+
 bml_matrix_ellpack_t *bml_random_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,
@@ -32,6 +40,14 @@ bml_matrix_ellpack_t *bml_random_matrix_ellpack_double_real(
     const int N,
     const int M);
 
+bml_matrix_ellpack_t *bml_random_matrix_ellpack_single_complex(
+    const int N,
+    const int M);
+
+bml_matrix_ellpack_t *bml_random_matrix_ellpack_double_complex(
+    const int N,
+    const int M);
+
 bml_matrix_ellpack_t *bml_identity_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,
@@ -42,6 +58,14 @@ bml_matrix_ellpack_t *bml_identity_matrix_ellpack_single_real(
     const int M);
 
 bml_matrix_ellpack_t *bml_identity_matrix_ellpack_double_real(
+    const int N,
+    const int M);
+
+bml_matrix_ellpack_t *bml_identity_matrix_ellpack_single_complex(
+    const int N,
+    const int M);
+
+bml_matrix_ellpack_t *bml_identity_matrix_ellpack_double_complex(
     const int N,
     const int M);
 

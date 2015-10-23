@@ -7,9 +7,10 @@
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 /** Convert a dense matrix into a bml matrix.
  *
@@ -40,7 +41,7 @@ TYPED_FUNC(bml_convert_from_dense_ellpack)(
     {
         for (int j = 0; j < N; j++)
         {
-            if (fabs(dense_A[j + i * N]) > (REAL_T) threshold)
+            if (is_above_threshold(dense_A[j + i * N], (REAL_T) threshold))
             {
                 A_value[nnz[j] + i * M] = dense_A[j + i * N];
                 A_index[nnz[j] + i * M] = i;

@@ -6,9 +6,10 @@
 #include "bml_threshold_ellpack.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -45,7 +46,7 @@ bml_matrix_ellpack_t* TYPED_FUNC(
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (fabs(A_value[j + i * M]) > athreshold)
+            if (is_above_threshold(A_value[j + i * M], athreshold))
             {
                 B_value[B_nnz[i] + i * M] = A_value[j + i * M];
                 B_index[B_nnz[i] + i * M] = A_index[j + i * M];
@@ -84,7 +85,7 @@ void TYPED_FUNC(
         rlen = 0;
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (fabs(A_value[j + i * M]) > athreshold)
+            if (is_above_threshold(A_value[j + i * M], athreshold))
             {
                 if (rlen < j)
                 {

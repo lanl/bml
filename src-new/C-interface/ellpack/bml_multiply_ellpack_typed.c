@@ -8,10 +8,11 @@
 #include "bml_multiply_ellpack.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -130,7 +131,7 @@ void TYPED_FUNC(
                 X2->index[i * msize + ll] = jp;
                 ll++;
             }
-            else if (fabs(xtmp) > sthreshold)
+            else if (is_above_threshold(xtmp, sthreshold))
             {
                 X2_value[i * msize + ll] = xtmp;
                 X2->index[i * msize + ll] = jp;

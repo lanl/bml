@@ -6,9 +6,10 @@
 #include "bml_add_ellpack.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -49,7 +50,7 @@ void TYPED_FUNC(
     memset(ix, 0, hsize * sizeof(int));
     memset(x, 0.0, hsize * sizeof(REAL_T));
 
-    #pragma omp parallel for firstprivate(x,ix)
+#pragma omp parallel for firstprivate(x,ix)
     for (int i = 0; i < hsize; i++)
     {
         int l = 0;
@@ -84,7 +85,7 @@ void TYPED_FUNC(
         for (int jp = 0; jp < l; jp++)
         {
             REAL_T xTmp = x[A->index[i * msize + jp]];
-            if (fabs(xTmp) > sthreshold)        // THIS THRESHOLDING COULD BE IGNORED!?
+            if (is_above_threshold(xTmp, sthreshold)) // THIS THRESHOLDING COULD BE IGNORED!?
             {
                 A_value[i * msize + ll] = xTmp;
                 A->index[i * msize + ll] = A->index[i * msize + jp];
@@ -115,10 +116,10 @@ void TYPED_FUNC(
 {
     REAL_T alpha = (REAL_T) 1.0;
 
-    bml_matrix_ellpack_t *I =
+    bml_matrix_ellpack_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M);
 
-    TYPED_FUNC(bml_add_ellpack) (A, I, alpha, beta, threshold);
+    TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
 
-    bml_deallocate_ellpack(I);
+    bml_deallocate_ellpack(Id);
 }

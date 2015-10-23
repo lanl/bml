@@ -32,6 +32,11 @@ bml_log_real(
             strncpy(new_format, format, 10000);
         }
         vprintf(new_format, ap);
+
+        if (log_level == BML_LOG_ERROR)
+        {
+            exit(-1);
+        }
     }
 }
 

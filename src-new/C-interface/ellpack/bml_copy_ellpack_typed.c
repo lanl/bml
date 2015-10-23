@@ -6,6 +6,7 @@
 #include "bml_copy_ellpack.h"
 #include "bml_types_ellpack.h"
 
+#include <complex.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,9 +26,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
-
     memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
-
     return B;
 }
 

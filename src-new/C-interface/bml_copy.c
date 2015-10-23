@@ -44,19 +44,30 @@ bml_copy_new(
 void
 bml_copy(
     const bml_matrix_t * A,
-    bml_matrix_t ** B)
+    bml_matrix_t * B)
 {
     assert(A != NULL);
+    assert(B != NULL);
     LOG_DEBUG("copying matrix\n");
-    *B = bml_zero_matrix(bml_get_type(A), bml_get_precision(A), bml_get_N(A),
-                         bml_get_M(A));
+    if(bml_get_type(A) != bml_get_type(B))
+    {
+        LOG_ERROR("type mismatch\n");
+    }
+    if(bml_get_N(A) != bml_get_N(B))
+    {
+        LOG_ERROR("matrix size mismatch\n");
+    }
+    if(bml_get_M(A) != bml_get_M(B))
+    {
+        LOG_ERROR("matrix parameter mismatch\n");
+    }
     switch (bml_get_type(A))
     {
         case dense:
-            bml_copy_dense(A, *B);
+            bml_copy_dense(A, B);
             break;
         case ellpack:
-            bml_copy_ellpack(A, *B);
+            bml_copy_ellpack(A, B);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
