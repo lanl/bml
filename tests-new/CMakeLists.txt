@@ -37,7 +37,7 @@ foreach(FILE ${C-TESTS})
       list(APPEND COMPILE_DEFINITIONS MATRIX_PRECISION=${MATRIX_PRECISION})
       list(APPEND COMPILE_DEFINITIONS MATRIX_TYPE=${MATRIX_TYPE})
       list(APPEND COMPILE_DEFINITIONS MATRIX_TYPE_NAME=${TYPE})
-      list(APPEND COMPILE_DEFINITIONS REAL_TYPE=${REAL_TYPE})
+      list(APPEND COMPILE_DEFINITIONS REAL_T=${REAL_TYPE})
       add_executable(${TESTNAME}
         ${FILE}
         test_driver.c)
@@ -52,7 +52,7 @@ foreach(FILE ${C-TESTS})
       endif()
       target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
-      if(VALGRIND)
+      if(VALGRIND AND NOT OPENMP_FOUND)
         add_test(${TESTNAME}-valgrind
           ${VALGRIND}
           --error-exitcode=1
