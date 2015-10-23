@@ -119,10 +119,10 @@ EOF
 else
     create
     configure
-    docs
+    #docs
     compile
-    install
-    testing
+    #install
+    #testing
 fi
 
 echo "The output was written to ${LOG_FILE}"
