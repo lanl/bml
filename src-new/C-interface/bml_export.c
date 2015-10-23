@@ -38,6 +38,9 @@ bml_export_to_dense(
             return bml_convert_to_dense_dense(A);
         case ellpack:
             return bml_convert_to_dense_ellpack(A);
+        case type_uninitialized:
+            return NULL;
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
     }

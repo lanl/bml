@@ -34,4 +34,10 @@ void *bml_convert_to_dense_dense_single_real(
 void *bml_convert_to_dense_dense_double_real(
     const bml_matrix_dense_t * A);
 
+void *bml_convert_to_dense_dense_single_complex(
+    const bml_matrix_dense_t * A);
+
+void *bml_convert_to_dense_dense_double_complex(
+    const bml_matrix_dense_t * A);
+
 #endif

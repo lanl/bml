@@ -13,9 +13,12 @@ test_function(
     const int M)
 {
     bml_matrix_t *A = NULL;
-    REAL_TYPE *A_dense = NULL;
+    REAL_T *A_dense = NULL;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A_dense = bml_export_to_dense(A);
+    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+    bml_free_memory(A_dense);
     bml_deallocate(&A);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
     A_dense = bml_convert_to_dense(A);

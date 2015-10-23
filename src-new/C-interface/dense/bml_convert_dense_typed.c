@@ -20,13 +20,12 @@
  * \param A The dense matrix
  * \return The bml matrix
  */
-bml_matrix_dense_t *
-TYPED_FUNC(bml_convert_from_dense_dense)(
+bml_matrix_dense_t *TYPED_FUNC(
+    bml_convert_from_dense_dense) (
     const int N,
     const void *A)
 {
-    bml_matrix_dense_t *A_bml = TYPED_FUNC(bml_zero_matrix_dense)(N);
-
+    bml_matrix_dense_t *A_bml = TYPED_FUNC(bml_zero_matrix_dense) (N);
     memcpy(A_bml->matrix, A, sizeof(REAL_T) * N * N);
     return A_bml;
 }
@@ -38,14 +37,11 @@ TYPED_FUNC(bml_convert_from_dense_dense)(
  * \param A The bml matrix
  * \return The dense matrix
  */
-void *
-TYPED_FUNC(bml_convert_to_dense_dense)(
+void *TYPED_FUNC(
+    bml_convert_to_dense_dense) (
     const bml_matrix_dense_t * A)
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
-
-
     memcpy(A_dense, A->matrix, sizeof(REAL_T) * A->N * A->N);
-
     return A_dense;
 }

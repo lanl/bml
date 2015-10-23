@@ -235,7 +235,7 @@ contains
     real, pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_single
@@ -258,7 +258,7 @@ contains
     double precision, pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_double
@@ -281,7 +281,7 @@ contains
     complex, pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_single_complex
@@ -304,7 +304,7 @@ contains
     complex(kind(0d0)), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_size(a), bml_get_size(a)])
+    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
   end subroutine bml_convert_to_dense_double_complex

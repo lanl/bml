@@ -5,6 +5,7 @@
 #include "dense/bml_copy_dense.h"
 #include "ellpack/bml_copy_ellpack.h"
 
+#include <assert.h>
 #include <stdlib.h>
 
 /** Copy a matrix - result is a new matrix.
@@ -43,15 +44,19 @@ bml_copy_new(
 void
 bml_copy(
     const bml_matrix_t * A,
-    const bml_matrix_t * B)
+    bml_matrix_t ** B)
 {
+    assert(A != NULL);
+    LOG_DEBUG("copying matrix\n");
+    *B = bml_zero_matrix(bml_get_type(A), bml_get_precision(A), bml_get_N(A),
+                         bml_get_M(A));
     switch (bml_get_type(A))
     {
         case dense:
-            bml_copy_dense(A, B);
+            bml_copy_dense(A, *B);
             break;
         case ellpack:
-            bml_copy_ellpack(A, B);
+            bml_copy_ellpack(A, *B);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

@@ -34,8 +34,8 @@ void TYPED_FUNC(
 
     int hdim = A->N;
 
-    C_BLAS(GEMM)(&trans, &trans, &hdim, &hdim, &hdim, &salpha, A->matrix,
-                 &hdim, B->matrix, &hdim, &sbeta, C->matrix, &hdim);
+    C_BLAS(GEMM) (&trans, &trans, &hdim, &hdim, &hdim, &salpha, A->matrix,
+                  &hdim, B->matrix, &hdim, &sbeta, C->matrix, &hdim);
 }
 
 /** Matrix multiply.

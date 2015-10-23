@@ -23,24 +23,24 @@
  *  \param threshold Threshold value
  *  \return The thresholded A
  */
-bml_matrix_dense_t* TYPED_FUNC(
+bml_matrix_dense_t *TYPED_FUNC(
     bml_threshold_new_dense) (
-    const bml_matrix_dense_t * A, const double threshold)
+    const bml_matrix_dense_t * A,
+    const double threshold)
 {
     int N = A->N;
     bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense)(N);
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-#pragma omp parallel for
-    for (int i = 0; i < N*N; i++)
+#pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
+    for (int i = 0; i < N * N; i++)
     {
         if (fabs(A_matrix[i]) > threshold)
         {
             B_matrix[i] = A_matrix[i];
         }
     }
-
     return B;
 }
 
@@ -54,13 +54,14 @@ bml_matrix_dense_t* TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_dense) (
-    const bml_matrix_dense_t * A, const double threshold)
+    const bml_matrix_dense_t * A,
+    const double threshold)
 {
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for
-    for (int i = 0; i < N*N; i++)
+#pragma omp parallel for default(none) shared(N, A_matrix)
+    for (int i = 0; i < N * N; i++)
     {
         if (fabs(A_matrix[i]) < threshold)
         {

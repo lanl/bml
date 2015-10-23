@@ -1,6 +1,7 @@
 #include "bml.h"
 #include "bml_test.h"
 
+#include <complex.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -12,60 +13,28 @@ test_function(
     const int M)
 {
     bml_matrix_t *A;
-    float *A_float;
-    float *B_float;
-    double *A_double;
-    double *B_double;
+    REAL_T *A_dense;
+    REAL_T *B_dense;
 
-    switch (matrix_precision)
+    A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
+    for (int i = 0; i < N * N; i++)
     {
-    case single_real:
-        A_float = bml_allocate_memory(sizeof(float) * N * N);
-        for (int i = 0; i < N * N; i++)
-        {
-            A_float[i] = rand() / (float) RAND_MAX;
-        }
-        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_float,
-                                   0, M);
-        B_float = bml_convert_to_dense(A);
-        for (int i = 0; i < N * N; i++)
-        {
-            if (fabs(A_float[i] - B_float[i]) > 1e-12)
-            {
-                bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
-                bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
-                LOG_ERROR("matrix element mismatch\n");
-            }
-        }
-        bml_free_memory(A_float);
-        bml_free_memory(B_float);
-        break;
-    case double_real:
-        A_double = bml_allocate_memory(sizeof(double) * N * N);
-        for (int i = 0; i < N * N; i++)
-        {
-            A_double[i] = rand() / (double) RAND_MAX;
-        }
-        A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_double,
-                                   0, M);
-        B_double = bml_convert_to_dense(A);
-        for (int i = 0; i < N * N; i++)
-        {
-            if (fabs(A_double[i] - B_double[i]) > 1e-12)
-            {
-                bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
-                bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
-                LOG_ERROR("matrix element mismatch\n");
-            }
-        }
-        bml_free_memory(A_double);
-        bml_free_memory(B_double);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
-        return -1;
-        break;
+        A_dense[i] = rand() / (double) RAND_MAX;
     }
+    A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_dense,
+                               0, M);
+    B_dense = bml_convert_to_dense(A);
+    for (int i = 0; i < N * N; i++)
+    {
+        if (fabs(A_dense[i] - B_dense[i]) > 1e-12)
+        {
+            bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+            bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
+            LOG_ERROR("matrix element mismatch\n");
+        }
+    }
+    bml_free_memory(A_dense);
+    bml_free_memory(B_dense);
     bml_deallocate(&A);
     return 0;
 }

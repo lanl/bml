@@ -7,14 +7,14 @@ module bml_introspection_m
 
   interface
      !> Return the matrix size.
-     function bml_get_size_C(a) result(n) bind(C, name="bml_get_size")
+     function bml_get_N_C(a) result(n) bind(C, name="bml_get_N")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
        integer(C_INT) :: n
-     end function bml_get_size_C
+     end function bml_get_N_C
   end interface
 
-  public :: bml_get_size
+  public :: bml_get_N
   public :: bml_get_bandwidth
 
 contains
@@ -23,16 +23,16 @@ contains
   !!
   !!\param a The matrix.
   !!\return The matrix size.
-  function bml_get_size(a)
+  function bml_get_n(a)
 
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
-    integer :: bml_get_size
+    integer :: bml_get_n
 
-    bml_get_size = bml_get_size_C(a%ptr)
+    bml_get_n = bml_get_N_C(a%ptr)
 
-  end function bml_get_size
+  end function bml_get_n
 
   !> Get the number of non-zero elements in a given row.
   !!

@@ -1,6 +1,7 @@
 #include "bml_types.h"
 #include "bml_logger.h"
 
+#include <complex.h>
 #include <stdio.h>
 
 /** Print a bml vector.
@@ -61,20 +62,17 @@ bml_print_dense_matrix(
     const int j_l,
     const int j_u)
 {
-    const float *A_float;
-    const double *A_double;
-
     LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
     switch (matrix_precision)
     {
         case single_real:
         {
-            A_float = A;
+            const float *A_typed = A;
             for (int i = i_l; i < i_u; i++)
             {
                 for (int j = j_l; j < j_u; j++)
                 {
-                    printf("% 1.3f", A_float[i + j * N]);
+                    printf("% 1.3f", A_typed[i + j * N]);
                 }
                 printf("\n");
             }
@@ -82,19 +80,47 @@ bml_print_dense_matrix(
         }
         case double_real:
         {
-            A_double = A;
+            const double *A_typed = A;
             for (int i = i_l; i < i_u; i++)
             {
                 for (int j = j_l; j < j_u; j++)
                 {
-                    printf("% 1.3f", A_double[i + j * N]);
+                    printf("% 1.3f", A_typed[i + j * N]);
+                }
+                printf("\n");
+            }
+            break;
+        }
+        case single_complex:
+        {
+            const complex *A_typed = A;
+            for (int i = i_l; i < i_u; i++)
+            {
+                for (int j = j_l; j < j_u; j++)
+                {
+                    printf("% 1.3f%+1.3fi", creal(A_typed[i + j * N]),
+                           cimag(A_typed[i + j * N]));
+                }
+                printf("\n");
+            }
+            break;
+        }
+        case double_complex:
+        {
+            const double complex *A_typed = A;
+            for (int i = i_l; i < i_u; i++)
+            {
+                for (int j = j_l; j < j_u; j++)
+                {
+                    printf("% 1.3f%+1.3fi", creal(A_typed[i + j * N]),
+                           cimag(A_typed[i + j * N]));
                 }
                 printf("\n");
             }
             break;
         }
         default:
-            LOG_ERROR("unknown matrix precision\n");
+            LOG_ERROR("unknown matrix precision");
             break;
     }
 }

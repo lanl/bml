@@ -7,6 +7,7 @@
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,6 +25,8 @@ bml_scale_dense_new(
 {
     bml_matrix_dense_t *B = NULL;
 
+    assert(A != NULL);
+
     switch (A->matrix_precision)
     {
         case single_real:
@@ -31,6 +34,12 @@ bml_scale_dense_new(
             break;
         case double_real:
             B = bml_scale_dense_new_double_real(scale_factor, A);
+            break;
+        case single_complex:
+            B = bml_scale_dense_new_single_complex(scale_factor, A);
+            break;
+        case double_complex:
+            B = bml_scale_dense_new_double_complex(scale_factor, A);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -52,13 +61,21 @@ bml_scale_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B)
 {
+    assert(A != NULL);
+
     switch (A->matrix_precision)
     {
         case single_real:
             bml_scale_dense_single_real(scale_factor, A, B);
             break;
         case double_real:
-            bml_scale_dense_single_real(scale_factor, A, B);
+            bml_scale_dense_double_real(scale_factor, A, B);
+            break;
+        case single_complex:
+            bml_scale_dense_single_complex(scale_factor, A, B);
+            break;
+        case double_complex:
+            bml_scale_dense_double_complex(scale_factor, A, B);
             break;
         default:
             LOG_ERROR("unknown precision\n");

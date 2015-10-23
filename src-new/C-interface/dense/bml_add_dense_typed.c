@@ -36,8 +36,8 @@ void TYPED_FUNC(
     int inc = 1;
 
     // Use BLAS saxpy
-    C_BLAS(SCAL)(&nElems, &salpha, A->matrix, &inc);
-    C_BLAS(AXPY)(&nElems, &sbeta, B->matrix, &inc, A->matrix, &inc);
+    C_BLAS(SCAL) (&nElems, &salpha, A->matrix, &inc);
+    C_BLAS(AXPY) (&nElems, &sbeta, B->matrix, &inc, A->matrix, &inc);
 }
 
 /** Matrix addition.
@@ -58,7 +58,7 @@ void TYPED_FUNC(
     int nElems = A->N * A->N;
     int inc = 1;
 
-    bml_matrix_dense_t *Id = TYPED_FUNC(bml_identity_matrix_dense)(A->N);
-    C_BLAS(AXPY)(&nElems, &sbeta, Id->matrix, &inc, A->matrix, &inc);
+    bml_matrix_dense_t *Id = TYPED_FUNC(bml_identity_matrix_dense) (A->N);
+    C_BLAS(AXPY) (&nElems, &sbeta, Id->matrix, &inc, A->matrix, &inc);
     bml_deallocate_dense(Id);
 }

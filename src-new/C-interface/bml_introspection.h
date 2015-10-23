@@ -8,6 +8,13 @@
 bml_matrix_type_t bml_get_type(
     const bml_matrix_t * A);
 
-int bml_get_size(
+bml_matrix_precision_t bml_get_precision(
     const bml_matrix_t * A);
+
+int bml_get_N(
+    const bml_matrix_t * A);
+
+int bml_get_M(
+    const bml_matrix_t * A);
+
 #endif

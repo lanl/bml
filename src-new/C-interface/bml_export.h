@@ -8,8 +8,7 @@
 void *bml_convert_to_dense(
     const bml_matrix_t * A);
 
-void *
-bml_export_to_dense(
+void *bml_export_to_dense(
     const bml_matrix_t * A);
 
 #endif

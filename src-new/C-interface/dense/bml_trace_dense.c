@@ -32,6 +32,12 @@ bml_trace_dense(
         case double_real:
             trace = bml_trace_dense_double_real(A);
             break;
+        case single_complex:
+            trace = bml_trace_dense_single_complex(A);
+            break;
+        case double_complex:
+            trace = bml_trace_dense_double_complex(A);
+            break;
         default:
             LOG_ERROR("unknown precision\n");
             break;

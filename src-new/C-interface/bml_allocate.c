@@ -83,22 +83,20 @@ bml_zero_matrix(
     const int N,
     const int M)
 {
-    bml_matrix_t *A = NULL;
-
     LOG_DEBUG("zero matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            A = bml_zero_matrix_dense(matrix_precision, N);
+            return bml_zero_matrix_dense(matrix_precision, N);
             break;
         case ellpack:
-            A = bml_zero_matrix_ellpack(matrix_precision, N, M);
+            return bml_zero_matrix_ellpack(matrix_precision, N, M);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }
-    return A;
+    return NULL;
 }
 
 /** Allocate a random matrix.
@@ -121,22 +119,20 @@ bml_random_matrix(
     const int N,
     const int M)
 {
-    bml_matrix_t *A = NULL;
-
     LOG_DEBUG("random matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            A = bml_random_matrix_dense(matrix_precision, N);
+            return bml_random_matrix_dense(matrix_precision, N);
             break;
         case ellpack:
-            A = bml_random_matrix_ellpack(matrix_precision, N, M);
+            return bml_random_matrix_ellpack(matrix_precision, N, M);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
             break;
     }
-    return A;
+    return NULL;
 }
 
 /** Allocate the identity matrix.
@@ -159,20 +155,18 @@ bml_identity_matrix(
     const int N,
     const int M)
 {
-    bml_matrix_t *A = NULL;
-
     LOG_DEBUG("identity matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            A = bml_identity_matrix_dense(matrix_precision, N);
+            return bml_identity_matrix_dense(matrix_precision, N);
             break;
         case ellpack:
-            A = bml_identity_matrix_ellpack(matrix_precision, N, M);
+            return bml_identity_matrix_ellpack(matrix_precision, N, M);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
             break;
     }
-    return A;
+    return NULL;
 }

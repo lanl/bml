@@ -12,6 +12,6 @@ bml_matrix_t *bml_copy_new(
 // Copy A to an existing matrix B
 void bml_copy(
     const bml_matrix_t * A,
-    const bml_matrix_t * B);
+    bml_matrix_t ** B);
 
 #endif

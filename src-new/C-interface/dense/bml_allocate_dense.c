@@ -36,21 +36,25 @@ bml_zero_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
     const int N)
 {
-    bml_matrix_dense_t *A = NULL;
-
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_zero_matrix_dense_single_real(N);
+            return bml_zero_matrix_dense_single_real(N);
             break;
         case double_real:
-            A = bml_zero_matrix_dense_double_real(N);
+            return bml_zero_matrix_dense_double_real(N);
+            break;
+        case single_complex:
+            return bml_zero_matrix_dense_single_complex(N);
+            break;
+        case double_complex:
+            return bml_zero_matrix_dense_double_complex(N);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return A;
+    return NULL;
 }
 
 /** Allocate a random matrix.
@@ -71,27 +75,25 @@ bml_random_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
     const int N)
 {
-    bml_matrix_dense_t *A = NULL;
-
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_random_matrix_dense_single_real(N);
+            return bml_random_matrix_dense_single_real(N);
             break;
         case double_real:
-            A = bml_random_matrix_dense_double_real(N);
+            return bml_random_matrix_dense_double_real(N);
             break;
         case single_complex:
-            A = bml_random_matrix_dense_single_complex(N);
+            return bml_random_matrix_dense_single_complex(N);
             break;
         case double_complex:
-            A = bml_random_matrix_dense_double_complex(N);
+            return bml_random_matrix_dense_double_complex(N);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return A;
+    return NULL;
 }
 
 /** Allocate the identity matrix.
@@ -112,25 +114,23 @@ bml_identity_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
     const int N)
 {
-    bml_matrix_dense_t *A = NULL;
-
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_identity_matrix_dense_single_real(N);
+            return bml_identity_matrix_dense_single_real(N);
             break;
         case double_real:
-            A = bml_identity_matrix_dense_double_real(N);
+            return bml_identity_matrix_dense_double_real(N);
             break;
         case single_complex:
-            A = bml_identity_matrix_dense_single_complex(N);
+            return bml_identity_matrix_dense_single_complex(N);
             break;
         case double_complex:
-            A = bml_identity_matrix_dense_double_complex(N);
+            return bml_identity_matrix_dense_double_complex(N);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return A;
+    return NULL;
 }

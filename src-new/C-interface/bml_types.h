@@ -7,7 +7,7 @@
 typedef enum
 {
     /** The matrix is not initialized. */
-    uninitialized,
+    type_uninitialized,
     /** Dense matrix. */
     dense,
     /** ELLPACK matrix. */
@@ -19,6 +19,8 @@ typedef enum
 /** The supported real precisions. */
 typedef enum
 {
+    /** The matrix is not initialized. */
+    precision_uninitialized,
     /** Matrix data is stored in single precision (float). */
     single_real,
     /** Matrix data is stored in double precision (double). */

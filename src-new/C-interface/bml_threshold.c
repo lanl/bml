@@ -14,26 +14,24 @@
  * \param threshold Threshold value
  * \return  Thresholded A
  */
-bml_matrix_t
-*bml_threshold_new(
+bml_matrix_t *
+bml_threshold_new(
     const bml_matrix_t * A,
     const double threshold)
 {
-    bml_matrix_t *B = NULL;
-
     switch (bml_get_type(A))
     {
         case dense:
-            B = bml_threshold_new_dense(A, threshold);
+            return bml_threshold_new_dense(A, threshold);
             break;
         case ellpack:
-            B = bml_threshold_new_ellpack(A, threshold);
+            return bml_threshold_new_ellpack(A, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }
-    return B;
+    return NULL;
 }
 
 /** Threshold matrix.
@@ -44,7 +42,8 @@ bml_matrix_t
  * \param threshold Threshold value
  * \return  Thresholded A
  */
-void bml_threshold(
+void
+bml_threshold(
     const bml_matrix_t * A,
     const double threshold)
 {
@@ -61,4 +60,3 @@ void bml_threshold(
             break;
     }
 }
-

@@ -47,14 +47,12 @@ bml_matrix_dense_t *TYPED_FUNC(
     const int N)
 {
     bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N);
-    REAL_T *A_dense = NULL;
-
-    A_dense = A->matrix;
+    REAL_T *A_dense = A->matrix;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            A_dense[i + N * j] = rand() / (REAL_T) RAND_MAX;
+            A_dense[i + N * j] = rand() / (double) RAND_MAX;
         }
     }
     return A;
@@ -76,9 +74,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     const int N)
 {
     bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N);
-    REAL_T *A_dense = NULL;
-
-    A_dense = A->matrix;
+    REAL_T *A_dense = A->matrix;
     for (int i = 0; i < N; i++)
     {
         A_dense[i + N * i] = 1;

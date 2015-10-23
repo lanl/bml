@@ -1,6 +1,7 @@
 #include "bml.h"
 #include "bml_test.h"
 
+#include <complex.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -15,11 +16,14 @@ test_function(
     bml_matrix_t *B = NULL;
     bml_matrix_t *C = NULL;
 
-    float *A_float = NULL, *B_float = NULL, *C_float = NULL;
-    double *A_double = NULL, *B_double = NULL, *C_double = NULL;
+    REAL_T *A_dense = NULL;
+    REAL_T *B_dense = NULL;
+    REAL_T *C_dense = NULL;
 
     double traceA, traceB, traceC;
-    double scalar = 5.0;
+    double scalar = 0.8;
+
+    double rel_diff;
 
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
     traceA = bml_trace(A);
@@ -28,51 +32,46 @@ test_function(
     C = bml_scale_new(scalar, B);
     traceC = bml_trace(C);
 
-    switch (matrix_precision)
+    A_dense = bml_convert_to_dense(A);
+    B_dense = bml_convert_to_dense(B);
+    C_dense = bml_convert_to_dense(C);
+    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
+
+    printf("diff. traceA = %e\n", traceA - N);
+    printf("diff. traceB = %e\n", traceB - scalar * N);
+    printf("diff. traceC = %e\n", traceC - scalar * scalar * N);
+
+    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > 1e-12)
     {
-    case single_real:
-        A_float = bml_convert_to_dense(A);
-        B_float = bml_convert_to_dense(B);
-        C_float = bml_convert_to_dense(C);
-        bml_print_dense_matrix(N, matrix_precision, A_float, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, B_float, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, C_float, 0, N, 0, N);
-    
-        if (fabs(traceA - (double)(N)) > 1e-12 ||
-            fabs(traceB - (double)(scalar * N)) > 1e-12 || 
-            fabs(traceC - (double)(scalar * scalar * N)) > 1e-12) 
-        {
-                LOG_ERROR("traces are not correct; traceA = %e traceB = %e traceC = %e\n", traceA, traceB, traceC);
-                return -1;
-        }
-        bml_free_memory(A_float);
-        bml_free_memory(B_float);
-        bml_free_memory(C_float);
-        break;
-    case double_real:
-        A_double = bml_convert_to_dense(A);
-        B_double = bml_convert_to_dense(B);
-        C_double = bml_convert_to_dense(C);;
-        bml_print_dense_matrix(N, matrix_precision, A_double, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, B_double, 0, N, 0, N);
-        bml_print_dense_matrix(N, matrix_precision, C_double, 0, N, 0, N);
- 
-        if (fabs(traceA - (double)(N)) > 1e-12 ||
-            fabs(traceB - (double)(scalar * N)) > 1e-12 ||
-            fabs(traceC - (double)(scalar * scalar * N)) > 1e-12)
-        {
-                LOG_ERROR("traces are not correct; traceA = %e traceB = %e traceC = %e\n", traceA, traceB, traceC);
-                return -1;
-        }
-        bml_free_memory(A_double);
-        bml_free_memory(B_double);
-        bml_free_memory(C_double);
-        break;
-    default:
-        LOG_ERROR("unknown precision\n");
+        LOG_ERROR
+            ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
+             traceA, rel_diff);
         return -1;
-        break;
     }
+    if ((rel_diff =
+         fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
+        1e-12)
+    {
+        LOG_ERROR
+            ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
+             traceB, (double) (scalar * N), rel_diff);
+        return -1;
+    }
+    if ((rel_diff =
+         fabs(traceC -
+              (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
+        1e-12)
+    {
+        LOG_ERROR
+            ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
+             traceC, (double) (scalar * scalar * N), rel_diff);
+        return -1;
+    }
+    bml_free_memory(A_dense);
+    bml_free_memory(B_dense);
+    bml_free_memory(C_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&C);

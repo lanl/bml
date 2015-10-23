@@ -36,6 +36,12 @@ bml_convert_from_dense_dense(
         case double_real:
             A_bml = bml_convert_from_dense_dense_double_real(N, A);
             break;
+        case single_complex:
+            A_bml = bml_convert_from_dense_dense_single_complex(N, A);
+            break;
+        case double_complex:
+            A_bml = bml_convert_from_dense_dense_double_complex(N, A);
+            break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -54,18 +60,19 @@ void *
 bml_convert_to_dense_dense(
     const bml_matrix_dense_t * A)
 {
-    float *A_float = NULL;
-    double *A_double = NULL;
-
     switch (A->matrix_precision)
     {
         case single_real:
-            A_float = bml_convert_to_dense_dense_single_real(A);
-            return A_float;
+            return bml_convert_to_dense_dense_single_real(A);
             break;
         case double_real:
-            A_double = bml_convert_to_dense_dense_double_real(A);
-            return A_double;
+            return bml_convert_to_dense_dense_double_real(A);
+            break;
+        case single_complex:
+            return bml_convert_to_dense_dense_single_complex(A);
+            break;
+        case double_complex:
+            return bml_convert_to_dense_dense_double_complex(A);
             break;
         default:
             LOG_ERROR("unknown precision\n");

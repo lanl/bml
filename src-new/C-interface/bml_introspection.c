@@ -24,8 +24,35 @@ bml_get_type(
     }
     else
     {
-        return uninitialized;
+        return type_uninitialized;
     }
+}
+
+/** Return the matrix precision.
+ *
+ * \param A The matrix.
+ * \return The matrix precision.
+ */
+bml_matrix_precision_t
+bml_get_precision(
+    const bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case type_uninitialized:
+            return precision_uninitialized;
+            break;
+        case dense:
+            return bml_get_precision_dense(A);
+            break;
+        case ellpack:
+            return bml_get_precision_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision");
+            break;
+    }
+    return precision_uninitialized;
 }
 
 /** Return the matrix size.
@@ -34,17 +61,46 @@ bml_get_type(
  * \return The matrix size.
  */
 int
-bml_get_size(
+bml_get_N(
     const bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
-        case uninitialized:
+        case type_uninitialized:
+            return -1;
+            break;
         case dense:
-            return bml_get_size_dense(A);
+            return bml_get_N_dense(A);
             break;
         case ellpack:
-            return bml_get_size_ellpack(A);
+            return bml_get_N_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return -1;
+}
+
+/** Return the matrix parameter M.
+ *
+ * \param A The matrix.
+ * \return The matrix parameter M.
+ */
+int
+bml_get_M(
+    const bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case type_uninitialized:
+            return 0;
+            break;
+        case dense:
+            return bml_get_M_dense(A);
+            break;
+        case ellpack:
+            return bml_get_M_ellpack(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

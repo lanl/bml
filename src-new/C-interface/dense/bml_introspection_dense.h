@@ -3,7 +3,13 @@
 
 #include "bml_types_dense.h"
 
-int bml_get_size_dense(
+bml_matrix_precision_t bml_get_precision_dense(
+    const bml_matrix_dense_t * A);
+
+int bml_get_N_dense(
+    const bml_matrix_dense_t * A);
+
+int bml_get_M_dense(
     const bml_matrix_dense_t * A);
 
 #endif

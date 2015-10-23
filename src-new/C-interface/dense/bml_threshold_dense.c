@@ -19,25 +19,28 @@
  *  \param threshold Threshold value
  *  \return The thresholded A
  */
-bml_matrix_dense_t
-*bml_threshold_new_dense(
-    const bml_matrix_dense_t * A, const double threshold)
+bml_matrix_dense_t * bml_threshold_new_dense(const bml_matrix_dense_t * A,
+                                             const double threshold)
 {
-    bml_matrix_dense_t *B = NULL;
-
     switch (A->matrix_precision)
     {
         case single_real:
-            B = bml_threshold_new_dense_single_real(A, threshold);
+            return bml_threshold_new_dense_single_real(A, threshold);
             break;
         case double_real:
-            B = bml_threshold_new_dense_double_real(A, threshold);
+            return bml_threshold_new_dense_double_real(A, threshold);
+            break;
+        case single_complex:
+            return bml_threshold_new_dense_single_complex(A, threshold);
+            break;
+        case double_complex:
+            return bml_threshold_new_dense_double_complex(A, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return B;
+    return NULL;
 }
 
 /** Threshold a matrix in place.
@@ -48,8 +51,10 @@ bml_matrix_dense_t
  *  \param threshold Threshold value
  *  \return The thresholded A
  */
-void bml_threshold_dense(
-    const bml_matrix_dense_t * A, const double threshold)
+void
+bml_threshold_dense(
+    const bml_matrix_dense_t * A,
+    const double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -64,4 +69,3 @@ void bml_threshold_dense(
             break;
     }
 }
-
