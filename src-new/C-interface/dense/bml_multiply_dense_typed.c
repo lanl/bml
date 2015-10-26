@@ -61,3 +61,29 @@ void TYPED_FUNC(
     C_BLAS(GEMM) (&trans, &trans, &hdim, &hdim, &hdim, &salpha, X->matrix,
                   &hdim, X->matrix, &hdim, &sbeta, X2->matrix, &hdim);
 }
+
+/** Matrix multiply.
+ *
+ * C = A * B
+ *
+ *  \ingroup multiply_group
+ *
+ *  \param A Matrix A
+ *  \param B Matrix B
+ *  \param C Matrix C
+ */
+void TYPED_FUNC(
+    bml_multiply_AB_dense) (
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    const bml_matrix_dense_t * C)
+{
+    REAL_T salpha = (REAL_T) 1.0;
+    REAL_T sbeta = (REAL_T) 1.0;
+    char trans = 'N';
+
+    int hdim = A->N;
+
+    C_BLAS(GEMM) (&trans, &trans, &hdim, &hdim, &hdim, &salpha, A->matrix,
+                  &hdim, B->matrix, &hdim, &sbeta, C->matrix, &hdim);
+}

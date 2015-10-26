@@ -20,4 +20,10 @@ void bml_multiply_x2(
     const bml_matrix_t * X2,
     const double threshold);
 
+// Multiply - C = A * B
+void bml_multiply_AB(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B,
+    const bml_matrix_t * C,
+    const double threshold);
 #endif

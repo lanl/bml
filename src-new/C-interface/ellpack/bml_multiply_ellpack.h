@@ -68,4 +68,34 @@ void bml_multiply_x2_ellpack_double_complex(
     const bml_matrix_ellpack_t * X2,
     const double threshold);
 
+void bml_multiply_AB_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const bml_matrix_ellpack_t * C,
+    const double threshold);
+
+void bml_multiply_AB_ellpack_single_real(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const bml_matrix_ellpack_t * C,
+    const double threshold);
+
+void bml_multiply_AB_ellpack_double_real(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const bml_matrix_ellpack_t * C,
+    const double threshold);
+
+void bml_multiply_AB_ellpack_single_complex(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const bml_matrix_ellpack_t * C,
+    const double threshold);
+
+void bml_multiply_AB_ellpack_double_complex(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const bml_matrix_ellpack_t * C,
+    const double threshold);
+
 #endif

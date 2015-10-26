@@ -50,8 +50,6 @@ bml_multiply(
  *
  * \param X Matrix X
  * \param X2 MatrixX2 
- * \param trX Trace of X
- * \param trX2 Trace of X2
  * \param threshold Threshold for multiplication
  */
 void
@@ -73,3 +71,36 @@ bml_multiply_x2(
             break;
     }
 }
+
+/** Matrix multiply.
+ *
+ * C = A * B
+ *
+ * \ingroup multiply_group_C
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param threshold Threshold for multiplication
+ */
+void
+bml_multiply_AB(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B,
+    const bml_matrix_t * C,
+    const double threshold)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_multiply_AB_dense(A, B, C);
+            break;
+        case ellpack:
+            bml_multiply_AB_ellpack(A, B, C, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
