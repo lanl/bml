@@ -10,6 +10,7 @@ set(HEADERS-DENSE
   bml_scale_dense.h
   bml_threshold_dense.h
   bml_trace_dense.h
+  bml_transpose_dense.h
   bml_types_dense.h)
 
 set(SOURCES-DENSE
@@ -21,7 +22,8 @@ set(SOURCES-DENSE
   bml_multiply_dense.c
   bml_scale_dense.c
   bml_threshold_dense.c
-  bml_trace_dense.c)
+  bml_trace_dense.c
+  bml_transpose_dense.c)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
 if(OPENMP_FOUND)
@@ -37,7 +39,8 @@ set(SOURCES-DENSE-TYPED
   bml_multiply_dense_typed.c
   bml_scale_dense_typed.c
   bml_threshold_dense_typed.c
-  bml_trace_dense_typed.c)
+  bml_trace_dense_typed.c
+  bml_transpose_dense_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-dense single_real "${SOURCES-DENSE-TYPED}")

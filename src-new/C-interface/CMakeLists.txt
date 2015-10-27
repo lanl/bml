@@ -16,6 +16,7 @@ set(HEADERS-C
   bml_scale.h
   bml_threshold.h
   bml_trace.h
+  bml_transpose.h
   bml_types.h
   bml_utilities.h)
 install(FILES ${HEADERS-C} DESTINATION include)
@@ -39,6 +40,7 @@ set(SOURCES-C
   bml_scale.c
   bml_threshold.c
   bml_trace.c
+  bml_transpose.c
   bml_utilities.c)
 add_library(bml-c OBJECT ${SOURCES-C})
 if(OPENMP_FOUND)
