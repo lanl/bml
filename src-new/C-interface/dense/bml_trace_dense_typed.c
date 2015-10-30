@@ -24,19 +24,14 @@ double TYPED_FUNC(
     bml_trace_dense) (
     const bml_matrix_dense_t * A)
 {
-    int N = A->N;
     REAL_T trace = 0.0;
     REAL_T *A_matrix = A->matrix;
 
 #pragma omp parallel for reduction(+:trace)
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < A->N; i++)
     {
-        trace += A_matrix[i + i * N];
+        trace += A_matrix[i + i * A->N];
     }
 
-#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
-    return (double) creal(trace);
-#else
-    return (double) trace;
-#endif
+    return (double) REAL_PART(trace);
 }

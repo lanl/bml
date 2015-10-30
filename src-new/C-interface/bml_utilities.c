@@ -93,7 +93,7 @@ bml_print_dense_matrix(
         }
         case single_complex:
         {
-            const complex *A_typed = A;
+            const float complex *A_typed = A;
             for (int i = i_l; i < i_u; i++)
             {
                 for (int j = j_l; j < j_u; j++)

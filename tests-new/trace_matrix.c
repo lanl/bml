@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define REL_TOL 1e-6
+
 int
 test_function(
     const int N,
@@ -27,24 +29,29 @@ test_function(
     double rel_diff;
 
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
-    traceA = bml_trace(A);
     B = bml_scale_new(scalar, A);
-    traceB = bml_trace(B);
     C = bml_scale_new(scalar, B);
+
+    traceA = bml_trace(A);
+    traceB = bml_trace(B);
     traceC = bml_trace(C);
 
     A_dense = bml_convert_to_dense(A);
     B_dense = bml_convert_to_dense(B);
     C_dense = bml_convert_to_dense(C);
+
     bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
     bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
     bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
 
-    printf("diff. traceA = %e\n", traceA - N);
-    printf("diff. traceB = %e\n", traceB - scalar * N);
-    printf("diff. traceC = %e\n", traceC - scalar * scalar * N);
+    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+           traceA - (double) N);
+    printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
+           traceB - scalar * N);
+    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+           scalar * scalar * N, traceC - scalar * scalar * N);
 
-    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > 1e-12)
+    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
     {
         LOG_ERROR
             ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
@@ -53,7 +60,7 @@ test_function(
     }
     if ((rel_diff =
          fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
-        1e-12)
+        REL_TOL)
     {
         LOG_ERROR
             ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
@@ -63,7 +70,7 @@ test_function(
     if ((rel_diff =
          fabs(traceC -
               (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
-        1e-12)
+        REL_TOL)
     {
         LOG_ERROR
             ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",

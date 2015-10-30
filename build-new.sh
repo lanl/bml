@@ -13,21 +13,18 @@ create() {
 configure() {
     cd "${BUILD_DIR}"
     ${CMAKE:=cmake} .. \
-          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Debug} \
-          -DCMAKE_C_COMPILER=${CC:=gcc} \
-          $([[ -n ${CMAKE_C_FLAGS} ]] \
-          && echo "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}") \
-          -DCMAKE_CXX_COMPILER=${CXX:=g++} \
-          $([[ -n ${CMAKE_CXX_FLAGS} ]] \
-          && echo "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}") \
-          -DCMAKE_Fortran_COMPILER=${FC:=gfortran} \
-          $([[ -n ${CMAKE_Fortran_FLAGS} ]] \
-          && echo "-DCMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS}") \
+          -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:=Debug}" \
+          -DCMAKE_C_COMPILER="${CC:=gcc}" \
+          $([[ -n ${CMAKE_C_FLAGS} ]] && echo "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}") \
+          -DCMAKE_CXX_COMPILER="${CXX:=g++}" \
+          $([[ -n ${CMAKE_CXX_FLAGS} ]] && echo "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}") \
+          -DCMAKE_Fortran_COMPILER="${FC:=gfortran}" \
+          $([[ -n ${CMAKE_Fortran_FLAGS} ]] && echo "-DCMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS}") \
           -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
-          -DBML_OPENMP=${BML_OPENMP:=yes} \
-          -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:=no} \
-          -DBML_TESTING=${BML_TESTING:=yes} \
-          -DBLAS_VENDOR=${BLAS_VENDOR:=} \
+          -DBML_OPENMP="${BML_OPENMP:=yes}" \
+          -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
+          -DBML_TESTING="${BML_TESTING:=yes}" \
+          -DBLAS_VENDOR="${BLAS_VENDOR:=}" \
           -DBML_NEW=yes | tee -a "${LOG_FILE}" || exit
     cd "${TOP_DIR}"
 }

@@ -19,7 +19,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
-set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -save-temps -std=c99)
+set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O2 -g -std=c99)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g -fcheck=all -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O2 -g -ffree-line-length-none)

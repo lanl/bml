@@ -10,26 +10,24 @@
  *
  * \ingroup trace_group_C
  *
- * \param A Matrix tocalculate trace for 
+ * \param A Matrix tocalculate trace for
  * \return  Trace of A
  */
 double
 bml_trace(
     const bml_matrix_t * A)
 {
-    double trace = 0.0;
-
     switch (bml_get_type(A))
     {
         case dense:
-            trace = bml_trace_dense(A);
+            return bml_trace_dense(A);
             break;
         case ellpack:
-            trace = bml_trace_ellpack(A);
+            return bml_trace_ellpack(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }
-    return trace;
+    return 0;
 }

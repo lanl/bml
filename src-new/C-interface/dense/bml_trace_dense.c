@@ -22,25 +22,23 @@ double
 bml_trace_dense(
     const bml_matrix_dense_t * A)
 {
-    double trace = 0.0;
-
     switch (A->matrix_precision)
     {
         case single_real:
-            trace = bml_trace_dense_single_real(A);
+            return bml_trace_dense_single_real(A);
             break;
         case double_real:
-            trace = bml_trace_dense_double_real(A);
+            return bml_trace_dense_double_real(A);
             break;
         case single_complex:
-            trace = bml_trace_dense_single_complex(A);
+            return bml_trace_dense_single_complex(A);
             break;
         case double_complex:
-            trace = bml_trace_dense_double_complex(A);
+            return bml_trace_dense_double_complex(A);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return trace;
+    return 0;
 }

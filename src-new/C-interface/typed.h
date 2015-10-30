@@ -6,24 +6,28 @@
 #define FUNC_SUFFIX single_real
 #define MATRIX_PRECISION single_real
 #define BLAS_PREFIX S
+#define REAL_PART(x) (x)
 #define is_above_threshold(x, t) fabsf(x) > (t)
 #elif defined(DOUBLE_REAL)
 #define REAL_T double
 #define FUNC_SUFFIX double_real
 #define MATRIX_PRECISION double_real
 #define BLAS_PREFIX D
+#define REAL_PART(x) (x)
 #define is_above_threshold(x, t) fabs(x) > (t)
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float complex
 #define FUNC_SUFFIX single_complex
 #define MATRIX_PRECISION single_complex
 #define BLAS_PREFIX C
+#define REAL_PART(x) crealf(x)
 #define is_above_threshold(x, t) cabsf(x) > cabsf(t)
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double complex
 #define FUNC_SUFFIX double_complex
 #define MATRIX_PRECISION double_complex
 #define BLAS_PREFIX Z
+#define REAL_PART(x) creal(x)
 #define is_above_threshold(x, t) cabs(x) > cabs(t)
 #else
 #error Unknown precision type
