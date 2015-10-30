@@ -14,6 +14,6 @@ bml_matrix_t *bml_scale_new(
 void bml_scale(
     const double scale_factor,
     const bml_matrix_t * A,
-    const bml_matrix_t * B);
+    bml_matrix_t * B);
 
 #endif

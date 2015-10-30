@@ -22,14 +22,14 @@
  *  \param A The matrix to be transposeed
  *  \return the transposeed A
  */
-bml_matrix_ellpack_t* TYPED_FUNC(
+bml_matrix_ellpack_t *TYPED_FUNC(
     bml_transpose_new_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
     int N = A->N;
     int M = A->M;
 
-    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
+    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
@@ -39,13 +39,13 @@ bml_matrix_ellpack_t* TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-    #pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
+#pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
             int trow = A_index[i * M + j];
-            #pragma omp critical
+#pragma omp critical
             {
                 int colcnt = B_nnz[trow];
                 B_index[trow * M + colcnt] = i;
@@ -76,14 +76,14 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-        for (int j = A_nnz[i]-1; j >= 0 ; j--)
+        for (int j = A_nnz[i] - 1; j >= 0; j--)
         {
-            if (A_index[i*M+j] > i)
+            if (A_index[i * M + j] > i)
             {
-                int ind = A_index[i*M+j];
+                int ind = A_index[i * M + j];
                 int exchangeDone = 0;
                 for (int k = 0; k < A_nnz[ind]; k++)
                 {
@@ -92,7 +92,7 @@ void TYPED_FUNC(
                     {
                         REAL_T tmp = A_value[i * M + j];
 
-                        #pragma omp critical
+#pragma omp critical
                         {
                             A_value[i * M + j] = A_value[ind * M + k];
                             A_value[ind * M + k] = tmp;
@@ -101,16 +101,16 @@ void TYPED_FUNC(
                         break;
                     }
                 }
-         
+
                 // If no match add to end of row
                 if (!exchangeDone)
                 {
                     int jind = A_nnz[ind];
 
-                    #pragma omp critical
+#pragma omp critical
                     {
                         A_index[ind * M + jind] = i;
-                        A_value[ind * M + jind] = A_value[i * M + j]; 
+                        A_value[ind * M + jind] = A_value[i * M + j];
                         A_nnz[ind]++;
                         A_nnz[i]--;
                     }

@@ -44,13 +44,14 @@ void TYPED_FUNC(
     REAL_T sbeta = (REAL_T) beta;
     REAL_T sthreshold = (REAL_T) threshold;
 
-    bml_matrix_ellpack_t * A2 = TYPED_FUNC(bml_zero_matrix_ellpack)(A->N, A->M);
+    bml_matrix_ellpack_t *A2 =
+        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M);
 
     if (A != NULL && A == B)
     {
         TYPED_FUNC(bml_multiply_x2_ellpack) (A, A2, sthreshold);
     }
-    else 
+    else
     {
         TYPED_FUNC(bml_multiply_AB_ellpack) (B, A, A2, sthreshold);
     }
@@ -76,8 +77,6 @@ void TYPED_FUNC(
     const bml_matrix_ellpack_t * X2,
     const double threshold)
 {
-    REAL_T sthreshold = (REAL_T) threshold;
-
     int hsize = X->N;
     int msize = X->M;
     int ix[hsize];
@@ -91,7 +90,7 @@ void TYPED_FUNC(
     memset(ix, 0, hsize * sizeof(int));
     memset(x, 0.0, hsize * sizeof(REAL_T));
 
-    #pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
+#pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
     for (int i = 0; i < hsize; i++)     // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
@@ -136,7 +135,7 @@ void TYPED_FUNC(
                 X2->index[i * msize + ll] = jp;
                 ll++;
             }
-            else if (is_above_threshold(xtmp, sthreshold))
+            else if (is_above_threshold(xtmp, threshold))
             {
                 X2_value[i * msize + ll] = xtmp;
                 X2->index[i * msize + ll] = jp;
@@ -157,8 +156,8 @@ void TYPED_FUNC(
  *  \ingroup multiply_group
  *
  *  \param A Matrix A
- *  \param B Matrix B 
- *  \param C Matrix C 
+ *  \param B Matrix B
+ *  \param C Matrix C
  *  \param threshold Used for sparse multiply
  */
 void TYPED_FUNC(
@@ -168,8 +167,6 @@ void TYPED_FUNC(
     const bml_matrix_ellpack_t * C,
     const double threshold)
 {
-    REAL_T sthreshold = (REAL_T) threshold;
-
     int hsize = A->N;
     int msize = A->M;
     int ix[hsize];
@@ -190,7 +187,7 @@ void TYPED_FUNC(
     memset(ix, 0, hsize * sizeof(int));
     memset(x, 0.0, hsize * sizeof(REAL_T));
 
-    #pragma omp parallel for firstprivate(ix,x)
+#pragma omp parallel for firstprivate(ix,x)
     for (int i = 0; i < hsize; i++)
     {
         int l = 0;
@@ -231,7 +228,7 @@ void TYPED_FUNC(
                 C_index[i * msize + ll] = jp;
                 ll++;
             }
-            else if (is_above_threshold(xtmp, sthreshold))
+            else if (is_above_threshold(xtmp, threshold))
             {
                 C_value[i * msize + ll] = xtmp;
                 C_index[i * msize + ll] = jp;

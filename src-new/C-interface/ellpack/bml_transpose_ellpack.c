@@ -15,8 +15,7 @@
  *  \return the transposeed A
  */
 bml_matrix_ellpack_t
-*bml_transpose_new_ellpack(
-    const bml_matrix_ellpack_t * A)
+    * bml_transpose_new_ellpack(const bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B = NULL;
 
@@ -48,7 +47,8 @@ bml_matrix_ellpack_t
  *  \param A The matrix to be transposeed
  *  \return the transposeed A
  */
-void bml_transpose_ellpack(
+void
+bml_transpose_ellpack(
     const bml_matrix_ellpack_t * A)
 {
 

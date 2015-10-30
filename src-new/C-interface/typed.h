@@ -7,7 +7,7 @@
 #define MATRIX_PRECISION single_real
 #define BLAS_PREFIX S
 #define REAL_PART(x) (x)
-#define is_above_threshold(x, t) fabsf(x) > (t)
+#define is_above_threshold(x, t) fabsf(x) > (float) (t)
 #elif defined(DOUBLE_REAL)
 #define REAL_T double
 #define FUNC_SUFFIX double_real
@@ -21,7 +21,7 @@
 #define MATRIX_PRECISION single_complex
 #define BLAS_PREFIX C
 #define REAL_PART(x) crealf(x)
-#define is_above_threshold(x, t) cabsf(x) > cabsf(t)
+#define is_above_threshold(x, t) cabsf(x) > cabsf((float) (t))
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double complex
 #define FUNC_SUFFIX double_complex

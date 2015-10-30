@@ -21,9 +21,9 @@ test_function(
     {
         A_dense[i] = rand() / (double) RAND_MAX;
     }
-    A = bml_convert_from_dense(matrix_type, matrix_precision, N, A_dense,
-                               0, M);
-    B_dense = bml_convert_to_dense(A);
+    A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense,
+                              0, M);
+    B_dense = bml_export_to_dense(A);
     for (int i = 0; i < N * N; i++)
     {
         if (fabs(A_dense[i] - B_dense[i]) > 1e-12)

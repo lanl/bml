@@ -21,32 +21,31 @@
  * \param A The dense matrix
  * \return The bml matrix
  */
-bml_matrix_ellpack_t *
-TYPED_FUNC(bml_convert_from_dense_ellpack)(
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_convert_from_dense_ellpack) (
     const int N,
     const void *A,
     const double threshold,
     const int M)
 {
-    bml_matrix_ellpack_t *A_bml =
-        TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
+    bml_matrix_ellpack_t *A_bml = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
 
     int *A_index = A_bml->index;
     int *nnz = A_bml->nnz;
 
-    REAL_T *dense_A = (REAL_T*) A;
+    REAL_T *dense_A = (REAL_T *) A;
     REAL_T *A_value = A_bml->value;
 
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            if (is_above_threshold(dense_A[j + i * N], (REAL_T) threshold))
+            if (is_above_threshold(dense_A[j + i * N], threshold))
             {
                 A_value[nnz[j] + i * M] = dense_A[j + i * N];
                 A_index[nnz[j] + i * M] = i;
                 nnz[j]++;
-             }
+            }
         }
     }
 
@@ -60,8 +59,8 @@ TYPED_FUNC(bml_convert_from_dense_ellpack)(
  * \param A The bml matrix
  * \return The dense matrix
  */
-void *
-TYPED_FUNC(bml_convert_to_dense_ellpack)(
+void *TYPED_FUNC(
+    bml_convert_to_dense_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
     int *A_index = A->index;
@@ -77,8 +76,7 @@ TYPED_FUNC(bml_convert_to_dense_ellpack)(
     {
         for (int j = 0; j < nnz[i]; j++)
         {
-            A_dense[A_index[j + i * M] + i * N] =
-                A_value[j + i * M];
+            A_dense[A_index[j + i * M] + i * N] = A_value[j + i * M];
         }
     }
     return A_dense;

@@ -26,26 +26,26 @@ bml_matrix_dense_t *bml_scale_dense_new_double_complex(
 void bml_scale_dense(
     const double scale_factor,
     const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+    bml_matrix_dense_t * B);
 
 void bml_scale_dense_single_real(
     const double scale_factor,
     const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+    bml_matrix_dense_t * B);
 
 void bml_scale_dense_double_real(
     const double scale_factor,
     const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+    bml_matrix_dense_t * B);
 
 void bml_scale_dense_single_complex(
     const double scale_factor,
     const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+    bml_matrix_dense_t * B);
 
 void bml_scale_dense_double_complex(
     const double scale_factor,
     const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B);
+    bml_matrix_dense_t * B);
 
 #endif

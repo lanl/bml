@@ -27,27 +27,31 @@ bml_convert_from_dense_ellpack(
     const double threshold,
     const int M)
 {
-    bml_matrix_ellpack_t *A_bml = NULL;
-
     switch (matrix_precision)
     {
         case single_real:
-            A_bml = bml_convert_from_dense_ellpack_single_real(N, A, threshold, M);
+            return bml_convert_from_dense_ellpack_single_real(N, A, threshold,
+                                                              M);
             break;
         case double_real:
-            A_bml = bml_convert_from_dense_ellpack_double_real(N, A, threshold, M);
+            return bml_convert_from_dense_ellpack_double_real(N, A, threshold,
+                                                              M);
             break;
         case single_complex:
-            A_bml = bml_convert_from_dense_ellpack_single_complex(N, A, threshold, M);
+            return bml_convert_from_dense_ellpack_single_complex(N, A,
+                                                                 threshold,
+                                                                 M);
             break;
         case double_complex:
-            A_bml = bml_convert_from_dense_ellpack_double_complex(N, A, threshold, M);
+            return bml_convert_from_dense_ellpack_double_complex(N, A,
+                                                                 threshold,
+                                                                 M);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return A_bml;
+    return NULL;
 }
 
 /** Convert a bml matrix into a dense matrix.
@@ -61,26 +65,19 @@ void *
 bml_convert_to_dense_ellpack(
     const bml_matrix_ellpack_t * A)
 {
-    float *A_float = NULL;
-    double *A_double = NULL;
-
     switch (A->matrix_precision)
     {
         case single_real:
-            A_float = bml_convert_to_dense_ellpack_single_real(A);
-            return A_float;
+            return bml_convert_to_dense_ellpack_single_real(A);
             break;
         case double_real:
-            A_double = bml_convert_to_dense_ellpack_double_real(A);
-            return A_double;
+            return bml_convert_to_dense_ellpack_double_real(A);
             break;
         case single_complex:
-            A_float = bml_convert_to_dense_ellpack_single_complex(A);
-            return A_float;
+            return bml_convert_to_dense_ellpack_single_complex(A);
             break;
         case double_complex:
-            A_double = bml_convert_to_dense_ellpack_double_complex(A);
-            return A_double;
+            return bml_convert_to_dense_ellpack_double_complex(A);
             break;
         default:
             LOG_ERROR("unknown precision\n");

@@ -23,15 +23,15 @@
  *  \param threshold Threshold value
  *  \return the thresholded A
  */
-bml_matrix_ellpack_t* TYPED_FUNC(
+bml_matrix_ellpack_t *TYPED_FUNC(
     bml_threshold_new_ellpack) (
-    const bml_matrix_ellpack_t * A, const double threshold)
+    const bml_matrix_ellpack_t * A,
+    const double threshold)
 {
-    REAL_T athreshold = (REAL_T) threshold;
     int N = A->N;
     int M = A->M;
 
-    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_zero_matrix_ellpack)(N, M);
+    bml_matrix_ellpack_t *B = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
@@ -41,12 +41,12 @@ bml_matrix_ellpack_t* TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (is_above_threshold(A_value[j + i * M], athreshold))
+            if (is_above_threshold(A_value[j + i * M], threshold))
             {
                 B_value[B_nnz[i] + i * M] = A_value[j + i * M];
                 B_index[B_nnz[i] + i * M] = A_index[j + i * M];
@@ -68,9 +68,9 @@ bml_matrix_ellpack_t* TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_ellpack) (
-    const bml_matrix_ellpack_t * A, const double threshold)
+    const bml_matrix_ellpack_t * A,
+    const double threshold)
 {
-    REAL_T athreshold = (REAL_T) threshold;
     int N = A->N;
     int M = A->M;
 
@@ -79,13 +79,13 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
 
     int rlen;
-    #pragma omp parallel for private(rlen)
+#pragma omp parallel for private(rlen)
     for (int i = 0; i < N; i++)
     {
         rlen = 0;
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (is_above_threshold(A_value[j + i * M], athreshold))
+            if (is_above_threshold(A_value[j + i * M], threshold))
             {
                 if (rlen < j)
                 {
@@ -97,5 +97,4 @@ void TYPED_FUNC(
         }
         A_nnz[i] = rlen;
     }
-
 }

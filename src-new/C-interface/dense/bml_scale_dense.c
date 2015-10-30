@@ -59,7 +59,7 @@ void
 bml_scale_dense(
     const double scale_factor,
     const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B)
+    bml_matrix_dense_t * B)
 {
     assert(A != NULL);
 

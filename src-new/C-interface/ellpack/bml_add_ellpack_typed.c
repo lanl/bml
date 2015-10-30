@@ -37,7 +37,6 @@ void TYPED_FUNC(
 {
     REAL_T salpha = (REAL_T) alpha;
     REAL_T sbeta = (REAL_T) beta;
-    REAL_T sthreshold = (REAL_T) threshold;
 
     int hsize = A->N;
     int msize = A->M;
@@ -85,7 +84,7 @@ void TYPED_FUNC(
         for (int jp = 0; jp < l; jp++)
         {
             REAL_T xTmp = x[A->index[i * msize + jp]];
-            if (is_above_threshold(xTmp, sthreshold)) // THIS THRESHOLDING COULD BE IGNORED!?
+            if (is_above_threshold(xTmp, threshold))    // THIS THRESHOLDING COULD BE IGNORED!?
             {
                 A_value[i * msize + ll] = xTmp;
                 A->index[i * msize + ll] = A->index[i * msize + jp];

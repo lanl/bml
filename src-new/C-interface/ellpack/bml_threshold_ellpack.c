@@ -16,8 +16,8 @@
  *  \return the thresholded A
  */
 bml_matrix_ellpack_t
-*bml_threshold_new_ellpack(
-    const bml_matrix_ellpack_t * A, const double threshold)
+    * bml_threshold_new_ellpack(const bml_matrix_ellpack_t * A,
+                                const double threshold)
 {
     bml_matrix_ellpack_t *B = NULL;
 
@@ -50,8 +50,10 @@ bml_matrix_ellpack_t
  *  \param threshold Threshold value
  *  \return the thresholded A
  */
-void bml_threshold_ellpack(
-    const bml_matrix_ellpack_t * A, const double threshold)
+void
+bml_threshold_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const double threshold)
 {
 
     switch (A->matrix_precision)

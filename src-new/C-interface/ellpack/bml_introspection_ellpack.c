@@ -7,7 +7,8 @@
  * \param A The matrix.
  * \return The matrix precision.
  */
-bml_matrix_precision_t bml_get_precision_ellpack(
+bml_matrix_precision_t
+bml_get_precision_ellpack(
     const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
@@ -44,7 +45,8 @@ bml_get_N_ellpack(
  * \param A The matrix.
  * \return The matrix parameter M.
  */
-int bml_get_M_ellpack(
+int
+bml_get_M_ellpack(
     const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
