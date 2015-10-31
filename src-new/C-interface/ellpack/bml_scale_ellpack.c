@@ -29,6 +29,12 @@ bml_scale_ellpack_new(
         case double_real:
             B = bml_scale_ellpack_new_double_real(scale_factor, A);
             break;
+        case single_complex:
+            B = bml_scale_ellpack_new_single_complex(scale_factor, A);
+            break;
+        case double_complex:
+            B = bml_scale_ellpack_new_double_complex(scale_factor, A);
+            break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -56,6 +62,12 @@ bml_scale_ellpack(
             break;
         case double_real:
             bml_scale_ellpack_double_real(scale_factor, A, B);
+            break;
+        case single_complex:
+            bml_scale_ellpack_single_complex(scale_factor, A, B);
+            break;
+        case double_complex:
+            bml_scale_ellpack_double_complex(scale_factor, A, B);
             break;
         default:
             LOG_ERROR("unknown precision\n");

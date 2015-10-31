@@ -28,7 +28,9 @@ test_function(
     {
         if (fabs(A_dense[i] - B_dense[i]) > 1e-12)
         {
+            LOG_DEBUG("input matrix:\n");
             bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+            LOG_DEBUG("output matrix:\n");
             bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
             LOG_ERROR("matrix element mismatch\n");
         }
