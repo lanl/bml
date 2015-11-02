@@ -23,6 +23,7 @@ contains
 
     double precision, parameter :: ALPHA = 1.2
     double precision, parameter :: BETA = 0.8
+    double precision, parameter :: THRESHOLD = 0.0
 
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b

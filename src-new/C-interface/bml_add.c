@@ -8,7 +8,7 @@
 
 /** Matrix addition.
  *
- * \f$ A = \alpha A + \beta B \f$
+ * \f$ A \leftarrow \alpha A + \beta B \f$
  *
  * \ingroup add_group_C
  *
@@ -42,7 +42,7 @@ bml_add(
 
 /** Matrix addition.
  *
- * \f$ A = A + \beta \mathrm{Id} \f$
+ * \f$ A \leftarrow A + \beta \mathrm{Id} \f$
  *
  * \ingroup add_group_C
  *

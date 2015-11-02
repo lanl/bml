@@ -9,10 +9,13 @@ module bml_interface_m
   !! enum in bml_types.h.
   integer, parameter :: bml_matrix_type_uninitialized_enum_id = 0
   integer, parameter :: bml_matrix_type_dense_enum_id = 1
-  integer, parameter :: bml_matrix_precision_single_real_enum_id = 0
-  integer, parameter :: bml_matrix_precision_double_real_enum_id = 1
-  integer, parameter :: bml_matrix_precision_single_complex_enum_id = 2
-  integer, parameter :: bml_matrix_precision_double_complex_enum_id = 3
+  integer, parameter :: bml_matrix_type_ellpack_enum_id = 2
+
+  integer, parameter :: bml_matrix_precision_uninitialized_id = 0
+  integer, parameter :: bml_matrix_precision_single_real_enum_id = 1
+  integer, parameter :: bml_matrix_precision_double_real_enum_id = 2
+  integer, parameter :: bml_matrix_precision_single_complex_enum_id = 3
+  integer, parameter :: bml_matrix_precision_double_complex_enum_id = 4
 
   public :: get_enum_id
 
@@ -42,6 +45,8 @@ contains
        id = bml_matrix_precision_double_complex_enum_id
     case(BML_MATRIX_DENSE)
        id = bml_matrix_type_dense_enum_id
+    case(BML_MATRIX_ELLPACK)
+       id = bml_matrix_type_ellpack_enum_id
     case default
        print *, "unknown type string "//trim(type_string)
        error stop

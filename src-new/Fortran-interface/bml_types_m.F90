@@ -22,15 +22,15 @@ module bml_types_m
   character(len=*), parameter :: BML_MATRIX_ELLPACK = "ellpack"
 
   !> The single precision identifier.
-  character(len=*), parameter :: BML_PRECISION_SINGLE_REAL = "single-real"
+  character(len=*), parameter :: BML_PRECISION_SINGLE_REAL = "single_real"
 
   !> The double-precision identifier.
-  character(len=*), parameter :: BML_PRECISION_DOUBLE_REAL = "double-real"
+  character(len=*), parameter :: BML_PRECISION_DOUBLE_REAL = "double_real"
 
   !> The single precision identifier.
-  character(len=*), parameter :: BML_PRECISION_SINGLE_COMPLEX = "single-complex"
+  character(len=*), parameter :: BML_PRECISION_SINGLE_COMPLEX = "single_complex"
 
   !> The double-precision identifier.
-  character(len=*), parameter :: BML_PRECISION_DOUBLE_COMPLEX = "double-complex"
+  character(len=*), parameter :: BML_PRECISION_DOUBLE_COMPLEX = "double_complex"
 
 end module bml_types_m

@@ -6,7 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
 #define REL_TOL 1e-6
+#else
+#define REL_TOL 1e-12
+#endif
 
 int
 test_function(
@@ -27,6 +31,8 @@ test_function(
     double scalar = 0.8;
 
     double rel_diff;
+
+    LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
     B = bml_scale_new(scalar, A);
