@@ -3,7 +3,6 @@
 
 #include "bml_types_dense.h"
 
-// Matrix addition - A = alpha * A + beta * B
 void bml_add_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,

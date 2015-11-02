@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_add.h"
@@ -17,15 +18,15 @@
 
 /** Matrix addition.
  *
- * A = alpha * A + beta * B
+ * \f$ A = \alpha A + \beta B \f$
  *
- *  \ingroup add_group
+ * \ingroup add_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param alpha Scalar factor multiplied by A
- *  \param beta Scalar factor multiplied by B
- *  \param threshold Threshold for matrix addition
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param alpha Scalar factor multiplied by A
+ * \param beta Scalar factor multiplied by B
+ * \param threshold Threshold for matrix addition
  */
 void TYPED_FUNC(
     bml_add_ellpack) (
@@ -35,63 +36,57 @@ void TYPED_FUNC(
     const double beta,
     const double threshold)
 {
-    REAL_T salpha = (REAL_T) alpha;
-    REAL_T sbeta = (REAL_T) beta;
-
-    int hsize = A->N;
-    int msize = A->M;
-    int ix[hsize];
-
-    REAL_T x[hsize];
+    int ix[A->N];
+    REAL_T x[A->N];
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
 
-    memset(ix, 0, hsize * sizeof(int));
-    memset(x, 0.0, hsize * sizeof(REAL_T));
+    memset(ix, 0, A->N * sizeof(int));
+    memset(x, 0.0, A->N * sizeof(REAL_T));
 
 #pragma omp parallel for firstprivate(x,ix)
-    for (int i = 0; i < hsize; i++)
+    for (int i = 0; i < A->N; i++)
     {
         int l = 0;
         for (int jp = 0; jp < A->nnz[i]; jp++)
         {
-            int k = A->index[i * msize + jp];
+            int k = A->index[ROWMAJOR(i, jp, A->M)];
             if (ix[k] == 0)
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A->index[i * msize + l] = k;
+                A->index[ROWMAJOR(i, l, A->M)] = k;
                 l++;
             }
-            x[k] = x[k] + salpha * A_value[i * msize + jp];
+            x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, A->M)];
         }
 
         for (int jp = 0; jp < B->nnz[i]; jp++)
         {
-            int k = B->index[i * msize + jp];
+            int k = B->index[ROWMAJOR(i, jp, A->M)];
             if (ix[k] == 0)
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A->index[i * msize + l] = k;
+                A->index[ROWMAJOR(i, l, A->M)] = k;
                 l++;
             }
-            x[k] = x[k] + sbeta * B_value[i * msize + jp];
+            x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, A->M)];
         }
         A->nnz[i] = l;
 
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
         {
-            REAL_T xTmp = x[A->index[i * msize + jp]];
+            REAL_T xTmp = x[A->index[ROWMAJOR(i, jp, A->M)]];
             if (is_above_threshold(xTmp, threshold))    // THIS THRESHOLDING COULD BE IGNORED!?
             {
-                A_value[i * msize + ll] = xTmp;
-                A->index[i * msize + ll] = A->index[i * msize + jp];
+                A_value[ROWMAJOR(i, ll, A->M)] = xTmp;
+                A->index[ROWMAJOR(i, ll, A->M)] = A->index[ROWMAJOR(i, jp, A->M)];
                 ll++;
             }
-            x[A->index[i * msize + jp]] = 0.0;
-            ix[A->index[i * msize + jp]] = 0;
+            x[A->index[ROWMAJOR(i, jp, A->M)]] = 0.0;
+            ix[A->index[ROWMAJOR(i, jp, A->M)]] = 0;
         }
         A->nnz[i] = ll;
     }

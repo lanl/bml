@@ -9,15 +9,15 @@
 
 /** Matrix addition.
  *
- * A = alpha * A + beta * B
+ * \f$ A = \alpha A + \beta B \f$
  *
- *  \ingroup add_group
+ * \ingroup add_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param alpha Scalar factor multiplied by A
- *  \param beta Scalar factor multiplied by B
- *  \param threshold Threshold for matrix addition
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param alpha Scalar factor multiplied by A
+ * \param beta Scalar factor multiplied by B
+ * \param threshold Threshold for matrix addition
  */
 void
 bml_add_ellpack(
@@ -49,13 +49,13 @@ bml_add_ellpack(
 
 /** Matrix addition.
  *
- *  A = A + beta * I
+ * \f$ A = A + \beta \mathrm{Id} \f$
  *
- *  \ingroup add_group
+ * \ingroup add_group
  *
- *  \param A Matrix A
- *  \param beta Scalar factor multiplied by A
- *  \param threshold Threshold for matrix addition
+ * \param A Matrix A
+ * \param beta Scalar factor multiplied by A
+ * \param threshold Threshold for matrix addition
  */
 void
 bml_add_identity_ellpack(
