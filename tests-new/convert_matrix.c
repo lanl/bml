@@ -30,7 +30,7 @@ test_function(
     {
         if (fabs(A_dense[i] - B_dense[i]) > 1e-12)
         {
-            LOG_ERROR("matrix element mismatch A[%d] = %e, B[%d] = %e\n", 
+            LOG_ERROR("matrix element mismatch A[%d] = %e, B[%d] = %e\n",
                 i, A_dense[i], i, B_dense[i]);
         }
     }

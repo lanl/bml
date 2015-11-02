@@ -1,9 +1,10 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
-#include "bml_transpose.h"
-#include "bml_types.h"
 #include "bml_allocate_dense.h"
+#include "bml_transpose.h"
 #include "bml_transpose_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -37,7 +38,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            B_matrix[i * N + j] = A_matrix[j * N + i];
+            B_matrix[ROWMAJOR(i, j, N)] = A_matrix[ROWMAJOR(j, i, N)];
         }
     }
     return B;
@@ -66,9 +67,9 @@ void TYPED_FUNC(
         {
             if (i != j)
             {
-                tmp = A_matrix[i * N + j];
-                A_matrix[i * N + j] = A_matrix[j * N + i];
-                A_matrix[j * N + i] = tmp;
+                tmp = A_matrix[ROWMAJOR(i, j, N)];
+                A_matrix[ROWMAJOR(i, j, N)] = A_matrix[ROWMAJOR(j, i, N)];
+                A_matrix[ROWMAJOR(j, i, N)] = tmp;
             }
         }
     }
