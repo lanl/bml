@@ -1,7 +1,8 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_trace.h"
-#include "bml_types.h"
 #include "bml_trace_ellpack.h"
+#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
@@ -23,22 +24,18 @@ double TYPED_FUNC(
     bml_trace_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
-    double trace = 0.0;
-
+    REAL_T trace = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-    int N = A->N;
-    int M = A->M;
-
 #pragma omp parallel for reduction(+:trace)
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < A->N; i++)
     {
         for (int j = 0; j < A->nnz[i]; j++)
         {
-            if (A->index[j + i * M] == i)
-                trace += A_value[j + i * M];
+            if (A->index[ROWMAJOR(i, j, A->M)] == i)
+                trace += A_value[ROWMAJOR(i, j, A->M)];
         }
     }
 
-    return trace;
+    return (double) REAL_PART(trace);
 }

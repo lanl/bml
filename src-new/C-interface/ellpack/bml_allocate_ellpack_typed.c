@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
@@ -34,15 +35,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->M = M;
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
-
-    // No values
-    for (int i = 0; i < N; i++)
-    {
-        A->nnz[i] = 0;
-    }
-
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
-
     return A;
 }
 
@@ -77,13 +70,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         for (int j = 0; j < M; j++)
         {
             REAL_T rvalue = rand() / (REAL_T) RAND_MAX;
-            A_value[i * M + jind] = rvalue;
-            A_index[i * M + jind] = j;
+            A_value[ROWMAJOR(i, jind, M)] = rvalue;
+            A_index[ROWMAJOR(i, jind, M)] = j;
             jind++;
         }
         A_nnz[i] = jind;
     }
-
     return A;
 }
 
@@ -118,6 +110,5 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         A_index[i * M] = i;
         A_nnz[i] = 1;
     }
-
     return A;
 }

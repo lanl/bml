@@ -9,14 +9,14 @@
 
 /** Matrix addition.
  *
- * A = alpha * A + beta * B
+ * \f$ A = \alpha A + \beta B \f$
  *
- *  \ingroup add_group
+ * \ingroup add_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param alpha Scalar factor multiplied by A
- *  \param beta Scalar factor multiplied by B
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param alpha Scalar factor multiplied by A
+ * \param beta Scalar factor multiplied by B
  */
 void
 bml_add_dense(
@@ -47,7 +47,7 @@ bml_add_dense(
 
 /** Matrix addition.
  *
- * A = A + beta * I
+ * \f$ A = A + \beta \mathrm{Id} \f$
  *
  *  \ingroup add_group
  *

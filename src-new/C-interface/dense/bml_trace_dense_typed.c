@@ -1,8 +1,8 @@
-#include "../typed.h"
 #include "../blas.h"
+#include "../typed.h"
 #include "bml_trace.h"
-#include "bml_types.h"
 #include "bml_trace_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>

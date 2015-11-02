@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
@@ -41,10 +42,10 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            if (is_above_threshold(dense_A[j + i * N], athreshold))
+            if (is_above_threshold(dense_A[ROWMAJOR(i, j, N)], athreshold))
             {
-                A_value[nnz[i] + i * M] = dense_A[j + i * N];
-                A_index[nnz[i] + i * M] = j;
+                A_value[ROWMAJOR(i, nnz[i], M)] = dense_A[ROWMAJOR(i, j, N)];
+                A_index[ROWMAJOR(i, nnz[i], M)] = j;
                 nnz[i]++;
             }
         }
@@ -77,7 +78,8 @@ void *TYPED_FUNC(
     {
         for (int j = 0; j < nnz[i]; j++)
         {
-            A_dense[A_index[j + i * M] + i * N] = A_value[j + i * M];
+            A_dense[ROWMAJOR(i, A_index[ROWMAJOR(i, j, M)], N)] =
+                A_value[ROWMAJOR(i, j, M)];
         }
     }
     return A_dense;
