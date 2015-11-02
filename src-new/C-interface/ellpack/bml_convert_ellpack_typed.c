@@ -33,6 +33,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A_bml->index;
     int *nnz = A_bml->nnz;
 
+    REAL_T athreshold = (REAL_T) threshold;
     REAL_T *dense_A = (REAL_T *) A;
     REAL_T *A_value = A_bml->value;
 
@@ -40,11 +41,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            if (is_above_threshold(dense_A[j + i * N], threshold))
+            if (is_above_threshold(dense_A[j + i * N], athreshold))
             {
-                A_value[nnz[j] + i * M] = dense_A[j + i * N];
-                A_index[nnz[j] + i * M] = i;
-                nnz[j]++;
+                A_value[nnz[i] + i * M] = dense_A[j + i * N];
+                A_index[nnz[i] + i * M] = j;
+                nnz[i]++;
             }
         }
     }

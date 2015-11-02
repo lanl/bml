@@ -24,13 +24,14 @@ test_function(
     A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense,
                               0, M);
     B_dense = bml_export_to_dense(A);
+    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
     for (int i = 0; i < N * N; i++)
     {
         if (fabs(A_dense[i] - B_dense[i]) > 1e-12)
         {
-            bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-            bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
-            LOG_ERROR("matrix element mismatch\n");
+            LOG_ERROR("matrix element mismatch A[%d] = %e, B[%d] = %e\n", 
+                i, A_dense[i], i, B_dense[i]);
         }
     }
     bml_free_memory(A_dense);
