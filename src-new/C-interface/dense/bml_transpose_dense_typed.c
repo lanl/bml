@@ -26,16 +26,18 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_transpose_new_dense) (
     const bml_matrix_dense_t * A)
 {
-    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense) (A->N);
+    int N = A->N;
+
+    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense) (N);
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-#pragma omp parallel for default(none) shared(A->N, A_matrix, B_matrix)
-    for (int i = 0; i < A->N; i++)
+    #pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
+    for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < A->N; j++)
+        for (int j = 0; j < N; j++)
         {
-            B_matrix[i * A->N + j] = A_matrix[j * A->N + i];
+            B_matrix[i * N + j] = A_matrix[j * N + i];
         }
     }
     return B;
@@ -52,19 +54,21 @@ void TYPED_FUNC(
     bml_transpose_dense) (
     const bml_matrix_dense_t * A)
 {
+    int N = A->N;
+
     REAL_T *A_matrix = A->matrix;
     REAL_T tmp;
 
-#pragma omp parallel for default(none) private(tmp) shared(A->N, A_matrix)
-    for (int i = 0; i < A->N - 1; i++)
+    #pragma omp parallel for default(none) private(tmp) shared(N, A_matrix)
+    for (int i = 0; i < N - 1; i++)
     {
-        for (int j = i + 1; j < A->N; j++)
+        for (int j = i + 1; j < N; j++)
         {
             if (i != j)
             {
-                tmp = A_matrix[i * A->N + j];
-                A_matrix[i * A->N + j] = A_matrix[j * A->N + i];
-                A_matrix[j * A->N + i] = tmp;
+                tmp = A_matrix[i * N + j];
+                A_matrix[i * N + j] = A_matrix[j * N + i];
+                A_matrix[j * N + i] = tmp;
             }
         }
     }
