@@ -1,6 +1,27 @@
 !> Matrix multiplication.
 module bml_multiply_m
+
   implicit none
+
+  private
+
+  interface
+
+     subroutine bml_multiply_C(a, b, c, alpha, beta, threshold) &
+          bind(C, name="bml_multiply")
+       use, intrinsic :: iso_C_binding
+       type(C_PTR), value, intent(in) :: a
+       type(C_PTR), value, intent(in) :: b
+       type(C_PTR), value, intent(in) :: c
+       real(C_DOUBLE), value, intent(in) :: alpha
+       real(C_DOUBLE), value, intent(in) :: beta
+       real(C_DOUBLE), value, intent(in) :: threshold
+     end subroutine bml_multiply_C
+
+  end interface
+
+  public :: bml_multiply
+
 contains
 
   !> Multiply two matrices.
@@ -25,6 +46,8 @@ contains
     type(bml_matrix_t), intent(inout) :: c
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
+
+    call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha, beta, 0.0d0)
 
   end subroutine bml_multiply
 

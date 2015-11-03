@@ -31,8 +31,9 @@ contains
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, b)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, c)
 
-    call bml_multiply(a, b, c)
+    call bml_multiply(a, b, c, 1.0d0, 1.0d0)
 
     test_result = .true.
 

@@ -21,6 +21,12 @@ contains
     integer, intent(in) :: n, m
     logical :: test_result
 
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
+    double precision :: rel_tol = 1e-6
+#else
+    double precision :: rel_tol = 1d-12
+#endif
+
     type(bml_matrix_t) :: a
 
     REAL_TYPE, allocatable :: a_dense(:, :)
@@ -39,7 +45,7 @@ contains
        tr_reference = tr_reference+a_dense(i, i)
     end do
 
-    if(abs(tr_a-tr_reference) > 1e-12) then
+    if(abs((tr_a - tr_reference)/tr_reference) > rel_tol) then
        test_result = .false.
        print *, "trace incorrect"
     else
