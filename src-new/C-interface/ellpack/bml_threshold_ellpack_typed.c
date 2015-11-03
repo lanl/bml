@@ -41,7 +41,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
@@ -79,7 +79,7 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
 
     int rlen;
-#pragma omp parallel for private(rlen)
+    #pragma omp parallel for private(rlen)
     for (int i = 0; i < N; i++)
     {
         rlen = 0;

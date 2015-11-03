@@ -90,7 +90,7 @@ void TYPED_FUNC(
     memset(ix, 0, hsize * sizeof(int));
     memset(x, 0.0, hsize * sizeof(REAL_T));
 
-#pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
+    #pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
     for (int i = 0; i < hsize; i++)     // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
@@ -187,7 +187,7 @@ void TYPED_FUNC(
     memset(ix, 0, hsize * sizeof(int));
     memset(x, 0.0, hsize * sizeof(REAL_T));
 
-#pragma omp parallel for firstprivate(ix,x)
+    #pragma omp parallel for firstprivate(ix,x)
     for (int i = 0; i < hsize; i++)
     {
         int l = 0;

@@ -44,7 +44,7 @@ void TYPED_FUNC(
     memset(ix, 0, A->N * sizeof(int));
     memset(x, 0.0, A->N * sizeof(REAL_T));
 
-#pragma omp parallel for firstprivate(x,ix)
+    #pragma omp parallel for firstprivate(x,ix)
     for (int i = 0; i < A->N; i++)
     {
         int l = 0;

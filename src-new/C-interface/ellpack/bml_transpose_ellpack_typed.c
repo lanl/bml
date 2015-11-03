@@ -39,13 +39,13 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-#pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
+    #pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
             int trow = A_index[i * M + j];
-#pragma omp critical
+            #pragma omp critical
             {
                 int colcnt = B_nnz[trow];
                 B_index[trow * M + colcnt] = i;
@@ -76,7 +76,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         for (int j = A_nnz[i] - 1; j >= 0; j--)
@@ -92,7 +92,7 @@ void TYPED_FUNC(
                     {
                         REAL_T tmp = A_value[i * M + j];
 
-#pragma omp critical
+                        #pragma omp critical
                         {
                             A_value[i * M + j] = A_value[ind * M + k];
                             A_value[ind * M + k] = tmp;
@@ -107,7 +107,7 @@ void TYPED_FUNC(
                 {
                     int jind = A_nnz[ind];
 
-#pragma omp critical
+                    #pragma omp critical
                     {
                         A_index[ind * M + jind] = i;
                         A_value[ind * M + jind] = A_value[i * M + j];

@@ -27,7 +27,7 @@ double TYPED_FUNC(
     REAL_T trace = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for reduction(+:trace)
+    #pragma omp parallel for reduction(+:trace)
     for (int i = 0; i < A->N; i++)
     {
         for (int j = 0; j < A->nnz[i]; j++)
