@@ -29,6 +29,20 @@ contains
     test_result = .true.
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_convert_to_dense(a, a_dense)
+    if(lbound(a_dense, 1) /= 1 .or. lbound(a_dense, 2) /= 1) then
+       print *, "incorrect lbound"
+       test_result = .false.
+       return
+    end if
+    if(ubound(a_dense, 1) /= 1 .or. ubound(a_dense, 2) /= 1) then
+       print *, "incorrect ubound"
+       test_result = .false.
+       return
+    end if
+    call bml_print_matrix("A", a_dense, 1, n, 1, n)
+    deallocate(a_dense)
+    call bml_deallocate(a)
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_convert_to_dense(a, a_dense)
     call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
