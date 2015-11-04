@@ -39,10 +39,20 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
+    // First move diagonal elements over
     #pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
     for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < A_nnz[i]; j++)
+        B_index[i * M] = i;
+        B_value[i * M] = A_value[i * M]; 
+        B_nnz[i] = 1;
+    }
+
+    // Transpose off-diagonal elements
+    #pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 1; j < A_nnz[i]; j++)
         {
             int trow = A_index[i * M + j];
             #pragma omp critical
@@ -76,10 +86,12 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+    // Transpose off-diagonal elements
+    // No need to move diagonal elements in first column
     #pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-        for (int j = A_nnz[i] - 1; j >= 0; j--)
+        for (int j = A_nnz[i] - 1; j > 0; j--)
         {
             if (A_index[i * M + j] > i)
             {
