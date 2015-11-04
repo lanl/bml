@@ -39,13 +39,22 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     for (int i = 0; i < N; i++)
     {
+        nnz[i] = 1;
         for (int j = 0; j < N; j++)
         {
             if (is_above_threshold(dense_A[ROWMAJOR(i, j, N)], threshold))
             {
-                A_value[ROWMAJOR(i, nnz[i], M)] = dense_A[ROWMAJOR(i, j, N)];
-                A_index[ROWMAJOR(i, nnz[i], M)] = j;
-                nnz[i]++;
+                if (i == j)
+                {
+                    A_value[ROWMAJOR(i, 0, M)] = dense_A[ROWMAJOR(i, j, N)];
+                    A_index[ROWMAJOR(i, 0, M)] = j;
+                }
+                else
+                {
+                    A_value[ROWMAJOR(i, nnz[i], M)] = dense_A[ROWMAJOR(i, j, N)];
+                    A_index[ROWMAJOR(i, nnz[i], M)] = j;
+                    nnz[i]++;
+                }
             }
         }
     }
