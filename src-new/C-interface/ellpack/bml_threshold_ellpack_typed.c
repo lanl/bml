@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_threshold.h"
@@ -46,10 +47,10 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (is_above_threshold(A_value[j + i * M], threshold))
+            if (is_above_threshold(A_value[ROWMAJOR(i, j, M)], threshold))
             {
-                B_value[B_nnz[i] + i * M] = A_value[j + i * M];
-                B_index[B_nnz[i] + i * M] = A_index[j + i * M];
+                B_value[ROWMAJOR(i, B_nnz[i], M)] = A_value[ROWMAJOR(i, j, M)];
+                B_index[ROWMAJOR(i, B_nnz[i], M)] = A_index[ROWMAJOR(i, j, M)];
                 B_nnz[i]++;
             }
         }
@@ -85,12 +86,12 @@ void TYPED_FUNC(
         rlen = 0;
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (is_above_threshold(A_value[j + i * M], threshold))
+            if (is_above_threshold(A_value[ROWMAJOR(i, j, M)], threshold))
             {
                 if (rlen < j)
                 {
-                    A_value[rlen + i * M] = A_value[j + i * M];
-                    A_index[rlen + i * M] = A_index[j + i * M];
+                    A_value[ROWMAJOR(i, rlen, M)] = A_value[ROWMAJOR(i, j, M)];
+                    A_index[ROWMAJOR(i, rlen, M)] = A_index[ROWMAJOR(i, j, M)];
                 }
                 rlen++;
             }
