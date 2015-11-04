@@ -32,11 +32,15 @@ contains
     call bml_convert_to_dense(a, a_dense)
     if(lbound(a_dense, 1) /= 1 .or. lbound(a_dense, 2) /= 1) then
        print *, "incorrect lbound"
+       print *, "lbound(a_dense, 1) = ", lbound(a_dense, 1)
+       print *, "lbound(a_dense, 2) = ", lbound(a_dense, 2)
        test_result = .false.
        return
     end if
-    if(ubound(a_dense, 1) /= 1 .or. ubound(a_dense, 2) /= 1) then
+    if(ubound(a_dense, 1) /= n .or. ubound(a_dense, 2) /= n) then
        print *, "incorrect ubound"
+       print *, "ubound(a_dense, 1) = ", ubound(a_dense, 1)
+       print *, "ubound(a_dense, 2) = ", ubound(a_dense, 2)
        test_result = .false.
        return
     end if
