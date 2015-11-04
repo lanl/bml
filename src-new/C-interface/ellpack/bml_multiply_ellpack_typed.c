@@ -123,17 +123,17 @@ void TYPED_FUNC(
             exit(-1);
         }
 
-        int ll = 0;
+        int ll = 1;
         for (int j = 0; j < l; j++)
         {
             int jp = X2->index[i * msize + j];
             REAL_T xtmp = x[jp];
+            // The diagonal elements are stored in the first column
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;
-                X2_value[i * msize + ll] = xtmp;
-                X2->index[i * msize + ll] = jp;
-                ll++;
+                X2_value[i * msize] = xtmp;
+                X2->index[i * msize] = jp;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
@@ -217,16 +217,16 @@ void TYPED_FUNC(
             exit(-1);
         }
 
-        int ll = 0;
+        int ll = 1;
         for (int j = 0; j < l; j++)
         {
             int jp = C_index[i * msize + j];
             REAL_T xtmp = x[jp];
+            // Diagonal elements are saved in first column
             if (jp == i)
             {
-                C_value[i * msize + ll] = xtmp;
-                C_index[i * msize + ll] = jp;
-                ll++;
+                C_value[i * msize] = xtmp;
+                C_index[i * msize] = jp;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
