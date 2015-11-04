@@ -30,11 +30,7 @@ double TYPED_FUNC(
     #pragma omp parallel for reduction(+:trace)
     for (int i = 0; i < A->N; i++)
     {
-        for (int j = 0; j < A->nnz[i]; j++)
-        {
-            if (A->index[ROWMAJOR(i, j, A->M)] == i)
-                trace += A_value[ROWMAJOR(i, j, A->M)];
-        }
+        trace += A_value[ROWMAJOR(i, 0, A->M)];
     }
 
     return (double) REAL_PART(trace);

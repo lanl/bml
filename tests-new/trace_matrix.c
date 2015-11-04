@@ -90,6 +90,72 @@ test_function(
     bml_deallocate(&B);
     bml_deallocate(&C);
 
+    // Test when more values that just diagonal
+    A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
+    for (int i = 0; i < N * N; i++)
+    {
+        A_dense[i] = rand() / (double) RAND_MAX;
+    }
+    for (int i = 0; i < N; i++)
+    {
+        A_dense[i * N + i] = (REAL_T)1.0;
+    }
+    A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0, M);
+    B = bml_scale_new(scalar, A);
+    C = bml_scale_new(scalar, B);
+
+    traceA = bml_trace(A);
+    traceB = bml_trace(B);
+    traceC = bml_trace(C);
+
+    A_dense = bml_convert_to_dense(A);
+    B_dense = bml_convert_to_dense(B);
+    C_dense = bml_convert_to_dense(C);
+
+    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
+
+    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+           traceA - (double) N);
+    printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
+           traceB - scalar * N);
+    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+           scalar * scalar * N, traceC - scalar * scalar * N);
+
+    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
+    {
+        LOG_ERROR
+            ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
+             traceA, rel_diff);
+        return -1;
+    }
+    if ((rel_diff =
+         fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
+        REL_TOL)
+    {
+        LOG_ERROR
+            ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
+             traceB, (double) (scalar * N), rel_diff);
+        return -1;
+    }
+    if ((rel_diff =
+         fabs(traceC -
+              (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
+        REL_TOL)
+    {
+        LOG_ERROR
+            ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
+             traceC, (double) (scalar * scalar * N), rel_diff);
+return -1;
+    }
+    bml_free_memory(A_dense);
+    bml_free_memory(B_dense);
+    bml_free_memory(C_dense);
+    bml_deallocate(&A);
+    bml_deallocate(&B);
+    bml_deallocate(&C);
+
     LOG_INFO("trace matrix test passed\n");
 
     return 0;
