@@ -1,5 +1,5 @@
 #ifndef __LAPACK_H
-#define __LAPACK_H
+#    define __LAPACK_H
 
 void C_SSYEV(
     const char *jobz,

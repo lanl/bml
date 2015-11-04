@@ -103,4 +103,3 @@ bml_multiply_AB(
             break;
     }
 }
-

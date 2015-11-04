@@ -1,7 +1,7 @@
 #ifndef __BLAS_H
-#define __BLAS_H
+#    define __BLAS_H
 
-#include <complex.h>
+#    include <complex.h>
 
 void C_SSCAL(
     const int *n,

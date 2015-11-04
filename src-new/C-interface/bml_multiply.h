@@ -1,9 +1,9 @@
 /** \file */
 
 #ifndef __BML_MULTIPLY_H
-#define __BML_MULTIPLY_H
+#    define __BML_MULTIPLY_H
 
-#include "bml_types.h"
+#    include "bml_types.h"
 
 // Multiply - C = alpha * A * B + beta * C
 void bml_multiply(

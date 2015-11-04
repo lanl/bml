@@ -1,11 +1,11 @@
 /** \file */
 
 #ifndef __BML_LOGGER_H
-#define __BML_LOGGER_H
+#    define __BML_LOGGER_H
 
-#include "bml_types.h"
+#    include "bml_types.h"
 
-#include <stdlib.h>
+#    include <stdlib.h>
 
 /** The log-levels. */
 typedef enum
@@ -21,16 +21,16 @@ typedef enum
 } bml_log_level_t;
 
 /** Convenience macro to write a BML_LOG_DEBUG level message. */
-#define LOG_DEBUG(format, ...) \
+#    define LOG_DEBUG(format, ...) \
     bml_log_location(BML_LOG_DEBUG, __FILE__, __LINE__, format, ##__VA_ARGS__)
 /** Convenience macro to write a BML_LOG_INFO level message. */
-#define LOG_INFO(format, ...) \
+#    define LOG_INFO(format, ...) \
     bml_log(BML_LOG_INFO, format, ##__VA_ARGS__)
 /** Convenience macro to write a BML_LOG_WARNING level message. */
-#define LOG_WARN(format, ...) \
+#    define LOG_WARN(format, ...) \
     bml_log_location(BML_LOG_WARNING, __FILE__, __LINE__, format, ##__VA_ARGS__)
 /** Convenience macro to write a BML_LOG_ERROR level message. */
-#define LOG_ERROR(format, ...) \
+#    define LOG_ERROR(format, ...) \
     bml_log_location(BML_LOG_ERROR, __FILE__, __LINE__, format, ##__VA_ARGS__)
 
 void bml_log(

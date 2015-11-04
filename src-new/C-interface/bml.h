@@ -194,20 +194,20 @@
 /** \file */
 
 #ifndef __BML_H
-#define __BML_H
+#    define __BML_H
 
-#include "bml_add.h"
-#include "bml_allocate.h"
-#include "bml_convert.h"
-#include "bml_copy.h"
-#include "bml_export.h"
-#include "bml_import.h"
-#include "bml_logger.h"
-#include "bml_multiply.h"
-#include "bml_scale.h"
-#include "bml_threshold.h"
-#include "bml_trace.h"
-#include "bml_transpose.h"
-#include "bml_utilities.h"
+#    include "bml_add.h"
+#    include "bml_allocate.h"
+#    include "bml_convert.h"
+#    include "bml_copy.h"
+#    include "bml_export.h"
+#    include "bml_import.h"
+#    include "bml_logger.h"
+#    include "bml_multiply.h"
+#    include "bml_scale.h"
+#    include "bml_threshold.h"
+#    include "bml_trace.h"
+#    include "bml_transpose.h"
+#    include "bml_utilities.h"
 
 #endif

@@ -1,7 +1,7 @@
 /** \file */
 
 #ifndef __BML_TYPES_H
-#define __BML_TYPES_H
+#    define __BML_TYPES_H
 
 /** The supported matrix types. */
 typedef enum

@@ -49,15 +49,15 @@ bml_copy(
     assert(A != NULL);
     assert(B != NULL);
     LOG_DEBUG("copying matrix\n");
-    if(bml_get_type(A) != bml_get_type(B))
+    if (bml_get_type(A) != bml_get_type(B))
     {
         LOG_ERROR("type mismatch\n");
     }
-    if(bml_get_N(A) != bml_get_N(B))
+    if (bml_get_N(A) != bml_get_N(B))
     {
         LOG_ERROR("matrix size mismatch\n");
     }
-    if(bml_get_M(A) != bml_get_M(B))
+    if (bml_get_M(A) != bml_get_M(B))
     {
         LOG_ERROR("matrix parameter mismatch\n");
     }
