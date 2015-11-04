@@ -66,13 +66,22 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     for (int i = 0; i < N; i++)
     {
-        int jind = 0;
+        int jind = 1;
         for (int j = 0; j < M; j++)
         {
             REAL_T rvalue = rand() / (REAL_T) RAND_MAX;
-            A_value[ROWMAJOR(i, jind, M)] = rvalue;
-            A_index[ROWMAJOR(i, jind, M)] = j;
-            jind++;
+            
+            if (i == j)
+            {
+                A_value[ROWMAJOR(i, 0, M)] = rvalue;
+                A_index[ROWMAJOR(i, 0, M)] = j;
+            }
+            else
+            {
+                A_value[ROWMAJOR(i, jind, M)] = rvalue;
+                A_index[ROWMAJOR(i, jind, M)] = j;
+                jind++;
+            }
         }
         A_nnz[i] = jind;
     }
