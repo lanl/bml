@@ -36,6 +36,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
+
     return A;
 }
 
@@ -64,6 +65,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+    #pragma omp parallel for shared(A_value,A_index,A_nnz)
     for (int i = 0; i < N; i++)
     {
         int jind = 1;
@@ -113,6 +115,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+    #pragma omp parallel for shared(A_value,A_index,A_nnz)
     for (int i = 0; i < N; i++)
     {
         A_value[i * M] = (REAL_T) 1.0;

@@ -24,13 +24,16 @@ double TYPED_FUNC(
     bml_trace_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
+    int N = A->N;
+    int M = A->M;
+
     REAL_T trace = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
     #pragma omp parallel for reduction(+:trace)
-    for (int i = 0; i < A->N; i++)
+    for (int i = 0; i < N; i++)
     {
-        trace += A_value[ROWMAJOR(i, 0, A->M)];
+        trace += A_value[ROWMAJOR(i, 0, M)];
     }
 
     return (double) REAL_PART(trace);

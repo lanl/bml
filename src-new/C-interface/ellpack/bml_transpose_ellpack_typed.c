@@ -88,7 +88,7 @@ void TYPED_FUNC(
 
     // Transpose off-diagonal elements
     // No need to move diagonal elements in first column
-    #pragma omp parallel for
+    #pragma omp parallel for shared(N,M,A_value,A_index,A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = A_nnz[i] - 1; j > 0; j--)

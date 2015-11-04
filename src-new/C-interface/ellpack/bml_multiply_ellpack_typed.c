@@ -81,6 +81,11 @@ void TYPED_FUNC(
     int msize = X->M;
     int ix[hsize];
 
+    int *X_index = X->index;
+    int *X2_index = X2->index;
+    int *X_nnz = X->nnz;
+    int *X2_nnz = X2->nnz;
+
     REAL_T x[hsize];
     REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
@@ -94,21 +99,21 @@ void TYPED_FUNC(
     for (int i = 0; i < hsize; i++)     // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
-        for (int jp = 0; jp < X->nnz[i]; jp++)
+        for (int jp = 0; jp < X_nnz[i]; jp++)
         {
             REAL_T a = X_value[i * msize + jp];
-            int j = X->index[i * msize + jp];
+            int j = X_index[i * msize + jp];
             if (j == i)
             {
                 traceX = traceX + a;
             }
-            for (int kp = 0; kp < X->nnz[j]; kp++)
+            for (int kp = 0; kp < X_nnz[j]; kp++)
             {
-                int k = X->index[j * msize + kp];
+                int k = X_index[j * msize + kp];
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    X2->index[i * msize + l] = k;
+                    X2_index[i * msize + l] = k;
                     ix[k] = i + 1;
                     l++;
                 }
@@ -126,25 +131,25 @@ void TYPED_FUNC(
         int ll = 1;
         for (int j = 0; j < l; j++)
         {
-            int jp = X2->index[i * msize + j];
+            int jp = X2_index[i * msize + j];
             REAL_T xtmp = x[jp];
             // The diagonal elements are stored in the first column
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;
                 X2_value[i * msize] = xtmp;
-                X2->index[i * msize] = jp;
+                X2_index[i * msize] = jp;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
                 X2_value[i * msize + ll] = xtmp;
-                X2->index[i * msize + ll] = jp;
+                X2_index[i * msize + ll] = jp;
                 ll++;
             }
             ix[jp] = 0;
             x[jp] = 0.0;
         }
-        X2->nnz[i] = ll;
+        X2_nnz[i] = ll;
     }
 
 }
