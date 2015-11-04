@@ -35,7 +35,8 @@ test_function(
     {
         if (fabs(B_dense[i] - C_dense[i]) > 1e-12)
         {
-            LOG_ERROR("matrices are not identical B[%d] = %e C[%d] = %e\n", i, B_dense[i], i, C_dense[i]);
+            LOG_ERROR("matrices are not identical B[%d] = %e C[%d] = %e\n", i,
+                      B_dense[i], i, C_dense[i]);
             return -1;
         }
     }

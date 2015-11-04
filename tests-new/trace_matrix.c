@@ -7,9 +7,9 @@
 #include <stdlib.h>
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 1e-6
+#    define REL_TOL 1e-6
 #else
-#define REL_TOL 1e-12
+#    define REL_TOL 1e-12
 #endif
 
 int
@@ -98,9 +98,10 @@ test_function(
     }
     for (int i = 0; i < N; i++)
     {
-        A_dense[i * N + i] = (REAL_T)1.0;
+        A_dense[i * N + i] = (REAL_T) 1.0;
     }
-    A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0, M);
+    A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0,
+                              M);
     B = bml_scale_new(scalar, A);
     C = bml_scale_new(scalar, B);
 
@@ -147,7 +148,7 @@ test_function(
         LOG_ERROR
             ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
              traceC, (double) (scalar * scalar * N), rel_diff);
-return -1;
+        return -1;
     }
     bml_free_memory(A_dense);
     bml_free_memory(B_dense);

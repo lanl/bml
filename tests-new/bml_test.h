@@ -1,5 +1,5 @@
 #ifndef __BML_TEST_H
-#define __BML_TEST_H
+#    define __BML_TEST_H
 
 int test_function(
     const int N,

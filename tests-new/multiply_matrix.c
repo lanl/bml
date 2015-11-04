@@ -71,7 +71,7 @@ test_function(
 
     for (int i = 0; i < N * N; i++)
     {
-        if (fabs(B_dense[i] - F_dense[i]) > 1e-12) 
+        if (fabs(B_dense[i] - F_dense[i]) > 1e-12)
         {
             LOG_ERROR
                 ("matrices are not identical; B[%d] = %e F[%d] = %e\n",

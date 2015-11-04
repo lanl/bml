@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 1e-6
+#    define REL_TOL 1e-6
 #else
-#define REL_TOL 1e-12
+#    define REL_TOL 1e-12
 #endif
 
 int

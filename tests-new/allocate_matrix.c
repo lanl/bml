@@ -19,7 +19,8 @@ test_function(
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
     A_dense = bml_export_to_dense(A);
-    B = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0, M);
+    B = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0,
+                              M);
     B_dense = bml_export_to_dense(B);
     bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
     bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
