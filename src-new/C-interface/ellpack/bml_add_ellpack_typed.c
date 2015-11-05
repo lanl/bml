@@ -36,59 +36,65 @@ void TYPED_FUNC(
     const double beta,
     const double threshold)
 {
-    int ix[A->N];
-    REAL_T x[A->N];
+    int N = A->N;
+    int M = A->M;
+    int ix[N];
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+    REAL_T x[N];
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
 
-    memset(ix, 0, A->N * sizeof(int));
-    memset(x, 0.0, A->N * sizeof(REAL_T));
+    memset(ix, 0, N * sizeof(int));
+    memset(x, 0.0, N * sizeof(REAL_T));
 
-    #pragma omp parallel for firstprivate(x,ix)
-    for (int i = 0; i < A->N; i++)
+#pragma omp parallel for default(none) firstprivate(x,ix) shared(N,M,A_index,A_value,A_nnz,B_index,B_value,B_nnz)
+    for (int i = 0; i < N; i++)
     {
         int l = 0;
-        for (int jp = 0; jp < A->nnz[i]; jp++)
+        for (int jp = 0; jp < A_nnz[i]; jp++)
         {
-            int k = A->index[ROWMAJOR(i, jp, A->M)];
+            int k = A_index[ROWMAJOR(i, jp, M)];
             if (ix[k] == 0)
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A->index[ROWMAJOR(i, l, A->M)] = k;
+                A_index[ROWMAJOR(i, l, M)] = k;
                 l++;
             }
-            x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, A->M)];
+            x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, M)];
         }
 
-        for (int jp = 0; jp < B->nnz[i]; jp++)
+        for (int jp = 0; jp < B_nnz[i]; jp++)
         {
-            int k = B->index[ROWMAJOR(i, jp, A->M)];
+            int k = B_index[ROWMAJOR(i, jp, M)];
             if (ix[k] == 0)
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A->index[ROWMAJOR(i, l, A->M)] = k;
+                A_index[ROWMAJOR(i, l, M)] = k;
                 l++;
             }
-            x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, A->M)];
+            x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, M)];
         }
-        A->nnz[i] = l;
+        A_nnz[i] = l;
 
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
         {
-            REAL_T xTmp = x[A->index[ROWMAJOR(i, jp, A->M)]];
+            REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, M)]];
             if (is_above_threshold(xTmp, threshold))    // THIS THRESHOLDING COULD BE IGNORED!?
             {
-                A_value[ROWMAJOR(i, ll, A->M)] = xTmp;
-                A->index[ROWMAJOR(i, ll, A->M)] = A->index[ROWMAJOR(i, jp, A->M)];
+                A_value[ROWMAJOR(i, ll, M)] = xTmp;
+                A_index[ROWMAJOR(i, ll, M)] = A_index[ROWMAJOR(i, jp, M)];
                 ll++;
             }
-            x[A->index[ROWMAJOR(i, jp, A->M)]] = 0.0;
-            ix[A->index[ROWMAJOR(i, jp, A->M)]] = 0;
+            x[A_index[ROWMAJOR(i, jp, M)]] = 0.0;
+            ix[A_index[ROWMAJOR(i, jp, M)]] = 0;
         }
-        A->nnz[i] = ll;
+        A_nnz[i] = ll;
     }
 }
 

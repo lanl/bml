@@ -41,7 +41,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
 
     // First move diagonal elements over
-    #pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
+#pragma omp parallel for default(none) shared(N,M,B_index,B_value,B_nnz,A_value)
     for (int i = 0; i < N; i++)
     {
         B_index[ROWMAJOR(i, 0, M)] = i;
@@ -50,13 +50,13 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     // Transpose off-diagonal elements
-    #pragma omp parallel for shared(N,M,B_index,B_value,B_nnz)
+#pragma omp parallel for default(none) shared(N,M,B_index,B_value,B_nnz,A_index,A_value,A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = 1; j < A_nnz[i]; j++)
         {
             int trow = A_index[ROWMAJOR(i, j, M)];
-            #pragma omp critical
+#pragma omp critical
             {
                 int colcnt = B_nnz[trow];
                 B_index[ROWMAJOR(trow, colcnt, M)] = i;
@@ -89,7 +89,7 @@ void TYPED_FUNC(
 
     // Transpose off-diagonal elements
     // No need to move diagonal elements in first column
-    #pragma omp parallel for shared(N,M,A_value,A_index,A_nnz)
+#pragma omp parallel for default(none) shared(N,M,A_value,A_index,A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = A_nnz[i] - 1; j > 0; j--)
@@ -105,7 +105,7 @@ void TYPED_FUNC(
                     {
                         REAL_T tmp = A_value[ROWMAJOR(i, j, M)];
 
-                        #pragma omp critical
+#pragma omp critical
                         {
                             A_value[ROWMAJOR(i, j, M)] = A_value[ROWMAJOR(ind, k, M)];
                             A_value[ROWMAJOR(ind, k, M)] = tmp;
@@ -120,7 +120,7 @@ void TYPED_FUNC(
                 {
                     int jind = A_nnz[ind];
 
-                    #pragma omp critical
+#pragma omp critical
                     {
                         A_index[ROWMAJOR(ind, jind, M)] = i;
                         A_value[ROWMAJOR(ind, jind, M)] = A_value[ROWMAJOR(i, j, M)];

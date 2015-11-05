@@ -78,52 +78,52 @@ void TYPED_FUNC(
     const bml_matrix_ellpack_t * X2,
     const double threshold)
 {
-    int hsize = X->N;
-    int msize = X->M;
-    int ix[hsize];
+    int N = X->N;
+    int M = X->M;
+    int ix[N];
 
     int *X_index = X->index;
     int *X2_index = X2->index;
     int *X_nnz = X->nnz;
     int *X2_nnz = X2->nnz;
 
-    REAL_T x[hsize];
+    REAL_T x[N];
     REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
     REAL_T *X_value = (REAL_T *) X->value;
     REAL_T *X2_value = (REAL_T *) X2->value;
 
-    memset(ix, 0, hsize * sizeof(int));
-    memset(x, 0.0, hsize * sizeof(REAL_T));
+    memset(ix, 0, N * sizeof(int));
+    memset(x, 0.0, N * sizeof(REAL_T));
 
-    #pragma omp parallel for firstprivate(ix,x) reduction(+:traceX,traceX2)
-    for (int i = 0; i < hsize; i++)     // CALCULATES THRESHOLDED X^2
+#pragma omp parallel for default(none) firstprivate(ix,x) shared(N,M,X_index,X_value,X_nnz,X2_index,X2_value,X2_nnz) reduction(+:traceX,traceX2)
+    for (int i = 0; i < N; i++)     // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
         {
-            REAL_T a = X_value[ROWMAJOR(i, jp, msize)];
-            int j = X_index[ROWMAJOR(i, jp, msize)];
+            REAL_T a = X_value[ROWMAJOR(i, jp, M)];
+            int j = X_index[ROWMAJOR(i, jp, M)];
             if (j == i)
             {
                 traceX = traceX + a;
             }
             for (int kp = 0; kp < X_nnz[j]; kp++)
             {
-                int k = X_index[ROWMAJOR(j, kp, msize)];
+                int k = X_index[ROWMAJOR(j, kp, M)];
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    X2_index[ROWMAJOR(i, l, msize)] = k;
+                    X2_index[ROWMAJOR(i, l, M)] = k;
                     ix[k] = i + 1;
                     l++;
                 }
-                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, msize)];      // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, M)];      // TEMPORARY STORAGE VECTOR LENGTH FULL N
             }
         }
 
         // Check for number of non-zeroes per row exceeded
-        if (l > msize)
+        if (l > M)
         {
             printf("\nERROR: Number of non-zeroes per row > M, Increase M\n");
             exit(-1);
@@ -132,19 +132,19 @@ void TYPED_FUNC(
         int ll = 1;
         for (int j = 0; j < l; j++)
         {
-            int jp = X2_index[ROWMAJOR(i, j, msize)];
+            int jp = X2_index[ROWMAJOR(i, j, M)];
             REAL_T xtmp = x[jp];
             // The diagonal elements are stored in the first column
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;
-                X2_value[ROWMAJOR(i, 0, msize)] = xtmp;
-                X2_index[ROWMAJOR(i, 0, msize)] = jp;
+                X2_value[ROWMAJOR(i, 0, M)] = xtmp;
+                X2_index[ROWMAJOR(i, 0, M)] = jp;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
-                X2_value[ROWMAJOR(i, ll, msize)] = xtmp;
-                X2_index[ROWMAJOR(i, ll, msize)] = jp;
+                X2_value[ROWMAJOR(i, ll, M)] = xtmp;
+                X2_index[ROWMAJOR(i, ll, M)] = jp;
                 ll++;
             }
             ix[jp] = 0;
@@ -173,11 +173,11 @@ void TYPED_FUNC(
     const bml_matrix_ellpack_t * C,
     const double threshold)
 {
-    int hsize = A->N;
-    int msize = A->M;
-    int ix[hsize];
+    int N = A->N;
+    int M = A->M;
+    int ix[N];
 
-    REAL_T x[hsize];
+    REAL_T x[N];
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
     REAL_T *C_value = (REAL_T *) C->value;
@@ -190,34 +190,34 @@ void TYPED_FUNC(
     int *B_index = B->index;
     int *C_index = C->index;
 
-    memset(ix, 0, hsize * sizeof(int));
-    memset(x, 0.0, hsize * sizeof(REAL_T));
+    memset(ix, 0, N * sizeof(int));
+    memset(x, 0.0, N * sizeof(REAL_T));
 
-    #pragma omp parallel for firstprivate(ix,x)
-    for (int i = 0; i < hsize; i++)
+#pragma omp parallel for default(none) firstprivate(ix,x) shared(N,M,A_index,A_value,A_nnz,B_index,B_value,B_nnz,C_index,C_value,C_nnz)
+    for (int i = 0; i < N; i++)
     {
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
-            REAL_T a = A_value[ROWMAJOR(i, jp, msize)];
-            int j = A_index[ROWMAJOR(i, jp, msize)];
+            REAL_T a = A_value[ROWMAJOR(i, jp, M)];
+            int j = A_index[ROWMAJOR(i, jp, M)];
 
             for (int kp = 0; kp < B_nnz[j]; kp++)
             {
-                int k = B_index[ROWMAJOR(j, kp, msize)];
+                int k = B_index[ROWMAJOR(j, kp, M)];
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    C_index[ROWMAJOR(i, l, msize)] = k;
+                    C_index[ROWMAJOR(i, l, M)] = k;
                     ix[k] = i + 1;
                     l++;
                 }
-                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, msize)];      // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, M)];      // TEMPORARY STORAGE VECTOR LENGTH FULL N
             }
         }
 
         // Check for number of non-zeroes per row exceeded
-        if (l > msize)
+        if (l > M)
         {
             printf("\nERROR: Number of non-zeroes per row > M, Increase M\n");
             exit(-1);
@@ -226,18 +226,18 @@ void TYPED_FUNC(
         int ll = 1;
         for (int j = 0; j < l; j++)
         {
-            int jp = C_index[ROWMAJOR(i, j, msize)];
+            int jp = C_index[ROWMAJOR(i, j, M)];
             REAL_T xtmp = x[jp];
             // Diagonal elements are saved in first column
             if (jp == i)
             {
-                C_value[ROWMAJOR(i, 0, msize)] = xtmp;
-                C_index[ROWMAJOR(i, 0, msize)] = jp;
+                C_value[ROWMAJOR(i, 0, M)] = xtmp;
+                C_index[ROWMAJOR(i, 0, M)] = jp;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
-                C_value[ROWMAJOR(i, ll, msize)] = xtmp;
-                C_index[ROWMAJOR(i, ll, msize)] = jp;
+                C_value[ROWMAJOR(i, ll, M)] = xtmp;
+                C_index[ROWMAJOR(i, ll, M)] = jp;
                 ll++;
             }
             ix[jp] = 0;
