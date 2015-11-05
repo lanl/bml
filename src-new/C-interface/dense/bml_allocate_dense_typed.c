@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_dense.h"
@@ -48,11 +49,12 @@ bml_matrix_dense_t *TYPED_FUNC(
 {
     bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N);
     REAL_T *A_dense = A->matrix;
+#pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            A_dense[i + N * j] = rand() / (double) RAND_MAX;
+            A_dense[ROWMAJOR(i, j, N)] = rand() / (double) RAND_MAX;
         }
     }
     return A;
@@ -75,9 +77,10 @@ bml_matrix_dense_t *TYPED_FUNC(
 {
     bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N);
     REAL_T *A_dense = A->matrix;
+#pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
     {
-        A_dense[i + N * i] = 1;
+        A_dense[ROWMAJOR(i, i, N)] = 1;
     }
     return A;
 }

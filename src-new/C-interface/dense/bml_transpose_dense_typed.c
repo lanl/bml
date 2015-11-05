@@ -33,7 +33,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-    #pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
+#pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -60,7 +60,7 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T tmp;
 
-    #pragma omp parallel for default(none) private(tmp) shared(N, A_matrix)
+#pragma omp parallel for default(none) private(tmp) shared(N, A_matrix)
     for (int i = 0; i < N - 1; i++)
     {
         for (int j = i + 1; j < N; j++)
