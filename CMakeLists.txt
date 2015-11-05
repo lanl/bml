@@ -212,7 +212,7 @@ add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 set(DIST_FILES CMakeLists.txt)
 
-set(BML_NEW FALSE
+set(BML_NEW TRUE
   CACHE BOOL "Whether to build the new version of the library")
 
 if(BML_NEW)
