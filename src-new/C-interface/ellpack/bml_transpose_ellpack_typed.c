@@ -45,7 +45,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
         B_index[ROWMAJOR(i, 0, M)] = i;
-        B_value[ROWMAJOR(i, 0, M)] = A_value[ROWMAJOR(i, 0, M)]; 
+        B_value[ROWMAJOR(i, 0, M)] = A_value[ROWMAJOR(i, 0, M)];
         B_nnz[i] = 1;
     }
 
@@ -60,7 +60,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
             {
                 int colcnt = B_nnz[trow];
                 B_index[ROWMAJOR(trow, colcnt, M)] = i;
-                B_value[ROWMAJOR(trow, colcnt, M)] = A_value[ROWMAJOR(i, j, M)];
+                B_value[ROWMAJOR(trow, colcnt, M)] =
+                    A_value[ROWMAJOR(i, j, M)];
                 B_nnz[trow]++;
             }
         }
@@ -107,7 +108,8 @@ void TYPED_FUNC(
 
 #pragma omp critical
                         {
-                            A_value[ROWMAJOR(i, j, M)] = A_value[ROWMAJOR(ind, k, M)];
+                            A_value[ROWMAJOR(i, j, M)] =
+                                A_value[ROWMAJOR(ind, k, M)];
                             A_value[ROWMAJOR(ind, k, M)] = tmp;
                         }
                         exchangeDone = 1;
@@ -123,7 +125,8 @@ void TYPED_FUNC(
 #pragma omp critical
                     {
                         A_index[ROWMAJOR(ind, jind, M)] = i;
-                        A_value[ROWMAJOR(ind, jind, M)] = A_value[ROWMAJOR(i, j, M)];
+                        A_value[ROWMAJOR(ind, jind, M)] =
+                            A_value[ROWMAJOR(i, j, M)];
                         A_nnz[ind]++;
                         A_nnz[i]--;
                     }

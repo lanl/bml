@@ -97,7 +97,7 @@ void TYPED_FUNC(
     memset(x, 0.0, N * sizeof(REAL_T));
 
 #pragma omp parallel for default(none) firstprivate(ix,x) shared(N,M,X_index,X_value,X_nnz,X2_index,X2_value,X2_nnz) reduction(+:traceX,traceX2)
-    for (int i = 0; i < N; i++)     // CALCULATES THRESHOLDED X^2
+    for (int i = 0; i < N; i++) // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
@@ -118,7 +118,7 @@ void TYPED_FUNC(
                     ix[k] = i + 1;
                     l++;
                 }
-                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, M)];      // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, M)];  // TEMPORARY STORAGE VECTOR LENGTH FULL N
             }
         }
 
@@ -212,7 +212,7 @@ void TYPED_FUNC(
                     ix[k] = i + 1;
                     l++;
                 }
-                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, M)];      // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, M)];  // TEMPORARY STORAGE VECTOR LENGTH FULL N
             }
         }
 

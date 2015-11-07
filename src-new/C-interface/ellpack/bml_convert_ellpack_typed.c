@@ -52,7 +52,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
                 }
                 else
                 {
-                    A_value[ROWMAJOR(i, A_nnz[i], M)] = dense_A[ROWMAJOR(i, j, N)];
+                    A_value[ROWMAJOR(i, A_nnz[i], M)] =
+                        dense_A[ROWMAJOR(i, j, N)];
                     A_index[ROWMAJOR(i, A_nnz[i], M)] = j;
                     A_nnz[i]++;
                 }

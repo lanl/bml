@@ -49,8 +49,10 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         {
             if (is_above_threshold(A_value[ROWMAJOR(i, j, M)], threshold))
             {
-                B_value[ROWMAJOR(i, B_nnz[i], M)] = A_value[ROWMAJOR(i, j, M)];
-                B_index[ROWMAJOR(i, B_nnz[i], M)] = A_index[ROWMAJOR(i, j, M)];
+                B_value[ROWMAJOR(i, B_nnz[i], M)] =
+                    A_value[ROWMAJOR(i, j, M)];
+                B_index[ROWMAJOR(i, B_nnz[i], M)] =
+                    A_index[ROWMAJOR(i, j, M)];
                 B_nnz[i]++;
             }
         }
@@ -90,8 +92,10 @@ void TYPED_FUNC(
             {
                 if (rlen < j)
                 {
-                    A_value[ROWMAJOR(i, rlen, M)] = A_value[ROWMAJOR(i, j, M)];
-                    A_index[ROWMAJOR(i, rlen, M)] = A_index[ROWMAJOR(i, j, M)];
+                    A_value[ROWMAJOR(i, rlen, M)] =
+                        A_value[ROWMAJOR(i, j, M)];
+                    A_index[ROWMAJOR(i, rlen, M)] =
+                        A_index[ROWMAJOR(i, j, M)];
                 }
                 rlen++;
             }
