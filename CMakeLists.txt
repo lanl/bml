@@ -99,6 +99,8 @@ if(BML_OPENMP)
     unset(OpenMP_C_FLAGS)
     unset(OpenMP_Fortran_FLAGS)
   endif()
+else()
+  message(STATUS "Will not build with OpenMP")
 endif()
 
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
@@ -192,18 +194,24 @@ if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} ${LAPACK_LIBRARIES})
-  check_fortran_function_exists(dsyev HAVE_SSYEV)
-  check_fortran_function_exists(dsyev HAVE_DSYEV)
-  if(NOT HAVE_SSYEV OR NOT HAVE_DSYEV)
-    message(FATAL_ERROR "Could not find {s,d}syev")
+  check_fortran_function_exists(ssyevr HAVE_SSYEVR)
+  check_fortran_function_exists(dsyevr HAVE_DSYEVR)
+  check_fortran_function_exists(cheevr HAVE_CHEEVR)
+  check_fortran_function_exists(zheevr HAVE_ZHEEVR)
+  if(NOT (HAVE_SSYEVR AND HAVE_DSYEVR AND HAVE_CHEEVR AND HAVE_ZHEEVR))
+    message(FATAL_ERROR "Could not find {s,d} or {c,z}heevr")
   endif()
-  add_definitions(-DHAVE_SSYEV -DHAVE_DSYEV)
+  add_definitions(-DHAVE_SSYEVR -DHAVE_DSYEVR -DHAVE_CSYEVR -DHAVE_ZSYEVR)
 
-  bml_check_C_Fortran_function_exists(dsyev C_SSYEV REQUIRED)
-  bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
+  bml_check_C_Fortran_function_exists(dsyevr C_SSYEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(ssyevr C_DSYEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(zheevr C_ZHEEVR REQUIRED)
   add_definitions(
-    -DC_SSYEV=${C_SSYEV}
-    -DC_DSYEV=${C_DSYEV})
+    -DC_SSYEVR=${C_SSYEVR}
+    -DC_DSYEVR=${C_DSYEVR}
+    -DC_CHEEVR=${C_CHEEVR}
+    -DC_ZHEEVR=${C_ZHEEVR})
 
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()

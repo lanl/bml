@@ -11,6 +11,14 @@ create() {
 }
 
 configure() {
+    echo "The following environment variables can be set"
+    echo "to influence the build:"
+    echo "CMAKE_BUILD_TYPE={Release,Debug}"
+    echo "CC=PATH_TO_C_COMPILER"
+    echo "CXX=PATH_TO_C++_COMPILER"
+    echo "FC=PATH_TO_Fortran_COMPILER"
+    echo "BML_OPENMP={yes,no}"
+    echo "BLAS_VENDOR={Intel}"
     cd "${BUILD_DIR}"
     ${CMAKE:=cmake} .. \
           -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:=Debug}" \
