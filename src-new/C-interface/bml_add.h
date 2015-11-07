@@ -1,9 +1,9 @@
 /** \file */
 
 #ifndef __BML_ADD_H
-#    define __BML_ADD_H
+#define __BML_ADD_H
 
-#    include "bml_types.h"
+#include "bml_types.h"
 
 void bml_add(
     const bml_matrix_t * A,

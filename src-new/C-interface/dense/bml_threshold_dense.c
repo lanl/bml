@@ -19,8 +19,10 @@
  *  \param threshold Threshold value
  *  \return The thresholded A
  */
-bml_matrix_dense_t * bml_threshold_new_dense(const bml_matrix_dense_t * A,
-                                             const double threshold)
+bml_matrix_dense_t *
+bml_threshold_new_dense(
+    const bml_matrix_dense_t * A,
+    const double threshold)
 {
     switch (A->matrix_precision)
     {

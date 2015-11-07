@@ -1,9 +1,9 @@
 /** \file */
 
 #ifndef __BML_SCALE_H
-#    define __BML_SCALE_H
+#define __BML_SCALE_H
 
-#    include "bml_types.h"
+#include "bml_types.h"
 
 // Scales A and returns a new B
 bml_matrix_t *bml_scale_new(

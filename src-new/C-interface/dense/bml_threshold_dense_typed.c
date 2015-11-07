@@ -29,7 +29,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     const double threshold)
 {
     int N = A->N;
-    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense)(N);
+    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense) (N);
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 

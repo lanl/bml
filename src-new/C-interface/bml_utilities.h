@@ -1,9 +1,9 @@
 /** \file */
 
 #ifndef __BML_UTILITIES_H
-#    define __BML_UTILITIES_H
+#define __BML_UTILITIES_H
 
-#    include "bml_types.h"
+#include "bml_types.h"
 
 void bml_print_dense_matrix(
     const int N,

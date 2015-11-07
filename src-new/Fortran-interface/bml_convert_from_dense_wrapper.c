@@ -1,4 +1,4 @@
-#include "bml_convert.h"
+#include "bml_import.h"
 
 /* function bml_convert_from_dense_single_C(matrix_type, matrix_precision, n, a, threshold, m) & */
 /*      bind(C, name="bml_convert_from_dense_wrapper_single") */

@@ -1,11 +1,11 @@
 /** \file */
 
 #ifndef __BML_ALLOCATE_H
-#    define __BML_ALLOCATE_H
+#define __BML_ALLOCATE_H
 
-#    include "bml_types.h"
+#include "bml_types.h"
 
-#    include <stdlib.h>
+#include <stdlib.h>
 
 void *bml_allocate_memory(
     const size_t s);
