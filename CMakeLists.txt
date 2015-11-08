@@ -220,11 +220,12 @@ add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 set(DIST_FILES CMakeLists.txt)
 
-set(BML_NEW TRUE
-  CACHE BOOL "Whether to build the new version of the library")
+set(BML_OLD FALSE
+  CACHE BOOL "Whether to build the old version of the library")
 
-if(BML_NEW)
-  add_subdirectory(src-new)
+if(BML_OLD)
+  message(STATUS "Building old version of library (unmaintained)")
+  add_subdirectory(src-old)
 else()
   add_subdirectory(src)
 endif()
@@ -232,14 +233,14 @@ endif()
 include(FindDoxygen)
 
 if(DOXYGEN_FOUND)
-  if(BML_NEW)
+  if(BML_OLD)
     set(DOXYGEN_INPUT
-      ${CMAKE_SOURCE_DIR}/src-new/C-interface
-      ${CMAKE_SOURCE_DIR}/src-new/Fortran-interface)
+      ${CMAKE_SOURCE_DIR}/src-old
+      ${CMAKE_BINARY_DIR}/src-old)
   else()
     set(DOXYGEN_INPUT
-      ${CMAKE_SOURCE_DIR}/src
-      ${CMAKE_BINARY_DIR}/src)
+      ${CMAKE_SOURCE_DIR}/src/C-interface
+      ${CMAKE_SOURCE_DIR}/src/Fortran-interface)
   endif()
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(docs/Doxyfile.in Doxyfile)
@@ -253,12 +254,12 @@ set(BML_TESTING FALSE
   CACHE BOOL "Whether to build the test suite.")
 
 if(BML_TESTING)
-  message(STATUS "Setting up test suite.")
+  message(STATUS "Setting up test suite")
   find_program(VALGRIND valgrind
     DOC "valgrind - a suite of tools for debugging and profiling programs")
   enable_testing()
-  if(BML_NEW)
-    add_subdirectory(tests-new)
+  if(BML_OLD)
+    add_subdirectory(tests-old)
   else()
     add_subdirectory(tests)
   endif()

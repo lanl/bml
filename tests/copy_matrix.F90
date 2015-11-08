@@ -14,44 +14,39 @@ module copy_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
 
-    integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
-    class(bml_matrix_t), allocatable :: b
+    type(bml_matrix_t) :: a
+    type(bml_matrix_t) :: b
+    type(bml_matrix_t) :: c
 
-    real, allocatable :: a_real(:, :)
-    real, allocatable :: b_real(:, :)
-    double precision, allocatable :: a_double(:, :)
-    double precision, allocatable :: b_double(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
+    REAL_TYPE, allocatable :: b_dense(:, :)
+    REAL_TYPE, allocatable :: c_dense(:, :)
 
-    call bml_random_matrix(matrix_type, n, a, matrix_precision)
-    call bml_copy(a, b)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    b = bml_copy_new(a)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, c)
+    call bml_copy(b, c)
 
-    select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_real)
-       call bml_convert_to_dense(b, b_real)
-       if(maxval(a_real-b_real) > 1e-12) then
-          test_result = .false.
-          print *, "matrices are not identical"
-       else
-          test_result = .true.
-       end if
-    case(BML_PRECISION_DOUBLE)
-       call bml_convert_to_dense(a, a_double)
-       call bml_convert_to_dense(b, b_double)
-       if(maxval(a_double-b_double) > 1e-12) then
-          test_result = .false.
-          print *, "matrices are not identical"
-       else
-          test_result = .true.
-       end if
-    end select
+    call bml_convert_to_dense(a, a_dense)
+    call bml_convert_to_dense(b, b_dense)
+    call bml_convert_to_dense(c, c_dense)
+    call bml_print_matrix("A", a_dense, 1, n, 1, n)
+    call bml_print_matrix("B", b_dense, 1, n, 1, n)
+    call bml_print_matrix("C", c_dense, 1, n, 1, n)
+    if(maxval(abs(a_dense - b_dense)) > 1e-12 .or. &
+       maxval(abs(a_dense - c_dense)) > 1e-12) then
+       test_result = .false.
+       print *, "matrices are not identical"
+    else
+       test_result = .true.
+    end if
 
   end function test_function
 

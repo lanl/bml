@@ -14,33 +14,27 @@ module diagonalize_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
 
-    integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
-    double precision, allocatable :: a_dense_double(:, :)
-    double precision, allocatable :: eigenvectors_double(:, :)
-    double precision, allocatable :: eigenvalues_double(:)
+    type(bml_matrix_t) :: a
+    type(bml_matrix_t) :: a_t
+    type(bml_matrix_t) :: eigenvectors
+    double precision, pointer :: eigenvalues(:)
 
     test_result = .false.
 
-    select case(matrix_precision)
-    case(BML_PRECISION_DOUBLE)
-       allocate(a_dense_double(n, n))
-       call random_number(a_dense_double)
-       a_dense_double = (a_dense_double+transpose(a_dense_double))/2
-       call bml_convert_from_dense(matrix_type, a_dense_double, a)
-       call bml_diagonalize(a, eigenvectors_double, eigenvalues_double)
-       call bml_print_matrix("A", a_dense_double, python_format=.true.)
-       call bml_print_vector("eval", eigenvalues_double)
-       call bml_print_matrix("evec", eigenvectors_double)
-    case default
-       print *, "unknown matrix type"
-    end select
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_transpose(a, a_t)
+    call bml_add(0.5d0, a, 0.5d0, a_t)
+    call bml_diagonalize(a, eigenvalues, eigenvectors)
+    call bml_print_matrix("A", a, 1, n, 1, n)
+    call bml_print_matrix("eigenvectors", eigenvectors, 1, n, 1, n)
+    !call bml_print_vector("eigenvalues", eigenvalues, 1, n)
 
   end function test_function
 

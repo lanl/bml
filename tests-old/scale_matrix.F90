@@ -14,28 +14,28 @@ module scale_matrix_m
 
 contains
 
-  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
+  function test_function(n, matrix_type, matrix_precision) result(test_result)
 
+    integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n, m
     logical :: test_result
 
     double precision, parameter :: alpha = 1.2
 
-    type(bml_matrix_t) :: a
-    type(bml_matrix_t) :: c
+    class(bml_matrix_t), allocatable :: A
+    class(bml_matrix_t), allocatable :: C
 
-    REAL_TYPE, pointer :: a_dense(:, :)
-    REAL_TYPE, pointer :: c_dense(:, :)
+    double precision, allocatable :: A_dense(:, :)
+    double precision, allocatable :: C_dense(:, :)
 
-    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
-    call bml_scale(alpha, a, c)
+    call bml_random_matrix(BML_MATRIX_DENSE, N, A)
+    call bml_scale(alpha, A, C)
 
-    call bml_convert_to_dense(a, a_dense)
-    call bml_convert_to_dense(c, c_dense)
+    call bml_convert_to_dense(A, A_dense)
+    call bml_convert_to_dense(C, C_dense)
 
-    if(maxval(alpha*a_dense-c_dense) > 1e-12) then
+    if(maxval(alpha*A_dense-C_dense) > 1e-12) then
        test_result = .false.
        print *, "matrix element mismatch"
     else

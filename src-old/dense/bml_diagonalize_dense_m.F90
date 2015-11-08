@@ -53,7 +53,7 @@ contains
        end if
        deallocate(work)
 #else
-       call error(__FILE__, __LINE__, "could not find LAPACK(dsyev) during configuration")
+       call bml_error(__FILE__, __LINE__, "could not find LAPACK(dsyev) during configuration")
 #endif
     class default
        call bml_error(__FILE__, __LINE__, "unknow matrix type")

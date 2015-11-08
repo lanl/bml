@@ -14,18 +14,18 @@ module get_bandwidth_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
 
-    integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
+    type(bml_matrix_t) :: a
 
     integer :: i
 
-    call bml_identity_matrix(matrix_type, n, a, matrix_precision)
+    call bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
 
     test_result = .true.
 
@@ -33,7 +33,7 @@ contains
        if(bml_get_bandwidth(a, i) /= 1) then
           print *, "Wrong bandwidth on row ", i
           print *, "Should be 1, but is ", bml_get_bandwidth(a, i)
-          call bml_print_matrix("A", a)
+          call bml_print_matrix("A", a, 1, n, 1, n)
           test_result = .false.
           return
        end if

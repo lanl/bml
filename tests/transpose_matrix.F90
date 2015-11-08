@@ -14,44 +14,33 @@ module transpose_matrix_m
 
 contains
 
-  function test_function(n, matrix_type, matrix_precision) result(test_result)
+  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
 
-    integer, intent(in) :: n
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
     logical :: test_result
 
-    class(bml_matrix_t), allocatable :: a
-    class(bml_matrix_t), allocatable :: b
+    type(bml_matrix_t) :: a
+    type(bml_matrix_t) :: b
+    type(bml_matrix_t) :: c
 
-    real, allocatable :: a_real(:, :)
-    real, allocatable :: b_real(:, :)
-    double precision, allocatable :: a_double(:, :)
-    double precision, allocatable :: b_double(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
+    REAL_TYPE, allocatable :: b_dense(:, :)
 
-    call bml_random_matrix(matrix_type, n, a, matrix_precision)
+    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_transpose(a, b)
+    call bml_copy(a, c)
 
-    select case(matrix_precision)
-    case(BML_PRECISION_SINGLE)
-       call bml_convert_to_dense(a, a_real)
-       call bml_convert_to_dense(b, b_real)
-       if(maxval(a_real-transpose(b_real)) > 1e-12) then
-          test_result = .false.
-          print *, "matrices are not transposes"
-       else
-          test_result = .true.
-       end if
-    case(BML_PRECISION_DOUBLE)
-       call bml_convert_to_dense(a, a_double)
-       call bml_convert_to_dense(b, b_double)
-       if(maxval(a_double-transpose(b_double)) > 1e-12) then
-          test_result = .false.
-          print *, "matrices are not transposes"
-       else
-          test_result = .true.
-       end if
-    end select
+    call bml_convert_to_dense(a, a_dense)
+    call bml_convert_to_dense(b, b_dense)
+
+    if(maxval(abs(a_dense-transpose(b_dense))) > 1e-12) then
+       test_result = .false.
+       print *, "matrices are not transposes"
+    else
+       test_result = .true.
+    end if
 
   end function test_function
 

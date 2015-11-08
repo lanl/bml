@@ -1,9 +1,9 @@
 #!/bin/bash
 
 TOP_DIR="${PWD}"
-BUILD_DIR="${TOP_DIR}/build-new"
-INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install-new}"
-LOG_FILE="${TOP_DIR}/build-new.log"
+BUILD_DIR="${TOP_DIR}/build"
+INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install}"
+LOG_FILE="${TOP_DIR}/build.log"
 
 create() {
     mkdir -v -p "${BUILD_DIR}" || exit
@@ -33,7 +33,7 @@ configure() {
           -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
           -DBML_TESTING="${BML_TESTING:=yes}" \
           -DBLAS_VENDOR="${BLAS_VENDOR:=}" \
-          -DBML_NEW=yes | tee -a "${LOG_FILE}" || exit
+          | tee -a "${LOG_FILE}" || exit
     cd "${TOP_DIR}"
 }
 
