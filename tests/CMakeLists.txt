@@ -7,6 +7,7 @@ set(C-TESTS
   allocate_matrix.c
   convert_matrix.c
   copy_matrix.c
+  diagonalize_matrix.c
   multiply_matrix.c
   scale_matrix.c
   threshold_matrix.c

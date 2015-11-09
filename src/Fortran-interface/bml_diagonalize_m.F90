@@ -10,8 +10,8 @@ module bml_diagonalize_m
           bind(C, name="bml_diagonalize")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
-       type(C_PTR), intent(in) :: eigenvalues
-       type(C_PTR), intent(in) :: eigenvectors
+       type(C_PTR), value :: eigenvalues
+       type(C_PTR), value :: eigenvectors
      end subroutine bml_diagonalize_C
 
   end interface
@@ -31,14 +31,10 @@ contains
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
-    type(bml_matrix_t), intent(in) :: eigenvectors
-    double precision, pointer, intent(inout) :: eigenvalues(:)
+    double precision, target, intent(inout) :: eigenvalues(:)
+    type(bml_matrix_t), intent(inout) :: eigenvectors
 
-    type(C_PTR) :: eigenvectors_
-    type(C_PTR) :: eigenvalues_
-
-    call bml_diagonalize_C(a%ptr, eigenvalues_, eigenvectors_)
-    call c_f_pointer(eigenvalues_, eigenvalues, [bml_get_n(a)])
+    call bml_diagonalize_C(a%ptr, c_loc(eigenvalues), eigenvectors%ptr)
 
   end subroutine bml_diagonalize
 

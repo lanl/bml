@@ -203,8 +203,8 @@ if(LAPACK_FOUND)
   endif()
   add_definitions(-DHAVE_SSYEVR -DHAVE_DSYEVR -DHAVE_CSYEVR -DHAVE_ZSYEVR)
 
-  bml_check_C_Fortran_function_exists(dsyevr C_SSYEVR REQUIRED)
-  bml_check_C_Fortran_function_exists(ssyevr C_DSYEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(ssyevr C_SSYEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(dsyevr C_DSYEVR REQUIRED)
   bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
   bml_check_C_Fortran_function_exists(zheevr C_ZHEEVR REQUIRED)
   add_definitions(

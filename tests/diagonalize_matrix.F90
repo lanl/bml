@@ -24,13 +24,18 @@ contains
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: a_t
     type(bml_matrix_t) :: eigenvectors
-    double precision, pointer :: eigenvalues(:)
+    double precision, allocatable :: eigenvalues(:)
 
     test_result = .false.
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_transpose(a, a_t)
+    call bml_print_matrix("A_t", a_t, 1, n, 1, n)
     call bml_add(0.5d0, a, 0.5d0, a_t)
+    call bml_print_matrix("A", a, 1, n, 1, n)
+    allocate(eigenvalues(n))
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, eigenvectors)
     call bml_diagonalize(a, eigenvalues, eigenvectors)
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_print_matrix("eigenvectors", eigenvectors, 1, n, 1, n)

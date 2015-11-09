@@ -48,19 +48,30 @@ void
 bml_deallocate(
     bml_matrix_t ** A)
 {
-    switch (bml_get_type(*A))
+    if (A == NULL)
     {
-        case dense:
-            bml_deallocate_dense(*A);
-            break;
-        case ellpack:
-            bml_deallocate_ellpack(*A);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
-            break;
+        LOG_DEBUG("A is NULL\n");
     }
-    *A = NULL;
+    else if (*A == NULL)
+    {
+        LOG_DEBUG("*A is NULL\n");
+    }
+    else
+    {
+        switch (bml_get_type(*A))
+        {
+            case dense:
+                bml_deallocate_dense(*A);
+                break;
+            case ellpack:
+                bml_deallocate_ellpack(*A);
+                break;
+            default:
+                LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(*A));
+                break;
+        }
+        *A = NULL;
+    }
 }
 
 /** Allocate the zero matrix.

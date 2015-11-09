@@ -12,7 +12,8 @@ set(HEADERS-DENSE
   bml_threshold_dense.h
   bml_trace_dense.h
   bml_transpose_dense.h
-  bml_types_dense.h)
+  bml_types_dense.h
+  bml_utilities_dense.h)
 
 set(SOURCES-DENSE
   bml_add_dense.c
@@ -25,7 +26,8 @@ set(SOURCES-DENSE
   bml_scale_dense.c
   bml_threshold_dense.c
   bml_trace_dense.c
-  bml_transpose_dense.c)
+  bml_transpose_dense.c
+  bml_utilities_dense.c)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
 if(OPENMP_FOUND)
