@@ -6,11 +6,11 @@ module bml_transpose_m
 
   interface
 
-     subroutine bml_transpose_C(a, a_t) bind(C, name="bml_transpose")
+     function bml_transpose_new_C(a) bind(C, name="bml_transpose_new")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
-       type(C_PTR), value, intent(in) :: a_t
-     end subroutine bml_transpose_C
+       type(C_PTR) :: bml_transpose_new_C
+     end function bml_transpose_new_C
 
   end interface
 
@@ -29,7 +29,7 @@ contains
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: a_t
 
-    call bml_transpose_C(a%ptr, a_t%ptr)
+    a_t%ptr = bml_transpose_new_C(a%ptr)
 
   end subroutine bml_transpose
 
