@@ -5,20 +5,41 @@ BUILD_DIR="${TOP_DIR}/build"
 INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install}"
 LOG_FILE="${TOP_DIR}/build.log"
 
+help() {
+    cat <<EOF
+Usage:
+
+This script can be used to build and test the bml library. When run
+without arguments, it will create the subdirectories 'build' and
+'install', configure and build the library in 'build', run all tests,
+and install it in 'install'. If called with a command, each step can
+be executed separately, including all necessary previous steps. Known
+commands are:
+
+create     - Create the build directory
+configure  - Configure the build system
+compile    - Compile the sources
+install    - Install the compiled sources
+testing    - Run the test suite
+docs       - Generate the API documentation
+
+The following environment variables can be set to influence the build:
+
+CMAKE_BUILD_TYPE {Release,Debug}
+CC               Path to C compiler
+CXX              Path to C++ compiler
+FC               Path to Fortran compiler
+BML_OPENMP       {yes,no}
+BLAS_VENDOR      {Intel,ACML}
+EOF
+}
+
 create() {
     mkdir -v -p "${BUILD_DIR}" || exit
     mkdir -v -p "${INSTALL_DIR}" || exit
 }
 
 configure() {
-    echo "The following environment variables can be set"
-    echo "to influence the build:"
-    echo "CMAKE_BUILD_TYPE={Release,Debug}"
-    echo "CC=PATH_TO_C_COMPILER"
-    echo "CXX=PATH_TO_C++_COMPILER"
-    echo "FC=PATH_TO_Fortran_COMPILER"
-    echo "BML_OPENMP={yes,no}"
-    echo "BLAS_VENDOR={Intel}"
     cd "${BUILD_DIR}"
     ${CMAKE:=cmake} .. \
           -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:=Debug}" \
@@ -63,23 +84,7 @@ commands=("create" "configure" "compile" "install" "testing" "docs")
 
 if [[ $# -gt 0 ]]; then
     if [[ "$1" = "-h" || "$1" = "--help" ]]; then
-        cat <<EOF
-Usage:
-
-This script can be used to build and test the bml library. When run
-without arguments, it will create the subdirectories 'build' and
-'install', configure and build the library in 'build', run all tests,
-and install it in 'install'. If called with a command, each step can
-be executed separately, including all necessary previous steps. Known
-commands are:
-
-create
-configure
-compile
-install
-testing
-docs
-EOF
+        help
         exit 0
     fi
 
@@ -122,12 +127,8 @@ EOF
         exit 1
     fi
 else
-    create
-    configure
-    #docs
-    compile
-    #install
-    #testing
+    echo "missing action"
+    help
 fi
 
 echo "The output was written to ${LOG_FILE}"
