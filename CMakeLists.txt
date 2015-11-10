@@ -114,9 +114,9 @@ if(BML_OPENCL)
 endif()
 
 set(BLAS_VENDOR ""
-  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,ACML}")
+  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,MKL,ACML}")
 
-if(BLAS_VENDOR STREQUAL "Intel")
+if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
   set(BLA_VENDOR Intel10_64lp)
 elseif(BLAS_VENDOR STREQUAL "ACML")

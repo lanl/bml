@@ -31,7 +31,7 @@ EOF
     echo "CC               Path to C compiler       (default is ${CC})"
     echo "CXX              Path to C++ compiler     (default is ${CXX})"
     echo "FC               Path to Fortran compiler (default is ${FC})"
-    echo "BLAS_VENDOR      {,Intel,ACML}            (default is '${BLAS_VENDOR}')"
+    echo "BLAS_VENDOR      {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
     echo "BML_OPENMP       {yes,no}                 (default is ${BML_OPENMP})"
     echo "BML_TESTING      {yes,no}                 (default is ${BML_TESTING})"
 }
