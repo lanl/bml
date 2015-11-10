@@ -3,6 +3,26 @@
 
 #include <complex.h>
 
+void C_SSYEV(
+    const char *JOBZ,
+    const char *UPLO,
+    const int *N,
+    float *A,
+    const int *LDA,
+    float *W,
+    float *WORK,
+    const int *LWORK,
+    int *INFO);
+void C_DSYEV(
+    const char *JOBZ,
+    const char *UPLO,
+    const int *N,
+    double *A,
+    const int *LDA,
+    double *W,
+    double *WORK,
+    const int *LWORK,
+    int *INFO);
 void C_SSYEVR(
     const char *JOBZ,
     const char *RANGE,

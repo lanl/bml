@@ -37,9 +37,11 @@ contains
     allocate(eigenvalues(n))
     call bml_zero_matrix(matrix_type, matrix_precision, n, m, eigenvectors)
     call bml_diagonalize(a, eigenvalues, eigenvectors)
-    call bml_print_matrix("A", a, 1, n, 1, n)
+    write(*, *) eigenvalues
     call bml_print_matrix("eigenvectors", eigenvectors, 1, n, 1, n)
     !call bml_print_vector("eigenvalues", eigenvalues, 1, n)
+
+    test_result = .true.
 
   end function test_function
 

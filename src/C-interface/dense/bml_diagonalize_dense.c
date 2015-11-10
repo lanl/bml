@@ -23,43 +23,22 @@ bml_diagonalize_dense_single_real(
     double *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
-    float *A_copy = calloc(A->N * A->N, sizeof(float));
     float *evecs = calloc(A->N * A->N, sizeof(float));
-    int M;
-    int *isuppz = calloc(2 * A->N, sizeof(int));
-    int lwork = 26 * A->N;
-    float *work = calloc(lwork, sizeof(float));
-    int liwork = 10 * A->N;
-    int *iwork = calloc(liwork, sizeof(int));
-    int info;
-    float abstol = 0;
     float *evals = calloc(A->N, sizeof(float));
-    float *A_matrix;
+    int lwork = 3 * A->N;
+    float *work = calloc(lwork, sizeof(float));
+    int info;
 
-    LOG_DEBUG("copying matrix\n");
-    memcpy(A_copy, A->matrix, A->N * A->N * sizeof(float));
-    LOG_DEBUG("calling ssyevr\n");
-    C_SSYEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
-             &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork,
-             iwork, &liwork, &info);
-    LOG_DEBUG("back from ssyevr\n");
-
-    A_matrix = (float *) eigenvectors->matrix;
-    for (int i = 0; i < A->N; i++)
+    memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
+    C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+    memcpy(eigenvectors->matrix, evecs, A->N * A->N * sizeof(float));
+    for(int i = 0; i < A->N; i++)
     {
         eigenvalues[i] = (double) evals[i];
-        for (int j = 0; j < A->N; j++)
-        {
-            A_matrix[ROWMAJOR(i, j, A->N)] = evecs[ROWMAJOR(i, j, A->N)];
-        }
     }
-
-    free(A_copy);
-    free(evecs);
-    free(isuppz);
-    free(work);
-    free(iwork);
     free(evals);
+    free(evecs);
+    free(work);
 }
 
 void
@@ -68,40 +47,23 @@ bml_diagonalize_dense_double_real(
     double *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
-    double *A_copy = calloc(A->N * A->N, sizeof(double));
     double *evecs = calloc(A->N * A->N, sizeof(double));
-    int M;
-    int *isuppz = calloc(2 * A->N, sizeof(int));
-    int lwork = 26 * A->N;
-    double *work = calloc(lwork, sizeof(double));
-    int liwork = 10 * A->N;
-    int *iwork = calloc(iwork, sizeof(int));
-    int info;
-    double abstol = 0;
     double *evals = calloc(A->N, sizeof(double));
-    double *A_matrix;
+    double *A_matrix = NULL;
+    int lwork = 3 * A->N;
+    double *work = calloc(lwork, sizeof(double));
+    int info;
 
-    memcpy(A_copy, A->matrix, A->N * A->N * sizeof(double));
-    C_DSYEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
-             &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork,
-             &iwork, liwork, &info);
-
-    A_matrix = (double *) eigenvectors->matrix;
-    for (int i = 0; i < A->N; i++)
+    memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
+    C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+    memcpy(eigenvectors->matrix, evecs, A->N * A->N * sizeof(double));
+    for(int i = 0; i < A->N; i++)
     {
         eigenvalues[i] = (double) evals[i];
-        for (int j = 0; j < A->N; j++)
-        {
-            A_matrix[ROWMAJOR(i, j, A->N)] = evecs[ROWMAJOR(i, j, A->N)];
-        }
     }
-
-    free(A_copy);
-    free(evecs);
-    free(isuppz);
-    free(work);
-    free(liwork);
     free(evals);
+    free(evecs);
+    free(work);
 }
 
 void

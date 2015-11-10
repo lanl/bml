@@ -65,7 +65,7 @@ contains
     integer, intent(in) :: j_l
     integer, intent(in) :: j_u
 
-    call bml_print_bml_matrix_C(c_loc(a), i_l, i_u, j_l, j_u)
+    call bml_print_bml_matrix_C(a%ptr, i_l, i_u, j_l, j_u)
 
   end subroutine bml_print_bml_matrix
 
@@ -85,7 +85,7 @@ contains
     integer, intent(in) :: i_l
     integer, intent(in) :: i_u
 
-    call bml_print_bml_vector_C(c_loc(v), i_l, i_u)
+    call bml_print_bml_vector_C(v%ptr, i_l, i_u)
 
   end subroutine bml_print_bml_vector
 

@@ -194,22 +194,22 @@ if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} ${LAPACK_LIBRARIES})
-  check_fortran_function_exists(ssyevr HAVE_SSYEVR)
-  check_fortran_function_exists(dsyevr HAVE_DSYEVR)
+  check_fortran_function_exists(ssyev HAVE_SSYEV)
+  check_fortran_function_exists(dsyev HAVE_DSYEV)
   check_fortran_function_exists(cheevr HAVE_CHEEVR)
   check_fortran_function_exists(zheevr HAVE_ZHEEVR)
-  if(NOT (HAVE_SSYEVR AND HAVE_DSYEVR AND HAVE_CHEEVR AND HAVE_ZHEEVR))
-    message(FATAL_ERROR "Could not find {s,d} or {c,z}heevr")
+  if(NOT (HAVE_SSYEV AND HAVE_DSYEV AND HAVE_CHEEVR AND HAVE_ZHEEVR))
+    message(FATAL_ERROR "Could not find {s,d}syev or {c,z}heevr")
   endif()
-  add_definitions(-DHAVE_SSYEVR -DHAVE_DSYEVR -DHAVE_CSYEVR -DHAVE_ZSYEVR)
+  add_definitions(-DHAVE_SSYEV -DHAVE_DSYEV -DHAVE_CSYEVR -DHAVE_ZSYEVR)
 
-  bml_check_C_Fortran_function_exists(ssyevr C_SSYEVR REQUIRED)
-  bml_check_C_Fortran_function_exists(dsyevr C_DSYEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(ssyev C_SSYEV REQUIRED)
+  bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
   bml_check_C_Fortran_function_exists(zheevr C_ZHEEVR REQUIRED)
   add_definitions(
-    -DC_SSYEVR=${C_SSYEVR}
-    -DC_DSYEVR=${C_DSYEVR}
+    -DC_SSYEV=${C_SSYEV}
+    -DC_DSYEV=${C_DSYEV}
     -DC_CHEEVR=${C_CHEEVR}
     -DC_ZHEEVR=${C_ZHEEVR})
 

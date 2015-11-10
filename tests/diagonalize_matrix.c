@@ -36,10 +36,13 @@ test_function(
     eigenvalues = calloc(N, sizeof(double));
     eigenvectors = bml_zero_matrix(matrix_type, matrix_precision, N, M);
     bml_diagonalize(A, eigenvalues, eigenvectors);
-    bml_print_dense_vector(N, matrix_precision, eigenvalues, 0, N);
+    bml_print_dense_vector(N, double_real, eigenvalues, 0, N);
     bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
+
     bml_deallocate(&A);
     bml_deallocate(&A_t);
+    bml_deallocate(&eigenvectors);
+    free(eigenvalues);
 
     LOG_INFO("diagonalize matrix test passed\n");
 
