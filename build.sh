@@ -33,6 +33,7 @@ EOF
     echo "FC               Path to Fortran compiler (default is ${FC})"
     echo "BML_OPENMP       {yes,no}                 (default is ${BML_OPENMP})"
     echo "BLAS_VENDOR      {,Intel,ACML}            (default is '${BLAS_VENDOR}')"
+    echo "BML_TESTING      {yes,no}                 (default is ${BML_TESTING})"
 }
 
 set_defaults() {
@@ -42,6 +43,7 @@ set_defaults() {
     FC="${FC:=gfortran}"
     BML_OPENMP=${BML_OPENMP:=yes}
     BLAS_VENDOR="${BLAS_VENDOR:=}"
+    BML_TESTING=${BML_TESTING:=yes}
 }
 
 create() {
