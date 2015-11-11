@@ -15,6 +15,9 @@ bml_diagonalize(
         case dense:
             bml_diagonalize_dense(A, eigenvalues, eigenvectors);
             break;
+        case ellpack:
+            LOG_ERROR("FIXME\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
