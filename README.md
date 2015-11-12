@@ -5,7 +5,9 @@ a shell script which goes through the necessary motions and builds the
 library, runs the tests, and installs it (in the `install` directory).
 Simply run:
 
-    $ ./build.sh
+    $ ./build.sh compile
+
+and the library will be built in the `build` directory.
 
 ## If the build fails ##
 
