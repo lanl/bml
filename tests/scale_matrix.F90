@@ -24,9 +24,9 @@ contains
     double precision, parameter :: alpha = 1.2
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-    double precision :: rel_tol = 1e-6
+    real :: abs_tol = 1e-6
 #else
-    double precision :: rel_tol = 1d-12
+    double precision :: abs_tol = 1d-12
 #endif
 
     type(bml_matrix_t) :: a
@@ -42,10 +42,12 @@ contains
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(c, c_dense)
 
-    if(maxval(abs(alpha*a_dense-c_dense)) > rel_tol) then
+    if(maxval(abs(alpha * a_dense - c_dense)) > abs_tol) then
        test_result = .false.
-       call bml_print_matrix("A", alpha*a_dense, 1, n, 1, n)
+       call bml_print_matrix("A", alpha * a_dense, 1, n, 1, n)
        call bml_print_matrix("C", c_dense, 1, n, 1, n)
+       print *, "maxval abs difference = ", maxval(abs(alpha * a_dense - c_dense))
+       print *, "abs_tol = ", abs_tol
        print *, "matrix element mismatch"
     else
        test_result = .true.
