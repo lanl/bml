@@ -82,3 +82,28 @@ bml_scale_dense(
             break;
     }
 }
+
+void
+bml_scale_inplace_dense(
+    const double scale_factor,
+    bml_matrix_dense_t * A)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_scale_inplace_dense_single_real(scale_factor, A);
+            break;
+        case double_real:
+            bml_scale_inplace_dense_double_real(scale_factor, A);
+            break;
+        case single_complex:
+            bml_scale_inplace_dense_single_complex(scale_factor, A);
+            break;
+        case double_complex:
+            bml_scale_inplace_dense_double_complex(scale_factor, A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}

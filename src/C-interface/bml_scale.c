@@ -63,3 +63,19 @@ bml_scale(
             break;
     }
 }
+
+void
+bml_scale_inplace(
+    const double scale_factor,
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_scale_inplace_dense(scale_factor, A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}

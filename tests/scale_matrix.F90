@@ -26,8 +26,8 @@ contains
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: c
 
-    REAL_TYPE, pointer :: a_dense(:, :)
-    REAL_TYPE, pointer :: c_dense(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
+    REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_scale(alpha, a, c)
@@ -35,7 +35,7 @@ contains
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(c, c_dense)
 
-    if(maxval(alpha*a_dense-c_dense) > 1e-12) then
+    if(maxval(abs(alpha*a_dense-c_dense)) > 1e-12) then
        test_result = .false.
        print *, "matrix element mismatch"
     else

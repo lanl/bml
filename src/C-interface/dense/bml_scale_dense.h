@@ -48,4 +48,24 @@ void bml_scale_dense_double_complex(
     const bml_matrix_dense_t * A,
     bml_matrix_dense_t * B);
 
+void bml_scale_inplace_dense(
+    const double scale_factor,
+    bml_matrix_dense_t * A);
+
+void bml_scale_inplace_dense_single_real(
+    const double scale_factor,
+    bml_matrix_dense_t * A);
+
+void bml_scale_inplace_dense_double_real(
+    const double scale_factor,
+    bml_matrix_dense_t * A);
+
+void bml_scale_inplace_dense_single_complex(
+    const double scale_factor,
+    bml_matrix_dense_t * A);
+
+void bml_scale_inplace_dense_double_complex(
+    const double scale_factor,
+    bml_matrix_dense_t * A);
+
 #endif
