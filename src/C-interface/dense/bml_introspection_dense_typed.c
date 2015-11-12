@@ -32,3 +32,36 @@ int TYPED_FUNC(
     }
     return bandwidth;
 }
+
+/** Return the bandwidth of a row in the matrix.
+ *
+ * \param A The bml matrix.
+ * \return The bandwidth of the matrix.
+ */
+int TYPED_FUNC(
+    bml_get_bandwidth_dense) (
+    const bml_matrix_dense_t * A)
+{
+    assert(A != NULL);
+
+    REAL_T *A_matrix = A->matrix;
+    int bandwidth = 0;
+    int row_bandwidth = 0;
+
+    for (int i = 0; i < A->N; i++)
+    {
+        row_bandwidth = 0;
+        for (int j = 0; j < A->N; j++)
+        {
+            if (is_above_threshold(A_matrix[ROWMAJOR(i, j, A->N)], 0))
+            {
+                row_bandwidth++;
+            }
+        }
+        if (row_bandwidth > bandwidth)
+        {
+            bandwidth = row_bandwidth;
+        }
+    }
+    return bandwidth;
+}

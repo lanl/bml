@@ -79,3 +79,29 @@ bml_get_row_bandwidth_dense(
             break;
     }
 }
+
+/** Return the bandwidth of a row in the matrix.
+ *
+ * \param A The bml matrix.
+ * \return The bandwidth of row i.
+ */
+int
+bml_get_bandwidth_dense(
+    const bml_matrix_dense_t * A)
+{
+    switch (bml_get_precision_dense(A))
+    {
+        case single_real:
+            return bml_get_bandwidth_dense_single_real(A);
+            break;
+        case double_real:
+            return bml_get_bandwidth_dense_double_real(A);
+            break;
+        case single_complex:
+            return bml_get_bandwidth_dense_single_complex(A);
+            break;
+        case double_complex:
+            return bml_get_bandwidth_dense_double_complex(A);
+            break;
+    }
+}

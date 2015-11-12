@@ -21,4 +21,7 @@ int bml_get_row_bandwidth(
     const bml_matrix_t * A,
     const int i);
 
+int bml_get_bandwidth(
+    const bml_matrix_t * A);
+
 #endif

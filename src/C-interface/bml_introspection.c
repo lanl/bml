@@ -135,3 +135,24 @@ bml_get_row_bandwidth(
     }
     return -1;
 }
+
+/** Return the bandwidth of a matrix.
+ *
+ * \param A The bml matrix.
+ * \return The bandwidth of row i.
+ */
+int
+bml_get_bandwidth(
+    const bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_get_bandwidth_dense(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return -1;
+}
