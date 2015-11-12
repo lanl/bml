@@ -9,6 +9,14 @@ Simply run:
 
 and the library will be built in the `build` directory.
 
+## Prerequisites ##
+
+In order to build the library, the following tools need to be installed:
+
+  - `gcc` with Fortran support
+  - `>=cmake-2.8.8`
+  - `>=python-2.7`
+
 ## If the build fails ##
 
 In case the build fails for some reason, please email the developers
