@@ -9,31 +9,28 @@ help() {
     cat <<EOF
 Usage:
 
-This script can be used to build and test the bml library. When run
-without arguments, it will create the subdirectories 'build' and
-'install', configure and build the library in 'build', run all tests,
-and install it in 'install'. If called with a command, each step can
-be executed separately, including all necessary previous steps. Known
-commands are:
+This script can be used to build and test the bml library.  The script has to
+be given a command. Known commands are:
 
-create     - Create the build directory
+create     - Create the build and install directories ('build' and 'install')
 configure  - Configure the build system
 compile    - Compile the sources
 install    - Install the compiled sources
 testing    - Run the test suite
 docs       - Generate the API documentation
 
-The following environment variables can be set to influence the build:
+The following environment variables can be set to influence the configuration
+step and the build:
 
 EOF
     set_defaults
-    echo "CMAKE_BUILD_TYPE {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
-    echo "CC               Path to C compiler       (default is ${CC})"
-    echo "CXX              Path to C++ compiler     (default is ${CXX})"
-    echo "FC               Path to Fortran compiler (default is ${FC})"
-    echo "BLAS_VENDOR      {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
-    echo "BML_OPENMP       {yes,no}                 (default is ${BML_OPENMP})"
-    echo "BML_TESTING      {yes,no}                 (default is ${BML_TESTING})"
+    echo "CMAKE_BUILD_TYPE   {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
+    echo "CC                 Path to C compiler       (default is ${CC})"
+    echo "CXX                Path to C++ compiler     (default is ${CXX})"
+    echo "FC                 Path to Fortran compiler (default is ${FC})"
+    echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
+    echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
+    echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
 }
 
 set_defaults() {
