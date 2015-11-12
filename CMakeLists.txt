@@ -336,7 +336,7 @@ if(TAR AND GIT)
       --format=tar.gz
       --prefix=bml-${PROJECT_VERSION}/
       --output=${CMAKE_BINARY_DIR}/bml-${PROJECT_VERSION}.tar.gz
-      HEAD
+      master
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   endif()
 else()
