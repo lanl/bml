@@ -18,7 +18,7 @@ compile    - Compile the sources
 install    - Install the compiled sources
 testing    - Run the test suite
 docs       - Generate the API documentation
-
+dist       - Generate a tar file (this only works with git)
 The following environment variables can be set to influence the configuration
 step and the build:
 
@@ -90,52 +90,54 @@ testing() {
     cd "${TOP_DIR}"
 }
 
-commands=("create" "configure" "compile" "install" "testing" "docs")
-
 if [[ $# -gt 0 ]]; then
     if [[ "$1" = "-h" || "$1" = "--help" ]]; then
         help
         exit 0
     fi
 
-    is_legal=0
-    for c in ${commands[@]}; do
-        if [[ "$1" = "${c}" ]]; then
-            is_legal=1
-            break
-        fi
-    done
-    if [[ ${is_legal} -ne 1 ]]; then
-        echo "unknown command $1"
-        exit 1
-    fi
-
-    if [[ "$1" = "create" ]]; then
-        create
-    elif [[ "$1" = "configure" ]]; then
-        create
-        configure
-    elif [[ "$1" = "docs" ]]; then
-        create
-        configure
-        docs
-    elif [[ "$1" = "compile" ]]; then
-        create
-        configure
-        compile
-    elif [[ "$1" = "install" ]]; then
-        create
-        configure
-        install
-    elif [[ "$1" = "testing" ]]; then
-        create
-        configure
-        compile
-        testing
-    else
-        echo "unknown command $1"
-        exit 1
-    fi
+    case "$1" in
+        "create")
+            create
+            ;;
+        "configure")
+            create
+            configure
+            ;;
+        "docs")
+            create
+            configure
+            docs
+            ;;
+        "compile")
+            create
+            configure
+            compile
+            ;;
+        "install")
+            create
+            configure
+            install
+            ;;
+        "testing")
+            create
+            configure
+            compile
+            testing
+            ;;
+        "dist")
+            if [[ ! -x ${GIT:="$(which git)"} ]]; then
+                echo "can not find git..."
+            else
+                ${GIT} archive --format=tar --prefix=bml/ HEAD | bzip2 > bml.tar.bz2
+                echo "written tar to bml.tar.bz2"
+            fi
+            ;;
+        *)
+            echo "unknown command $1"
+            exit 1
+            ;;
+    esac
 else
     echo "missing action"
     help
