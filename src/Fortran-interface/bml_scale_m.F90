@@ -13,6 +13,13 @@ module bml_scale_m
 
   interface
 
+     subroutine bml_scale_C (alpha, a, b) bind(C, name="bml_scale")
+       use, intrinsic :: iso_C_binding
+       real(C_DOUBLE), value, intent(in) :: alpha
+       type(C_PTR), value :: a
+       type(C_PTR), value :: b
+     end subroutine bml_scale_C
+
      subroutine bml_scale_inplace_C (alpha, a) bind(C, name="bml_scale_inplace")
        use, intrinsic :: iso_C_binding
        real(C_DOUBLE), value, intent(in) :: alpha
@@ -56,6 +63,8 @@ contains
     double precision, intent(in) :: alpha
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: c
+
+    call bml_scale_C(alpha, a%ptr, c%ptr)
 
   end subroutine scale_two
 

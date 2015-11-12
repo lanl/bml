@@ -102,6 +102,7 @@ test_function(
     }
     A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0,
                               M);
+    bml_free_memory(A_dense);
     B = bml_scale_new(scalar, A);
     C = bml_scale_new(scalar, B);
 

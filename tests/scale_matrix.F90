@@ -23,6 +23,12 @@ contains
 
     double precision, parameter :: alpha = 1.2
 
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
+    double precision :: rel_tol = 1e-6
+#else
+    double precision :: rel_tol = 1d-12
+#endif
+
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: c
 
@@ -30,13 +36,16 @@ contains
     REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, c)
     call bml_scale(alpha, a, c)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(c, c_dense)
 
-    if(maxval(abs(alpha*a_dense-c_dense)) > 1e-12) then
+    if(maxval(abs(alpha*a_dense-c_dense)) > rel_tol) then
        test_result = .false.
+       call bml_print_matrix("A", alpha*a_dense, 1, n, 1, n)
+       call bml_print_matrix("C", c_dense, 1, n, 1, n)
        print *, "matrix element mismatch"
     else
        test_result = .true.
