@@ -108,3 +108,30 @@ bml_get_M(
     }
     return -1;
 }
+
+/** Return the bandwidth of a row in the matrix.
+ *
+ * \param A The bml matrix.
+ * \param i The row index.
+ * \return The bandwidth of row i.
+ */
+int
+bml_get_row_bandwidth(
+    const bml_matrix_t * A,
+    const int i)
+{
+    if (i < 0 || i >= bml_get_N(A))
+    {
+        LOG_ERROR("row index %d outside of matrix\n", i);
+    }
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_get_row_bandwidth_dense(A, i);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return -1;
+}

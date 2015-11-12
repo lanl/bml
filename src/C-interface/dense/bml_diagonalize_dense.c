@@ -32,7 +32,7 @@ bml_diagonalize_dense_single_real(
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
     memcpy(eigenvectors->matrix, evecs, A->N * A->N * sizeof(float));
-    for(int i = 0; i < A->N; i++)
+    for (int i = 0; i < A->N; i++)
     {
         eigenvalues[i] = (double) evals[i];
     }
@@ -57,7 +57,7 @@ bml_diagonalize_dense_double_real(
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
     C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
     memcpy(eigenvectors->matrix, evecs, A->N * A->N * sizeof(double));
-    for(int i = 0; i < A->N; i++)
+    for (int i = 0; i < A->N; i++)
     {
         eigenvalues[i] = (double) evals[i];
     }

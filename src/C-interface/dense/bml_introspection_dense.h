@@ -12,4 +12,24 @@ int bml_get_N_dense(
 int bml_get_M_dense(
     const bml_matrix_dense_t * A);
 
+int bml_get_row_bandwidth_dense(
+    const bml_matrix_dense_t * A,
+    const int i);
+
+int bml_get_row_bandwidth_dense_single_real(
+    const bml_matrix_dense_t * A,
+    const int i);
+
+int bml_get_row_bandwidth_dense_double_real(
+    const bml_matrix_dense_t * A,
+    const int i);
+
+int bml_get_row_bandwidth_dense_single_complex(
+    const bml_matrix_dense_t * A,
+    const int i);
+
+int bml_get_row_bandwidth_dense_double_complex(
+    const bml_matrix_dense_t * A,
+    const int i);
+
 #endif

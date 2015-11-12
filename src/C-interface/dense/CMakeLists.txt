@@ -40,6 +40,7 @@ set(SOURCES-DENSE-TYPED
   bml_allocate_dense_typed.c
   bml_convert_dense_typed.c
   bml_copy_dense_typed.c
+  bml_introspection_dense_typed.c
   bml_multiply_dense_typed.c
   bml_scale_dense_typed.c
   bml_threshold_dense_typed.c

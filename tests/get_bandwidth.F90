@@ -30,9 +30,9 @@ contains
     test_result = .true.
 
     do i = 1, n
-       if(bml_get_bandwidth(a, i) /= 1) then
+       if(bml_get_row_bandwidth(a, i) /= 1) then
           print *, "Wrong bandwidth on row ", i
-          print *, "Should be 1, but is ", bml_get_bandwidth(a, i)
+          print *, "Should be 1, but is ", bml_get_row_bandwidth(a, i)
           call bml_print_matrix("A", a, 1, n, 1, n)
           test_result = .false.
           return
