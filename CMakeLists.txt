@@ -320,19 +320,25 @@ if(BML_TESTING)
   endif()
 endif()
 
-list(APPEND DIST_FILES
-  ${CMAKE_SOURCE_DIR}/CMakeLists.txt
-  ${CMAKE_SOURCE_DIR}/README.md
-  ${CMAKE_SOURCE_DIR}/bml-manual.pdf)
-
 find_program(TAR tar)
-if(TAR)
-  message(STATUS "Creating dist target")
-  add_custom_target(dist
-    ${TAR}
-    -C ${CMAKE_SOURCE_DIR}
-    -cvf ${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}-${PROJECT_VERSION}.tar
-    ${DIST_FILES})
+find_program(GIT git)
+if(TAR AND GIT)
+  execute_process(COMMAND ${GIT} status
+    RESULT_VARIABLE IS_GIT_REPOSITORY
+    OUTPUT_QUIET
+    ERROR_QUIET)
+  if(NOT IS_GIT_REPOSITORY EQUAL 0)
+    message(WARNING "Not in git repository, disabling dist target")
+  else()
+    message(STATUS "Creating dist target")
+    add_custom_target(dist
+      COMMAND ${GIT} archive
+      --format=tar.gz
+      --prefix=bml-${PROJECT_VERSION}/
+      --output=${CMAKE_BINARY_DIR}/bml-${PROJECT_VERSION}.tar.gz
+      HEAD
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  endif()
 else()
   add_custom_target(dist)
 endif()

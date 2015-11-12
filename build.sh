@@ -90,6 +90,10 @@ testing() {
     cd "${TOP_DIR}"
 }
 
+dist() {
+    make -C "${BUILD_DIR}" dist 2>&1 | tee -a "${LOG_FILE}"
+}
+
 if [[ $# -gt 0 ]]; then
     if [[ "$1" = "-h" || "$1" = "--help" ]]; then
         help
@@ -126,12 +130,9 @@ if [[ $# -gt 0 ]]; then
             testing
             ;;
         "dist")
-            if [[ ! -x ${GIT:="$(which git)"} ]]; then
-                echo "can not find git..."
-            else
-                ${GIT} archive --format=tar --prefix=bml/ HEAD | bzip2 > bml.tar.bz2
-                echo "written tar to bml.tar.bz2"
-            fi
+            create
+            configure
+            dist
             ;;
         *)
             echo "unknown command $1"
