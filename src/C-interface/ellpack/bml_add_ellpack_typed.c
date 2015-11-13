@@ -50,7 +50,7 @@ void TYPED_FUNC(
     memset(ix, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
-#pragma omp parallel for default(none) firstprivate(x,ix) shared(N,M,A_index,A_value,A_nnz,B_index,B_value,B_nnz)
+#pragma omp parallel for default(none) firstprivate(x, ix) shared(N, M, A_index, A_value, A_nnz, B_index, B_value, B_nnz)
     for (int i = 0; i < N; i++)
     {
         int l = 0;

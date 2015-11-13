@@ -74,6 +74,9 @@ bml_scale_inplace(
         case dense:
             bml_scale_inplace_dense(scale_factor, A);
             break;
+    case ellpack:
+        bml_scale_inplace_ellpack(scale_factor, A);
+        break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

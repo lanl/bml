@@ -48,4 +48,8 @@ void bml_scale_ellpack_double_complex(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B);
 
+void bml_scale_inplace_ellpack(
+    const double scale_factor,
+    bml_matrix_ellpack_t * A);
+
 #endif
