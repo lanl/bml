@@ -16,6 +16,7 @@ module bml_allocate_m
 
   !> The interfaces to the C API.
   interface
+
      subroutine bml_deallocate_C(a) bind(C, name="bml_deallocate")
        use, intrinsic :: iso_C_binding
        type(C_PTR) :: a

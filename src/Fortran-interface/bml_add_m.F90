@@ -13,7 +13,6 @@ module bml_add_m
        real(C_DOUBLE), value, intent(in) :: alpha
        real(C_DOUBLE), value, intent(in) :: beta
        real(C_DOUBLE), value, intent(in) :: threshold
-
      end subroutine bml_add_C
 
      subroutine bml_add_identity_C(a, beta, threshold) bind(C, name="bml_add_identity")
@@ -36,7 +35,6 @@ module bml_add_m
   !> Add identity matrix to a matrix.
   interface bml_add_identity
      module procedure add_identity_one
-     module procedure add_identity_two
   end interface bml_add_identity
   !> @}
 
@@ -89,27 +87,5 @@ contains
     call bml_add_identity_C(a%ptr, alpha, 0d0)
 
   end subroutine add_identity_one
-
-  !> Add a scaled identity matrix to a bml matrix.
-  !!
-  !! \f$ C \leftarrow \alpha A + \beta \mathrm{Id} \f$
-  !!
-  !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
-  !! 1.
-  !!
-  !! \param alpha Factor \f$ \alpha \f$
-  !! \param a Matrix A
-  !! \param c Matrix C
-  !! \param beta Factor \f$ \beta \f$
-  subroutine add_identity_two(alpha, a, c, beta)
-
-    use bml_types_m
-
-    double precision, intent(in) :: alpha
-    type(bml_matrix_t), intent(in) :: a
-    double precision, intent(in) :: beta
-    type(bml_matrix_t), intent(inout) :: c
-
-  end subroutine add_identity_two
 
 end module bml_add_m
