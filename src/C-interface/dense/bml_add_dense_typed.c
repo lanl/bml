@@ -1,11 +1,12 @@
-#include "../typed.h"
 #include "../blas.h"
-#include "bml_allocate.h"
+#include "../macros.h"
+#include "../typed.h"
 #include "bml_add.h"
-#include "bml_types.h"
+#include "bml_add_dense.h"
+#include "bml_allocate.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
-#include "bml_add_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -25,7 +26,7 @@
  */
 void TYPED_FUNC(
     bml_add_dense) (
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta)
@@ -50,14 +51,13 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_dense) (
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     const double beta)
 {
     REAL_T beta_ = beta;
-    int nElems = A->N * A->N;
-    int inc = 1;
-
-    bml_matrix_dense_t *Id = TYPED_FUNC(bml_identity_matrix_dense) (A->N);
-    C_BLAS(AXPY) (&nElems, &beta_, Id->matrix, &inc, A->matrix, &inc);
-    bml_deallocate_dense(Id);
+    REAL_T *A_matrix = (REAL_T*) A->matrix;
+    for(int i = 0; i < A->N; i++)
+    {
+        A_matrix[ROWMAJOR(i, i, A->N)] += beta;
+    }
 }

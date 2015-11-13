@@ -5,6 +5,7 @@ module bml_add_m
   private
 
   interface
+
      subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
@@ -12,7 +13,16 @@ module bml_add_m
        real(C_DOUBLE), value, intent(in) :: alpha
        real(C_DOUBLE), value, intent(in) :: beta
        real(C_DOUBLE), value, intent(in) :: threshold
+
      end subroutine bml_add_C
+
+     subroutine bml_add_identity_C(a, beta, threshold) bind(C, name="bml_add_identity")
+       use, intrinsic :: iso_C_binding
+       type(C_PTR), value :: a
+       real(C_DOUBLE), value, intent(in) :: beta
+       real(C_DOUBLE), value, intent(in) :: threshold
+     end subroutine bml_add_identity_C
+
   end interface
 
   !> \addtogroup add_group_Fortran
@@ -61,7 +71,7 @@ contains
 
   !> Add a scaled identity matrix to a bml matrix.
   !!
-  !! \f$ A \leftarrow \alpha A + \beta \mathrm{Id} \f$
+  !! \f$ A \leftarrow A + \beta \mathrm{Id} \f$
   !!
   !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
   !! 1.
@@ -69,13 +79,14 @@ contains
   !! \param a Matrix A
   !! \param alpha Factor \f$ \alpha \f$
   !! \param beta Factor \f$ \beta \f$
-  subroutine add_identity_one(a, alpha, beta)
+  subroutine add_identity_one(a, alpha)
 
     use bml_types_m
 
-    double precision, intent(in) :: alpha
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: beta
+    double precision, intent(in) :: alpha
+
+    call bml_add_identity_C(a%ptr, alpha, 0d0)
 
   end subroutine add_identity_one
 

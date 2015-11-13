@@ -6,14 +6,14 @@
 #include "bml_types.h"
 
 void bml_add(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     const bml_matrix_t * B,
     const double alpha,
     const double beta,
     const double threshold);
 
 void bml_add_identity(
-    const bml_matrix_t * A,
+    bml_matrix_t * A,
     const double beta,
     const double threshold);
 

@@ -20,7 +20,7 @@
  */
 void
 bml_add_dense(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta)
@@ -56,7 +56,7 @@ bml_add_dense(
  */
 void
 bml_add_identity_dense(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     const double beta)
 {
     switch (A->matrix_precision)
