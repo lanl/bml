@@ -19,9 +19,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
-set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -save-temps -std=c99)
+set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit --coverage -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O2 -g -std=c99)
-set(GNU_Fortran_FLAGS_DEBUG -O0 -g -fcheck=all -ffree-line-length-none)
+set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O2 -g -ffree-line-length-none)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit -traceback)
@@ -161,8 +161,6 @@ elseif(BLAS_VENDOR STREQUAL "ACML")
   set(BLAS_FOUND TRUE)
   set(LAPACK_FOUND TRUE)
 endif()
-
-message(STATUS "Using BLAS_LIBRARIES ${BLAS_LIBRARIES}")
 
 if(NOT (BLAS_LIBRARIES OR BLAS_FOUND))
   include(FindBLAS)
