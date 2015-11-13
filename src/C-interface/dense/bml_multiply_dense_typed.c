@@ -24,18 +24,14 @@ void TYPED_FUNC(
     bml_multiply_dense) (
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
-    const bml_matrix_dense_t * C,
+    bml_matrix_dense_t * C,
     const double alpha,
     const double beta)
 {
-    REAL_T salpha = (REAL_T) alpha;
-    REAL_T sbeta = (REAL_T) beta;
-    char trans = 'N';
-
-    int hdim = A->N;
-
-    C_BLAS(GEMM) (&trans, &trans, &hdim, &hdim, &hdim, &salpha, A->matrix,
-                  &hdim, B->matrix, &hdim, &sbeta, C->matrix, &hdim);
+    REAL_T alpha_ = (REAL_T) alpha;
+    REAL_T beta_ = (REAL_T) beta;
+    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha_, A->matrix,
+                  &A->N, B->matrix, &A->N, &beta_, C->matrix, &A->N);
 }
 
 /** Matrix multiply.
@@ -50,16 +46,12 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_multiply_x2_dense) (
     const bml_matrix_dense_t * X,
-    const bml_matrix_dense_t * X2)
+    bml_matrix_dense_t * X2)
 {
-    REAL_T salpha = (REAL_T) 1.0;
-    REAL_T sbeta = (REAL_T) 1.0;
-    char trans = 'N';
-
-    int hdim = X->N;
-
-    C_BLAS(GEMM) (&trans, &trans, &hdim, &hdim, &hdim, &salpha, X->matrix,
-                  &hdim, X->matrix, &hdim, &sbeta, X2->matrix, &hdim);
+    REAL_T alpha = (REAL_T) 1.0;
+    REAL_T beta = (REAL_T) 1.0;
+    C_BLAS(GEMM) ("N", "N", &X->N, &X->N, &X->N, &alpha, X->matrix,
+                  &X->N, X->matrix, &X->N, &beta, X2->matrix, &X->N);
 }
 
 /** Matrix multiply.
@@ -76,14 +68,10 @@ void TYPED_FUNC(
     bml_multiply_AB_dense) (
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
-    const bml_matrix_dense_t * C)
+    bml_matrix_dense_t * C)
 {
-    REAL_T salpha = (REAL_T) 1.0;
-    REAL_T sbeta = (REAL_T) 1.0;
-    char trans = 'N';
-
-    int hdim = A->N;
-
-    C_BLAS(GEMM) (&trans, &trans, &hdim, &hdim, &hdim, &salpha, A->matrix,
-                  &hdim, B->matrix, &hdim, &sbeta, C->matrix, &hdim);
+    REAL_T alpha = (REAL_T) 1.0;
+    REAL_T beta = (REAL_T) 0.0;
+    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha, A->matrix,
+                  &A->N, B->matrix, &A->N, &beta, C->matrix, &A->N);
 }

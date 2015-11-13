@@ -23,7 +23,7 @@ void
 bml_multiply(
     const bml_matrix_t * A,
     const bml_matrix_t * B,
-    const bml_matrix_t * C,
+    bml_matrix_t * C,
     const double alpha,
     const double beta,
     const double threshold)
@@ -44,18 +44,18 @@ bml_multiply(
 
 /** Matrix multiply.
  *
- * X2 = X * X
+ * \f$ X^2 \leftarrow X \, X \f$
  *
  * \ingroup multiply_group_C
  *
  * \param X Matrix X
- * \param X2 MatrixX2 
+ * \param X2 MatrixX2
  * \param threshold Threshold for multiplication
  */
 void
 bml_multiply_x2(
     const bml_matrix_t * X,
-    const bml_matrix_t * X2,
+    bml_matrix_t * X2,
     const double threshold)
 {
     switch (bml_get_type(X))
@@ -87,7 +87,7 @@ void
 bml_multiply_AB(
     const bml_matrix_t * A,
     const bml_matrix_t * B,
-    const bml_matrix_t * C,
+    bml_matrix_t * C,
     const double threshold)
 {
     switch (bml_get_type(A))

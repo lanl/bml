@@ -1,4 +1,5 @@
 #include "bml_introspection_dense.h"
+#include "bml_logger.h"
 
 #include <stdlib.h>
 
@@ -77,7 +78,14 @@ bml_get_row_bandwidth_dense(
         case double_complex:
             return bml_get_row_bandwidth_dense_double_complex(A, i);
             break;
+        case precision_uninitialized:
+            LOG_ERROR("precision not initialized");
+            break;
+        default:
+            LOG_ERROR("fatal logic error\n");
+            break;
     }
+    return -1;
 }
 
 /** Return the bandwidth of a row in the matrix.
@@ -103,5 +111,12 @@ bml_get_bandwidth_dense(
         case double_complex:
             return bml_get_bandwidth_dense_double_complex(A);
             break;
+        case precision_uninitialized:
+            LOG_ERROR("precision not initialized");
+            break;
+        default:
+            LOG_ERROR("fatal logic error\n");
+            break;
     }
+    return -1;
 }

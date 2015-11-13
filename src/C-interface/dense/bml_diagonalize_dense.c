@@ -49,7 +49,6 @@ bml_diagonalize_dense_double_real(
 {
     double *evecs = calloc(A->N * A->N, sizeof(double));
     double *evals = calloc(A->N, sizeof(double));
-    double *A_matrix = NULL;
     int lwork = 3 * A->N;
     double *work = calloc(lwork, sizeof(double));
     int info;

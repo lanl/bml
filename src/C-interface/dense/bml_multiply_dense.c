@@ -23,7 +23,7 @@ void
 bml_multiply_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
-    const bml_matrix_dense_t * C,
+    bml_matrix_dense_t * C,
     const double alpha,
     const double beta)
 {
@@ -59,7 +59,7 @@ bml_multiply_dense(
 void
 bml_multiply_x2_dense(
     const bml_matrix_dense_t * X,
-    const bml_matrix_dense_t * X2)
+    bml_matrix_dense_t * X2)
 {
     switch (X->matrix_precision)
     {
@@ -95,7 +95,7 @@ void
 bml_multiply_AB_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
-    const bml_matrix_dense_t * C)
+    bml_matrix_dense_t * C)
 {
     switch (A->matrix_precision)
     {

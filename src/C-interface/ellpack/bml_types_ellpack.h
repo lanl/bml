@@ -16,7 +16,7 @@ struct bml_matrix_ellpack_t
     int M;
     /** The value matrix. */
     void *value;
-    /** The indeces matrix. */
+    /** The index matrix. */
     int *index;
     /** The vector of non-zeros per row */
     int *nnz;

@@ -68,5 +68,5 @@ void TYPED_FUNC(
     int number_elements = A->N * A->N;
     int inc = 1;
 
-    C_BLAS(SCAL) (&number_elements, &scale_factor_, A->matrix, &inc);
+    C_BLAS(SCAL) (&number_elements, &scale_factor_, A->value, &inc);
 }
