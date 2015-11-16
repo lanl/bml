@@ -61,7 +61,7 @@ test_function(
     {
         LOG_ERROR
             ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
-             traceA, rel_diff);
+             traceA, N, rel_diff);
         return -1;
     }
     if ((rel_diff =

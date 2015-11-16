@@ -68,22 +68,14 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #pragma omp parallel for default(none) shared(A_value,A_index,A_nnz)
     for (int i = 0; i < N; i++)
     {
-        int jind = 1;
+        int jind = 0;
         for (int j = 0; j < M; j++)
         {
             REAL_T rvalue = rand() / (REAL_T) RAND_MAX;
 
-            if (i == j)
-            {
-                A_value[ROWMAJOR(i, 0, M)] = rvalue;
-                A_index[ROWMAJOR(i, 0, M)] = j;
-            }
-            else
-            {
-                A_value[ROWMAJOR(i, jind, M)] = rvalue;
-                A_index[ROWMAJOR(i, jind, M)] = j;
-                jind++;
-            }
+            A_value[ROWMAJOR(i, jind, M)] = rvalue;
+            A_index[ROWMAJOR(i, jind, M)] = j;
+            jind++;
         }
         A_nnz[i] = jind;
     }

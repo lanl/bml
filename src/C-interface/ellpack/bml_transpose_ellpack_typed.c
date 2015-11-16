@@ -40,20 +40,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-    // First move diagonal elements over
-#pragma omp parallel for default(none) shared(N,M,B_index,B_value,B_nnz,A_value)
-    for (int i = 0; i < N; i++)
-    {
-        B_index[ROWMAJOR(i, 0, M)] = i;
-        B_value[ROWMAJOR(i, 0, M)] = A_value[ROWMAJOR(i, 0, M)];
-        B_nnz[i] = 1;
-    }
-
-    // Transpose off-diagonal elements
+    // Transpose all elements
 #pragma omp parallel for default(none) shared(N,M,B_index,B_value,B_nnz,A_index,A_value,A_nnz)
     for (int i = 0; i < N; i++)
     {
-        for (int j = 1; j < A_nnz[i]; j++)
+        for (int j = 0; j < A_nnz[i]; j++)
         {
             int trow = A_index[ROWMAJOR(i, j, M)];
 #pragma omp critical
@@ -88,14 +79,12 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-    // Transpose off-diagonal elements
-    // No need to move diagonal elements in first column
 #pragma omp parallel for default(none) shared(N,M,A_value,A_index,A_nnz)
     for (int i = 0; i < N; i++)
     {
-        for (int j = A_nnz[i] - 1; j > 0; j--)
+        for (int j = A_nnz[i] - 1; j >= 0; j--)
         {
-            if (A_index[i * M + j] > i)
+            if (A_index[ROWMAJOR(i, j, M)] > i)
             {
                 int ind = A_index[ROWMAJOR(i, j, M)];
                 int exchangeDone = 0;

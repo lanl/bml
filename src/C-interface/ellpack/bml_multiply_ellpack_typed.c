@@ -129,7 +129,7 @@ void TYPED_FUNC(
             exit(-1);
         }
 
-        int ll = 1;
+        int ll = 0;
         for (int j = 0; j < l; j++)
         {
             int jp = X2_index[ROWMAJOR(i, j, M)];
@@ -138,8 +138,9 @@ void TYPED_FUNC(
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;
-                X2_value[ROWMAJOR(i, 0, M)] = xtmp;
-                X2_index[ROWMAJOR(i, 0, M)] = jp;
+                X2_value[ROWMAJOR(i, ll, M)] = xtmp;
+                X2_index[ROWMAJOR(i, ll, M)] = jp;
+                ll++;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
@@ -223,7 +224,7 @@ void TYPED_FUNC(
             exit(-1);
         }
 
-        int ll = 1;
+        int ll = 0;
         for (int j = 0; j < l; j++)
         {
             int jp = C_index[ROWMAJOR(i, j, M)];
@@ -231,8 +232,9 @@ void TYPED_FUNC(
             // Diagonal elements are saved in first column
             if (jp == i)
             {
-                C_value[ROWMAJOR(i, 0, M)] = xtmp;
-                C_index[ROWMAJOR(i, 0, M)] = jp;
+                C_value[ROWMAJOR(i, ll, M)] = xtmp;
+                C_index[ROWMAJOR(i, ll, M)] = jp;
+                ll++;
             }
             else if (is_above_threshold(xtmp, threshold))
             {

@@ -40,23 +40,15 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #pragma omp parallel for default(none) shared(A_value,A_index,A_nnz,dense_A)
     for (int i = 0; i < N; i++)
     {
-        A_nnz[i] = 1;
+        A_nnz[i] = 0;
         for (int j = 0; j < N; j++)
         {
             if (is_above_threshold(dense_A[ROWMAJOR(i, j, N)], threshold))
             {
-                if (i == j)
-                {
-                    A_value[ROWMAJOR(i, 0, M)] = dense_A[ROWMAJOR(i, j, N)];
-                    A_index[ROWMAJOR(i, 0, M)] = j;
-                }
-                else
-                {
-                    A_value[ROWMAJOR(i, A_nnz[i], M)] =
-                        dense_A[ROWMAJOR(i, j, N)];
-                    A_index[ROWMAJOR(i, A_nnz[i], M)] = j;
-                    A_nnz[i]++;
-                }
+                A_value[ROWMAJOR(i, A_nnz[i], M)] =
+                    dense_A[ROWMAJOR(i, j, N)];
+                A_index[ROWMAJOR(i, A_nnz[i], M)] = j;
+                A_nnz[i]++;
             }
         }
     }
