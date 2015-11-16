@@ -25,6 +25,7 @@
  * \ingroup convert_group_C
  *
  * \param A The bml matrix
+ * \param order The matrix element order
  * \return The dense matrix
  */
 void *

@@ -7,16 +7,50 @@ module bml_interface_m
 
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
+  !!
+  !! Matrix type is unitialized.
   integer, parameter :: bml_matrix_type_uninitialized_enum_id = 0
+
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix type is dense.
   integer, parameter :: bml_matrix_type_dense_enum_id = 1
+
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix type is ellpack.
   integer, parameter :: bml_matrix_type_ellpack_enum_id = 2
 
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix precision is unitialized.
   integer, parameter :: bml_matrix_precision_uninitialized_id = 0
+
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix precision is single real.
   integer, parameter :: bml_matrix_precision_single_real_enum_id = 1
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix precision is double real.
   integer, parameter :: bml_matrix_precision_double_real_enum_id = 2
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix precision is single complex.
   integer, parameter :: bml_matrix_precision_single_complex_enum_id = 3
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Matrix precision is double complex.
   integer, parameter :: bml_matrix_precision_double_complex_enum_id = 4
 
+  !> The dense matrix element order.
   integer, parameter :: BML_DENSE_COLUMN_MAJOR = 1
 
   public :: get_enum_id

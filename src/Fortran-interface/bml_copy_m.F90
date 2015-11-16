@@ -23,8 +23,8 @@ contains
   !!
   !! \ingroup copy_group_F
   !!
-  !! \param A Matrix to copy
-  !! \return  A Copy of A
+  !! \param a Matrix to copy
+  !! \param b The copy
   subroutine bml_copy(a, b)
 
     use bml_types_m

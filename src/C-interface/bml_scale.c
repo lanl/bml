@@ -64,6 +64,13 @@ bml_scale(
     }
 }
 
+/** Scale a matrix in place, i.e. the matrix is overwritten.
+ *
+ * \ingroup scale_group_C
+ *
+ * \param scale_factor Scale factor for A
+ * \param A [inout] Matrix to scale
+ */
 void
 bml_scale_inplace(
     const double scale_factor,

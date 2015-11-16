@@ -10,8 +10,6 @@
 
 /** Print a bml vector.
  *
- * \param N The number of rows/columns.
- * \param matrix_precision The real precision.
  * \param v The vector.
  * \param i_l The lower row index.
  * \param i_u The upper row index.
@@ -27,8 +25,6 @@ bml_print_bml_vector(
 
 /** Print a dense matrix.
  *
- * \param N The number of rows/columns.
- * \param matrix_precision The real precision.
  * \param A The matrix.
  * \param i_l The lower row index.
  * \param i_u The upper row index.
