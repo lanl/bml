@@ -28,14 +28,22 @@ bml_diagonalize_dense_single_real(
     int lwork = 3 * A->N;
     float *work = calloc(lwork, sizeof(float));
     int info;
+    float *A_matrix;
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-    memcpy(eigenvectors->matrix, evecs, A->N * A->N * sizeof(float));
+
+    A_matrix = (float *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
         eigenvalues[i] = (double) evals[i];
+        for (int j = 0; j < A->N; j++)
+        {
+            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+                evecs[COLMAJOR(i, j, A->N, A->N)];
+        }
     }
+
     free(evals);
     free(evecs);
     free(work);
@@ -52,14 +60,22 @@ bml_diagonalize_dense_double_real(
     int lwork = 3 * A->N;
     double *work = calloc(lwork, sizeof(double));
     int info;
+    double *A_matrix;
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
     C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-    memcpy(eigenvectors->matrix, evecs, A->N * A->N * sizeof(double));
+
+    A_matrix = (double *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
         eigenvalues[i] = (double) evals[i];
+        for (int j = 0; j < A->N; j++)
+        {
+            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+                evecs[COLMAJOR(i, j, A->N, A->N)];
+        }
     }
+
     free(evals);
     free(evecs);
     free(work);
@@ -97,7 +113,8 @@ bml_diagonalize_dense_single_complex(
         eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, A->N)] = evecs[ROWMAJOR(i, j, A->N)];
+            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+                evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
 
@@ -142,7 +159,8 @@ bml_diagonalize_dense_double_complex(
         eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
-            A_matrix[ROWMAJOR(i, j, A->N)] = evecs[ROWMAJOR(i, j, A->N)];
+            A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
+                evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
 
