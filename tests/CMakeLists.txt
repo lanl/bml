@@ -82,6 +82,7 @@ set(FORTRAN-TESTS
   #get_matrix.F90
   multiply_matrix.F90
   scale_matrix.F90
+  threshold_matrix.F90
   trace_matrix.F90
   transpose_matrix.F90)
 

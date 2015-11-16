@@ -44,6 +44,54 @@ bml_print_bml_matrix(
         case dense:
             bml_print_bml_matrix_dense(A, i_l, i_u, j_l, j_u);
             break;
+        case ellpack:
+            switch (bml_get_precision(A))
+            {
+                case single_real:
+                {
+                    float *A_dense =
+                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), single_real,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    free(A_dense);
+                    break;
+                }
+                case double_real:
+                {
+                    double *A_dense =
+                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), double_real,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    free(A_dense);
+                    break;
+                }
+                case single_complex:
+                {
+                    float *A_dense =
+                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), single_complex,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    free(A_dense);
+                    break;
+                }
+                case double_complex:
+                {
+                    double *A_dense =
+                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    bml_print_dense_matrix(bml_get_N(A), double_complex,
+                                           dense_row_major, A_dense, i_l, i_u,
+                                           j_l, j_u);
+                    free(A_dense);
+                    break;
+                }
+                default:
+                    LOG_ERROR("unknown precision\n");
+                    break;
+            }
+            break;
         default:
             LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
             break;

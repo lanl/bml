@@ -36,7 +36,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 #pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
     for (int i = 0; i < N * N; i++)
     {
-        if (fabs(A_matrix[i]) > threshold)
+        if (is_above_threshold(A_matrix[i], threshold))
         {
             B_matrix[i] = A_matrix[i];
         }
@@ -54,7 +54,7 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_dense) (
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     const double threshold)
 {
     int N = A->N;
@@ -63,7 +63,7 @@ void TYPED_FUNC(
 #pragma omp parallel for default(none) shared(N, A_matrix)
     for (int i = 0; i < N * N; i++)
     {
-        if (fabs(A_matrix[i]) < threshold)
+        if (!is_above_threshold(A_matrix[i], threshold))
         {
             A_matrix[i] = (REAL_T) 0.0;
         }

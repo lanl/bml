@@ -55,7 +55,7 @@ bml_threshold_new_dense(
  */
 void
 bml_threshold_dense(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     const double threshold)
 {
     switch (A->matrix_precision)
@@ -65,6 +65,12 @@ bml_threshold_dense(
             break;
         case double_real:
             bml_threshold_dense_double_real(A, threshold);
+            break;
+        case single_complex:
+            bml_threshold_dense_single_complex(A, threshold);
+            break;
+        case double_complex:
+            bml_threshold_dense_double_complex(A, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
