@@ -21,10 +21,17 @@ module bml_introspection_m
        integer(C_INT) :: bml_get_row_bandwidth_C
      end function bml_get_row_bandwidth_C
 
+     function bml_get_bandwidth_C(a) bind(C, name="bml_get_bandwidth")
+       use, intrinsic :: iso_C_binding
+       type(C_PTR), value, intent(in) :: a
+       integer(C_INT) :: bml_get_bandwidth_C
+     end function bml_get_bandwidth_C
+
   end interface
 
   public :: bml_get_N
   public :: bml_get_row_bandwidth
+  public :: bml_get_bandwidth
 
 contains
 
@@ -59,5 +66,20 @@ contains
     bml_get_row_bandwidth = bml_get_row_bandwidth_C(a%ptr, i-1)
 
   end function bml_get_row_bandwidth
+
+  !> Get the bandwidth of non-zero elements of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bandwidth of non-zero elements (bandwidth) of the matrix.
+  function bml_get_bandwidth(a)
+
+    use bml_types_m
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_bandwidth
+
+    bml_get_bandwidth = bml_get_bandwidth_C(a%ptr)
+
+  end function bml_get_bandwidth
 
 end module bml_introspection_m

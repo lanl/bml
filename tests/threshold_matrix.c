@@ -23,10 +23,12 @@ test_function(
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
     B = bml_threshold_new(A, threshold);
 
-    A_dense = bml_convert_to_dense(A);
-    B_dense = bml_convert_to_dense(B);
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
+    A_dense = bml_convert_to_dense(A, dense_row_major);
+    B_dense = bml_convert_to_dense(B, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
     for (int i = 0; i < N * N; i++)
     {
         if (fabs(B_dense[i]) > 0 && fabs(B_dense[i]) < threshold)

@@ -74,6 +74,7 @@ endforeach()
 set(FORTRAN-TESTS
   add_matrix.F90
   allocate_matrix.F90
+  bandwidth.F90
   convert_matrix.F90
   copy_matrix.F90
   diagonalize_matrix.F90

@@ -55,9 +55,9 @@ void TYPED_FUNC(
     const double beta)
 {
     REAL_T beta_ = beta;
-    REAL_T *A_matrix = (REAL_T*) A->matrix;
-    for(int i = 0; i < A->N; i++)
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    for (int i = 0; i < A->N; i++)
     {
-        A_matrix[ROWMAJOR(i, i, A->N)] += beta;
+        A_matrix[ROWMAJOR(i, i, A->N)] += beta_;
     }
 }

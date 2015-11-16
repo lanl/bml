@@ -21,11 +21,13 @@ test_function(
     {
         A_dense[i] = rand() / (double) RAND_MAX;
     }
-    A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense,
-                              0, M);
-    B_dense = bml_export_to_dense(A);
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
+    A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
+                              N, A_dense, 0, M);
+    B_dense = bml_export_to_dense(A, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
     for (int i = 0; i < N * N; i++)
     {
         if (fabs(A_dense[i] - B_dense[i]) > 1e-12)

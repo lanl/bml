@@ -18,12 +18,14 @@ test_function(
     REAL_T *B_dense = NULL;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    A_dense = bml_export_to_dense(A);
-    B = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0,
-                              M);
-    B_dense = bml_export_to_dense(B);
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
+                              N, A_dense, 0, M);
+    B_dense = bml_export_to_dense(B, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -56,8 +58,9 @@ test_function(
     bml_deallocate(&A);
     bml_deallocate(&B);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
-    A_dense = bml_convert_to_dense(A);
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
+    A_dense = bml_convert_to_dense(A, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)

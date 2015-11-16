@@ -10,6 +10,6 @@ bml_print_bml_matrix_dense(
     const int j_l,
     const int j_u)
 {
-    bml_print_dense_matrix(A->N, A->matrix_precision, A->matrix, i_l, i_u,
-                           j_l, j_u);
+    bml_print_dense_matrix(A->N, A->matrix_precision, dense_row_major,
+                           A->matrix, i_l, i_u, j_l, j_u);
 }

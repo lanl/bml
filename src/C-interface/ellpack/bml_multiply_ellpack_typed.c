@@ -21,22 +21,22 @@
 
 /** Matrix multiply.
  *
- * C = alpha * A * B + beta * C
+ * \f$ C \leftarrow \alpha A \, B + \beta C \f$
  *
- *  \ingroup multiply_group
+ * \ingroup multiply_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param C Matrix C
- *  \param alpha Scalar factor multiplied by A * B
- *  \param beta Scalar factor multiplied by C
- *  \param threshold Used for sparse multiply
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param alpha Scalar factor multiplied by A * B
+ * \param beta Scalar factor multiplied by C
+ * \param threshold Used for sparse multiply
  */
 void TYPED_FUNC(
     bml_multiply_ellpack) (
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
-    const bml_matrix_ellpack_t * C,
+    bml_matrix_ellpack_t * C,
     const double alpha,
     const double beta,
     const double threshold)
@@ -64,18 +64,18 @@ void TYPED_FUNC(
 
 /** Matrix multiply.
  *
- * X2 = X * X
+ * \f$ X^{2} \leftarrow X \, X \f$
  *
- *  \ingroup multiply_group
+ * \ingroup multiply_group
  *
- *  \param X Matrix X
- *  \param X2 Matrix X2
- *  \param threshold Used for sparse multiply
+ * \param X Matrix X
+ * \param X2 Matrix X2
+ * \param threshold Used for sparse multiply
  */
 void TYPED_FUNC(
     bml_multiply_x2_ellpack) (
     const bml_matrix_ellpack_t * X,
-    const bml_matrix_ellpack_t * X2,
+    bml_matrix_ellpack_t * X2,
     const double threshold)
 {
     int N = X->N;
@@ -96,7 +96,11 @@ void TYPED_FUNC(
     memset(ix, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
-#pragma omp parallel for default(none) firstprivate(ix,x) shared(N,M,X_index,X_value,X_nnz,X2_index,X2_value,X2_nnz) reduction(+:traceX,traceX2)
+#pragma omp parallel for \
+    default(none) \
+    firstprivate(ix, x) \
+    shared(N, M, X_index, X_value, X_nnz, X2_index, X2_value, X2_nnz) \
+    reduction(+: traceX, traceX2)
     for (int i = 0; i < N; i++) // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
@@ -153,25 +157,24 @@ void TYPED_FUNC(
         }
         X2_nnz[i] = ll;
     }
-
 }
 
 /** Matrix multiply.
  *
- * C = B * A
+ * \f$ C \leftarrow B \, A \f$
  *
- *  \ingroup multiply_group
+ * \ingroup multiply_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param C Matrix C
- *  \param threshold Used for sparse multiply
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param threshold Used for sparse multiply
  */
 void TYPED_FUNC(
     bml_multiply_AB_ellpack) (
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
-    const bml_matrix_ellpack_t * C,
+    bml_matrix_ellpack_t * C,
     const double threshold)
 {
     int N = A->N;
@@ -194,7 +197,10 @@ void TYPED_FUNC(
     memset(ix, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
-#pragma omp parallel for default(none) firstprivate(ix,x) shared(N,M,A_index,A_value,A_nnz,B_index,B_value,B_nnz,C_index,C_value,C_nnz)
+#pragma omp parallel for \
+    default(none) \
+    firstprivate(ix, x) \
+    shared(N, M, A_index, A_value, A_nnz, B_index, B_value, B_nnz, C_index, C_value, C_nnz)
     for (int i = 0; i < N; i++)
     {
         int l = 0;

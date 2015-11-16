@@ -25,12 +25,15 @@ test_function(
     C = bml_copy_new(A);
     bml_transpose(C);
 
-    A_dense = bml_convert_to_dense(A);
-    B_dense = bml_convert_to_dense(B);
-    C_dense = bml_convert_to_dense(C);
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
+    A_dense = bml_convert_to_dense(A, dense_row_major);
+    B_dense = bml_convert_to_dense(B, dense_row_major);
+    C_dense = bml_convert_to_dense(C, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                           N, 0, N);
     for (int i = 0; i < N * N; i++)
     {
         if (fabs(B_dense[i] - C_dense[i]) > 1e-12)

@@ -7,7 +7,8 @@
 
 void bml_print_dense_matrix(
     const int N,
-    bml_matrix_precision_t matrix_precision,
+    const bml_matrix_precision_t matrix_precision,
+    const bml_dense_order_t order,
     const void *A,
     const int i_l,
     const int i_u,

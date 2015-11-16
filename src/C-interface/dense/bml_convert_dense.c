@@ -22,6 +22,7 @@
 bml_matrix_dense_t *
 bml_convert_from_dense_dense(
     const bml_matrix_precision_t matrix_precision,
+    const bml_dense_order_t order,
     const int N,
     const void *A,
     const double threshold)
@@ -31,16 +32,16 @@ bml_convert_from_dense_dense(
     switch (matrix_precision)
     {
         case single_real:
-            A_bml = bml_convert_from_dense_dense_single_real(N, A);
+            A_bml = bml_convert_from_dense_dense_single_real(order, N, A);
             break;
         case double_real:
-            A_bml = bml_convert_from_dense_dense_double_real(N, A);
+            A_bml = bml_convert_from_dense_dense_double_real(order, N, A);
             break;
         case single_complex:
-            A_bml = bml_convert_from_dense_dense_single_complex(N, A);
+            A_bml = bml_convert_from_dense_dense_single_complex(order, N, A);
             break;
         case double_complex:
-            A_bml = bml_convert_from_dense_dense_double_complex(N, A);
+            A_bml = bml_convert_from_dense_dense_double_complex(order, N, A);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -58,21 +59,22 @@ bml_convert_from_dense_dense(
  */
 void *
 bml_convert_to_dense_dense(
-    const bml_matrix_dense_t * A)
+    const bml_matrix_dense_t * A,
+    const bml_dense_order_t order)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_convert_to_dense_dense_single_real(A);
+            return bml_convert_to_dense_dense_single_real(A, order);
             break;
         case double_real:
-            return bml_convert_to_dense_dense_double_real(A);
+            return bml_convert_to_dense_dense_double_real(A, order);
             break;
         case single_complex:
-            return bml_convert_to_dense_dense_single_complex(A);
+            return bml_convert_to_dense_dense_single_complex(A, order);
             break;
         case double_complex:
-            return bml_convert_to_dense_dense_double_complex(A);
+            return bml_convert_to_dense_dense_double_complex(A, order);
             break;
         default:
             LOG_ERROR("unknown precision\n");

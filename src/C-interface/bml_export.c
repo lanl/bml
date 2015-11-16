@@ -29,15 +29,16 @@
  */
 void *
 bml_export_to_dense(
-    const bml_matrix_t * A)
+    const bml_matrix_t * A,
+    const bml_dense_order_t order)
 {
     LOG_DEBUG("Exporting bml matrix to dense\n");
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_convert_to_dense_dense(A);
+            return bml_convert_to_dense_dense(A, order);
         case ellpack:
-            return bml_convert_to_dense_ellpack(A);
+            return bml_convert_to_dense_ellpack(A, order);
         case type_uninitialized:
             return NULL;
             break;
@@ -51,7 +52,8 @@ bml_export_to_dense(
  */
 void *
 bml_convert_to_dense(
-    const bml_matrix_t * A)
+    const bml_matrix_t * A,
+    const bml_dense_order_t order)
 {
-    return bml_export_to_dense(A);
+    return bml_export_to_dense(A, order);
 }

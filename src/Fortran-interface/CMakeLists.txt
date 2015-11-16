@@ -18,8 +18,7 @@ set(FORTRAN-SOURCES-PUBLIC
 
 set(FORTRAN-SOURCES-PRIVATE
   bml_interface_m.F90
-  bml_typed_m.F90
-  bml_convert_from_dense_wrapper.c)
+  bml_typed_m.F90)
 
 set(FORTRAN-SOURCES-TYPED
   bml_utilities_typed_m.F90)

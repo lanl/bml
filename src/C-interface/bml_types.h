@@ -31,6 +31,15 @@ typedef enum
     double_complex
 } bml_matrix_precision_t;
 
+/** The supported dense matrix elements orderings. */
+typedef enum
+{
+    /** row-major order. */
+    dense_row_major,
+    /** column-major order. */
+    dense_column_major
+} bml_dense_order_t;
+
 /** The vector type. */
 typedef void bml_vector_t;
 

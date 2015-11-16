@@ -7,9 +7,9 @@
 #include <stdlib.h>
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#    define REL_TOL 1e-6
+#define REL_TOL 1e-6
 #else
-#    define REL_TOL 1e-12
+#define REL_TOL 1e-12
 #endif
 
 int
@@ -42,13 +42,16 @@ test_function(
     traceB = bml_trace(B);
     traceC = bml_trace(C);
 
-    A_dense = bml_convert_to_dense(A);
-    B_dense = bml_convert_to_dense(B);
-    C_dense = bml_convert_to_dense(C);
+    A_dense = bml_convert_to_dense(A, dense_row_major);
+    B_dense = bml_convert_to_dense(B, dense_row_major);
+    C_dense = bml_convert_to_dense(C, dense_row_major);
 
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                           N, 0, N);
 
     printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
            traceA - (double) N);
@@ -100,8 +103,8 @@ test_function(
     {
         A_dense[i * N + i] = (REAL_T) 1.0;
     }
-    A = bml_import_from_dense(matrix_type, matrix_precision, N, A_dense, 0,
-                              M);
+    A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
+                              N, A_dense, 0, M);
     bml_free_memory(A_dense);
     B = bml_scale_new(scalar, A);
     C = bml_scale_new(scalar, B);
@@ -110,13 +113,16 @@ test_function(
     traceB = bml_trace(B);
     traceC = bml_trace(C);
 
-    A_dense = bml_convert_to_dense(A);
-    B_dense = bml_convert_to_dense(B);
-    C_dense = bml_convert_to_dense(C);
+    A_dense = bml_convert_to_dense(A, dense_row_major);
+    B_dense = bml_convert_to_dense(B, dense_row_major);
+    C_dense = bml_convert_to_dense(C, dense_row_major);
 
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                           N, 0, N);
 
     printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
            traceA - (double) N);

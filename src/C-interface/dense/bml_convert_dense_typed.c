@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_dense.h"
@@ -22,11 +23,33 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_convert_from_dense_dense) (
+    const bml_dense_order_t order,
     const int N,
     const void *A)
 {
     bml_matrix_dense_t *A_bml = TYPED_FUNC(bml_zero_matrix_dense) (N);
-    memcpy(A_bml->matrix, A, sizeof(REAL_T) * N * N);
+    switch (order)
+    {
+        case dense_row_major:
+            memcpy(A_bml->matrix, A, sizeof(REAL_T) * N * N);
+            break;
+        case dense_column_major:
+        {
+            REAL_T *A_ptr = (REAL_T *) A;
+            REAL_T *B_ptr = (REAL_T *) A_bml->matrix;
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    B_ptr[ROWMAJOR(i, j, N)] = A_ptr[COLMAJOR(i, j, N)];
+                }
+            }
+            break;
+        }
+        default:
+            LOG_ERROR("logic error\n");
+            break;
+    }
     return A_bml;
 }
 
@@ -39,9 +62,31 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_convert_to_dense_dense) (
-    const bml_matrix_dense_t * A)
+    const bml_matrix_dense_t * A,
+    const bml_dense_order_t order)
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
-    memcpy(A_dense, A->matrix, sizeof(REAL_T) * A->N * A->N);
+    switch (order)
+    {
+        case dense_row_major:
+            memcpy(A_dense, A->matrix, sizeof(REAL_T) * A->N * A->N);
+            break;
+        case dense_column_major:
+        {
+            REAL_T *B_ptr = (REAL_T *) A->matrix;
+            for (int i = 0; i < A->N; i++)
+            {
+                for (int j = 0; j < A->N; j++)
+                {
+                    A_dense[COLMAJOR(i, j, A->N)] =
+                        B_ptr[ROWMAJOR(i, j, A->N)];
+                }
+            }
+            break;
+        }
+        default:
+            LOG_ERROR("logic error\n");
+            break;
+    }
     return A_dense;
 }

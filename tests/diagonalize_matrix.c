@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#    define REL_TOL 1e-6
+#define REL_TOL 1e-6
 #else
-#    define REL_TOL 1e-12
+#define REL_TOL 1e-12
 #endif
 
 int
@@ -23,7 +23,6 @@ test_function(
 
     double *eigenvalues = NULL;
     bml_matrix_t *eigenvectors = NULL;
-    double threshold = 0.0;
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 

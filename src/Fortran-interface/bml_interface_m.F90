@@ -17,7 +17,10 @@ module bml_interface_m
   integer, parameter :: bml_matrix_precision_single_complex_enum_id = 3
   integer, parameter :: bml_matrix_precision_double_complex_enum_id = 4
 
+  integer, parameter :: BML_DENSE_COLUMN_MAJOR = 1
+
   public :: get_enum_id
+  public :: BML_DENSE_COLUMN_MAJOR
 
 contains
 

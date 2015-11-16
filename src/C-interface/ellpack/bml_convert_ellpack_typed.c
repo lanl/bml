@@ -24,6 +24,7 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_convert_from_dense_ellpack) (
+    const bml_dense_order_t order,
     const int N,
     const void *A,
     const double threshold,
@@ -65,7 +66,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_convert_to_dense_ellpack) (
-    const bml_matrix_ellpack_t * A)
+    const bml_matrix_ellpack_t * A,
+    const bml_dense_order_t order)
 {
     int *A_index = A->index;
     int *A_nnz = A->nnz;

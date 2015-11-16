@@ -44,19 +44,25 @@ test_function(
     bml_multiply(A, D, E, alpha_factor, beta_factor, threshold);
     bml_multiply_AB(A, D, F, threshold);
 
-    A_dense = bml_convert_to_dense(A);
-    B_dense = bml_convert_to_dense(B);
-    C_dense = bml_convert_to_dense(C);
-    D_dense = bml_convert_to_dense(D);
-    E_dense = bml_convert_to_dense(E);
-    F_dense = bml_convert_to_dense(F);
+    A_dense = bml_convert_to_dense(A, dense_row_major);
+    B_dense = bml_convert_to_dense(B, dense_row_major);
+    C_dense = bml_convert_to_dense(C, dense_row_major);
+    D_dense = bml_convert_to_dense(D, dense_row_major);
+    E_dense = bml_convert_to_dense(E, dense_row_major);
+    F_dense = bml_convert_to_dense(F, dense_row_major);
 
-    bml_print_dense_matrix(N, matrix_precision, A_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, B_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, C_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, D_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, E_dense, 0, N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, F_dense, 0, N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, E_dense, 0,
+                           N, 0, N);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, F_dense, 0,
+                           N, 0, N);
 
     for (int i = 0; i < N * N; i++)
     {

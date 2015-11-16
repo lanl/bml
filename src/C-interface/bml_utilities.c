@@ -3,6 +3,7 @@
 #include "bml_types.h"
 #include "bml_utilities.h"
 #include "dense/bml_utilities_dense.h"
+#include "macros.h"
 
 #include <complex.h>
 #include <stdio.h>
@@ -57,6 +58,7 @@ bml_print_bml_matrix(
  *
  * \param N The number of rows/columns.
  * \param matrix_precision The real precision.
+ * \param order The matrix element order.
  * \param A The matrix.
  * \param i_l The lower row index.
  * \param i_u The upper row index.
@@ -66,7 +68,8 @@ bml_print_bml_matrix(
 void
 bml_print_dense_matrix(
     const int N,
-    bml_matrix_precision_t matrix_precision,
+    const bml_matrix_precision_t matrix_precision,
+    const bml_dense_order_t order,
     const void *A,
     const int i_l,
     const int i_u,
@@ -79,54 +82,132 @@ bml_print_dense_matrix(
         case single_real:
         {
             const float *A_typed = A;
-            for (int i = i_l; i < i_u; i++)
+            switch (order)
             {
-                for (int j = j_l; j < j_u; j++)
-                {
-                    printf(" % 1.3f", A_typed[i + j * N]);
-                }
-                printf("\n");
+                case dense_row_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f", A_typed[ROWMAJOR(i, j, N)]);
+                        }
+                        printf("\n");
+                    }
+                    break;
+                case dense_column_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f", A_typed[COLMAJOR(i, j, N)]);
+                        }
+                        printf("\n");
+                    }
+                    break;
+                default:
+                    LOG_ERROR("logic error\n");
+                    break;
             }
             break;
         }
         case double_real:
         {
             const double *A_typed = A;
-            for (int i = i_l; i < i_u; i++)
+            switch (order)
             {
-                for (int j = j_l; j < j_u; j++)
-                {
-                    printf(" % 1.3f", A_typed[i + j * N]);
-                }
-                printf("\n");
+                case dense_row_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f", A_typed[ROWMAJOR(i, j, N)]);
+                        }
+                        printf("\n");
+                    }
+                    break;
+                case dense_column_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f", A_typed[COLMAJOR(i, j, N)]);
+                        }
+                        printf("\n");
+                    }
+                    break;
+                default:
+                    LOG_ERROR("logic error\n");
+                    break;
             }
             break;
         }
         case single_complex:
         {
             const float complex *A_typed = A;
-            for (int i = i_l; i < i_u; i++)
+            switch (order)
             {
-                for (int j = j_l; j < j_u; j++)
-                {
-                    printf(" % 1.3f%+1.3fi", creal(A_typed[i + j * N]),
-                           cimag(A_typed[i + j * N]));
-                }
-                printf("\n");
+                case dense_row_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f%+1.3fi",
+                                   creal(A_typed[ROWMAJOR(i, j, N)]),
+                                   cimag(A_typed[ROWMAJOR(i, j, N)]));
+                        }
+                        printf("\n");
+                    }
+                    break;
+                case dense_column_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f%+1.3fi",
+                                   creal(A_typed[COLMAJOR(i, j, N)]),
+                                   cimag(A_typed[COLMAJOR(i, j, N)]));
+                        }
+                        printf("\n");
+                    }
+                    break;
+                default:
+                    LOG_ERROR("logic error\n");
+                    break;
             }
             break;
         }
         case double_complex:
         {
             const double complex *A_typed = A;
-            for (int i = i_l; i < i_u; i++)
+            switch (order)
             {
-                for (int j = j_l; j < j_u; j++)
-                {
-                    printf(" % 1.3f%+1.3fi", creal(A_typed[i + j * N]),
-                           cimag(A_typed[i + j * N]));
-                }
-                printf("\n");
+                case dense_row_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f%+1.3fi",
+                                   creal(A_typed[ROWMAJOR(i, j, N)]),
+                                   cimag(A_typed[ROWMAJOR(i, j, N)]));
+                        }
+                        printf("\n");
+                    }
+                    break;
+                case dense_column_major:
+                    for (int i = i_l; i < i_u; i++)
+                    {
+                        for (int j = j_l; j < j_u; j++)
+                        {
+                            printf(" % 1.3f%+1.3fi",
+                                   creal(A_typed[COLMAJOR(i, j, N)]),
+                                   cimag(A_typed[COLMAJOR(i, j, N)]));
+                        }
+                        printf("\n");
+                    }
+                    break;
+                default:
+                    LOG_ERROR("logic error\n");
+                    break;
             }
             break;
         }

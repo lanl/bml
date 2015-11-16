@@ -7,20 +7,22 @@ module bml_convert_m
   !> The interfaces to the C API.
   interface
 
-     function bml_convert_from_dense_C(matrix_type, matrix_precision, n, a, threshold, m) &
+     function bml_convert_from_dense_C(matrix_type, matrix_precision, order, n, a, threshold, m) &
           bind(C, name="bml_convert_from_dense")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: matrix_type
        integer(C_INT), value, intent(in) :: matrix_precision
+       integer(C_INT), value, intent(in) :: order
        integer(C_INT), value, intent(in) :: n, m
        type(C_PTR), value, intent(in) :: a
        real(C_DOUBLE), value, intent(in) :: threshold
        type(C_PTR) :: bml_convert_from_dense_C
      end function bml_convert_from_dense_C
 
-     function bml_convert_to_dense_C(a) bind(C, name="bml_convert_to_dense")
+     function bml_convert_to_dense_C(a, order) bind(C, name="bml_convert_to_dense")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
+       integer(C_INT), value, intent(in) :: order
        type(C_PTR) :: bml_convert_to_dense_C
      end function bml_convert_to_dense_C
 
@@ -82,7 +84,7 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(BML_PRECISION_SINGLE_REAL), &
+           get_enum_id(BML_PRECISION_SINGLE_REAL), BML_DENSE_COLUMN_MAJOR, &
            size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -125,7 +127,7 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(BML_PRECISION_DOUBLE_REAL), &
+           get_enum_id(BML_PRECISION_DOUBLE_REAL), BML_DENSE_COLUMN_MAJOR, &
            size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -168,7 +170,7 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(BML_PRECISION_SINGLE_COMPLEX), &
+           get_enum_id(BML_PRECISION_SINGLE_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
            size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -211,7 +213,7 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-           get_enum_id(BML_PRECISION_DOUBLE_COMPLEX), &
+           get_enum_id(BML_PRECISION_DOUBLE_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
            size(a_dense, 1), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -226,6 +228,7 @@ contains
   subroutine bml_convert_to_dense_single(a, a_dense)
 
     use bml_types_m
+    use bml_interface_m
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
@@ -234,7 +237,7 @@ contains
     type(C_PTR) :: a_ptr
     real, pointer :: a_dense_ptr(:, :)
 
-    a_ptr = bml_convert_to_dense_C(a%ptr)
+    a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
@@ -249,6 +252,7 @@ contains
   subroutine bml_convert_to_dense_double(a, a_dense)
 
     use bml_types_m
+    use bml_interface_m
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
@@ -257,7 +261,7 @@ contains
     type(C_PTR) :: a_ptr
     double precision, pointer :: a_dense_ptr(:, :)
 
-    a_ptr = bml_convert_to_dense_C(a%ptr)
+    a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
@@ -272,6 +276,7 @@ contains
   subroutine bml_convert_to_dense_single_complex(a, a_dense)
 
     use bml_types_m
+    use bml_interface_m
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
@@ -280,7 +285,7 @@ contains
     type(C_PTR) :: a_ptr
     complex, pointer :: a_dense_ptr(:, :)
 
-    a_ptr = bml_convert_to_dense_C(a%ptr)
+    a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 
@@ -295,6 +300,7 @@ contains
   subroutine bml_convert_to_dense_double_complex(a, a_dense)
 
     use bml_types_m
+    use bml_interface_m
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
@@ -303,7 +309,7 @@ contains
     type(C_PTR) :: a_ptr
     complex(kind(0d0)), pointer :: a_dense_ptr(:, :)
 
-    a_ptr = bml_convert_to_dense_C(a%ptr)
+    a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
 

@@ -27,7 +27,7 @@ void
 bml_multiply_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
-    const bml_matrix_ellpack_t * C,
+    bml_matrix_ellpack_t * C,
     const double alpha,
     const double beta,
     const double threshold)
@@ -67,7 +67,7 @@ bml_multiply_ellpack(
 void
 bml_multiply_x2_ellpack(
     const bml_matrix_ellpack_t * X,
-    const bml_matrix_ellpack_t * X2,
+    bml_matrix_ellpack_t * X2,
     const double threshold)
 {
     switch (X->matrix_precision)
@@ -95,17 +95,17 @@ bml_multiply_x2_ellpack(
  * C = A * B
  *
  *  \ingroup multiply_group
- * 
+ *
  *  \param A Matrix A
- *  \param B Matrix B 
- *  \param C Matrix C 
+ *  \param B Matrix B
+ *  \param C Matrix C
  *  \param threshold Used for sparse multiply
  */
 void
 bml_multiply_AB_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
-    const bml_matrix_ellpack_t * C,
+    bml_matrix_ellpack_t * C,
     const double threshold)
 {
     switch (A->matrix_precision)

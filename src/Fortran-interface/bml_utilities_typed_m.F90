@@ -6,11 +6,12 @@ module bml_utilities_MATRIX_TYPE_m
   private
 
   interface
-     subroutine bml_print_dense_matrix_C(n, matrix_precision, a, i_l, i_u, j_l, j_u) &
+     subroutine bml_print_dense_matrix_C(n, matrix_precision, order, a, i_l, i_u, j_l, j_u) &
           bind(C, name="bml_print_dense_matrix")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: n
        integer(C_INT), value, intent(in) :: matrix_precision
+       integer(C_INT), value, intent(in) :: order
        type(C_PTR), value, intent(in) :: a
        integer(C_INT), value, intent(in) :: i_l
        integer(C_INT), value, intent(in) :: i_u
@@ -54,6 +55,7 @@ contains
       ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
       ! exclusive in the upper bound in the C code.
       call bml_print_dense_matrix_C(size(a, 1), get_enum_id(PRECISION_NAME), &
+           BML_DENSE_COLUMN_MAJOR, &
            c_loc(a_ptr), &
            i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
            j_l-lbound(a, 2), j_u-lbound(a, 2)+1)
