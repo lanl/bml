@@ -38,7 +38,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            B_matrix[ROWMAJOR(i, j, N)] = A_matrix[ROWMAJOR(j, i, N)];
+            B_matrix[ROWMAJOR(i, j, N, N)] = A_matrix[ROWMAJOR(j, i, N, N)];
         }
     }
     return B;
@@ -67,9 +67,10 @@ void TYPED_FUNC(
         {
             if (i != j)
             {
-                tmp = A_matrix[ROWMAJOR(i, j, N)];
-                A_matrix[ROWMAJOR(i, j, N)] = A_matrix[ROWMAJOR(j, i, N)];
-                A_matrix[ROWMAJOR(j, i, N)] = tmp;
+                tmp = A_matrix[ROWMAJOR(i, j, N, N)];
+                A_matrix[ROWMAJOR(i, j, N, N)] =
+                    A_matrix[ROWMAJOR(j, i, N, N)];
+                A_matrix[ROWMAJOR(j, i, N, N)] = tmp;
             }
         }
     }

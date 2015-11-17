@@ -30,10 +30,10 @@ double TYPED_FUNC(
     REAL_T trace = 0.0;
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for default(none) shared(N,A_matrix) reduction(+:trace)
+#pragma omp parallel for default(none) shared(N, A_matrix) reduction(+:trace)
     for (int i = 0; i < N; i++)
     {
-        trace += A_matrix[ROWMAJOR(i, i, N)];
+        trace += A_matrix[ROWMAJOR(i, i, N, N)];
     }
 
     return (double) REAL_PART(trace);

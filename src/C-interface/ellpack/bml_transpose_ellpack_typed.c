@@ -41,18 +41,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
 
     // Transpose all elements
-#pragma omp parallel for default(none) shared(N,M,B_index,B_value,B_nnz,A_index,A_value,A_nnz)
+#pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            int trow = A_index[ROWMAJOR(i, j, M)];
+            int trow = A_index[ROWMAJOR(i, j, N, M)];
 #pragma omp critical
             {
                 int colcnt = B_nnz[trow];
-                B_index[ROWMAJOR(trow, colcnt, M)] = i;
-                B_value[ROWMAJOR(trow, colcnt, M)] =
-                    A_value[ROWMAJOR(i, j, M)];
+                B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
+                B_value[ROWMAJOR(trow, colcnt, N, M)] =
+                    A_value[ROWMAJOR(i, j, N, M)];
                 B_nnz[trow]++;
             }
         }
@@ -79,27 +79,27 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp parallel for default(none) shared(N,M,A_value,A_index,A_nnz)
+#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = A_nnz[i] - 1; j >= 0; j--)
         {
-            if (A_index[ROWMAJOR(i, j, M)] > i)
+            if (A_index[ROWMAJOR(i, j, N, M)] > i)
             {
-                int ind = A_index[ROWMAJOR(i, j, M)];
+                int ind = A_index[ROWMAJOR(i, j, N, M)];
                 int exchangeDone = 0;
                 for (int k = 0; k < A_nnz[ind]; k++)
                 {
                     // Existing corresponding value for transpose - exchange
-                    if (A_index[ROWMAJOR(ind, k, M)] == i)
+                    if (A_index[ROWMAJOR(ind, k, N, M)] == i)
                     {
-                        REAL_T tmp = A_value[ROWMAJOR(i, j, M)];
+                        REAL_T tmp = A_value[ROWMAJOR(i, j, N, M)];
 
 #pragma omp critical
                         {
-                            A_value[ROWMAJOR(i, j, M)] =
-                                A_value[ROWMAJOR(ind, k, M)];
-                            A_value[ROWMAJOR(ind, k, M)] = tmp;
+                            A_value[ROWMAJOR(i, j, N, M)] =
+                                A_value[ROWMAJOR(ind, k, N, M)];
+                            A_value[ROWMAJOR(ind, k, N, M)] = tmp;
                         }
                         exchangeDone = 1;
                         break;
@@ -113,9 +113,9 @@ void TYPED_FUNC(
 
 #pragma omp critical
                     {
-                        A_index[ROWMAJOR(ind, jind, M)] = i;
-                        A_value[ROWMAJOR(ind, jind, M)] =
-                            A_value[ROWMAJOR(i, j, M)];
+                        A_index[ROWMAJOR(ind, jind, N, M)] = i;
+                        A_value[ROWMAJOR(ind, jind, N, M)] =
+                            A_value[ROWMAJOR(i, j, N, M)];
                         A_nnz[ind]++;
                         A_nnz[i]--;
                     }

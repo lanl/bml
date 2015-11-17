@@ -33,14 +33,14 @@ double TYPED_FUNC(
     REAL_T trace = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) shared(N,M,A_value,A_index,A_nnz) reduction(+:trace)
+#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz) reduction(+:trace)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (i == A_index[ROWMAJOR(i, j, M)])
+            if (i == A_index[ROWMAJOR(i, j, N, M)])
             {
-                trace += A_value[ROWMAJOR(i, j, M)];
+                trace += A_value[ROWMAJOR(i, j, N, M)];
                 break;
             }
         }

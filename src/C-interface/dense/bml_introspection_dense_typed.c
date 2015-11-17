@@ -25,7 +25,7 @@ int TYPED_FUNC(
 
     for (int j = 0; j < A->N; j++)
     {
-        if (is_above_threshold(A_matrix[ROWMAJOR(i, j, A->N)], 0))
+        if (is_above_threshold(A_matrix[ROWMAJOR(i, j, A->N, A->N)], 0))
         {
             bandwidth++;
         }
@@ -53,7 +53,7 @@ int TYPED_FUNC(
         row_bandwidth = 0;
         for (int j = 0; j < A->N; j++)
         {
-            if (is_above_threshold(A_matrix[ROWMAJOR(i, j, A->N)], 0))
+            if (is_above_threshold(A_matrix[ROWMAJOR(i, j, A->N, A->N)], 0))
             {
                 row_bandwidth++;
             }

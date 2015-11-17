@@ -1,3 +1,4 @@
+#include "bml_export.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
 #include "bml_types.h"
@@ -49,8 +50,7 @@ bml_print_bml_matrix(
             {
                 case single_real:
                 {
-                    float *A_dense =
-                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
@@ -59,8 +59,7 @@ bml_print_bml_matrix(
                 }
                 case double_real:
                 {
-                    double *A_dense =
-                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
@@ -69,8 +68,7 @@ bml_print_bml_matrix(
                 }
                 case single_complex:
                 {
-                    float *A_dense =
-                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
@@ -79,8 +77,7 @@ bml_print_bml_matrix(
                 }
                 case double_complex:
                 {
-                    double *A_dense =
-                        bml_convert_to_dense_ellpack(A, dense_row_major);
+                    double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
@@ -133,7 +130,7 @@ bml_print_dense_matrix(
                     {
                         for (int j = j_l; j < j_u; j++)
                         {
-                            printf(" % 1.3f", A_typed[ROWMAJOR(i, j, N)]);
+                            printf(" % 1.3f", A_typed[ROWMAJOR(i, j, N, N)]);
                         }
                         printf("\n");
                     }
@@ -143,7 +140,7 @@ bml_print_dense_matrix(
                     {
                         for (int j = j_l; j < j_u; j++)
                         {
-                            printf(" % 1.3f", A_typed[COLMAJOR(i, j, N)]);
+                            printf(" % 1.3f", A_typed[COLMAJOR(i, j, N, N)]);
                         }
                         printf("\n");
                     }
@@ -164,7 +161,7 @@ bml_print_dense_matrix(
                     {
                         for (int j = j_l; j < j_u; j++)
                         {
-                            printf(" % 1.3f", A_typed[ROWMAJOR(i, j, N)]);
+                            printf(" % 1.3f", A_typed[ROWMAJOR(i, j, N, N)]);
                         }
                         printf("\n");
                     }
@@ -174,7 +171,7 @@ bml_print_dense_matrix(
                     {
                         for (int j = j_l; j < j_u; j++)
                         {
-                            printf(" % 1.3f", A_typed[COLMAJOR(i, j, N)]);
+                            printf(" % 1.3f", A_typed[COLMAJOR(i, j, N, N)]);
                         }
                         printf("\n");
                     }
@@ -196,8 +193,8 @@ bml_print_dense_matrix(
                         for (int j = j_l; j < j_u; j++)
                         {
                             printf(" % 1.3f%+1.3fi",
-                                   creal(A_typed[ROWMAJOR(i, j, N)]),
-                                   cimag(A_typed[ROWMAJOR(i, j, N)]));
+                                   creal(A_typed[ROWMAJOR(i, j, N, N)]),
+                                   cimag(A_typed[ROWMAJOR(i, j, N, N)]));
                         }
                         printf("\n");
                     }
@@ -208,8 +205,8 @@ bml_print_dense_matrix(
                         for (int j = j_l; j < j_u; j++)
                         {
                             printf(" % 1.3f%+1.3fi",
-                                   creal(A_typed[COLMAJOR(i, j, N)]),
-                                   cimag(A_typed[COLMAJOR(i, j, N)]));
+                                   creal(A_typed[COLMAJOR(i, j, N, N)]),
+                                   cimag(A_typed[COLMAJOR(i, j, N, N)]));
                         }
                         printf("\n");
                     }
@@ -231,8 +228,8 @@ bml_print_dense_matrix(
                         for (int j = j_l; j < j_u; j++)
                         {
                             printf(" % 1.3f%+1.3fi",
-                                   creal(A_typed[ROWMAJOR(i, j, N)]),
-                                   cimag(A_typed[ROWMAJOR(i, j, N)]));
+                                   creal(A_typed[ROWMAJOR(i, j, N, N)]),
+                                   cimag(A_typed[ROWMAJOR(i, j, N, N)]));
                         }
                         printf("\n");
                     }
@@ -243,8 +240,8 @@ bml_print_dense_matrix(
                         for (int j = j_l; j < j_u; j++)
                         {
                             printf(" % 1.3f%+1.3fi",
-                                   creal(A_typed[COLMAJOR(i, j, N)]),
-                                   cimag(A_typed[COLMAJOR(i, j, N)]));
+                                   creal(A_typed[COLMAJOR(i, j, N, N)]),
+                                   cimag(A_typed[COLMAJOR(i, j, N, N)]));
                         }
                         printf("\n");
                     }

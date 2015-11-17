@@ -38,17 +38,17 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *dense_A = (REAL_T *) A;
     REAL_T *A_value = A_bml->value;
 
-#pragma omp parallel for default(none) shared(A_value,A_index,A_nnz,dense_A)
+#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz, dense_A)
     for (int i = 0; i < N; i++)
     {
         A_nnz[i] = 0;
         for (int j = 0; j < N; j++)
         {
-            if (is_above_threshold(dense_A[ROWMAJOR(i, j, N)], threshold))
+            if (is_above_threshold(dense_A[ROWMAJOR(i, j, N, M)], threshold))
             {
-                A_value[ROWMAJOR(i, A_nnz[i], M)] =
-                    dense_A[ROWMAJOR(i, j, N)];
-                A_index[ROWMAJOR(i, A_nnz[i], M)] = j;
+                A_value[ROWMAJOR(i, A_nnz[i], N, M)] =
+                    dense_A[ROWMAJOR(i, j, N, M)];
+                A_index[ROWMAJOR(i, A_nnz[i], N, M)] = j;
                 A_nnz[i]++;
             }
         }
@@ -78,13 +78,13 @@ void *TYPED_FUNC(
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
     REAL_T *A_value = A->value;
 
-#pragma omp parallel for default(none) shared(N,M,A_value,A_index,A_nnz,A_dense)
+#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, A_dense)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            A_dense[ROWMAJOR(i, A_index[ROWMAJOR(i, j, M)], N)] =
-                A_value[ROWMAJOR(i, j, M)];
+            A_dense[ROWMAJOR(i, A_index[ROWMAJOR(i, j, N, M)], N, N)] =
+                A_value[ROWMAJOR(i, j, N, M)];
         }
     }
     return A_dense;

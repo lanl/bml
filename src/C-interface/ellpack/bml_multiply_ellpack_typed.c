@@ -106,23 +106,23 @@ void TYPED_FUNC(
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
         {
-            REAL_T a = X_value[ROWMAJOR(i, jp, M)];
-            int j = X_index[ROWMAJOR(i, jp, M)];
+            REAL_T a = X_value[ROWMAJOR(i, jp, N, M)];
+            int j = X_index[ROWMAJOR(i, jp, N, M)];
             if (j == i)
             {
                 traceX = traceX + a;
             }
             for (int kp = 0; kp < X_nnz[j]; kp++)
             {
-                int k = X_index[ROWMAJOR(j, kp, M)];
+                int k = X_index[ROWMAJOR(j, kp, N, M)];
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    X2_index[ROWMAJOR(i, l, M)] = k;
+                    X2_index[ROWMAJOR(i, l, N, M)] = k;
                     ix[k] = i + 1;
                     l++;
                 }
-                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, M)];  // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                x[k] = x[k] + a * X_value[ROWMAJOR(j, kp, N, M)];       // TEMPORARY STORAGE VECTOR LENGTH FULL N
             }
         }
 
@@ -136,20 +136,20 @@ void TYPED_FUNC(
         int ll = 0;
         for (int j = 0; j < l; j++)
         {
-            int jp = X2_index[ROWMAJOR(i, j, M)];
+            int jp = X2_index[ROWMAJOR(i, j, N, M)];
             REAL_T xtmp = x[jp];
             // The diagonal elements are stored in the first column
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;
-                X2_value[ROWMAJOR(i, ll, M)] = xtmp;
-                X2_index[ROWMAJOR(i, ll, M)] = jp;
+                X2_value[ROWMAJOR(i, ll, N, M)] = xtmp;
+                X2_index[ROWMAJOR(i, ll, N, M)] = jp;
                 ll++;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
-                X2_value[ROWMAJOR(i, ll, M)] = xtmp;
-                X2_index[ROWMAJOR(i, ll, M)] = jp;
+                X2_value[ROWMAJOR(i, ll, N, M)] = xtmp;
+                X2_index[ROWMAJOR(i, ll, N, M)] = jp;
                 ll++;
             }
             ix[jp] = 0;
@@ -206,20 +206,20 @@ void TYPED_FUNC(
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
-            REAL_T a = A_value[ROWMAJOR(i, jp, M)];
-            int j = A_index[ROWMAJOR(i, jp, M)];
+            REAL_T a = A_value[ROWMAJOR(i, jp, N, M)];
+            int j = A_index[ROWMAJOR(i, jp, N, M)];
 
             for (int kp = 0; kp < B_nnz[j]; kp++)
             {
-                int k = B_index[ROWMAJOR(j, kp, M)];
+                int k = B_index[ROWMAJOR(j, kp, N, M)];
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    C_index[ROWMAJOR(i, l, M)] = k;
+                    C_index[ROWMAJOR(i, l, N, M)] = k;
                     ix[k] = i + 1;
                     l++;
                 }
-                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, M)];  // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, N, M)];       // TEMPORARY STORAGE VECTOR LENGTH FULL N
             }
         }
 
@@ -233,19 +233,19 @@ void TYPED_FUNC(
         int ll = 0;
         for (int j = 0; j < l; j++)
         {
-            int jp = C_index[ROWMAJOR(i, j, M)];
+            int jp = C_index[ROWMAJOR(i, j, N, M)];
             REAL_T xtmp = x[jp];
             // Diagonal elements are saved in first column
             if (jp == i)
             {
-                C_value[ROWMAJOR(i, ll, M)] = xtmp;
-                C_index[ROWMAJOR(i, ll, M)] = jp;
+                C_value[ROWMAJOR(i, ll, N, M)] = xtmp;
+                C_index[ROWMAJOR(i, ll, N, M)] = jp;
                 ll++;
             }
             else if (is_above_threshold(xtmp, threshold))
             {
-                C_value[ROWMAJOR(i, ll, M)] = xtmp;
-                C_index[ROWMAJOR(i, ll, M)] = jp;
+                C_value[ROWMAJOR(i, ll, N, M)] = xtmp;
+                C_index[ROWMAJOR(i, ll, N, M)] = jp;
                 ll++;
             }
             ix[jp] = 0;

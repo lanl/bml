@@ -58,6 +58,6 @@ void TYPED_FUNC(
     REAL_T *A_matrix = (REAL_T *) A->matrix;
     for (int i = 0; i < A->N; i++)
     {
-        A_matrix[ROWMAJOR(i, i, A->N)] += beta_;
+        A_matrix[ROWMAJOR(i, i, A->N, A->N)] += beta_;
     }
 }

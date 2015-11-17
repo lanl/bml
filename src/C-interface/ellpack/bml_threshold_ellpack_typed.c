@@ -42,17 +42,17 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-#pragma omp parallel for default(none) shared(N,M,A_value,A_index,A_nnz,B_value,B_index,B_nnz)
+#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, B_value, B_index, B_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (is_above_threshold(A_value[ROWMAJOR(i, j, M)], threshold))
+            if (is_above_threshold(A_value[ROWMAJOR(i, j, N, M)], threshold))
             {
-                B_value[ROWMAJOR(i, B_nnz[i], M)] =
-                    A_value[ROWMAJOR(i, j, M)];
-                B_index[ROWMAJOR(i, B_nnz[i], M)] =
-                    A_index[ROWMAJOR(i, j, M)];
+                B_value[ROWMAJOR(i, B_nnz[i], N, M)] =
+                    A_value[ROWMAJOR(i, j, N, M)];
+                B_index[ROWMAJOR(i, B_nnz[i], N, M)] =
+                    A_index[ROWMAJOR(i, j, N, M)];
                 B_nnz[i]++;
             }
         }
@@ -88,14 +88,14 @@ void TYPED_FUNC(
         rlen = 0;
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            if (is_above_threshold(A_value[ROWMAJOR(i, j, M)], threshold))
+            if (is_above_threshold(A_value[ROWMAJOR(i, j, N, M)], threshold))
             {
                 if (rlen < j)
                 {
-                    A_value[ROWMAJOR(i, rlen, M)] =
-                        A_value[ROWMAJOR(i, j, M)];
-                    A_index[ROWMAJOR(i, rlen, M)] =
-                        A_index[ROWMAJOR(i, j, M)];
+                    A_value[ROWMAJOR(i, rlen, N, M)] =
+                        A_value[ROWMAJOR(i, j, N, M)];
+                    A_index[ROWMAJOR(i, rlen, N, M)] =
+                        A_index[ROWMAJOR(i, j, N, M)];
                 }
                 rlen++;
             }

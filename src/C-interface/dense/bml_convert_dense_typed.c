@@ -41,7 +41,7 @@ bml_matrix_dense_t *TYPED_FUNC(
             {
                 for (int j = 0; j < N; j++)
                 {
-                    B_ptr[ROWMAJOR(i, j, N)] = A_ptr[COLMAJOR(i, j, N)];
+                    B_ptr[ROWMAJOR(i, j, N, N)] = A_ptr[COLMAJOR(i, j, N, N)];
                 }
             }
             break;
@@ -78,8 +78,8 @@ void *TYPED_FUNC(
             {
                 for (int j = 0; j < A->N; j++)
                 {
-                    A_dense[COLMAJOR(i, j, A->N)] =
-                        B_ptr[ROWMAJOR(i, j, A->N)];
+                    A_dense[COLMAJOR(i, j, A->N, A->N)] =
+                        B_ptr[ROWMAJOR(i, j, A->N, A->N)];
                 }
             }
             break;

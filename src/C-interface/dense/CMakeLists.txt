@@ -6,6 +6,7 @@ set(HEADERS-DENSE
   bml_convert_dense.h
   bml_copy_dense.h
   bml_diagonalize_dense.h
+  bml_elemental_dense.h
   bml_introspection_dense.h
   bml_multiply_dense.h
   bml_scale_dense.h
@@ -21,6 +22,7 @@ set(SOURCES-DENSE
   bml_convert_dense.c
   bml_copy_dense.c
   bml_diagonalize_dense.c
+  bml_elemental_dense.c
   bml_introspection_dense.c
   bml_multiply_dense.c
   bml_scale_dense.c

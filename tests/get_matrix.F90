@@ -25,7 +25,7 @@ contains
 
     integer :: i, j
 
-    REAL_TYPE, pointer :: a_dense(:, :)
+    REAL_TYPE, allocatable :: a_dense(:, :)
     REAL_TYPE :: a_ij
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
@@ -33,12 +33,15 @@ contains
     test_result = .true.
 
     call bml_convert_to_dense(a, a_dense)
+    call bml_print_matrix("A", a_dense, 1, n, 1, n)
     do i = 1, n
        do j = 1, n
-          a_ij = bml_get(a, i, j)
+          call bml_get(a_ij, a, i, j)
           if(abs(a_ij-a_dense(i, j)) > 1e-12) then
              test_result = .false.
              print *, "matrix element mismatch"
+             print *, "got ", a_ij
+             print *, "expected ", a_dense(i, j)
              return
           end if
        end do

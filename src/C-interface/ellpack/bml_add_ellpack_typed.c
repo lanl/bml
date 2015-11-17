@@ -56,43 +56,44 @@ void TYPED_FUNC(
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
-            int k = A_index[ROWMAJOR(i, jp, M)];
+            int k = A_index[ROWMAJOR(i, jp, N, M)];
             if (ix[k] == 0)
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A_index[ROWMAJOR(i, l, M)] = k;
+                A_index[ROWMAJOR(i, l, N, M)] = k;
                 l++;
             }
-            x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, M)];
+            x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, M)];
         }
 
         for (int jp = 0; jp < B_nnz[i]; jp++)
         {
-            int k = B_index[ROWMAJOR(i, jp, M)];
+            int k = B_index[ROWMAJOR(i, jp, N, M)];
             if (ix[k] == 0)
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A_index[ROWMAJOR(i, l, M)] = k;
+                A_index[ROWMAJOR(i, l, N, M)] = k;
                 l++;
             }
-            x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, M)];
+            x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, M)];
         }
         A_nnz[i] = l;
 
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
         {
-            REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, M)]];
+            REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, N, M)]];
             if (is_above_threshold(xTmp, threshold))    // THIS THRESHOLDING COULD BE IGNORED!?
             {
-                A_value[ROWMAJOR(i, ll, M)] = xTmp;
-                A_index[ROWMAJOR(i, ll, M)] = A_index[ROWMAJOR(i, jp, M)];
+                A_value[ROWMAJOR(i, ll, N, M)] = xTmp;
+                A_index[ROWMAJOR(i, ll, N, M)] =
+                    A_index[ROWMAJOR(i, jp, N, M)];
                 ll++;
             }
-            x[A_index[ROWMAJOR(i, jp, M)]] = 0.0;
-            ix[A_index[ROWMAJOR(i, jp, M)]] = 0;
+            x[A_index[ROWMAJOR(i, jp, N, M)]] = 0.0;
+            ix[A_index[ROWMAJOR(i, jp, N, M)]] = 0;
         }
         A_nnz[i] = ll;
     }
