@@ -31,6 +31,15 @@ module bml_allocate_m
        type(C_PTR) :: bml_zero_matrix_C
      end function bml_zero_matrix_C
 
+     function bml_banded_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_banded_matrix")
+       use, intrinsic :: iso_C_binding
+       integer(C_INT), value, intent(in) :: matrix_type
+       integer(C_INT), value, intent(in) :: matrix_precision
+       integer(C_INT), value, intent(in) :: n
+       integer(C_INT), value, intent(in) :: m
+       type(C_PTR) :: bml_banded_matrix_C
+     end function bml_banded_matrix_C
+
      function bml_random_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_random_matrix")
        use, intrinsic :: iso_C_binding
        integer(C_INT), value, intent(in) :: matrix_type
@@ -53,6 +62,7 @@ module bml_allocate_m
 
   public :: bml_deallocate
   public :: bml_random_matrix
+  public :: bml_banded_matrix
   public :: bml_identity_matrix
   public :: bml_zero_matrix
 
@@ -94,6 +104,32 @@ contains
     a%ptr = bml_zero_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
 
   end subroutine bml_zero_matrix
+
+  !> Create a banded matrix.
+  !!
+  !! \ingroup allocate_group_Fortran
+  !!
+  !! \param matrix_type The matrix type.
+  !! \param matrix_precision The precision of the matrix.
+  !! \param n The matrix size.
+  !! \param a The matrix.
+  !! \param m The extra arg.
+  subroutine bml_banded_matrix(matrix_type, matrix_precision, n, m, a)
+
+    use bml_types_m
+    use bml_interface_m
+
+    character(len=*), intent(in) :: matrix_type
+    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: n, m
+    type(bml_matrix_t), intent(inout) :: a
+
+    if(c_associated(a%ptr)) then
+       call bml_deallocate_C(a%ptr)
+    end if
+    a%ptr = bml_banded_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
+
+  end subroutine bml_banded_matrix
 
   !> Create a random matrix.
   !!

@@ -146,6 +146,39 @@ bml_random_matrix(
     return NULL;
 }
 
+/** Allocate a banded matrix.
+ *
+ *  Note that the matrix \f$ A \f$ will be newly allocated. The
+ *  function does not check whether the matrix is already allocated.
+ *
+ *  \ingroup allocate_group_C
+ *
+ *  \param matrix_type The matrix type.
+ *  \param matrix_precision The precision of the matrix.
+ *  \param N The matrix size.
+ *  \param M The bandwidth of the matrix.
+ *  \return The matrix.
+ */
+bml_matrix_t *
+bml_banded_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M)
+{
+    LOG_DEBUG("banded matrix of size %d\n", N);
+    switch (matrix_type)
+    {
+        case dense:
+            return bml_banded_matrix_dense(matrix_precision, N, M);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+            break;
+    }
+    return NULL;
+}
+
 /** Allocate the identity matrix.
  *
  *  Note that the matrix \f$ A \f$ will be newly allocated. The
