@@ -103,3 +103,36 @@ bml_multiply_AB(
             break;
     }
 }
+
+/** Matrix multiply with threshold adjustment.
+ *
+ * C = A * B
+ *
+ * \ingroup multiply_group_C
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param threshold Threshold for multiplication
+ */
+void
+bml_multiply_adjust_AB(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B,
+    bml_matrix_t * C,
+    const double threshold)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_multiply_adjust_AB_dense(A, B, C);
+            break;
+        case ellpack:
+            bml_multiply_adjust_AB_ellpack(A, B, C, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+

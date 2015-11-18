@@ -84,4 +84,29 @@ void bml_multiply_AB_dense_double_complex(
     const bml_matrix_dense_t * B,
     bml_matrix_dense_t * C);
 
+void bml_multiply_adjust_AB_dense(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * C);
+
+void bml_multiply_adjust_AB_dense_single_real(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * C);
+
+void bml_multiply_adjust_AB_dense_double_real(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * C);
+
+void bml_multiply_adjust_AB_dense_single_complex(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * C);
+
+void bml_multiply_adjust_AB_dense_double_complex(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * C);
+
 #endif

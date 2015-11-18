@@ -27,4 +27,11 @@ void bml_multiply_AB(
     bml_matrix_t * C,
     const double threshold);
 
+// Multiply with threshold adjustment - C = A * B
+void bml_multiply_adjust_AB(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B,
+    bml_matrix_t * C,
+    const double threshold);
+
 #endif

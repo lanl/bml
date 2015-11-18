@@ -80,7 +80,7 @@ void TYPED_FUNC(
 {
     int N = X->N;
     int M = X->M;
-    int ix[N];
+    int ix[N], jx[N];
 
     int *X_index = X->index;
     int *X2_index = X2->index;
@@ -94,11 +94,12 @@ void TYPED_FUNC(
     REAL_T *X2_value = (REAL_T *) X2->value;
 
     memset(ix, 0, N * sizeof(int));
+    memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
 #pragma omp parallel for \
     default(none) \
-    firstprivate(ix, x) \
+    firstprivate(ix, jx, x) \
     shared(N, M, X_index, X_value, X_nnz, X2_index, X2_value, X2_nnz) \
     reduction(+: traceX, traceX2)
     for (int i = 0; i < N; i++) // CALCULATES THRESHOLDED X^2
@@ -118,7 +119,8 @@ void TYPED_FUNC(
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    X2_index[ROWMAJOR(i, l, N, M)] = k;
+                    //X2_index[ROWMAJOR(i, l, N, M)] = k;
+                    jx[l] = k;
                     ix[k] = i + 1;
                     l++;
                 }
@@ -136,7 +138,8 @@ void TYPED_FUNC(
         int ll = 0;
         for (int j = 0; j < l; j++)
         {
-            int jp = X2_index[ROWMAJOR(i, j, N, M)];
+            //int jp = X2_index[ROWMAJOR(i, j, N, M)];
+            int jp = jx[j];
             REAL_T xtmp = x[jp];
             // The diagonal elements are stored in the first column
             if (jp == i)
@@ -179,7 +182,7 @@ void TYPED_FUNC(
 {
     int N = A->N;
     int M = A->M;
-    int ix[N];
+    int ix[N], jx[N];
 
     REAL_T x[N];
     REAL_T *A_value = (REAL_T *) A->value;
@@ -195,11 +198,12 @@ void TYPED_FUNC(
     int *C_index = C->index;
 
     memset(ix, 0, N * sizeof(int));
+    memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
 #pragma omp parallel for \
     default(none) \
-    firstprivate(ix, x) \
+    firstprivate(ix, jx, x) \
     shared(N, M, A_index, A_value, A_nnz, B_index, B_value, B_nnz, C_index, C_value, C_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -215,7 +219,8 @@ void TYPED_FUNC(
                 if (ix[k] == 0)
                 {
                     x[k] = 0.0;
-                    C_index[ROWMAJOR(i, l, N, M)] = k;
+                    //C_index[ROWMAJOR(i, l, N, M)] = k;
+                    jx[l] = k;
                     ix[k] = i + 1;
                     l++;
                 }
@@ -233,7 +238,8 @@ void TYPED_FUNC(
         int ll = 0;
         for (int j = 0; j < l; j++)
         {
-            int jp = C_index[ROWMAJOR(i, j, N, M)];
+            //int jp = C_index[ROWMAJOR(i, j, N, M)];
+            int jp = jx[j];
             REAL_T xtmp = x[jp];
             // Diagonal elements are saved in first column
             if (jp == i)
@@ -254,3 +260,114 @@ void TYPED_FUNC(
         C_nnz[i] = ll;
     }
 }
+
+/** Matrix multiply with threshold adjustment.
+ *
+ * \f$ C \leftarrow B \, A \f$
+ *
+ * \ingroup multiply_group
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param threshold Used for sparse multiply
+ */
+void TYPED_FUNC(
+    bml_multiply_adjust_AB_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    const double threshold)
+{
+    int N = A->N;
+    int M = A->M;
+    int ix[N], jx[N];
+
+    int aflag = 1;
+
+    REAL_T x[N];
+    REAL_T *A_value = (REAL_T *) A->value;
+    REAL_T *B_value = (REAL_T *) B->value;
+    REAL_T *C_value = (REAL_T *) C->value;
+
+    REAL_T adjust_threshold = (REAL_T) threshold;
+
+    int *A_nnz = A->nnz;
+    int *B_nnz = B->nnz;
+    int *C_nnz = C->nnz;
+
+    int *A_index = A->index;
+    int *B_index = B->index;
+    int *C_index = C->index;
+
+    memset(ix, 0, N * sizeof(int));
+    memset(jx, 0, N * sizeof(int));
+    memset(x, 0.0, N * sizeof(REAL_T));
+
+    while (aflag > 0)
+    {
+        aflag = 0;
+
+#pragma omp parallel for \
+    default(none) \
+    firstprivate(ix, jx, x) \
+    shared(N, M, A_index, A_value, A_nnz, B_index, B_value, B_nnz, C_index, C_value, C_nnz, adjust_threshold) \
+    reduction(+:aflag)
+        for (int i = 0; i < N; i++)
+        {
+            int l = 0;
+            for (int jp = 0; jp < A_nnz[i]; jp++)
+            {
+                REAL_T a = A_value[ROWMAJOR(i, jp, N, M)];
+                int j = A_index[ROWMAJOR(i, jp, N, M)];
+
+                for (int kp = 0; kp < B_nnz[j]; kp++)
+                {
+                    int k = B_index[ROWMAJOR(j, kp, N, M)];
+                    if (ix[k] == 0)
+                    {
+                        x[k] = 0.0;
+                        jx[l] = k;
+                        ix[k] = i + 1;
+                        l++;
+                    }
+                    x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, N, M)];       // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                }
+            }
+
+            // Check for number of non-zeroes per row exceeded
+            // Need to adjust threshold
+            if (l > M)
+            {
+                aflag = 1;
+            }
+
+            int ll = 0;
+            for (int j = 0; j < l; j++)
+            {
+                //int jp = C_index[ROWMAJOR(i, j, N, M)];
+                int jp = jx[j];
+                REAL_T xtmp = x[jp];
+                // Diagonal elements are saved in first column
+                if (jp == i)
+                {
+                    C_value[ROWMAJOR(i, ll, N, M)] = xtmp;
+                    C_index[ROWMAJOR(i, ll, N, M)] = jp;
+                    ll++;
+                }
+                else if (is_above_threshold(xtmp, adjust_threshold))
+                {
+                    C_value[ROWMAJOR(i, ll, N, M)] = xtmp;
+                    C_index[ROWMAJOR(i, ll, N, M)] = jp;
+                    ll++;
+                }
+                ix[jp] = 0;
+                x[jp] = 0.0;
+            }
+            C_nnz[i] = ll;
+        }
+
+        adjust_threshold *= (REAL_T)2.0;
+    }
+}
+

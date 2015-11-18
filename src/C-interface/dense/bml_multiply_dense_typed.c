@@ -75,3 +75,28 @@ void TYPED_FUNC(
     C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha, A->matrix,
                   &A->N, B->matrix, &A->N, &beta, C->matrix, &A->N);
 }
+
+/** Matrix multiply.
+ *
+ * This routine is provided for completeness.
+ *
+ * C = A * B
+ *
+ *  \ingroup multiply_group
+ *
+ *  \param A Matrix A
+ *  \param B Matrix B
+ *  \param C Matrix C
+ */
+void TYPED_FUNC(
+    bml_multiply_adjust_AB_dense) (
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * C)
+{
+    REAL_T alpha = (REAL_T) 1.0;
+    REAL_T beta = (REAL_T) 0.0;
+    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha, A->matrix,
+                  &A->N, B->matrix, &A->N, &beta, C->matrix, &A->N);
+}
+
