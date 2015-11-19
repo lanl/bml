@@ -51,8 +51,8 @@ contains
     call bml_copy(a, d)
     call bml_random_matrix(matrix_type, matrix_precision, n, m, c)
 
-    call bml_add(alpha, b, beta, c)
-    call bml_add_identity(d, alpha)
+    call bml_add(alpha, b, beta, c, threshold)
+    call bml_add_identity(d, alpha, threshold)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(b, b_dense)

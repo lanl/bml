@@ -54,7 +54,8 @@ contains
   !! \param a Matrix \f$ A \f$
   !! \param beta Factor \f$ \beta \f$
   !! \param b Matrix \f$ B \f$
-  subroutine add_two(alpha, a, beta, b)
+  !! \param threshold \f$ threshold \f$
+  subroutine add_two(alpha, a, beta, b, threshold)
 
     use bml_types_m
 
@@ -62,8 +63,9 @@ contains
     type(bml_matrix_t), intent(inout) :: a
     double precision, intent(in) :: beta
     type(bml_matrix_t), intent(in) :: b
+    double precision, intent(in) :: threshold
 
-    call bml_add_C(a%ptr, b%ptr, alpha, beta, 0.0d0)
+    call bml_add_C(a%ptr, b%ptr, alpha, beta, threshold)
 
   end subroutine add_two
 
@@ -77,14 +79,16 @@ contains
   !! \param a Matrix A
   !! \param alpha Factor \f$ \alpha \f$
   !! \param beta Factor \f$ \beta \f$
-  subroutine add_identity_one(a, alpha)
+  !! \param threshold \f$ threshold \f$
+  subroutine add_identity_one(a, alpha, threshold)
 
     use bml_types_m
 
     type(bml_matrix_t), intent(inout) :: a
     double precision, intent(in) :: alpha
+    double precision, intent(in) :: threshold
 
-    call bml_add_identity_C(a%ptr, alpha, 0d0)
+    call bml_add_identity_C(a%ptr, alpha, threshold)
 
   end subroutine add_identity_one
 

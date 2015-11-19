@@ -20,19 +20,21 @@ contains
     character(len=*), intent(in) :: matrix_precision
     integer, intent(in) :: n, m
     logical :: test_result
+    double precision :: threshold
 
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: a_t
     type(bml_matrix_t) :: eigenvectors
     double precision, allocatable :: eigenvalues(:)
 
+    threshold = 0.0
     test_result = .false.
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_transpose(a, a_t)
     call bml_print_matrix("A_t", a_t, 1, n, 1, n)
-    call bml_add(0.5d0, a, 0.5d0, a_t)
+    call bml_add(0.5d0, a, 0.5d0, a_t, threshold)
     call bml_print_matrix("A", a, 1, n, 1, n)
     allocate(eigenvalues(n))
     call bml_zero_matrix(matrix_type, matrix_precision, n, m, eigenvectors)
