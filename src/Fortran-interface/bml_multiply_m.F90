@@ -38,7 +38,8 @@ contains
   !! \param c Matrix \f$ C \f$.
   !! \param alpha The factor \f$ \alpha \f$.
   !! \param beta The factor \f$ \beta \f$.
-  subroutine bml_multiply(a, b, c, alpha, beta)
+  !! \param threshold The threshold \f$ threshold \f$.
+  subroutine bml_multiply(a, b, c, alpha, beta, threshold)
 
     use bml_types_m
 
@@ -46,8 +47,9 @@ contains
     type(bml_matrix_t), intent(inout) :: c
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
+    double precision, optional, intent(in) :: threshold 
 
-    call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha, beta, 0.0d0)
+    call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha, beta, threshold)
 
   end subroutine bml_multiply
 

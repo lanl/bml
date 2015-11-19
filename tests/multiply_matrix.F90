@@ -34,6 +34,7 @@ contains
 
     double precision :: alpha = -0.8
     double precision :: beta = 1.2
+    double precision :: threshold = 0.0
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
     double precision :: abs_tol = 1e-6
@@ -45,7 +46,7 @@ contains
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, c)
     call bml_copy(c, d)
 
-    call bml_multiply(a, b, d, alpha, beta)
+    call bml_multiply(a, b, d, alpha, beta, threshold)
 
     test_result = .true.
 
