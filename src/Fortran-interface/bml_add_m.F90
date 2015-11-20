@@ -63,9 +63,16 @@ contains
     type(bml_matrix_t), intent(inout) :: a
     double precision, intent(in) :: beta
     type(bml_matrix_t), intent(in) :: b
-    double precision, intent(in) :: threshold
+    double precision, optional, intent(in) :: threshold
 
-    call bml_add_C(a%ptr, b%ptr, alpha, beta, threshold)
+    double precision :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+    call bml_add_C(a%ptr, b%ptr, alpha, beta, threshold_)
 
   end subroutine add_two
 
