@@ -34,4 +34,12 @@ void bml_print_bml_matrix(
     const int j_l,
     const int j_u);
 
+void bml_read_bml_matrix(
+    const bml_matrix_t * A,
+    const char * filename);
+
+void bml_write_bml_matrix(
+    const bml_matrix_t * A,
+    const char * filename);
+    
 #endif

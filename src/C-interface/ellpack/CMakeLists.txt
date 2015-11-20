@@ -12,7 +12,8 @@ set(HEADERS-ELLPACK
   bml_threshold_ellpack.h
   bml_trace_ellpack.h
   bml_transpose_ellpack.h
-  bml_types_ellpack.h)
+  bml_types_ellpack.h
+  bml_utilities_ellpack.h)
 
 set(SOURCES-ELLPACK
   bml_add_ellpack.c
@@ -25,7 +26,8 @@ set(SOURCES-ELLPACK
   bml_scale_ellpack.c
   bml_threshold_ellpack.c
   bml_trace_ellpack.c
-  bml_transpose_ellpack.c)
+  bml_transpose_ellpack.c
+  bml_utilities_ellpack.c)
 
 add_library(bml-ellpack OBJECT ${SOURCES-ELLPACK})
 if(OPENMP_FOUND)
@@ -42,7 +44,8 @@ set(SOURCES-ELLPACK-TYPED
   bml_scale_ellpack_typed.c
   bml_threshold_ellpack_typed.c
   bml_trace_ellpack_typed.c
-  bml_transpose_ellpack_typed.c)
+  bml_transpose_ellpack_typed.c
+  bml_utilities_ellpack_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellpack single_real "${SOURCES-ELLPACK-TYPED}")

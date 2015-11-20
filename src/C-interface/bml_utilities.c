@@ -4,6 +4,7 @@
 #include "bml_types.h"
 #include "bml_utilities.h"
 #include "dense/bml_utilities_dense.h"
+#include "ellpack/bml_utilities_ellpack.h"
 #include "macros.h"
 
 #include <complex.h>
@@ -324,3 +325,52 @@ bml_print_dense_vector(
             break;
     }
 }
+
+/** Read a bml matrix from a Matrix Market file.
+ *
+ * \param A The matrix
+ * \param filename The file containing matrix
+ */
+void
+bml_read_bml_matrix(
+    const bml_matrix_t * A,
+    const char * filename)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_read_bml_matrix_dense(A, filename);
+            break;
+        case ellpack:
+            bml_read_bml_matrix_ellpack(A, filename);
+            break;
+        default:
+            LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
+            break;
+    }
+}
+
+/** Write a bml matrix to a Matrix Market file.
+ *
+ * \param A The matrix
+ * \param filename The file containing matrix
+ */
+void
+bml_write_bml_matrix(
+    const bml_matrix_t * A,
+    const char * filename)
+{   
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_write_bml_matrix_dense(A, filename);
+            break;
+        case ellpack:
+            bml_write_bml_matrix_ellpack(A, filename);
+            break;
+        default:
+            LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
+            break;
+    }
+}
+
