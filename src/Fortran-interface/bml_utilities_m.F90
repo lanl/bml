@@ -34,14 +34,14 @@ module bml_utilities_m
           bind(C, name="bml_read_bml_matrix")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
-       character(C_CHAR), value, intent(in) :: filename
+       character(C_CHAR), intent(in) :: filename(*)
      end subroutine bml_read_bml_matrix_C
 
      subroutine bml_write_bml_matrix_C(a, filename) &
           bind(C, name="bml_write_bml_matrix")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
-       character(C_CHAR), value, intent(in) :: filename
+       character(C_CHAR), intent(in) :: filename(*)
      end subroutine bml_write_bml_matrix_C
 
      
