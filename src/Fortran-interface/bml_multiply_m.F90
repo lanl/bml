@@ -47,9 +47,28 @@ contains
     type(bml_matrix_t), intent(inout) :: c
     double precision, optional, intent(in) :: alpha
     double precision, optional, intent(in) :: beta
-    double precision, optional, intent(in) :: threshold 
+    double precision, optional, intent(in) :: threshold
 
-    call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha, beta, threshold)
+    double precision :: alpha_
+    double precision :: beta_
+    double precision :: threshold_
+
+    if(present(alpha)) then
+       alpha_ = alpha
+    else
+       alpha_ = 1
+    end if
+    if(present(beta)) then
+       beta_ = beta
+    else
+       beta_ = 0
+    end if
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+    call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha_, beta_, threshold_)
 
   end subroutine bml_multiply
 
