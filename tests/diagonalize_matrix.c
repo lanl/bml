@@ -27,9 +27,7 @@ test_function(
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    bml_print_bml_matrix(A, 0, N, 0, N);
     A_t = bml_transpose_new(A);
-    bml_print_bml_matrix(A_t, 0, N, 0, N);
     bml_add(A, A_t, 0.5, 0.5, 0.0);
     bml_print_bml_matrix(A, 0, N, 0, N);
     eigenvalues = calloc(N, sizeof(double));

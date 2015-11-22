@@ -24,7 +24,10 @@ contains
 
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: a_t
+    type(bml_matrix_t) :: b
+    type(bml_matrix_t) :: c
     type(bml_matrix_t) :: eigenvectors
+    type(bml_matrix_t) :: eigenvectors_t
     double precision, allocatable :: eigenvalues(:)
 
     threshold = 0.0
@@ -39,10 +42,14 @@ contains
     allocate(eigenvalues(n))
     call bml_zero_matrix(matrix_type, matrix_precision, n, m, eigenvectors)
     call bml_diagonalize(a, eigenvalues, eigenvectors)
+    call bml_transpose(eigenvectors, eigenvectors_t)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, b)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, c)
+    call bml_multiply(eigenvectors_t, eigenvectors, b)
+    !call bml_multiply(b, eigenvectors, c)
     write(*, *) eigenvalues
     call bml_print_matrix("eigenvectors", eigenvectors, 1, n, 1, n)
-    !call bml_print_vector("eigenvalues", eigenvalues, 1, n)
-
+    call bml_print_matrix("U^t U", b, 1, n, 1, n)
     test_result = .true.
 
   end function test_function

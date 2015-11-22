@@ -8,7 +8,7 @@
 
 /** Matrix multiply.
  *
- * C = alpha * A * B + beat * C
+ * \f$ C \leftarrow \alpha \, A \, B + \beta C \f$
  *
  * \ingroup multiply_group_C
  *
@@ -135,4 +135,3 @@ bml_multiply_adjust_AB(
             break;
     }
 }
-

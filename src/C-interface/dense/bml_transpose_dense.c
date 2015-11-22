@@ -52,7 +52,7 @@ bml_transpose_new_dense(
  */
 void
 bml_transpose_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     switch (A->matrix_precision)
     {

@@ -9,15 +9,15 @@
 
 /** Matrix multiply.
  *
- * C = alpha * A * B + beta * C
+ * \f$ C \leftarrow \alpha \, A \, B + \beta C \f$
  *
- *  \ingroup multiply_group
+ * \ingroup multiply_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param C Matrix C
- *  \param alpha Scalar factor multiplied by A * B
- *  \param beta Scalar factor multiplied by C
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param alpha Scalar factor multiplied by A * B
+ * \param beta Scalar factor multiplied by C
  */
 void
 bml_multiply_dense(
@@ -154,4 +154,3 @@ bml_multiply_adjust_AB_dense(
             break;
     }
 }
-

@@ -41,7 +41,7 @@ bml_transpose_new(
  */
 void
 bml_transpose(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {

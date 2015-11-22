@@ -1,24 +1,28 @@
-#include "../typed.h"
 #include "../blas.h"
+#include "../bml_logger.h"
+#include "../typed.h"
 #include "bml_multiply.h"
-#include "bml_types.h"
 #include "bml_multiply_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>
 #include <string.h>
 
+#define FUNC_STRING_2(a) #a
+#define FUNC_STRING(a) FUNC_STRING_2(a)
+
 /** Matrix multiply.
  *
- * C = alpha * A * B + beta * C
+ * \f$ C \leftarrow \alpha \, A \, B + \beta C \f$
  *
- *  \ingroup multiply_group
+ * \ingroup multiply_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param C Matrix C
- *  \param alpha Scalar factor multiplied by A * B
- *  \param beta Scalar factor multiplied by C
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param alpha Scalar factor multiplied by A * B
+ * \param beta Scalar factor multiplied by C
  */
 void TYPED_FUNC(
     bml_multiply_dense) (
@@ -30,8 +34,14 @@ void TYPED_FUNC(
 {
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
-    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha_, A->matrix,
-                  &A->N, B->matrix, &A->N, &beta_, C->matrix, &A->N);
+    /* LOG_DEBUG("entering " FUNC_STRING(TYPED_FUNC(bml_multiply_dense)) "()\n"); */
+    /* bml_print_dense_matrix(A->N, MATRIX_PRECISION, dense_row_major, A->matrix, 0, A->N, 0, A->N); */
+    /* bml_print_dense_matrix(B->N, MATRIX_PRECISION, dense_row_major, B->matrix, 0, B->N, 0, B->N); */
+    /* bml_print_dense_matrix(C->N, MATRIX_PRECISION, dense_row_major, C->matrix, 0, C->N, 0, C->N); */
+    /* LOG_DEBUG("calling " FUNC_STRING(C_BLAS(GEMM)) "()\n"); */
+    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha_, B->matrix,
+                  &A->N, A->matrix, &A->N, &beta_, C->matrix, &A->N);
+    /* bml_print_dense_matrix(C->N, MATRIX_PRECISION, dense_row_major, C->matrix, 0, C->N, 0, C->N); */
 }
 
 /** Matrix multiply.
@@ -48,21 +58,18 @@ void TYPED_FUNC(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)
 {
-    REAL_T alpha = (REAL_T) 1.0;
-    REAL_T beta = (REAL_T) 1.0;
-    C_BLAS(GEMM) ("N", "N", &X->N, &X->N, &X->N, &alpha, X->matrix,
-                  &X->N, X->matrix, &X->N, &beta, X2->matrix, &X->N);
+    TYPED_FUNC(bml_multiply_dense) (X, X, X2, 1.0, 0.0);
 }
 
 /** Matrix multiply.
  *
- * C = A * B
+ * \f$ C \leftarrow A \, B \f$
  *
- *  \ingroup multiply_group
+ * \ingroup multiply_group
  *
- *  \param A Matrix A
- *  \param B Matrix B
- *  \param C Matrix C
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
  */
 void TYPED_FUNC(
     bml_multiply_AB_dense) (
@@ -70,10 +77,7 @@ void TYPED_FUNC(
     const bml_matrix_dense_t * B,
     bml_matrix_dense_t * C)
 {
-    REAL_T alpha = (REAL_T) 1.0;
-    REAL_T beta = (REAL_T) 0.0;
-    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha, A->matrix,
-                  &A->N, B->matrix, &A->N, &beta, C->matrix, &A->N);
+    TYPED_FUNC(bml_multiply_dense) (A, B, C, 1.0, 0.0);
 }
 
 /** Matrix multiply.
@@ -96,7 +100,6 @@ void TYPED_FUNC(
 {
     REAL_T alpha = (REAL_T) 1.0;
     REAL_T beta = (REAL_T) 0.0;
-    C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha, A->matrix,
+    C_BLAS(GEMM) ("T", "T", &A->N, &A->N, &A->N, &alpha, A->matrix,
                   &A->N, B->matrix, &A->N, &beta, C->matrix, &A->N);
 }
-

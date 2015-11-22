@@ -165,4 +165,3 @@ bml_multiply_adjust_AB_ellpack(
             break;
     }
 }
-

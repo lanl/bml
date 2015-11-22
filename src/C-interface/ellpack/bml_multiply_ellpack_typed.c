@@ -331,7 +331,7 @@ void TYPED_FUNC(
                         ix[k] = i + 1;
                         l++;
                     }
-                    x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, N, M)];       // TEMPORARY STORAGE VECTOR LENGTH FULL N
+                    x[k] = x[k] + a * B_value[ROWMAJOR(j, kp, N, M)];   // TEMPORARY STORAGE VECTOR LENGTH FULL N
                 }
             }
 
@@ -367,7 +367,6 @@ void TYPED_FUNC(
             C_nnz[i] = ll;
         }
 
-        adjust_threshold *= (REAL_T)2.0;
+        adjust_threshold *= (REAL_T) 2.0;
     }
 }
-
