@@ -18,10 +18,10 @@
  *  \param A The matrix to be read
  *  \param filename The Matrix Market format file
  */
-void
-TYPED_FUNC(bml_read_bml_matrix_ellpack) (
+void TYPED_FUNC(
+    bml_read_bml_matrix_ellpack) (
     const bml_matrix_ellpack_t * A,
-    const char * filename)
+    const char *filename)
 {
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
@@ -30,18 +30,19 @@ TYPED_FUNC(bml_read_bml_matrix_ellpack) (
 
     int N = A->N;
     int M = A->M;
-    REAL_T *A_value = (REAL_T *)A->value;
+    REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    
+
     hFile = fopen(filename, "r");
 
     // Read header
-    fscanf(hFile, "%s %s %s %s %s", header1, header2, header3, header4, header5);
-  
+    fscanf(hFile, "%s %s %s %s %s", header1, header2, header3, header4,
+           header5);
+
     // Read N, N, # of non-zeroes
     fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz);
-  
+
     char *FMT;
     switch (A->matrix_precision)
     {
@@ -66,7 +67,8 @@ TYPED_FUNC(bml_read_bml_matrix_ellpack) (
     for (int i = 0; i < nnz; i++)
     {
         fscanf(hFile, FMT, &irow, &icol, &val);
-        irow--; icol--;
+        irow--;
+        icol--;
         ind = A_nnz[irow];
         A_index[ROWMAJOR(irow, ind, M, N)] = icol;
         A_value[ROWMAJOR(irow, ind, M, N)] = val;
@@ -75,7 +77,7 @@ TYPED_FUNC(bml_read_bml_matrix_ellpack) (
 
     fclose(hFile);
 }
-  
+
 /** Write a Matrix Market format file from a bml matrix.
  *
  *  \ingroup utilities_group
@@ -83,18 +85,18 @@ TYPED_FUNC(bml_read_bml_matrix_ellpack) (
  *  \param A The matrix to be written 
  *  \param filename The Matrix Market format file
  */
-void
-TYPED_FUNC(bml_write_bml_matrix_ellpack) (
+void TYPED_FUNC(
+    bml_write_bml_matrix_ellpack) (
     const bml_matrix_ellpack_t * A,
-    const char * filename)
+    const char *filename)
 {
-    FILE* mFile;
+    FILE *mFile;
     int msum;
 
     int N = A->N;
     int M = A->M;
 
-    REAL_T *A_value = (REAL_T *)A->value;
+    REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
@@ -102,7 +104,7 @@ TYPED_FUNC(bml_write_bml_matrix_ellpack) (
 
     // Write header
     fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate real general\n");
-   
+
     // Collect number of non-zero elements
     // Write out matrix size as dense and number of non-zero elements
     msum = 0;
@@ -111,16 +113,17 @@ TYPED_FUNC(bml_write_bml_matrix_ellpack) (
         msum += A_nnz[i];
     }
     fprintf(mFile, "%d %d %d\n", N, N, msum);
-   
+
     // Write out non-zero elements
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            fprintf(mFile, "%d %d %20.15e\n", i+1, A_index[ROWMAJOR(i, j, M, N)]+1, 
-                REAL_PART(A_value[ROWMAJOR(i, j, M, N)]));
+            fprintf(mFile, "%d %d %20.15e\n", i + 1,
+                    A_index[ROWMAJOR(i, j, M, N)] + 1,
+                    REAL_PART(A_value[ROWMAJOR(i, j, M, N)]));
         }
     }
-   
+
     fclose(mFile);
 }

@@ -334,7 +334,7 @@ bml_print_dense_vector(
 void
 bml_read_bml_matrix(
     const bml_matrix_t * A,
-    const char * filename)
+    const char *filename)
 {
     switch (bml_get_type(A))
     {
@@ -358,8 +358,8 @@ bml_read_bml_matrix(
 void
 bml_write_bml_matrix(
     const bml_matrix_t * A,
-    const char * filename)
-{   
+    const char *filename)
+{
     switch (bml_get_type(A))
     {
         case dense:
@@ -373,4 +373,3 @@ bml_write_bml_matrix(
             break;
     }
 }
-

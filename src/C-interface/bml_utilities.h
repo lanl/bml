@@ -36,10 +36,10 @@ void bml_print_bml_matrix(
 
 void bml_read_bml_matrix(
     const bml_matrix_t * A,
-    const char * filename);
+    const char *filename);
 
 void bml_write_bml_matrix(
     const bml_matrix_t * A,
-    const char * filename);
-    
+    const char *filename);
+
 #endif

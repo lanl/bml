@@ -6,7 +6,7 @@
 void
 bml_read_bml_matrix_ellpack(
     const bml_matrix_ellpack_t * A,
-    const char * filename)
+    const char *filename)
 {
     switch (A->matrix_precision)
     {
@@ -27,11 +27,11 @@ bml_read_bml_matrix_ellpack(
             break;
     }
 }
- 
+
 void
 bml_write_bml_matrix_ellpack(
     const bml_matrix_ellpack_t * A,
-    const char * filename)
+    const char *filename)
 {
     switch (A->matrix_precision)
     {
