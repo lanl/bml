@@ -1,12 +1,12 @@
 #include "../macros.h"
 #include "../typed.h"
 #include "bml_add.h"
-#include "bml_allocate.h"
-#include "bml_multiply.h"
-#include "bml_types.h"
 #include "bml_add_ellpack.h"
+#include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
+#include "bml_multiply.h"
 #include "bml_multiply_ellpack.h"
+#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
@@ -41,23 +41,19 @@ void TYPED_FUNC(
     const double beta,
     const double threshold)
 {
-    REAL_T salpha = (REAL_T) alpha;
-    REAL_T sbeta = (REAL_T) beta;
-    REAL_T sthreshold = (REAL_T) threshold;
-
     bml_matrix_ellpack_t *A2 =
         TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M);
 
     if (A != NULL && A == B)
     {
-        TYPED_FUNC(bml_multiply_x2_ellpack) (A, A2, sthreshold);
+        TYPED_FUNC(bml_multiply_x2_ellpack) (A, A2, threshold);
     }
     else
     {
-        TYPED_FUNC(bml_multiply_AB_ellpack) (B, A, A2, sthreshold);
+        TYPED_FUNC(bml_multiply_AB_ellpack) (A, B, A2, threshold);
     }
 
-    TYPED_FUNC(bml_add_ellpack) (C, A2, sbeta, salpha, sthreshold);
+    TYPED_FUNC(bml_add_ellpack) (C, A2, beta, alpha, threshold);
 
     bml_deallocate_ellpack(A2);
 }
