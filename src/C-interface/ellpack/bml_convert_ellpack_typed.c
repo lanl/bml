@@ -78,14 +78,33 @@ void *TYPED_FUNC(
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
     REAL_T *A_value = A->value;
 
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, A_dense)
-    for (int i = 0; i < N; i++)
+    switch (order)
     {
-        for (int j = 0; j < A_nnz[i]; j++)
+    case dense_row_major:
+#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, A_dense)
+        for (int i = 0; i < N; i++)
         {
-            A_dense[ROWMAJOR(i, A_index[ROWMAJOR(i, j, N, M)], N, N)] =
-                A_value[ROWMAJOR(i, j, N, M)];
+            for (int j = 0; j < A_nnz[i]; j++)
+            {
+                A_dense[ROWMAJOR(i, A_index[ROWMAJOR(i, j, N, M)], N, N)] =
+                    A_value[ROWMAJOR(i, j, N, M)];
+            }
         }
+        break;
+    case dense_column_major:
+#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, A_dense)
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < A_nnz[i]; j++)
+            {
+                A_dense[COLMAJOR(i, A_index[ROWMAJOR(i, j, N, M)], N, N)] =
+                    A_value[ROWMAJOR(i, j, N, M)];
+            }
+        }
+        break;
+    default:
+        LOG_ERROR("unknown order\n");
+        break;
     }
     return A_dense;
 }

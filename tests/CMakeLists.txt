@@ -10,6 +10,7 @@ set(C-TESTS
   diagonalize_matrix.c
   io_matrix.c
   multiply_matrix.c
+  multiply_banded_matrix.c
   scale_matrix.c
   threshold_matrix.c
   trace_matrix.c

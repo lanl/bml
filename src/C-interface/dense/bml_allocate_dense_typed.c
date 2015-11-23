@@ -34,15 +34,15 @@ bml_matrix_dense_t *TYPED_FUNC(
 
 /** Allocate a banded matrix.
  *
- *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
- *  already allocated then the matrix will be deallocated in the
- *  process.
+ * Note that the matrix \f$ a \f$ will be newly allocated. If it is
+ * already allocated then the matrix will be deallocated in the
+ * process.
  *
- *  \ingroup allocate_group
+ * \ingroup allocate_group
  *
- *  \param N The matrix size.
- * \param M The bandwidth
- *  \return The matrix.
+ * \param N The matrix size.
+ * \param M The bandwidth (the number of non-zero elements per row).
+ * \return The matrix.
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_banded_matrix_dense) (
@@ -54,7 +54,8 @@ bml_matrix_dense_t *TYPED_FUNC(
 #pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
     {
-        for (int j = (i - M >= 0 ? i - M : 0); j < (i + M <= N ? i + M : N);
+        for (int j = (i - M/2 >= 0 ? i - M/2 : 0);
+             j < (i - M/2 + M <= N ? i - M/2 + M : N);
              j++)
         {
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;

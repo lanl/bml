@@ -172,6 +172,9 @@ bml_banded_matrix(
         case dense:
             return bml_banded_matrix_dense(matrix_precision, N, M);
             break;
+        case ellpack:
+            return bml_banded_matrix_ellpack(matrix_precision, N, M);
+            break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
             break;
