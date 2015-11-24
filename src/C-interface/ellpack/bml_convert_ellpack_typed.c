@@ -69,42 +69,38 @@ void *TYPED_FUNC(
     const bml_matrix_ellpack_t * A,
     const bml_dense_order_t order)
 {
-    int *A_index = A->index;
-    int *A_nnz = A->nnz;
-
-    int N = A->N;
-    int M = A->M;
-
-    REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
+    REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
     REAL_T *A_value = A->value;
 
     switch (order)
     {
-    case dense_row_major:
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, A_dense)
-        for (int i = 0; i < N; i++)
-        {
-            for (int j = 0; j < A_nnz[i]; j++)
+        case dense_row_major:
+#pragma omp parallel for default(none) shared(A, A_value, A_dense)
+            for (int i = 0; i < A->N; i++)
             {
-                A_dense[ROWMAJOR(i, A_index[ROWMAJOR(i, j, N, M)], N, N)] =
-                    A_value[ROWMAJOR(i, j, N, M)];
+                for (int j = 0; j < A->nnz[i]; j++)
+                {
+                    A_dense[ROWMAJOR
+                            (i, A->index[ROWMAJOR(i, j, A->N, A->M)], A->N,
+                             A->N)] = A_value[ROWMAJOR(i, j, A->N, A->M)];
+                }
             }
-        }
-        break;
-    case dense_column_major:
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, A_dense)
-        for (int i = 0; i < N; i++)
-        {
-            for (int j = 0; j < A_nnz[i]; j++)
+            break;
+        case dense_column_major:
+#pragma omp parallel for default(none) shared(A, A_value, A_dense)
+            for (int i = 0; i < A->N; i++)
             {
-                A_dense[COLMAJOR(i, A_index[ROWMAJOR(i, j, N, M)], N, N)] =
-                    A_value[ROWMAJOR(i, j, N, M)];
+                for (int j = 0; j < A->nnz[i]; j++)
+                {
+                    A_dense[COLMAJOR
+                            (i, A->index[ROWMAJOR(i, j, A->N, A->M)], A->N,
+                             A->N)] = A_value[ROWMAJOR(i, j, A->N, A->M)];
+                }
             }
-        }
-        break;
-    default:
-        LOG_ERROR("unknown order\n");
-        break;
+            break;
+        default:
+            LOG_ERROR("unknown order\n");
+            break;
     }
     return A_dense;
 }

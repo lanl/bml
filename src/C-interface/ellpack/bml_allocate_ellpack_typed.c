@@ -70,9 +70,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
-        for (int j = (i - M/2 >= 0 ? i - M/2 : 0);
-             j < (i - M/2 + M <= N ? i - M/2 + M : N);
-             j++)
+        for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
+             j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
             A_value[ROWMAJOR(i, jind, N, M)] = rand() / (REAL_T) RAND_MAX;
             A_index[ROWMAJOR(i, jind, N, M)] = j;

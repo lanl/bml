@@ -12,4 +12,11 @@ int bml_get_N_ellpack(
 int bml_get_M_ellpack(
     const bml_matrix_ellpack_t * A);
 
+int bml_get_row_bandwidth_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int i);
+
+int bml_get_bandwidth_ellpack(
+    const bml_matrix_ellpack_t * A);
+
 #endif

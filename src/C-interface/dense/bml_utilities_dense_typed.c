@@ -76,7 +76,7 @@ void TYPED_FUNC(
  *
  *  \ingroup utilities_group
  *
- *  \param A The matrix to be written 
+ *  \param A The matrix to be written
  *  \param filename The Matrix Market format file
  */
 void TYPED_FUNC(

@@ -90,9 +90,9 @@ void TYPED_FUNC(
 #pragma omp parallel for \
     default(none) \
     firstprivate(ix, jx, x) \
-    shared(X_index, X_value, X_nnz, X2_index, X2_value, X2_nnz) \
+    shared(X, X2, X_value, X2_value)             \
     reduction(+: traceX, traceX2)
-    for (int i = 0; i < X->N; i++) // CALCULATES THRESHOLDED X^2
+    for (int i = 0; i < X->N; i++)      // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
         for (int jp = 0; jp < X->nnz[i]; jp++)
@@ -184,7 +184,7 @@ void TYPED_FUNC(
 #pragma omp parallel for \
     default(none) \
     firstprivate(ix, jx, x) \
-    shared(N, M, A_index, A_value, A_nnz, B_index, B_value, B_nnz, C_index, C_value, C_nnz)
+    shared(A, B, C, A_value, B_value, C_value)
     for (int i = 0; i < A->N; i++)
     {
         int l = 0;
@@ -280,7 +280,7 @@ void TYPED_FUNC(
 #pragma omp parallel for \
     default(none) \
     firstprivate(ix, jx, x) \
-    shared(N, M, A_index, A_value, A_nnz, B_index, B_value, B_nnz, C_index, C_value, C_nnz, adjust_threshold) \
+    shared(A, B, C, A_value, B_value, C_value, adjust_threshold) \
     reduction(+:aflag)
         for (int i = 0; i < A->N; i++)
         {

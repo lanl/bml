@@ -58,3 +58,35 @@ bml_get_M_ellpack(
         return -1;
     }
 }
+
+/** Return the bandwidth of a row in the matrix.
+ *
+ * \param A The bml matrix.
+ * \param i The row index.
+ * \return The bandwidth of row i.
+ */
+int
+bml_get_row_bandwidth_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int i)
+{
+    return A->nnz[i];
+}
+
+/** Return the bandwidth of a matrix.
+ *
+ * \param A The bml matrix.
+ * \return The bandwidth of row i.
+ */
+int
+bml_get_bandwidth_ellpack(
+    const bml_matrix_ellpack_t * A)
+{
+    int max_bandwidth = 0;
+    for (int i = 0; i < A->N; i++)
+    {
+        max_bandwidth =
+            (A->nnz[i] > max_bandwidth ? A->nnz[i] : max_bandwidth);
+    }
+    return max_bandwidth;
+}

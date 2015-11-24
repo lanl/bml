@@ -44,7 +44,6 @@ module bml_utilities_m
        character(C_CHAR), intent(in) :: filename(*)
      end subroutine bml_write_bml_matrix_C
 
-     
   end interface
 
   interface bml_print_vector

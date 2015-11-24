@@ -129,6 +129,9 @@ bml_get_row_bandwidth(
         case dense:
             return bml_get_row_bandwidth_dense(A, i);
             break;
+        case ellpack:
+            return bml_get_row_bandwidth_ellpack(A, i);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -149,6 +152,9 @@ bml_get_bandwidth(
     {
         case dense:
             return bml_get_bandwidth_dense(A);
+            break;
+        case ellpack:
+            return bml_get_bandwidth_ellpack(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
