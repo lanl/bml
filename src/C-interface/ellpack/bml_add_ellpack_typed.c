@@ -51,7 +51,9 @@ void TYPED_FUNC(
     memset(ix, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
-#pragma omp parallel for default(none) firstprivate(x, ix) shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz)
+#pragma omp parallel for default(none) \
+    firstprivate(x, ix) \
+    shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz)
     for (int i = 0; i < N; i++)
     {
         int l = 0;
@@ -86,7 +88,7 @@ void TYPED_FUNC(
         for (int jp = 0; jp < l; jp++)
         {
             REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, N, A_M)]];
-            if (is_above_threshold(xTmp, threshold))    
+            if (is_above_threshold(xTmp, threshold))
             {
                 A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
                 A_index[ROWMAJOR(i, ll, N, A_M)] =
