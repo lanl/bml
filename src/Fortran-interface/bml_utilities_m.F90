@@ -6,7 +6,7 @@ module bml_utilities_m
   use bml_utilities_double_real_m
   use bml_utilities_single_complex_m
   use bml_utilities_double_complex_m
-
+  use bml_fc_tools_m
   implicit none
 
   private
@@ -118,7 +118,7 @@ contains
     character(len=*, kind=C_CHAR), intent(in) :: filename
     type(bml_matrix_t), intent(in) :: a
 
-    call bml_read_bml_matrix_C(a%ptr, filename)
+    call bml_read_bml_matrix_C(a%ptr, f_c_string(filename))
 
   end subroutine bml_read_bml_matrix
 
@@ -131,7 +131,7 @@ contains
     character(len=*, kind=C_CHAR), intent(in) :: filename
     type(bml_matrix_t), intent(in) :: a
 
-    call bml_write_bml_matrix_C(a%ptr, filename)
+    call bml_write_bml_matrix_C(a%ptr, f_c_string(filename))
 
   end subroutine bml_write_bml_matrix
 
