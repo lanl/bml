@@ -31,7 +31,7 @@ contains
 
     type(bml_matrix_t), intent(inout) :: a
     integer, intent(in) :: i
-    real(kind(0e0)), target, intent(in) :: row(:)
+    real(kind(0e0)), target, intent(in) :: row(*)
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row))
 
@@ -43,7 +43,7 @@ contains
 
     type(bml_matrix_t), intent(inout) :: a
     integer, intent(in) :: i
-    real(kind(0d0)), target, intent(in) :: row(:)
+    real(kind(0d0)), target, intent(in) :: row(*)
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row))
 
@@ -55,7 +55,7 @@ contains
 
     type(bml_matrix_t), intent(inout) :: a
     integer, intent(in) :: i
-    complex(kind(0e0)), target, intent(in) :: row(:)
+    complex(kind(0e0)), target, intent(in) :: row(*)
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row))
 
@@ -67,7 +67,7 @@ contains
 
     type(bml_matrix_t), intent(inout) :: a
     integer, intent(in) :: i
-    complex(kind(0d0)), target, intent(in) :: row(:)
+    complex(kind(0d0)), target, intent(in) :: row(*)
 
     call bml_set_row_C(a%ptr, i-1, c_loc(row))
 
