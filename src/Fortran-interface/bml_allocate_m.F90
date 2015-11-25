@@ -71,18 +71,18 @@ contains
   !! \ingroup allocate_group_Fortran
   !!
   !! \param matrix_type The matrix type.
-  !! \param matrix_precision The precision of the matrix.
+  !! \param precision_kind The precision of the matrix.
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_zero_matrix(matrix_type, matrix_precision, n, m, a)
+  subroutine bml_zero_matrix(matrix_type, precision_kind, n, m, a)
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: precision_kind
     integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(out) :: a
 
-    a%ptr = bml_zero_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
+    a%ptr = bml_zero_matrix_C(get_type_id(matrix_type), get_prec_id(precision_kind), n, m)
 
   end subroutine bml_zero_matrix
 
@@ -91,18 +91,18 @@ contains
   !! \ingroup allocate_group_Fortran
   !!
   !! \param matrix_type The matrix type.
-  !! \param matrix_precision The precision of the matrix.
+  !! \param precision_kind The precision of the matrix.
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_banded_matrix(matrix_type, matrix_precision, n, m, a)
+  subroutine bml_banded_matrix(matrix_type, precision_kind, n, m, a)
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: precision_kind
     integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(out) :: a
 
-    a%ptr = bml_banded_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
+    a%ptr = bml_banded_matrix_C(get_type_id(matrix_type), get_prec_id(precision_kind), n, m)
 
   end subroutine bml_banded_matrix
 
@@ -111,18 +111,18 @@ contains
   !! \ingroup allocate_group_Fortran
   !!
   !! \param matrix_type The matrix type.
-  !! \param matrix_precision The precision of the matrix.
+  !! \param precision_kind The precision of the matrix.
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+  subroutine bml_random_matrix(matrix_type, precision_kind, n, m, a)
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: precision_kind
     integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(out) :: a
 
-    a%ptr = bml_random_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
+    a%ptr = bml_random_matrix_C(get_type_id(matrix_type), get_prec_id(precision_kind), n, m)
 
   end subroutine bml_random_matrix
 
@@ -131,18 +131,18 @@ contains
   !! \ingroup allocate_group_Fortran
   !!
   !! \param matrix_type The matrix type.
-  !! \param matrix_precision The precision of the matrix.
+  !! \param precision_kind The precision of the matrix.
   !! \param n The matrix size.
   !! \param a The matrix.
   !! \param m The extra arg.
-  subroutine bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
+  subroutine bml_identity_matrix(matrix_type, precision_kind, n, m, a)
 
     character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    integer, intent(in) :: precision_kind
     integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(out) :: a
 
-    a%ptr = bml_identity_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
+    a%ptr = bml_identity_matrix_C(get_type_id(matrix_type), get_prec_id(precision_kind), n, m)
 
   end subroutine bml_identity_matrix
 

@@ -82,8 +82,8 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-          & get_enum_id(BML_PRECISION_SINGLE_REAL), BML_DENSE_COLUMN_MAJOR, &
+      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
+          & get_prec_id(C_FLOAT), BML_DENSE_COLUMN_MAJOR, &
           & size(a_dense, 1, C_INT), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -121,8 +121,8 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-          & get_enum_id(BML_PRECISION_DOUBLE_REAL), BML_DENSE_COLUMN_MAJOR, &
+      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
+          & get_prec_id(C_DOUBLE), BML_DENSE_COLUMN_MAJOR, &
           & size(a_dense, 1, kind=C_INT), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -140,7 +140,7 @@ contains
   subroutine bml_convert_from_dense_single_complex(matrix_type, a_dense, a, threshold, m)
 
     character(len=*), intent(in) :: matrix_type
-    complex, target, intent(in) :: a_dense(:, :)
+    complex(C_FLOAT_COMPLEX), target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
@@ -161,8 +161,8 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-          & get_enum_id(BML_PRECISION_SINGLE_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
+      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
+          & get_prec_id(C_FLOAT_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
           & size(a_dense, 1, kind=C_INT), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -180,7 +180,7 @@ contains
   subroutine bml_convert_from_dense_double_complex(matrix_type, a_dense, a, threshold, m)
 
     character(len=*), intent(in) :: matrix_type
-    complex(C_DOUBLE), target, intent(in) :: a_dense(:, :)
+    complex(C_DOUBLE_COMPLEX), target, intent(in) :: a_dense(:, :)
     type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
@@ -201,8 +201,8 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_enum_id(matrix_type), &
-          & get_enum_id(BML_PRECISION_DOUBLE_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
+      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
+          & get_prec_id(C_DOUBLE_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
           & size(a_dense, 1, kind=C_INT), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -257,10 +257,10 @@ contains
   subroutine bml_convert_to_dense_single_complex(a, a_dense)
 
     type(bml_matrix_t), intent(in) :: a
-    complex(C_FLOAT), allocatable, intent(out) :: a_dense(:, :)
+    complex(C_FLOAT_COMPLEX), allocatable, intent(out) :: a_dense(:, :)
 
     type(C_PTR) :: a_ptr
-    complex(C_FLOAT), pointer :: a_dense_ptr(:, :)
+    complex(C_FLOAT_COMPLEX), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
@@ -277,10 +277,10 @@ contains
   subroutine bml_convert_to_dense_double_complex(a, a_dense)
 
     type(bml_matrix_t), intent(in) :: a
-    complex(C_DOUBLE), allocatable, intent(out) :: a_dense(:, :)
+    complex(C_DOUBLE_COMPLEX), allocatable, intent(out) :: a_dense(:, :)
 
     type(C_PTR) :: a_ptr
-    complex(C_DOUBLE), pointer :: a_dense_ptr(:, :)
+    complex(C_DOUBLE_COMPLEX), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
