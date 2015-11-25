@@ -11,10 +11,10 @@ set(C_REAL_TYPES
   "double complex")
 
 set(F_REAL_TYPES
-  "real(kind(0.0))"
-  "real(kind(0.0d0))"
-  "complex(kind(0.0))"
-  "complex(kind(0.0d0))")
+  "real(C_FLOAT)"
+  "real(C_DOUBLE)"
+  "complex(C_FLOAT_COMPLEX)"
+  "complex(C_DOUBLE_COMPLEX)")
 
 set(F_PRECISION_NAMES
   BML_PRECISION_SINGLE_REAL

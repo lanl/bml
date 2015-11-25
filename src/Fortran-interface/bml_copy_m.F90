@@ -1,6 +1,6 @@
 !> Copy operations on matrices.
 module bml_copy_m
-
+  use, intrinsic :: iso_C_binding
   implicit none
 
   private
@@ -8,7 +8,7 @@ module bml_copy_m
   interface
 
      function bml_copy_new_C(a) bind(C, name="bml_copy_new")
-       use, intrinsic :: iso_C_binding
+       import :: C_PTR
        type(C_PTR), value, intent(in) :: a
        type(C_PTR) :: bml_copy_new_C
      end function bml_copy_new_C

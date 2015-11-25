@@ -1,6 +1,8 @@
 !> Matrix allocation functions.
 module bml_allocate_m
-
+  use, intrinsic :: iso_c_binding
+  use bml_types_m
+  use bml_interface_m
   implicit none
 
   private
@@ -18,12 +20,12 @@ module bml_allocate_m
   interface
 
      subroutine bml_deallocate_C(a) bind(C, name="bml_deallocate")
-       use, intrinsic :: iso_C_binding
+       import :: C_PTR
        type(C_PTR) :: a
      end subroutine bml_deallocate_C
 
      function bml_zero_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_zero_matrix")
-       use, intrinsic :: iso_C_binding
+       import :: C_INT, C_PTR
        integer(C_INT), value, intent(in) :: matrix_type
        integer(C_INT), value, intent(in) :: matrix_precision
        integer(C_INT), value, intent(in) :: n
@@ -32,7 +34,7 @@ module bml_allocate_m
      end function bml_zero_matrix_C
 
      function bml_banded_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_banded_matrix")
-       use, intrinsic :: iso_C_binding
+       import :: C_INT, C_PTR
        integer(C_INT), value, intent(in) :: matrix_type
        integer(C_INT), value, intent(in) :: matrix_precision
        integer(C_INT), value, intent(in) :: n
@@ -41,7 +43,7 @@ module bml_allocate_m
      end function bml_banded_matrix_C
 
      function bml_random_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_random_matrix")
-       use, intrinsic :: iso_C_binding
+       import :: C_INT, C_PTR
        integer(C_INT), value, intent(in) :: matrix_type
        integer(C_INT), value, intent(in) :: matrix_precision
        integer(C_INT), value, intent(in) :: n
@@ -50,7 +52,7 @@ module bml_allocate_m
      end function bml_random_matrix_C
 
      function bml_identity_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_identity_matrix")
-       use, intrinsic :: iso_C_binding
+       import :: C_INT, C_PTR
        integer(C_INT), value, intent(in) :: matrix_type
        integer(C_INT), value, intent(in) :: matrix_precision
        integer(C_INT), value, intent(in) :: n
@@ -74,7 +76,6 @@ contains
   !!
   !! \param a The matrix.
   subroutine bml_deallocate(a)
-    use bml_types_m
     type(bml_matrix_t) :: a
     call bml_deallocate_C(a%ptr)
   end subroutine bml_deallocate
@@ -90,12 +91,9 @@ contains
   !! \param m The extra arg.
   subroutine bml_zero_matrix(matrix_type, matrix_precision, n, m, a)
 
-    use bml_types_m
-    use bml_interface_m
-
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n, m
+    integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(inout) :: a
 
     if(c_associated(a%ptr)) then
@@ -116,12 +114,9 @@ contains
   !! \param m The extra arg.
   subroutine bml_banded_matrix(matrix_type, matrix_precision, n, m, a)
 
-    use bml_types_m
-    use bml_interface_m
-
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n, m
+    integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(inout) :: a
 
     if(c_associated(a%ptr)) then
@@ -142,12 +137,9 @@ contains
   !! \param m The extra arg.
   subroutine bml_random_matrix(matrix_type, matrix_precision, n, m, a)
 
-    use bml_types_m
-    use bml_interface_m
-
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n, m
+    integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(inout) :: a
 
     if(c_associated(a%ptr)) then
@@ -168,12 +160,9 @@ contains
   !! \param m The extra arg.
   subroutine bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
 
-    use bml_types_m
-    use bml_interface_m
-
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
-    integer, intent(in) :: n, m
+    integer(C_INT), intent(in) :: n, m
     type(bml_matrix_t), intent(inout) :: a
 
     if(c_associated(a%ptr)) then

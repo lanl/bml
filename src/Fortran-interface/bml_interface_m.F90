@@ -1,6 +1,7 @@
 !> Interface module.
 module bml_interface_m
-
+  use iso_c_binding
+  use bml_types_m
   implicit none
 
   private
@@ -66,10 +67,8 @@ contains
   !! in bml_matrix_types_t and bml_matrix_precision_t.
   function get_enum_id(type_string) result(id)
 
-    use bml_types_m
-
     character(len=*), intent(in) :: type_string
-    integer :: id
+    integer(C_INT) :: id
 
     select case(type_string)
     case(BML_PRECISION_SINGLE_REAL)

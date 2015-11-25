@@ -1,5 +1,6 @@
 module bml_add_m
-
+  use, intrinsic :: iso_c_binding
+  use bml_types_m
   implicit none
 
   private
@@ -7,7 +8,7 @@ module bml_add_m
   interface
 
      subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
-       use, intrinsic :: iso_C_binding
+       import :: C_PTR, C_DOUBLE
        type(C_PTR), value, intent(in) :: a
        type(C_PTR), value, intent(in) :: b
        real(C_DOUBLE), value, intent(in) :: alpha
@@ -16,7 +17,7 @@ module bml_add_m
      end subroutine bml_add_C
 
      subroutine bml_add_identity_C(a, beta, threshold) bind(C, name="bml_add_identity")
-       use, intrinsic :: iso_C_binding
+       import :: C_PTR, C_DOUBLE
        type(C_PTR), value :: a
        real(C_DOUBLE), value, intent(in) :: beta
        real(C_DOUBLE), value, intent(in) :: threshold
@@ -57,20 +58,18 @@ contains
   !! \param threshold \f$ threshold \f$
   subroutine add_two(alpha, a, beta, b, threshold)
 
-    use bml_types_m
-
-    double precision, intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: alpha
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: beta
+    real(C_DOUBLE), intent(in) :: beta
     type(bml_matrix_t), intent(in) :: b
-    double precision, optional, intent(in) :: threshold
+    real(C_DOUBLE), optional, intent(in) :: threshold
 
-    double precision :: threshold_
+    real(C_DOUBLE) :: threshold_
 
     if(present(threshold)) then
        threshold_ = threshold
     else
-       threshold_ = 0
+       threshold_ = 0.0_C_DOUBLE
     end if
     call bml_add_C(a%ptr, b%ptr, alpha, beta, threshold_)
 
@@ -89,11 +88,9 @@ contains
   !! \param threshold \f$ threshold \f$
   subroutine add_identity_one(a, alpha, threshold)
 
-    use bml_types_m
-
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: alpha
-    double precision, intent(in) :: threshold
+    real(C_DOUBLE), intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: threshold
 
     call bml_add_identity_C(a%ptr, alpha, threshold)
 

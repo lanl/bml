@@ -1,7 +1,7 @@
 !> The basic bml types.
 module bml_types_m
 
-  use, intrinsic :: iso_C_binding
+  use, intrinsic :: iso_c_binding
 
   !> The bml vector type.
   type :: bml_vector_t

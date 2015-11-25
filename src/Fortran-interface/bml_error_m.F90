@@ -30,9 +30,9 @@ contains
 
     write(line_string, *) line
     write(*, "(A)") "["//trim(adjustl(file)) &
-         //":"//trim(adjustl(line_string)) &
-         //" "//trim(adjustl(tag))//"] " &
-         //trim(adjustl(message))
+         & //":"//trim(adjustl(line_string)) &
+         & //" "//trim(adjustl(tag))//"] " &
+         & //trim(adjustl(message))
 
   end subroutine bml_msg
 

@@ -1,13 +1,14 @@
 !> Transpose functions.
 module bml_transpose_m
-
+  use, intrinsic :: iso_c_binding
+  use bml_types_m
   implicit none
   private
 
   interface
 
      function bml_transpose_new_C(a) bind(C, name="bml_transpose_new")
-       use, intrinsic :: iso_C_binding
+       import :: C_PTR
        type(C_PTR), value, intent(in) :: a
        type(C_PTR) :: bml_transpose_new_C
      end function bml_transpose_new_C
@@ -23,8 +24,6 @@ contains
   !! @param a The matrix.
   !! @param a_t The transpose.
   subroutine bml_transpose(a, a_t)
-
-    use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: a_t
