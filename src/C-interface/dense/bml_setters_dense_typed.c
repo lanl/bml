@@ -17,6 +17,6 @@ void TYPED_FUNC(
 
     for (int j = 0; j < N; j++)
     {
-        A_matrix[ROWMAJOR(i, j, N, N)] = row[i];
+        A_matrix[ROWMAJOR(i, j, N, N)] = row[j];
     }
 }
