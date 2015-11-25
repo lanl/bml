@@ -19,10 +19,6 @@ module bml_allocate_m
   !> The interfaces to the C API.
   interface
 
-     subroutine bml_deallocate_C(a) bind(C, name="bml_deallocate")
-       import :: C_PTR
-       type(C_PTR) :: a
-     end subroutine bml_deallocate_C
 
      function bml_zero_matrix_C(matrix_type, matrix_precision, n, m) bind(C, name="bml_zero_matrix")
        import :: C_INT, C_PTR
@@ -62,7 +58,6 @@ module bml_allocate_m
 
   end interface
 
-  public :: bml_deallocate
   public :: bml_random_matrix
   public :: bml_banded_matrix
   public :: bml_identity_matrix
@@ -70,15 +65,6 @@ module bml_allocate_m
 
 contains
 
-  !> Deallocate a matrix.
-  !!
-  !! \ingroup allocate_group_Fortran
-  !!
-  !! \param a The matrix.
-  subroutine bml_deallocate(a)
-    type(bml_matrix_t) :: a
-    call bml_deallocate_C(a%ptr)
-  end subroutine bml_deallocate
 
   !> Create the zero matrix.
   !!
@@ -94,11 +80,8 @@ contains
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
 
-    if(c_associated(a%ptr)) then
-       call bml_deallocate_C(a%ptr)
-    end if
     a%ptr = bml_zero_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
 
   end subroutine bml_zero_matrix
@@ -117,11 +100,8 @@ contains
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
 
-    if(c_associated(a%ptr)) then
-       call bml_deallocate_C(a%ptr)
-    end if
     a%ptr = bml_banded_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
 
   end subroutine bml_banded_matrix
@@ -140,11 +120,8 @@ contains
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
 
-    if(c_associated(a%ptr)) then
-       call bml_deallocate_C(a%ptr)
-    end if
     a%ptr = bml_random_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
 
   end subroutine bml_random_matrix
@@ -163,11 +140,8 @@ contains
     character(len=*), intent(in) :: matrix_type
     character(len=*), intent(in) :: matrix_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
 
-    if(c_associated(a%ptr)) then
-       call bml_deallocate_C(a%ptr)
-    end if
     a%ptr = bml_identity_matrix_C(get_enum_id(matrix_type), get_enum_id(matrix_precision), n, m)
 
   end subroutine bml_identity_matrix
