@@ -12,6 +12,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_introspection_m.F90
   bml_multiply_m.F90
   bml_scale_m.F90
+  bml_setters_m.F90
   bml_threshold_m.F90
   bml_trace_m.F90
   bml_transpose_m.F90

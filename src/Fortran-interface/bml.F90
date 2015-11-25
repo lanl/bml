@@ -12,6 +12,7 @@ module bml
   use bml_introspection_m
   use bml_multiply_m
   use bml_scale_m
+  use bml_setters_m
   use bml_threshold_m
   use bml_trace_m
   use bml_transpose_m

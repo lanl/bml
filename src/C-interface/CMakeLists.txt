@@ -15,6 +15,7 @@ set(HEADERS-C
   bml_logger.h
   bml_multiply.h
   bml_scale.h
+  bml_setters.h
   bml_threshold.h
   bml_trace.h
   bml_transpose.h
@@ -40,6 +41,7 @@ set(SOURCES-C
   bml_logger.c
   bml_multiply.c
   bml_scale.c
+  bml_setters.c
   bml_threshold.c
   bml_trace.c
   bml_transpose.c
