@@ -6,8 +6,7 @@ module bml_types_m
   public :: bml_vector_t, bml_matrix_t
   public :: bml_deallocate
   public :: BML_MATRIX_DENSE, BML_MATRIX_ELLPACK
-  public :: BML_PRECISION_SINGLE_REAL, BML_PRECISION_DOUBLE_REAL
-  public :: BML_PRECISION_SINGLE_COMPLEX, BML_PRECISION_DOUBLE_COMPLEX
+  public :: BML_ELEMENT_REAL, BML_ELEMENT_COMPLEX
 
   !> The bml vector type.
   type :: bml_vector_t
@@ -32,16 +31,11 @@ module bml_types_m
   character(len=*), parameter :: BML_MATRIX_ELLPACK = "ellpack"
 
   !> The single precision identifier.
-  character(len=*), parameter :: BML_PRECISION_SINGLE_REAL = "single_real"
+  character(len=*), parameter :: BML_ELEMENT_REAL = "real"
 
   !> The double-precision identifier.
-  character(len=*), parameter :: BML_PRECISION_DOUBLE_REAL = "double_real"
+  character(len=*), parameter :: BML_ELEMENT_COMPLEX = "complex"
 
-  !> The single precision identifier.
-  character(len=*), parameter :: BML_PRECISION_SINGLE_COMPLEX = "single_complex"
-
-  !> The double-precision identifier.
-  character(len=*), parameter :: BML_PRECISION_DOUBLE_COMPLEX = "double_complex"
 
   interface
     subroutine bml_deallocate_C(a) bind(C, name="bml_deallocate")

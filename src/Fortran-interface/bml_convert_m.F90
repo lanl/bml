@@ -82,8 +82,8 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
-          & get_prec_id(C_FLOAT), BML_DENSE_COLUMN_MAJOR, &
+      a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
+          & get_element_id(BML_ELEMENT_REAL, C_FLOAT), BML_DENSE_COLUMN_MAJOR, &
           & size(a_dense, 1, C_INT), c_loc(a_ptr), threshold_, m_)
     end associate
 
@@ -121,9 +121,10 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
-          & get_prec_id(C_DOUBLE), BML_DENSE_COLUMN_MAJOR, &
-          & size(a_dense, 1, kind=C_INT), c_loc(a_ptr), threshold_, m_)
+      a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
+          & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
+          & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
+          & c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_double
@@ -161,9 +162,10 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
-          & get_prec_id(C_FLOAT_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
-          & size(a_dense, 1, kind=C_INT), c_loc(a_ptr), threshold_, m_)
+      a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
+          & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
+          & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
+          & c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_single_complex
@@ -201,9 +203,10 @@ contains
     end if
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
-      a%ptr = bml_convert_from_dense_C(get_type_id(matrix_type), &
-          & get_prec_id(C_DOUBLE_COMPLEX), BML_DENSE_COLUMN_MAJOR, &
-          & size(a_dense, 1, kind=C_INT), c_loc(a_ptr), threshold_, m_)
+      a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
+          & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &
+          & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
+          & c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_double_complex
