@@ -9,6 +9,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_diagonalize_m.F90
   bml_elemental_m.F90
   bml_error_m.F90
+  bml_getters_m.F90
   bml_introspection_m.F90
   bml_multiply_m.F90
   bml_scale_m.F90

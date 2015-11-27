@@ -10,6 +10,7 @@ set(HEADERS-C
   bml_diagonalize.h
   bml_elemental.h
   bml_export.h
+  bml_getters.h
   bml_import.h
   bml_introspection.h
   bml_logger.h
@@ -36,6 +37,7 @@ set(SOURCES-C
   bml_diagonalize.c
   bml_elemental.c
   bml_export.c
+  bml_getters.c
   bml_import.c
   bml_introspection.c
   bml_logger.c
