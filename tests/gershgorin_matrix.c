@@ -20,6 +20,7 @@ test_function(
     REAL_T *B_dense = NULL;
 
     double scale_factor = 2.5;
+    double threshold = 0.0;
 
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
     bml_scale_inplace(scale_factor, A);
@@ -28,7 +29,7 @@ test_function(
     A_dense = bml_export_to_dense(A, dense_row_major);
     A_dense[0] = scale_factor * scale_factor;
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, A_dense, N, M);
+                              N, A_dense, threshold, M);
     B_gbnd = bml_gershgorin(B);
 
     bml_free_memory(A_dense);

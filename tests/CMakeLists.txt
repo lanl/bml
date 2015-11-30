@@ -83,6 +83,7 @@ set(FORTRAN-TESTS
   diagonalize_matrix.F90
   get_bandwidth.F90
   get_matrix.F90
+  gershgorin_matrix.F90
   io_matrix.F90
   multiply_matrix.F90
   scale_matrix.F90
