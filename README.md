@@ -7,7 +7,22 @@ Simply run:
 
     $ ./build.sh compile
 
-and the library will be built in the `build` directory.
+and the library will be built in the `build` directory.  In case you
+change any sources and simply want to rebuild the library, you don't
+have to run `build.sh` again, but rather
+
+    $ make -C build
+
+The compiled library can be installed by running
+
+    $ make -C build install
+
+which by default installs in `/usr/local`.  The install directory can
+be modified by running
+
+    $ CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+
+(which assumes that you are using the bash shell).
 
 ## Prerequisites ##
 
@@ -64,6 +79,7 @@ as not to confuse it with the version available from LANL.
 Additionally, redistribution and use in source and binary forms, with
 or without modification, are permitted provided that the following
 conditions are met:
+
     - Redistributions of source code must retain the above copyright
       notice, this list of conditions and the following disclaimer.
     - Redistributions in binary form must reproduce the above
