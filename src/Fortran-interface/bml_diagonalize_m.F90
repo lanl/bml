@@ -31,7 +31,7 @@ contains
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
-    double precision, target, intent(inout) :: eigenvalues(:)
+    double precision, target, intent(inout) :: eigenvalues(*)
     type(bml_matrix_t), intent(inout) :: eigenvectors
 
     call bml_diagonalize_C(a%ptr, c_loc(eigenvalues), eigenvectors%ptr)
