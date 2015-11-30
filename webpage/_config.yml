@@ -2,3 +2,6 @@ defaults:
   -
     values:
       layout: "default"
+
+host: localhost
+baseurl: /bml
