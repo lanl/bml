@@ -16,29 +16,27 @@
  *  \param maxminusmin Calculated max-min value
  *  \param threshold Threshold for matrix
  */
-void
+void*
 bml_gershgorin_ellpack(
-    const bml_matrix_ellpack_t * A,
-    double maxeval,
-    double maxminusmin,
-    const double threshold)
+    const bml_matrix_ellpack_t * A)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_gershgorin_ellpack_single_real(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_ellpack_single_real(A);
             break;
         case double_real:
-            bml_gershgorin_ellpack_double_real(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_ellpack_double_real(A);
             break;
         case single_complex:
-            bml_gershgorin_ellpack_single_complex(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_ellpack_single_complex(A);
             break;
         case double_complex:
-            bml_gershgorin_ellpack_double_complex(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_ellpack_double_complex(A);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
+    return NULL;
 }

@@ -8,6 +8,7 @@ set(C-TESTS
   convert_matrix.c
   copy_matrix.c
   diagonalize_matrix.c
+  gershgorin_matrix.c
   io_matrix.c
   multiply_matrix.c
   multiply_banded_matrix.c

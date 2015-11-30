@@ -19,31 +19,29 @@
  *  \param maxminusmin Calculated max-min value
  *  \param threshold Threshold for matrix
  */
-void
+void*
 bml_gershgorin_dense(
-    const bml_matrix_dense_t * A,
-    double maxeval,
-    double minminusmax,
-    const double threshold)
+    const bml_matrix_dense_t * A)
 {
     assert(A != NULL);
 
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_gershgorin_dense_single_real(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_dense_single_real(A);
             break;
         case double_real:
-            bml_gershgorin_dense_double_real(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_dense_double_real(A);
             break;
         case single_complex:
-            bml_gershgorin_dense_single_complex(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_dense_single_complex(A);
             break;
         case double_complex:
-            bml_gershgorin_dense_double_complex(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_dense_double_complex(A);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
+    return NULL;
 }

@@ -31,7 +31,7 @@
 #define MATRIX_PRECISION double_complex
 #define BLAS_PREFIX Z
 #define REAL_PART(x) creal(x)
-#define ABS(x) (cals(x))
+#define ABS(x) (cabs(x))
 #define is_above_threshold(x, t) (cabs(x) > cabs(t))
 #else
 #error Unknown precision type

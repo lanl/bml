@@ -203,6 +203,7 @@
 #include "bml_copy.h"
 #include "bml_diagonalize.h"
 #include "bml_export.h"
+#include "bml_gershgorin.h"
 #include "bml_import.h"
 #include "bml_logger.h"
 #include "bml_multiply.h"

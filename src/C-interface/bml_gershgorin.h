@@ -6,10 +6,8 @@
 #include "bml_types.h"
 
 // Calculate Gershgorin bounds
-void bml_gershgorin(
-    const bml_matrix_t * A,
-    double maxeval;
-    double maxminusmin,
-    const double threshold);
+void*
+ bml_gershgorin(
+    const bml_matrix_t * A);
 
 #endif

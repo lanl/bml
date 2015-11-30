@@ -16,24 +16,22 @@
  * \param maxminusmin Calculated max-min value
  * \param threshold Threshold for A
  */
-void
+void*
 bml_gershgorin(
-    const bml_matrix_t * A,
-    double maxeval;
-    double maxminusmin,
-    const double threshold);
+    const bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
         case dense:
-            bml_gershgorin_dense(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_dense(A);
             break;
         case ellpack:
-            bml_gershgorin_ellpack(A, maxeval, maxminusmin, threshold);
+            return bml_gershgorin_ellpack(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }
+    return NULL;
 }
 
