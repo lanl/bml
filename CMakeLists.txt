@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.7)
 project(bml C CXX Fortran)
 
 # The library version is versioned off the major version. If the API
@@ -310,6 +310,9 @@ if(BML_TESTING)
   message(STATUS "Setting up test suite")
   find_program(VALGRIND valgrind
     DOC "valgrind - a suite of tools for debugging and profiling programs")
+  if(VALGRIND)
+    message(STATUS "Found valgrind, will test memory")
+  endif()
   enable_testing()
   if(BML_OLD)
     add_subdirectory(tests-old)

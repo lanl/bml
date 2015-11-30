@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TOP_DIR="${PWD}"
-BUILD_DIR="${TOP_DIR}/build"
+BUILD_DIR="${BUILD_DIR:=${TOP_DIR}/build}"
 INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install}"
 LOG_FILE="${TOP_DIR}/build.log"
 
@@ -31,6 +31,7 @@ EOF
     echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
     echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
     echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
+    echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
 }
 
 set_defaults() {
