@@ -35,7 +35,8 @@ In order to build the library, the following tools need to be installed:
 ## If the build fails ##
 
 In case the build fails for some reason, please email the developers
-at <qmmd-all@lanl.gov> and attach the files
+at <qmmd-all@lanl.gov> or open an issue on github
+(https://github.com/qmmd/bml/issues) and attach the files
 
     build/CMakeFiles/CMakeOutput.log
     build/CMakeFiles/CMakeError.log
