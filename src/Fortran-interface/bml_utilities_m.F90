@@ -126,7 +126,7 @@ contains
     character(len=*), intent(in) :: filename
     type(bml_matrix_t), intent(in) :: a
 
-    call bml_read_bml_matrix_C(a%ptr, filename)
+    call bml_read_bml_matrix_C(a%ptr, trim(filename)//C_NULL_CHAR)
 
   end subroutine bml_read_bml_matrix
 
@@ -142,7 +142,7 @@ contains
     character(len=*), intent(in) :: filename
     type(bml_matrix_t), intent(in) :: a
 
-    call bml_write_bml_matrix_C(a%ptr, filename)
+    call bml_write_bml_matrix_C(a%ptr, trim(filename)//C_NULL_CHAR)
 
   end subroutine bml_write_bml_matrix
 

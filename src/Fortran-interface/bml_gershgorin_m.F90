@@ -40,6 +40,8 @@ contains
     call c_f_pointer(ag_ptr, a_gbnd_ptr, [2])
     a_gbnd = a_gbnd_ptr
 
+    deallocate(a_gbnd_ptr)
+
   end subroutine bml_gershgorin
 
 end module bml_gershgorin_m
