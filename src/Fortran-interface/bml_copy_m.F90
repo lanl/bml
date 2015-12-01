@@ -30,7 +30,7 @@ contains
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
-    type(bml_matrix_t), intent(inout) :: b
+    type(bml_matrix_t), intent(out) :: b
 
     b%ptr = bml_copy_new_C(a%ptr)
 

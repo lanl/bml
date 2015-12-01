@@ -26,7 +26,7 @@ contains
   subroutine bml_transpose(a, a_t)
 
     type(bml_matrix_t), intent(in) :: a
-    type(bml_matrix_t), intent(inout) :: a_t
+    type(bml_matrix_t), intent(out) :: a_t
 
     a_t%ptr = bml_transpose_new_C(a%ptr)
 
