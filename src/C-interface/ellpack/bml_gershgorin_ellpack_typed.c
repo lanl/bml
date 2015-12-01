@@ -19,9 +19,9 @@
  *  \param A The matrix
  *  \param maxeval Calculated max value
  *  \param maxminusmin Calculated max-min value
- *  \param threshold The matrix threshold 
+ *  \param threshold The matrix threshold
  */
-void* TYPED_FUNC(
+void *TYPED_FUNC(
     bml_gershgorin_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
@@ -54,8 +54,12 @@ void* TYPED_FUNC(
 
         }
 
-        emax = (emax > REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius)); 
-        emin = (emin < REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius)); 
+        emax =
+            (emax >
+             REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
+        emin =
+            (emin <
+             REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
     }
 
     eval[0] = emax;

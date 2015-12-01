@@ -43,10 +43,8 @@ contains
     end do
     call bml_convert_from_dense(matrix_type, a_dense, a, 0.0d0, m)
     call bml_convert_to_dense(a, b_dense)
-    call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
-         lbound(a_dense, 2), ubound(a_dense, 2))
-    call bml_print_matrix("B", b_dense, lbound(b_dense, 1), ubound(b_dense, 1), &
-         lbound(b_dense, 2), ubound(b_dense, 2))
+    call bml_print_matrix("A", a_dense, 1, n, 1, n)
+    call bml_print_matrix("B", b_dense, 1, n, 1, n)
     if (maxval(abs(a_dense - b_dense)) > 1e-12) then
        print *, "Matrix element mismatch"
        test_result = .false.

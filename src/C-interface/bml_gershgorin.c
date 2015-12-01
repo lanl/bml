@@ -16,7 +16,7 @@
  * \param maxminusmin Calculated max-min value
  * \param threshold Threshold for A
  */
-void*
+void *
 bml_gershgorin(
     const bml_matrix_t * A)
 {
@@ -34,4 +34,3 @@ bml_gershgorin(
     }
     return NULL;
 }
-

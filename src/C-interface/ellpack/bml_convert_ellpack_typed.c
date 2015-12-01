@@ -44,10 +44,22 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         A_nnz[i] = 0;
         for (int j = 0; j < N; j++)
         {
-            if (is_above_threshold(dense_A[ROWMAJOR(i, j, N, M)], threshold))
+            REAL_T A_ij;
+            switch (order)
             {
-                A_value[ROWMAJOR(i, A_nnz[i], N, M)] =
-                    dense_A[ROWMAJOR(i, j, N, M)];
+                case dense_row_major:
+                    A_ij = dense_A[ROWMAJOR(i, j, N, N)];
+                    break;
+                case dense_column_major:
+                    A_ij = dense_A[COLMAJOR(i, j, N, N)];
+                    break;
+                default:
+                    LOG_ERROR("unknown order\n");
+                    break;
+            }
+            if (is_above_threshold(A_ij, threshold))
+            {
+                A_value[ROWMAJOR(i, A_nnz[i], N, M)] = A_ij;
                 A_index[ROWMAJOR(i, A_nnz[i], N, M)] = j;
                 A_nnz[i]++;
             }

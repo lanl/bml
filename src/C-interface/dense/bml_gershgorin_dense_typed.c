@@ -21,7 +21,7 @@
  *  \param maxminusmin Calculated max-min value
  *  \param threshold The matrix threshold
  */
-void* TYPED_FUNC(
+void *TYPED_FUNC(
     bml_gershgorin_dense) (
     const bml_matrix_dense_t * A)
 {
@@ -43,17 +43,21 @@ void* TYPED_FUNC(
         for (int j = 0; j < N; j++)
         {
             absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
-            radius += (double)absham;
+            radius += (double) absham;
         }
 
         dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
 
         radius -= ABS(dvalue);
 
-        emax = (emax > REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
-        emin = (emin < REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
+        emax =
+            (emax >
+             REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
+        emin =
+            (emin <
+             REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
     }
- 
+
     eval[0] = emax;
     eval[1] = emax - emin;
 

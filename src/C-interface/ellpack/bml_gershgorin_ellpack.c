@@ -16,7 +16,7 @@
  *  \param maxminusmin Calculated max-min value
  *  \param threshold Threshold for matrix
  */
-void*
+void *
 bml_gershgorin_ellpack(
     const bml_matrix_ellpack_t * A)
 {

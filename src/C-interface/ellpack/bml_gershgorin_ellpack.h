@@ -3,24 +3,19 @@
 
 #include "bml_types_ellpack.h"
 
-void*
-bml_gershgorin_ellpack(
+void *bml_gershgorin_ellpack(
     const bml_matrix_ellpack_t * A);
 
-void*
-bml_gershgorin_ellpack_single_real(
+void *bml_gershgorin_ellpack_single_real(
     const bml_matrix_ellpack_t * A);
 
-void*
-bml_gershgorin_ellpack_double_real(
+void *bml_gershgorin_ellpack_double_real(
     const bml_matrix_ellpack_t * A);
 
-void*
-bml_gershgorin_ellpack_single_complex(
+void *bml_gershgorin_ellpack_single_complex(
     const bml_matrix_ellpack_t * A);
 
-void*
-bml_gershgorin_ellpack_double_complex(
+void *bml_gershgorin_ellpack_double_complex(
     const bml_matrix_ellpack_t * A);
 
 #endif

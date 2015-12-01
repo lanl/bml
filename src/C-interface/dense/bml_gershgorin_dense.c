@@ -19,7 +19,7 @@
  *  \param maxminusmin Calculated max-min value
  *  \param threshold Threshold for matrix
  */
-void*
+void *
 bml_gershgorin_dense(
     const bml_matrix_dense_t * A)
 {

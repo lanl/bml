@@ -31,11 +31,11 @@ void bml_set_row_dense_double_real(
 void bml_set_row_dense_single_complex(
     bml_matrix_dense_t * A,
     const int i,
-    const float complex *row);
+    const float complex * row);
 
 void bml_set_row_dense_double_complex(
     bml_matrix_dense_t * A,
     const int i,
-    const double complex *row);
+    const double complex * row);
 
 #endif
