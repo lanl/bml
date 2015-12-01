@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml)
+
 # Build Instructions #
 
 The bml library is built with CMake.  For your convenience, we provide
