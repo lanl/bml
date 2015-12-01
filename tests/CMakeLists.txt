@@ -144,6 +144,15 @@ foreach(FILE ${FORTRAN-TESTS})
       endif()
       target_link_libraries(${TESTNAME} bml ${LINK_LIBRARIES})
       add_test(${TESTNAME} ${TESTNAME})
+      if(VALGRIND AND NOT OPENMP_FOUND)
+        add_test(${TESTNAME}-valgrind
+          ${VALGRIND}
+          --error-exitcode=1
+          --leak-check=full
+          --read-var-info=yes
+          --track-origins=yes
+          ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME})
+      endif()
     endforeach()
   endforeach()
 endforeach()

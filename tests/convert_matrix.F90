@@ -55,6 +55,12 @@ contains
        print *, "Test passed"
     end if
 
+    call bml_deallocate(a)
+    call bml_deallocate(b)
+
+    deallocate(a_dense)
+    deallocate(b_dense)
+
   end function test_function
 
 end module convert_matrix_m

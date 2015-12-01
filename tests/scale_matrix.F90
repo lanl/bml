@@ -53,6 +53,12 @@ contains
        test_result = .true.
     endif
 
+    call bml_deallocate(a)
+    call bml_deallocate(c)
+
+    deallocate(a_dense)
+    deallocate(c_dense)
+
   end function test_function
 
 end module scale_matrix_m

@@ -27,11 +27,13 @@ contains
   !! \param b The copy
   subroutine bml_copy(a, b)
 
+    use bml_allocate_m
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: b
 
+    call bml_deallocate(b)
     b%ptr = bml_copy_new_C(a%ptr)
 
   end subroutine bml_copy

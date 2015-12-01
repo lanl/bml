@@ -240,6 +240,7 @@ contains
     a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
+    deallocate(a_dense_ptr)
 
   end subroutine bml_convert_to_dense_single
 
@@ -264,6 +265,7 @@ contains
     a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
+    deallocate(a_dense_ptr)
 
   end subroutine bml_convert_to_dense_double
 
@@ -288,6 +290,7 @@ contains
     a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
+    deallocate(a_dense_ptr)
 
   end subroutine bml_convert_to_dense_single_complex
 
@@ -312,6 +315,7 @@ contains
     a_ptr = bml_convert_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
     call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
     a_dense = a_dense_ptr
+    deallocate(a_dense_ptr)
 
   end subroutine bml_convert_to_dense_double_complex
 

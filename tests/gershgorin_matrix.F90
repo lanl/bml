@@ -41,7 +41,7 @@ contains
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_scale(scale_factor, a)
     call bml_gershgorin(a, a_gbnd)
-    call bml_convert_to_dense(a, a_dense) 
+    call bml_convert_to_dense(a, a_dense)
     a_dense(1,1) = scale_factor * scale_factor
     call bml_convert_from_dense(matrix_type, a_dense, b, threshold, m)
     call bml_gershgorin(b, b_gbnd);
@@ -70,6 +70,9 @@ contains
 
     call bml_deallocate(a)
     call bml_deallocate(b)
+
+    deallocate(a_dense)
+    deallocate(b_dense)
 
   end function test_function
 

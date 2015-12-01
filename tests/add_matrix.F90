@@ -87,6 +87,12 @@ contains
     call bml_deallocate(a)
     call bml_deallocate(b)
     call bml_deallocate(c)
+    call bml_deallocate(d)
+
+    deallocate(a_dense)
+    deallocate(b_dense)
+    deallocate(c_dense)
+    deallocate(d_dense)
 
   end function test_function
 

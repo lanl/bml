@@ -31,7 +31,6 @@ contains
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_copy(a, b)
-    call bml_zero_matrix(matrix_type, matrix_precision, n, m, c)
     call bml_copy(b, c)
 
     call bml_convert_to_dense(a, a_dense)
@@ -47,6 +46,14 @@ contains
     else
        test_result = .true.
     end if
+
+    call bml_deallocate(a)
+    call bml_deallocate(b)
+    call bml_deallocate(c)
+
+    deallocate(a_dense)
+    deallocate(b_dense)
+    deallocate(c_dense)
 
   end function test_function
 

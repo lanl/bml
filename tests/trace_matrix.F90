@@ -52,6 +52,9 @@ contains
        test_result = .true.
     end if
 
+    call bml_deallocate(a)
+    deallocate(a_dense)
+
   end function test_function
 
 end module trace_matrix_m

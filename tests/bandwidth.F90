@@ -60,6 +60,8 @@ contains
     call bml_banded_matrix(matrix_type, matrix_precision, n, m/2, a)
     call bml_print_matrix("A", a, 1, n, 1, n)
 
+    call bml_deallocate(a)
+
   end function test_function
 
 end module bandwidth_m

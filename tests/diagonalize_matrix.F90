@@ -52,6 +52,15 @@ contains
     call bml_print_matrix("U^t U", b, 1, n, 1, n)
     test_result = .true.
 
+    call bml_deallocate(a)
+    call bml_deallocate(a_t)
+    call bml_deallocate(b)
+    call bml_deallocate(c)
+    call bml_deallocate(eigenvectors)
+    call bml_deallocate(eigenvectors_t)
+
+    deallocate(eigenvalues)
+
   end function test_function
 
 end module diagonalize_matrix_m
