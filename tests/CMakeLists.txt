@@ -8,6 +8,7 @@ set(C-TESTS
   convert_matrix.c
   copy_matrix.c
   diagonalize_matrix.c
+  gershgorin_matrix.c
   io_matrix.c
   multiply_matrix.c
   multiply_banded_matrix.c
@@ -82,6 +83,7 @@ set(FORTRAN-TESTS
   diagonalize_matrix.F90
   get_bandwidth.F90
   get_matrix.F90
+  gershgorin_matrix.F90
   io_matrix.F90
   multiply_matrix.F90
   scale_matrix.F90
