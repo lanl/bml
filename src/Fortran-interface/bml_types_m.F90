@@ -1,6 +1,6 @@
 !> The basic bml types.
 module bml_types_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   private
 
   public :: bml_vector_t, bml_matrix_t
@@ -13,6 +13,8 @@ module bml_types_m
      !> The C pointer to the vector.
      type(C_PTR) :: ptr = C_NULL_PTR
   contains
+     procedure :: bml_vector_t_assign
+     generic :: assignment(=) => bml_vector_t_assign
      final :: destruct_bml_vector_t
   end type bml_vector_t
 
@@ -21,6 +23,8 @@ module bml_types_m
      !> The C pointer to the matrix.
      type(C_PTR) :: ptr = C_NULL_PTR
   contains
+     procedure :: bml_matrix_t_assign
+     generic :: assignment(=) => bml_matrix_t_assign
      final :: destruct_bml_matrix_t
   end type bml_matrix_t
 
@@ -37,13 +41,6 @@ module bml_types_m
   character(len=*), parameter :: BML_ELEMENT_COMPLEX = "complex"
 
 
-  interface
-    subroutine bml_deallocate_C(a) bind(C, name="bml_deallocate")
-      import :: C_PTR
-      type(C_PTR) :: a
-     end subroutine bml_deallocate_C
-   end interface
-
 contains
 
   !> Deallocate a matrix.
@@ -57,6 +54,16 @@ contains
   end subroutine bml_deallocate
 
 
+  subroutine bml_vector_t_assign(this, other)
+    class(bml_vector_t), intent(inout) :: this
+    class(bml_vector_t), intent(in) :: other
+
+    print *, "Direct assignment between vectors not implemented"
+    error stop
+
+  end subroutine bml_vector_t_assign
+
+
   subroutine destruct_bml_vector_t(this)
     type(bml_vector_t), intent(inout) :: this
 
@@ -65,6 +72,17 @@ contains
     this%ptr = C_NULL_PTR
     
   end subroutine destruct_bml_vector_t
+
+
+  subroutine bml_matrix_t_assign(this, other)
+    class(bml_matrix_t), intent(out) :: this
+    class(bml_matrix_t), intent(in) :: other
+
+    if (c_associated(other%ptr)) then
+      this%ptr = bml_copy_new_C(other%ptr)
+    end if
+    
+  end subroutine bml_matrix_t_assign
 
 
   subroutine destruct_bml_matrix_t(this)
