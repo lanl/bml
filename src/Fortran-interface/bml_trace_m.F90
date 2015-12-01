@@ -1,13 +1,14 @@
 !> Matrix trace.
 module bml_trace_m
-
+  use, intrinsic :: iso_c_binding
+  use bml_types_m
   implicit none
   private
 
   interface
 
      function bml_trace_C(a) bind(C, name="bml_trace")
-       use, intrinsic :: iso_C_binding
+       import :: C_PTR, C_DOUBLE
        type(C_PTR), value, intent(in) :: a
        real(C_DOUBLE) :: bml_trace_C
      end function bml_trace_C
@@ -25,10 +26,8 @@ contains
   !! \param a The matrix.
   function bml_trace(a) result(tr_a)
 
-    use bml_types_m
-
     class(bml_matrix_t), intent(in) :: a
-    double precision :: tr_a
+    real(C_DOUBLE) :: tr_a
 
     tr_a = bml_trace_C(a%ptr)
 

@@ -1,6 +1,7 @@
 !> Interface module.
 module bml_interface_m
-
+  use iso_c_binding
+  use bml_types_m
   implicit none
 
   private
@@ -53,7 +54,7 @@ module bml_interface_m
   !> The dense matrix element order.
   integer, parameter :: BML_DENSE_COLUMN_MAJOR = 1
 
-  public :: get_enum_id
+  public :: get_matrix_id, get_element_id
   public :: BML_DENSE_COLUMN_MAJOR
 
 contains
@@ -64,31 +65,59 @@ contains
   !! the matrix type and precision.
   !! @return The corresponding integer value matching the enum values
   !! in bml_matrix_types_t and bml_matrix_precision_t.
-  function get_enum_id(type_string) result(id)
-
-    use bml_types_m
+  function get_matrix_id(type_string) result(id)
 
     character(len=*), intent(in) :: type_string
-    integer :: id
+    integer(C_INT) :: id
 
     select case(type_string)
-    case(BML_PRECISION_SINGLE_REAL)
-       id = bml_matrix_precision_single_real_enum_id
-    case(BML_PRECISION_DOUBLE_REAL)
-       id = bml_matrix_precision_double_real_enum_id
-    case(BML_PRECISION_SINGLE_COMPLEX)
-       id = bml_matrix_precision_single_complex_enum_id
-    case(BML_PRECISION_DOUBLE_COMPLEX)
-       id = bml_matrix_precision_double_complex_enum_id
     case(BML_MATRIX_DENSE)
-       id = bml_matrix_type_dense_enum_id
+      id = bml_matrix_type_dense_enum_id
     case(BML_MATRIX_ELLPACK)
        id = bml_matrix_type_ellpack_enum_id
     case default
-       print *, "unknown type string "//trim(type_string)
+       print *, "unknown matrix type"//trim(type_string)
        error stop
     end select
 
-  end function get_enum_id
+  end function get_matrix_id
+
+
+
+  function get_element_id(element_type, element_kind) result(id)
+
+    character(len=*), intent(in) :: element_type
+    integer, intent(in) :: element_kind
+    integer(C_INT) :: id
+
+    select case (element_type)
+
+    case (BML_ELEMENT_REAL)
+      select case (element_kind)
+      case (C_FLOAT)
+        id = bml_matrix_precision_single_real_enum_id
+      case (C_DOUBLE)
+        id = bml_matrix_precision_double_real_enum_id
+      case default
+        print "(A,1X,I0)", "Unknown element kind:", element_kind
+      end select
+
+    case (BML_ELEMENT_COMPLEX)
+      select case (element_kind)
+      case (C_FLOAT_COMPLEX)
+        id = bml_matrix_precision_single_complex_enum_id
+      case (C_DOUBLE_COMPLEX)
+        id = bml_matrix_precision_double_complex_enum_id
+      case default
+        print "(A,1X,I0)", "Unknown element kind:", element_kind
+      end select
+
+    case default
+      print "(A,1X,A)", "Unknown element type:", element_type
+
+    end select
+
+  end function get_element_id
+
 
 end module bml_interface_m
