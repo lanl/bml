@@ -1,6 +1,6 @@
 !> Interface module.
 module bml_interface_m
-  use iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
 

@@ -1,5 +1,5 @@
 module bml_fc_tools_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m, only : c_null_char, c_char
   implicit none
   private
 

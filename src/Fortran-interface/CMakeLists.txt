@@ -6,7 +6,6 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_allocate_m.F90
   bml_convert_m.F90
   bml_copy_m.F90
-  bml_c_interface_m.F90
   bml_diagonalize_m.F90
   bml_elemental_m.F90
   bml_error_m.F90
@@ -21,6 +20,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_utilities_m.F90)
 
 set(FORTRAN-SOURCES-PRIVATE
+  bml_c_interface_m.F90
   bml_interface_m.F90
   bml_typed_m.F90
   bml_fc_tools_m.F90)

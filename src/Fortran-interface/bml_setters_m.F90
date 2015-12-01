@@ -1,19 +1,8 @@
 module bml_setters_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
   private
-
-  interface
-
-     subroutine bml_set_row_C(a, i, row) bind(C, name="bml_set_row")
-       import :: C_PTR, C_INT
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT), value, intent(in) :: i
-       type(C_PTR), value :: row
-     end subroutine bml_set_row_C
-
-  end interface
 
   interface bml_set_row
      module procedure bml_set_row_single_real

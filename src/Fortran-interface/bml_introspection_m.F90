@@ -1,34 +1,11 @@
 !> Introspection procedures.
 module bml_introspection_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
 
   private
 
-  interface
-
-     !> Return the matrix size.
-     function bml_get_N_C(a) bind(C, name="bml_get_N")
-       import :: C_PTR, C_INT
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT) :: bml_get_N_C
-     end function bml_get_N_C
-
-     function bml_get_row_bandwidth_C(a, i) bind(C, name="bml_get_row_bandwidth")
-       import :: C_PTR, C_INT
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT), value, intent(in) :: i
-       integer(C_INT) :: bml_get_row_bandwidth_C
-     end function bml_get_row_bandwidth_C
-
-     function bml_get_bandwidth_C(a) bind(C, name="bml_get_bandwidth")
-       import :: C_PTR, C_INT
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT) :: bml_get_bandwidth_C
-     end function bml_get_bandwidth_C
-
-  end interface
 
   public :: bml_get_N
   public :: bml_get_row_bandwidth

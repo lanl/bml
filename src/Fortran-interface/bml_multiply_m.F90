@@ -1,25 +1,10 @@
 !> Matrix multiplication.
 module bml_multiply_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
 
   private
-
-  interface
-
-     subroutine bml_multiply_C(a, b, c, alpha, beta, threshold) &
-         & bind(C, name="bml_multiply")
-       import :: C_PTR, C_DOUBLE
-       type(C_PTR), value, intent(in) :: a
-       type(C_PTR), value, intent(in) :: b
-       type(C_PTR), value, intent(in) :: c
-       real(C_DOUBLE), value, intent(in) :: alpha
-       real(C_DOUBLE), value, intent(in) :: beta
-       real(C_DOUBLE), value, intent(in) :: threshold
-     end subroutine bml_multiply_C
-
-  end interface
 
   public :: bml_multiply
 

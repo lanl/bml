@@ -1,6 +1,6 @@
 !> Utility matrix functions.
 module bml_utilities_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   use bml_utilities_single_real_m
   use bml_utilities_double_real_m
@@ -8,45 +8,8 @@ module bml_utilities_m
   use bml_utilities_double_complex_m
   use bml_fc_tools_m
   implicit none
-
   private
-
-  interface
-
-     subroutine bml_print_bml_vector_C(v, i_l, i_u) &
-         & bind(C, name="bml_print_bml_vector")
-       import :: C_PTR, C_INT
-       type(C_PTR), value, intent(in) :: v
-       integer(C_INT), value, intent(in) :: i_l
-       integer(C_INT), value, intent(in) :: i_u
-     end subroutine bml_print_bml_vector_C
-
-     subroutine bml_print_bml_matrix_C(a, i_l, i_u, j_l, j_u) &
-         & bind(C, name="bml_print_bml_matrix")
-       import :: C_PTR, C_INT
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT), value, intent(in) :: i_l
-       integer(C_INT), value, intent(in) :: i_u
-       integer(C_INT), value, intent(in) :: j_l
-       integer(C_INT), value, intent(in) :: j_u
-     end subroutine bml_print_bml_matrix_C
-
-     subroutine bml_read_bml_matrix_C(a, filename) &
-         & bind(C, name="bml_read_bml_matrix")
-       import :: C_PTR, C_CHAR
-       type(C_PTR), value, intent(in) :: a
-       character(C_CHAR), intent(in) :: filename(*)
-     end subroutine bml_read_bml_matrix_C
-
-     subroutine bml_write_bml_matrix_C(a, filename) &
-          & bind(C, name="bml_write_bml_matrix")
-       import :: C_PTR, C_CHAR
-       type(C_PTR), value, intent(in) :: a
-       character(C_CHAR), intent(in) :: filename(*)
-     end subroutine bml_write_bml_matrix_C
-
-  end interface
-
+  
   interface bml_print_vector
      module procedure bml_print_bml_vector
   end interface bml_print_vector

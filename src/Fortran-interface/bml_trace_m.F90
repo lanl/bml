@@ -1,19 +1,9 @@
 !> Matrix trace.
 module bml_trace_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
   private
-
-  interface
-
-     function bml_trace_C(a) bind(C, name="bml_trace")
-       import :: C_PTR, C_DOUBLE
-       type(C_PTR), value, intent(in) :: a
-       real(C_DOUBLE) :: bml_trace_C
-     end function bml_trace_C
-
-  end interface
 
   public :: bml_trace
 

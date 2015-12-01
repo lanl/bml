@@ -1,29 +1,8 @@
 module bml_add_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
-
   private
-
-  interface
-
-     subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
-       import :: C_PTR, C_DOUBLE
-       type(C_PTR), value, intent(in) :: a
-       type(C_PTR), value, intent(in) :: b
-       real(C_DOUBLE), value, intent(in) :: alpha
-       real(C_DOUBLE), value, intent(in) :: beta
-       real(C_DOUBLE), value, intent(in) :: threshold
-     end subroutine bml_add_C
-
-     subroutine bml_add_identity_C(a, beta, threshold) bind(C, name="bml_add_identity")
-       import :: C_PTR, C_DOUBLE
-       type(C_PTR), value :: a
-       real(C_DOUBLE), value, intent(in) :: beta
-       real(C_DOUBLE), value, intent(in) :: threshold
-     end subroutine bml_add_identity_C
-
-  end interface
 
   !> \addtogroup add_group_Fortran
   !! @{

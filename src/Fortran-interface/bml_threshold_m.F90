@@ -1,18 +1,8 @@
 module bml_threshold_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   implicit none
   private
-
-  interface
-
-     subroutine bml_threshold_C(a, threshold) bind(C, name="bml_threshold")
-       import :: C_PTR, C_DOUBLE
-       type(C_PTR), value :: a
-       real(C_DOUBLE), value, intent(in) :: threshold
-     end subroutine bml_threshold_C
-
-  end interface
 
   public :: bml_threshold
 

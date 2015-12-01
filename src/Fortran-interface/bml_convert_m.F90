@@ -1,35 +1,10 @@
 module bml_convert_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   use bml_interface_m
   use bml_introspection_m
   implicit none
-
   private
-
-  !> The interfaces to the C API.
-  interface
-
-     function bml_convert_from_dense_C(matrix_type, matrix_precision, order, n, a, threshold, m) &
-         & bind(C, name="bml_convert_from_dense")
-       import :: C_INT, C_PTR, C_DOUBLE
-       integer(C_INT), value, intent(in) :: matrix_type
-       integer(C_INT), value, intent(in) :: matrix_precision
-       integer(C_INT), value, intent(in) :: order
-       integer(C_INT), value, intent(in) :: n, m
-       type(C_PTR), value, intent(in) :: a
-       real(C_DOUBLE), value, intent(in) :: threshold
-       type(C_PTR) :: bml_convert_from_dense_C
-     end function bml_convert_from_dense_C
-
-     function bml_convert_to_dense_C(a, order) bind(C, name="bml_convert_to_dense")
-       import :: C_INT, C_PTR
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT), value, intent(in) :: order
-       type(C_PTR) :: bml_convert_to_dense_C
-     end function bml_convert_to_dense_C
-
-  end interface
 
   interface bml_convert_from_dense
      module procedure bml_convert_from_dense_single

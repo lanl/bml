@@ -1,26 +1,11 @@
 !> Utility matrix functions.
 module bml_utilities_MATRIX_TYPE_m
-  use, intrinsic :: iso_c_binding
+  use bml_c_interface_m
   use bml_types_m
   use bml_interface_m
   implicit none
-
   private
 
-  interface
-     subroutine bml_print_dense_matrix_C(n, matrix_precision, order, a, i_l, i_u, j_l, j_u) &
-         & bind(C, name="bml_print_dense_matrix")
-       import :: C_PTR, C_INT
-       integer(C_INT), value, intent(in) :: n
-       integer(C_INT), value, intent(in) :: matrix_precision
-       integer(C_INT), value, intent(in) :: order
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT), value, intent(in) :: i_l
-       integer(C_INT), value, intent(in) :: i_u
-       integer(C_INT), value, intent(in) :: j_l
-       integer(C_INT), value, intent(in) :: j_u
-     end subroutine bml_print_dense_matrix_C
-  end interface
 
   !> Print a dense matrix.
   interface bml_print_matrix
