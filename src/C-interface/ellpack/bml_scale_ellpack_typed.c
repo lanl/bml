@@ -65,7 +65,7 @@ void TYPED_FUNC(
     bml_matrix_ellpack_t * A)
 {
     REAL_T scale_factor_ = (REAL_T) scale_factor;
-    int number_elements = A->N * A->N;
+    int number_elements = A->N * A->M;
     int inc = 1;
 
     C_BLAS(SCAL) (&number_elements, &scale_factor_, A->value, &inc);

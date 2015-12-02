@@ -70,8 +70,8 @@ void TYPED_FUNC(
         irow--;
         icol--;
         ind = A_nnz[irow];
-        A_index[ROWMAJOR(irow, ind, M, N)] = icol;
-        A_value[ROWMAJOR(irow, ind, M, N)] = val;
+        A_index[ROWMAJOR(irow, ind, N, M)] = icol;
+        A_value[ROWMAJOR(irow, ind, N, M)] = val;
         A_nnz[irow]++;
     }
 
@@ -120,8 +120,8 @@ void TYPED_FUNC(
         for (int j = 0; j < A_nnz[i]; j++)
         {
             fprintf(mFile, "%d %d %20.15e\n", i + 1,
-                    A_index[ROWMAJOR(i, j, M, N)] + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, M, N)]));
+                    A_index[ROWMAJOR(i, j, N, M)] + 1,
+                    REAL_PART(A_value[ROWMAJOR(i, j, N, M)]));
         }
     }
 
