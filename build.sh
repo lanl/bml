@@ -44,14 +44,32 @@ set_defaults() {
     BML_TESTING=${BML_TESTING:=yes}
 }
 
+die() {
+  echo "fatal error"
+  if [[ $# -gt 1 ]]; then
+    exit $1
+  else
+    exit 1
+  fi
+}
+
+check_pipe_error() {
+  if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
+    die ${PIPESTATUS[0]}
+  fi
+}
+
 create() {
-    mkdir -v -p "${BUILD_DIR}" || exit
-    mkdir -v -p "${INSTALL_DIR}" || exit
+    mkdir -v -p "${BUILD_DIR}" || die
+    mkdir -v -p "${INSTALL_DIR}" || die
 }
 
 configure() {
     set_defaults
     cd "${BUILD_DIR}"
+    if [[ -f "${BUILD_DIR}/CMakeCache.txt" ]]; then
+      rm -v "${BUILD_DIR}/CMakeCache.txt" || die
+    fi
     ${CMAKE:=cmake} .. \
           -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" \
           -DCMAKE_C_COMPILER="${CC}" \
@@ -65,17 +83,21 @@ configure() {
           -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
           -DBML_TESTING="${BML_TESTING:=yes}" \
           -DBLAS_VENDOR="${BLAS_VENDOR}" \
-        | tee -a "${LOG_FILE}" || exit
+        | tee -a "${LOG_FILE}"
+    check_pipe_error
     cd "${TOP_DIR}"
 }
 
 compile() {
-    make -C "${BUILD_DIR}" VERBOSE=1 2>&1 | tee -a "${LOG_FILE}" || exit
+    make -C "${BUILD_DIR}" VERBOSE=1 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
 }
 
 docs() {
-    make -C "${BUILD_DIR}" docs 2>&1 | tee -a "${LOG_FILE}" || exit
-    make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}" || exit
+    make -C "${BUILD_DIR}" docs 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
+    make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
     if test -f "${BUILD_DIR}/doc/latex/refman.pdf"; then
         cp -v "${BUILD_DIR}/doc/latex/refman.pdf" "${TOP_DIR}/bml-manual.pdf"
     fi
@@ -83,16 +105,19 @@ docs() {
 
 install() {
     make -C "${BUILD_DIR}" install 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
 }
 
 testing() {
     cd "${BUILD_DIR}"
     ctest --output-on-failure 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
     cd "${TOP_DIR}"
 }
 
 dist() {
     make -C "${BUILD_DIR}" dist 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
 }
 
 if [[ $# -gt 0 ]]; then
