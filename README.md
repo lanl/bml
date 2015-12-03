@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml)
-[![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=develop)](https://travis-ci.org/qmmd/bml)
+| master | develop |
+| ------ | ------- |
+| [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=develop)](https://travis-ci.org/qmmd/bml) |
 
 # Build Instructions #
 
