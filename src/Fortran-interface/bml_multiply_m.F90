@@ -18,9 +18,18 @@ module bml_multiply_m
        real(C_DOUBLE), value, intent(in) :: threshold
      end subroutine bml_multiply_C
 
+     subroutine bml_multiply_x2_C(a, b, threshold) &
+          bind(C, name="bml_multiply_x2")
+       use, intrinsic :: iso_C_binding
+       type(C_PTR), value, intent(in) :: a
+       type(C_PTR), value, intent(in) :: b
+       real(C_DOUBLE), value, intent(in) :: threshold
+     end subroutine bml_multiply_x2_C
+
   end interface
 
   public :: bml_multiply
+  public :: bml_multiply_x2
 
 contains
 
@@ -71,5 +80,34 @@ contains
     call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha_, beta_, threshold_)
 
   end subroutine bml_multiply
+
+  !> Square a matrix.
+  !!
+  !! \ingroup multiply_group
+  !!
+  !! \f$B \leftarrow A \times A \f$
+  !!
+  !! \param a Matrix \f$ A \f$.
+  !! \param b Matrix \f$ B \f$.
+  !! \param threshold The threshold \f$ threshold \f$.
+  subroutine bml_multiply_x2(a, b, threshold)
+
+    use bml_types_m
+
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: b
+    double precision, optional, intent(in) :: threshold
+
+    double precision :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+
+    call bml_multiply_x2_c(a%ptr, b%ptr, threshold_)
+
+  end subroutine bml_multiply_x2
 
 end module bml_multiply_m
