@@ -2,12 +2,14 @@ include_directories(..)
 
 set(HEADERS-DENSE
   bml_add_dense.h
+  bml_adjungate_triangle_dense.h
   bml_allocate_dense.h
   bml_convert_dense.h
   bml_copy_dense.h
   bml_diagonalize_dense.h
   bml_elemental_dense.h
   bml_gershgorin_dense.h
+  bml_getters_dense.h
   bml_introspection_dense.h
   bml_multiply_dense.h
   bml_scale_dense.h
@@ -15,17 +17,20 @@ set(HEADERS-DENSE
   bml_threshold_dense.h
   bml_trace_dense.h
   bml_transpose_dense.h
+  bml_transpose_triangle_dense.h
   bml_types_dense.h
   bml_utilities_dense.h)
 
 set(SOURCES-DENSE
   bml_add_dense.c
+  bml_adjungate_triangle_dense.c
   bml_allocate_dense.c
   bml_convert_dense.c
   bml_copy_dense.c
   bml_diagonalize_dense.c
   bml_elemental_dense.c
   bml_gershgorin_dense.c
+  bml_getters_dense.c
   bml_introspection_dense.c
   bml_multiply_dense.c
   bml_scale_dense.c
@@ -33,6 +38,7 @@ set(SOURCES-DENSE
   bml_threshold_dense.c
   bml_trace_dense.c
   bml_transpose_dense.c
+  bml_transpose_triangle_dense.c
   bml_utilities_dense.c)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
@@ -43,10 +49,12 @@ endif()
 
 set(SOURCES-DENSE-TYPED
   bml_add_dense_typed.c
+  bml_adjungate_triangle_dense_typed.c
   bml_allocate_dense_typed.c
   bml_convert_dense_typed.c
   bml_copy_dense_typed.c
   bml_gershgorin_dense_typed.c
+  bml_getters_dense_typed.c
   bml_introspection_dense_typed.c
   bml_multiply_dense_typed.c
   bml_scale_dense_typed.c
@@ -54,6 +62,7 @@ set(SOURCES-DENSE-TYPED
   bml_threshold_dense_typed.c
   bml_trace_dense_typed.c
   bml_transpose_dense_typed.c
+  bml_transpose_triangle_dense_typed.c
   bml_utilities_dense_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)

@@ -3,6 +3,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../C-interface)
 set(FORTRAN-SOURCES-PUBLIC
   bml.F90
   bml_add_m.F90
+  bml_adjungate_triangle_m.F90
   bml_allocate_m.F90
   bml_convert_m.F90
   bml_copy_m.F90
@@ -10,6 +11,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_elemental_m.F90
   bml_error_m.F90
   bml_gershgorin_m.F90
+  bml_getters_m.F90
   bml_introspection_m.F90
   bml_multiply_m.F90
   bml_scale_m.F90
@@ -17,6 +19,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_threshold_m.F90
   bml_trace_m.F90
   bml_transpose_m.F90
+  bml_transpose_triangle_m.F90
   bml_types_m.F90
   bml_utilities_m.F90)
 

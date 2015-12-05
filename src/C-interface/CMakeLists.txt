@@ -4,6 +4,7 @@ include_directories(.)
 set(HEADERS-C
   bml.h
   bml_add.h
+  bml_adjungate_triangle.h
   bml_allocate.h
   bml_convert.h
   bml_copy.h
@@ -11,6 +12,7 @@ set(HEADERS-C
   bml_elemental.h
   bml_export.h
   bml_gershgorin.h
+  bml_getters.h
   bml_import.h
   bml_introspection.h
   bml_logger.h
@@ -20,6 +22,7 @@ set(HEADERS-C
   bml_threshold.h
   bml_trace.h
   bml_transpose.h
+  bml_transpose_triangle.h
   bml_types.h
   bml_utilities.h)
 install(FILES ${HEADERS-C} DESTINATION include)
@@ -31,6 +34,7 @@ set(HEADERS-C-PRIVATE
 
 set(SOURCES-C
   bml_add.c
+  bml_adjungate_triangle.c
   bml_allocate.c
   bml_convert.c
   bml_copy.c
@@ -38,6 +42,7 @@ set(SOURCES-C
   bml_elemental.c
   bml_export.c
   bml_gershgorin.c
+  bml_getters.c
   bml_import.c
   bml_introspection.c
   bml_logger.c
@@ -47,6 +52,7 @@ set(SOURCES-C
   bml_threshold.c
   bml_trace.c
   bml_transpose.c
+  bml_transpose_triangle.c
   bml_utilities.c)
 add_library(bml-c OBJECT ${SOURCES-C})
 if(OPENMP_FOUND)
