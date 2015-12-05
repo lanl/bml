@@ -1,24 +1,10 @@
 !> Matrix multiplication.
 module bml_multiply_m
-
+  use bml_c_interface_m
+  use bml_types_m
   implicit none
 
   private
-
-  interface
-
-     subroutine bml_multiply_C(a, b, c, alpha, beta, threshold) &
-          bind(C, name="bml_multiply")
-       use, intrinsic :: iso_C_binding
-       type(C_PTR), value, intent(in) :: a
-       type(C_PTR), value, intent(in) :: b
-       type(C_PTR), value, intent(in) :: c
-       real(C_DOUBLE), value, intent(in) :: alpha
-       real(C_DOUBLE), value, intent(in) :: beta
-       real(C_DOUBLE), value, intent(in) :: threshold
-     end subroutine bml_multiply_C
-
-  end interface
 
   public :: bml_multiply
 
@@ -41,17 +27,15 @@ contains
   !! \param threshold The threshold \f$ threshold \f$.
   subroutine bml_multiply(a, b, c, alpha, beta, threshold)
 
-    use bml_types_m
-
     type(bml_matrix_t), intent(in) :: a, b
     type(bml_matrix_t), intent(inout) :: c
-    double precision, optional, intent(in) :: alpha
-    double precision, optional, intent(in) :: beta
-    double precision, optional, intent(in) :: threshold
+    real(C_DOUBLE), optional, intent(in) :: alpha
+    real(C_DOUBLE), optional, intent(in) :: beta
+    real(C_DOUBLE), optional, intent(in) :: threshold
 
-    double precision :: alpha_
-    double precision :: beta_
-    double precision :: threshold_
+    real(C_DOUBLE) :: alpha_
+    real(C_DOUBLE) :: beta_
+    real(C_DOUBLE) :: threshold_
 
     if(present(alpha)) then
        alpha_ = alpha

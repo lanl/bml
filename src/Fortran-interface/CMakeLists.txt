@@ -24,15 +24,17 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_utilities_m.F90)
 
 set(FORTRAN-SOURCES-PRIVATE
+  bml_c_interface_m.F90
   bml_interface_m.F90
-  bml_typed_m.F90)
+  bml_typed_m.F90
+  bml_fc_tools_m.F90)
 
 set(FORTRAN-SOURCES-TYPED
   bml_utilities_typed_m.F90)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlGetTypes.cmake)
 foreach(i RANGE ${NUMBER_TYPES_MAX})
-  get_Fortran_types(${i} MATRIX_TYPE PRECISION_NAME REAL_TYPE)
+  get_Fortran_types(${i} MATRIX_TYPE PRECISION_NAME REAL_TYPE REAL_KIND REAL_NAME)
   foreach(S ${FORTRAN-SOURCES-TYPED})
     string(REPLACE "typed" ${MATRIX_TYPE} S_TYPED ${S})
     get_filename_component(S_TYPED ${S_TYPED} NAME)
@@ -41,6 +43,8 @@ foreach(i RANGE ${NUMBER_TYPES_MAX})
       COMMAND ${CMAKE_SOURCE_DIR}/scripts/convert-template
       -DMATRIX_TYPE=${MATRIX_TYPE}
       -DREAL_TYPE="${REAL_TYPE}"
+      -DREAL_KIND=${REAL_KIND}
+      -DREAL_NAME=${REAL_NAME}
       -DPRECISION_NAME=${PRECISION_NAME}
       -o ${S_TYPED}
       ${CMAKE_CURRENT_SOURCE_DIR}/${S})

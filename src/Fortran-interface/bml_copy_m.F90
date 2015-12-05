@@ -1,19 +1,11 @@
 !> Copy operations on matrices.
 module bml_copy_m
 
+  use bml_c_interface_m
+  use bml_types_m
+
   implicit none
-
   private
-
-  interface
-
-     function bml_copy_new_C(a) bind(C, name="bml_copy_new")
-       use, intrinsic :: iso_C_binding
-       type(C_PTR), value, intent(in) :: a
-       type(C_PTR) :: bml_copy_new_C
-     end function bml_copy_new_C
-
-  end interface
 
   public :: bml_copy
 
@@ -27,11 +19,8 @@ contains
   !! \param b The copy
   subroutine bml_copy(a, b)
 
-    use bml_allocate_m
-    use bml_types_m
-
     type(bml_matrix_t), intent(in) :: a
-    type(bml_matrix_t), intent(inout) :: b
+    type(bml_matrix_t), intent(out) :: b
 
     call bml_deallocate(b)
     b%ptr = bml_copy_new_C(a%ptr)
