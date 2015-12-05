@@ -1,7 +1,7 @@
 /** \file */
 
-#ifndef __BML_SETTERS_H
-#define __BML_SETTERS_H
+#ifndef __BML_SETTERS_DENSE_H
+#define __BML_SETTERS_DENSE_H
 
 #include "bml_types_dense.h"
 
