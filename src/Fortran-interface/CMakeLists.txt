@@ -9,9 +9,9 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_diagonalize_m.F90
   bml_elemental_m.F90
   bml_error_m.F90
-  bml_gershgorin_m.F90
   bml_introspection_m.F90
   bml_multiply_m.F90
+  bml_normalize_m.F90
   bml_scale_m.F90
   bml_setters_m.F90
   bml_threshold_m.F90

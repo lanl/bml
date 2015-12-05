@@ -7,9 +7,9 @@ set(HEADERS-DENSE
   bml_copy_dense.h
   bml_diagonalize_dense.h
   bml_elemental_dense.h
-  bml_gershgorin_dense.h
   bml_introspection_dense.h
   bml_multiply_dense.h
+  bml_normalize_dense.h
   bml_scale_dense.h
   bml_setters_dense.h
   bml_threshold_dense.h
@@ -25,9 +25,9 @@ set(SOURCES-DENSE
   bml_copy_dense.c
   bml_diagonalize_dense.c
   bml_elemental_dense.c
-  bml_gershgorin_dense.c
   bml_introspection_dense.c
   bml_multiply_dense.c
+  bml_normalize_dense.c
   bml_scale_dense.c
   bml_setters_dense.c
   bml_threshold_dense.c
@@ -46,9 +46,9 @@ set(SOURCES-DENSE-TYPED
   bml_allocate_dense_typed.c
   bml_convert_dense_typed.c
   bml_copy_dense_typed.c
-  bml_gershgorin_dense_typed.c
   bml_introspection_dense_typed.c
   bml_multiply_dense_typed.c
+  bml_normalize_dense_typed.c
   bml_scale_dense_typed.c
   bml_setters_dense_typed.c
   bml_threshold_dense_typed.c

@@ -10,11 +10,11 @@ set(HEADERS-C
   bml_diagonalize.h
   bml_elemental.h
   bml_export.h
-  bml_gershgorin.h
   bml_import.h
   bml_introspection.h
   bml_logger.h
   bml_multiply.h
+  bml_normalize.h
   bml_scale.h
   bml_setters.h
   bml_threshold.h
@@ -37,11 +37,11 @@ set(SOURCES-C
   bml_diagonalize.c
   bml_elemental.c
   bml_export.c
-  bml_gershgorin.c
   bml_import.c
   bml_introspection.c
   bml_logger.c
   bml_multiply.c
+  bml_normalize.c
   bml_scale.c
   bml_setters.c
   bml_threshold.c

@@ -6,9 +6,9 @@ set(HEADERS-ELLPACK
   bml_convert_ellpack.h
   bml_copy_ellpack.h
   bml_elemental_ellpack.h
-  bml_gershgorin_ellpack.h
   bml_introspection_ellpack.h
   bml_multiply_ellpack.h
+  bml_normalize_ellpack.h
   bml_scale_ellpack.h
   bml_threshold_ellpack.h
   bml_trace_ellpack.h
@@ -22,9 +22,9 @@ set(SOURCES-ELLPACK
   bml_convert_ellpack.c
   bml_copy_ellpack.c
   bml_elemental_ellpack.c
-  bml_gershgorin_ellpack.c
   bml_introspection_ellpack.c
   bml_multiply_ellpack.c
+  bml_normalize_ellpack.c
   bml_scale_ellpack.c
   bml_threshold_ellpack.c
   bml_trace_ellpack.c
@@ -42,8 +42,8 @@ set(SOURCES-ELLPACK-TYPED
   bml_allocate_ellpack_typed.c
   bml_convert_ellpack_typed.c
   bml_copy_ellpack_typed.c
-  bml_gershgorin_ellpack_typed.c
   bml_multiply_ellpack_typed.c
+  bml_normalize_ellpack_typed.c
   bml_scale_ellpack_typed.c
   bml_threshold_ellpack_typed.c
   bml_trace_ellpack_typed.c

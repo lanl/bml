@@ -28,6 +28,14 @@ module bml_multiply_m
 
   end interface
 
+  interface bml_multiply
+     module procedure bml_multiply
+  end interface
+
+  interface bml_multiply_x2
+     module procedure bml_multiply_x2
+  end interface
+
   public :: bml_multiply
   public :: bml_multiply_x2
 
