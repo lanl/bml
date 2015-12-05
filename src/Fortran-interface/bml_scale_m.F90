@@ -1,6 +1,7 @@
 !> Matrix scaling for matrices.
 module bml_scale_m
-
+  use bml_c_interface_m
+  use bml_types_m
   implicit none
 
   private
@@ -10,23 +11,6 @@ module bml_scale_m
      module procedure scale_one
      module procedure scale_two
   end interface bml_scale
-
-  interface
-
-     subroutine bml_scale_C (alpha, a, b) bind(C, name="bml_scale")
-       use, intrinsic :: iso_C_binding
-       real(C_DOUBLE), value, intent(in) :: alpha
-       type(C_PTR), value :: a
-       type(C_PTR), value :: b
-     end subroutine bml_scale_C
-
-     subroutine bml_scale_inplace_C (alpha, a) bind(C, name="bml_scale_inplace")
-       use, intrinsic :: iso_C_binding
-       real(C_DOUBLE), value, intent(in) :: alpha
-       type(C_PTR), value :: a
-     end subroutine bml_scale_inplace_C
-
-  end interface
 
   public :: bml_scale
 
@@ -40,9 +24,7 @@ contains
   !! \param a The matrix
   subroutine scale_one(alpha, a)
 
-    use bml_types_m
-
-    double precision, intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: alpha
     type(bml_matrix_t), intent(inout) :: a
 
     call bml_scale_inplace_C(alpha, a%ptr)
@@ -58,9 +40,7 @@ contains
   !! \param c The matrix
   subroutine scale_two(alpha, a, c)
 
-    use bml_types_m
-
-    double precision, intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: alpha
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: c
 

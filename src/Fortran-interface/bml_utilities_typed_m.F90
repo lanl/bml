@@ -1,24 +1,11 @@
 !> Utility matrix functions.
 module bml_utilities_MATRIX_TYPE_m
-
+  use bml_c_interface_m
+  use bml_types_m
+  use bml_interface_m
   implicit none
-
   private
 
-  interface
-     subroutine bml_print_dense_matrix_C(n, matrix_precision, order, a, i_l, i_u, j_l, j_u) &
-          bind(C, name="bml_print_dense_matrix")
-       use, intrinsic :: iso_C_binding
-       integer(C_INT), value, intent(in) :: n
-       integer(C_INT), value, intent(in) :: matrix_precision
-       integer(C_INT), value, intent(in) :: order
-       type(C_PTR), value, intent(in) :: a
-       integer(C_INT), value, intent(in) :: i_l
-       integer(C_INT), value, intent(in) :: i_u
-       integer(C_INT), value, intent(in) :: j_l
-       integer(C_INT), value, intent(in) :: j_u
-     end subroutine bml_print_dense_matrix_C
-  end interface
 
   !> Print a dense matrix.
   interface bml_print_matrix
@@ -39,26 +26,23 @@ contains
   !! \param j_u The upper column bound.
   subroutine bml_print_dense_matrix_MATRIX_TYPE(tag, a, i_l, i_u, j_l, j_u)
 
-    use, intrinsic :: iso_C_binding
-    use bml_types_m
-    use bml_interface_m
-
     character(len=*), intent(in) :: tag
     REAL_TYPE, target, intent(in) :: a(:, :)
-    integer, intent(in) :: i_l
-    integer, intent(in) :: i_u
-    integer, intent(in) :: j_l
-    integer, intent(in) :: j_u
+    integer(C_INT), intent(in) :: i_l
+    integer(C_INT), intent(in) :: i_u
+    integer(C_INT), intent(in) :: j_l
+    integer(C_INT), intent(in) :: j_u
 
     write(*, "(A)") tag
     associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
       ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
       ! exclusive in the upper bound in the C code.
-      call bml_print_dense_matrix_C(size(a, 1), get_enum_id(PRECISION_NAME), &
-           BML_DENSE_COLUMN_MAJOR, &
-           c_loc(a_ptr), &
-           i_l-lbound(a, 1), i_u-lbound(a, 1)+1, &
-           j_l-lbound(a, 2), j_u-lbound(a, 2)+1)
+      call bml_print_dense_matrix_C(size(a, 1, kind=C_INT), &
+          & get_element_id(REAL_NAME, REAL_KIND), &
+          & BML_DENSE_COLUMN_MAJOR, &
+          & c_loc(a_ptr), &
+          & i_l-lbound(a, 1, kind=C_INT), i_u-lbound(a, 1, kind=C_INT)+1, &
+          & j_l-lbound(a, 2, kind=C_INT), j_u-lbound(a, 2, kind=C_INT)+1)
     end associate
 
   end subroutine bml_print_dense_matrix_MATRIX_TYPE
