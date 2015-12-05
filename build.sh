@@ -4,6 +4,7 @@ TOP_DIR="${PWD}"
 BUILD_DIR="${BUILD_DIR:=${TOP_DIR}/build}"
 INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install}"
 LOG_FILE="${TOP_DIR}/build.log"
+VERBOSE_MAKEFILE="${VERBOSE_MAKEFILE:=no}"
 
 help() {
     cat <<EOF
@@ -89,7 +90,9 @@ configure() {
 }
 
 compile() {
-    make -C "${BUILD_DIR}" VERBOSE=1 2>&1 | tee -a "${LOG_FILE}"
+    make -C "${BUILD_DIR}" \
+      $([[ "${VERBOSE_MAKEFILE}" = "yes" ]] && echo "VERBOSE=1") 2>&1 \
+      | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
