@@ -49,7 +49,7 @@ contains
   !!
   !! \param a The matrix.
   subroutine bml_deallocate(a)
-    type(bml_matrix_t) :: a
+    type(bml_matrix_t), intent(inout) :: a
     call bml_deallocate_C(a%ptr)
   end subroutine bml_deallocate
 

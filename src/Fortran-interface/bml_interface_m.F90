@@ -70,7 +70,7 @@ contains
     character(len=*), intent(in) :: type_string
     integer(C_INT) :: id
 
-    select case(type_string)
+    select case (trim(type_string))
     case(BML_MATRIX_DENSE)
       id = bml_matrix_type_dense_enum_id
     case(BML_MATRIX_ELLPACK)
@@ -90,7 +90,7 @@ contains
     integer, intent(in) :: element_kind
     integer(C_INT) :: id
 
-    select case (element_type)
+    select case (trim(element_type))
 
     case (BML_ELEMENT_REAL)
       select case (element_kind)
