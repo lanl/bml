@@ -38,6 +38,14 @@ module bml_c_interface_m
     end subroutine bml_add_identity_C
 
 
+    subroutine bml_adjungate_triangle_C(a, triangle) &
+        & bind(C, name="bml_adjungate_triangle")
+      import :: C_PTR, C_CHAR
+      type(C_PTR), value :: a
+      character(C_CHAR), value, intent(in) :: triangle
+    end subroutine bml_adjungate_triangle_C
+
+
     function bml_banded_matrix_C(matrix_type, matrix_precision, n, m) &
         & bind(C, name="bml_banded_matrix")
       import :: C_INT, C_PTR
@@ -136,6 +144,21 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       integer(C_INT) :: bml_get_N_C
     end function bml_get_N_C
+
+
+    subroutine bml_get_row_C(a, i, row) bind(C, name="bml_get_row")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT), value, intent(in) :: i
+      type(C_PTR), value, intent(in) :: row
+    end subroutine bml_get_row_C
+    
+
+    function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR) :: bml_gershgorin_C
+    end function bml_gershgorin_C
 
 
     function bml_get_row_bandwidth_C(a, i) &

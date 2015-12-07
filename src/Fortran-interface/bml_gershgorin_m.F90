@@ -1,19 +1,10 @@
 !> Calculate gershoring bounds for a matrix
 module bml_gershgorin_m
-
+  use bml_c_interface_m
+  use bml_types_m
   implicit none
-
   private
 
-  interface
-
-     function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")
-       use, intrinsic :: iso_C_binding
-       type(C_PTR), value, intent(in) :: a
-       type(C_PTR) :: bml_gershgorin_C
-     end function bml_gershgorin_C
-
-  end interface
 
   public :: bml_gershgorin
 
