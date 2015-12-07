@@ -12,7 +12,7 @@ module bml_multiply_m
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
        type(C_PTR), value, intent(in) :: b
-       type(C_PTR), value, intent(in) :: c
+       type(C_PTR), value :: c
        real(C_DOUBLE), value, intent(in) :: alpha
        real(C_DOUBLE), value, intent(in) :: beta
        real(C_DOUBLE), value, intent(in) :: threshold
@@ -22,7 +22,7 @@ module bml_multiply_m
           bind(C, name="bml_multiply_x2")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
-       type(C_PTR), value, intent(in) :: b
+       type(C_PTR), value :: b
        real(C_DOUBLE), value, intent(in) :: threshold
      end subroutine bml_multiply_x2_C
 

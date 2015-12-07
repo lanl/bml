@@ -28,6 +28,12 @@ contains
     double precision, allocatable :: b_gbnd(:)
     double precision :: scale_factor, threshold
 
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
+    double precision :: rel_tol = 1e-6
+#else
+    double precision :: rel_tol = 1d-12
+#endif
+
     REAL_TYPE, allocatable :: a_dense(:, :)
     REAL_TYPE, allocatable :: b_dense(:, :)
 
@@ -63,17 +69,18 @@ contains
     call bml_print_matrix("B", b_dense, lbound(b_dense, 1), ubound(b_dense, 1), &
          lbound(b_dense, 2), ubound(b_dense, 2))
 
-    if ((abs(a_gbnd(1) - scale_factor) > 1e-12) .or. (a_gbnd(2) > 1e-12)) then
+    if ((abs(a_gbnd(1) - scale_factor) > rel_tol) .or. (a_gbnd(2) > rel_tol)) then
        print *, "Incorrect maxeval or maxminusmin"
        test_result = .false.
     end if
 
-    if ((abs(b_gbnd(1) - scale_factor*scale_factor) > 1e-12) .or. (abs(b_gbnd(2) - (scale_factor*scale_factor - scale_factor)) > 1e-12)) then
+    if ((abs(b_gbnd(1) - scale_factor*scale_factor) > rel_tol) .or. &
+        (abs(b_gbnd(2) - (scale_factor*scale_factor - scale_factor)) > rel_tol)) then
        print *, "Incorrect maxeval or maxminusmin"
        test_result = .false.
     end if
 
-    if (abs(b_dense(1,1)) > 1e-12) then
+    if (abs(b_dense(1,1)) > rel_tol) then
        print *, "Incorrect maxeval or maxminusmin, failed normalize"
        test_result = .false.
     end if

@@ -23,10 +23,10 @@ bml_normalize(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_normalize_dense(A, maxeval, maxminusmin);
+            bml_normalize_dense(A, maxeval, maxminusmin);
             break;
         case ellpack:
-            return bml_normalize_ellpack(A, maxeval, maxminusmin);
+            bml_normalize_ellpack(A, maxeval, maxminusmin);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

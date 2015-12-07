@@ -24,16 +24,16 @@ bml_normalize_ellpack(
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_normalize_ellpack_single_real(A, maxeval, maxminusmin);
+            bml_normalize_ellpack_single_real(A, maxeval, maxminusmin);
             break;
         case double_real:
-            return bml_normalize_ellpack_double_real(A, maxeval, maxminusmin);
+            bml_normalize_ellpack_double_real(A, maxeval, maxminusmin);
             break;
         case single_complex:
-            return bml_normalize_ellpack_single_complex(A, maxeval, maxminusmin);
+            bml_normalize_ellpack_single_complex(A, maxeval, maxminusmin);
             break;
         case double_complex:
-            return bml_normalize_ellpack_double_complex(A, maxeval, maxminusmin);
+            bml_normalize_ellpack_double_complex(A, maxeval, maxminusmin);
             break;
         default:
             LOG_ERROR("unknown precision\n");

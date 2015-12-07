@@ -10,7 +10,7 @@ module bml_normalize_m
      subroutine bml_normalize_C(a, maxeval, maxminusmin) & 
        bind(C, name="bml_normalize")
        use, intrinsic :: iso_C_binding
-       type(C_PTR), intent(inout) :: a
+       type(C_PTR), value :: a
        real(C_DOUBLE), value, intent(in) :: maxeval
        real(C_DOUBLE), value, intent(in) :: maxminusmin
      end subroutine bml_normalize_C
@@ -21,6 +21,14 @@ module bml_normalize_m
        type(C_PTR) :: bml_gershgorin_C
      end function bml_gershgorin_C
 
+  end interface
+
+  interface bml_normalize
+       module procedure bml_normalize
+  end interface
+
+  interface bml_gershgorin
+       module procedure bml_gershgorin
   end interface
 
   public :: bml_normalize

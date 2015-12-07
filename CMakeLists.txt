@@ -20,9 +20,9 @@ endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit --coverage -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O2 -g -std=c99)
+set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all -ffree-line-length-none)
-set(GNU_Fortran_FLAGS_RELEASE -O2 -g -ffree-line-length-none -fopenmp)
+set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none -fopenmp)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit -traceback)
 set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99)
