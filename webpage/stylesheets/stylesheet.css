@@ -232,6 +232,9 @@ a {
 .site-footer-credits {
   color: #819198; }
 
+table.build-status {
+  style: margin:1em auto; }
+
 @media screen and (min-width: 64em) {
   .site-footer {
     font-size: 1rem; } }
