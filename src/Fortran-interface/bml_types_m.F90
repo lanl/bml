@@ -50,7 +50,12 @@ contains
   !! \param a The matrix.
   subroutine bml_deallocate(a)
     type(bml_matrix_t), intent(inout) :: a
-    call bml_deallocate_C(a%ptr)
+    
+    if (c_associated(a%ptr)) then
+      call bml_deallocate_C(a%ptr)
+    end if
+    a%ptr = C_NULL_PTR
+      
   end subroutine bml_deallocate
 
 
@@ -88,10 +93,7 @@ contains
   subroutine destruct_bml_matrix_t(this)
     type(bml_matrix_t), intent(inout) :: this
 
-    if (c_associated(this%ptr)) then
       call bml_deallocate(this)
-    end if
-    this%ptr = C_NULL_PTR
 
   end subroutine destruct_bml_matrix_t
     

@@ -14,10 +14,11 @@ module diagonalize_matrix_m
 
 contains
 
-  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
+  function test_function(matrix_type, element_type, element_precision, n, m) &
+      & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    character(len=*), intent(in) :: matrix_type, element_type
+    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
     double precision :: threshold
@@ -33,18 +34,20 @@ contains
     threshold = 0.0
     test_result = .false.
 
-    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
+        & a)
     call bml_print_matrix("A", a, 1, n, 1, n)
     call bml_transpose(a, a_t)
     call bml_print_matrix("A_t", a_t, 1, n, 1, n)
     call bml_add(0.5d0, a, 0.5d0, a_t, threshold)
     call bml_print_matrix("A", a, 1, n, 1, n)
     allocate(eigenvalues(n))
-    call bml_zero_matrix(matrix_type, matrix_precision, n, m, eigenvectors)
+    call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, &
+        & eigenvectors)
     call bml_diagonalize(a, eigenvalues, eigenvectors)
     call bml_transpose(eigenvectors, eigenvectors_t)
-    call bml_zero_matrix(matrix_type, matrix_precision, n, m, b)
-    call bml_zero_matrix(matrix_type, matrix_precision, n, m, c)
+    call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, b)
+    call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, c)
     call bml_multiply(eigenvectors_t, eigenvectors, b)
     !call bml_multiply(b, eigenvectors, c)
     write(*, *) eigenvalues
