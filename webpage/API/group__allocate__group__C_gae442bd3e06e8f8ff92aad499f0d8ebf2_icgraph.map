@@ -1,0 +1,4 @@
+<map id="bml_deallocate" name="bml_deallocate">
+<area shape="rect" id="node2" href="$namespacebml__copy__m.html#a67cb41a9c72aa9ecee29551e4619c0d7" title="Copy a matrix &#45; result is a new matrix. " alt="" coords="180,5,340,32"/>
+<area shape="rect" id="node3" href="$group__allocate__group__Fortran.html#ga2c6dfd18349216716b0a64ba6126f156" title="Deallocate a matrix. " alt="" coords="163,56,357,83"/>
+</map>
