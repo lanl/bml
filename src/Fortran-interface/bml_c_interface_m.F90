@@ -45,6 +45,12 @@ module bml_c_interface_m
       character(C_CHAR), value, intent(in) :: triangle
     end subroutine bml_adjungate_triangle_C
 
+    subroutine bml_transpose_triangle_C(a, triangle) &
+        & bind(C, name="bml_transpose_triangle")
+      import :: C_PTR, C_CHAR
+      type(C_PTR), value :: a
+      character(C_CHAR), value, intent(in) :: triangle
+    end subroutine bml_transpose_triangle_C
 
     function bml_banded_matrix_C(matrix_type, matrix_precision, n, m) &
         & bind(C, name="bml_banded_matrix")
