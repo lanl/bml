@@ -12,6 +12,7 @@ set(PROJECT_DESCRIPTION
   "Basic Matrix Library (bml): "
   "A matrix library for linear algebra operations, "
   "supporting several data structures.")
+string(REPLACE ";" " " PROJECT_DESCRIPTION "${PROJECT_DESCRIPTION}")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
