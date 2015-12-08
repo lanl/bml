@@ -14,13 +14,15 @@ module io_matrix_m
 
 contains
 
-  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
+  function test_function(matrix_type, element_type, element_precision, n, m) &
+      & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
-    character(len=*), parameter :: fname="ftest_matrix.mtx"
+    character(len=*), intent(in) :: matrix_type, element_type
+    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
+
+    character(len=*), parameter :: fname="ftest_matrix.mtx"
 
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b
@@ -31,9 +33,10 @@ contains
     allocate(a_dense(n,n))
     allocate(b_dense(n,n))
 
-    call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
+    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
+        & a)
     call bml_write_matrix(a, fname)
-    call bml_zero_matrix(matrix_type, matrix_precision, n, m, b)
+    call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, b)
     call bml_read_matrix(b, fname)
 
     call bml_convert_to_dense(a, a_dense)
