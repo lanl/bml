@@ -26,6 +26,7 @@
  * matrix operations on a variety of hardware platforms. For details,
  * please have a look at our \ref future_plans "future plans".
  *
+ * \author Bálint Aradi <aradi@uni-bremen.de>
  * \author Christian Negre <cnegre@lanl.gov>
  * \author Jamaludin Mohd-Yusof <jamal@lanl.gov>
  * \author Nicolas Bock <nbock@lanl.gov>

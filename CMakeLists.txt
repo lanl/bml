@@ -12,6 +12,7 @@ set(PROJECT_DESCRIPTION
   "Basic Matrix Library (bml): "
   "A matrix library for linear algebra operations, "
   "supporting several data structures.")
+string(REPLACE ";" " " PROJECT_DESCRIPTION "${PROJECT_DESCRIPTION}")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
@@ -26,8 +27,8 @@ set(GNU_Fortran_FLAGS_RELEASE -O2 -g -ffree-line-length-none)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit -traceback)
 set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99)
-set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -traceback)
-set(Intel_Fortran_FLAGS_RELEASE -O2 -g)
+set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -assume realloc_lhs -traceback)
+set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs)
 
 set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
