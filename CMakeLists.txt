@@ -344,3 +344,12 @@ if(TAR AND GIT)
 else()
   add_custom_target(dist)
 endif()
+
+string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
+string(STRIP "${LINKLINE}" LINKLINE)
+message(STATUS "Use '${LINKLINE}' when linking the bml library")
+
+if(OPENMP_FOUND)
+  message(STATUS "Additional Fortran compiler link flags: '${OpenMP_Fortran_FLAGS}'")
+  message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
+endif()
