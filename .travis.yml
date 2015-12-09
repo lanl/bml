@@ -24,6 +24,7 @@ addons:
 branches:
   except:
     - gh-pages
+    - webpage
 
 env:
   - CC=gcc     CXX=g++     FC=gfortran     BML_OPENMP=no VERBOSE_MAKEFILE=yes
