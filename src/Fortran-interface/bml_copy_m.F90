@@ -20,7 +20,7 @@ contains
   subroutine bml_copy(a, b)
 
     type(bml_matrix_t), intent(in) :: a
-    type(bml_matrix_t), intent(out) :: b
+    type(bml_matrix_t), intent(inout) :: b
 
     call bml_deallocate(b)
     b%ptr = bml_copy_new_C(a%ptr)

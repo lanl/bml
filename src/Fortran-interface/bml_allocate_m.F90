@@ -30,8 +30,9 @@ contains
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
 
+    call bml_deallocate(a)
     a%ptr = bml_zero_matrix_C(get_matrix_id(matrix_type), &
         & get_element_id(element_type, element_precision), n, m)
 
@@ -54,8 +55,9 @@ contains
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
 
+    call bml_deallocate(a)
     a%ptr = bml_banded_matrix_C(get_matrix_id(matrix_type), &
         & get_element_id(element_type, element_precision), n, m)
 
@@ -78,8 +80,9 @@ contains
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
 
+    call bml_deallocate(a)
     a%ptr = bml_random_matrix_C(get_matrix_id(matrix_type), &
         & get_element_id(element_type, element_precision), n, m)
 
@@ -102,8 +105,9 @@ contains
     character(len=*), intent(in) :: matrix_type, element_type
     integer, intent(in) :: element_precision
     integer(C_INT), intent(in) :: n, m
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
 
+    call bml_deallocate(a)
     a%ptr = bml_identity_matrix_C(get_matrix_id(matrix_type), &
         & get_element_id(element_type, element_precision), n, m)
 
