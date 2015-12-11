@@ -1,6 +1,9 @@
 !> The basic bml types.
 module bml_types_m
+
   use bml_c_interface_m
+
+  implicit none
   private
 
   public :: bml_vector_t, bml_matrix_t
@@ -15,7 +18,6 @@ module bml_types_m
   !     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68778
   ! is resolved, destructors can be enabled again, and the bml_deallocate()
   ! calls can vanish from the library and from user code as well. (BA)
-
 
   !> The bml vector type.
   type :: bml_vector_t
@@ -49,7 +51,6 @@ module bml_types_m
   !> The double-precision identifier.
   character(len=*), parameter :: BML_ELEMENT_COMPLEX = "complex"
 
-
 contains
 
   !> Deallocate a matrix.
@@ -58,6 +59,7 @@ contains
   !!
   !! \param a The matrix.
   subroutine bml_deallocate(a)
+
     type(bml_matrix_t), intent(inout) :: a
 
     if (c_associated(a%ptr)) then
@@ -66,7 +68,6 @@ contains
     a%ptr = C_NULL_PTR
 
   end subroutine bml_deallocate
-
 
   !subroutine bml_vector_t_assign(this, other)
   !  class(bml_vector_t), intent(inout) :: this
@@ -105,6 +106,5 @@ contains
   !    call bml_deallocate(this)
   !
   !end subroutine destruct_bml_matrix_t
-
 
 end module bml_types_m

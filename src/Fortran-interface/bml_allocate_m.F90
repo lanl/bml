@@ -1,18 +1,19 @@
 !> Matrix allocation functions.
 module bml_allocate_m
+
   use bml_c_interface_m
   use bml_types_m
   use bml_interface_m
+
   implicit none
   private
 
-  public :: bml_random_matrix
   public :: bml_banded_matrix
   public :: bml_identity_matrix
+  public :: bml_random_matrix
   public :: bml_zero_matrix
 
 contains
-
 
   !> Create the zero matrix.
   !!
@@ -38,7 +39,6 @@ contains
 
   end subroutine bml_zero_matrix
 
-
   !> Create a banded matrix.
   !!
   !! \ingroup allocate_group_Fortran
@@ -63,7 +63,6 @@ contains
 
   end subroutine bml_banded_matrix
 
-
   !> Create a random matrix.
   !!
   !! \ingroup allocate_group_Fortran
@@ -87,7 +86,6 @@ contains
         & get_element_id(element_type, element_precision), n, m)
 
   end subroutine bml_random_matrix
-
 
   !> Create the identity matrix.
   !!

@@ -40,7 +40,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     real(C_FLOAT), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -59,6 +59,7 @@ contains
        m_ = 0
     end if
 
+    call bml_deallocate(a)
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_REAL, C_FLOAT), BML_DENSE_COLUMN_MAJOR, &
@@ -80,7 +81,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     real(C_DOUBLE), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -99,6 +100,7 @@ contains
        m_ = 0
     end if
 
+    call bml_deallocate(a)
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
@@ -121,7 +123,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     complex(C_FLOAT_COMPLEX), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -140,6 +142,7 @@ contains
        m_ = 0
     end if
 
+    call bml_deallocate(a)
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
@@ -162,7 +165,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     complex(C_DOUBLE_COMPLEX), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(out) :: a
+    type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -181,6 +184,7 @@ contains
        m_ = 0
     end if
 
+    call bml_deallocate(a)
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &

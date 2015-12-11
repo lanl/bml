@@ -1,7 +1,9 @@
 !> Transpose_triangle functions.
 module bml_transpose_triangle_m
+
   use bml_c_interface_m
   use bml_types_m
+
   implicit none
   private
 
@@ -21,6 +23,5 @@ contains
     call bml_transpose_triangle_C(a%ptr, triangle)
 
   end subroutine bml_transpose_triangle
-
 
 end module bml_transpose_triangle_m

@@ -37,7 +37,11 @@ void *TYPED_FUNC(
     int *A_index = (int *) A->index;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value) private(absham, radius, dvalue) reduction(max:emax) reduction(min:emin)
+#pragma omp parallel for default(none) \
+    shared(N, M, A_nnz, A_index, A_value) \
+    private(absham, radius, dvalue) \
+    reduction(max:emax) \
+    reduction(min:emin)
     for (int i = 0; i < N; i++)
     {
         radius = 0.0;

@@ -1,6 +1,8 @@
 module bml_getters_m
+
   use bml_c_interface_m
   use bml_types_m
+
   implicit none
   private
 
@@ -47,7 +49,6 @@ contains
 
   end subroutine bml_get_row_single_complex
 
-
   subroutine bml_get_row_double_complex(a, i, row)
 
     type(bml_matrix_t), intent(in) :: a
@@ -57,6 +58,5 @@ contains
     call bml_get_row_C(a%ptr, i-1, c_loc(row))
 
   end subroutine bml_get_row_double_complex
-
 
 end module bml_getters_m

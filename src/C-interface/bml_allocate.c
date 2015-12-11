@@ -58,6 +58,7 @@ bml_deallocate(
     }
     else
     {
+        LOG_DEBUG("deallocating bml matrix\n");
         switch (bml_get_type(*A))
         {
             case dense:

@@ -1,8 +1,10 @@
 !> Matrix diagonalization functions.
 module bml_diagonalize_m
+
   use bml_c_interface_m
   use bml_introspection_m
   use bml_types_m
+
   implicit none
   private
 

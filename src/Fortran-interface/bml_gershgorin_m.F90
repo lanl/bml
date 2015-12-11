@@ -1,10 +1,11 @@
 !> Calculate gershoring bounds for a matrix
 module bml_gershgorin_m
+
   use bml_c_interface_m
   use bml_types_m
+
   implicit none
   private
-
 
   public :: bml_gershgorin
 

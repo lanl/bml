@@ -1,9 +1,10 @@
 !> Matrix scaling for matrices.
 module bml_scale_m
+
   use bml_c_interface_m
   use bml_types_m
-  implicit none
 
+  implicit none
   private
 
   !> Scale a matrix.

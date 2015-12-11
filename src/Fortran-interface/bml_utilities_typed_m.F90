@@ -1,11 +1,12 @@
 !> Utility matrix functions.
 module bml_utilities_MATRIX_TYPE_m
+
   use bml_c_interface_m
   use bml_types_m
   use bml_interface_m
+
   implicit none
   private
-
 
   !> Print a dense matrix.
   interface bml_print_matrix

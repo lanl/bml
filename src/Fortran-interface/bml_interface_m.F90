@@ -1,9 +1,10 @@
 !> Interface module.
 module bml_interface_m
+
   use bml_c_interface_m
   use bml_types_m
-  implicit none
 
+  implicit none
   private
 
   !> The enum values of the C API. Keep this synchronized with the
@@ -35,16 +36,19 @@ module bml_interface_m
   !!
   !! Matrix precision is single real.
   integer, parameter :: bml_matrix_precision_single_real_enum_id = 1
+
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
   !!
   !! Matrix precision is double real.
   integer, parameter :: bml_matrix_precision_double_real_enum_id = 2
+
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
   !!
   !! Matrix precision is single complex.
   integer, parameter :: bml_matrix_precision_single_complex_enum_id = 3
+
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
   !!
@@ -82,8 +86,6 @@ contains
 
   end function get_matrix_id
 
-
-
   function get_element_id(element_type, element_kind) result(id)
 
     character(len=*), intent(in) :: element_type
@@ -118,6 +120,5 @@ contains
     end select
 
   end function get_element_id
-
 
 end module bml_interface_m

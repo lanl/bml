@@ -4,7 +4,6 @@
 module bml_error_m
 
   implicit none
-
   private
 
   public :: bml_error, bml_warning, bml_debug

@@ -1,11 +1,11 @@
 !> Introspection procedures.
 module bml_introspection_m
+
   use bml_c_interface_m
   use bml_types_m
+
   implicit none
-
   private
-
 
   public :: bml_get_N
   public :: bml_get_row_bandwidth
