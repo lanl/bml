@@ -38,7 +38,7 @@ contains
 
   end subroutine bml_zero_matrix
 
-  
+
   !> Create a banded matrix.
   !!
   !! \ingroup allocate_group_Fortran
@@ -63,7 +63,7 @@ contains
 
   end subroutine bml_banded_matrix
 
-  
+
   !> Create a random matrix.
   !!
   !! \ingroup allocate_group_Fortran
@@ -88,7 +88,7 @@ contains
 
   end subroutine bml_random_matrix
 
-  
+
   !> Create the identity matrix.
   !!
   !! \ingroup allocate_group_Fortran

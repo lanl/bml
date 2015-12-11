@@ -1,8 +1,10 @@
 module bml_convert_m
+
   use bml_c_interface_m
   use bml_types_m
   use bml_interface_m
   use bml_introspection_m
+
   implicit none
   private
 
@@ -35,9 +37,10 @@ contains
   !! \param threshold The matrix element magnited threshold
   !! \param m The extra arg
   subroutine bml_convert_from_dense_single(matrix_type, a_dense, a, threshold, m)
+
     character(len=*), intent(in) :: matrix_type
     real(C_FLOAT), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -58,8 +61,8 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
-          & get_element_id(BML_ELEMENT_REAL, C_FLOAT), BML_DENSE_COLUMN_MAJOR, &
-          & size(a_dense, 1, C_INT), c_loc(a_ptr), threshold_, m_)
+           & get_element_id(BML_ELEMENT_REAL, C_FLOAT), BML_DENSE_COLUMN_MAJOR, &
+           & size(a_dense, 1, C_INT), c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_single
@@ -74,9 +77,10 @@ contains
   !! \param threshold The matrix element magnited threshold
   !! \param m the extra arg
   subroutine bml_convert_from_dense_double(matrix_type, a_dense, a, threshold, m)
+
     character(len=*), intent(in) :: matrix_type
     real(C_DOUBLE), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -97,9 +101,9 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
-          & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
-          & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
-          & c_loc(a_ptr), threshold_, m_)
+           & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
+           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
+           & c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_double
@@ -117,7 +121,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     complex(C_FLOAT_COMPLEX), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -138,9 +142,9 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
-          & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
-          & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
-          & c_loc(a_ptr), threshold_, m_)
+           & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
+           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
+           & c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_single_complex
@@ -158,7 +162,7 @@ contains
 
     character(len=*), intent(in) :: matrix_type
     complex(C_DOUBLE_COMPLEX), target, intent(in) :: a_dense(:, :)
-    type(bml_matrix_t), intent(inout) :: a
+    type(bml_matrix_t), intent(out) :: a
     real(C_DOUBLE), optional, intent(in) :: threshold
     integer, optional, intent(in) :: m
 
@@ -179,9 +183,9 @@ contains
 
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_convert_from_dense_C(get_matrix_id(matrix_type), &
-          & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &
-          & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
-          & c_loc(a_ptr), threshold_, m_)
+           & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &
+           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), &
+           & c_loc(a_ptr), threshold_, m_)
     end associate
 
   end subroutine bml_convert_from_dense_double_complex

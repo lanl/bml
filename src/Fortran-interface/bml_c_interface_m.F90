@@ -158,7 +158,7 @@ module bml_c_interface_m
       integer(C_INT), value, intent(in) :: i
       type(C_PTR), value, intent(in) :: row
     end subroutine bml_get_row_C
-    
+
 
     function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")
       import :: C_PTR

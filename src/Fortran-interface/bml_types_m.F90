@@ -12,11 +12,11 @@ module bml_types_m
   ! explicit bml_deallocate() unnecessary and would prevent memory leaks, has
   ! been disabled, as the GNU Fortran compiler up to version 5.2 is not able
   ! create reliably working code. Once the reported bug
-  !     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68778 
+  !     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68778
   ! is resolved, destructors can be enabled again, and the bml_deallocate()
   ! calls can vanish from the library and from user code as well. (BA)
 
-  
+
   !> The bml vector type.
   type :: bml_vector_t
      !> The C pointer to the vector.
@@ -59,12 +59,12 @@ contains
   !! \param a The matrix.
   subroutine bml_deallocate(a)
     type(bml_matrix_t), intent(inout) :: a
-    
+
     if (c_associated(a%ptr)) then
       call bml_deallocate_C(a%ptr)
     end if
     a%ptr = C_NULL_PTR
-      
+
   end subroutine bml_deallocate
 
 
@@ -84,7 +84,7 @@ contains
   !  print *, "DESTRUCTOR for bml_vector not implemented yet."
   !  print *, "You possibly leak memory here."
   !  this%ptr = C_NULL_PTR
-  !  
+  !
   !end subroutine destruct_bml_vector_t
   !
   !
@@ -95,7 +95,7 @@ contains
   !  if (c_associated(other%ptr)) then
   !    this%ptr = bml_copy_new_C(other%ptr)
   !  end if
-  !  
+  !
   !end subroutine bml_matrix_t_assign
   !
   !
@@ -105,6 +105,6 @@ contains
   !    call bml_deallocate(this)
   !
   !end subroutine destruct_bml_matrix_t
-    
+
 
 end module bml_types_m
