@@ -24,6 +24,9 @@ bml_set_row(
         case dense:
             bml_set_row_dense(A, i, row);
             break;
+        case ellpack:
+            bml_set_row_ellpack(A, i, row);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
