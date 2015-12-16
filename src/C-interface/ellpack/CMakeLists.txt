@@ -47,6 +47,7 @@ set(SOURCES-ELLPACK-TYPED
   bml_gershgorin_ellpack_typed.c
   bml_multiply_ellpack_typed.c
   bml_scale_ellpack_typed.c
+  bml_setters_ellpack_typed.c
   bml_threshold_ellpack_typed.c
   bml_trace_ellpack_typed.c
   bml_transpose_ellpack_typed.c
