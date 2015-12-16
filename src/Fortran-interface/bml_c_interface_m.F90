@@ -214,11 +214,12 @@ module bml_c_interface_m
       type(C_PTR), value :: a
     end subroutine bml_scale_inplace_C
 
-    subroutine bml_set_row_C(a, i, row) bind(C, name="bml_set_row")
-      import :: C_PTR, C_INT
+    subroutine bml_set_row_C(a, i, row, threshold) bind(C, name="bml_set_row")
+      import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i
       type(C_PTR), value :: row
+      real(C_DOUBLE), value :: threshold
     end subroutine bml_set_row_C
 
     subroutine bml_threshold_C(a, threshold) bind(C, name="bml_threshold")
