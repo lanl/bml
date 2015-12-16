@@ -28,27 +28,20 @@ void TYPED_FUNC(
     int A_N = A->N;
     int A_M = A->M;
 
-    int ll=0;
+    int ll = 0;
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    
-    printf("HOLA %d\n",A_N);
-    printf("HOLA %d\n",A_M);
-    printf("HOLA %d\n",i);
-    printf("HOLA %f\n",threshold);        
-   
+
     for (int j = 0; j < A_N; j++)
     {
-      printf("%f \n",row[j]);
         if (ABS(row[j]) > threshold)
-	{
-	    ll++;
-            printf("%d \n",ll);
+        {
+            ll++;
             A_value[ROWMAJOR(i, ll, A_N, A_M)] = row[j];
-	    A_index[ROWMAJOR(i, ll, A_N, A_M)] = j;
-	}        
+            A_index[ROWMAJOR(i, ll, A_N, A_M)] = j;
+        }
     }
-    A_nnz[i] = ll;            
+    A_nnz[i] = ll;
 }

@@ -24,16 +24,16 @@ bml_set_row_ellpack(
 //     switch (bml_get_precision(A))
     {
         case single_real:
-          bml_set_row_ellpack_single_real(A, i, row, threshold);
+            bml_set_row_ellpack_single_real(A, i, row, threshold);
             break;
         case double_real:
-          bml_set_row_ellpack_double_real(A, i, row, threshold);
+            bml_set_row_ellpack_double_real(A, i, row, threshold);
             break;
         case single_complex:
-          bml_set_row_ellpack_single_complex(A, i, row, threshold);
+            bml_set_row_ellpack_single_complex(A, i, row, threshold);
             break;
         case double_complex:
-          bml_set_row_ellpack_double_complex(A, i, row, threshold);
+            bml_set_row_ellpack_double_complex(A, i, row, threshold);
             break;
         default:
             LOG_ERROR("unkonwn precision\n");

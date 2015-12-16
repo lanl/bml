@@ -25,7 +25,7 @@ contains
     real(C_DOUBLE), optional, intent(in) :: threshold
 
     real(C_DOUBLE) :: threshold_
-    
+
     if(present(threshold)) then
       threshold_ = threshold
     else
@@ -42,7 +42,7 @@ contains
     real(C_DOUBLE), target, intent(in) :: row(*)
     real(C_DOUBLE), optional, intent(in) :: threshold
     real(C_DOUBLE) :: threshold_
-    
+
     if(present(threshold)) then
       threshold_ = threshold
     else
@@ -60,7 +60,7 @@ contains
     complex(C_FLOAT_COMPLEX), target, intent(in) :: row(*)
     real(C_DOUBLE), optional, intent(in) :: threshold
     real(C_DOUBLE) :: threshold_
-    
+
     if(present(threshold)) then
       threshold_ = threshold
     else
@@ -78,7 +78,7 @@ contains
     complex(C_DOUBLE_COMPLEX), target, intent(in) :: row(*)
     real(C_DOUBLE), optional, intent(in) :: threshold
     real(C_DOUBLE) :: threshold_
-    
+
     if(present(threshold)) then
       threshold_ = threshold
     else
