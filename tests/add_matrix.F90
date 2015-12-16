@@ -47,8 +47,8 @@ contains
     test_result = .true.
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
-    call bml_copy(a, b)
-    call bml_copy(a, d)
+    call bml_copy_new(a, b)
+    call bml_copy_new(a, d)
     call bml_random_matrix(matrix_type, matrix_precision, n, m, c)
 
     call bml_add(alpha, b, beta, c, threshold)

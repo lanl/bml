@@ -37,6 +37,8 @@ contains
     REAL_TYPE, allocatable :: f_dense(:, :)
     REAL_TYPE, allocatable :: g_dense(:, :)
 
+    double precision, allocatable :: trace(:)
+
     double precision :: alpha = -0.8
     double precision :: beta = 1.2
     double precision :: threshold = 0.0
@@ -51,13 +53,13 @@ contains
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, b)
     call bml_identity_matrix(matrix_type, matrix_precision, n, m, c)
-    call bml_copy(c, d)
+    call bml_copy_new(c, d)
 
     call bml_multiply(a, b, d, alpha, beta, threshold)
 
     call bml_zero_matrix(matrix_type, matrix_precision, n, m, f)
     call bml_zero_matrix(matrix_type, matrix_precision, n, m, g)
-    call bml_multiply_x2(a, f, threshold)
+    call bml_multiply_x2(a, f, threshold, trace)
     call bml_multiply(a, a, g, ONE, ZERO, threshold)
 
     test_result = .true.

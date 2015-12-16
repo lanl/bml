@@ -30,8 +30,8 @@ contains
     REAL_TYPE, allocatable :: c_dense(:, :)
 
     call bml_random_matrix(matrix_type, matrix_precision, n, m, a)
-    call bml_copy(a, b)
-    call bml_copy(b, c)
+    call bml_copy_new(a, b)
+    call bml_copy_new(b, c)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(b, b_dense)

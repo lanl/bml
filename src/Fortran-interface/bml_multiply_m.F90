@@ -18,13 +18,14 @@ module bml_multiply_m
        real(C_DOUBLE), value, intent(in) :: threshold
      end subroutine bml_multiply_C
 
-     subroutine bml_multiply_x2_C(a, b, threshold) &
+     function bml_multiply_x2_C(a, b, threshold) &
           bind(C, name="bml_multiply_x2")
        use, intrinsic :: iso_C_binding
        type(C_PTR), value, intent(in) :: a
        type(C_PTR), value :: b
        real(C_DOUBLE), value, intent(in) :: threshold
-     end subroutine bml_multiply_x2_C
+       type(C_PTR) :: bml_multiply_x2_C
+     end function bml_multiply_x2_C
 
   end interface
 
@@ -98,15 +99,19 @@ contains
   !! \param a Matrix \f$ A \f$.
   !! \param b Matrix \f$ B \f$.
   !! \param threshold The threshold \f$ threshold \f$.
-  subroutine bml_multiply_x2(a, b, threshold)
+  subroutine bml_multiply_x2(a, b, threshold, trace)
 
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: b
     double precision, optional, intent(in) :: threshold
+    double precision, allocatable, intent(inout) :: trace(:)
 
     double precision :: threshold_
+
+    type(C_PTR) :: trace_ptr
+    double precision, pointer :: a_trace_ptr(:)
 
     if(present(threshold)) then
        threshold_ = threshold
@@ -114,7 +119,11 @@ contains
        threshold_ = 0
     end if
 
-    call bml_multiply_x2_c(a%ptr, b%ptr, threshold_)
+    trace_ptr =  bml_multiply_x2_c(a%ptr, b%ptr, threshold_)
+    call c_f_pointer(trace_ptr, a_trace_ptr, [2])
+    trace = a_trace_ptr
+
+    deallocate(a_trace_ptr)
 
   end subroutine bml_multiply_x2
 
