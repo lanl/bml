@@ -47,10 +47,31 @@ at <qmmd-all@lanl.gov> or open an issue on github
 
 # Developer Suggested Workflow #
 
-We do our main development on the `develop` branch.  If you would like
-to contribute your work to the bml project, please fork the project on
-github, hack away at the forked `develop` branch and send us a pull
-request once you think we should have a look and integrate your work.
+We do our main development on the `develop` branch.  If you would like to
+contribute your work to the bml project, please fork the project on the GitHub
+webpage. Replace `USERNAME` in the following with your GitHub username.
+
+~~~
+$ git clone git@github.com:USERNAME/bml.git
+$ git remote add upstream git@github.com:qmmd/bml.git
+$ git fetch --all
+$ git checkout -b feature origin/develop
+~~~
+
+You should name the branch something more exciting than simply `feature` to
+indicate better what it is for. Now work on the branch and commit as often as
+you like. When you are done and think you want to push your changes back to
+GitHub for us to have a look at, run
+
+~~~
+$ git push --set-upstream origin feature
+~~~
+
+Open a new pull request on the GitHub webpage and make sure to set `base-fork:
+qmmd/bml` and `base: develop`.
+
+You can find a good description of how this works
+[here](https://help.github.com/articles/using-pull-requests/).
 
 ## Coding Style ##
 
