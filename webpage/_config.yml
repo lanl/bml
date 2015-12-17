@@ -5,3 +5,4 @@ defaults:
 
 host: localhost
 baseurl: /bml
+exclude: [ Gemfile, Gemfile.lock, Makefile ]
