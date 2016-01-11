@@ -14,10 +14,11 @@ module convert_matrix_m
 
 contains
 
-  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
+  function test_function(matrix_type, element_type, element_precision, n, m) &
+      & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    character(len=*), intent(in) :: matrix_type, element_type
+    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
 

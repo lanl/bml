@@ -29,7 +29,7 @@ bml_import_from_dense(
     const double threshold,
     const int M)
 {
-    LOG_DEBUG("Importing dense matrix\n");
+    LOG_DEBUG("importing dense matrix\n");
     switch (matrix_type)
     {
         case dense:

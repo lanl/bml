@@ -14,10 +14,11 @@ module normalize_matrix_m
 
 contains
 
-  function test_function(matrix_type, matrix_precision, n, m) result(test_result)
+  function test_function(matrix_type, element_type, element_precision, n, m) &
+      & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type
-    character(len=*), intent(in) :: matrix_precision
+    character(len=*), intent(in) :: matrix_type, element_type
+    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
 
@@ -44,8 +45,8 @@ contains
     scale_factor = 2.5
     threshold = 0.0
 
-    call bml_identity_matrix(matrix_type, matrix_precision, n, m, a)
-    call bml_zero_matrix(matrix_type, matrix_precision, n, m, b)
+    call bml_identity_matrix(matrix_type, element_type, element_precision, n, &
+        & m, a)
     call bml_scale(scale_factor, a)
     call bml_gershgorin(a, a_gbnd)
     call bml_convert_to_dense(a, a_dense)

@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml)
+| master | develop |
+| ------ | ------- |
+| [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=develop)](https://travis-ci.org/qmmd/bml) |
 
 # Build Instructions #
 
@@ -30,9 +32,9 @@ be modified by running
 
 In order to build the library, the following tools need to be installed:
 
-  - `gcc` with Fortran support
-  - `>=cmake-2.8.8`
-  - `>=python-2.7`
+- `gcc` with Fortran support
+- `>=cmake-2.8.8`
+- `>=python-2.7`
 
 ## If the build fails ##
 
@@ -45,16 +47,10 @@ at <qmmd-all@lanl.gov> or open an issue on github
 
 # Developer Suggested Workflow #
 
-We try to preserve a linear history in our main (master)
-branch. Instead of pulling (i.e. merging), we suggest you use:
-
-    $ git pull --rebase
-
-And then
-
-    $ git push
-
-To push your changes back to the server.
+We do our main development on the `develop` branch.  If you would like
+to contribute your work to the bml project, please fork the project on
+github, hack away at the forked `develop` branch and send us a pull
+request once you think we should have a look and integrate your work.
 
 ## Coding Style ##
 

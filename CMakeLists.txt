@@ -12,6 +12,7 @@ set(PROJECT_DESCRIPTION
   "Basic Matrix Library (bml): "
   "A matrix library for linear algebra operations, "
   "supporting several data structures.")
+string(REPLACE ";" " " PROJECT_DESCRIPTION "${PROJECT_DESCRIPTION}")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
@@ -19,15 +20,22 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
-set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit --coverage -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99)
+string(TOUPPER ${CMAKE_BUILD_TYPE} TEMP)
+if(TEMP STREQUAL DEBUG)
+  add_definitions(-DGLOBAL_DEBUG=BML_LOG_DEBUG)
+else()
+  add_definitions(-DGLOBAL_DEBUG=BML_LOG_INFO)
+endif()
+
+set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Wno-unknown-pragmas --coverage -save-temps -std=c99)
+set(GNU_C_FLAGS_RELEASE -O2 -g -std=c99)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none -fopenmp)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit -traceback)
 set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99)
-set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -traceback)
-set(Intel_Fortran_FLAGS_RELEASE -O2 -g)
+set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -assume realloc_lhs -traceback)
+set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs)
 
 set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
@@ -342,4 +350,13 @@ if(TAR AND GIT)
   endif()
 else()
   add_custom_target(dist)
+endif()
+
+string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
+string(STRIP "${LINKLINE}" LINKLINE)
+message(STATUS "Use '${LINKLINE}' when linking the bml library")
+
+if(OPENMP_FOUND)
+  message(STATUS "Additional Fortran compiler link flags: '${OpenMP_Fortran_FLAGS}'")
+  message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
 endif()

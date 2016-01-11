@@ -4,7 +4,6 @@
 module bml_error_m
 
   implicit none
-
   private
 
   public :: bml_error, bml_warning, bml_debug
@@ -30,9 +29,9 @@ contains
 
     write(line_string, *) line
     write(*, "(A)") "["//trim(adjustl(file)) &
-         //":"//trim(adjustl(line_string)) &
-         //" "//trim(adjustl(tag))//"] " &
-         //trim(adjustl(message))
+         & //":"//trim(adjustl(line_string)) &
+         & //" "//trim(adjustl(tag))//"] " &
+         & //trim(adjustl(message))
 
   end subroutine bml_msg
 

@@ -5,24 +5,6 @@ module bml_normalize_m
 
   private
 
-  interface
-
-     subroutine bml_normalize_C(a, maxeval, maxminusmin) & 
-       bind(C, name="bml_normalize")
-       use, intrinsic :: iso_C_binding
-       type(C_PTR), value :: a
-       real(C_DOUBLE), value, intent(in) :: maxeval
-       real(C_DOUBLE), value, intent(in) :: maxminusmin
-     end subroutine bml_normalize_C
-
-     function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")
-       use, intrinsic :: iso_C_binding
-       type(C_PTR), value, intent(in) :: a
-       type(C_PTR) :: bml_gershgorin_C
-     end function bml_gershgorin_C
-
-  end interface
-
   interface bml_normalize
        module procedure bml_normalize
   end interface
@@ -41,11 +23,12 @@ contains
   !! \ingroup normalize_group_F
   !!
   !! \param a Matrix
-  !! \param maxeval Calculated max 
+  !! \param maxeval Calculated max
   !! \param maxminusmin Calculated max-min
   subroutine bml_normalize(a, maxeval, maxminusmin)
 
     use bml_types_m
+    use bml_c_interface_m
 
     type(bml_matrix_t), intent(inout) :: a
     double precision, intent(in) :: maxeval, maxminusmin
@@ -62,6 +45,7 @@ contains
   !! \param a_gbnd Calculated max and max-min
   subroutine bml_gershgorin(a, a_gbnd)
 
+    use bml_c_interface_m
     use bml_types_m
 
     type(bml_matrix_t), intent(in) :: a
