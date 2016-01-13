@@ -10,7 +10,15 @@ bml_set(
     const int j,
     const void *value)
 {
-    LOG_ERROR("FIXME\n");
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_set_dense(A, i, j, value);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
 }
 
 void

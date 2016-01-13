@@ -13,6 +13,30 @@ void bml_set_dense(
     const int j,
     const void *value);
 
+void bml_set_dense_single_real(
+    bml_matrix_dense_t * A,
+    const int i,
+    const int j,
+    const void *value);
+
+void bml_set_dense_double_real(
+    bml_matrix_dense_t * A,
+    const int i,
+    const int j,
+    const void *value);
+
+void bml_set_dense_single_complex(
+    bml_matrix_dense_t * A,
+    const int i,
+    const int j,
+    const void *value);
+
+void bml_set_dense_double_complex(
+    bml_matrix_dense_t * A,
+    const int i,
+    const int j,
+    const void *value);
+
 void bml_set_row_dense(
     bml_matrix_dense_t * A,
     const int i,
