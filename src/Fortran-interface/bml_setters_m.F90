@@ -13,7 +13,15 @@ module bml_setters_m
      module procedure bml_set_row_double_complex
   end interface bml_set_row
 
+  interface bml_set_diag
+     module procedure bml_set_diag_single_real
+     module procedure bml_set_diag_double_real
+     module procedure bml_set_diag_single_complex
+     module procedure bml_set_diag_double_complex
+  end interface bml_set_diag
+
   public :: bml_set_row
+  public :: bml_set_diag
 
 contains
 
