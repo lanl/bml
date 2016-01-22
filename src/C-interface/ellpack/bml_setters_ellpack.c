@@ -55,3 +55,30 @@ bml_set_row_ellpack(
             break;
     }
 }
+
+/* Setter for diagonal */
+void
+bml_set_diag_ellpack(
+    bml_matrix_ellpack_t * A,
+    const void *)
+{
+    switch (bml_get_precision(A))
+    {
+        case single_real:
+            bml_set_diag_ellpack_single_real(A, diag);
+            break;
+        case double_real:
+            bml_set_diag_ellpack_double_real(A, diag);
+            break;
+        case single_complex:
+            bml_set_diag_ellpack_single_complex(A, diag);
+            break;
+        case double_complex:
+            bml_set_diag_ellpack_double_complex(A, diag);
+            break;
+        default:
+            LOG_ERROR("unkonwn precision\n");
+            break;
+    }
+}
+

@@ -62,4 +62,25 @@ void bml_set_row_ellpack_double_complex(
     const int i,
     const double complex * row);
 
+/* Setters for diagonal */
+void bml_set_diag_ellpack(
+    bml_matrix_ellpack_t * A,
+    const void *diag);
+
+void bml_set_diag_ellpack_single_real(
+    bml_matrix_ellpack_t * A,
+    const float *diag);
+
+void bml_set_diag_ellpack_double_real(
+    bml_matrix_ellpack_t * A,
+    const double *diag);
+
+void bml_set_diag_ellpack_single_complex(
+    bml_matrix_ellpack_t * A,
+    const float complex * diag);
+
+void bml_set_diag_ellpack_double_complex(
+    bml_matrix_ellpack_t * A,
+    const double complex * diag);
+
 #endif

@@ -41,3 +41,23 @@ bml_set_row(
             break;
     }
 }
+
+void
+bml_set_diag(
+    bml_matrix_t * A,
+    const void *diag)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_set_diag_dense(A,row);
+            break;
+        case ellpack:
+            bml_set_diag_ellpack(A,row);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+

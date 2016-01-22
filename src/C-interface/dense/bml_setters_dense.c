@@ -55,3 +55,29 @@ bml_set_row_dense(
             break;
     }
 }
+
+/* Setters for diagonal */
+void
+bml_set_diag_dense(
+    bml_matrix_dense_t * A,
+    const void *diag)
+{
+    switch (bml_get_precision(A))
+    {
+        case single_real:
+            bml_set_diag_dense_single_real(A, diag);
+            break;
+        case double_real:
+            bml_set_diag_dense_double_real(A, diag);
+            break;
+        case single_complex:
+            bml_set_diag_dense_single_complex(A, diag);
+            break;
+        case double_complex:
+            bml_set_diag_dense_double_complex(A, diag);
+            break;
+        default:
+            LOG_ERROR("unkonwn precision\n");
+            break;
+    }
+}

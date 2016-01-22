@@ -64,5 +64,42 @@ contains
     call bml_set_row_C(a%ptr, i-1, c_loc(row))
 
   end subroutine bml_set_row_double_complex
+  
+  !Setter for diagonal 
+  subroutine bml_set_diag_single_real(a, diag)
+
+    type(bml_matrix_t), intent(inout) :: a
+    real(C_FLOAT), target, intent(in) :: diag(*)
+
+    call bml_set_diag_C(a%ptr, c_loc(diag))
+
+  end subroutine bml_set_diag_single_real
+
+  subroutine bml_set_diag_double_real(a, diag)
+
+    type(bml_matrix_t), intent(inout) :: a
+    real(C_DOUBLE), target, intent(in) :: diag(*)
+
+    call bml_set_diag_C(a%ptr, c_loc(diag))
+
+  end subroutine bml_set_diag_double_real
+
+  subroutine bml_set_diag_single_complex(a, diag)
+
+    type(bml_matrix_t), intent(inout) :: a
+    complex(C_FLOAT_COMPLEX), target, intent(in) :: diag(*)
+
+    call bml_set_diag_C(a%ptr,c_loc(diag))
+
+  end subroutine bml_set_diag_single_complex
+
+  subroutine bml_set_diag_double_complex(a, diag)
+
+    type(bml_matrix_t), intent(inout) :: a
+    complex(C_DOUBLE_COMPLEX), target, intent(in) :: diag(*)
+
+    call bml_set_diag_C(a%ptr,c_loc(diag))
+
+  end subroutine bml_set_diag_double_complex
 
 end module bml_setters_m

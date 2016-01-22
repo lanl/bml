@@ -16,4 +16,8 @@ void bml_set_row(
     const int i,
     const void *row);
 
+void bml_set_diag(
+    bml_matrix_t * A,
+    const void *diag);
+
 #endif
