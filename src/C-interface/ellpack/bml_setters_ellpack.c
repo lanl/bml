@@ -35,10 +35,9 @@ bml_set_row_ellpack(
     bml_matrix_ellpack_t * A,
     const int i,
     const void *row,
-    const void *threshold, 
-    )
+    const double threshold)
 {
-    switch (bml_get_precision(A))
+    switch (A->matrix_precision)
     {
         case single_real:
             bml_set_row_ellpack_single_real(A, i, row, threshold);
@@ -63,10 +62,9 @@ void
 bml_set_diag_ellpack(
     bml_matrix_ellpack_t * A,
     const void *diag,
-    const void *threshold, 
-    )
+    const double threshold)
 {
-    switch (bml_get_precision(A))
+    switch (A->matrix_precision)
     {
         case single_real:
             bml_set_diag_ellpack_single_real(A, diag,threshold);

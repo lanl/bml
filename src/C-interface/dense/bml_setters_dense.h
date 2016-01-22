@@ -71,7 +71,7 @@ void bml_set_diag_dense_single_real(
     bml_matrix_dense_t * A,
     const float *diag);
 
-void bml_set_dense_double_real(
+void bml_set_diag_dense_double_real(
     bml_matrix_dense_t * A,
     const double *diag);
 

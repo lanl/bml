@@ -3,8 +3,11 @@
 #include "../bml_introspection.h"
 #include "bml_setters_ellpack.h"
 #include "bml_types_ellpack.h"
-
+#include "bml_types.h" 
+#include <stdio.h> 
+#include <stdlib.h>  
 #include <complex.h>
+#include <math.h> 
 
 void TYPED_FUNC(
     bml_set_ellpack) (
@@ -42,8 +45,10 @@ void TYPED_FUNC(
   int *A_index = A->index;
   int *A_nnz = A->nnz;
 
-  for (int j = 0; j < A_N; j++)
-  {
+  for (int j = 0; j < A_M; j++)
+  { 
+    A_value[ROWMAJOR(i, j, A_N, A_M)] = 0.0; /* set all the previous values to 0 */
+
     if (ABS(row[j]) > threshold)
     {
       ll++;
@@ -74,29 +79,27 @@ void TYPED_FUNC(
   int A_N = A->N;
   int A_M = A->M;
 
-  int ll = 0;
-
   REAL_T *A_value = (REAL_T *) A->value;
   int *A_index = A->index;
   int *A_nnz = A->nnz;
 
   for (int i = 0; i < A_N; i++)
   {
-    if (ABS(diag[i]) > threshold)
+    for (int j = 0; j < A_M; j++) 
     {
-      for (int j = 0; j < A_M; j++) 
+      if (A_index[ROWMAJOR(i, j, A_N, A_M)] == i)
       {
-        if (A_index[ROWMAJOR(i, j, A_N, A_M)] = i)
-        {
-          A_index[ROWMAJOR(i, j, A_N, A_M)] = i;
+        if (ABS(diag[i]) > threshold) {
           A_value[ROWMAJOR(i, j, A_N, A_M)] = diag[i];
         }
-      }
-      if (A_nnz[i] < 1) /* If there is nothing in the row the nnz will have to be at least 1 */
-      {
-        A_nnz[i] = 1;
+        else {
+          A_value[ROWMAJOR(i, j, A_N, A_M)] = 0.0; 
+        }
       }
     }
+    if (A_nnz[i] < 1) /* If there is nothing in the row the nnz will have to be at least 1 */
+    {
+      A_nnz[i] = 1;
+    }
   }
-  A_nnz[i] = ll;
 }

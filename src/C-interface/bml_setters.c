@@ -26,7 +26,8 @@ void
 bml_set_row(
     bml_matrix_t * A,
     const int i,
-    const void *row)
+    const void *row,
+    const double threshold)
 {
     switch (bml_get_type(A))
     {
@@ -34,7 +35,7 @@ bml_set_row(
             bml_set_row_dense(A, i, row);
             break;
         case ellpack:
-            bml_set_row_ellpack(A, i, row);
+            bml_set_row_ellpack(A, i, row, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -45,19 +46,20 @@ bml_set_row(
 void
 bml_set_diag(
     bml_matrix_t * A,
-    const void *diag)
+    const void *diag, 
+    const double threshold)    
 {
-    switch (bml_get_type(A))
-    {
-        case dense:
-            bml_set_diag_dense(A,row);
-            break;
-        case ellpack:
-            bml_set_diag_ellpack(A,row);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
-            break;
-    }
+  switch (bml_get_type(A))
+  {
+    case dense:
+      bml_set_diag_dense(A, diag);
+      break;
+    case ellpack:
+      bml_set_diag_ellpack(A, diag, threshold);
+      break;
+    default:
+      LOG_ERROR("unknown matrix type\n");
+      break;
+  }
 }
 
