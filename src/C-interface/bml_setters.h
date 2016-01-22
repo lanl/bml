@@ -14,10 +14,14 @@ void bml_set(
 void bml_set_row(
     bml_matrix_t * A,
     const int i,
-    const void *row);
+    const void *row,
+    const void *threshold
+    );
 
 void bml_set_diag(
     bml_matrix_t * A,
-    const void *diag);
+    const void *diag,
+    const void *threshold
+    );
 
 #endif
