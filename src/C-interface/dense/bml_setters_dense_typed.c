@@ -31,3 +31,16 @@ void TYPED_FUNC(
         A_matrix[ROWMAJOR(i, j, N, N)] = row[j];
     }
 }
+
+void TYPED_FUNC(
+    bml_set_diagonal_dense) (
+    bml_matrix_dense_t * A,
+    const REAL_T * diagonal)
+{
+    int N = bml_get_N(A);
+    REAL_T *A_matrix = A->matrix;
+    for (int j = 0; j < N; j++)
+    {
+        A_matrix[ROWMAJOR(j, j, N, N)] = diagonal[j];
+    }
+}
