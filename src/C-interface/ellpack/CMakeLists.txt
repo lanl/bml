@@ -10,6 +10,7 @@ set(HEADERS-ELLPACK
   bml_multiply_ellpack.h
   bml_normalize_ellpack.h
   bml_scale_ellpack.h
+  bml_setters_ellpack.h
   bml_threshold_ellpack.h
   bml_trace_ellpack.h
   bml_transpose_ellpack.h
@@ -26,6 +27,7 @@ set(SOURCES-ELLPACK
   bml_multiply_ellpack.c
   bml_normalize_ellpack.c
   bml_scale_ellpack.c
+  bml_setters_ellpack.c
   bml_threshold_ellpack.c
   bml_trace_ellpack.c
   bml_transpose_ellpack.c
@@ -45,6 +47,7 @@ set(SOURCES-ELLPACK-TYPED
   bml_multiply_ellpack_typed.c
   bml_normalize_ellpack_typed.c
   bml_scale_ellpack_typed.c
+  bml_setters_ellpack_typed.c
   bml_threshold_ellpack_typed.c
   bml_trace_ellpack_typed.c
   bml_transpose_ellpack_typed.c

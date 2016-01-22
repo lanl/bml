@@ -14,6 +14,12 @@ void bml_set(
 void bml_set_row(
     bml_matrix_t * A,
     const int i,
-    const void *row);
+    const void *row,
+    const double threshold);
+
+void bml_set_diag(
+    bml_matrix_t * A,
+    const void *diag,
+    const double threshold);
 
 #endif
