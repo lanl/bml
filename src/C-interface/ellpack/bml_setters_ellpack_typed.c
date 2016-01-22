@@ -25,7 +25,7 @@ void TYPED_FUNC(
   *  \param threshold The threshold value to be set
   *
   */
- 
+
 void TYPED_FUNC(
     bml_set_row_ellpack) (
       bml_matrix_ellpack_t * A,

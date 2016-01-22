@@ -34,7 +34,7 @@ void
 bml_set_row_ellpack(
     bml_matrix_ellpack_t * A,
     const int i,
-    const void *row
+    const void *row,
     const void *threshold, 
     )
 {
@@ -62,7 +62,7 @@ bml_set_row_ellpack(
 void
 bml_set_diag_ellpack(
     bml_matrix_ellpack_t * A,
-    const void *diag
+    const void *diag,
     const void *threshold, 
     )
 {
