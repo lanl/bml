@@ -1,4 +1,7 @@
 add_test(dummy /bin/true)
-add_executable(bml_test
-  bml_test.c)
-target_link_libraries(bml_test bml)
+add_executable(bml-test
+  bml_test.c
+  test_multiply.c)
+set_target_properties(bml-test
+  PROPERTIES
+  LINK_FLAGS "-fprofile-arcs -lgcov")
