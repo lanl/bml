@@ -6,12 +6,17 @@
 #include <string.h>
 #include <strings.h>
 
-const int NUM_TESTS = 2;
-const char *test_name[] = { "new", "multiply" };
+#include "bml_test.h"
+
+const int NUM_TESTS = 1;
+const char *test_name[] = { "multiply" };
 
 const char *test_description[] = {
-    "Instantiate a new bml matrix",
     "Multiply two bml matrices"
+};
+
+const test_function_t testers[] = {
+    test_multiply
 };
 
 void
@@ -50,6 +55,8 @@ main(
     char **argv)
 {
     int N = 11;
+    char *test = NULL;
+    int test_index = -1;
 
     const char *short_options = "ht:lN:";
     const struct option long_options[] = {
@@ -72,18 +79,21 @@ main(
                 break;
             case 't':
             {
-                char *test_str = strdup(optarg);
-                int i;
-                for (i = 0; i < NUM_TESTS; i++)
+                if (test)
                 {
-                    if (strcasecmp(test_str, test_name[i]) == 0)
+                    free(test);
+                }
+                test = strdup(optarg);
+                for (test_index = 0; test_index < NUM_TESTS; test_index++)
+                {
+                    if (strcasecmp(test, test_name[test_index]) == 0)
                     {
                         break;
                     }
                 }
-                if (i == NUM_TESTS)
+                if (test_index == NUM_TESTS)
                 {
-                    fprintf(stderr, "unknown test %s\n", test_str);
+                    fprintf(stderr, "unknown test %s\n", test);
                     return 1;
                 }
                 break;
@@ -109,7 +119,13 @@ main(
         }
     }
 
-    fprintf(stderr, "N = %d\n", N);
+    if (!test)
+    {
+        fprintf(stderr, "missing test\n");
+        return 1;
+    }
 
-    return 0;
+    fprintf(stderr, "%s\n", test);
+    fprintf(stderr, "N = %d\n", N);
+    return testers[test_index] (N, dense, single_real, 0);
 }

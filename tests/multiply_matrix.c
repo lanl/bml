@@ -1,5 +1,6 @@
 #include "bml.h"
 #include "bml_test.h"
+#include "typed.h"
 
 #include <complex.h>
 #include <math.h>
@@ -56,7 +57,7 @@ compare_matrix(
 }
 
 int
-test_function(
+test_multiply(
     const int N,
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
