@@ -1,5 +1,9 @@
 include_directories(.)
 
+if(MPI_C_INCLUDE_PATH)
+  include_directories(${MPI_C_INCLUDE_PATH})
+endif()
+
 # Public headers.
 set(HEADERS-C
   bml.h
@@ -58,6 +62,10 @@ add_library(bml-c OBJECT ${SOURCES-C})
 if(OPENMP_FOUND)
   set_target_properties(bml-c
     PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+endif()
+if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
+  set_target_properties(bml-c
+    PROPERTIES COMPILE_FLAGS ${MPI_C_COMPILE_FLAGS})
 endif()
 
 add_subdirectory(dense)
