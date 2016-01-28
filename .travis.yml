@@ -22,11 +22,11 @@ addons:
     - gfortran-5
 
 env:
-  - CC=gcc     CXX=g++     FC=gfortran     BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-5   CXX=g++-5   FC=gfortran-5   BML_OPENMP=no VERBOSE_MAKEFILE=yes
+  - CC=gcc     CXX=g++     FC=gfortran     GCVO=gcov     BML_OPENMP=no VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCVO=gcov-4.7 BML_OPENMP=no VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCVO=gcov-4.8 BML_OPENMP=no VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCVO=gcov-4.9 BML_OPENMP=no VERBOSE_MAKEFILE=yes
+  - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCVO=gcov-5   BML_OPENMP=no VERBOSE_MAKEFILE=yes
 
 before_script:
   - pip install --user codecov
@@ -37,4 +37,4 @@ script:
 after_success:
   - pwd
   - find "${PWD}" -type f -name '*.gcno' -exec ls -lh {} +
-  - codecov
+  - codecov --gcov-exec ${GCOV}
