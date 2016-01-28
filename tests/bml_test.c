@@ -25,10 +25,11 @@ print_usage(
 {
     printf("Usage:\n");
     printf("\n");
-    printf("-h | --help       This help\n");
-    printf("-t | --test TEST  Run test TEST\n");
-    printf("-l | --list       List all available tests\n");
-    printf("-N | --N N        Test N x N matrices\n");
+    printf("-h | --help         This help\n");
+    printf("-t | --test TEST    Run test TEST\n");
+    printf("-p | --precision P  Choose matrix precision\n");
+    printf("-l | --list         List all available tests\n");
+    printf("-N | --N N          Test N x N matrices\n");
     printf("\n");
 
     int max_width = 0;
@@ -57,11 +58,15 @@ main(
     int N = 11;
     char *test = NULL;
     int test_index = -1;
+    bml_matrix_type_t matrix_type = dense;
+    bml_matrix_precision_t precision = single_real;
 
-    const char *short_options = "ht:lN:";
+    const char *short_options = "hn:t:p:lN:";
     const struct option long_options[] = {
         {"help", no_argument, NULL, 'h'},
-        {"test", required_argument, NULL, 't'},
+        {"testname", required_argument, NULL, 'n'},
+        {"type", required_argument, NULL, 't'},
+        {"precision", required_argument, NULL, 'p'},
         {"list", no_argument, NULL, 'l'},
         {"N", required_argument, NULL, 'N'},
         {NULL, 0, NULL, 0}
@@ -77,7 +82,7 @@ main(
                 print_usage();
                 return 0;
                 break;
-            case 't':
+            case 'n':
             {
                 if (test)
                 {
@@ -98,6 +103,42 @@ main(
                 }
                 break;
             }
+            case 't':
+                if (strcasecmp(optarg, "dense") == 0)
+                {
+                    matrix_type = dense;
+                }
+                else if (strcasecmp(optarg, "ellpack") == 0)
+                {
+                    matrix_type = ellpack;
+                }
+                else
+                {
+                    fprintf(stderr, "unknown matrix type %s\n", optarg);
+                }
+                break;
+            case 'p':
+                if (strcasecmp(optarg, "single_real") == 0)
+                {
+                    precision = single_real;
+                }
+                else if (strcasecmp(optarg, "double_real") == 0)
+                {
+                    precision = double_real;
+                }
+                else if (strcasecmp(optarg, "single_complex") == 0)
+                {
+                    precision = single_complex;
+                }
+                else if (strcasecmp(optarg, "double_complex") == 0)
+                {
+                    precision = double_complex;
+                }
+                else
+                {
+                    fprintf(stderr, "unknow matrix precision %s\n", optarg);
+                }
+                break;
             case 'l':
                 for (int i = 0; i < NUM_TESTS; i++)
                 {
@@ -127,5 +168,5 @@ main(
 
     fprintf(stderr, "%s\n", test);
     fprintf(stderr, "N = %d\n", N);
-    return testers[test_index] (N, dense, single_real, 0);
+    return testers[test_index] (N, matrix_type, precision, 0);
 }
