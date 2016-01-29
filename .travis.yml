@@ -22,11 +22,15 @@ addons:
     - gfortran-5
 
 env:
-  - CC=gcc     CXX=g++     FC=gfortran     GCOV=gcov     BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BML_OPENMP=no VERBOSE_MAKEFILE=yes
-  - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BML_OPENMP=no VERBOSE_MAKEFILE=yes
+  - CC=gcc     CXX=g++     FC=gfortran     GCOV=gcov     BML_OPENMP=no  VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BML_OPENMP=no  VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BML_OPENMP=yes VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BML_OPENMP=no  VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BML_OPENMP=yes VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BML_OPENMP=no  VERBOSE_MAKEFILE=yes
+  - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BML_OPENMP=yes VERBOSE_MAKEFILE=yes
+  - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BML_OPENMP=no  VERBOSE_MAKEFILE=yes
+  - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BML_OPENMP=yes VERBOSE_MAKEFILE=yes
 
 before_script:
   - pip install --user codecov
