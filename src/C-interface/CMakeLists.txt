@@ -29,7 +29,7 @@ set(HEADERS-C
   bml_transpose_triangle.h
   bml_types.h
   bml_utilities.h)
-install(FILES ${HEADERS-C} DESTINATION include)
+install(FILES ${HEADERS-C} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Private headers.
 set(HEADERS-C-PRIVATE

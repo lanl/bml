@@ -14,6 +14,9 @@ set(PROJECT_DESCRIPTION
   "supporting several data structures.")
 string(REPLACE ";" " " PROJECT_DESCRIPTION "${PROJECT_DESCRIPTION}")
 
+include(GNUInstallDirs)
+set(CMAKE_INSTALL_PKG_CONFIG_DIR ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
   message(STATUS "No user specified build type, using default...")
@@ -372,3 +375,7 @@ if(OPENMP_FOUND)
   message(STATUS "Additional Fortran compiler link flags: '${OpenMP_Fortran_FLAGS}'")
   message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
 endif()
+
+configure_file(src/bml.pc.in bml.pc)
+install(FILES ${CMAKE_BINARY_DIR}/bml.pc
+  DESTINATION ${CMAKE_INSTALL_PKG_CONFIG_DIR})
