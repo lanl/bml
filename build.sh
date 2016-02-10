@@ -34,6 +34,7 @@ EOF
     echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
     echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
     echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
+    echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
 }
 
 set_defaults() {
