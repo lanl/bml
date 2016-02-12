@@ -39,6 +39,4 @@ script:
   - ./build.sh testing
 
 after_success:
-  - pwd
-  - find "${PWD}" -type f -name '*.gcno' -exec ls -lh {} +
   - codecov --gcov-exec ${GCOV}
