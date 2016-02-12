@@ -39,7 +39,7 @@ void TYPED_FUNC(
     int N = A->N;
     int A_M = A->M;
     int B_M = B->M;
-    int ix[N];
+    int ix[N], jx[N];
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int *B_nnz = B->nnz;
@@ -49,10 +49,11 @@ void TYPED_FUNC(
     REAL_T *B_value = (REAL_T *) B->value;
 
     memset(ix, 0, N * sizeof(int));
+    memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
 
 #pragma omp parallel for default(none) \
-    firstprivate(x, ix) \
+    firstprivate(x, ix, jx) \
     shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -64,7 +65,8 @@ void TYPED_FUNC(
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                jx[l] = k;
                 l++;
             }
             x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
@@ -77,7 +79,8 @@ void TYPED_FUNC(
             {
                 x[k] = 0.0;
                 ix[k] = i + 1;
-                A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                jx[l] = k;
                 l++;
             }
             x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
@@ -87,16 +90,17 @@ void TYPED_FUNC(
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
         {
-            REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, N, A_M)]];
+            int jind = jx[jp];
+            //REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, N, A_M)]];
+            REAL_T xTmp = x[jind];
             if (is_above_threshold(xTmp, threshold))
             {
                 A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
-                A_index[ROWMAJOR(i, ll, N, A_M)] =
-                    A_index[ROWMAJOR(i, jp, N, A_M)];
+                A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
                 ll++;
             }
-            x[A_index[ROWMAJOR(i, jp, N, A_M)]] = 0.0;
-            ix[A_index[ROWMAJOR(i, jp, N, A_M)]] = 0;
+            x[jind] = 0.0;
+            ix[jind] = 0;
         }
         A_nnz[i] = ll;
     }
@@ -125,7 +129,7 @@ double TYPED_FUNC(
     int N = A->N;
     int A_M = A->M;
     int B_M = B->M;
-    int ix[N];
+    int ix[N], jx[N];
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int *B_nnz = B->nnz;
@@ -140,11 +144,12 @@ double TYPED_FUNC(
     double trnorm = 0.0;
 
     memset(ix, 0, N * sizeof(int));
+    memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
     memset(y, 0.0, N * sizeof(REAL_T));
 
 #pragma omp parallel for default(none) \
-    firstprivate(x, ix, y) \
+    firstprivate(x, y, ix, jx) \
     shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz) \
     reduction(+:trnorm)
     for (int i = 0; i < N; i++)
@@ -159,7 +164,8 @@ double TYPED_FUNC(
                 x[k] = 0.0;
                 ix[k] = i + 1;
                 y[k] = 0.0;
-                A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                jx[l] = k;
                 l++;
             }
             x[k] = x[k] + alpha * A_value[ind];
@@ -175,7 +181,8 @@ double TYPED_FUNC(
                 x[k] = 0.0;
                 ix[k] = i + 1;
                 y[k] = 0.0;
-                A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                jx[l] = k;
                 l++;
             }
             x[k] = x[k] + beta * B_value[ind];
@@ -186,21 +193,18 @@ double TYPED_FUNC(
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
         {
-            int ind2 = A_index[ROWMAJOR(i, jp, N, A_M)];
-            REAL_T xTmp = x[ind2];
-            trnorm += y[ind2] * y[ind2];
+            int jind = jx[jp];
+            REAL_T xTmp = x[jind];
+            trnorm += y[jind] * y[jind];
             if (is_above_threshold(xTmp, threshold))
             {
                 A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
-                A_index[ROWMAJOR(i, ll, N, A_M)] = ind2;
+                A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
                 ll++;
             }
-            int ind = ROWMAJOR(i, jp, N, A_M);
-            ind2 = A_index[ind];
-            x[ind2] = 0.0;
-            ix[ind2] = 0;
-            y[ind2] = 0.0;
-            A_index[ind] = 0;
+            x[jind] = 0.0;
+            ix[jind] = 0;
+            y[jind] = 0.0;
         }
         A_nnz[i] = ll;
     }
