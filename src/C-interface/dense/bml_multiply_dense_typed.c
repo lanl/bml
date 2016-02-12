@@ -2,7 +2,11 @@
 #include "../bml_logger.h"
 #include "../typed.h"
 #include "bml_multiply.h"
+#include "bml_trace.h"
+#include "bml_allocate.h"
 #include "bml_multiply_dense.h"
+#include "bml_trace_dense.h"
+#include "bml_allocate_dense.h"
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
@@ -53,12 +57,20 @@ void TYPED_FUNC(
  *  \param X Matrix X
  *  \param X2 MatrixX2
  */
-void TYPED_FUNC(
+void* TYPED_FUNC(
     bml_multiply_x2_dense) (
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)
 {
+    double *trace = bml_allocate_memory(sizeof(double) * 2);
+
+    REAL_T alpha_ = (REAL_T) 1.0;
+    REAL_T beta_ = (REAL_T) 0.0;
+    trace[0] = TYPED_FUNC(bml_trace_dense) (X);
     TYPED_FUNC(bml_multiply_dense) (X, X, X2, 1.0, 0.0);
+    trace[1] = TYPED_FUNC(bml_trace_dense) (X2);
+
+    return trace;
 }
 
 /** Matrix multiply.

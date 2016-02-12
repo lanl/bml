@@ -5,6 +5,12 @@
 #include <math.h>
 #include <stdlib.h>
 
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
+#define REL_TOL 1e-6
+#else
+#define REL_TOL 1e-12
+#endif
+
 int
 test_function(
     const int N,
@@ -40,7 +46,14 @@ test_function(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
 
-    if ((fabs(A_gbnd[0] - scale_factor)) > 1e-12 || A_gbnd[1] > 1e-12)
+    bml_normalize(B, B_gbnd[0], B_gbnd[1]);
+
+    bml_free_memory(B_dense);
+    B_dense = bml_export_to_dense(B, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           N, 0, N);
+
+    if ((fabs(A_gbnd[0] - scale_factor)) > REL_TOL || A_gbnd[1] > REL_TOL)
     {
         LOG_ERROR
             ("incorrect maxeval or maxminusmin; maxeval = %e maxminusmin = %e\n",
@@ -48,9 +61,9 @@ test_function(
         return -1;
     }
 
-    if ((fabs(B_gbnd[0] - scale_factor * scale_factor)) > 1e-12 ||
+    if ((fabs(B_gbnd[0] - scale_factor * scale_factor)) > REL_TOL ||
         (fabs(B_gbnd[1] - (scale_factor * scale_factor - scale_factor))) >
-        1e-12)
+        REL_TOL)
     {
         LOG_ERROR
             ("incorrect maxeval or maxminusmin; maxeval = %e maxminusmin = %e\n",
@@ -58,9 +71,19 @@ test_function(
         return -1;
     }
 
-    LOG_INFO("gershgorin matrix test passed\n");
+    if (fabs(B_dense[0]) > REL_TOL)
+    {
+        LOG_ERROR
+            ("normalize error, incorrect maxeval or maxminusmin; maxeval = %e maxminusmin = %e\n",
+             B_gbnd[0], B_gbnd[1]);
+        return -1;
+    }
+
+    LOG_INFO("normalize matrix test passed\n");
     bml_free_memory(A_dense);
     bml_free_memory(B_dense);
+    bml_free_memory(A_gbnd);
+    bml_free_memory(B_gbnd);
     bml_deallocate(&A);
     bml_deallocate(&B);
 

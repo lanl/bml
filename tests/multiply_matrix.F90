@@ -26,16 +26,25 @@ contains
     type(bml_matrix_t) :: b
     type(bml_matrix_t) :: c
     type(bml_matrix_t) :: d
+    type(bml_matrix_t) :: f
+    type(bml_matrix_t) :: g
+
 
     REAL_TYPE, allocatable :: a_dense(:, :)
     REAL_TYPE, allocatable :: b_dense(:, :)
     REAL_TYPE, allocatable :: c_dense(:, :)
     REAL_TYPE, allocatable :: d_dense(:, :)
     REAL_TYPE, allocatable :: e_dense(:, :)
+    REAL_TYPE, allocatable :: f_dense(:, :)
+    REAL_TYPE, allocatable :: g_dense(:, :)
+
+    double precision, allocatable :: trace(:)
 
     double precision :: alpha = -0.8
     double precision :: beta = 1.2
     double precision :: threshold = 0.0
+    double precision :: ONE = 1.0
+    double precision :: ZERO = 0.0
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
     double precision :: abs_tol = 1e-6
@@ -51,6 +60,11 @@ contains
     call bml_copy(c, d)
 
     call bml_multiply(a, b, d, alpha, beta, threshold)
+
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, f)
+    call bml_zero_matrix(matrix_type, matrix_precision, n, m, g)
+    call bml_multiply_x2(a, f, threshold, trace)
+    call bml_multiply(a, a, g, ONE, ZERO, threshold)
 
     test_result = .true.
 
@@ -72,10 +86,22 @@ contains
        print *, "max abs diff = ", maxval(abs(e_dense - d_dense))
     endif
 
+    call bml_convert_to_dense(f, f_dense)
+    call bml_convert_to_dense(g, g_dense)
+    call bml_print_matrix("F", f_dense, 1, n, 1, n)
+    call bml_print_matrix("G", g_dense, 1, n, 1, n)
+    if(maxval(abs(f_dense - g_dense)) > abs_tol) then
+       test_result = .false.
+       print *, "incorrect matrix product"
+       print *, "max abs diff = ", maxval(abs(f_dense - g_dense))
+    endif
+
     call bml_deallocate(a)
     call bml_deallocate(b)
     call bml_deallocate(c)
     call bml_deallocate(d)
+    call bml_deallocate(f)
+    call bml_deallocate(g)
 
   end function test_function
 

@@ -8,6 +8,7 @@ module bml_multiply_m
   private
 
   public :: bml_multiply
+  public :: bml_multiply_x2
 
 contains
 
@@ -56,5 +57,42 @@ contains
     call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha_, beta_, threshold_)
 
   end subroutine bml_multiply
+
+  !> Square a matrix.
+  !!
+  !! \ingroup multiply_group
+  !!
+  !! \f$B \leftarrow A \times A \f$
+  !!
+  !! \param a Matrix \f$ A \f$.
+  !! \param b Matrix \f$ B \f$.
+  !! \param threshold The threshold \f$ threshold \f$.
+  subroutine bml_multiply_x2(a, b, threshold, trace)
+
+    use bml_types_m
+
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: b
+    double precision, optional, intent(in) :: threshold
+    double precision, allocatable, intent(inout) :: trace(:)
+
+    double precision :: threshold_
+
+    type(C_PTR) :: trace_ptr
+    double precision, pointer :: a_trace_ptr(:)
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0
+    end if
+
+    trace_ptr =  bml_multiply_x2_c(a%ptr, b%ptr, threshold_)
+    call c_f_pointer(trace_ptr, a_trace_ptr, [2])
+    trace = a_trace_ptr
+
+    deallocate(a_trace_ptr)
+
+  end subroutine bml_multiply_x2
 
 end module bml_multiply_m

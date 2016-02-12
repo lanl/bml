@@ -64,7 +64,7 @@ bml_multiply_ellpack(
  *  \param X2 Matrix X2
  *  \param threshold Used for sparse multiply
  */
-void
+void*
 bml_multiply_x2_ellpack(
     const bml_matrix_ellpack_t * X,
     bml_matrix_ellpack_t * X2,
@@ -73,21 +73,22 @@ bml_multiply_x2_ellpack(
     switch (X->matrix_precision)
     {
         case single_real:
-            bml_multiply_x2_ellpack_single_real(X, X2, threshold);
+            return bml_multiply_x2_ellpack_single_real(X, X2, threshold);
             break;
         case double_real:
-            bml_multiply_x2_ellpack_double_real(X, X2, threshold);
+            return bml_multiply_x2_ellpack_double_real(X, X2, threshold);
             break;
         case single_complex:
-            bml_multiply_x2_ellpack_single_complex(X, X2, threshold);
+            return bml_multiply_x2_ellpack_single_complex(X, X2, threshold);
             break;
         case double_complex:
-            bml_multiply_x2_ellpack_double_complex(X, X2, threshold);
+            return bml_multiply_x2_ellpack_double_complex(X, X2, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
+    return NULL;
 }
 
 /** Matrix multiply.

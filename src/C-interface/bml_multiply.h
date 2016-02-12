@@ -15,7 +15,7 @@ void bml_multiply(
     const double threshold);
 
 // Multiply X^2 - X2 = X * X
-void bml_multiply_x2(
+void* bml_multiply_x2(
     const bml_matrix_t * X,
     bml_matrix_t * X2,
     const double threshold);

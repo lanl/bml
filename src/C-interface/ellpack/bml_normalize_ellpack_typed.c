@@ -1,10 +1,12 @@
 #include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
-#include "bml_gershgorin.h"
+#include "bml_normalize.h"
 #include "bml_types.h"
 #include "bml_allocate_ellpack.h"
-#include "bml_gershgorin_ellpack.h"
+#include "bml_normalize_ellpack.h"
+#include "bml_scale_ellpack.h"
+#include "bml_add_ellpack.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
@@ -12,14 +14,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-/** Calculate Gershgorin bounds for an ellpack matrix.
+/*s Normalize ellpack matrix given Gershgorin bounds.
  *
- *  \ingroup gershgorin_group
+ *  \ingroup normalize_group
  *
  *  \param A The matrix
  *  \param maxeval Calculated max value
  *  \param maxminusmin Calculated max-min value
- *  \param threshold The matrix threshold
+ */
+void TYPED_FUNC(
+    bml_normalize_ellpack) (
+    bml_matrix_ellpack_t * A,
+    const double maxeval,
+    const double maxminusmin)
+{
+    double gershfact = maxeval / maxminusmin;
+    double scalar = (double)-1.0 / maxminusmin;
+    double threshold = 0.0;
+
+    bml_scale_inplace_ellpack(scalar, A);
+    bml_add_identity_ellpack(A, gershfact, threshold);
+}
+
+/** Calculate Gershgorin bounds for an ellpack matrix.
+ *
+ *  \ingroup normalize_group
+ *
+ *  \param A The matrix
+ *  returns maxeval Calculated max value
+ *  returns maxminusmin Calculated max-min value
  */
 void *TYPED_FUNC(
     bml_gershgorin_ellpack) (
