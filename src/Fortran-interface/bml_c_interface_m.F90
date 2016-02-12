@@ -150,6 +150,14 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: row
     end subroutine bml_get_row_C
 
+     subroutine bml_normalize_C(a, maxeval, maxminusmin) & 
+       bind(C, name="bml_normalize")
+       import :: C_PTR, C_DOUBLE
+       type(C_PTR), value :: a
+       real(C_DOUBLE), value, intent(in) :: maxeval
+       real(C_DOUBLE), value, intent(in) :: maxminusmin
+     end subroutine bml_normalize_C
+
     function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a
@@ -190,6 +198,15 @@ module bml_c_interface_m
       real(C_DOUBLE), value, intent(in) :: beta
       real(C_DOUBLE), value, intent(in) :: threshold
     end subroutine bml_multiply_C
+
+    function bml_multiply_x2_C(x, x2, threshold) &
+        & bind(C, name="bml_multiply_x2")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: x
+      type(C_PTR), value, intent(in) :: x2
+      real(C_DOUBLE), value, intent(in) :: threshold
+      type(C_PTR) :: bml_multiply_x2_C
+    end function bml_multiply_x2_C
 
     function bml_random_matrix_C(matrix_type, matrix_precision, n, m) &
         & bind(C, name="bml_random_matrix")

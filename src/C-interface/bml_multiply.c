@@ -52,7 +52,7 @@ bml_multiply(
  * \param X2 MatrixX2
  * \param threshold Threshold for multiplication
  */
-void
+void*
 bml_multiply_x2(
     const bml_matrix_t * X,
     bml_matrix_t * X2,
@@ -61,15 +61,16 @@ bml_multiply_x2(
     switch (bml_get_type(X))
     {
         case dense:
-            bml_multiply_x2_dense(X, X2);
+            return bml_multiply_x2_dense(X, X2);
             break;
         case ellpack:
-            bml_multiply_x2_ellpack(X, X2, threshold);
+            return bml_multiply_x2_ellpack(X, X2, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }
+    return NULL;
 }
 
 /** Matrix multiply.

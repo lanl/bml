@@ -42,21 +42,31 @@ void TYPED_FUNC(
     const double beta,
     const double threshold)
 {
-    bml_matrix_ellpack_t *A2 =
-        TYPED_FUNC(bml_zero_matrix_ellpack) (C->N, C->M);
+    const double ONE = 1.0;
+    const double ZERO = 0.0;
 
-    if (A != NULL && A == B)
+    if (A != NULL && A == B && alpha == ONE && beta == ZERO)
     {
-        TYPED_FUNC(bml_multiply_x2_ellpack) (A, A2, threshold);
+        TYPED_FUNC(bml_multiply_x2_ellpack) (A, C, threshold);
     }
     else
     {
-        TYPED_FUNC(bml_multiply_AB_ellpack) (A, B, A2, threshold);
+        bml_matrix_ellpack_t *A2 =
+            TYPED_FUNC(bml_zero_matrix_ellpack) (C->N, C->M);
+
+        if (A != NULL && A == B)
+        {
+            TYPED_FUNC(bml_multiply_x2_ellpack) (A, A2, threshold);
+        }
+        else
+        {
+            TYPED_FUNC(bml_multiply_AB_ellpack) (A, B, A2, threshold);
+        }
+
+        TYPED_FUNC(bml_add_ellpack) (C, A2, beta, alpha, threshold);
+
+        bml_deallocate_ellpack(A2);
     }
-
-    TYPED_FUNC(bml_add_ellpack) (C, A2, beta, alpha, threshold);
-
-    bml_deallocate_ellpack(A2);
 }
 
 /** Matrix multiply.
@@ -69,7 +79,7 @@ void TYPED_FUNC(
  * \param X2 Matrix X2
  * \param threshold Used for sparse multiply
  */
-void TYPED_FUNC(
+void* TYPED_FUNC(
     bml_multiply_x2_ellpack) (
     const bml_matrix_ellpack_t * X,
     bml_matrix_ellpack_t * X2,
@@ -92,6 +102,8 @@ void TYPED_FUNC(
     REAL_T traceX2 = 0.0;
     REAL_T *X_value = (REAL_T *) X->value;
     REAL_T *X2_value = (REAL_T *) X2->value;
+
+    double *trace = bml_allocate_memory(sizeof(double) * 2);
 
     memset(ix, 0, X_N * sizeof(int));
     memset(jx, 0, X_N * sizeof(int));
@@ -161,6 +173,11 @@ void TYPED_FUNC(
         }
         X2_nnz[i] = ll;
     }
+
+    trace[0] = traceX;
+    trace[1] = traceX2;
+
+    return trace; 
 }
 
 /** Matrix multiply.

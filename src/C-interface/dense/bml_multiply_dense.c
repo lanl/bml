@@ -56,7 +56,7 @@ bml_multiply_dense(
  *  \param X Matrix X
  *  \param X2 Matrix X2
  */
-void
+void*
 bml_multiply_x2_dense(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)
@@ -64,21 +64,22 @@ bml_multiply_x2_dense(
     switch (X->matrix_precision)
     {
         case single_real:
-            bml_multiply_x2_dense_single_real(X, X2);
+            return bml_multiply_x2_dense_single_real(X, X2);
             break;
         case double_real:
-            bml_multiply_x2_dense_double_real(X, X2);
+            return bml_multiply_x2_dense_double_real(X, X2);
             break;
         case single_complex:
-            bml_multiply_x2_dense_single_complex(X, X2);
+            return bml_multiply_x2_dense_single_complex(X, X2);
             break;
         case double_complex:
-            bml_multiply_x2_dense_double_complex(X, X2);
+            return bml_multiply_x2_dense_double_complex(X, X2);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
+    return NULL;
 }
 
 /** Matrix multiply.

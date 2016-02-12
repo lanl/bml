@@ -32,7 +32,7 @@ contains
     call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
         & a)
     call bml_transpose(a, b)
-    call bml_copy(a, c)
+    call bml_copy_new(a, c)
 
     call bml_convert_to_dense(a, a_dense)
     call bml_convert_to_dense(b, b_dense)

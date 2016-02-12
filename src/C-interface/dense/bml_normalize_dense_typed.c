@@ -1,10 +1,12 @@
 #include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
-#include "bml_gershgorin.h"
+#include "bml_normalize.h"
 #include "bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_gershgorin_dense.h"
+#include "bml_normalize_dense.h"
+#include "bml_scale_dense.h"
+#include "bml_add_dense.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -12,14 +14,34 @@
 #include <stdlib.h>
 #include <string.h>
 
+/** Normalize dense matrix given Gershgorin bounds.
+ *
+ *  \ingroup normalize_group
+ *
+ *  \param A The matrix
+ *  \param maxeval Calculated max value
+ *  \param maxminusmin Calculated max-min value
+ */
+void TYPED_FUNC(
+    bml_normalize_dense) (
+    bml_matrix_dense_t * A,
+    const double maxeval,
+    const double maxminusmin)
+{
+    double gershfact = maxeval / maxminusmin;
+    double scalar = (double)-1.0 / maxminusmin;
+
+    bml_scale_inplace_dense(scalar, A);
+    bml_add_identity_dense(A, gershfact);
+}
+
 /** Calculate Gershgorin bounds for a dense matrix.
  *
  *  \ingroup gershgorin_group
  *
  *  \param A The matrix
- *  \param maxeval Calculated max value
- *  \param maxminusmin Calculated max-min value
- *  \param threshold The matrix threshold
+ *  returns maxeval Calculated max value
+ *  returns maxminusmin Calculated max-min value
  */
 void *TYPED_FUNC(
     bml_gershgorin_dense) (
