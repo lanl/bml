@@ -53,7 +53,7 @@ bml_add(
  * \param threshold Threshold for matrix addition
  *
  */
-void* 
+double 
 bml_add_norm(
     bml_matrix_t * A,
     const bml_matrix_t * B,
@@ -61,6 +61,7 @@ bml_add_norm(
     const double beta,
     const double threshold)
 {
+
     switch (bml_get_type(A))
     {
         case dense:
@@ -73,7 +74,7 @@ bml_add_norm(
             LOG_ERROR("unknown matrix type\n");
             break;
     }
-    return NULL;
+    return 0;
 }
 
 /** Matrix addition.

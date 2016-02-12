@@ -114,7 +114,7 @@ void TYPED_FUNC(
  * \param beta Scalar factor multiplied by B
  * \param threshold Threshold for matrix addition
  */
-void *TYPED_FUNC(
+double TYPED_FUNC(
     bml_add_norm_ellpack) (
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
@@ -137,8 +137,7 @@ void *TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
 
-    double norm = 0.0;
-    double *trnorm = bml_allocate_memory(sizeof(double));
+    double trnorm = 0.0;
 
     memset(ix, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
@@ -147,13 +146,13 @@ void *TYPED_FUNC(
 #pragma omp parallel for default(none) \
     firstprivate(x, ix, y) \
     shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz) \
-    reduction(+:norm)
+    reduction(+:trnorm)
     for (int i = 0; i < N; i++)
     {
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
-            ind = ROWMAJOR(i, jp, N, A_M);
+            int ind = ROWMAJOR(i, jp, N, A_M);
             int k = A_index[ind];
             if (ix[k] == 0)
             {
@@ -169,7 +168,7 @@ void *TYPED_FUNC(
 
         for (int jp = 0; jp < B_nnz[i]; jp++)
         {
-            ind = ROWMAJOR(i, jp, N, B_M);
+            int ind = ROWMAJOR(i, jp, N, B_M);
             int k = B_index[ind];
             if (ix[k] == 0)
             {
@@ -187,16 +186,16 @@ void *TYPED_FUNC(
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
         {
-            ind2 = A_index[ROWMAJOR(i, jp, N, A_M)];
+            int ind2 = A_index[ROWMAJOR(i, jp, N, A_M)];
             REAL_T xTmp = x[ind2];
-            norm += y[ind2] * y[ind2];
+            trnorm += y[ind2] * y[ind2];
             if (is_above_threshold(xTmp, threshold))
             {
                 A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
                 A_index[ROWMAJOR(i, ll, N, A_M)] = ind2;
                 ll++;
             }
-            ind = ROWMAJOR(i, jp, N, A_M);
+            int ind = ROWMAJOR(i, jp, N, A_M);
             ind2 = A_index[ind];
             x[ind2] = 0.0;
             ix[ind2] = 0;
@@ -206,7 +205,6 @@ void *TYPED_FUNC(
         A_nnz[i] = ll;
     }
 
-    trnorm[0] = norm;
 
     return trnorm;
 }

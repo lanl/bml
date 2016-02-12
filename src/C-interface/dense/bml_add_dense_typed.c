@@ -51,24 +51,22 @@ void TYPED_FUNC(
  * \param alpha Scalar factor multiplied by A
  * \param beta Scalar factor multiplied by B
  */
-void *TYPED_FUNC(
+double TYPED_FUNC(
     bml_add_norm_dense) (
     bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta)
 {
-    double norm = 0.0;
-    double *trnorm = bml_allocate_memory(sizeof(double));
+    double trnorm = 0.0;
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
 
     for (int i = 0; i < A->N * A->N; i++)    
     {
-        norm += B_value[i] * B_value[i];
+        trnorm += B_matrix[i] * B_matrix[i];
     }
 
     TYPED_FUNC(bml_add_dense)(A, B, alpha, beta);    
-
-    trnorm[0] = norm;
 
     return trnorm;
 }

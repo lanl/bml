@@ -33,31 +33,31 @@ void bml_add_dense_double_complex(
     const double alpha,
     const double beta);
 
-void* bml_add_norm_dense(
+double bml_add_norm_dense(
     bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta);
 
-void* bml_add_norm_dense_single_real(
+double bml_add_norm_dense_single_real(
     bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta);
 
-void* bml_add_norm_dense_double_real(
+double bml_add_norm_dense_double_real(
     bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta);
 
-void* bml_add_norm_dense_single_complex(
+double bml_add_norm_dense_single_complex(
     bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
     const double beta);
 
-void* bml_add_norm_dense_double_complex(
+double bml_add_norm_dense_double_complex(
     bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,

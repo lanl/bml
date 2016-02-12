@@ -15,9 +15,9 @@ module bml_add_m
   end interface bml_add
 
   !> Add two matrices and calculate norm.
-  interface bml_add_norm
-     module procedure bml_add_norm
-  end interface bml_add_norm
+!!  interface bml_add_norm
+!!     module procedure bml_add_norm
+!!  end interface bml_add_norm
 
   !> Add identity matrix to a matrix.
   interface bml_add_identity
@@ -74,17 +74,14 @@ contains
   !! \param beta Factor \f$ \beta \f$
   !! \param b Matrix \f$ B \f$
   !! \param threshold \f$ threshold \f$
-  subroutine function bml_add_norm(alpha, a, beta, b, threshold, trnorm)
+  function bml_add_norm(alpha, a, beta, b, threshold) result(trnorm)
 
     real(C_DOUBLE), intent(in) :: alpha
     class(bml_matrix_t), intent(in) :: a
     real(C_DOUBLE), intent(in) :: beta
     class(bml_matrix_t), intent(in) :: b
     real(C_DOUBLE), optional, intent(in) :: threshold
-    double precision, allocatable, intent(inout) :: trnorm(:)
-
-    type(C_PTR) :: at_ptr
-    double precision, pointer :: a_trnorm_ptr(:)
+    real(C_DOUBLE) :: trnorm
 
     real(C_DOUBLE) :: threshold_
 
@@ -94,11 +91,7 @@ contains
        threshold_ = 0.0_C_DOUBLE
     end if
 
-    at_ptr = bml_add_norm_C(a%ptr, b%ptr, alpha, beta, threshold_)
-    call c_f_pointer(at_ptr, a_trnorm_ptr, [1])
-    trnorm = a_trnorm_ptr
-
-    deallocate(a_trnorm_ptr)
+    trnorm = bml_add_norm_C(a%ptr, b%ptr, alpha, beta, threshold_)
 
     end function bml_add_norm
 

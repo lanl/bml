@@ -59,7 +59,7 @@ bml_add_ellpack(
  * \param beta Scalar factor multiplied by B
  * \param threshold Threshold for matrix addition
  */
-void*
+double
 bml_add_Norm_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
@@ -67,25 +67,27 @@ bml_add_Norm_ellpack(
     const double beta,
     const double threshold)
 {
+    double trnorm = 0.0;
+
     switch (B->matrix_precision)
     {
         case single_real:
-            return bml_add_norm_ellpack_single_real(A, B, alpha, beta, threshold);
+            trnorm = bml_add_norm_ellpack_single_real(A, B, alpha, beta, threshold);
             break;
         case double_real:
-            return bml_add_norm_ellpack_double_real(A, B, alpha, beta, threshold);
+            trnorm = bml_add_norm_ellpack_double_real(A, B, alpha, beta, threshold);
             break;
         case single_complex:
-            return bml_add_norm_ellpack_single_complex(A, B, alpha, beta, threshold);
+            trnorm = bml_add_norm_ellpack_single_complex(A, B, alpha, beta, threshold);
             break;
         case double_complex:
-            return bml_add_norm_ellpack_double_complex(A, B, alpha, beta, threshold);
+            trnorm = bml_add_norm_ellpack_double_complex(A, B, alpha, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
             break;
     }
-    return NULL;
+    return trnorm;
 }
 
 /** Matrix addition.

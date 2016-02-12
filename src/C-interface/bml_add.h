@@ -12,7 +12,7 @@ void bml_add(
     const double beta,
     const double threshold);
 
-void* bml_add_norm(
+double bml_add_norm(
     bml_matrix_t * A,
     const bml_matrix_t * B,
     const double alpha,
