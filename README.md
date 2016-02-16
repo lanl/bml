@@ -67,9 +67,12 @@ You can use the script `indent.sh` to indent all C code.
 
 If you find this library useful, we encourage you to cite us.
 
-  @misc{bml,
-    url = {\url{https://qmmd.github.io}}
-  }
+    @misc{bml,
+      url = {\url{https://qmmd.github.io}}
+      author = {Aradi, B\'{a}lint and Bock, Nicolas and Mniszewski, Susan M.
+        and Mohd-Yusof, Jamaludin and Negre, Christian},
+      year = 2016
+    }
 
 # License #
 
