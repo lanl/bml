@@ -61,6 +61,16 @@ Please indent your C code using
 
 You can use the script `indent.sh` to indent all C code.
 
+# Citing #
+
+[![DOI](https://zenodo.org/badge/20454/qmmd/bml.svg)](https://zenodo.org/badge/latestdoi/20454/qmmd/bml)
+
+If you find this library useful, we encourage you to cite us.
+
+  @misc{bml,
+    url = {\url{https://qmmd.github.io}}
+  }
+
 # License #
 
 The bml library is licensed under the BSD 3-clause license.
