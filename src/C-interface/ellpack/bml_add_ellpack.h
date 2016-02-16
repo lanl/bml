@@ -38,6 +38,41 @@ void bml_add_ellpack_double_complex(
     const double beta,
     const double threshold);
 
+double bml_add_norm_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+double bml_add_norm_ellpack_single_real(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+double bml_add_norm_ellpack_double_real(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+double bml_add_norm_ellpack_single_complex(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+double bml_add_norm_ellpack_double_complex(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
 void bml_add_identity_ellpack(
     const bml_matrix_ellpack_t * A,
     const double beta,

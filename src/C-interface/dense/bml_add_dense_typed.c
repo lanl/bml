@@ -40,6 +40,37 @@ void TYPED_FUNC(
     C_BLAS(AXPY) (&nElems, &beta_, B->matrix, &inc, A->matrix, &inc);
 }
 
+/** Matrix addition and calculate TrNorm.
+ *
+ * \f$ A = \alpha A + \beta B \f$
+ *
+ * \ingroup add_group
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param alpha Scalar factor multiplied by A
+ * \param beta Scalar factor multiplied by B
+ */
+double TYPED_FUNC(
+    bml_add_norm_dense) (
+    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B,
+    const double alpha,
+    const double beta)
+{
+    double trnorm = 0.0;
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
+
+    for (int i = 0; i < A->N * A->N; i++)    
+    {
+        trnorm += B_matrix[i] * B_matrix[i];
+    }
+
+    TYPED_FUNC(bml_add_dense)(A, B, alpha, beta);    
+
+    return trnorm;
+}
+
 /** Matrix addition.
  *
  * \f$ A = A + \beta \mathrm{Id} \f$

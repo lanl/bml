@@ -30,6 +30,16 @@ module bml_c_interface_m
       real(C_DOUBLE), value, intent(in) :: threshold
     end subroutine bml_add_C
 
+    function bml_add_norm_C(a, b, alpha, beta, threshold) &
+        & bind(C, name="bml_add_norm")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      real(C_DOUBLE), value, intent(in) :: alpha
+      real(C_DOUBLE), value, intent(in) :: beta
+      real(C_DOUBLE), value, intent(in) :: threshold
+      real(C_DOUBLE) :: bml_add_norm_C
+    end function bml_add_norm_C
 
     subroutine bml_add_identity_C(a, beta, threshold) &
         & bind(C, name="bml_add_identity")
