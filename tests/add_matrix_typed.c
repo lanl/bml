@@ -50,7 +50,7 @@ int TYPED_FUNC(
     for (int i = 0; i < N * N; i++)
     {
         double expected = alpha * A_dense[i] + beta * C_dense[i];
-        double rel_diff = fabs((expected - B_dense[i]) / expected);
+        double rel_diff = ABS((expected - B_dense[i]) / expected);
         if (rel_diff > REL_TOL)
         {
             LOG_ERROR

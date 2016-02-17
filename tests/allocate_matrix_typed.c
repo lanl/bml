@@ -32,7 +32,7 @@ int TYPED_FUNC(
         {
             if (i == j)
             {
-                if (fabs(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
+                if (ABS(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
                 {
                     LOG_ERROR
                         ("incorrect value on diagonal; A[%d,%d] = %e B[%d,%d] = %e\n",
@@ -42,7 +42,7 @@ int TYPED_FUNC(
             }
             else
             {
-                if (fabs(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
+                if (ABS(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
                 {
                     LOG_ERROR
                         ("incorrect value off-diagonal; A[%d,%d] = %e B[%d,%d] = %e\n",
@@ -67,7 +67,7 @@ int TYPED_FUNC(
         {
             if (i == j)
             {
-                if (fabs(A_dense[i * N + j] - 1) > 1e-12)
+                if (ABS(A_dense[i * N + j] - 1) > 1e-12)
                 {
                     LOG_ERROR
                         ("incorrect value on diagonal; A[%d,%d] = %e\n",
@@ -77,7 +77,7 @@ int TYPED_FUNC(
             }
             else
             {
-                if (fabs(A_dense[i * N + j]) > 1e-12)
+                if (ABS(A_dense[i * N + j]) > 1e-12)
                 {
                     LOG_ERROR
                         ("incorrect value off-diagonal; A[%d,%d] = %e\n",
