@@ -8,11 +8,11 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 8;
+const int NUM_TESTS = 11;
 
 const char *test_name[] =
     { "add", "allocate", "convert", "copy", "diagonalize", "multiply",
-    "normalize", "scale"
+    "normalize", "scale", "threshold", "trace", "transpose"
 };
 
 const char *test_description[] = {
@@ -23,7 +23,10 @@ const char *test_description[] = {
     "Diagonalize a bml matrix",
     "Multiply two bml matrices",
     "Normalize bml matrices",
-    "Scale bml matrices"
+    "Scale bml matrices",
+    "Threshold bml matrices",
+    "Trace of bml matrices",
+    "Transpose of bml matrices"
 };
 
 const test_function_t testers[] = {
@@ -34,7 +37,10 @@ const test_function_t testers[] = {
     test_diagonalize,
     test_multiply,
     test_normalize,
-    test_scale
+    test_scale,
+    test_threshold,
+    test_trace,
+    test_transpose
 };
 
 void
@@ -52,12 +58,15 @@ print_usage(
     printf("\n");
     printf("Recognized types:\n");
     printf("\n");
-    printf("  dense, ellpack\n");
+    printf("  dense\n");
+    printf("  ellpack\n");
     printf("\n");
     printf("Recognized precisions:\n");
     printf("\n");
-    printf("  single_real, double_real,\n");
-    printf("  single_complex, double_complex\n");
+    printf("  single_real\n");
+    printf("  double_real,\n");
+    printf("  single_complex\n");
+    printf("  double_complex\n");
     printf("\n");
 
     int max_width = 0;
