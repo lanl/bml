@@ -94,6 +94,12 @@ module bml_c_interface_m
       type(C_PTR) :: bml_convert_to_dense_C
     end function bml_convert_to_dense_C
 
+    subroutine bml_copy_C(a, b) bind(C, name="bml_copy")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b 
+    end subroutine bml_copy_C
+
     function bml_copy_new_C(a) bind(C, name="bml_copy_new")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a

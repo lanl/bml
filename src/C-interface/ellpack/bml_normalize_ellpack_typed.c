@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*s Normalize ellpack matrix given Gershgorin bounds.
+/* Normalize ellpack matrix given Gershgorin bounds.
  *
  *  \ingroup normalize_group
  *
