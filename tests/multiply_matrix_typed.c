@@ -43,12 +43,22 @@ int TYPED_FUNC(
 {
     for (int i = 0; i < N * N; i++)
     {
-        if (fabs(A[i] - B[i]) > ABS_TOL)
+        if (ABS(A[i] - B[i]) > ABS_TOL)
         {
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, A, 0,
                                    N, 0, N);
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, B, 0,
                                    N, 0, N);
+            LOG_INFO("element %d outside %1.2e\n", i, ABS_TOL);
+#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+            LOG_INFO("A[%d] = %e+%ei\n", i, creal(A[i]), cimag(A[i]));
+            LOG_INFO("B[%d] = %e+%ei\n", i, creal(B[i]), cimag(B[i]));
+            LOG_INFO("abs(A[%d]-B[%d]) = %e\n", i, i, ABS(A[i] - B[i]));
+#else
+            LOG_INFO("A[%d] = %e\n", i, A[i]);
+            LOG_INFO("B[%d] = %e\n", i, B[i]);
+            LOG_INFO("abs(A[%d]-B[%d]) = %e\n", i, i, ABS(A[i] - B[i]));
+#endif
             return 1;
         }
     }

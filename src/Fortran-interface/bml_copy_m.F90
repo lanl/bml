@@ -8,6 +8,7 @@ module bml_copy_m
   private
 
   public :: bml_copy
+  public :: bml_copy_new
 
 contains
 

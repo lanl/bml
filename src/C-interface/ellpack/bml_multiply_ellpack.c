@@ -64,7 +64,7 @@ bml_multiply_ellpack(
  *  \param X2 Matrix X2
  *  \param threshold Used for sparse multiply
  */
-void*
+void *
 bml_multiply_x2_ellpack(
     const bml_matrix_ellpack_t * X,
     bml_matrix_ellpack_t * X2,

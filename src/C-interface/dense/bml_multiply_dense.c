@@ -56,7 +56,7 @@ bml_multiply_dense(
  *  \param X Matrix X
  *  \param X2 Matrix X2
  */
-void*
+void *
 bml_multiply_x2_dense(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)

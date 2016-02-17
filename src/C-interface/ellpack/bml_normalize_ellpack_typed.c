@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*s Normalize ellpack matrix given Gershgorin bounds.
+/* Normalize ellpack matrix given Gershgorin bounds.
  *
  *  \ingroup normalize_group
  *
@@ -29,7 +29,7 @@ void TYPED_FUNC(
     const double maxminusmin)
 {
     double gershfact = maxeval / maxminusmin;
-    double scalar = (double)-1.0 / maxminusmin;
+    double scalar = (double) -1.0 / maxminusmin;
     double threshold = 0.0;
 
     bml_scale_inplace_ellpack(scalar, A);

@@ -61,12 +61,12 @@ double TYPED_FUNC(
     double trnorm = 0.0;
     REAL_T *B_matrix = (REAL_T *) B->matrix;
 
-    for (int i = 0; i < A->N * A->N; i++)    
+    for (int i = 0; i < A->N * A->N; i++)
     {
         trnorm += B_matrix[i] * B_matrix[i];
     }
 
-    TYPED_FUNC(bml_add_dense)(A, B, alpha, beta);    
+    TYPED_FUNC(bml_add_dense) (A, B, alpha, beta);
 
     return trnorm;
 }

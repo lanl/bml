@@ -29,7 +29,7 @@ void TYPED_FUNC(
     const double maxminusmin)
 {
     double gershfact = maxeval / maxminusmin;
-    double scalar = (double)-1.0 / maxminusmin;
+    double scalar = (double) -1.0 / maxminusmin;
 
     bml_scale_inplace_dense(scalar, A);
     bml_add_identity_dense(A, gershfact);

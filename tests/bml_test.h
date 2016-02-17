@@ -10,34 +10,16 @@ typedef int (
     const bml_matrix_precision_t matrix_precision,
     const int M);
 
-int test_multiply(
-    const int N,
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int M);
-
-int test_multiply_single_real(
-    const int N,
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int M);
-
-int test_multiply_double_real(
-    const int N,
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int M);
-
-int test_multiply_single_complex(
-    const int N,
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int M);
-
-int test_multiply_double_complex(
-    const int N,
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int M);
+#include "add_matrix.h"
+#include "allocate_matrix.h"
+#include "convert_matrix.h"
+#include "copy_matrix.h"
+#include "diagonalize_matrix.h"
+#include "multiply_matrix.h"
+#include "normalize_matrix.h"
+#include "scale_matrix.h"
+#include "threshold_matrix.h"
+#include "trace_matrix.h"
+#include "transpose_matrix.h"
 
 #endif
