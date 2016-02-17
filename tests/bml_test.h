@@ -17,5 +17,6 @@ typedef int (
 #include "diagonalize_matrix.h"
 #include "multiply_matrix.h"
 #include "normalize_matrix.h"
+#include "scale_matrix.h"
 
 #endif
