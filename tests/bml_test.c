@@ -55,6 +55,7 @@ print_usage(
     printf("-p | --precision P    Choose matrix precision\n");
     printf("-l | --list           List all available tests\n");
     printf("-N | --N N            Test N x N matrices\n");
+    printf("-M | --M M            Pass an extra parameter M to the test\n");
     printf("\n");
     printf("Recognized types:\n");
     printf("\n");
@@ -94,12 +95,13 @@ main(
     char **argv)
 {
     int N = 11;
+    int M = -1;
     char *test = NULL;
     int test_index = -1;
     bml_matrix_type_t matrix_type = dense;
     bml_matrix_precision_t precision = single_real;
 
-    const char *short_options = "hn:t:p:lN:";
+    const char *short_options = "hn:t:p:lN:M:";
     const struct option long_options[] = {
         {"help", no_argument, NULL, 'h'},
         {"testname", required_argument, NULL, 'n'},
@@ -107,6 +109,7 @@ main(
         {"precision", required_argument, NULL, 'p'},
         {"list", no_argument, NULL, 'l'},
         {"N", required_argument, NULL, 'N'},
+        {"M", required_argument, NULL, 'M'},
         {NULL, 0, NULL, 0}
     };
     int c;
@@ -191,6 +194,9 @@ main(
             case 'N':
                 N = strtol(optarg, NULL, 10);
                 break;
+            case 'M':
+                M = strtol(optarg, NULL, 10);
+                break;
             default:
                 fprintf(stderr, "unknown option\n");
                 return 1;
@@ -204,7 +210,12 @@ main(
         return 1;
     }
 
+    if (M < 0)
+    {
+        M = N;
+    }
+
     fprintf(stderr, "%s\n", test);
     fprintf(stderr, "N = %d\n", N);
-    return testers[test_index] (N, matrix_type, precision, 0);
+    return testers[test_index] (N, matrix_type, precision, M);
 }
