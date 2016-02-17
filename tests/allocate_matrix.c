@@ -13,18 +13,20 @@ test_allocate(
     switch (matrix_precision)
     {
         case single_real:
-            return test_add_single_real(N, matrix_type, matrix_precision, M);
+            return test_allocate_single_real(N, matrix_type, matrix_precision,
+                                             M);
             break;
         case double_real:
-            return test_add_double_real(N, matrix_type, matrix_precision, M);
+            return test_allocate_double_real(N, matrix_type, matrix_precision,
+                                             M);
             break;
         case single_complex:
-            return test_add_single_complex(N, matrix_type, matrix_precision,
-                                           M);
+            return test_allocate_single_complex(N, matrix_type,
+                                                matrix_precision, M);
             break;
         case double_complex:
-            return test_add_double_complex(N, matrix_type, matrix_precision,
-                                           M);
+            return test_allocate_double_complex(N, matrix_type,
+                                                matrix_precision, M);
             break;
         default:
             fprintf(stderr, "unknown matrix precision\n");
