@@ -60,7 +60,7 @@ bml_add_ellpack(
  * \param threshold Threshold for matrix addition
  */
 double
-bml_add_Norm_ellpack(
+bml_add_norm_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
     const double alpha,
