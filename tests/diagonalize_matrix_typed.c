@@ -24,6 +24,12 @@ int TYPED_FUNC(
     double *eigenvalues = NULL;
     bml_matrix_t *eigenvectors = NULL;
 
+    if (matrix_type != dense)
+    {
+        LOG_INFO("diagonalization for this matrix type is not implemented\n");
+        return 0;
+    }
+
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M);
