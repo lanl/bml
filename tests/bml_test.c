@@ -32,11 +32,21 @@ print_usage(
 {
     printf("Usage:\n");
     printf("\n");
-    printf("-h | --help         This help\n");
-    printf("-t | --test TEST    Run test TEST\n");
-    printf("-p | --precision P  Choose matrix precision\n");
-    printf("-l | --list         List all available tests\n");
-    printf("-N | --N N          Test N x N matrices\n");
+    printf("-h | --help           This help\n");
+    printf("-n | --testname TEST  Run test TEST\n");
+    printf("-t | --type T         Choose the matrix type\n");
+    printf("-p | --precision P    Choose matrix precision\n");
+    printf("-l | --list           List all available tests\n");
+    printf("-N | --N N            Test N x N matrices\n");
+    printf("\n");
+    printf("Recognized types:\n");
+    printf("\n");
+    printf("  dense, ellpack\n");
+    printf("\n");
+    printf("Recognized precisions:\n");
+    printf("\n");
+    printf("  single_real, double_real,\n");
+    printf("  single_complex, double_complex\n");
     printf("\n");
 
     int max_width = 0;
@@ -48,9 +58,10 @@ print_usage(
         }
     }
     char desc_format[100];
-    snprintf(desc_format, 100, "%%%ds   %%s\n", max_width);
+    snprintf(desc_format, 100, "%%%ds    %%s\n", max_width);
 
     printf("Available tests:\n");
+    printf("\n");
     for (int i = 0; i < NUM_TESTS; i++)
     {
         printf(desc_format, test_name[i], test_description[i]);
