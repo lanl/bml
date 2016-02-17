@@ -14,6 +14,7 @@ typedef int (
 #include "allocate_matrix.h"
 #include "convert_matrix.h"
 #include "copy_matrix.h"
+#include "diagonalize_matrix.h"
 #include "multiply_matrix.h"
 
 #endif

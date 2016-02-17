@@ -5,6 +5,7 @@ set(SOURCES_TYPED
   allocate_matrix_typed.c
   convert_matrix_typed.c
   copy_matrix_typed.c
+  diagonalize_matrix_typed.c
   multiply_matrix_typed.c)
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
@@ -34,6 +35,7 @@ add_executable(bml-test
   bml_test.c
   convert_matrix.c
   copy_matrix.c
+  diagonalize_matrix.c
   multiply_matrix.c)
 target_link_libraries(bml-test bmltests bml ${LINK_LIBRARIES})
 set_target_properties(bml-test
@@ -52,27 +54,10 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
-add_test(allocate-dense-single_real bml-test -n allocate -t dense -p single_real)
-add_test(allocate-dense-double_real bml-test -n allocate -t dense -p double_real)
-add_test(allocate-dense-single_complex bml-test -n allocate -t dense -p single_complex)
-add_test(allocate-dense-double_complex bml-test -n allocate -t dense -p double_complex)
-
-add_test(add-dense-single_real bml-test -n add -t dense -p single_real)
-add_test(add-dense-double_real bml-test -n add -t dense -p double_real)
-add_test(add-dense-single_complex bml-test -n add -t dense -p single_complex)
-add_test(add-dense-double_complex bml-test -n add -t dense -p double_complex)
-
-add_test(multiply-dense-single_real bml-test -n multiply -t dense -p single_real)
-add_test(multiply-dense-double_real bml-test -n multiply -t dense -p double_real)
-add_test(multiply-dense-single_complex bml-test -n multiply -t dense -p single_complex)
-add_test(multiply-dense-double_complex bml-test -n multiply -t dense -p double_complex)
-
-add_test(convert-dense-single_real bml-test -n convert -t dense -p single_real)
-add_test(convert-dense-double_real bml-test -n convert -t dense -p double_real)
-add_test(convert-dense-single_complex bml-test -n convert -t dense -p single_complex)
-add_test(convert-dense-double_complex bml-test -n convert -t dense -p double_complex)
-
-add_test(copy-dense-single_real bml-test -n copy -t dense -p single_real)
-add_test(copy-dense-double_real bml-test -n copy -t dense -p double_real)
-add_test(copy-dense-single_complex bml-test -n copy -t dense -p single_complex)
-add_test(copy-dense-double_complex bml-test -n copy -t dense -p double_complex)
+foreach(N allocate add multiply convert copy diagonalize)
+  foreach(T dense ellpack)
+    foreach(P single_real double_real single_complex double_complex)
+      add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
+    endforeach()
+  endforeach()
+endforeach()
