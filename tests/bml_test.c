@@ -8,16 +8,18 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 2;
+const int NUM_TESTS = 3;
 
-const char *test_name[] = { "add", "multiply" };
+const char *test_name[] = { "allocate", "add", "multiply" };
 
 const char *test_description[] = {
+    "Allcate bml matrices",
     "Add two bml matrices",
     "Multiply two bml matrices"
 };
 
 const test_function_t testers[] = {
+    test_allocate,
     test_add,
     test_multiply
 };

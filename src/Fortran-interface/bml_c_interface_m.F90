@@ -160,7 +160,7 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: row
     end subroutine bml_get_row_C
 
-     subroutine bml_normalize_C(a, maxeval, maxminusmin) & 
+     subroutine bml_normalize_C(a, maxeval, maxminusmin) &
        bind(C, name="bml_normalize")
        import :: C_PTR, C_DOUBLE
        type(C_PTR), value :: a

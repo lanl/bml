@@ -53,7 +53,7 @@ bml_add(
  * \param threshold Threshold for matrix addition
  *
  */
-double 
+double
 bml_add_norm(
     bml_matrix_t * A,
     const bml_matrix_t * B,

@@ -7,7 +7,7 @@
 
 // Normalize
 void bml_normalize(
-    bml_matrix_t * A, 
+    bml_matrix_t * A,
     const double maxeval,
     const double maxminusmin);
 

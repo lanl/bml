@@ -52,7 +52,7 @@ bml_multiply(
  * \param X2 MatrixX2
  * \param threshold Threshold for multiplication
  */
-void*
+void *
 bml_multiply_x2(
     const bml_matrix_t * X,
     bml_matrix_t * X2,

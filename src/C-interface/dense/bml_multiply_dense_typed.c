@@ -57,7 +57,7 @@ void TYPED_FUNC(
  *  \param X Matrix X
  *  \param X2 MatrixX2
  */
-void* TYPED_FUNC(
+void *TYPED_FUNC(
     bml_multiply_x2_dense) (
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)

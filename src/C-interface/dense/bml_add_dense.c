@@ -64,7 +64,7 @@ bml_add_norm_dense(
     const double beta)
 {
     double trnorm = 0.0;
- 
+
     switch (A->matrix_precision)
     {
         case single_real:

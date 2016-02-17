@@ -29,7 +29,7 @@ void TYPED_FUNC(
     const double maxminusmin)
 {
     double gershfact = maxeval / maxminusmin;
-    double scalar = (double)-1.0 / maxminusmin;
+    double scalar = (double) -1.0 / maxminusmin;
     double threshold = 0.0;
 
     bml_scale_inplace_ellpack(scalar, A);

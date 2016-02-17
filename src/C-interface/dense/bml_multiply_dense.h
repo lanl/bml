@@ -39,23 +39,23 @@ void bml_multiply_dense_double_complex(
     const double alpha,
     const double beta);
 
-void* bml_multiply_x2_dense(
+void *bml_multiply_x2_dense(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2);
 
-void* bml_multiply_x2_dense_single_real(
+void *bml_multiply_x2_dense_single_real(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2);
 
-void* bml_multiply_x2_dense_double_real(
+void *bml_multiply_x2_dense_double_real(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2);
 
-void* bml_multiply_x2_dense_single_complex(
+void *bml_multiply_x2_dense_single_complex(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2);
 
-void* bml_multiply_x2_dense_double_complex(
+void *bml_multiply_x2_dense_double_complex(
     const bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2);
 

@@ -79,7 +79,7 @@ void TYPED_FUNC(
  * \param X2 Matrix X2
  * \param threshold Used for sparse multiply
  */
-void* TYPED_FUNC(
+void *TYPED_FUNC(
     bml_multiply_x2_ellpack) (
     const bml_matrix_ellpack_t * X,
     bml_matrix_ellpack_t * X2,
@@ -177,7 +177,7 @@ void* TYPED_FUNC(
     trace[0] = traceX;
     trace[1] = traceX2;
 
-    return trace; 
+    return trace;
 }
 
 /** Matrix multiply.
