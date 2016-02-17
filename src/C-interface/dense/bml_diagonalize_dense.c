@@ -88,12 +88,12 @@ bml_diagonalize_dense_single_complex(
     bml_matrix_dense_t * eigenvectors)
 {
     int *isuppz = calloc(2 * A->N, sizeof(int));
-    int iwork = 10 * A->N;
-    int *liwork = calloc(iwork, sizeof(int));
+    int lwork = 2 * A->N;
+    int liwork = 10 * A->N;
+    int lrwork = 24 * A->N;
+    int *iwork = calloc(liwork, sizeof(int));
     int M;
     int info;
-    int lrwork = 24 * A->N;
-    int lwork = 2 * A->N;
     float *evals = calloc(A->N, sizeof(float));
     float *rwork = calloc(lrwork, sizeof(float));
     float abstol = 0;
@@ -105,7 +105,7 @@ bml_diagonalize_dense_single_complex(
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(float complex));
     C_CHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
              &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork, rwork,
-             &lrwork, &iwork, liwork, &info);
+             &lrwork, iwork, &liwork, &info);
 
     A_matrix = (float complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
@@ -123,7 +123,7 @@ bml_diagonalize_dense_single_complex(
     free(isuppz);
     free(work);
     free(rwork);
-    free(liwork);
+    free(iwork);
     free(evals);
 }
 
@@ -134,12 +134,12 @@ bml_diagonalize_dense_double_complex(
     bml_matrix_dense_t * eigenvectors)
 {
     int *isuppz = calloc(2 * A->N, sizeof(int));
-    int iwork = 10 * A->N;
-    int *liwork = calloc(iwork, sizeof(int));
-    int M;
-    int info;
+    int liwork = 10 * A->N;
     int lrwork = 24 * A->N;
     int lwork = 2 * A->N;
+    int *iwork = calloc(liwork, sizeof(int));
+    int M;
+    int info;
     double *evals = calloc(A->N, sizeof(double));
     double *rwork = calloc(lrwork, sizeof(double));
     double abstol = 0;
@@ -151,7 +151,7 @@ bml_diagonalize_dense_double_complex(
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(double complex));
     C_ZHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
              &abstol, &M, evals, evecs, &A->N, isuppz, work, &lwork, rwork,
-             &lrwork, &iwork, liwork, &info);
+             &lrwork, iwork, &liwork, &info);
 
     A_matrix = (double complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
@@ -169,7 +169,7 @@ bml_diagonalize_dense_double_complex(
     free(isuppz);
     free(work);
     free(rwork);
-    free(liwork);
+    free(iwork);
     free(evals);
 }
 
