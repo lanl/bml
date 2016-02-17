@@ -8,10 +8,11 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 6;
+const int NUM_TESTS = 7;
 
 const char *test_name[] =
-    { "add", "allocate", "convert", "copy", "diagonalize", "multiply" };
+    { "add", "allocate", "convert", "copy", "diagonalize", "multiply",
+"normalize" };
 
 const char *test_description[] = {
     "Add two bml matrices",
@@ -19,7 +20,8 @@ const char *test_description[] = {
     "Convert bml matrices",
     "Copy bml matrices",
     "Diagonalize a bml matrix",
-    "Multiply two bml matrices"
+    "Multiply two bml matrices",
+    "Normalize bml matrices"
 };
 
 const test_function_t testers[] = {
@@ -28,7 +30,8 @@ const test_function_t testers[] = {
     test_convert,
     test_copy,
     test_diagonalize,
-    test_multiply
+    test_multiply,
+    test_normalize
 };
 
 void
