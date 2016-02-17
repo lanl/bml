@@ -29,7 +29,7 @@ void TYPED_FUNC(
 }
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define ABS_TOL 1e-6
+#define ABS_TOL 2e-6
 #else
 #define ABS_TOL 1e-12
 #endif
