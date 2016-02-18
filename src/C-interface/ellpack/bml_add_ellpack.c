@@ -154,16 +154,20 @@ bml_scale_add_identity_ellpack(
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_scale_add_identity_ellpack_single_real(A, alpha, beta, threshold);
+            bml_scale_add_identity_ellpack_single_real(A, alpha, beta,
+                                                       threshold);
             break;
         case double_real:
-            bml_scale_add_identity_ellpack_double_real(A, alpha, beta, threshold);
+            bml_scale_add_identity_ellpack_double_real(A, alpha, beta,
+                                                       threshold);
             break;
         case single_complex:
-            bml_scale_add_identity_ellpack_single_complex(A, alpha, beta, threshold);
+            bml_scale_add_identity_ellpack_single_complex(A, alpha, beta,
+                                                          threshold);
             break;
         case double_complex:
-            bml_scale_add_identity_ellpack_double_complex(A, alpha, beta, threshold);
+            bml_scale_add_identity_ellpack_double_complex(A, alpha, beta,
+                                                          threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");

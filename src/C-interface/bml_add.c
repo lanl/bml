@@ -138,5 +138,3 @@ bml_scale_add_identity(
             break;
     }
 }
-
-

@@ -126,7 +126,7 @@ contains
 
     type(bml_matrix_t), intent(inout) :: a
     real(C_DOUBLE), intent(in) :: alpha
-    real(C_DOUBLE), intent(in) :: beta 
+    real(C_DOUBLE), intent(in) :: beta
     real(C_DOUBLE), intent(in) :: threshold
 
     call bml_scale_add_identity_C(a%ptr, alpha, beta, threshold)
