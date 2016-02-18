@@ -84,7 +84,7 @@ bml_add_norm(
  * \ingroup add_group_C
  *
  * \param A Matrix A
- * \param beta Scalar factor multiplied by A
+ * \param beta Scalar factor multiplied by I
  * \param threshold Threshold for matrix addition
  */
 void
@@ -106,3 +106,37 @@ bml_add_identity(
             break;
     }
 }
+
+/** Matrix addition.
+ *
+ * \f$ A \leftarrow \alpha A + \beta \mathrm{Id} \f$
+ *
+ * \ingroup add_group_C
+ *
+ * \param A Matrix A
+ * \param alpha Scalar factor multiplied by A
+ * \param beta Scalar factor multiplied by I
+ * \param threshold Threshold for matrix addition
+ */
+void
+bml_scale_add_identity(
+    bml_matrix_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_scale_add_identity_dense(A, alpha, beta);
+            break;
+        case ellpack:
+            bml_scale_add_identity_ellpack(A, alpha, beta, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+

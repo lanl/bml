@@ -6,6 +6,8 @@
 #include "bml_allocate.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
+#include "bml_scale.h"
+#include "bml_scale_dense.h"
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
@@ -78,7 +80,7 @@ double TYPED_FUNC(
  *  \ingroup add_group
  *
  *  \param A Matrix A
- *  \param beta Scalar factor multiplied by A
+ *  \param beta Scalar factor multiplied by I
  */
 void TYPED_FUNC(
     bml_add_identity_dense) (
@@ -91,4 +93,24 @@ void TYPED_FUNC(
     {
         A_matrix[ROWMAJOR(i, i, A->N, A->N)] += beta_;
     }
+}
+
+/** Matrix addition.
+ *
+ * \f$ A = alpha A + \beta \mathrm{Id} \f$
+ *
+ *  \ingroup add_group
+ *
+ *  \param A Matrix A
+ *  \param alpha Scalar factor multiplied by A
+ *  \param beta Scalar factor multiplied by I
+ */
+void TYPED_FUNC(
+    bml_scale_add_identity_dense) (
+    bml_matrix_dense_t * A,
+    const double alpha,
+    const double beta)
+{
+    bml_scale_inplace_dense(alpha, A);
+    bml_add_identity_dense(A, beta);
 }

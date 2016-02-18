@@ -220,7 +220,7 @@ double TYPED_FUNC(
  *  \ingroup add_group
  *
  *  \param A Matrix A
- *  \param beta Scalar factor multiplied by A
+ *  \param beta Scalar factor multiplied by I
  *  \param threshold Threshold for matrix addition
  */
 void TYPED_FUNC(
@@ -231,6 +231,32 @@ void TYPED_FUNC(
 {
     REAL_T alpha = (REAL_T) 1.0;
 
+    bml_matrix_ellpack_t *Id =
+        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M);
+
+    TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
+
+    bml_deallocate_ellpack(Id);
+}
+
+/** Matrix addition.
+ *
+ *  A = alpha * A + beta * I
+ *
+ *  \ingroup add_group
+ *
+ *  \param A Matrix A
+ *  \param alpha Scalar factor multiplied by A
+ *  \param beta Scalar factor multiplied by I
+ *  \param threshold Threshold for matrix addition
+ */
+void TYPED_FUNC(
+    bml_scale_add_identity_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold)
+{
     bml_matrix_ellpack_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M);
 

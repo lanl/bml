@@ -133,3 +133,40 @@ bml_add_identity_ellpack(
             break;
     }
 }
+
+/** Matrix addition.
+ *
+ * \f$ A = A + \beta \mathrm{Id} \f$
+ *
+ * \ingroup add_group
+ *
+ * \param A Matrix A
+ * \param beta Scalar factor multiplied by A
+ * \param threshold Threshold for matrix addition
+ */
+void
+bml_scale_add_identity_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_scale_add_identity_ellpack_single_real(A, alpha, beta, threshold);
+            break;
+        case double_real:
+            bml_scale_add_identity_ellpack_double_real(A, alpha, beta, threshold);
+            break;
+        case single_complex:
+            bml_scale_add_identity_ellpack_single_complex(A, alpha, beta, threshold);
+            break;
+        case double_complex:
+            bml_scale_add_identity_ellpack_double_complex(A, alpha, beta, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}

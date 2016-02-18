@@ -93,7 +93,7 @@ bml_add_norm_dense(
  *  \ingroup add_group
  *
  *  \param A Matrix A
- *  \param beta Scalar factor multiplied by A
+ *  \param beta Scalar factor multiplied by I
  */
 void
 bml_add_identity_dense(
@@ -113,6 +113,42 @@ bml_add_identity_dense(
             break;
         case double_complex:
             bml_add_identity_dense_double_complex(A, beta);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
+/** Matrix addition.
+ *
+ * \f$ A = \alpha A + \beta \mathrm{Id} \f$
+ *
+ *  \ingroup add_group
+ *
+ *  \param A Matrix A
+ *  \param alpha Scalar factor multiplied by A
+ *  \param beta Scalar factor multiplied by I
+ */
+void
+bml_scale_add_identity_dense(
+    bml_matrix_dense_t * A,
+    const double alpha,
+    const double beta)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_scale_add_identity_dense_single_real(A, alpha, beta);
+            break;
+        case double_real:
+            bml_scale_add_identity_dense_double_real(A, alpha, beta);
+            break;
+        case single_complex:
+            bml_scale_add_identity_dense_single_complex(A, alpha, beta);
+            break;
+        case double_complex:
+            bml_scale_add_identity_dense_double_complex(A, alpha, beta);
             break;
         default:
             LOG_ERROR("unknown precision\n");
