@@ -5,28 +5,28 @@
 
 void bml_normalize_ellpack(
     bml_matrix_ellpack_t * A,
-    const double maxeval,
-    const double maxminusmin);
+    const double mineval,
+    const double maxeval);
 
 void bml_normalize_ellpack_single_real(
     bml_matrix_ellpack_t * A,
-    const double maxeval,
-    const double maxminusmin);
+    const double mineval,
+    const double maxeval);
 
 void bml_normalize_ellpack_double_real(
     bml_matrix_ellpack_t * A,
-    const double maxeval,
-    const double maxminusmin);
+    const double mineval,
+    const double maxeval);
 
 void bml_normalize_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
-    const double maxeval,
-    const double maxminusmin);
+    const double mineval,
+    const double maxeval);
 
 void bml_normalize_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
-    const double maxeval,
-    const double maxminusmin);
+    const double mineval,
+    const double maxeval);
 
 void *bml_gershgorin_ellpack(
     const bml_matrix_ellpack_t * A);

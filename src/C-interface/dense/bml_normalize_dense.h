@@ -5,8 +5,8 @@
 
 void bml_normalize_dense(
     bml_matrix_dense_t * A,
-    double maxeval,
-    double maxminusmin);
+    double mineval,
+    double maxeval);
 
 void bml_normalize_dense_single_real(
     bml_matrix_dense_t * A,
@@ -15,18 +15,18 @@ void bml_normalize_dense_single_real(
 
 void bml_normalize_dense_double_real(
     bml_matrix_dense_t * A,
-    double maxeval,
-    double maxminusmin);
+    double mineval,
+    double maxeval);
 
 void bml_normalize_dense_single_complex(
     bml_matrix_dense_t * A,
-    double maxeval,
-    double maxminusmin);
+    double mineval,
+    double maxeval);
 
 void bml_normalize_dense_double_complex(
     bml_matrix_dense_t * A,
-    double maxeval,
-    double maxminusmin);
+    double mineval,
+    double maxeval);
 
 void *bml_gershgorin_dense(
     const bml_matrix_dense_t * A);

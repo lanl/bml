@@ -8,8 +8,8 @@
 // Normalize
 void bml_normalize(
     bml_matrix_t * A,
-    const double maxeval,
-    const double maxminusmin);
+    const double mineval,
+    const double maxeval);
 
 // Calculate Gershgorin bounds
 void *bml_gershgorin(

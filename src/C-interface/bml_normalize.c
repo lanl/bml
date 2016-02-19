@@ -11,22 +11,22 @@
  ** \ingroup normalize_group_C
  *
  * \param A Matrix to scale
+ * \param mineval Calculated min value
  * \param maxeval Calculated max value
- * \param maxminusmin Calculated max-min value
  */
 void
 bml_normalize(
     bml_matrix_t * A,
-    const double maxeval,
-    const double maxminusmin)
+    const double mineval,
+    const double maxeval)
 {
     switch (bml_get_type(A))
     {
         case dense:
-            bml_normalize_dense(A, maxeval, maxminusmin);
+            bml_normalize_dense(A, mineval, maxeval);
             break;
         case ellpack:
-            bml_normalize_ellpack(A, maxeval, maxminusmin);
+            bml_normalize_ellpack(A, mineval, maxeval);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -39,8 +39,8 @@ bml_normalize(
  * \ingroup normalize_group_C
  *
  * \param A Matrix to scale
+ * returns mineval Calculated min value
  * returns maxeval Calculated max value
- * returns maxminusmin Calculated max-min value
  */
 void *
 bml_gershgorin(

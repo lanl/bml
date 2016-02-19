@@ -23,17 +23,17 @@ contains
   !! \ingroup normalize_group_F
   !!
   !! \param a Matrix
+  !! \param mineval Calculated min
   !! \param maxeval Calculated max
-  !! \param maxminusmin Calculated max-min
-  subroutine bml_normalize(a, maxeval, maxminusmin)
+  subroutine bml_normalize(a, mineval, maxeval)
 
     use bml_types_m
     use bml_c_interface_m
 
     type(bml_matrix_t), intent(inout) :: a
-    double precision, intent(in) :: maxeval, maxminusmin
+    double precision, intent(in) :: mineval, maxeval
 
-    call bml_normalize_C(a%ptr, maxeval, maxminusmin)
+    call bml_normalize_C(a%ptr, mineval, maxeval)
 
   end subroutine bml_normalize
 
@@ -42,7 +42,7 @@ contains
   !! \ingroup normalize_group_F
   !!
   !! \param a Matrix
-  !! \param a_gbnd Calculated max and max-min
+  !! \param a_gbnd Calculated min and max
   subroutine bml_gershgorin(a, a_gbnd)
 
     use bml_c_interface_m
