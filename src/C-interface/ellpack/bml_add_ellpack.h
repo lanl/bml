@@ -98,4 +98,34 @@ void bml_add_identity_ellpack_double_complex(
     const double beta,
     const double threshold);
 
+void bml_scale_add_identity_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+void bml_scale_add_identity_ellpack_single_real(
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+void bml_scale_add_identity_ellpack_double_real(
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+void bml_scale_add_identity_ellpack_single_complex(
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
+void bml_scale_add_identity_ellpack_double_complex(
+    const bml_matrix_ellpack_t * A,
+    const double alpha,
+    const double beta,
+    const double threshold);
+
 #endif

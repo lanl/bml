@@ -49,6 +49,15 @@ module bml_c_interface_m
       real(C_DOUBLE), value, intent(in) :: threshold
     end subroutine bml_add_identity_C
 
+    subroutine bml_scale_add_identity_C(a, alpha, beta, threshold) &
+        & bind(C, name="bml_scale_add_identity")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value :: a
+      real(C_DOUBLE), value, intent(in) :: alpha
+      real(C_DOUBLE), value, intent(in) :: beta
+      real(C_DOUBLE), value, intent(in) :: threshold
+    end subroutine bml_scale_add_identity_C
+
 
     subroutine bml_adjungate_triangle_C(a, triangle) &
         & bind(C, name="bml_adjungate_triangle")
@@ -166,12 +175,12 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: row
     end subroutine bml_get_row_C
 
-     subroutine bml_normalize_C(a, maxeval, maxminusmin) &
+     subroutine bml_normalize_C(a, mineval, maxeval) &
        bind(C, name="bml_normalize")
        import :: C_PTR, C_DOUBLE
        type(C_PTR), value :: a
+       real(C_DOUBLE), value, intent(in) :: mineval
        real(C_DOUBLE), value, intent(in) :: maxeval
-       real(C_DOUBLE), value, intent(in) :: maxminusmin
      end subroutine bml_normalize_C
 
     function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")

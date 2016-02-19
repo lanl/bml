@@ -53,29 +53,31 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
 
-    if ((ABS(A_gbnd[0] - scale_factor)) > REL_TOL || A_gbnd[1] > REL_TOL)
+    if ((ABS(A_gbnd[1] - scale_factor)) > REL_TOL
+        || (A_gbnd[1] - A_gbnd[0]) > REL_TOL)
     {
         LOG_ERROR
-            ("incorrect maxeval or maxminusmin; maxeval = %e maxminusmin = %e\n",
-             A_gbnd[0], A_gbnd[1]);
+            ("incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
+             A_gbnd[0], A_gbnd[1], A_gbnd[1] - A_gbnd[0]);
         return -1;
     }
 
-    if ((ABS(B_gbnd[0] - scale_factor * scale_factor)) > REL_TOL ||
-        (ABS(B_gbnd[1] - (scale_factor * scale_factor - scale_factor))) >
-        REL_TOL)
+    if ((ABS(B_gbnd[1] - scale_factor * scale_factor)) > REL_TOL ||
+        (ABS
+         ((B_gbnd[1] - B_gbnd[0]) -
+          (scale_factor * scale_factor - scale_factor))) > REL_TOL)
     {
         LOG_ERROR
-            ("incorrect maxeval or maxminusmin; maxeval = %e maxminusmin = %e\n",
-             B_gbnd[0], B_gbnd[1]);
+            ("incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
+             B_gbnd[0], B_gbnd[1], B_gbnd[1] - B_gbnd[0]);
         return -1;
     }
 
     if (ABS(B_dense[0]) > REL_TOL)
     {
         LOG_ERROR
-            ("normalize error, incorrect maxeval or maxminusmin; maxeval = %e maxminusmin = %e\n",
-             B_gbnd[0], B_gbnd[1]);
+            ("normalize error, incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
+             B_gbnd[0], B_gbnd[1], B_gbnd[1] - B_gbnd[0]);
         return -1;
     }
 

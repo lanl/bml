@@ -217,5 +217,6 @@ main(
 
     fprintf(stderr, "%s\n", test);
     fprintf(stderr, "N = %d\n", N);
+    free(test);
     return testers[test_index] (N, matrix_type, precision, M);
 }

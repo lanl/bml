@@ -15,30 +15,30 @@
  *  \ingroup normalize_group
  *
  *  \param A The matrix
+ *  \param mineval Calculated min value
  *  \param maxeval Calculated max value
- *  \param maxminusmin Calculated max-min value
  */
 void
 bml_normalize_dense(
     bml_matrix_dense_t * A,
-    const double maxeval,
-    const double maxminusmin)
+    const double mineval,
+    const double maxeval)
 {
     assert(A != NULL);
 
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_normalize_dense_single_real(A, maxeval, maxminusmin);
+            bml_normalize_dense_single_real(A, mineval, maxeval);
             break;
         case double_real:
-            bml_normalize_dense_double_real(A, maxeval, maxminusmin);
+            bml_normalize_dense_double_real(A, mineval, maxeval);
             break;
         case single_complex:
-            bml_normalize_dense_single_complex(A, maxeval, maxminusmin);
+            bml_normalize_dense_single_complex(A, mineval, maxeval);
             break;
         case double_complex:
-            bml_normalize_dense_double_complex(A, maxeval, maxminusmin);
+            bml_normalize_dense_double_complex(A, mineval, maxeval);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -51,8 +51,8 @@ bml_normalize_dense(
  *  \ingroup normalize_group
  *
  *  \param A The matrix
+ *  returns mineval Calculated min value
  *  returns maxeval Calculated max value
- *  returns maxminusmin Calculated max-min value
  */
 void *
 bml_gershgorin_dense(

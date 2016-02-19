@@ -19,15 +19,16 @@
  *  \ingroup normalize_group
  *
  *  \param A The matrix
+ *  \param mineval Calculated min value
  *  \param maxeval Calculated max value
- *  \param maxminusmin Calculated max-min value
  */
 void TYPED_FUNC(
     bml_normalize_ellpack) (
     bml_matrix_ellpack_t * A,
-    const double maxeval,
-    const double maxminusmin)
+    const double mineval,
+    const double maxeval)
 {
+    double maxminusmin = maxeval - mineval;
     double gershfact = maxeval / maxminusmin;
     double scalar = (double) -1.0 / maxminusmin;
     double threshold = 0.0;
@@ -41,8 +42,8 @@ void TYPED_FUNC(
  *  \ingroup normalize_group
  *
  *  \param A The matrix
+ *  returns mineval Calculated min value
  *  returns maxeval Calculated max value
- *  returns maxminusmin Calculated max-min value
  */
 void *TYPED_FUNC(
     bml_gershgorin_ellpack) (
@@ -89,8 +90,8 @@ void *TYPED_FUNC(
              REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
     }
 
-    eval[0] = emax;
-    eval[1] = emax - emin;
+    eval[0] = emin;
+    eval[1] = emax;
 
     return eval;
 }
