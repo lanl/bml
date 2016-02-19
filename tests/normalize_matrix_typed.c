@@ -53,7 +53,8 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
 
-    if ((ABS(A_gbnd[1] - scale_factor)) > REL_TOL || (A_gbnd[1] - A_gbnd[0]) > REL_TOL)
+    if ((ABS(A_gbnd[1] - scale_factor)) > REL_TOL
+        || (A_gbnd[1] - A_gbnd[0]) > REL_TOL)
     {
         LOG_ERROR
             ("incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
@@ -62,8 +63,9 @@ int TYPED_FUNC(
     }
 
     if ((ABS(B_gbnd[1] - scale_factor * scale_factor)) > REL_TOL ||
-        (ABS((B_gbnd[1] - B_gbnd[0]) - (scale_factor * scale_factor - scale_factor))) >
-        REL_TOL)
+        (ABS
+         ((B_gbnd[1] - B_gbnd[0]) -
+          (scale_factor * scale_factor - scale_factor))) > REL_TOL)
     {
         LOG_ERROR
             ("incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
