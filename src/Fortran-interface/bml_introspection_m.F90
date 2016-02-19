@@ -8,6 +8,7 @@ module bml_introspection_m
   private
 
   public :: bml_get_N
+  public :: bml_get_type
   public :: bml_get_row_bandwidth
   public :: bml_get_bandwidth
 
@@ -53,5 +54,30 @@ contains
     bml_get_bandwidth = bml_get_bandwidth_C(a%ptr)
 
   end function bml_get_bandwidth
+
+  !> Get the type of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml format type of the matrix.
+  function bml_get_type(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_type_num
+    character(20) :: bml_get_type
+
+    bml_get_type_num = bml_get_type_C(a%ptr)
+
+    select case(bml_get_type_num)
+      case(0)
+        bml_get_type = "Unformatted"
+      case(1)
+        bml_get_type = "dense"
+      case(2)
+        bml_get_type = "ellpack"
+      case default 
+        stop 'Unknown matrix type in bml_get_type'
+    end select
+
+  end function bml_get_type
 
 end module bml_introspection_m

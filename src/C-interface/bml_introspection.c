@@ -26,6 +26,7 @@ bml_get_type(
     {
         return type_uninitialized;
     }
+
 }
 
 /** Return the matrix precision.

@@ -16,7 +16,7 @@ bml_diagonalize(
             bml_diagonalize_dense(A, eigenvalues, eigenvectors);
             break;
         case ellpack:
-            LOG_ERROR("FIXME\n");
+            LOG_ERROR("diagonalize routine is not implemented for ellpack\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
