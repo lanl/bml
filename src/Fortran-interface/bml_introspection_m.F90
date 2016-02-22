@@ -74,7 +74,7 @@ contains
         bml_get_type = "dense"
       case(2)
         bml_get_type = "ellpack"
-      case default 
+      case default
         stop 'Unknown matrix type in bml_get_type'
     end select
 

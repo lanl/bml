@@ -34,11 +34,17 @@ void TYPED_FUNC(
     hFile = fopen(filename, "r");
 
     // Read header
-    fscanf(hFile, "%s %s %s %s %s", header1, header2, header3, header4,
-           header5);
+    if (fscanf(hFile, "%s %s %s %s %s", header1, header2, header3, header4,
+               header5) < 5)
+    {
+        LOG_ERROR("read error\n");
+    }
 
     // Read N, N, # of non-zeroes
-    fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz);
+    if (fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz) < 3)
+    {
+        LOG_ERROR("read error\n");
+    }
 
     char *FMT;
     switch (A->matrix_precision)
@@ -63,7 +69,10 @@ void TYPED_FUNC(
     // Read in values
     for (int i = 0; i < nnz; i++)
     {
-        fscanf(hFile, FMT, &irow, &icol, &val);
+        if (fscanf(hFile, FMT, &irow, &icol, &val) < 3)
+        {
+            LOG_ERROR("read error\n");
+        }
         irow--;
         icol--;
         A_value[ROWMAJOR(irow, icol, N, N)] = val;
