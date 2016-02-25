@@ -207,6 +207,7 @@
 #include "bml_import.h"
 #include "bml_logger.h"
 #include "bml_multiply.h"
+#include "bml_norm.h"
 #include "bml_normalize.h"
 #include "bml_scale.h"
 #include "bml_setters.h"

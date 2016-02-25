@@ -181,13 +181,35 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: row
     end subroutine bml_get_row_C
 
-     subroutine bml_normalize_C(a, mineval, maxeval) &
-       bind(C, name="bml_normalize")
-       import :: C_PTR, C_DOUBLE
-       type(C_PTR), value :: a
-       real(C_DOUBLE), value, intent(in) :: mineval
-       real(C_DOUBLE), value, intent(in) :: maxeval
-     end subroutine bml_normalize_C
+    function bml_sum_squares_C(a) bind(C, name="bml_sum_squares")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      real(C_DOUBLE) :: bml_sum_squares_C
+    end function bml_sum_squares_C
+
+    function bml_sum_squares2_C(a, b, alpha, beta) &
+      bind(C, name="bml_sum_squares2")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      real(C_DOUBLE), value, intent(in) :: alpha
+      real(C_DOUBLE), value, intent(in) :: beta
+      real(C_DOUBLE) :: bml_sum_squares2_C
+    end function bml_sum_squares2_C
+
+    function bml_fnorm_C(a) bind(C, name="bml_fnorm")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      real(C_DOUBLE) :: bml_fnorm_C
+    end function bml_fnorm_C
+
+    subroutine bml_normalize_C(a, mineval, maxeval) &
+      bind(C, name="bml_normalize")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value :: a
+      real(C_DOUBLE), value, intent(in) :: mineval
+      real(C_DOUBLE), value, intent(in) :: maxeval
+    end subroutine bml_normalize_C
 
     function bml_gershgorin_C(a) bind(C, name="bml_gershgorin")
       import :: C_PTR

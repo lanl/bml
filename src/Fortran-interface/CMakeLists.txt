@@ -13,6 +13,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_getters_m.F90
   bml_introspection_m.F90
   bml_multiply_m.F90
+  bml_norm_m.F90
   bml_normalize_m.F90
   bml_scale_m.F90
   bml_setters_m.F90

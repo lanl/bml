@@ -20,6 +20,7 @@ set(HEADERS-C
   bml_introspection.h
   bml_logger.h
   bml_multiply.h
+  bml_norm.h
   bml_normalize.h
   bml_scale.h
   bml_setters.h
@@ -50,6 +51,7 @@ set(SOURCES-C
   bml_introspection.c
   bml_logger.c
   bml_multiply.c
+  bml_norm.c
   bml_normalize.c
   bml_scale.c
   bml_setters.c
