@@ -13,6 +13,7 @@ module bml
   use bml_getters_m
   use bml_introspection_m
   use bml_multiply_m
+  use bml_norm_m
   use bml_normalize_m
   use bml_scale_m
   use bml_setters_m

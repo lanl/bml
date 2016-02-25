@@ -58,7 +58,7 @@ contains
 
   end subroutine add_two
 
-  !> Add two matrices and calcualte trnorm.
+  !> Add two matrices and calculate trnorm.
   !!
   !! \f$ A \leftarrow \alpha A + \beta B \f$
   !!
