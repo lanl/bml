@@ -63,9 +63,12 @@ You can use the script `indent.sh` to indent all C code.
 
 # Citing #
 
+If you find this library useful, we encourage you to cite us. Our project has
+a citable DOI:
+
 [![DOI](https://zenodo.org/badge/20454/qmmd/bml.svg)](https://zenodo.org/badge/latestdoi/20454/qmmd/bml)
 
-If you find this library useful, we encourage you to cite us.
+with the following `bibtex` snipped:
 
     @misc{bml,
       url = {\url{https://qmmd.github.io}}
