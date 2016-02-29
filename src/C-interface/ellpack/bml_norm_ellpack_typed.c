@@ -28,13 +28,22 @@ double TYPED_FUNC(
     int N = A->N;
     int M = A->M;
 
+    int *A_nnz = (int *) A->nnz;
+
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) shared(N, M, A_value) reduction(+:sum)
-    for (int i = 0; i < N*M; i++)
+#pragma omp parallel for  \
+    default(none) \
+    shared(N, M, A_value, A_nnz) \
+    reduction(+:sum)
+    for (int i = 0; i < N; i++)
     {
-        sum += A_value[i] * A_value[i];
+        for (int j = 0; j < A_nnz[i]; j++)
+        {
+            REAL_T xval = A_value[ROWMAJOR(i, j, N, M)];
+            sum += xval * xval;
+        }
     }
 
     return (double) REAL_PART(sum);
