@@ -26,37 +26,37 @@
  */
 void TYPED_FUNC(
     bml_adjungate_triangle_dense) (
-    bml_matrix_dense_t * A,
-    char triangle)
+      bml_matrix_dense_t * A,
+      char triangle)
 {
-    int N = A->N;
+  int N = A->N;
 
-    REAL_T *A_matrix = A->matrix;
+  REAL_T *A_matrix = A->matrix;
 
-    switch (triangle)
-    {
-        case 'u':
+  switch (triangle)
+  {
+    case 'u':
 #pragma omp parallel for default(none) shared(N, A_matrix)
-            for (int i = 0; i < N - 1; i++)
-            {
-                for (int j = i + 1; j < N; j++)
-                {
-                    A_matrix[ROWMAJOR(j, i, N, N)] =
-                        conj(A_matrix[ROWMAJOR(i, j, N, N)]);
-                }
-            }
-            break;
+      for (int i = 0; i < N - 1; i++)
+      {
+        for (int j = i + 1; j < N; j++)
+        {
+          A_matrix[ROWMAJOR(j, i, N, N)] =
+            conj(A_matrix[ROWMAJOR(i, j, N, N)]);
+        }
+      }
+      break;
 
-        case 'l':
+    case 'l':
 #pragma omp parallel for default(none) shared(N, A_matrix)
-            for (int i = 0; i < N - 1; i++)
-            {
-                for (int j = i + 1; j < N; j++)
-                {
-                    A_matrix[ROWMAJOR(i, j, N, N)] =
-                        conj(A_matrix[ROWMAJOR(j, i, N, N)]);
-                }
-            }
-            break;
-    }
+      for (int i = 0; i < N - 1; i++)
+      {
+        for (int j = i + 1; j < N; j++)
+        {
+          A_matrix[ROWMAJOR(i, j, N, N)] =
+            conj(A_matrix[ROWMAJOR(j, i, N, N)]);
+        }
+      }
+      break;
+  }
 }

@@ -64,6 +64,7 @@ module bml_c_interface_m
       import :: C_PTR, C_CHAR
       type(C_PTR), value :: a
       character(C_CHAR), value, intent(in) :: triangle
+      write(*,*)"In adjungate" 
     end subroutine bml_adjungate_triangle_C
 
     subroutine bml_transpose_triangle_C(a, triangle) &

@@ -66,7 +66,7 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
-foreach(N allocate add multiply convert copy diagonalize norm  normalize scale
+foreach(N adjungate_triangle allocate add multiply convert copy diagonalize norm  normalize scale
     threshold trace transpose)
   foreach(T dense ellpack)
     foreach(P single_real double_real single_complex double_complex)
