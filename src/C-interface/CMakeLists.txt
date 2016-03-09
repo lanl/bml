@@ -24,6 +24,7 @@ set(HEADERS-C
   bml_normalize.h
   bml_scale.h
   bml_setters.h
+  bml_submatrix.h
   bml_threshold.h
   bml_trace.h
   bml_transpose.h
@@ -55,6 +56,7 @@ set(SOURCES-C
   bml_normalize.c
   bml_scale.c
   bml_setters.c
+  bml_submatrix.c
   bml_threshold.c
   bml_trace.c
   bml_transpose.c

@@ -1,0 +1,255 @@
+#include "../macros.h"
+#include "../typed.h"
+#include "bml_logger.h"
+#include "bml_allocate.h"
+#include "dense/bml_allocate_dense.h"
+#include "bml_submatrix.h"
+#include "bml_submatrix_ellpack.h"
+#include "bml_types.h"
+#include "bml_types_ellpack.h"
+
+#include <complex.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
+/** Determine element indices for submatrix, given a set of nodes/orbitals.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Hamiltonian matrix A
+ * \param B Graph matrix B
+ * \param nodelist List of node/orbital indeces
+ * \param nsize Size of nodelist
+ * \param core_halo_index List of core+halo indeces
+ * \param core_pos List of core indeces in core_halo_index
+ * \param vsize Size of core_halo_index and core_pos
+ * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
+ */
+void TYPED_FUNC(
+    bml_matrix2submatrix_index_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B,
+    const int * nodelist,
+    const int nsize,
+    int * core_halo_index,
+    int * core_pos,
+    int * vsize,
+    const int double_jump_flag)
+{
+    int l, ll, ii, ls, k;
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    int B_N = B->N;
+    int B_M = B->M;
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+
+    int ix[A_N], lg[A_N];
+
+    memset(ix, 0, A_N * sizeof(int));
+    memset(lg, 0, A_N * sizeof(int));
+
+    l = 0;
+    ll = 0;
+
+    // Collect indeces from graph
+    for (int j = 0; j < nsize ; j++)
+    {
+        ii = nodelist[j];
+  
+        for (int jp = 0; jp < B_nnz[ii]; jp++)
+        {
+            k = B_index[ROWMAJOR(ii, jp, B_N, B_M)];
+            if (ix[k] == 0)
+            {
+                ix[k] = ii + 1;
+                core_halo_index[l] = k;
+                lg[k] = l;
+                l++;
+            } 
+            // Core diagonal elements
+            if (k == ii)
+            {
+                core_pos[ll] = lg[k];
+                ll++;
+            }
+        }
+    }
+
+    // Add more new elements from H
+    for (int j = 0; j < nsize; j++)
+    {
+        ii = nodelist[j];
+
+        for (int jp = 0; jp < A_nnz[ii]; jp++)
+        {
+            k = A_index[ROWMAJOR(ii, jp, A_N, A_M)];
+            if (ix[k] == 0)
+            {
+                ix[k] = ii + 1;
+                core_halo_index[l] = k; 
+                l++;
+            }
+        }
+    } 
+
+    // Perform a "double jump" for extra elements
+    // based on graph, like performing a symbolic X^2 
+    if (double_jump_flag == 1)
+    {
+        ls = l;
+        for (int j = 0; j < ls; j++)
+        {
+            ii = core_halo_index[j];
+
+            for (int jp = 0; jp < B_nnz[ii]; jp++)
+            {
+                k = B_index[ROWMAJOR(ii, jp, B_N, B_M)];
+                if (ix[k] == 0)
+                {
+                    ix[k] = ii + 1;
+                    core_halo_index[l] = k;
+                    l++;
+                }
+            }
+        }
+    }
+
+    vsize[0] = l;
+    vsize[1] = ll;
+}
+
+/** Extract a submatrix from a matrix given a set of core+halo rows.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A
+ * \param B Submatrix B
+ * \param core_halo_index Set of row indeces for submatrix
+ * \param llsize Number of indeces 
+ */
+void TYPED_FUNC(
+    bml_matrix2submatrix_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    bml_matrix_dense_t * B,
+    const int * core_halo_index,
+    const int lsize)
+{
+    REAL_T *rvalue;
+
+    int B_N;
+    REAL_T * B_matrix;
+
+    B = TYPED_FUNC(bml_zero_matrix_dense)(lsize);
+    B_N = B->N;
+    B_matrix = B->matrix;
+
+#pragma omp parallel for \
+    default(none) \
+    private(rvalue) \
+    shared(core_halo_index) \
+    shared(A, B_matrix, B_N)
+    for (int jb = 0; jb < lsize; jb++)
+    {
+        rvalue = TYPED_FUNC(bml_getVector_ellpack)(A, core_halo_index, 
+                            core_halo_index[jb], lsize);    
+        memcpy(&B_matrix[ROWMAJOR(jb, 0, B_N, B_N)], rvalue, lsize*sizeof(REAL_T));    
+    }
+}
+
+/** Assemble submatrix into a full matrixi based on core+halo indeces.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Submatrix A
+ * \param B Matrix B
+ * \param core_halo_index Set of submatrix row indeces 
+ * \param lsize Number of indeces
+ * \param core_pos Set of positions in core_halo_index for core rows
+ * \param llsize Number of core positions
+ */
+void TYPED_FUNC(
+    bml_submatrix2matrix_ellpack) (
+    const bml_matrix_dense_t * A,
+    bml_matrix_ellpack_t * B,
+    const int * core_halo_index,
+    const int lsize,
+    const int * core_pos,
+    const int llsize,
+    const double threshold)
+{
+    int A_N = A->N;
+    REAL_T *A_matrix = A->matrix;
+
+    int B_N = B->N;
+    int B_M = B->M;
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+    REAL_T *B_value = B->value;
+
+    int ii, icol;
+
+#pragma omp parallel for \
+    default(none) \
+    private(ii, icol) \
+    shared(core_halo_index, core_pos) \
+    shared(A_N, A_matrix) \
+    shared(B_N, B_M, B_nnz, B_index, B_value) 
+    for (int ja = 0; ja < llsize; ja++)
+    {
+        ii = core_halo_index[core_pos[ja]];
+        
+        icol = 0;
+        for (int jb = 0; jb < lsize; jb++)
+        {
+            if (ABS(A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)]) > threshold)
+            {
+                B_index[ROWMAJOR(ii, icol, B_N, B_M)] = core_halo_index[jb];
+                B_value[ROWMAJOR(ii, icol, B_N, B_M)] = 
+                    A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)];
+                icol++;
+            }
+        }
+        B_nnz[ii] = icol;
+    }
+}
+
+// Get matching vector of values 
+void* 
+TYPED_FUNC(bml_getVector_ellpack)(
+    const bml_matrix_ellpack_t * A,
+    const int * jj,
+    const int irow, 
+    const int colCnt) 
+{
+  const REAL_T ZERO = 0.0;
+
+  int A_N = A->N;
+  int A_M = A->M;
+  int *A_nnz = A->nnz;
+  int *A_index = A->index;
+  REAL_T *A_value = A->value;
+  REAL_T *rvalue = malloc(colCnt * sizeof(REAL_T));
+
+  for (int i = 0; i < colCnt; i++)
+  {
+    for (int j = 0; j < A_nnz[irow]; j++)
+    {
+        if (A_index[ROWMAJOR(irow, j, A_N, A_M)] == jj[i])
+        {
+            rvalue[i] = A_value[ROWMAJOR(irow, jj[i], A_N, A_M)];
+            break;
+        }
+        rvalue[i] = ZERO;
+    }
+  }
+  return rvalue;
+}
