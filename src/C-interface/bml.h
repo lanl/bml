@@ -211,6 +211,7 @@
 #include "bml_normalize.h"
 #include "bml_scale.h"
 #include "bml_setters.h"
+#include "bml_submatrix.h"
 #include "bml_threshold.h"
 #include "bml_trace.h"
 #include "bml_transpose.h"

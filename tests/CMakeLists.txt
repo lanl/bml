@@ -10,6 +10,7 @@ set(SOURCES_TYPED
   norm_matrix_typed.c
   normalize_matrix_typed.c
   scale_matrix_typed.c
+  submatrix_matrix_typed.c
   threshold_matrix_typed.c
   trace_matrix_typed.c
   transpose_matrix_typed.c)
@@ -46,6 +47,7 @@ add_executable(bml-test
   norm_matrix.c
   normalize_matrix.c
   scale_matrix.c
+  submatrix_matrix.c
   threshold_matrix.c
   trace_matrix.c
   transpose_matrix.c)
@@ -67,7 +69,7 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
 endif()
 
 foreach(N allocate add multiply convert copy diagonalize norm  normalize scale
-    threshold trace transpose)
+    submatrix threshold trace transpose)
   foreach(T dense ellpack)
     foreach(P single_real double_real single_complex double_complex)
       add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})

@@ -168,7 +168,7 @@ void* bml_getVector_ellpack(
             return bml_getVector_ellpack_double_real(A, jj, irow, colCnt);
             break;
         case single_complex:
-            return bml_getVactor_ellpack_single_complex(A, jj, irow, colCnt);
+            return bml_getVector_ellpack_single_complex(A, jj, irow, colCnt);
             break;
         case double_complex:
             return bml_getVector_ellpack_double_complex(A, jj, irow, colCnt);

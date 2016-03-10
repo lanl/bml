@@ -99,7 +99,7 @@ bml_submatrix2matrix(
     const int llsize,
     const double threshold)
 {
-    switch (bml_get_type(A))
+    switch (bml_get_type(B))
     {
         case dense:
             //bml_submatrix2matrix_dense(A, B, core_halo_index, lsize, 

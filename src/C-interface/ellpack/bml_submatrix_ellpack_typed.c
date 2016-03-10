@@ -148,7 +148,7 @@ void TYPED_FUNC(
     int B_N;
     REAL_T * B_matrix;
 
-    B = TYPED_FUNC(bml_zero_matrix_dense)(lsize);
+    //B = TYPED_FUNC(bml_zero_matrix_dense)(lsize);
     B_N = B->N;
     B_matrix = B->matrix;
 
@@ -161,11 +161,16 @@ void TYPED_FUNC(
     {
         rvalue = TYPED_FUNC(bml_getVector_ellpack)(A, core_halo_index, 
                             core_halo_index[jb], lsize);    
-        memcpy(&B_matrix[ROWMAJOR(jb, 0, B_N, B_N)], rvalue, lsize*sizeof(REAL_T));    
+        for (int j = 0; j < lsize; j++)
+        {
+            B_matrix[ROWMAJOR(jb, j, B_N, B_N)] = rvalue[j];
+        }
+
+        free(rvalue);
     }
 }
 
-/** Assemble submatrix into a full matrixi based on core+halo indeces.
+/** Assemble submatrix into a full matrix based on core+halo indeces.
  *
  * \ingroup submatrix_group_C
  *
@@ -245,7 +250,7 @@ TYPED_FUNC(bml_getVector_ellpack)(
     {
         if (A_index[ROWMAJOR(irow, j, A_N, A_M)] == jj[i])
         {
-            rvalue[i] = A_value[ROWMAJOR(irow, jj[i], A_N, A_M)];
+            rvalue[i] = A_value[ROWMAJOR(irow, j, A_N, A_M)];
             break;
         }
         rvalue[i] = ZERO;

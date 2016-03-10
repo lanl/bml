@@ -8,11 +8,11 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 12;
+const int NUM_TESTS = 13;
 
 const char *test_name[] =
     { "add", "allocate", "convert", "copy", "diagonalize", "multiply",
-    "norm", "normalize", "scale", "threshold", "trace", "transpose"
+    "norm", "normalize", "scale", "submatrix", "threshold", "trace", "transpose"
 };
 
 const char *test_description[] = {
@@ -25,6 +25,7 @@ const char *test_description[] = {
     "Norm of bml matrix",
     "Normalize bml matrices",
     "Scale bml matrices",
+    "Submatrix bml matrices",
     "Threshold bml matrices",
     "Trace of bml matrices",
     "Transpose of bml matrices"
@@ -40,6 +41,7 @@ const test_function_t testers[] = {
     test_norm,
     test_normalize,
     test_scale,
+    test_submatrix,
     test_threshold,
     test_trace,
     test_transpose
