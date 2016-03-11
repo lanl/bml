@@ -299,6 +299,40 @@ module bml_c_interface_m
       real(C_DOUBLE), value :: threshold
     end subroutine bml_set_diagonal_C
 
+    subroutine bml_matrix2submatrix_index_C(a, b, nodelist, nsize, &
+      chlist, cpos, vsize, dj_flag) bind(C, name="bml_matrix2submatrix_index")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      type(C_PTR), value, intent(in) :: nodelist
+      integer(C_INT), value, intent(in) :: nsize
+      type(C_PTR), value, intent(in) :: chlist
+      type(C_PTR), value, intent(in) :: cpos
+      type(C_PTR), value, intent(in) :: vsize
+      integer(C_INT), value, intent(in) :: dj_flag
+    end subroutine bml_matrix2submatrix_index_C
+
+    subroutine bml_matrix2submatrix_C(a, b, chlist, lsize) &
+      bind(C, name="bml_matrix2submatrix")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      type(C_PTR), value, intent(in) :: chlist
+      integer(C_INT), value, intent(in) :: lsize
+    end subroutine bml_matrix2submatrix_C
+
+    subroutine bml_submatrix2matrix_C(a, b, chlist, lsize, cpos, llsize, &
+      threshold) bind(C, name="bml_submatrix2matrix")
+      import :: C_PTR, C_INT, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      type(C_PTR), value, intent(in) :: chlist
+      integer(C_INT), value, intent(in) :: lsize
+      type(C_PTR), value, intent(in) :: cpos
+      integer(C_INT), value, intent(in) :: llsize
+      real(C_DOUBLE), value :: threshold
+    end subroutine bml_submatrix2matrix_C
+
     subroutine bml_threshold_C(a, threshold) bind(C, name="bml_threshold")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a
