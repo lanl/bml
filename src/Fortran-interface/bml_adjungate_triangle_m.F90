@@ -19,9 +19,9 @@ contains
 
     type(bml_matrix_t), intent(inout) :: a
     character(C_CHAR), intent(in) :: triangle
-
+    
     call bml_adjungate_triangle_C(a%ptr, triangle)
 
   end subroutine bml_adjungate_triangle
-
+  
 end module bml_adjungate_triangle_m

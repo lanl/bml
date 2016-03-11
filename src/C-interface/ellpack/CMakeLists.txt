@@ -3,9 +3,11 @@ include_directories(..)
 set(HEADERS-ELLPACK
   bml_add_ellpack.h
   bml_allocate_ellpack.h
+  bml_adjungate_triangle_ellpack.h
   bml_convert_ellpack.h
   bml_copy_ellpack.h
   bml_elemental_ellpack.h
+  bml_getters_ellpack.h
   bml_introspection_ellpack.h
   bml_multiply_ellpack.h
   bml_norm_ellpack.h
@@ -22,9 +24,11 @@ set(HEADERS-ELLPACK
 set(SOURCES-ELLPACK
   bml_add_ellpack.c
   bml_allocate_ellpack.c
+  bml_adjungate_triangle_ellpack.c
   bml_convert_ellpack.c
   bml_copy_ellpack.c
   bml_elemental_ellpack.c
+  bml_getters_ellpack.c
   bml_introspection_ellpack.c
   bml_multiply_ellpack.c
   bml_norm_ellpack.c
@@ -46,8 +50,10 @@ endif()
 set(SOURCES-ELLPACK-TYPED
   bml_add_ellpack_typed.c
   bml_allocate_ellpack_typed.c
+  bml_adjungate_triangle_ellpack_typed.c
   bml_convert_ellpack_typed.c
   bml_copy_ellpack_typed.c
+  bml_getters_ellpack_typed.c
   bml_multiply_ellpack_typed.c
   bml_norm_ellpack_typed.c
   bml_normalize_ellpack_typed.c

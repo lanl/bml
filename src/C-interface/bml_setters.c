@@ -17,7 +17,7 @@ bml_set(
             bml_set_dense(A, i, j, value);
             break;
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("unknown matrix type in bml_set  \n");
             break;
     }
 }
@@ -38,7 +38,7 @@ bml_set_row(
             bml_set_row_ellpack(A, i, row, threshold);
             break;
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("unknown matrix type in bml_set_row\n");
             break;
     }
 }
@@ -58,7 +58,7 @@ bml_set_diagonal(
             bml_set_diagonal_ellpack(A, diagonal, threshold);
             break;
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("unknown matrix type in bml_set_diagonal\n");
             break;
     }
 }

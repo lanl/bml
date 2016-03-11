@@ -2,6 +2,7 @@
 #include "bml_introspection.h"
 #include "bml_logger.h"
 #include "dense/bml_adjungate_triangle_dense.h"
+#include "ellpack/bml_adjungate_triangle_ellpack.h"
 
 #include <stdlib.h>
 
@@ -17,18 +18,17 @@ bml_adjungate_triangle(
     bml_matrix_t * A,
     char triangle)
 {
+  int status;
     switch (bml_get_type(A))
     {
         case dense:
-            bml_adjungate_triangle_dense(A, triangle);
+            bml_adjungate_triangle_dense(A, triangle);            
             break;
-            /*
-               case ellpack:
-               bml_adjungate_triangle_ellpack(A, triangle);
-               break;
-             */
+        case ellpack:
+            bml_adjungate_triangle_ellpack(A, triangle);
+            break;
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("unknown matrix type in bml_adjungate_triangle\n");
             break;
     }
 }

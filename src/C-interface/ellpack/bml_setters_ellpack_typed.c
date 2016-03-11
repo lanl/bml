@@ -62,7 +62,6 @@ void TYPED_FUNC(
 
 }
 
-
 /** Set diagonal of matrix A.
  *
  *  \ingroup setters

@@ -2,7 +2,7 @@
 #include "bml_logger.h"
 #include "bml_getters.h"
 #include "dense/bml_getters_dense.h"
-
+#include "ellpack/bml_getters_ellpack.h"
 /*
 void
 bml_get(
@@ -23,11 +23,14 @@ bml_get_row(
 {
     switch (bml_get_type(A))
     {
-        case dense:
+        case dense:          
             bml_get_row_dense(A, i, row);
             break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
+        case ellpack:
+            bml_get_row_ellpack(A, i, row);
+            break;            
+        default:            
+            LOG_ERROR("unknown matrix type in bml_get_row\n");
             break;
     }
 }
