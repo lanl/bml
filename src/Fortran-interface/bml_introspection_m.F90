@@ -9,6 +9,7 @@ module bml_introspection_m
 
   public :: bml_get_N
   public :: bml_get_type
+  public :: bml_get_precision
   public :: bml_get_row_bandwidth
   public :: bml_get_bandwidth
 
@@ -79,5 +80,18 @@ contains
     end select
 
   end function bml_get_type
+
+!> Get the precision of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml format precision of the matrix.
+  function bml_get_precision(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_precision
+
+    bml_get_precision = bml_get_precision_C(a%ptr)
+
+  end function bml_get_precision
 
 end module bml_introspection_m

@@ -174,6 +174,12 @@ module bml_c_interface_m
       integer(C_INT) :: bml_get_type_C
     end function bml_get_type_C
 
+    function bml_get_precision_C(a) bind(C, name="bml_get_precision")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT) :: bml_get_precision_C
+    end function bml_get_precision_C
+
     subroutine bml_get_row_C(a, i, row) bind(C, name="bml_get_row")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
