@@ -5,7 +5,7 @@
 #include "ellpack/bml_setters_ellpack.h"
 
 void
-bml_set(
+bml_set_element(
     bml_matrix_t * A,
     const int i,
     const int j,
@@ -14,10 +14,13 @@ bml_set(
     switch (bml_get_type(A))
     {
         case dense:
-            bml_set_dense(A, i, j, value);
+            bml_set_element_dense(A, i, j, value);
+            break;
+        case ellpack:
+            bml_set_element_ellpack(A, i, j, value);
             break;
         default:
-            LOG_ERROR("unknown matrix type in bml_set  \n");
+            LOG_ERROR("unknown matrix type in bml_set\n");
             break;
     }
 }

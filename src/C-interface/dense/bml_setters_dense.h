@@ -7,31 +7,31 @@
 
 #include <complex.h>
 
-void bml_set_dense(
+void bml_set_element_dense(
     bml_matrix_dense_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_dense_single_real(
+void bml_set_element_dense_single_real(
     bml_matrix_dense_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_dense_double_real(
+void bml_set_element_dense_double_real(
     bml_matrix_dense_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_dense_single_complex(
+void bml_set_element_dense_single_complex(
     bml_matrix_dense_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_dense_double_complex(
+void bml_set_element_dense_double_complex(
     bml_matrix_dense_t * A,
     const int i,
     const int j,

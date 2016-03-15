@@ -7,7 +7,7 @@
 #include <complex.h>
 
 void TYPED_FUNC(
-    bml_set_dense) (
+    bml_set_element_dense) (
     bml_matrix_dense_t * A,
     const int i,
     const int j,

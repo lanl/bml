@@ -5,7 +5,7 @@
 
 #include "bml_types.h"
 
-void bml_set(
+void bml_set_element(
     bml_matrix_t * A,
     const int i,
     const int j,

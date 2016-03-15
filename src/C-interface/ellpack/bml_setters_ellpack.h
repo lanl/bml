@@ -7,31 +7,31 @@
 
 #include <complex.h>
 
-void bml_set_ellpack(
+void bml_set_element_ellpack(
     bml_matrix_ellpack_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_ellpack_single_real(
+void bml_set_element_ellpack_single_real(
     bml_matrix_ellpack_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_ellpack_double_real(
+void bml_set_element_ellpack_double_real(
     bml_matrix_ellpack_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_ellpack_single_complex(
+void bml_set_element_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
     const int i,
     const int j,
     const void *value);
 
-void bml_set_ellpack_double_complex(
+void bml_set_element_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
     const int i,
     const int j,
