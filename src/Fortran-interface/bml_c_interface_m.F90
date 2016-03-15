@@ -306,6 +306,15 @@ module bml_c_interface_m
       type(C_PTR), value :: element
     end subroutine bml_set_element_C
 
+    subroutine bml_set_element_new_C(a, i, j, element) bind(C, name="bml_set_element_new")
+      import :: C_PTR, C_INT, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT), value, intent(in) :: i
+      integer(C_INT), value, intent(in) :: j
+      type(C_PTR), value :: element
+    end subroutine bml_set_element_new_C
+        
+
     subroutine bml_set_diagonal_C(a, diagonal, threshold) bind(C, name="bml_set_diagonal")
       import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a

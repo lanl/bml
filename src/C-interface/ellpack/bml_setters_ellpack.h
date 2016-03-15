@@ -7,6 +7,12 @@
 
 #include <complex.h>
 
+void bml_set_element_new_ellpack(
+  bml_matrix_ellpack_t * A,
+  const int i,
+  const int j,
+  const void *value);
+
 void bml_set_element_ellpack(
     bml_matrix_ellpack_t * A,
     const int i,
