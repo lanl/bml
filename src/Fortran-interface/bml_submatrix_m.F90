@@ -45,7 +45,7 @@ contains
       cflag = 0;
     endif
 
-    call bml_matrix2submatrix_index__C(a%ptr, b%ptr, c_loc(nodelist), &
+    call bml_matrix2submatrix_index_C(a%ptr, b%ptr, c_loc(nodelist), &
       nsize, c_loc(core_halo_index), c_loc(core_pos), c_loc(vsize), cflag)
 
   end subroutine bml_matrix2submatrix_index
