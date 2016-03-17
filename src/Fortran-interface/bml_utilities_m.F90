@@ -20,14 +20,6 @@ module bml_utilities_m
      module procedure bml_print_bml_matrix
   end interface bml_print_matrix
 
-  interface bml_read_matrix
-     module procedure bml_read_bml_matrix
-  end interface bml_read_matrix
-
-  interface bml_write_matrix
-     module procedure bml_write_bml_matrix
-  end interface bml_write_matrix
-
   public :: bml_print_vector
   public :: bml_print_matrix
   public :: bml_read_matrix
@@ -78,26 +70,26 @@ contains
   !!
   !! \param a The matrix.
   !! \param filename The file to read from.
-  subroutine bml_read_bml_matrix(a, filename)
+  subroutine bml_read_matrix(a, filename)
 
     character(len=*, kind=C_CHAR), intent(in) :: filename
     type(bml_matrix_t), intent(in) :: a
 
     call bml_read_bml_matrix_C(a%ptr, f_c_string(filename))
 
-  end subroutine bml_read_bml_matrix
+  end subroutine bml_read_matrix
 
   !> Write out a bml matrix to a Matrix Market file.
   !!
   !! \param a The matrix.
   !! \param filename The file to write to.
-  subroutine bml_write_bml_matrix(a, filename)
+  subroutine bml_write_matrix(a, filename)
 
     character(len=*, kind=C_CHAR), intent(in) :: filename
     type(bml_matrix_t), intent(in) :: a
 
     call bml_write_bml_matrix_C(a%ptr, f_c_string(filename))
 
-  end subroutine bml_write_bml_matrix
+  end subroutine bml_write_matrix
 
 end module bml_utilities_m
