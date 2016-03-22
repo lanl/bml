@@ -145,12 +145,8 @@ void TYPED_FUNC(
 {
     REAL_T *rvalue;
 
-    int B_N;
-    REAL_T * B_matrix;
-
-    //B = TYPED_FUNC(bml_zero_matrix_dense)(lsize);
-    B_N = B->N;
-    B_matrix = B->matrix;
+    int B_N = B->N;
+    REAL_T * B_matrix = B->matrix;
 
 #pragma omp parallel for \
     default(none) \
