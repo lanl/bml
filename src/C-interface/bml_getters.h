@@ -18,4 +18,8 @@ void bml_get_row(
     const int i,
     void *row);
 
+void bml_get_diagonal(
+  bml_matrix_t * A,
+  void *diagonal);
+
 #endif

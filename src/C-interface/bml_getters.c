@@ -34,3 +34,22 @@ bml_get_row(
             break;
     }
 }
+
+void
+bml_get_diagonal(
+  bml_matrix_t * A,
+  void *diagonal)
+{
+  switch (bml_get_type(A))
+  {
+    case dense:          
+      bml_get_diagonal_dense(A, diagonal);
+      break;
+    case ellpack:
+      bml_get_diagonal_ellpack(A, diagonal);
+      break;            
+    default:            
+      LOG_ERROR("unknown matrix type in bml_get_diagonal\n");
+      break;
+  }
+}
