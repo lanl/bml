@@ -54,9 +54,10 @@ double TYPED_FUNC(
  *  \ingroup norm_group
  *
  *  \param A The matrix A
- *  \param A The matrix B
+ *  \param B The matrix B
  *  \param alpha Multiplier for A
  *  \param beta Multiplier for B
+ *  \pram threshold Threshold
  *  \return The sum of squares of \alpha A + \beta B
  */
 double TYPED_FUNC(
@@ -64,7 +65,8 @@ double TYPED_FUNC(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
     const double alpha,
-    const double beta)
+    const double beta, 
+    const double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -110,7 +112,8 @@ double TYPED_FUNC(
 
        for (int jp = 0; jp < A_N; jp++)
        {
-           sum += y[jp] * y[jp];
+           if (REAL_PART(y[jp]) > threshold) 
+               sum += y[jp] * y[jp];
        }
 
     }

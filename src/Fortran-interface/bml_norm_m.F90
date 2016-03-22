@@ -33,15 +33,16 @@ contains
   !!\param alpha Multiplier for a
   !!\param beta Multiplier for b
   !!\return The sum of squares for alpha * A + beta * B
-  function bml_sum_squares2(a, b, alpha, beta) result(ssum2)
+  function bml_sum_squares2(a, b, alpha, beta, threshold) result(ssum2)
 
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(in) :: b
     real(C_DOUBLE), intent(in) :: alpha
     real(C_DOUBLE), intent(in) :: beta
+    real(C_DOUBLE), intent(in) :: threshold
     real(C_DOUBLE) :: ssum2
 
-    ssum2 = bml_sum_squares2_C(a%ptr, b%ptr, alpha, beta)
+    ssum2 = bml_sum_squares2_C(a%ptr, b%ptr, alpha, beta, threshold)
 
   end function bml_sum_squares2
 

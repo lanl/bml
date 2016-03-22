@@ -40,6 +40,7 @@ bml_sum_squares(
  * \param B Matrix
  * \param alpha Multiplier for matrix A
  * \param beta Multiplier for matrix B
+ * \param threshold Threshold
  * \return sum of squares of alpha * A + beta * B 
  */
 double
@@ -47,15 +48,16 @@ bml_sum_squares2(
     const bml_matrix_t * A,
     const bml_matrix_t * B,
     const double alpha,
-    const double beta)
+    const double beta,
+    const double threshold)
 {
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_sum_squares2_dense(A, B, alpha, beta);
+            return bml_sum_squares2_dense(A, B, alpha, beta, threshold);
             break;
         case ellpack:
-            return bml_sum_squares2_ellpack(A, B, alpha, beta);
+            return bml_sum_squares2_ellpack(A, B, alpha, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

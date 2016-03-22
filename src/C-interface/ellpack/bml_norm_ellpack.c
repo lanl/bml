@@ -48,6 +48,7 @@ bml_sum_squares_ellpack(
  *  \param B The matrix B
  *  \param alpha Multiplier for A
  *  \param beta Multiplier for B
+ *  \param threshold Threshold
  *  \return The sum of squares of \alpha A + \beta B
  */
 double
@@ -55,22 +56,23 @@ bml_sum_squares2_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
     const double alpha,
-    const double beta)
+    const double beta,
+    const double threshold)
 {
 
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_sum_squares2_ellpack_single_real(A, B, alpha, beta);
+            return bml_sum_squares2_ellpack_single_real(A, B, alpha, beta, threshold);
             break;
         case double_real:
-            return bml_sum_squares2_ellpack_double_real(A, B, alpha, beta);
+            return bml_sum_squares2_ellpack_double_real(A, B, alpha, beta, threshold);
             break;
         case single_complex:
-            return bml_sum_squares2_ellpack_single_complex(A, B, alpha, beta);
+            return bml_sum_squares2_ellpack_single_complex(A, B, alpha, beta, threshold);
             break;
         case double_complex:
-            return bml_sum_squares2_ellpack_double_complex(A, B, alpha, beta);
+            return bml_sum_squares2_ellpack_double_complex(A, B, alpha, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
