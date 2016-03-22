@@ -42,7 +42,7 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
 
-    sum2 = bml_sum_squares2(A, B, alpha, beta);
+    sum2 = bml_sum_squares2(A, B, alpha, beta, threshold);
 
     bml_add(A, B, alpha, beta, threshold);
     sum = bml_sum_squares(A);

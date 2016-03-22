@@ -51,6 +51,7 @@ bml_sum_squares_dense(
  *  \param B The matrix B
  *  \param alpha Multiplier for matrix A
  *  \param beta Multiplier for matrix B
+ *  \param threshold Threshold
  *  \return The sum of squares of all elements of \alpha A + \beta B
  */
 double
@@ -58,21 +59,22 @@ bml_sum_squares2_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
-    const double beta)
+    const double beta,
+    const double threshold)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_sum_squares2_dense_single_real(A, B, alpha, beta);
+            return bml_sum_squares2_dense_single_real(A, B, alpha, beta, threshold);
             break;
         case double_real:
-            return bml_sum_squares2_dense_double_real(A, B, alpha, beta);
+            return bml_sum_squares2_dense_double_real(A, B, alpha, beta, threshold);
             break;
         case single_complex:
-            return bml_sum_squares2_dense_single_complex(A, B, alpha, beta);
+            return bml_sum_squares2_dense_single_complex(A, B, alpha, beta, threshold);
             break;
         case double_complex:
-            return bml_sum_squares2_dense_double_complex(A, B, alpha, beta);
+            return bml_sum_squares2_dense_double_complex(A, B, alpha, beta, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");

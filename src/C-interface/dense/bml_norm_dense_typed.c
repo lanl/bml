@@ -48,6 +48,7 @@ double TYPED_FUNC(
  *  \param B The matrix B
  *  \param alpha Multiplier for A 
  *  \param beta Multiplier for B 
+ *  \param threshold Threshold
  *  \return The sum of squares of all elements of \alpha A + \beta BB
  */
 double TYPED_FUNC(
@@ -55,7 +56,8 @@ double TYPED_FUNC(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,
     const double alpha,
-    const double beta)
+    const double beta,
+    const double threshold)
 {
     int N = A->N;
 
@@ -73,7 +75,8 @@ double TYPED_FUNC(
     for (int i = 0; i < N * N; i++)
     {
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
-        sum += temp * temp;
+        if (REAL_PART(temp) > threshold) 
+            sum += temp * temp;
     }
 
     return (double) REAL_PART(sum);
