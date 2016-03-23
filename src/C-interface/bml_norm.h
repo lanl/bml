@@ -9,7 +9,7 @@
 double bml_sum_squares(
     const bml_matrix_t * A);
 
-// Calculate the sum of suares of all the elements of
+// Calculate the sum of squares of all the elements of
 // alpha * A + beta * B
 double bml_sum_squares2(
     const bml_matrix_t * A,
@@ -17,6 +17,12 @@ double bml_sum_squares2(
     const double alpha,
     const double beta,
     const double threshold);
+
+// Calculate the sum of squares for submatrix core elements
+double bml_sum_squares_submatrix(
+    const bml_matrix_t * A,
+    const int * core_pos,
+    const int core_size);
 
 // Calculate Frobenius norm for matrix A
 // sqrt(sum(A_ij*A_ij)

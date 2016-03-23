@@ -49,6 +49,45 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
+/** Calculate the sum of squares of all the core elements of a submatrix.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix
+ *  \param core_pos Core rows of submatrix
+ *  \param core_size Number of core rows
+ *  \return The sum of squares of A
+ */
+double TYPED_FUNC(
+    bml_sum_squares_submatrix_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    const int * core_pos,
+    const int core_size)
+{
+    int N = A->N;
+    int M = A->M;
+
+    int *A_index = (int *)A->index;
+    int *A_nnz = (int *)A->nnz;
+ 
+    REAL_T sum = 0.0;
+    REAL_T *A_value = (REAL_T *)A->value;
+
+#pragma omp parallel for default(none) \
+    shared(N, M, A_index, A_nnz, A_value, core_pos) \
+    reduction(+:sum)
+    for (int i = 0; i < core_size; i++)
+    {
+        for (int j = 0; j < A_nnz[core_pos[i]]; j++)
+        {
+            REAL_T value = A_value[ROWMAJOR(core_pos[i], j, N, M)];
+            sum += value * value;
+        }
+    }
+
+    return (double) REAL_PART(sum);
+}
+
 /** Calculate the sum of squares of the elements of \alpha A + \beta B.
  *
  *  \ingroup norm_group
@@ -112,7 +151,7 @@ double TYPED_FUNC(
 
        for (int jp = 0; jp < A_N; jp++)
        {
-           if (REAL_PART(y[jp]) > threshold) 
+           if (ABS(y[jp]) > threshold) 
                sum += y[jp] * y[jp];
        }
 

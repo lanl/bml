@@ -8,6 +8,7 @@ module bml_introspection_m
   private
 
   public :: bml_get_N
+  public :: bml_get_M
   public :: bml_get_type
   public :: bml_get_precision
   public :: bml_get_row_bandwidth
@@ -27,6 +28,19 @@ contains
     bml_get_n = bml_get_N_C(a%ptr)
 
   end function bml_get_n
+
+  !> Return the max non-zero elements per row.
+  !!
+  !!\param a The matrix.
+  !!\return The max non-zeroes per row.
+  function bml_get_m(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_m
+
+    bml_get_m = bml_get_M_C(a%ptr)
+
+  end function bml_get_m
 
   !> Get the bandwidth of non-zero elements in a given row.
   !!

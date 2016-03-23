@@ -50,7 +50,14 @@ int
 bml_get_M_dense(
     const bml_matrix_dense_t * A)
 {
-    return 0;
+    if (A != NULL)
+    {
+        return A->N;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /** Return the bandwidth of a row in the matrix.
