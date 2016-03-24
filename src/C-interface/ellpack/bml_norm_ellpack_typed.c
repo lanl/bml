@@ -123,38 +123,59 @@ double TYPED_FUNC(
 
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
+
     REAL_T y[A_N];
+    int ix[A_N], jjb[A_N];
 
     memset(y, 0.0, A_N * sizeof(REAL_T));
+    memset(ix, 0, A_N * sizeof(int));
 
 #pragma omp parallel for \
     default(none) \
-    firstprivate(y) \
+    firstprivate(ix, y) \
+    private(jjb) \
     shared(alpha_, beta_) \
     shared(A_N, A_M, A_index, A_nnz, A_value) \
     shared(B_N, B_M, B_index, B_nnz, B_value) \
     reduction(+:sum)
     for (int i = 0; i < A_N; i++)
     {
+       int l = 0;
        for (int jp = 0; jp < A_nnz[i]; jp++)
        {
            int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
+           if (ix[k] == 0)
+           {
+               y[k] = 0.0;
+               ix[k] = i + 1;
+               jjb[l] = k;
+               l++;
+           }
            y[k] += alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
        } 
 
        for (int jp = 0; jp < B_nnz[i]; jp++)
        {
            int k = B_index[ROWMAJOR(i, jp, B_N, B_M)];
+           if (ix[k] == 0)
+           {
+               y[k] = 0.0;
+               ix[k] = i + 1;
+               jjb[l] = k;
+               l++;
+           }
            y[k] += beta_ * B_value[ROWMAJOR(i, jp, B_N, B_M)];
-
        }
 
-       for (int jp = 0; jp < A_N; jp++)
+       for (int jp = 0; jp < l; jp++)
        {
-           if (ABS(y[jp]) > threshold) 
-               sum += y[jp] * y[jp];
-       }
+           if (ABS(y[jjb[jp]]) > threshold) 
+               sum += y[jjb[jp]] * y[jjb[jp]];
 
+           ix[jjb[jp]] = 0;
+           y[jjb[jp]] = 0.0;
+           jjb[jp] = 0;
+       }
     }
 
     return (double) REAL_PART(sum); 

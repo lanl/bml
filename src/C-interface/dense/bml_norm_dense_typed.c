@@ -110,7 +110,7 @@ double TYPED_FUNC(
     for (int i = 0; i < N * N; i++)
     {
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
-        if (REAL_PART(temp) > threshold) 
+        if (ABS(temp) > threshold) 
             sum += temp * temp;
     }
 
