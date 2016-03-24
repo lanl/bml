@@ -32,6 +32,36 @@ bml_sum_squares(
     return 0;
 }
 
+/** Calculate the sum of squares of all the elements of a matrix.
+ *
+ * \ingroup norm_group_C
+ *
+ * \param A Matrix A
+ * \param core_pos Core rows in A
+ * \param core_size Number of core rows
+ * \return sum of squares of all elements in A
+ */
+double 
+bml_sum_squares_submatrix(
+    const bml_matrix_t * A,
+    const int * core_pos,
+    const int core_size)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_sum_squares_submatrix_dense(A, core_pos, core_size);
+            break;
+        case ellpack:
+            return bml_sum_squares_submatrix_ellpack(A, core_pos, core_size);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return 0;
+}
+
 /** Calculate sum of squares of all the elements of 
  * \alpha A + \beta B
  * \ingroup norm_group_C

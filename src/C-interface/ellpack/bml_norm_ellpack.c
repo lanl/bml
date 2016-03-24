@@ -40,6 +40,42 @@ bml_sum_squares_ellpack(
     return 0;
 }
 
+/** Calculate the sum of squares of the core elements in submatrix A.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix
+ *  \param core_pos Core rows in submatrix
+ *  \param core_size Number of core rows
+ *  \return Sum of squares of all elements in A
+ */
+double 
+bml_sum_squares_submatrix_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int * core_pos,
+    const int core_size)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_sum_squares_submatrix_ellpack_single_real(A, core_pos, core_size);
+            break;
+        case double_real:
+            return bml_sum_squares_submatrix_ellpack_double_real(A, core_pos, core_size);
+            break;
+        case single_complex:
+            return bml_sum_squares_submatrix_ellpack_single_complex(A, core_pos, core_size);
+            break;
+        case double_complex:
+            return bml_sum_squares_submatrix_ellpack_double_complex(A, core_pos, core_size);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return 0;
+}
+
 /** Calculate the sum of squares of the elements of \alpha A + \beta B.
  *
  *  \ingroup norm_group

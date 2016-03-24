@@ -2,6 +2,7 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_normalize.h"
+#include "bml_add.h"
 #include "bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_normalize_dense.h"
@@ -29,11 +30,13 @@ void TYPED_FUNC(
     const double maxeval)
 {
     double maxminusmin = maxeval - mineval;
-    double gershfact = maxeval / maxminusmin;
-    double scalar = (double) -1.0 / maxminusmin;
+    double beta = maxeval / maxminusmin;
+    double alpha = (double) -1.0 / maxminusmin;
 
-    bml_scale_inplace_dense(scalar, A);
-    bml_add_identity_dense(A, gershfact);
+    TYPED_FUNC(bml_scale_add_identity_dense)(A, alpha, beta);
+
+//    bml_scale_inplace_dense(scalar, A);
+ //   bml_add_identity_dense(A, gershfact);
 }
 
 /** Calculate Gershgorin bounds for a dense matrix.

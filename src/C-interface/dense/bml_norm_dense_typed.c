@@ -40,6 +40,41 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
+/** Calculate the sum of squares of all the core elements of a submatrix.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix
+ *  \param core_pos Core rows of submatrix
+ *  \param core_size Number of core rows
+ *  \return The sum of squares of A
+ */
+double TYPED_FUNC(
+    bml_sum_squares_submatrix_dense) (
+    const bml_matrix_dense_t * A,
+    const int * core_pos,
+    const int core_size)
+{
+    int N = A->N;
+
+    REAL_T sum = 0.0;
+    REAL_T *A_matrix = A->matrix;
+
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix, core_pos) \
+    reduction(+:sum)
+    for (int i = 0; i < core_size; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            REAL_T value = A_matrix[ROWMAJOR(core_pos[i], j, N, N)];
+            sum += value * value;
+        }
+    }
+
+    return (double) REAL_PART(sum);
+}
+
 /** Calculate the sum of squares of all elements of \alpha A + \beta B.
  *
  *  \ingroup norm_group
@@ -75,7 +110,7 @@ double TYPED_FUNC(
     for (int i = 0; i < N * N; i++)
     {
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
-        if (REAL_PART(temp) > threshold) 
+        if (ABS(temp) > threshold) 
             sum += temp * temp;
     }
 

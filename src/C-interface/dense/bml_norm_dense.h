@@ -18,6 +18,31 @@ double bml_sum_squares_dense_single_complex(
 double bml_sum_squares_dense_double_complex(
     const bml_matrix_dense_t * A);
 
+double bml_sum_squares_submatrix_dense(
+    const bml_matrix_dense_t * A,
+    const int * core_pos,
+    const int core_size);
+
+double bml_sum_squares_submatrix_dense_single_real(
+    const bml_matrix_dense_t * A,
+    const int * core_pos,
+    const int core_size);
+
+double bml_sum_squares_submatrix_dense_double_real(
+    const bml_matrix_dense_t * A,
+    const int * core_pos,
+    const int core_size);
+
+double bml_sum_squares_submatrix_dense_single_complex(
+    const bml_matrix_dense_t * A,
+    const int * core_pos,
+    const int core_size);
+
+double bml_sum_squares_submatrix_dense_double_complex(
+    const bml_matrix_dense_t * A,
+    const int * core_pos,
+    const int core_size);
+
 double bml_sum_squares2_dense(
     const bml_matrix_dense_t * A,
     const bml_matrix_dense_t * B,

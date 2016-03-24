@@ -49,6 +49,45 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
+/** Calculate the sum of squares of all the core elements of a submatrix.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix
+ *  \param core_pos Core rows of submatrix
+ *  \param core_size Number of core rows
+ *  \return The sum of squares of A
+ */
+double TYPED_FUNC(
+    bml_sum_squares_submatrix_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    const int * core_pos,
+    const int core_size)
+{
+    int N = A->N;
+    int M = A->M;
+
+    int *A_index = (int *)A->index;
+    int *A_nnz = (int *)A->nnz;
+ 
+    REAL_T sum = 0.0;
+    REAL_T *A_value = (REAL_T *)A->value;
+
+#pragma omp parallel for default(none) \
+    shared(N, M, A_index, A_nnz, A_value, core_pos) \
+    reduction(+:sum)
+    for (int i = 0; i < core_size; i++)
+    {
+        for (int j = 0; j < A_nnz[core_pos[i]]; j++)
+        {
+            REAL_T value = A_value[ROWMAJOR(core_pos[i], j, N, M)];
+            sum += value * value;
+        }
+    }
+
+    return (double) REAL_PART(sum);
+}
+
 /** Calculate the sum of squares of the elements of \alpha A + \beta B.
  *
  *  \ingroup norm_group
@@ -84,38 +123,59 @@ double TYPED_FUNC(
 
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
+
     REAL_T y[A_N];
+    int ix[A_N], jjb[A_N];
 
     memset(y, 0.0, A_N * sizeof(REAL_T));
+    memset(ix, 0, A_N * sizeof(int));
 
 #pragma omp parallel for \
     default(none) \
-    firstprivate(y) \
+    firstprivate(ix, y) \
+    private(jjb) \
     shared(alpha_, beta_) \
     shared(A_N, A_M, A_index, A_nnz, A_value) \
     shared(B_N, B_M, B_index, B_nnz, B_value) \
     reduction(+:sum)
     for (int i = 0; i < A_N; i++)
     {
+       int l = 0;
        for (int jp = 0; jp < A_nnz[i]; jp++)
        {
            int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
+           if (ix[k] == 0)
+           {
+               y[k] = 0.0;
+               ix[k] = i + 1;
+               jjb[l] = k;
+               l++;
+           }
            y[k] += alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
        } 
 
        for (int jp = 0; jp < B_nnz[i]; jp++)
        {
            int k = B_index[ROWMAJOR(i, jp, B_N, B_M)];
+           if (ix[k] == 0)
+           {
+               y[k] = 0.0;
+               ix[k] = i + 1;
+               jjb[l] = k;
+               l++;
+           }
            y[k] += beta_ * B_value[ROWMAJOR(i, jp, B_N, B_M)];
-
        }
 
-       for (int jp = 0; jp < A_N; jp++)
+       for (int jp = 0; jp < l; jp++)
        {
-           if (REAL_PART(y[jp]) > threshold) 
-               sum += y[jp] * y[jp];
-       }
+           if (ABS(y[jjb[jp]]) > threshold) 
+               sum += y[jjb[jp]] * y[jjb[jp]];
 
+           ix[jjb[jp]] = 0;
+           y[jjb[jp]] = 0.0;
+           jjb[jp] = 0;
+       }
     }
 
     return (double) REAL_PART(sum); 
