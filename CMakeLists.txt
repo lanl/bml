@@ -32,10 +32,10 @@ endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Wno-unknown-pragmas --coverage
   -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O2 -g -std=c99)
+set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
   -ffree-line-length-none)
-set(GNU_Fortran_FLAGS_RELEASE -O2 -g -ffree-line-length-none)
+set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
   -traceback)
@@ -152,10 +152,10 @@ if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   else()
     if(BML_OPENMP)
       set(BLAS_LIBRARIES -Wl,--no-as-needed "-L${MKLROOT}/lib/intel64"
-        -lmkl_gf_lp64 -lmkl_core -lmkl_gnu_thread -ldl -lpthread -lm)
+        -lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core -lmkl_gnu_thread -lmkl_core -ldl -lpthread -lm)
     else()
       set(BLAS_LIBRARIES -Wl,--no-as-needed "-L${MKLROOT}/lib/intel64"
-        -lmkl_gf_lp64 -lmkl_core -lmkl_sequential -lpthread -lm)
+        -lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_sequential -lmkl_core -lmkl_sequential -lmkl_core -lpthread -lm)
     endif()
   endif()
   set(BLAS_FOUND TRUE)
