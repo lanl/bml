@@ -12,6 +12,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 /** Scale a dense matrix - result in new matrix.
  *
  *  \ingroup scale_group

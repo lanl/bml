@@ -13,6 +13,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #define FUNC_STRING_2(a) #a
 #define FUNC_STRING(a) FUNC_STRING_2(a)
 

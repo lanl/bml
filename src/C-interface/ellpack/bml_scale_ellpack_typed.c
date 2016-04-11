@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 /** Scale an ellpack matrix - result is a new matrix.
  *
  *  \ingroup scale_group
