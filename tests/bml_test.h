@@ -3,10 +3,6 @@
 
 #include <bml.h>
 
-#ifdef DO_MPI
-#include <mpi.h>
-#endif
-
 typedef int (
     *test_function_t) (
     const int N,

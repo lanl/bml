@@ -99,9 +99,7 @@ main(
     int argc,
     char **argv)
 {
-#ifdef DO_MPI
-    MPI_Init(&argc, &argv);
-#endif
+    bml_init(&argc, &argv);
 
     int N = 11;
     int M = -1;
@@ -228,9 +226,7 @@ main(
     fprintf(stderr, "N = %d\n", N);
     free(test);
 
-#ifdef DO_MPI
-    MPI_Finalize();
-#endif
+    bml_shutdown();
 
     return testers[test_index] (N, matrix_type, precision, M);
 }
