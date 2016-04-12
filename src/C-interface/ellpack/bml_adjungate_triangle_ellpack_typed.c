@@ -34,13 +34,17 @@ void TYPED_FUNC(
   REAL_T *A_value = (REAL_T *) A->value;
   int *A_index = A->index;
   int *A_nnz = A->nnz;
+#ifdef _OPENMP
   omp_lock_t lock[A_M];
+#endif
 
   switch (triangle)
   {
     case 'u':
       for (int i=0; i<A_M; i++)
+#ifdef _OPENMP
         omp_init_lock(&(lock[i]));
+#endif
 
 #pragma omp parallel for default(none) shared(A_N,A_M,A_index,A_nnz,A_value,lock) \
       private(j,l,ll)
@@ -56,25 +60,33 @@ void TYPED_FUNC(
           {
             if (ll > i)
             {                   
+#ifdef _OPENMP
               omp_set_lock(&(lock[ll]));
+#endif
               A_index[ROWMAJOR(ll,A_nnz[ll], A_N, A_M)] = i;                 
               A_value[ROWMAJOR(ll,A_nnz[ll], A_N, A_M)] =
                 conj(A_value[ROWMAJOR(i, j, A_N, A_M)]);
               A_nnz[ll]++;
+#ifdef _OPENMP
               omp_unset_lock(&(lock[ll]));
+#endif
 
             }
           }
         }   
       }
       for (int i=0; i<A_M; i++)
+#ifdef _OPENMP
         omp_destroy_lock(&(lock[i]));
+#endif
 
       break;
 
     case 'l':
       for (int i=0; i<A_M; i++)
+#ifdef _OPENMP
         omp_init_lock(&(lock[i]));
+#endif
 
 #pragma omp parallel for default(none) shared(lock,A_N,A_M,A_index,A_nnz,A_value) \
       private(j,l,ll)      
@@ -89,19 +101,25 @@ void TYPED_FUNC(
           {
             if (ll < i)
             {                     
+#ifdef _OPENMP
               omp_set_lock(&(lock[ll]));
+#endif
               A_index[ROWMAJOR(ll,A_nnz[ll], A_N, A_M)] = i;                 
               A_value[ROWMAJOR(ll,A_nnz[ll], A_N, A_M)] =
                 conj(A_value[ROWMAJOR(i, j, A_N, A_M)]);
               A_nnz[ll]++;
+#ifdef _OPENMP
               omp_unset_lock(&(lock[ll]));              
+#endif
 
             }
           }
         }   
       } 
       for (int i=0; i<A_M; i++)
+#ifdef _OPENMP
         omp_destroy_lock(&(lock[i]));
+#endif
 
       break;
   }
