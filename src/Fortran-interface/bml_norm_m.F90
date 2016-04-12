@@ -15,7 +15,7 @@ module bml_norm_m
 contains
 
   !> Return sum of squares of the elements of a matrix.
-  !! 
+  !!
   !!\param a The matrix
   !!\return The sum of squares
   function bml_sum_squares(a) result(ssum)
@@ -28,7 +28,7 @@ contains
   end function bml_sum_squares
 
   !> Return sum of squares of the core elements of a submatrix.
-  !! 
+  !!
   !!\param a The matrix
   !!\param core_pos Core rows of submatrix
   !!\param core_size Number of rows
@@ -45,7 +45,7 @@ contains
   end function bml_sum_squares_submatrix
 
   !> Return sum of squares of alpha * A + beta * B.
-  !! 
+  !!
   !!\param a The matrix a
   !!\param b The matrix b
   !!\param alpha Multiplier for a
@@ -65,7 +65,7 @@ contains
   end function bml_sum_squares2
 
   !> Return Frobenius norm of a matrix.
-  !! 
+  !!
   !!\param a The matrix
   !!\return The Frobenius norm
   function bml_fnorm(a) result(fnorm)

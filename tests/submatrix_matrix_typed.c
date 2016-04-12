@@ -32,9 +32,9 @@ int TYPED_FUNC(
     int vsize[2];
     int chlist_size, cpos_size;
 
-    double threshold = 0.0;	
-    double threshold2 = 0.2;	
-    double threshold3 = 0.3;	
+    double threshold = 0.0;
+    double threshold2 = 0.2;
+    double threshold3 = 0.3;
 
     A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
     for (int i = 0; i < N * N; i++)
@@ -68,12 +68,13 @@ int TYPED_FUNC(
     {
         // Get indices for submatrix
         nlist[0] = i;
-        bml_matrix2submatrix_index(B, A, nlist, 1, chlist, cpos, vsize, 0);      
+        bml_matrix2submatrix_index(B, A, nlist, 1, chlist, cpos, vsize, 0);
         chlist_size = vsize[0];
         cpos_size = vsize[1];
         LOG_INFO("chlist size = %d cpos size %d\n", chlist_size, cpos_size);
 
-        C = bml_zero_matrix(dense, matrix_precision, chlist_size, chlist_size);
+        C = bml_zero_matrix(dense, matrix_precision, chlist_size,
+                            chlist_size);
 
         // Get submatrix
         bml_matrix2submatrix(A, C, chlist, chlist_size);
@@ -86,11 +87,11 @@ int TYPED_FUNC(
                              threshold);
         D_dense = bml_export_to_dense(D, dense_row_major);
         LOG_INFO("Matrix D %d:\n", i);
-        bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense, 0,
-                               N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense,
+                               0, N, 0, N);
 
-        bml_free_memory(C_dense);    
-        bml_free_memory(D_dense);    
+        bml_free_memory(C_dense);
+        bml_free_memory(D_dense);
         bml_deallocate(&C);
     }
 
