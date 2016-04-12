@@ -11,11 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
-#ifdef _OPENMP
 #include <omp.h>
-#endif
-
 
 /** Transposes a triangle of a matrix in place.
  *

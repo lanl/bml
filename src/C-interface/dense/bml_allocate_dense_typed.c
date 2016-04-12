@@ -6,6 +6,7 @@
 #include "bml_types_dense.h"
 
 #include <complex.h>
+#include <omp.h>
 
 /** Allocate the zero matrix.
  *

@@ -8,6 +8,7 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <omp.h>
 
 /** Allocate the zero matrix.
  *

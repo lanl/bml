@@ -12,6 +12,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 /** Convert a dense matrix into a bml matrix.
  *

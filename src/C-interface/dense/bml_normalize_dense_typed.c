@@ -14,6 +14,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 /** Normalize dense matrix given Gershgorin bounds.
  *

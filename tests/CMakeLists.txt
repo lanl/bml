@@ -27,15 +27,6 @@ add_library(bmltests
   $<TARGET_OBJECTS:bmltests-single_complex>
   $<TARGET_OBJECTS:bmltests-double_complex>)
 
-if(OPENMP_FOUND)
-  set_target_properties(bmltests-single_real
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
-endif()
-if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
-  set_target_properties(bmltests-single_real
-    PROPERTIES COMPILE_FLAGS ${MPI_C_COMPILE_FLAGS})
-endif()
-
 add_executable(bml-test
   add_matrix.c
   allocate_matrix.c
