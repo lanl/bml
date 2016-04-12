@@ -12,7 +12,8 @@ const int NUM_TESTS = 13;
 
 const char *test_name[] =
     { "add", "allocate", "convert", "copy", "diagonalize", "multiply",
-    "norm", "normalize", "scale", "submatrix", "threshold", "trace", "transpose"
+    "norm", "normalize", "scale", "submatrix", "threshold", "trace",
+        "transpose"
 };
 
 const char *test_description[] = {

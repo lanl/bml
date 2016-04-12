@@ -19,8 +19,8 @@ module bml_getters_m
 contains
 
   !> Get the row i of matrix a
-  !! \param a The matrix 
-  !! \param i The row number 
+  !! \param a The matrix
+  !! \param i The row number
   !! \param row The row that is extracted
   subroutine bml_get_row_single_real(a, i, row)
 
@@ -33,8 +33,8 @@ contains
   end subroutine bml_get_row_single_real
 
   !> Get the row i of matrix a
-  !! \param a The matrix 
-  !! \param i The row number 
+  !! \param a The matrix
+  !! \param i The row number
   !! \param row The row that is extracted
   subroutine bml_get_row_double_real(a, i, row)
 
@@ -47,8 +47,8 @@ contains
   end subroutine bml_get_row_double_real
 
   !> Get the row i of matrix a
-  !! \param a The matrix 
-  !! \param i The row number 
+  !! \param a The matrix
+  !! \param i The row number
   !! \param row The row that is extracted
   subroutine bml_get_row_single_complex(a, i, row)
 
@@ -61,9 +61,9 @@ contains
   end subroutine bml_get_row_single_complex
 
   !> Get the row i of matrix a
-  !! \param a The matrix 
-  !! \param i The row number 
-  !! \param row The row that is extracted  
+  !! \param a The matrix
+  !! \param i The row number
+  !! \param row The row that is extracted
   subroutine bml_get_row_double_complex(a, i, row)
 
     type(bml_matrix_t), intent(in) :: a

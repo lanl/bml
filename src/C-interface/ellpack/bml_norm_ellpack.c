@@ -49,25 +49,31 @@ bml_sum_squares_ellpack(
  *  \param core_size Number of core rows
  *  \return Sum of squares of all elements in A
  */
-double 
+double
 bml_sum_squares_submatrix_ellpack(
     const bml_matrix_ellpack_t * A,
-    const int * core_pos,
+    const int *core_pos,
     const int core_size)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_sum_squares_submatrix_ellpack_single_real(A, core_pos, core_size);
+            return bml_sum_squares_submatrix_ellpack_single_real(A, core_pos,
+                                                                 core_size);
             break;
         case double_real:
-            return bml_sum_squares_submatrix_ellpack_double_real(A, core_pos, core_size);
+            return bml_sum_squares_submatrix_ellpack_double_real(A, core_pos,
+                                                                 core_size);
             break;
         case single_complex:
-            return bml_sum_squares_submatrix_ellpack_single_complex(A, core_pos, core_size);
+            return bml_sum_squares_submatrix_ellpack_single_complex(A,
+                                                                    core_pos,
+                                                                    core_size);
             break;
         case double_complex:
-            return bml_sum_squares_submatrix_ellpack_double_complex(A, core_pos, core_size);
+            return bml_sum_squares_submatrix_ellpack_double_complex(A,
+                                                                    core_pos,
+                                                                    core_size);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -99,16 +105,20 @@ bml_sum_squares2_ellpack(
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_sum_squares2_ellpack_single_real(A, B, alpha, beta, threshold);
+            return bml_sum_squares2_ellpack_single_real(A, B, alpha, beta,
+                                                        threshold);
             break;
         case double_real:
-            return bml_sum_squares2_ellpack_double_real(A, B, alpha, beta, threshold);
+            return bml_sum_squares2_ellpack_double_real(A, B, alpha, beta,
+                                                        threshold);
             break;
         case single_complex:
-            return bml_sum_squares2_ellpack_single_complex(A, B, alpha, beta, threshold);
+            return bml_sum_squares2_ellpack_single_complex(A, B, alpha, beta,
+                                                           threshold);
             break;
         case double_complex:
-            return bml_sum_squares2_ellpack_double_complex(A, B, alpha, beta, threshold);
+            return bml_sum_squares2_ellpack_double_complex(A, B, alpha, beta,
+                                                           threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");

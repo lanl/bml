@@ -12,7 +12,7 @@ module bml_setters_m
 
   !> Routine to set elements to a new matrix
   !! This routine is just faster than set_element
-  !! We just need to make sure that the matrix is empty and 
+  !! We just need to make sure that the matrix is empty and
   !! no elements are replaced.
   !! The dense version remains the same as set_element.
   interface bml_set_element_new
@@ -23,7 +23,7 @@ module bml_setters_m
   end interface bml_set_element_new
 
   !> Routine to set elements.
-  !! 
+  !!
   interface bml_set_element
      module procedure bml_set_element_single_real
      module procedure bml_set_element_double_real
@@ -32,7 +32,7 @@ module bml_setters_m
   end interface bml_set_element
 
   !> Routine to set rows.
-  !!   
+  !!
   interface bml_set_row
      module procedure bml_set_row_single_real
      module procedure bml_set_row_double_real
@@ -41,7 +41,7 @@ module bml_setters_m
   end interface bml_set_row
 
   !> Routine to set diagonal.
-  !!     
+  !!
   interface bml_set_diagonal
      module procedure bml_set_diagonal_single_real
      module procedure bml_set_diagonal_double_real
@@ -98,10 +98,10 @@ contains
     complex(C_DOUBLE_COMPLEX), target, intent(in) :: element
 
     call bml_set_element_new_C(a%ptr,i-1,j-1,c_loc(element))
-  
+
   end subroutine bml_set_element_new_double_complex
 
-  !Setters for element 
+  !Setters for element
   subroutine bml_set_element_single_real(a,i,j,element)
 
     type(bml_matrix_t), intent(inout) :: a
@@ -143,11 +143,11 @@ contains
     complex(C_DOUBLE_COMPLEX), target, intent(in) :: element
 
     call bml_set_element_C(a%ptr,i-1,j-1,c_loc(element))
-  
+
   end subroutine bml_set_element_double_complex
 
-  
-  !Setters for row 
+
+  !Setters for row
   subroutine bml_set_row_single_real(a, i, row, threshold)
 
     type(bml_matrix_t), intent(inout) :: a

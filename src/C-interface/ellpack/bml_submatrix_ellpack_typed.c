@@ -32,11 +32,11 @@ void TYPED_FUNC(
     bml_matrix2submatrix_index_ellpack) (
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
-    const int * nodelist,
+    const int *nodelist,
     const int nsize,
-    int * core_halo_index,
-    int * core_pos,
-    int * vsize,
+    int *core_halo_index,
+    int *core_pos,
+    int *vsize,
     const int double_jump_flag)
 {
     int l, ll, ii, ls, k;
@@ -58,10 +58,10 @@ void TYPED_FUNC(
     ll = 0;
 
     // Collect indeces from graph
-    for (int j = 0; j < nsize ; j++)
+    for (int j = 0; j < nsize; j++)
     {
         ii = nodelist[j];
-  
+
         for (int jp = 0; jp < B_nnz[ii]; jp++)
         {
             k = B_index[ROWMAJOR(ii, jp, B_N, B_M)];
@@ -71,7 +71,7 @@ void TYPED_FUNC(
                 core_halo_index[l] = k;
                 lg[k] = l;
                 l++;
-            } 
+            }
             // Core diagonal elements
             if (k == ii)
             {
@@ -92,14 +92,14 @@ void TYPED_FUNC(
             if (ix[k] == 0)
             {
                 ix[k] = ii + 1;
-                core_halo_index[l] = k; 
+                core_halo_index[l] = k;
                 l++;
             }
         }
-    } 
+    }
 
     // Perform a "double jump" for extra elements
-    // based on graph, like performing a symbolic X^2 
+    // based on graph, like performing a symbolic X^2
     if (double_jump_flag == 1)
     {
         ls = l;
@@ -131,19 +131,19 @@ void TYPED_FUNC(
  * \param A Matrix A
  * \param B Submatrix B
  * \param core_halo_index Set of row indeces for submatrix
- * \param llsize Number of indeces 
+ * \param llsize Number of indeces
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_ellpack) (
     const bml_matrix_ellpack_t * A,
     bml_matrix_dense_t * B,
-    const int * core_halo_index,
+    const int *core_halo_index,
     const int lsize)
 {
     REAL_T *rvalue;
 
     int B_N = B->N;
-    REAL_T * B_matrix = B->matrix;
+    REAL_T *B_matrix = B->matrix;
 
 #pragma omp parallel for \
     default(none) \
@@ -152,8 +152,9 @@ void TYPED_FUNC(
     shared(A, B_matrix, B_N)
     for (int jb = 0; jb < lsize; jb++)
     {
-        rvalue = TYPED_FUNC(bml_getVector_ellpack)(A, core_halo_index, 
-                            core_halo_index[jb], lsize);    
+        rvalue = TYPED_FUNC(bml_getVector_ellpack) (A, core_halo_index,
+                                                    core_halo_index[jb],
+                                                    lsize);
         for (int j = 0; j < lsize; j++)
         {
             B_matrix[ROWMAJOR(jb, j, B_N, B_N)] = rvalue[j];
@@ -169,7 +170,7 @@ void TYPED_FUNC(
  *
  * \param A Submatrix A
  * \param B Matrix B
- * \param core_halo_index Set of submatrix row indeces 
+ * \param core_halo_index Set of submatrix row indeces
  * \param lsize Number of indeces
  * \param core_pos Set of positions in core_halo_index for core rows
  * \param llsize Number of core positions
@@ -178,9 +179,9 @@ void TYPED_FUNC(
     bml_submatrix2matrix_ellpack) (
     const bml_matrix_dense_t * A,
     bml_matrix_ellpack_t * B,
-    const int * core_halo_index,
+    const int *core_halo_index,
     const int lsize,
-    const int * core_pos,
+    const int *core_pos,
     const int llsize,
     const double threshold)
 {
@@ -200,18 +201,19 @@ void TYPED_FUNC(
     private(ii, icol) \
     shared(core_halo_index, core_pos) \
     shared(A_N, A_matrix) \
-    shared(B_N, B_M, B_nnz, B_index, B_value) 
+    shared(B_N, B_M, B_nnz, B_index, B_value)
     for (int ja = 0; ja < llsize; ja++)
     {
         ii = core_halo_index[core_pos[ja]];
-        
+
         icol = 0;
         for (int jb = 0; jb < lsize; jb++)
         {
-            if (ABS(A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)]) > threshold)
+            if (ABS(A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)]) >
+                threshold)
             {
                 B_index[ROWMAJOR(ii, icol, B_N, B_M)] = core_halo_index[jb];
-                B_value[ROWMAJOR(ii, icol, B_N, B_M)] = 
+                B_value[ROWMAJOR(ii, icol, B_N, B_M)] =
                     A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)];
                 icol++;
             }
@@ -220,34 +222,34 @@ void TYPED_FUNC(
     }
 }
 
-// Get matching vector of values 
-void* 
-TYPED_FUNC(bml_getVector_ellpack)(
+// Get matching vector of values
+void *TYPED_FUNC(
+    bml_getVector_ellpack) (
     const bml_matrix_ellpack_t * A,
-    const int * jj,
-    const int irow, 
-    const int colCnt) 
+    const int *jj,
+    const int irow,
+    const int colCnt)
 {
-  const REAL_T ZERO = 0.0;
+    const REAL_T ZERO = 0.0;
 
-  int A_N = A->N;
-  int A_M = A->M;
-  int *A_nnz = A->nnz;
-  int *A_index = A->index;
-  REAL_T *A_value = A->value;
-  REAL_T *rvalue = malloc(colCnt * sizeof(REAL_T));
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    REAL_T *A_value = A->value;
+    REAL_T *rvalue = malloc(colCnt * sizeof(REAL_T));
 
-  for (int i = 0; i < colCnt; i++)
-  {
-    for (int j = 0; j < A_nnz[irow]; j++)
+    for (int i = 0; i < colCnt; i++)
     {
-        if (A_index[ROWMAJOR(irow, j, A_N, A_M)] == jj[i])
+        for (int j = 0; j < A_nnz[irow]; j++)
         {
-            rvalue[i] = A_value[ROWMAJOR(irow, j, A_N, A_M)];
-            break;
+            if (A_index[ROWMAJOR(irow, j, A_N, A_M)] == jj[i])
+            {
+                rvalue[i] = A_value[ROWMAJOR(irow, j, A_N, A_M)];
+                break;
+            }
+            rvalue[i] = ZERO;
         }
-        rvalue[i] = ZERO;
     }
-  }
-  return rvalue;
+    return rvalue;
 }

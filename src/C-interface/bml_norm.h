@@ -21,7 +21,7 @@ double bml_sum_squares2(
 // Calculate the sum of squares for submatrix core elements
 double bml_sum_squares_submatrix(
     const bml_matrix_t * A,
-    const int * core_pos,
+    const int *core_pos,
     const int core_size);
 
 // Calculate Frobenius norm for matrix A

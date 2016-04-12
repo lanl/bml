@@ -34,10 +34,10 @@ void TYPED_FUNC(
     double beta = maxeval / maxminusmin;
     double alpha = (double) -1.0 / maxminusmin;
 
-    TYPED_FUNC(bml_scale_add_identity_dense)(A, alpha, beta);
+    TYPED_FUNC(bml_scale_add_identity_dense) (A, alpha, beta);
 
 //    bml_scale_inplace_dense(scalar, A);
- //   bml_add_identity_dense(A, gershfact);
+    //   bml_add_identity_dense(A, gershfact);
 }
 
 /** Calculate Gershgorin bounds for a dense matrix.

@@ -6,10 +6,10 @@
 #include "bml_types.h"
 
 void bml_set_element_new(
-  bml_matrix_t * A,
-  const int i,
-  const int j,
-  const void *value);
+    bml_matrix_t * A,
+    const int i,
+    const int j,
+    const void *value);
 
 void bml_set_element(
     bml_matrix_t * A,
