@@ -63,8 +63,12 @@ foreach(N adjungate_triangle allocate add multiply convert copy diagonalize norm
     normalize scale submatrix threshold trace transpose)
   foreach(T dense ellpack)
     foreach(P single_real double_real single_complex double_complex)
-      add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
-      if(NOT BML_OPENMP AND VALGRIND)
+      if(BML_MPI)
+        add_test(${N}-${T}-${P} mpirun -np 1 bml-test -n ${N} -t ${T} -p ${P})
+      else()
+        add_test(${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
+      endif()
+      if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
         add_test(${N}-${T}-${P}-valgrind ${VALGRIND} --error-exitcode=1
           --leak-check=full --read-var-info=yes --track-origins=yes
           ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})

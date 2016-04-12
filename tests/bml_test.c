@@ -99,6 +99,10 @@ main(
     int argc,
     char **argv)
 {
+#ifdef DO_MPI
+    MPI_Init(&argc, &argv);
+#endif
+
     int N = 11;
     int M = -1;
     char *test = NULL;
@@ -223,5 +227,10 @@ main(
     fprintf(stderr, "%s\n", test);
     fprintf(stderr, "N = %d\n", N);
     free(test);
+
+#ifdef DO_MPI
+    MPI_Finalize();
+#endif
+
     return testers[test_index] (N, matrix_type, precision, M);
 }
