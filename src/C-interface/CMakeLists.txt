@@ -23,6 +23,7 @@ set(HEADERS-C
   bml_multiply.h
   bml_norm.h
   bml_normalize.h
+  bml_parallel.h
   bml_scale.h
   bml_setters.h
   bml_shutdown.h
@@ -57,6 +58,7 @@ set(SOURCES-C
   bml_multiply.c
   bml_norm.c
   bml_normalize.c
+  bml_parallel.c
   bml_scale.c
   bml_setters.c
   bml_shutdown.c

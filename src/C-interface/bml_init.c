@@ -1,11 +1,7 @@
 #include "bml_init.h"
-#include "bml_logger.h"
+#include "bml_parallel.h"
 
 #include <stdlib.h>
-
-#ifdef DO_MPI
-#include <mpi.h>
-#endif
 
 /** Initialize.
  *
@@ -19,7 +15,5 @@ bml_init(
     int * argc,
     char *** argv)
 {
-#ifdef DO_MPI
-    MPI_Init(argc, argv);
-#endif
+    bml_initParallel(argc, argv);
 }

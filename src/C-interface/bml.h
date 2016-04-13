@@ -210,6 +210,7 @@
 #include "bml_multiply.h"
 #include "bml_norm.h"
 #include "bml_normalize.h"
+#include "bml_parallel.h"
 #include "bml_scale.h"
 #include "bml_setters.h"
 #include "bml_shutdown.h"

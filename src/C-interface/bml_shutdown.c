@@ -1,11 +1,7 @@
 #include "bml_shutdown.h"
-#include "bml_logger.h"
+#include "bml_parallel.h"
 
 #include <stdlib.h>
-
-#ifdef DO_MPI
-#include <mpi.h>
-#endif
 
 /** Shutdown.
  *
@@ -15,7 +11,5 @@
 void 
 bml_shutdown()
 {
-#ifdef DO_MPI
-    MPI_Finalize();
-#endif
+    bml_shutdownParallel();
 }
