@@ -18,11 +18,11 @@ bml_adjungate_triangle(
     bml_matrix_t * A,
     char triangle)
 {
-  int status;
+    int status;
     switch (bml_get_type(A))
     {
         case dense:
-            bml_adjungate_triangle_dense(A, triangle);            
+            bml_adjungate_triangle_dense(A, triangle);
             break;
         case ellpack:
             bml_adjungate_triangle_ellpack(A, triangle);

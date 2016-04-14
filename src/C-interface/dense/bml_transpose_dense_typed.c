@@ -11,10 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
-#ifdef _OPENMP
 #include <omp.h>
-#endif
 
 /** Transpose a matrix.
  *

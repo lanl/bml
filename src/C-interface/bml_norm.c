@@ -41,10 +41,10 @@ bml_sum_squares(
  * \param core_size Number of core rows
  * \return sum of squares of all elements in A
  */
-double 
+double
 bml_sum_squares_submatrix(
     const bml_matrix_t * A,
-    const int * core_pos,
+    const int *core_pos,
     const int core_size)
 {
     switch (bml_get_type(A))
@@ -62,7 +62,7 @@ bml_sum_squares_submatrix(
     return 0;
 }
 
-/** Calculate sum of squares of all the elements of 
+/** Calculate sum of squares of all the elements of
  * \alpha A + \beta B
  * \ingroup norm_group_C
  *
@@ -71,7 +71,7 @@ bml_sum_squares_submatrix(
  * \param alpha Multiplier for matrix A
  * \param beta Multiplier for matrix B
  * \param threshold Threshold
- * \return sum of squares of alpha * A + beta * B 
+ * \return sum of squares of alpha * A + beta * B
  */
 double
 bml_sum_squares2(
@@ -121,4 +121,3 @@ bml_fnorm(
     }
     return 0;
 }
-

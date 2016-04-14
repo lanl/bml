@@ -120,10 +120,8 @@ endif()
 
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
-  include(FindMPI)
-  if(NOT MPI_C_FOUND OR NOT MPI_Fortran_FOUND)
-    message(FATAL_ERROR "Can not find MPI compiler")
-  endif()
+  message(STATUS "Will build with MPI")
+  add_definitions(-DDO_MPI)
 endif()
 
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")

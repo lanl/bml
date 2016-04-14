@@ -31,7 +31,7 @@ contains
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(in) :: b
     integer(C_INT), target, intent(in) :: nodelist(*)
-    integer(C_INT), target, intent(inout) :: core_halo_index(*) 
+    integer(C_INT), target, intent(inout) :: core_halo_index(*)
     integer(C_INT), target, intent(inout) :: core_pos(*)
     integer(C_INT), target, intent(inout) :: vsize(*)
     integer, intent(in) :: nsize

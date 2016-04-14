@@ -29,6 +29,14 @@ be modified by running
 
 (which assumes that you are using the bash shell).
 
+To build with GNU compilers, OpenMP, and Intel MKL do the following.
+
+    $ CC=gcc FC=gfortran BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+
+To build with MPI, OpenMP, and use Intel MKL do the following.
+
+    $ CC=mpicc FC=mpif90 BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+
 ## Prerequisites ##
 
 In order to build the library, the following tools need to be installed:

@@ -12,7 +12,8 @@ const int NUM_TESTS = 13;
 
 const char *test_name[] =
     { "add", "allocate", "convert", "copy", "diagonalize", "multiply",
-    "norm", "normalize", "scale", "submatrix", "threshold", "trace", "transpose"
+    "norm", "normalize", "scale", "submatrix", "threshold", "trace",
+        "transpose"
 };
 
 const char *test_description[] = {
@@ -98,6 +99,8 @@ main(
     int argc,
     char **argv)
 {
+    bml_init(&argc, &argv);
+
     int N = 11;
     int M = -1;
     char *test = NULL;
@@ -222,5 +225,8 @@ main(
     fprintf(stderr, "%s\n", test);
     fprintf(stderr, "N = %d\n", N);
     free(test);
+
+    bml_shutdown();
+
     return testers[test_index] (N, matrix_type, precision, M);
 }

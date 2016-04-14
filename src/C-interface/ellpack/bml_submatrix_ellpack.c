@@ -26,30 +26,42 @@ void
 bml_matrix2submatrix_index_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
-    const int * nodelist,
+    const int *nodelist,
     const int nsize,
-    int * core_halo_index,
-    int * core_pos,
-    int * vsize,
+    int *core_halo_index,
+    int *core_pos,
+    int *vsize,
     const int double_jump_flag)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_matrix2submatrix_index_ellpack_single_real(A, B, nodelist, nsize, 
-                core_halo_index, core_pos, vsize, double_jump_flag);
+            bml_matrix2submatrix_index_ellpack_single_real(A, B, nodelist,
+                                                           nsize,
+                                                           core_halo_index,
+                                                           core_pos, vsize,
+                                                           double_jump_flag);
             break;
         case double_real:
-            bml_matrix2submatrix_index_ellpack_double_real(A, B, nodelist, nsize, 
-                core_halo_index, core_pos, vsize, double_jump_flag);
+            bml_matrix2submatrix_index_ellpack_double_real(A, B, nodelist,
+                                                           nsize,
+                                                           core_halo_index,
+                                                           core_pos, vsize,
+                                                           double_jump_flag);
             break;
         case single_complex:
-            bml_matrix2submatrix_index_ellpack_single_complex(A, B, nodelist, nsize, 
-                core_halo_index, core_pos, vsize, double_jump_flag);
+            bml_matrix2submatrix_index_ellpack_single_complex(A, B, nodelist,
+                                                              nsize,
+                                                              core_halo_index,
+                                                              core_pos, vsize,
+                                                              double_jump_flag);
             break;
         case double_complex:
-            bml_matrix2submatrix_index_ellpack_double_complex(A, B, nodelist, nsize, 
-                core_halo_index, core_pos, vsize, double_jump_flag);
+            bml_matrix2submatrix_index_ellpack_double_complex(A, B, nodelist,
+                                                              nsize,
+                                                              core_halo_index,
+                                                              core_pos, vsize,
+                                                              double_jump_flag);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -64,32 +76,32 @@ bml_matrix2submatrix_index_ellpack(
  * \param A Matrix A
  * \param B Submatrix B
  * \param core_halo_index Set of row indeces for submatrix
- * \param llsize Number of indeces 
+ * \param llsize Number of indeces
  */
 void
 bml_matrix2submatrix_ellpack(
     const bml_matrix_ellpack_t * A,
     bml_matrix_dense_t * B,
-    const int * core_halo_index,
+    const int *core_halo_index,
     const int lsize)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_matrix2submatrix_ellpack_single_real(A, B, core_halo_index, 
-                                                            lsize);
+            bml_matrix2submatrix_ellpack_single_real(A, B, core_halo_index,
+                                                     lsize);
             break;
         case double_real:
-            bml_matrix2submatrix_ellpack_double_real(A, B, core_halo_index, 
-                                                            lsize);
+            bml_matrix2submatrix_ellpack_double_real(A, B, core_halo_index,
+                                                     lsize);
             break;
         case single_complex:
-            bml_matrix2submatrix_ellpack_single_complex(A, B, core_halo_index, 
-                                                            lsize);
+            bml_matrix2submatrix_ellpack_single_complex(A, B, core_halo_index,
+                                                        lsize);
             break;
         case double_complex:
-            bml_matrix2submatrix_ellpack_double_complex(A, B, core_halo_index, 
-                                                            lsize);
+            bml_matrix2submatrix_ellpack_double_complex(A, B, core_halo_index,
+                                                        lsize);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -103,7 +115,7 @@ bml_matrix2submatrix_ellpack(
  *
  * \param A Submatrix A
  * \param B Matrix B
- * \param core_halo_index Set of submatrix row indeces 
+ * \param core_halo_index Set of submatrix row indeces
  * \param lsize Number of indeces
  * \param core_pos Set of positions in core_halo_index for core rows
  * \param llsize Number of core positions
@@ -113,29 +125,33 @@ void
 bml_submatrix2matrix_ellpack(
     const bml_matrix_dense_t * A,
     bml_matrix_ellpack_t * B,
-    const int * core_halo_index,
+    const int *core_halo_index,
     const int lsize,
-    const int * core_pos,
+    const int *core_pos,
     const int llsize,
     const double threshold)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_submatrix2matrix_ellpack_single_real(A, B, core_halo_index, lsize, 
-                                                     core_pos, llsize, threshold);
+            bml_submatrix2matrix_ellpack_single_real(A, B, core_halo_index,
+                                                     lsize, core_pos, llsize,
+                                                     threshold);
             break;
         case double_real:
-            bml_submatrix2matrix_ellpack_double_real(A, B, core_halo_index, lsize, 
-                                                     core_pos, llsize, threshold);
+            bml_submatrix2matrix_ellpack_double_real(A, B, core_halo_index,
+                                                     lsize, core_pos, llsize,
+                                                     threshold);
             break;
         case single_complex:
-            bml_submatrix2matrix_ellpack_single_complex(A, B, core_halo_index, lsize, 
-                                                     core_pos, llsize, threshold);
+            bml_submatrix2matrix_ellpack_single_complex(A, B, core_halo_index,
+                                                        lsize, core_pos,
+                                                        llsize, threshold);
             break;
         case double_complex:
-            bml_submatrix2matrix_ellpack_double_complex(A, B, core_halo_index, lsize, 
-                                                     core_pos, llsize, threshold);
+            bml_submatrix2matrix_ellpack_double_complex(A, B, core_halo_index,
+                                                        lsize, core_pos,
+                                                        llsize, threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -153,9 +169,10 @@ bml_submatrix2matrix_ellpack(
  * \param colCnt Number of columns
  * \param rvalue Returned vector
  */
-void* bml_getVector_ellpack(
+void *
+bml_getVector_ellpack(
     const bml_matrix_ellpack_t * A,
-    const int * jj,
+    const int *jj,
     const int irow,
     const int colCnt)
 {

@@ -58,7 +58,7 @@ int TYPED_FUNC(
 
     sqrt_sum = sqrt(sum);
     sqrt_sum2 = sqrt(sum2);
-    
+
     if ((ABS(sqrt_sum - sqrt_sum2) > REL_TOL) ||
         (ABS(sqrt_sum - fnorm) > REL_TOL) ||
         (ABS(sqrt_sum2 - fnorm) > REL_TOL))

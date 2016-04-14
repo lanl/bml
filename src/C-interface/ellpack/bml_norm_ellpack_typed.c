@@ -9,10 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef _OPENMP
 #include <omp.h>
-#endif
 
 /** Calculate the sum of squares of the elements of a matrix.
  *
@@ -61,17 +58,17 @@ double TYPED_FUNC(
 double TYPED_FUNC(
     bml_sum_squares_submatrix_ellpack) (
     const bml_matrix_ellpack_t * A,
-    const int * core_pos,
+    const int *core_pos,
     const int core_size)
 {
     int N = A->N;
     int M = A->M;
 
-    int *A_index = (int *)A->index;
-    int *A_nnz = (int *)A->nnz;
- 
+    int *A_index = (int *) A->index;
+    int *A_nnz = (int *) A->nnz;
+
     REAL_T sum = 0.0;
-    REAL_T *A_value = (REAL_T *)A->value;
+    REAL_T *A_value = (REAL_T *) A->value;
 
 #pragma omp parallel for default(none) \
     shared(N, M, A_index, A_nnz, A_value, core_pos) \
@@ -104,7 +101,7 @@ double TYPED_FUNC(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
     const double alpha,
-    const double beta, 
+    const double beta,
     const double threshold)
 {
     int A_N = A->N;
@@ -140,46 +137,46 @@ double TYPED_FUNC(
     reduction(+:sum)
     for (int i = 0; i < A_N; i++)
     {
-       int l = 0;
-       for (int jp = 0; jp < A_nnz[i]; jp++)
-       {
-           int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
-           if (ix[k] == 0)
-           {
-               y[k] = 0.0;
-               ix[k] = i + 1;
-               jjb[l] = k;
-               l++;
-           }
-           y[k] += alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
-       } 
+        int l = 0;
+        for (int jp = 0; jp < A_nnz[i]; jp++)
+        {
+            int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
+            if (ix[k] == 0)
+            {
+                y[k] = 0.0;
+                ix[k] = i + 1;
+                jjb[l] = k;
+                l++;
+            }
+            y[k] += alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
+        }
 
-       for (int jp = 0; jp < B_nnz[i]; jp++)
-       {
-           int k = B_index[ROWMAJOR(i, jp, B_N, B_M)];
-           if (ix[k] == 0)
-           {
-               y[k] = 0.0;
-               ix[k] = i + 1;
-               jjb[l] = k;
-               l++;
-           }
-           y[k] += beta_ * B_value[ROWMAJOR(i, jp, B_N, B_M)];
-       }
+        for (int jp = 0; jp < B_nnz[i]; jp++)
+        {
+            int k = B_index[ROWMAJOR(i, jp, B_N, B_M)];
+            if (ix[k] == 0)
+            {
+                y[k] = 0.0;
+                ix[k] = i + 1;
+                jjb[l] = k;
+                l++;
+            }
+            y[k] += beta_ * B_value[ROWMAJOR(i, jp, B_N, B_M)];
+        }
 
-       for (int jp = 0; jp < l; jp++)
-       {
-           if (ABS(y[jjb[jp]]) > threshold) 
-               sum += y[jjb[jp]] * y[jjb[jp]];
+        for (int jp = 0; jp < l; jp++)
+        {
+            if (ABS(y[jjb[jp]]) > threshold)
+                sum += y[jjb[jp]] * y[jjb[jp]];
 
-           ix[jjb[jp]] = 0;
-           y[jjb[jp]] = 0.0;
-           jjb[jp] = 0;
-       }
+            ix[jjb[jp]] = 0;
+            y[jjb[jp]] = 0.0;
+            jjb[jp] = 0;
+        }
     }
 
-    return (double) REAL_PART(sum); 
-}    
+    return (double) REAL_PART(sum);
+}
 
 /** Calculate the Frobenius norm of matrix A.
  *
@@ -197,4 +194,3 @@ double TYPED_FUNC(
 
     return (double) REAL_PART(fnorm);
 }
-

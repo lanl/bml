@@ -1,6 +1,6 @@
 /** \file */
 
-#ifndef __BML_GETTERS_DENSE_H
+#ifndef __BML_GETTERS_ELLPACK_H
 #define __BML_GETTERS_ELLPACK_H
 
 #include "bml_types_ellpack.h"

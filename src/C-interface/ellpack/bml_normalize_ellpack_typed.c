@@ -13,6 +13,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 /* Normalize ellpack matrix given Gershgorin bounds.
  *

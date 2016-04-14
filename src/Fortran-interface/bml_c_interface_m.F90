@@ -335,7 +335,7 @@ module bml_c_interface_m
       integer(C_INT), value, intent(in) :: j
       type(C_PTR), value :: element
     end subroutine bml_set_element_new_C
-        
+
 
     subroutine bml_set_diagonal_C(a, diagonal, threshold) bind(C, name="bml_set_diagonal")
       import :: C_PTR, C_INT, C_DOUBLE

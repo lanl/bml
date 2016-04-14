@@ -10,10 +10,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef _OPENMP
 #include <omp.h>
-#endif
 
 /** Calculate the sum of squares of all the elements of a matrix.
  *
@@ -52,7 +49,7 @@ double TYPED_FUNC(
 double TYPED_FUNC(
     bml_sum_squares_submatrix_dense) (
     const bml_matrix_dense_t * A,
-    const int * core_pos,
+    const int *core_pos,
     const int core_size)
 {
     int N = A->N;
@@ -81,8 +78,8 @@ double TYPED_FUNC(
  *
  *  \param A The matrix A
  *  \param B The matrix B
- *  \param alpha Multiplier for A 
- *  \param beta Multiplier for B 
+ *  \param alpha Multiplier for A
+ *  \param beta Multiplier for B
  *  \param threshold Threshold
  *  \return The sum of squares of all elements of \alpha A + \beta BB
  */
@@ -110,7 +107,7 @@ double TYPED_FUNC(
     for (int i = 0; i < N * N; i++)
     {
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
-        if (ABS(temp) > threshold) 
+        if (ABS(temp) > threshold)
             sum += temp * temp;
     }
 
