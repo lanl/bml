@@ -125,3 +125,50 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# LA-CC # 
+
+NOTICE OF OSS COPYRIGHT ASSERTION:
+
+LANS has asserted copyright on the software package entitled *Basic
+Matrix Library (bml), Version 0.x (C16006)*.
+
+*ABSTRACT*
+The basic matrix library (bml) is a collection of various matrix data
+formats (in dense and sparse) and their associated algorithms for basic
+matrix operations.
+
+This code is unclassified and has been assigned LA-CC-*15-093*. Los
+Alamos National Laboratory’s Export Control Team made an in-house
+determination that this software is controlled under Department of
+Commerce regulations and the Export Control Classification Number (ECCN)
+*EAR99*. The export control review is attached.
+
+The developers intend to distribute this software package under the OSI
+Certified *BSD 3-Clause
+License***(http://www.opensource.org/licenses/BSD-3-Clause)
+
+This code was developed using funding from the LANL Laboratory-Directed
+Research Development (LDRD) Program. Larry Kwei, LAFO Program Manager,
+has granted his concurrence to asserting copyright and then distributing
+the **Basic Matrix Library (bml), Version 0.x* *code using an open
+source software license. See attached memo.
+
+LANS acknowledges that it will comply with the DOE OSS policy as follows:
+
+a.  submit form DOE F 241.4 to the Energy Science and Technology
+Software Center (ESTSC),
+b.  provide the unique URL on the form for ESTSC to distribute, and
+c. maintain an OSS Record available for inspection by DOE.
+
+Following is a table briefly summarizes information for this software
+package:
+
+*CODE NAME:  *
+*Basic Matrix Library (bml), Version 0.x (C16006)
+**Classification Review Number: LA-CC-15-093**
+Export Control Classification Number (ECCN): EAR99**
+B&R Code:  YN0100000
+*
+
+
