@@ -193,6 +193,12 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: row
     end subroutine bml_get_row_C
 
+    subroutine bml_get_diagonal_C(a, diagonal) bind(C, name="bml_get_diagonal")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: diagonal
+    end subroutine bml_get_diagonal_C
+    
     function bml_sum_squares_C(a) bind(C, name="bml_sum_squares")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
