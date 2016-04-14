@@ -36,6 +36,12 @@ int TYPED_FUNC(
     double threshold2 = 0.2;
     double threshold3 = 0.3;
 
+    if (matrix_type == dense) 
+    {
+        LOG_INFO("submatrix matrix test not available\n");
+        return 0;
+    }
+
     A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
     for (int i = 0; i < N * N; i++)
     {
