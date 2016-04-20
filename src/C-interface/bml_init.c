@@ -17,3 +17,18 @@ bml_init(
 {
     bml_initParallel(argc, argv);
 }
+
+/** Initialize from Fortran.
+ *
+ * \ingroup init_group_C
+ *
+ * \param Comm from Fortran
+ */
+#ifdef DO_MPI
+void
+bm_initF(
+    MPI_Fint* fcomm)
+{
+    bml_initParallelF(fcomm);
+}
+#endif

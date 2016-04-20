@@ -199,6 +199,14 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: diagonal
     end subroutine bml_get_diagonal_C
     
+    subroutine bml_initF_C(fcomm) bind(C, name="bml_initF")
+      import :: C_PTR, C_INT
+      integer(C_INT), value, intent(in) :: fcomm
+    end subroutine bml_initF_C
+
+    subroutine bml_shutdownF_C() bind(C, name="bml_shutdownF")
+    end subroutine bml_shutdownF_C
+
     function bml_sum_squares_C(a) bind(C, name="bml_sum_squares")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a

@@ -7,4 +7,6 @@
 
 void bml_shutdown();
 
+void bml_shutdownF();
+
 #endif

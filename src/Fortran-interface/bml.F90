@@ -11,12 +11,14 @@ module bml
   use bml_elemental_m
   use bml_error_m
   use bml_getters_m
+  use bml_init_m
   use bml_introspection_m
   use bml_multiply_m
   use bml_norm_m
   use bml_normalize_m
   use bml_scale_m
   use bml_setters_m
+  use bml_shutdown_m
   use bml_submatrix_m
   use bml_threshold_m
   use bml_trace_m

@@ -11,7 +11,7 @@ static int myRank = 0;
 static int nRanks = 1;
 #ifdef DO_MPI
 static MPI_Request* requestList;
-static MPI_Fint fComm;
+static MPI_Comm ccomm;
 #endif
 static int* rUsed;
 static int reqCount = 0;
@@ -47,14 +47,6 @@ int bml_getMyRank()
    return myRank;
 }
 
-#ifdef DO_MPI
-// Return Fortran Comm
-MPI_Fint bml_getComm()
-{
-   return fComm;
-}
-#endif
-
 //
 /// \details
 /// For now this is just a check for rank 0 but in principle it could be
@@ -70,16 +62,29 @@ void bml_initParallel(int* argc, char*** argv)
 {
 #ifdef DO_MPI
    MPI_Init(argc, argv);
-   MPI_Comm_rank(MPI_COMM_WORLD, &myRank);
-   MPI_Comm_size(MPI_COMM_WORLD, &nRanks);
-
-   fComm = MPI_Comm_c2f(MPI_COMM_WORLD);
+   ccomm = MPI_COMM_WORLD;
+   MPI_Comm_rank(ccomm, &myRank);
+   MPI_Comm_size(ccomm, &nRanks);
 
    requestList = (MPI_Request*) malloc(nRanks*sizeof(MPI_Request));
    rUsed = (int*) malloc(nRanks*sizeof(int));
    for (int i = 0; i < nRanks; i++) { rUsed[i] = 0; }
 #endif
 }
+
+#ifdef DO_MPI
+void bml_initParallelF(MPI_Fint* fcomm)
+{
+   ccomm = MPI_Comm_f2c(*fcomm);
+   MPI_Comm_rank(ccomm, &myRank);
+   MPI_Comm_size(ccomm, &nRanks);
+
+   requestList = (MPI_Request*) malloc(nRanks*sizeof(MPI_Request));
+   rUsed = (int*) malloc(nRanks*sizeof(int));
+   for (int i = 0; i < nRanks; i++) { rUsed[i] = 0; }
+}
+#endif
+
 
 void bml_shutdownParallel()
 {
@@ -93,6 +98,6 @@ void bml_shutdownParallel()
 void bml_barrierParallel()
 {
 #ifdef DO_MPI
-   MPI_Barrier(MPI_COMM_WORLD);
+   MPI_Barrier(ccomm);
 #endif
 }

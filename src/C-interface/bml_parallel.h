@@ -15,9 +15,9 @@ int bml_getNRanks(void);
 // Return local rank.
 int bml_getMyRank(void);
 
-// Return Fortran Comm
+// Initialize from Fortran MPI
 #ifdef DO_MPI
-MPI_Fint bml_getComm(void);
+void bml_initParallelF(MPI_Fint* fcomm);
 #endif
 
 // Return non-zero if printing occurs from this rank.
