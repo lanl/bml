@@ -15,7 +15,7 @@ void bml_init(
 
 #ifdef DO_MPI
 void bml_initF(
-    MPI_Fint* fcomm);
+    MPI_Fint fcomm);
 #endif
 
 #endif

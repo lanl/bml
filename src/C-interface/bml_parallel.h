@@ -17,7 +17,7 @@ int bml_getMyRank(void);
 
 // Initialize from Fortran MPI
 #ifdef DO_MPI
-void bml_initParallelF(MPI_Fint* fcomm);
+void bml_initParallelF(MPI_Fint fcomm);
 #endif
 
 // Return non-zero if printing occurs from this rank.

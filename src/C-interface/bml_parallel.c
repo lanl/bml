@@ -73,11 +73,14 @@ void bml_initParallel(int* argc, char*** argv)
 }
 
 #ifdef DO_MPI
-void bml_initParallelF(MPI_Fint* fcomm)
+void bml_initParallelF(MPI_Fint fcomm)
 {
-   ccomm = MPI_Comm_f2c(*fcomm);
+   ccomm = MPI_Comm_f2c(fcomm);
    MPI_Comm_rank(ccomm, &myRank);
    MPI_Comm_size(ccomm, &nRanks);
+
+   if (bml_printRank())
+       printf("MPI started in bml with %d ranks\n", nRanks);
 
    requestList = (MPI_Request*) malloc(nRanks*sizeof(MPI_Request));
    rUsed = (int*) malloc(nRanks*sizeof(int));
