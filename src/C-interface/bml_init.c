@@ -26,7 +26,7 @@ bml_init(
  */
 #ifdef DO_MPI
 void
-bm_initF(
+bml_initF(
     MPI_Fint* fcomm)
 {
     bml_initParallelF(fcomm);
