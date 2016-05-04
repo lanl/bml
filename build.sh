@@ -51,6 +51,17 @@ set_defaults() {
 
 die() {
   echo "fatal error"
+  if [[ -f "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" ]]; then
+      echo "appending CMake output"
+      echo "*********** CMake Output ***********" >> ${LOG_FILE}
+      cat "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" >> ${LOG_FILE}
+  fi
+  if [[ -f "${BUILD_DIR}/CMakeFiles/CMakeError.log" ]]; then
+      echo "appending CMake error"
+      echo "*********** CMake Error ***********" >> ${LOG_FILE}
+      cat "${BUILD_DIR}/CMakeFiles/CMakeError.log" >> ${LOG_FILE}
+  fi
+  echo "the output from this build was written to ${LOG_FILE}"
   if [[ $# -gt 1 ]]; then
     exit $1
   else
