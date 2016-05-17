@@ -9,6 +9,24 @@
 
 #include "bml_types.h"
 
+static int myRank = 0;
+static int nRanks = 1;
+#ifdef DO_MPI
+static MPI_Request* requestList;
+static MPI_Comm ccomm;
+#endif
+static int* rUsed;
+static int reqCount = 0;
+
+#ifdef DO_MPI
+#ifdef SINGLE
+#define REAL_MPI_TYPE MPI_FLOAT
+#else
+#define REAL_MPI_TYPE MPI_DOUBLE
+#endif
+
+#endif
+
 // Return total number of processors.
 int bml_getNRanks(void);
 
@@ -29,7 +47,10 @@ void bml_initParallel(int *argc, char ***argv);
 // Wrapper for MPI_Finalize.
 void bml_shutdownParallel(void);
 
-// Wrapper for MPI_Barrier(MPI_COMM_WORLD).
+// Wrapper for MPI_Barrier.
 void bml_barrierParallel(void);
+
+// Wrapper for MPI_allGatherV
+void bml_allGatherVParallel(bml_matrix_t * A);
 
 #endif

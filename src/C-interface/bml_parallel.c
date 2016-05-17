@@ -1,5 +1,8 @@
 #include "bml_parallel.h"
+#include "bml_introspection.h"
 #include "bml_logger.h"
+#include "dense/bml_parallel_dense.h"
+#include "ellpack/bml_parallel_ellpack.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,6 +10,7 @@
 #include <string.h>
 #include <assert.h>
 
+/*
 static int myRank = 0;
 static int nRanks = 1;
 #ifdef DO_MPI
@@ -24,6 +28,7 @@ static int reqCount = 0;
 #endif
 
 #endif
+*/
 
 /** Initialize.
  *
@@ -103,4 +108,25 @@ void bml_barrierParallel()
 #ifdef DO_MPI
    MPI_Barrier(ccomm);
 #endif
+}
+
+/** Exchange pieces of matrix across MPI ranks.
+ *
+ * \param A Matrix A
+ */
+void 
+bml_allGatherVParallel(bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_allGatherVParallel_dense(A);
+            break;
+        case ellpack:
+            bml_allGatherVParallel_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
 }
