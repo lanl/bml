@@ -20,6 +20,8 @@ struct bml_matrix_ellpack_t
     int *index;
     /** The vector of non-zeros per row */
     int *nnz;
+    /** The domain decomposition when running in parallel. */
+    bml_domain_t domain;
 };
 typedef struct bml_matrix_ellpack_t bml_matrix_ellpack_t;
 

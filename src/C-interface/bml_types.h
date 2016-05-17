@@ -46,4 +46,38 @@ typedef void bml_vector_t;
 /** The matrix type. */
 typedef void bml_matrix_t;
 
+/** Decomposition for working in parallel. */
+struct bml_domain_t
+{
+   /** number of processors */
+   int totalProcs;
+   /** total number of rows */
+   int totalRows;
+   /** total number of columns */
+   int totalCols;
+   
+   /** global minimum row number */
+   int globalRowMin;
+   /** global maximum row number */
+   int globalRowMax;
+   /** global total rows */
+   int globalRowExtent;
+   
+   /** maximum extent for most processors */
+   int maxLocalExtent;
+   /** minimum extent for last processors */
+   int minLocalExtent;
+   /** minimum row per rank */
+   int* localRowMin;
+   /** maximum row per rank */
+   int* localRowMax;
+   /** extent of rows per rank, localRowMax - localRowMin */
+   int* localRowExtent;
+   /** local number of elements per rank */
+   int* localElements;
+   /** local displacements per rank for 2D */
+   int* localDispl;
+};
+typedef struct bml_domain_t bml_domain_t;
+
 #endif
