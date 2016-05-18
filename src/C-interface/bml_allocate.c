@@ -1,10 +1,12 @@
 #include "bml_allocate.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
+#include "bml_parallel.h"
 #include "dense/bml_allocate_dense.h"
 #include "ellpack/bml_allocate_ellpack.h"
 
 #include <stdlib.h>
+#include <math.h>
 
 /** Allocate and zero a chunk of memory.
  *
@@ -36,6 +38,23 @@ bml_free_memory(
     void *ptr)
 {
     free(ptr);
+}
+
+/** Deallocate a domain.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param D The domain.
+ */
+void
+bml_deallocate_domain(
+    bml_domain_t * D)
+{
+    bml_free_memory(D->localRowMin);
+    bml_free_memory(D->localRowMax);
+    bml_free_memory(D->localRowExtent);
+    bml_free_memory(D->localDispl);
+    bml_free_memory(D->localElements);
 }
 
 /** Deallocate a matrix.
@@ -217,4 +236,70 @@ bml_identity_matrix(
             break;
     }
     return NULL;
+}
+
+/** Allocate a default domain for a bml matrix.
+ *
+ * \ingroup allocate_group_C
+ *
+ *  \param N number of rows
+ *  \param M number of columns
+ *  \return The domain
+ */
+bml_domain_t *
+bml_default_domain(
+    const int N,
+    const int M)
+{
+    int nRanks = bml_getNRanks();
+
+    bml_domain_t *domain = bml_allocate_memory(sizeof(bml_domain_t));
+
+    domain->totalProcs = nRanks;
+    domain->totalRows = N;
+    domain->totalCols = M;
+
+    domain->maxLocalExtent = ceil((float)N / (float)nRanks);
+    domain->minLocalExtent = N - (nRanks-1) * domain->maxLocalExtent;
+
+    domain->globalRowMin = 0;
+    domain->globalRowMax = domain->totalRows;
+    domain->globalRowExtent = domain->globalRowMax - domain->globalRowMin;
+
+    domain->localRowMin = bml_allocate_memory(nRanks * sizeof(int));
+    domain->localRowMax = bml_allocate_memory(nRanks * sizeof(int));
+    domain->localRowExtent = bml_allocate_memory(nRanks * sizeof(int));
+    domain->localElements = bml_allocate_memory(nRanks * sizeof(int));
+    domain->localDispl = bml_allocate_memory(nRanks * sizeof(int));
+
+    /** For first rank */
+    domain->localRowMin[0] = domain->globalRowMin;
+    domain->localRowMax[0] = domain->globalRowMin + domain->maxLocalExtent;
+    domain->localRowExtent[0] = domain->localRowMax[0] - domain->localRowMin[0];
+
+    /** For middle ranks */
+    for (int i = 1; i < (nRanks-1); i++)
+    {
+      domain->localRowMin[i] = domain->globalRowMin + i * domain->maxLocalExtent;
+      domain->localRowMax[i] = domain->globalRowMin + (i+1) * domain->maxLocalExtent;
+      domain->localRowExtent[i] = domain->localRowMax[i] - domain->localRowMin[i];
+    }
+
+    /** For last rank */
+    if (nRanks > 1)
+    {
+      int last = nRanks - 1;
+      domain->localRowMin[last] = domain->localRowMax[last-1];
+      domain->localRowMax[last] = domain->localRowMin[last] + domain->minLocalExtent;
+      domain->localRowExtent[last] = domain->localRowMax[last] - domain->localRowMin[last];
+    }
+
+    /** Number of elements and displacement per rank */
+    for (int i = 0; i < nRanks; i++)
+    {
+      domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
+      domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
+    }
+
+    return domain;
 }

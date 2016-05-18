@@ -40,4 +40,11 @@ bml_matrix_t *bml_identity_matrix(
     const int N,
     const int M);
 
+void bml_deallocate_domain(
+    bml_domain_t * D);
+
+bml_domain_t *bml_default_domain(
+    const int N,
+    const int M);
+
 #endif

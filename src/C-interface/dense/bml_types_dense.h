@@ -15,7 +15,7 @@ struct bml_matrix_dense_t
     /** The dense matrix. */
     void *matrix;
     /** The domain decomposition when running in parallel. */
-    bml_domain_t domain;
+    bml_domain_t *domain;
 };
 typedef struct bml_matrix_dense_t bml_matrix_dense_t;
 

@@ -30,6 +30,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->matrix_precision = MATRIX_PRECISION;
     A->N = N;
     A->matrix = bml_allocate_memory(sizeof(REAL_T) * N * N);
+    A->domain = bml_default_domain(N, N);
     return A;
 }
 
@@ -61,6 +62,8 @@ bml_matrix_dense_t *TYPED_FUNC(
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
         }
     }
+
+    A->domain = bml_default_domain(N, N);
     return A;
 }
 
@@ -89,6 +92,7 @@ bml_matrix_dense_t *TYPED_FUNC(
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
         }
     }
+    A->domain = bml_default_domain(N, N);
     return A;
 }
 
@@ -114,5 +118,6 @@ bml_matrix_dense_t *TYPED_FUNC(
     {
         A_dense[ROWMAJOR(i, i, N, N)] = 1;
     }
+    A->domain = bml_default_domain(N, N);
     return A;
 }

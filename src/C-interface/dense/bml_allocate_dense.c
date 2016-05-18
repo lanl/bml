@@ -14,6 +14,9 @@ void
 bml_deallocate_dense(
     bml_matrix_dense_t * A)
 {
+    bml_deallocate_domain(A->domain);
+
+    bml_free_memory(A->domain);
     bml_free_memory(A->matrix);
     bml_free_memory(A);
 }

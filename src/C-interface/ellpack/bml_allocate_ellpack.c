@@ -14,6 +14,9 @@ void
 bml_deallocate_ellpack(
     bml_matrix_ellpack_t * A)
 {
+    bml_deallocate_domain(A->domain);
+
+    bml_free_memory(A->domain);
     bml_free_memory(A->value);
     bml_free_memory(A->index);
     bml_free_memory(A->nnz);

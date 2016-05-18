@@ -38,6 +38,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
+    A->domain = bml_default_domain(N, M);
 
     return A;
 }
@@ -80,6 +81,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
+    A->domain = bml_default_domain(N, M);
     return A;
 }
 
@@ -120,6 +122,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
+    A->domain = bml_default_domain(N, M);
     return A;
 }
 
@@ -155,5 +158,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         A_index[ROWMAJOR(i, 0, N, M)] = i;
         A_nnz[i] = 1;
     }
+    A->domain = bml_default_domain(N, M);
     return A;
 }
