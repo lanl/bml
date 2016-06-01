@@ -38,4 +38,10 @@ void bml_copy_ellpack_double_complex(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B);
 
+void bml_save_domain_ellpack(
+    bml_matrix_ellpack_t * A);
+
+void bml_restore_domain_ellpack(
+    bml_matrix_ellpack_t * A);
+
 #endif

@@ -75,4 +75,10 @@ bml_matrix_dense_t *bml_identity_matrix_dense_single_complex(
 bml_matrix_dense_t *bml_identity_matrix_dense_double_complex(
     const int N);
 
+void bml_update_domain_dense(
+    bml_matrix_dense_t * A,
+    int * localPartMin,
+    int * localPartMax,
+    int * nnodesInPart);
+
 #endif

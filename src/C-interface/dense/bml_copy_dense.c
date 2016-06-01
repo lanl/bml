@@ -77,3 +77,29 @@ bml_copy_dense(
             break;
     }
 }
+
+/** Save the domain for a dense matrix.
+ *
+ * \ingroup copy_group
+ *
+ * \param A The matrix with the domain to be saved
+ */
+void
+bml_save_domain_dense(
+    bml_matrix_dense_t * A)
+{
+    bml_copy_domain(A->domain, A->domain2);
+}
+
+/** Restore the domain for a dense matrix.
+ *
+ * \ingroup copy_group
+ *
+ * \param A The matrix with the domain to be restored
+ */
+void
+bml_restore_domain_dense(
+    bml_matrix_dense_t * A)
+{
+    bml_copy_domain(A->domain2, A->domain);
+}

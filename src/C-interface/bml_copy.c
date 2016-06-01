@@ -1,12 +1,14 @@
 #include "bml_allocate.h"
 #include "bml_copy.h"
 #include "bml_introspection.h"
+#include "bml_parallel.h"
 #include "bml_logger.h"
 #include "dense/bml_copy_dense.h"
 #include "ellpack/bml_copy_ellpack.h"
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 /** Copy a matrix - result is a new matrix.
  *
@@ -68,6 +70,68 @@ bml_copy(
             break;
         case ellpack:
             bml_copy_ellpack(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+/** Copy a domain.
+ *
+ * \param A Domain to copy
+ * \param B Copy of Domain A
+ */
+void
+bml_copy_domain(
+    const bml_domain_t * A,
+    bml_domain_t * B)
+{
+    int nRanks = bml_getNRanks();
+
+    memcpy(B->localRowMin, A->localRowMin, nRanks*sizeof(int));
+    memcpy(B->localRowMax, A->localRowMax, nRanks*sizeof(int));
+    memcpy(B->localRowExtent, A->localRowExtent, nRanks*sizeof(int));
+    memcpy(B->localDispl, A->localDispl, nRanks*sizeof(int));
+    memcpy(B->localElements, A->localElements, nRanks*sizeof(int));
+}
+
+
+/** Save current domain for bml matrix.
+ *
+ * \param A Matrix with domain
+ */
+void bml_save_domain(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_save_domain_dense(A);
+            break;
+        case ellpack:
+            bml_save_domain_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+/** Restore to saved domain for bml matrix.
+ *
+ * \param A Matrix with domain
+ */
+void bml_restore_domain(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_restore_domain_dense(A);
+            break;
+        case ellpack:
+            bml_restore_domain_ellpack(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

@@ -9,6 +9,8 @@ module bml_copy_m
 
   public :: bml_copy
   public :: bml_copy_new
+  public :: bml_save_domain
+  public :: bml_restore_domain
 
 contains
 
@@ -44,5 +46,35 @@ contains
     call bml_copy_C(a%ptr, b%ptr)
 
   end subroutine bml_copy
+
+  !> Save the matrix's domain.
+  !!
+  !! \ingroup copy_group_F
+  !!
+  !! \param a Matrix's domain to save 
+  subroutine bml_save_domain(a)
+
+    use bml_types_m
+
+    type(bml_matrix_t), intent(inout) :: a
+
+    call bml_save_domain_C(a%ptr)
+
+  end subroutine bml_save_domain
+
+  !> Restore the matrix's domain.
+  !!
+  !! \ingroup copy_group_F
+  !!
+  !! \param a Matrix's domain to restore
+  subroutine bml_restore_domain(a)
+
+    use bml_types_m
+
+    type(bml_matrix_t), intent(inout) :: a
+
+    call bml_restore_domain_C(a%ptr)
+
+  end subroutine bml_restore_domain
 
 end module bml_copy_m

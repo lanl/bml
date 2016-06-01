@@ -12,6 +12,7 @@ module bml_allocate_m
   public :: bml_identity_matrix
   public :: bml_random_matrix
   public :: bml_zero_matrix
+  public :: bml_update_domain
 
 contains
 
@@ -110,5 +111,25 @@ contains
         & get_element_id(element_type, element_precision), n, m)
 
   end subroutine bml_identity_matrix
+
+  !> Update domain of a matrix.
+  !!
+  !! \ingroup allocate_group_Fortran
+  !!
+  !! \param a The matrix.
+  !! \param globalPartMin First part on each rank
+  !! \param globalPartMax Last part on each rank
+  !! \param nnodesInPart Number of nodes in each part
+  subroutine bml_update_domain(a, globalPartMin, globalPartMax, nnodesInPart)
+
+    integer(C_INT), target, intent(in) :: globalPartMin(*)
+    integer(C_INT), target, intent(in) :: globalPartMax(*)
+    integer(C_INT), target, intent(in) :: nnodesInPart(*)
+    type(bml_matrix_t), intent(inout) :: a
+
+    call bml_update_domain_C(a%ptr, c_loc(globalPartMin), c_loc(globalPartMax), &
+        c_loc(nnodesInPart))
+
+  end subroutine bml_update_domain
 
 end module bml_allocate_m

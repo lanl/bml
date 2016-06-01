@@ -6,6 +6,7 @@
 #include "ellpack/bml_allocate_ellpack.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 /** Allocate and zero a chunk of memory.
@@ -301,5 +302,49 @@ bml_default_domain(
       domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
     }
 
+/*
+    if (bml_printRank() == 1)
+    {
+      printf("Default Domain\n");
+      for (int i = 0; i < nRanks; i++)
+      {
+        printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
+          i, domain->localRowMin[i], domain->localRowMax[i], 
+          domain->localRowExtent[i], domain->localElements[i],
+          domain->localDispl[i]);
+      }
+    }    
+*/
+
     return domain;
+}
+
+/** Update a domain for a bml matrix.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param A Matrix with domain
+ * \param localPartMin First part on each rank
+ * \param localPartMax Last part on each rank
+ * \param nnodesInPart Number of nodes in each part
+ */
+void 
+bml_update_domain(
+    bml_matrix_t * A,
+    int * localPartMin,
+    int * localPartMax,
+    int * nnodesInPart)
+{
+    switch (bml_get_type(A))
+    {
+      case dense:
+          bml_update_domain_dense(A, localPartMin, localPartMax, nnodesInPart);
+          break;
+      case ellpack:
+          bml_update_domain_ellpack(A, localPartMin, localPartMax, nnodesInPart);
+          break;
+      default:
+          LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
+          break;
+    }
 }

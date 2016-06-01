@@ -58,6 +58,11 @@ module bml_c_interface_m
       real(C_DOUBLE), value, intent(in) :: threshold
     end subroutine bml_scale_add_identity_C
 
+    subroutine bml_allGatherVParallel_C(a) &
+        & bind(C, name="bml_allGatherVParallel")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+    end subroutine bml_allGatherVParallel_C
 
     subroutine bml_adjungate_triangle_C(a, triangle) &
         & bind(C, name="bml_adjungate_triangle")
@@ -114,6 +119,25 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       type(C_PTR) :: bml_copy_new_C
     end function bml_copy_new_C
+
+    subroutine bml_save_domain_C(a) bind(C, name="bml_save_domain")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+    end subroutine bml_save_domain_C
+
+    subroutine bml_restore_domain_C(a) bind(C, name="bml_restore_domain")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+    end subroutine bml_restore_domain_C
+
+    subroutine bml_update_domain_C(a, globalPartMin, globalPartMax, &
+        nnodesInPart) bind(C, name="bml_update_domain")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: globalPartMin
+      type(C_PTR), value, intent(in) :: globalPartMax
+      type(C_PTR), value, intent(in) :: nnodesInPart
+    end subroutine bml_update_domain_C
 
     subroutine bml_diagonalize_C(a, eigenvalues, eigenvectors) &
         & bind(C, name="bml_diagonalize")

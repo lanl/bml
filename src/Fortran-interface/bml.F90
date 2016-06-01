@@ -16,6 +16,7 @@ module bml
   use bml_multiply_m
   use bml_norm_m
   use bml_normalize_m
+  use bml_parallel_m
   use bml_scale_m
   use bml_setters_m
   use bml_shutdown_m

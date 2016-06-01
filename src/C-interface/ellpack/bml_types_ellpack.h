@@ -22,6 +22,8 @@ struct bml_matrix_ellpack_t
     int *nnz;
     /** The domain decomposition when running in parallel. */
     bml_domain_t *domain;
+    /** A copy of the domain decomposition. */
+    bml_domain_t *domain2;
 };
 typedef struct bml_matrix_ellpack_t bml_matrix_ellpack_t;
 

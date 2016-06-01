@@ -10,25 +10,14 @@
 #include <string.h>
 #include <assert.h>
 
-/*
 static int myRank = 0;
 static int nRanks = 1;
 #ifdef DO_MPI
 static MPI_Request* requestList;
-static MPI_Comm ccomm;
+MPI_Comm ccomm;
 #endif
 static int* rUsed;
 static int reqCount = 0;
-
-#ifdef DO_MPI
-#ifdef SINGLE
-#define REAL_MPI_TYPE MPI_FLOAT
-#else
-#define REAL_MPI_TYPE MPI_DOUBLE
-#endif
-
-#endif
-*/
 
 /** Initialize.
  *

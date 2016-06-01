@@ -27,6 +27,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
     memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+    bml_copy_domain(A->domain, B->domain);
+    bml_copy_domain(A->domain2, B->domain2);
     return B;
 }
 
@@ -45,6 +47,7 @@ void TYPED_FUNC(
 
     memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
-
     memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+    bml_copy_domain(A->domain, B->domain);
+    bml_copy_domain(A->domain2, B->domain2);
 }

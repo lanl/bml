@@ -47,4 +47,10 @@ bml_domain_t *bml_default_domain(
     const int N,
     const int M);
 
+void bml_update_domain(
+    bml_matrix_t * A,
+    int * localPartMin,
+    int * localPartMax,
+    int * nnodesInPart);
+
 #endif

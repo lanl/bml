@@ -32,26 +32,28 @@ void TYPED_FUNC(
 
     int *A_nnz = (int *) A->nnz;
     int *A_index = (int *) A->index;
+    bml_domain_t * A_domain = A->domain;
 
     REAL_T *A_value = (REAL_T *) A->value;
 
 #ifdef DO_MPI
-/*
     // Number of non-zeros per row
-    MPI_Allgatherv(A_nnz[domain->localRowMin[myRank]], 
-                   domain->localRowExtent[myRank], MPI_INT, 
-                   A_nnz, domain->localRowExtent, MPI_INT, ccomm);
+    MPI_Allgatherv(&A_nnz[A_domain->localRowMin[myRank]], 
+                   A_domain->localRowExtent[myRank], MPI_INT, 
+                   A_nnz, A_domain->localRowExtent, A_domain->localRowMin,
+                   MPI_INT, ccomm);
 
     // Indeces
-    MPI_Allgatherv(A_index[domain->localRowMin[myRank]], 
-                   domain->localElements[myRank], MPI_INT, 
-                   A_index, domain->localElements, MPI_INT, ccomm);
+    MPI_Allgatherv(&A_index[A_domain->localRowMin[myRank] * M], 
+                   A_domain->localElements[myRank], MPI_INT, 
+                   A_index, A_domain->localElements, A_domain->localDispl,
+                   MPI_INT, ccomm);
 
     // Values
-    MPI_Allgatherv(A_value[domain->localRowMin[myRank]], i
-                   domain->localElements[myRank], REAL_MPI_TYPE, 
-                   A_value, domain->localElements, REAL_MPI_TYPE, ccomm);
-*/
+    MPI_Allgatherv(&A_value[A_domain->localRowMin[myRank] * M],
+                   A_domain->localElements[myRank], REAL_MPI_TYPE, 
+                   A_value, A_domain->localElements, A_domain->localDispl,
+                   REAL_MPI_TYPE, ccomm);
 #endif
 
 }

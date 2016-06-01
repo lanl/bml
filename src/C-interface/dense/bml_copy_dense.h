@@ -38,4 +38,10 @@ void bml_copy_dense_double_complex(
     const bml_matrix_dense_t * A,
     bml_matrix_dense_t * B);
 
+void bml_save_domain_dense(
+     bml_matrix_dense_t * A);
+
+void bml_restore_domain_dense(
+     bml_matrix_dense_t * A);
+
 #endif

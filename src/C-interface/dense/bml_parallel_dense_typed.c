@@ -26,15 +26,14 @@ void TYPED_FUNC(
     int N = A->N;
 
     REAL_T *A_matrix = A->matrix;
+    bml_domain_t * A_domain = A->domain;
 
 #ifdef DO_MPI
 
-/*
-    MPI_Allgatherv(A_matrix[domain->localRowMin[myRank]], 
-                   domain->localElements[myRank], REAL_MPI_TYPE,
-                   A_matrix, domain->localElements, 
-                   domain->recvDispl, REAL_MPI_TYPE, ccomm);  
-*/
+    MPI_Allgatherv(&A_matrix[A_domain->localRowMin[myRank] * N], 
+                   A_domain->localElements[myRank], REAL_MPI_TYPE,
+                   &A_matrix, A_domain->localElements, 
+                   A_domain->localDispl, REAL_MPI_TYPE, ccomm);  
 
 #endif
 
