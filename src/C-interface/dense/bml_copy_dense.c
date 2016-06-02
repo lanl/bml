@@ -78,6 +78,37 @@ bml_copy_dense(
     }
 }
 
+/** Reorder a dense matrix using a permutation vector.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be reordered
+ */
+void
+bml_reorder_dense(
+    bml_matrix_dense_t * A,
+    int * perm)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_reorder_dense_single_real(A, perm);
+            break;
+        case double_real:
+            bml_reorder_dense_double_real(A, perm);
+            break;
+        case single_complex:
+            bml_reorder_dense_single_complex(A, perm);
+            break;
+        case double_complex:
+            bml_reorder_dense_double_complex(A, perm);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
 /** Save the domain for a dense matrix.
  *
  * \ingroup copy_group

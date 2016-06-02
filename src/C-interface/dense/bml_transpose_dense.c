@@ -43,7 +43,7 @@ bml_transpose_new_dense(
     return NULL;
 }
 
-/** Threshold a matrix in place.
+/** Transpose a matrix in place.
  *
  *  \ingroup transpose_group
  *

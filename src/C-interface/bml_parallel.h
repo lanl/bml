@@ -17,7 +17,9 @@
 #endif
 #endif
 
+#ifdef DO_MPI
 extern MPI_Comm ccomm;
+#endif
 
 // Return total number of processors.
 int bml_getNRanks(void);

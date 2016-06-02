@@ -77,6 +77,31 @@ bml_copy(
     }
 }
 
+/** Reorder a matrix in place.
+ *
+ * \ingroup copy_group_C
+ *
+ * \param A Matrix to reorder
+ */
+void
+bml_reorder(
+    bml_matrix_t * A,
+    int * perm)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_reorder_dense(A, perm);
+            break;
+        case ellpack:
+            //bml_reorder_ellpack(A, perm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
 /** Copy a domain.
  *
  * \param A Domain to copy

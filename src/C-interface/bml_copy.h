@@ -12,6 +12,10 @@ void bml_copy(
     const bml_matrix_t * A,
     bml_matrix_t * B);
 
+void bml_reorder(
+    bml_matrix_t * A,
+    int * perm);
+
 void bml_copy_domain(
     const bml_domain_t * A,
     bml_domain_t * B);

@@ -44,3 +44,33 @@ void TYPED_FUNC(
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
 }
+
+/** Reorder a dense matrix using a permutation vector.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be reordered
+ *  \param perm The permutation vector
+ */
+void TYPED_FUNC(
+    bml_reorder_dense) (
+    bml_matrix_dense_t * A,
+    int * perm)
+{
+    int N = A->N;
+
+    bml_matrix_dense_t *B = TYPED_FUNC(bml_copy_dense_new) (A);
+    REAL_T *A_matrix = A->matrix;
+    REAL_T *B_matrix = B->matrix;
+
+    // Reorder rows - need to copy
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++)
+    {
+   //   memcpy(A_matrix[ROWMAJOR(0, perm[i], N, N], B_matrix[ROWMAJOR(0, i, N, N)], N*sizeof(REAL_T));
+    }
+
+    // Reorder elements in each row - just change index
+    
+    bml_deallocate_dense(B);
+}
