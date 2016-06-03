@@ -82,6 +82,7 @@ bml_copy(
  * \ingroup copy_group_C
  *
  * \param A Matrix to reorder
+ * \param perm permutation vector for reordering
  */
 void
 bml_reorder(
@@ -94,7 +95,7 @@ bml_reorder(
             bml_reorder_dense(A, perm);
             break;
         case ellpack:
-            //bml_reorder_ellpack(A, perm);
+            bml_reorder_ellpack(A, perm);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

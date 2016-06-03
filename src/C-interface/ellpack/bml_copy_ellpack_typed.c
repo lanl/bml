@@ -51,3 +51,51 @@ void TYPED_FUNC(
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
 }
+
+/** Reorder an ellpack matrix.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be reordered
+ *  \param B The permutation vector
+ */
+void TYPED_FUNC(
+    bml_reorder_ellpack) (
+    bml_matrix_ellpack_t * A,
+    int * perm)
+{
+  int N = A->N;
+  int M = A->M;
+
+  int * A_index = A->index;
+  int * A_nnz = A->nnz;
+  REAL_T * A_value = A->value;
+
+  bml_matrix_ellpack_t * B = bml_copy_new(A);
+  int * B_index = B->index;
+  int * B_nnz = B->nnz;
+  REAL_T * B_value = B->value;
+
+  // Reorder rows - need to copy
+  #pragma omp parallel for
+  for (int i = 0; i < N; i++)
+  {
+/*
+    memcpy(A_index[perm[i]], B_index[i], M*sizeof(int));
+    memcpy(A_value[perm[i]], B_value[i], M*sizeof(REAL_T));
+    A_nnz[perm[i]] = B_nnz[i];
+*/
+  }
+
+  // Reorder elements in each row - just change index
+  #pragma omp parallel for
+  for (int i = 0; i < N; i++)
+  {
+    for (int j = 0; j < A_nnz[i]; j++)
+    {
+//      A_index[i][j] = perm[A_index[i][j]];
+    }
+  }
+
+  bml_deallocate_ellpack(B);
+}

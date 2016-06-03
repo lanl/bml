@@ -74,6 +74,39 @@ bml_copy_ellpack(
     }
 }
 
+/** Reorder an ellpack matrix.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be reordered
+ *  \param B The permutation matrix
+ */
+void
+bml_reorder_ellpack(
+    bml_matrix_ellpack_t * A,
+    int * perm)
+{
+
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_reorder_ellpack_single_real(A, perm);
+            break;
+        case double_real:
+            bml_reorder_ellpack_double_real(A, perm);
+            break;
+        case single_complex:
+            bml_reorder_ellpack_single_complex(A, perm);
+            break;
+        case double_complex:
+            bml_reorder_ellpack_double_complex(A, perm);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
 /** Save the domain for an ellpack matrix.
  *
  * \ingroup copy_group

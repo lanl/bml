@@ -83,6 +83,7 @@ bml_copy_dense(
  *  \ingroup copy_group
  *
  *  \param A The matrix to be reordered
+ *  \param perm permutaiton matrix for reordering
  */
 void
 bml_reorder_dense(
