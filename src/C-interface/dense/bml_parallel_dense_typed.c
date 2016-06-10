@@ -30,9 +30,8 @@ void TYPED_FUNC(
 
 #ifdef DO_MPI
 
-    MPI_Allgatherv(&A_matrix[A_domain->localRowMin[myRank] * N], 
-                   A_domain->localElements[myRank], REAL_MPI_TYPE,
-                   &A_matrix, A_domain->localElements, 
+    MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
+                   A_matrix, A_domain->localElements, 
                    A_domain->localDispl, REAL_MPI_TYPE, ccomm);  
 
 #endif
