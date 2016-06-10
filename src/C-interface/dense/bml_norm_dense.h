@@ -93,4 +93,24 @@ double bml_fnorm_dense_single_complex(
 double bml_fnorm_dense_double_complex(
     const bml_matrix_dense_t * A);
 
+double bml_fnorm2_dense(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_fnorm2_dense_single_real(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_fnorm2_dense_double_real(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_fnorm2_dense_single_complex(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_fnorm2_dense_double_complex(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
 #endif

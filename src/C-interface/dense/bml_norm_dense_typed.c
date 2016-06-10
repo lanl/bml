@@ -130,3 +130,38 @@ double TYPED_FUNC(
 
     return (double) REAL_PART(sqrt(sum));
 }
+
+/** Calculate the Frobenius norm of 2 matrices.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param A The matrix B
+ *  \return The Frobenius norm of A-B
+ */
+double TYPED_FUNC(
+    bml_fnorm2_dense) (
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B)
+{
+    int N = A->N;
+
+    REAL_T * A_matrix = (REAL_T *) A->matrix;
+    REAL_T * B_matrix = (REAL_T *) B->matrix;
+
+    double fnorm = 0.0;
+    REAL_T temp;
+
+#pragma omp parallel for \
+    default(none) \
+    shared(temp) \
+    shared(N, A_matrix, B_matrix) \
+    reduction(+:fnorm)
+    for (int i = 0; i < N*N;i++)
+    {
+        temp = A_matrix[i] - B_matrix[i];
+        fnorm += temp * temp;
+    }
+
+    return (double) REAL_PART(sqrt(fnorm));
+}

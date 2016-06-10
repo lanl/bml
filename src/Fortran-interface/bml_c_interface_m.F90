@@ -269,6 +269,13 @@ module bml_c_interface_m
       real(C_DOUBLE) :: bml_fnorm_C
     end function bml_fnorm_C
 
+    function bml_fnorm2_C(a, b) bind(C, name="bml_fnorm2")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      real(C_DOUBLE) :: bml_fnorm2_C
+    end function bml_fnorm2_C
+
     subroutine bml_normalize_C(a, mineval, maxeval) &
       bind(C, name="bml_normalize")
       import :: C_PTR, C_DOUBLE

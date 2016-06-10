@@ -29,4 +29,9 @@ double bml_sum_squares_submatrix(
 double bml_fnorm(
     const bml_matrix_t * A);
 
+// Calculate Frobenius norm for 2 matrices
+ double bml_fnorm2(
+     const bml_matrix_t * A,
+     const bml_matrix_t * B);
+
 #endif

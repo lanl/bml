@@ -93,4 +93,24 @@ double bml_fnorm_ellpack_single_complex(
 double bml_fnorm_ellpack_double_complex(
     const bml_matrix_ellpack_t * A);
 
+double bml_fnorm2_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B);
+
+double bml_fnorm2_ellpack_single_real(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B);
+
+double bml_fnorm2_ellpack_double_real(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B);
+
+double bml_fnorm2_ellpack_single_complex(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B);
+
+double bml_fnorm2_ellpack_double_complex(
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B);
+
 #endif

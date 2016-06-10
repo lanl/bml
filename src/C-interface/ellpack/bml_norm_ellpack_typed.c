@@ -194,3 +194,78 @@ double TYPED_FUNC(
 
     return (double) REAL_PART(fnorm);
 }
+
+/** Calculate the Frobenius norm of 2 matrices.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \return The Frobenius norm of A-B
+ */
+double TYPED_FUNC(
+    bml_fnorm2_ellpack) (
+    const bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * B)
+{
+    int N = A->N;
+    int M = A->M;
+    double fnorm = 0.0;
+    REAL_T rvalue;
+
+    int * A_nnz = (int *) A->nnz;
+    int * A_index = (int *) A->index;
+    REAL_T * A_value = (REAL_T *) A->value;
+    int * B_nnz = (int *) B->nnz;
+    int * B_index = (int *) B->index;
+    REAL_T * B_value = (REAL_T *) B->value;
+    
+    REAL_T temp;
+
+#pragma omp parallel for \
+    default(none) \
+    private(rvalue, temp) \
+    shared(N, M, A_nnz, A_index, A_value, B_nnz, B_index, B_value) \
+    reduction(+:fnorm)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < A_nnz[i]; j++)
+        {
+            for (int k = 0; k < B_nnz[i]; k++)
+            {
+                if (A_index[ROWMAJOR(i, j, N, M)] == B_index[ROWMAJOR(i, k, N, M)])
+                {
+                    rvalue = B_value[ROWMAJOR(i, k, N, M)];
+                    break;
+                }
+                rvalue = 0.0;
+            }
+
+            temp = A_value[ROWMAJOR(i, j, N, M)] - rvalue;
+            fnorm += temp * temp;
+        }
+
+        for (int j = 0; j < B_nnz[i]; j++)
+        {
+            for (int k = 0; k < A_nnz[i]; k++)
+            {
+                if (A_index[ROWMAJOR(i, k, N, M)] == B_index[ROWMAJOR(i, j, N, M)])
+                {
+                    rvalue = A_value[ROWMAJOR(i, k, N, M)];
+                    break;
+                }
+                rvalue = 0.0;
+            }
+
+            if (rvalue == 0.0)
+            {
+                temp = B_value[ROWMAJOR(i, j, N, M)];
+                fnorm += temp * temp;
+            }
+        }
+    }
+
+    fnorm = sqrt(fnorm);
+
+    return (double) REAL_PART(fnorm);
+}

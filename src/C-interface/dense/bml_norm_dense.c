@@ -158,3 +158,38 @@ bml_fnorm_dense(
     }
     return 0;
 }
+
+/** Calculate the Fobenius norm of 2 matrices.
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \return Frobenius norm of A-B
+ */
+double
+bml_fnorm2_dense(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_fnorm2_dense_single_real(A, B);
+            break;
+        case double_real:
+            return bml_fnorm2_dense_double_real(A, B);
+            break;
+        case single_complex:
+            return bml_fnorm2_dense_single_complex(A, B);
+            break;
+        case double_complex:
+            return bml_fnorm2_dense_double_complex(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown precision");
+            break;
+    }
+    return 0;
+}
+

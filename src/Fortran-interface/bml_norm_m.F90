@@ -11,6 +11,7 @@ module bml_norm_m
   public :: bml_sum_squares_submatrix
   public :: bml_sum_squares2
   public :: bml_fnorm
+  public :: bml_fnorm2
 
 contains
 
@@ -76,5 +77,20 @@ contains
     fnorm = bml_fnorm_C(a%ptr)
 
   end function bml_fnorm
+
+  !> Return Frobenius norm of 2 matrices.
+  !!
+  !!\param a The matrix a
+  !!\param b The matrix b
+  !!\return The Frobenius norm of a-b
+  function bml_fnorm2(a, b) result(fnorm)
+
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(in) :: b
+    real(C_DOUBLE) :: fnorm
+
+    fnorm = bml_fnorm2_C(a%ptr, b%ptr)
+
+  end function bml_fnorm2
 
 end module bml_norm_m

@@ -121,3 +121,31 @@ bml_fnorm(
     }
     return 0;
 }
+
+/** Calculate the Frobenius norm of 2 matrices.
+ *
+ * \ingroup norm_group_C
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \return Frobenius norm of Matrix A
+ */
+double
+bml_fnorm2(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_fnorm2_dense(A, B);
+            break;
+        case ellpack:
+            return bml_fnorm2_ellpack(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return 0;
+}
