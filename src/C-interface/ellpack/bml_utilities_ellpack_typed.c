@@ -5,6 +5,7 @@
 #include "../bml_utilities.h"
 #include "bml_types_ellpack.h"
 #include "bml_utilities_ellpack.h"
+#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>
@@ -108,6 +109,9 @@ void TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
+
+    // Only write from rank 0
+    if (bml_printRank() != 1) return;
 
     mFile = fopen(filename, "w");
 

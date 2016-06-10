@@ -42,3 +42,38 @@ bml_trace_dense(
     }
     return 0;
 }
+
+/** Calculate the trace of a matrix multiplication.
+ * Matrices must be of the same size.
+ *
+ *  \ingroup trace_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \return The trace of A*B
+ */
+double
+bml_traceMult_dense(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_traceMult_dense_single_real(A, B);
+            break;
+        case double_real:
+            return bml_traceMult_dense_double_real(A, B);
+            break;
+        case single_complex:
+            return bml_traceMult_dense_single_complex(A, B);
+            break;
+        case double_complex:
+            return bml_traceMult_dense_double_complex(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return 0;
+}

@@ -9,6 +9,7 @@ module bml_copy_m
 
   public :: bml_copy
   public :: bml_copy_new
+  public :: bml_reorder
   public :: bml_save_domain
   public :: bml_restore_domain
 
@@ -46,6 +47,24 @@ contains
     call bml_copy_C(a%ptr, b%ptr)
 
   end subroutine bml_copy
+
+  !> Reorder a matrix.
+  !!
+  !! \ingroup copy_group_F
+  !!
+  !! \param a Matrix to reorder
+  !! \param perm The permutation matrix
+  subroutine bml_reorder(a, perm)
+
+    use bml_types_m
+
+    type(bml_matrix_t), intent(inout) :: a
+    integer(C_INT), target, intent(in) :: perm(*)
+
+    call bml_reorder_C(a%ptr, c_loc(perm))
+
+  end subroutine bml_reorder
+
 
   !> Save the matrix's domain.
   !!

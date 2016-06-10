@@ -230,7 +230,7 @@ void bml_update_domain_ellpack(
      if (i == 0)
          A_domain->localRowMin[0] = A_domain->globalRowMin;
      else
-         A_domain->localRowMin[i] = A_domain->localRowMax[i-1] ;
+         A_domain->localRowMin[i] = A_domain->localRowMax[i-1];
 
      A_domain->localRowMax[i] = A_domain->localRowMin[i] + rtotal;
      A_domain->localRowExtent[i] = A_domain->localRowMax[i] - A_domain->localRowMin[i];
@@ -265,5 +265,4 @@ void bml_update_domain_ellpack(
       }
     }
 */
-
 }

@@ -82,11 +82,19 @@ void bml_initParallelF(MPI_Fint fcomm)
 }
 #endif
 
+void bml_shutdownParallelF()
+{
+#ifdef DO_MPI
+   free(requestList);
+   free(rUsed);
+#endif
+}
 
 void bml_shutdownParallel()
 {
 #ifdef DO_MPI
    free(requestList);
+   free(rUsed);
 
    MPI_Finalize();
 #endif

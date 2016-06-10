@@ -31,3 +31,31 @@ bml_trace(
     }
     return 0;
 }
+
+/** Calculate trace of a matrix multiplication.
+ *
+ * \ingroup trace_group_C
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \return  Trace of A*B
+ */
+double
+bml_traceMult(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_traceMult_dense(A, B);
+            break;
+        case ellpack:
+            return bml_traceMult_ellpack(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return 0;
+}

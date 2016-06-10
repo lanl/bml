@@ -120,6 +120,12 @@ module bml_c_interface_m
       type(C_PTR) :: bml_copy_new_C
     end function bml_copy_new_C
 
+    subroutine bml_reorder_C(a, perm) bind(C, name="bml_reorder")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: perm
+    end subroutine bml_reorder_C
+
     subroutine bml_save_domain_C(a) bind(C, name="bml_save_domain")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a
@@ -459,6 +465,13 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       real(C_DOUBLE) :: bml_trace_C
     end function bml_trace_C
+
+    function bml_traceMult_C(a, b) bind(C, name="bml_traceMult")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      real(C_DOUBLE) :: bml_traceMult_C
+    end function bml_traceMult_C
 
     function bml_transpose_new_C(a) bind(C, name="bml_transpose_new")
       import :: C_PTR

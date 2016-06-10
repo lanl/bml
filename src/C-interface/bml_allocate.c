@@ -315,7 +315,6 @@ bml_default_domain(
       }
     }    
 */
-
     return domain;
 }
 

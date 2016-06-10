@@ -38,11 +38,11 @@ void bml_copy_dense_double_complex(
     const bml_matrix_dense_t * A,
     bml_matrix_dense_t * B);
 
-void bml_reorder_single_real(
+void bml_reorder_dense(
     bml_matrix_dense_t * A,
     int * perm);
 
-void bml_reorder_dense(
+void bml_reorder_dense_single_real(
     bml_matrix_dense_t * A,
     int * perm);
 

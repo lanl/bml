@@ -22,6 +22,7 @@ bml_shutdown()
 void
 bml_shutdownF()
 {
+    bml_shutdownParallelF();
     // Fortran is expected to do the MPI_Finalize
     // Future: shutdown GPUs, cublas, cusparse, etc.
 }

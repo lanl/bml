@@ -32,6 +32,9 @@ int bml_getMyRank(void);
 void bml_initParallelF(MPI_Fint fcomm);
 #endif
 
+// Shutdown from Fortran MPI
+void bml_shutdownParallelF();
+
 // Return non-zero if printing occurs from this rank.
 int bml_printRank(void);
 

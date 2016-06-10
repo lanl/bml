@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <omp.h>
 
 #ifdef DO_MPI
@@ -26,34 +27,52 @@ void TYPED_FUNC(
     bml_matrix_ellpack_t * A)
 {
     int myRank = bml_getMyRank();
+    int nRanks = bml_getNRanks();
 
     int N = A->N;
     int M = A->M;
 
     int *A_nnz = (int *) A->nnz;
     int *A_index = (int *) A->index;
-    bml_domain_t * A_domain = A->domain;
+    bml_domain_t * A_domain = (bml_domain_t *)A->domain;
 
     REAL_T *A_value = (REAL_T *) A->value;
 
 #ifdef DO_MPI
+/*    
+    for (int i = 0; i < nRanks; i++)
+    {
+      printf("allgatherv %d: rank %d localRow %d %d %d\n", myRank, i, A_domain->localRowMin[i],
+        A_domain->localRowMax[i], A_domain->localRowExtent[i]);
+      printf("allgatherv %d before: rank %d nnz  %d %d %d %d\n", myRank, i, A_nnz[0], 
+        A_nnz[3071], A_nnz[3072], A_nnz[6143]);
+    }
+*/
+
     // Number of non-zeros per row
-    MPI_Allgatherv(&A_nnz[A_domain->localRowMin[myRank]], 
-                   A_domain->localRowExtent[myRank], MPI_INT, 
-                   A_nnz, A_domain->localRowExtent, A_domain->localRowMin,
-                   MPI_INT, ccomm);
+    MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
+                   A_nnz, A_domain->localRowExtent,
+                   A_domain->localRowMin, MPI_INT, ccomm);
 
     // Indeces
-    MPI_Allgatherv(&A_index[A_domain->localRowMin[myRank] * M], 
-                   A_domain->localElements[myRank], MPI_INT, 
+    MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
                    A_index, A_domain->localElements, A_domain->localDispl,
                    MPI_INT, ccomm);
 
     // Values
-    MPI_Allgatherv(&A_value[A_domain->localRowMin[myRank] * M],
-                   A_domain->localElements[myRank], REAL_MPI_TYPE, 
+    MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
                    A_value, A_domain->localElements, A_domain->localDispl,
                    REAL_MPI_TYPE, ccomm);
+
+/*
+    for (int i = 0; i < nRanks; i++)
+    {
+      printf("allgatherv %d: rank %d localRow %d %d %d\n", myRank, i, A_domain->localRowMin[i],
+        A_domain->localRowMax[i], A_domain->localRowExtent[i]);
+      printf("allgatherv %d after: rank %d nnz  %d %d %d %d\n", myRank, i, A_nnz[0], 
+        A_nnz[3071], A_nnz[3072], A_nnz[6143]);
+    }
+*/
 #endif
 
 }

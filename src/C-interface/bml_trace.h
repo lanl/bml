@@ -9,4 +9,9 @@
 double bml_trace(
     const bml_matrix_t * A);
 
+// Calculate trace of matrix mult
+double bml_tracemult(
+    const bml_matrix_t * A,
+    const bml_matrix_t * B);
+
 #endif

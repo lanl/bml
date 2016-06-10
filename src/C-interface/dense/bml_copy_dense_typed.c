@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_copy.h"
@@ -67,10 +68,20 @@ void TYPED_FUNC(
     #pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-   //   memcpy(A_matrix[ROWMAJOR(0, perm[i], N, N], B_matrix[ROWMAJOR(0, i, N, N)], N*sizeof(REAL_T));
+      memcpy(&A_matrix[ROWMAJOR(perm[i], 0, N, N)], &B_matrix[ROWMAJOR(i, 0, N, N)], N*sizeof(REAL_T));
     }
 
     // Reorder elements in each row - just change index
+    REAL_T tmp;
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++)
+    {
+      for (int j = 0; j < N; j++)
+      {
+        tmp = A_matrix[ROWMAJOR(i, j, N, N)];
+        A_matrix[ROWMAJOR(i, j, N, N)] = B_matrix[ROWMAJOR(i, perm[j], N, N)];
+      }
+    }
     
     bml_deallocate_dense(B);
 }

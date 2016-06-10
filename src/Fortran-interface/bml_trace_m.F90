@@ -8,6 +8,7 @@ module bml_trace_m
   private
 
   public :: bml_trace
+  public :: bml_traceMult
 
 contains
 
@@ -24,5 +25,18 @@ contains
     tr_a = bml_trace_C(a%ptr)
 
   end function bml_trace
+
+  !> Calculate the trace of a matrix multiplication.
+  !!
+  !! \param a The matrix a.
+  !! \param b The matrix b.
+  function bml_traceMult(a, b) result(tr_mult)
+
+    class(bml_matrix_t), intent(in) :: a, b
+    real(C_DOUBLE) :: tr_mult
+
+    tr_mult= bml_traceMult_C(a%ptr, b%ptr)
+
+  end function bml_traceMult
 
 end module bml_trace_m

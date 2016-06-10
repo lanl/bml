@@ -18,4 +18,24 @@ double bml_trace_dense_single_complex(
 double bml_trace_dense_double_complex(
     const bml_matrix_dense_t * A);
 
+double bml_traceMult_dense(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_traceMult_dense_single_real(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_traceMult_dense_double_real(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_traceMult_dense_single_complex(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
+double bml_traceMult_dense_double_complex(
+    const bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * B);
+
 #endif
