@@ -218,6 +218,11 @@ void TYPED_FUNC(
                 icol++;
             }
         }
+        if (icol > B_M)
+        {
+            LOG_ERROR("Number of non-zeroes per row >= M, Increase M\n");
+        }
+
         B_nnz[ii] = icol;
     }
 }
