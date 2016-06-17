@@ -21,20 +21,21 @@ testing     - Run the test suite
 docs        - Generate the API documentation
 indent      - Indent the sources
 dist        - Generate a tar file (this only works with git)
+
 The following environment variables can be set to influence the configuration
 step and the build:
 
 EOF
   set_defaults
-  echo "CMAKE_BUILD_TYPE   {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
-  echo "CC                 Path to C compiler       (default is ${CC})"
-  echo "CXX                Path to C++ compiler     (default is ${CXX})"
-  echo "FC                 Path to Fortran compiler (default is ${FC})"
   echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
-  echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
   echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
+  echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
   echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
   echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
+  echo "CC                 Path to C compiler       (default is ${CC})"
+  echo "CMAKE_BUILD_TYPE   {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
+  echo "CXX                Path to C++ compiler     (default is ${CXX})"
+  echo "FC                 Path to Fortran compiler (default is ${FC})"
   echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
 }
 
