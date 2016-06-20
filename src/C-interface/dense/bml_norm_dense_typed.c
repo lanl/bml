@@ -49,7 +49,6 @@ double TYPED_FUNC(
 double TYPED_FUNC(
     bml_sum_squares_submatrix_dense) (
     const bml_matrix_dense_t * A,
-    const int *core_pos,
     const int core_size)
 {
     int N = A->N;
@@ -58,13 +57,13 @@ double TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
 
 #pragma omp parallel for default(none) \
-    shared(N, A_matrix, core_pos) \
+    shared(N, A_matrix) \
     reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {
-        for (int j = 0; j < N; j++)
+        for (int j = 0; j < core_size; j++)
         {
-            REAL_T value = A_matrix[ROWMAJOR(core_pos[i], j, N, N)];
+            REAL_T value = A_matrix[ROWMAJOR(i, j, N, N)];
             sum += value * value;
         }
     }

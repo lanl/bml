@@ -58,7 +58,6 @@ double TYPED_FUNC(
 double TYPED_FUNC(
     bml_sum_squares_submatrix_ellpack) (
     const bml_matrix_ellpack_t * A,
-    const int *core_pos,
     const int core_size)
 {
     int N = A->N;
@@ -71,14 +70,17 @@ double TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
 
 #pragma omp parallel for default(none) \
-    shared(N, M, A_index, A_nnz, A_value, core_pos) \
+    shared(N, M, A_index, A_nnz, A_value) \
     reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {
-        for (int j = 0; j < A_nnz[core_pos[i]]; j++)
+        for (int j = 0; j < A_nnz[i]; j++)
         {
-            REAL_T value = A_value[ROWMAJOR(core_pos[i], j, N, M)];
-            sum += value * value;
+            if (A_index[ROWMAJOR(i, j, N, M)] < core_size)
+            {
+                REAL_T value = A_value[ROWMAJOR(i, j, N, M)];
+                sum += value * value;
+            }
         }
     }
 

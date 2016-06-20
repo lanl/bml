@@ -44,16 +44,15 @@ bml_sum_squares(
 double
 bml_sum_squares_submatrix(
     const bml_matrix_t * A,
-    const int *core_pos,
     const int core_size)
 {
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_sum_squares_submatrix_dense(A, core_pos, core_size);
+            return bml_sum_squares_submatrix_dense(A, core_size);
             break;
         case ellpack:
-            return bml_sum_squares_submatrix_ellpack(A, core_pos, core_size);
+            return bml_sum_squares_submatrix_ellpack(A, core_size);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
