@@ -243,11 +243,10 @@ module bml_c_interface_m
       real(C_DOUBLE) :: bml_sum_squares_C
     end function bml_sum_squares_C
 
-    function bml_sum_squares_submatrix_C(a, core_pos, core_size) &
+    function bml_sum_squares_submatrix_C(a, core_size) &
       bind(C, name="bml_sum_squares_submatrix")
       import :: C_PTR, C_DOUBLE, C_INT
       type(C_PTR), value, intent(in) :: a
-      type(C_PTR), value, intent(in) :: core_pos
       integer(C_INT), value, intent(in) :: core_size
       real(C_DOUBLE) :: bml_sum_squares_submatrix_C
     end function bml_sum_squares_submatrix_C

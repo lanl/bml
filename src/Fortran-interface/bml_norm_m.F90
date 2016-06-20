@@ -31,17 +31,15 @@ contains
   !> Return sum of squares of the core elements of a submatrix.
   !!
   !!\param a The matrix
-  !!\param core_pos Core rows of submatrix
   !!\param core_size Number of rows
   !!\return The sum of squares
-  function bml_sum_squares_submatrix(a, core_pos, core_size) result(ssum)
+  function bml_sum_squares_submatrix(a, core_size) result(ssum)
 
     type(bml_matrix_t), intent(in) :: a
-    integer(C_INT), target, intent(in) :: core_pos(*)
     integer(C_INT), intent(in) :: core_size
     real(C_DOUBLE) :: ssum
 
-    ssum = bml_sum_squares_submatrix_C(a%ptr, c_loc(core_pos), core_size)
+    ssum = bml_sum_squares_submatrix_C(a%ptr, core_size)
 
   end function bml_sum_squares_submatrix
 
