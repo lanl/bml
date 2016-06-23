@@ -422,6 +422,14 @@ module bml_c_interface_m
       real(C_DOUBLE), value :: threshold
     end subroutine bml_submatrix2matrix_C
 
+    subroutine bml_adjacency_C(a, xadj, adjncy) &
+      bind(C, name="bml_adjacency")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: xadj
+      type(C_PTR), value, intent(in) :: adjncy
+    end subroutine bml_adjacency_C
+
     subroutine bml_threshold_C(a, threshold) bind(C, name="bml_threshold")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a

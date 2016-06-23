@@ -10,6 +10,7 @@ module bml_submatrix_m
   public :: bml_matrix2submatrix_index
   public :: bml_matrix2submatrix
   public :: bml_submatrix2matrix
+  public :: bml_adjacency
 
 contains
 
@@ -101,5 +102,22 @@ contains
       c_loc(core_pos), llsize, threshold_)
 
   end subroutine bml_submatrix2matrix
+
+  !> Assemble adjacency vectors for a matrix.
+  !!
+  !! \ingroup submatrix_group_F
+  !!
+  !! \param a Matrix
+  !! \param xadj Start indeces for each row
+  !! \param adjncy Indices of non-zero values
+  subroutine bml_adjacency(a, xadj, adjncy)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer(C_INT), target, intent(in) :: xadj(*)
+    integer(C_INT), target, intent(in) :: adjncy(*)
+
+    call bml_adjacency_C(a%ptr, c_loc(xadj), c_loc(adjncy))
+
+  end subroutine bml_adjacency
 
 end module bml_submatrix_m
