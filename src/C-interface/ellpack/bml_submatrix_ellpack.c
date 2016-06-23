@@ -196,3 +196,59 @@ bml_getVector_ellpack(
     }
     return NULL;
 }
+
+
+void 
+bml_adjacency_ellpack(
+	const bml_matrix_ellpack_t * A,
+	int * xadj,
+	int * adjncy)
+{	
+/** we ignore self loops
+*/
+
+	int A_N = A->N; //rows
+	
+	int A_M = A->M; //max size of nnz row
+	int *A_nnz = A->nnz;
+	int *A_index = A->index;
+	int i,j;
+	int totalnnz;
+	for(j = 0; j < A_N; j++)
+		{
+			totalnnz = totalnnz + A_nnz[j];
+		}	
+	xadj[0] = 0;
+	fprintf(stderr, "\t \t \t xadj[0] = %d \n", xadj[0]);
+	for (i = 1; i < A_N +1; i++)
+	{
+		
+		xadj[i] = xadj[i-1] + A_nnz[i-1];
+	}
+		
+	for(j =0; j < A_nnz[0]; j++)
+	{
+		adjncy[j] = A_index[j];
+	}
+
+	for(i=1; i < A_N; i++)
+	{
+		for(j = 0; j < A_nnz[i]; j++)
+		{
+			int row_start = i*A_nnz[i];
+			adjncy[A_nnz[i-1]  + j] = A_index[row_start +j];	
+		}	
+	}
+	for (i = 0; i< A_N+1; i++){
+		fprintf(stderr, "%d, ", xadj[i]);
+	}
+	fprintf(stderr, "\n");
+	
+		for (i = 0; i< totalnnz; i++){
+		fprintf(stderr, "%d, ", adjncy[i]);
+	}
+	fprintf(stderr, "\n");
+		
+	
+}	
+	

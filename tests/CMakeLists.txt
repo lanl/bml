@@ -3,6 +3,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/C-interface)
 set(SOURCES_TYPED
   add_matrix_typed.c
   allocate_matrix_typed.c
+  adjacency_typed.c
   convert_matrix_typed.c
   copy_matrix_typed.c
   diagonalize_matrix_typed.c
@@ -30,6 +31,7 @@ add_library(bmltests
 add_executable(bml-test
   add_matrix.c
   allocate_matrix.c
+  adjacency.c
   bml_test.c
   convert_matrix.c
   copy_matrix.c

@@ -33,4 +33,9 @@ void bml_submatrix2matrix(
     const int llsize,
     const double threshold);
 
+void bml_adjacency(
+	bml_matrix_t * A,
+	int * xadj,
+	int * adjncy);
+	
 #endif
