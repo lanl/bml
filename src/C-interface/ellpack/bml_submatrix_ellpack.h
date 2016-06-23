@@ -162,8 +162,8 @@ void *bml_getVector_ellpack_double_complex(
     const int colCnt);
     
 void bml_adjacency_ellpack(
-	const bml_matrix_ellpack_t * A,
-	int * xadj,
-	int * adjncy);
+    const bml_matrix_ellpack_t * A,
+    int * xadj,
+    int * adjncy);
 
 #endif

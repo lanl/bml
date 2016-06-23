@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "bml_logger.h"
 #include "bml_submatrix.h"
 #include "bml_submatrix_ellpack.h"
@@ -8,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 /** Determine element indices for submatrix, given a set of nodes/orbitals.
  *
@@ -197,58 +199,39 @@ bml_getVector_ellpack(
     return NULL;
 }
 
-
+/** Assemble adjacency structure from matrix.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A
+ * \param xadj Index of each row in adjncy
+ * \param adjncy Adjacency vector
+ */
 void 
 bml_adjacency_ellpack(
-	const bml_matrix_ellpack_t * A,
-	int * xadj,
-	int * adjncy)
+    const bml_matrix_ellpack_t * A,
+    int * xadj,
+    int * adjncy)
 {	
-/** we ignore self loops
-*/
+    int A_N = A->N; //rows
+	
+    int A_M = A->M; //max size of nnz row
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
 
-	int A_N = A->N; //rows
-	
-	int A_M = A->M; //max size of nnz row
-	int *A_nnz = A->nnz;
-	int *A_index = A->index;
-	int i,j;
-	int totalnnz;
-	for(j = 0; j < A_N; j++)
-		{
-			totalnnz = totalnnz + A_nnz[j];
-		}	
-	xadj[0] = 0;
-	fprintf(stderr, "\t \t \t xadj[0] = %d \n", xadj[0]);
-	for (i = 1; i < A_N +1; i++)
-	{
-		
-		xadj[i] = xadj[i-1] + A_nnz[i-1];
-	}
-		
-	for(j =0; j < A_nnz[0]; j++)
-	{
-		adjncy[j] = A_index[j];
-	}
+    xadj[0] = 0;
+    for (int i = 1; i < A_N+1; i++)
+    {
+        xadj[i] = xadj[i-1] + A_nnz[i-1];
+    }
 
-	for(i=1; i < A_N; i++)
-	{
-		for(j = 0; j < A_nnz[i]; j++)
-		{
-			int row_start = i*A_nnz[i];
-			adjncy[A_nnz[i-1]  + j] = A_index[row_start +j];	
-		}	
-	}
-	for (i = 0; i< A_N+1; i++){
-		fprintf(stderr, "%d, ", xadj[i]);
-	}
-	fprintf(stderr, "\n");
-	
-		for (i = 0; i< totalnnz; i++){
-		fprintf(stderr, "%d, ", adjncy[i]);
-	}
-	fprintf(stderr, "\n");
-		
-	
-}	
-	
+#pragma omp parallel for default(none) \
+    shared(A_N, A_M, A_index, xadj, adjncy)
+    for (int i = 0; i < A_N; i++)
+    {
+        for (int j = xadj[i], jj = 0; j < xadj[i+1]; j++, jj++)
+        {
+            adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
+        }
+    }
+}

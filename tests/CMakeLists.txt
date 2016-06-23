@@ -2,8 +2,8 @@ include_directories(${CMAKE_SOURCE_DIR}/src/C-interface)
 
 set(SOURCES_TYPED
   add_matrix_typed.c
+  adjacency_matrix_typed.c
   allocate_matrix_typed.c
-  adjacency_typed.c
   convert_matrix_typed.c
   copy_matrix_typed.c
   diagonalize_matrix_typed.c
@@ -30,8 +30,8 @@ add_library(bmltests
 
 add_executable(bml-test
   add_matrix.c
+  adjacency_matrix.c
   allocate_matrix.c
-  adjacency.c
   bml_test.c
   convert_matrix.c
   copy_matrix.c
@@ -61,7 +61,7 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
-foreach(N adjungate_triangle allocate add multiply convert copy diagonalize norm  
+foreach(N add adjacency adjungate_triangle allocate convert copy diagonalize multiply norm  
     normalize scale submatrix threshold trace transpose)
   foreach(T dense ellpack)
     foreach(P single_real double_real single_complex double_complex)

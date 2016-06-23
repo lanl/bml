@@ -11,8 +11,8 @@ typedef int (
     const int M);
 
 #include "add_matrix.h"
+#include "adjacency_matrix.h"
 #include "allocate_matrix.h"
-#include "adjacency.h"
 #include "convert_matrix.h"
 #include "copy_matrix.h"
 #include "diagonalize_matrix.h"

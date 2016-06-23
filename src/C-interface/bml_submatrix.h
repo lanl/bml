@@ -33,8 +33,9 @@ void bml_submatrix2matrix(
     const int llsize,
     const double threshold);
 
+// Return adjacency vectors
 void bml_adjacency(
-	bml_matrix_t * A,
+	const bml_matrix_t * A,
 	int * xadj,
 	int * adjncy);
 	

@@ -117,26 +117,31 @@ bml_submatrix2matrix(
     }
 }
 
-/** reads matrix and fills up the data structures to be used in metis and sim annealing algorithms **/
-
+/** Assemble adjacency structures from matrix.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Submatrix A
+ * \param xadj index to start of each row
+ * \param adjncy adjacency vector
+*/
 void 
 bml_adjacency(
-	bml_matrix_t * A,
-	int * xadj,
-	int * adjncy)
+    const bml_matrix_t * A,
+    int * xadj,
+    int * adjncy)
 {
 
-	switch (bml_get_type(A))
-	{
-		case dense:
-			LOG_ERROR("bml_adjacency routine is not implemented for dense\n");
-			break;
-		case ellpack:
-
-			bml_adjacency_ellpack(A, xadj, adjncy);
-			break;
-		default:
-			LOG_ERROR("unknown matrix type\n");
-			break;
+    switch (bml_get_type(A))
+    {
+	case dense:
+	    LOG_ERROR("bml_adjacency routine is not implemented for dense\n");
+	    break;
+	case ellpack:
+	    bml_adjacency_ellpack(A, xadj, adjncy);
+	    break;
+	default:
+   	    LOG_ERROR("unknown matrix type\n");
+	    break;
 	}
 }
