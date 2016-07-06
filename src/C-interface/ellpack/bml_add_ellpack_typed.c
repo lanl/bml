@@ -3,6 +3,7 @@
 #include "bml_allocate.h"
 #include "bml_add.h"
 #include "bml_types.h"
+#include "bml_parallel.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_add_ellpack.h"
 #include "bml_types_ellpack.h"
@@ -36,14 +37,22 @@ void TYPED_FUNC(
     int N = A->N;
     int A_M = A->M;
     int B_M = B->M;
+
     int ix[N], jx[N];
+
     int *A_nnz = A->nnz;
     int *A_index = A->index;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
     int *B_nnz = B->nnz;
     int *B_index = B->index;
+
     REAL_T x[N];
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
+
+    int myRank = bml_getMyRank();
 
     memset(ix, 0, N * sizeof(int));
     memset(jx, 0, N * sizeof(int));
@@ -51,10 +60,15 @@ void TYPED_FUNC(
 
 #pragma omp parallel for default(none) \
     firstprivate(x, ix, jx) \
-    shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz)
-    for (int i = 0; i < N; i++)
+    shared(N, A_M, B_M, myRank) \
+    shared(A_index, A_value, A_nnz) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_index, B_value, B_nnz)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
+        if (alpha > (double)0.0 || alpha < (double)0.0)
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
             int k = A_index[ROWMAJOR(i, jp, N, A_M)];
@@ -69,6 +83,7 @@ void TYPED_FUNC(
             x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
         }
 
+        if (beta > (double)0.0 || beta < (double)0.0)
         for (int jp = 0; jp < B_nnz[i]; jp++)
         {
             int k = B_index[ROWMAJOR(i, jp, N, B_M)];
@@ -127,10 +142,15 @@ double TYPED_FUNC(
     int A_M = A->M;
     int B_M = B->M;
     int ix[N], jx[N];
+
     int *A_nnz = A->nnz;
     int *A_index = A->index;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
     int *B_nnz = B->nnz;
     int *B_index = B->index;
+
     int ind, ind2;
 
     REAL_T x[N];
@@ -140,6 +160,8 @@ double TYPED_FUNC(
 
     double trnorm = 0.0;
 
+    int myRank = bml_getMyRank();
+
     memset(ix, 0, N * sizeof(int));
     memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
@@ -147,9 +169,13 @@ double TYPED_FUNC(
 
 #pragma omp parallel for default(none) \
     firstprivate(x, y, ix, jx) \
-    shared(N, A_M, B_M, A_index, A_value, A_nnz, B_index, B_value, B_nnz) \
+    shared(N, A_M, B_M, myRank) \
+    shared(A_index, A_value, A_nnz) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_index, B_value, B_nnz) \
     reduction(+:trnorm)
-    for (int i = 0; i < N; i++)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
@@ -205,7 +231,6 @@ double TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
-
 
     return trnorm;
 }

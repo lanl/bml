@@ -2,6 +2,7 @@
 #include "../blas.h"
 #include "bml_allocate.h"
 #include "bml_scale.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_copy_ellpack.h"
@@ -31,10 +32,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     bml_matrix_ellpack_t *B = TYPED_FUNC(bml_copy_ellpack_new) (A);
 
-    int nElems = B->N * B->M;
+    REAL_T * B_value = B->value;
+    int myRank = bml_getMyRank();
+    //int nElems = B->N * B->M;
+    int nElems = B->domain->localRowExtent[myRank] * B->M;
+    int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#if DO_MPI_BLOCK
+    C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
+#else
     C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
+#endif
 
     return B;
 }
@@ -57,10 +66,18 @@ void TYPED_FUNC(
     if (A != B)
         TYPED_FUNC(bml_copy_ellpack) (A, B);
 
-    int nElems = B->N * B->M;
+    REAL_T * B_value = B->value;
+    int myRank = bml_getMyRank();
+    //int nElems = B->N * B->M;
+    int nElems = B->domain->localRowExtent[myRank] * B->M;
+    int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef DO_MPI_BLOCK
+    C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
+#else
     C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
+#endif
 }
 
 void TYPED_FUNC(
@@ -68,9 +85,18 @@ void TYPED_FUNC(
     const double scale_factor,
     bml_matrix_ellpack_t * A)
 {
+    REAL_T * A_value = A->value;
     REAL_T scale_factor_ = (REAL_T) scale_factor;
-    int number_elements = A->N * A->M;
+
+    int myRank = bml_getMyRank();
+    //int number_elements = A->N * A->M;
+    int number_elements = A->domain->localRowExtent[myRank] * A->M;
+    int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 
+#if DO_MPI_BLOCK
+    C_BLAS(SCAL) (&number_elements, &scale_factor_, &(A_value[startIndex]), &inc);
+#else
     C_BLAS(SCAL) (&number_elements, &scale_factor_, A->value, &inc);
+#endif
 }

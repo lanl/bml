@@ -2,6 +2,7 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_transpose.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_transpose_ellpack.h"
@@ -32,12 +33,17 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
 
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
+    int myRank = bml_getMyRank();
+
     // Transpose all elements
+/*
 #pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -56,6 +62,33 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     return B;
+*/
+
+    // Transpose all elements
+#pragma omp parallel for default(none) \
+    shared(N, M, B_index, B_value, B_nnz) \
+    shared(A_index, A_value, A_nnz) \
+    shared(A_localRowMin, A_localRowMax, myRank)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            for (int k = 0; k < A_nnz[j]; k++)
+            {
+                if (A_index[ROWMAJOR(j, k, N, M)] == i)
+                {
+                    B_index[ROWMAJOR(i, B_nnz[i], N, M)] = j;
+                    B_value[ROWMAJOR(i, B_nnz[i], N, M)] = A_value[ROWMAJOR(j, k, N, M)];
+                    B_nnz[i]++;
+                    break;
+                }
+            }
+        }
+    }
+
+    return B;
+
 }
 
 /** Transpose a matrix in place.
@@ -63,7 +96,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  *  \ingroup transpose_group
  *
  *  \param A The matrix to be transposeed
- *  \return the transposeed A
+ *  \return the transposed A
  */
 void TYPED_FUNC(
     bml_transpose_ellpack) (

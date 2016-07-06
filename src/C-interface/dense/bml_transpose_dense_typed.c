@@ -3,6 +3,7 @@
 #include "bml_allocate.h"
 #include "bml_allocate_dense.h"
 #include "bml_transpose.h"
+#include "bml_parallel.h"
 #include "bml_transpose_dense.h"
 #include "bml_types.h"
 #include "bml_types_dense.h"
@@ -30,8 +31,16 @@ bml_matrix_dense_t *TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-#pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
-    for (int i = 0; i < N; i++)
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix, B_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         for (int j = 0; j < N; j++)
         {
@@ -57,7 +66,9 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T tmp;
 
-#pragma omp parallel for default(none) private(tmp) shared(N, A_matrix)
+#pragma omp parallel for default(none) \
+    private(tmp) \
+    shared(N, A_matrix)
     for (int i = 0; i < N - 1; i++)
     {
         for (int j = i + 1; j < N; j++)

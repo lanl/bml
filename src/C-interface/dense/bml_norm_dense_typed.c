@@ -5,6 +5,7 @@
 #include "bml_norm_dense.h"
 #include "bml_types.h"
 #include "bml_types_dense.h"
+#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>
@@ -28,8 +29,17 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for default(none) shared(N, A_matrix) reduction(+:sum)
-    for (int i = 0; i < N * N; i++)
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    reduction(+:sum)
+    //for (int i = 0; i < N * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
     {
         sum += A_matrix[i] * A_matrix[i];
     }
@@ -95,15 +105,23 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
+
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
+
+    int myRank = bml_getMyRank();
 
 #pragma omp parallel for \
     default(none) \
     shared(alpha_, beta_) \
     shared(N, A_matrix, B_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
     reduction(+:sum)
-    for (int i = 0; i < N * N; i++)
+    //for (int i = 0; i < N * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
     {
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
         if (ABS(temp) > threshold)
@@ -124,8 +142,14 @@ double TYPED_FUNC(
     bml_fnorm_dense) (
     const bml_matrix_dense_t * A)
 {
-    REAL_T sum = 0.0;
+    double sum = 0.0;
     sum = TYPED_FUNC(bml_sum_squares_dense) (A);
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        bml_sumRealReduce(&sum);
+    }
+#endif
 
     return (double) REAL_PART(sqrt(sum));
 }
@@ -148,19 +172,33 @@ double TYPED_FUNC(
     REAL_T * A_matrix = (REAL_T *) A->matrix;
     REAL_T * B_matrix = (REAL_T *) B->matrix;
 
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
     double fnorm = 0.0;
     REAL_T temp;
+
+    int myRank = bml_getMyRank();
 
 #pragma omp parallel for \
     default(none) \
     shared(temp) \
     shared(N, A_matrix, B_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
     reduction(+:fnorm)
-    for (int i = 0; i < N*N;i++)
+    //for (int i = 0; i < N*N;i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
     {
         temp = A_matrix[i] - B_matrix[i];
         fnorm += temp * temp;
     }
+
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        bml_sumRealReduce(&fnorm);
+    }
+#endif
 
     return (double) REAL_PART(sqrt(fnorm));
 }

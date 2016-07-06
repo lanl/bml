@@ -1,6 +1,7 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_threshold.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_threshold_dense.h"
@@ -30,8 +31,16 @@ bml_matrix_dense_t *TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-#pragma omp parallel for default(none) shared(N, A_matrix, B_matrix)
-    for (int i = 0; i < N * N; i++)
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix, B_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank)
+    //for (int i = 0; i < N * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
     {
         if (is_above_threshold(A_matrix[i], threshold))
         {
@@ -57,8 +66,16 @@ void TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for default(none) shared(N, A_matrix)
-    for (int i = 0; i < N * N; i++)
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank)
+    //for (int i = 0; i < N * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
     {
         if (!is_above_threshold(A_matrix[i], threshold))
         {

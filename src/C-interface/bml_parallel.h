@@ -47,6 +47,15 @@ void bml_shutdownParallel(void);
 // Wrapper for MPI_Barrier.
 void bml_barrierParallel(void);
 
+// Wrapper for real sum MPI_AllReduce
+void bml_sumRealReduce(double *value);
+
+// Wrapper for real min MPI_AllReduce
+void bml_minRealReduce(double *value);
+
+// Wrapper for real max MPI_AllReduce
+void bml_maxRealReduce(double *value);
+
 // Wrapper for MPI_allGatherV
 void bml_allGatherVParallel(bml_matrix_t * A);
 

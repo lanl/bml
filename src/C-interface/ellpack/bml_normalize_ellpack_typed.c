@@ -2,6 +2,7 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_normalize.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_normalize_ellpack.h"
@@ -12,6 +13,7 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <omp.h>
 
@@ -60,16 +62,28 @@ void *TYPED_FUNC(
     int M = A->M;
     int *A_nnz = (int *) A->nnz;
     int *A_index = (int *) A->index;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
+    REAL_T rad[N];
+    REAL_T dval[N];
+
     REAL_T *A_value = (REAL_T *) A->value;
 
 #pragma omp parallel for default(none) \
     shared(N, M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    shared(rad, dval) \
     private(absham, radius, dvalue) \
     reduction(max:emax) \
     reduction(min:emin)
-    for (int i = 0; i < N; i++)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         radius = 0.0;
+        dvalue = 0.0;
 
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -83,13 +97,38 @@ void *TYPED_FUNC(
 
         }
 
+        dval[i] = dvalue;
+        rad[i] = radius;
+
+/*
         emax =
             (emax >
              REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
         emin =
             (emin <
              REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
+
+*/
     }
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    {
+        if (REAL_PART(dval[i] + rad[i]) > emax)
+            emax = REAL_PART(dval[i] + rad[i]);
+        if (REAL_PART(dval[i] - rad[i]) < emin)
+            emin = REAL_PART(dval[i] - rad[i]);
+
+    }
+
+//    printf("%d: emin = %e emax = %e\n", myRank, emin, emax);
+
+#ifdef DO_MPI_BLOCK
+    if (bml_getNRanks() > 1)
+    {
+        bml_minRealReduce(&emin);
+        bml_maxRealReduce(&emax);
+    }
+#endif
 
     eval[0] = emin;
     eval[1] = emax;

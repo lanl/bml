@@ -2,6 +2,7 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_normalize.h"
+#include "bml_parallel.h"
 #include "bml_add.h"
 #include "bml_types.h"
 #include "bml_allocate_dense.h"
@@ -36,8 +37,6 @@ void TYPED_FUNC(
 
     TYPED_FUNC(bml_scale_add_identity_dense) (A, alpha, beta);
 
-//    bml_scale_inplace_dense(scalar, A);
-    //   bml_add_identity_dense(A, gershfact);
 }
 
 /** Calculate Gershgorin bounds for a dense matrix.
@@ -57,6 +56,11 @@ void *TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
     double emin = 100000000000.0;
     double emax = -100000000000.0;
 
@@ -65,10 +69,12 @@ void *TYPED_FUNC(
 #pragma omp parallel for \
     default(none) \
     shared(N, A_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
     private(absham, radius, dvalue) \
     reduction(max:emax) \
     reduction(min:emin)
-    for (int i = 0; i < N; i++)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         radius = 0.0;
 
@@ -82,13 +88,27 @@ void *TYPED_FUNC(
 
         radius -= ABS(dvalue);
 
+/*
         emax =
             (emax >
              REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
         emin =
             (emin <
              REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
+*/
+        if (REAL_PART(dvalue + radius) > emax)
+            emax = REAL_PART(dvalue + radius);
+        if (REAL_PART(dvalue - radius) < emin)
+            emin = REAL_PART(dvalue - radius);
     }
+
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        bml_minRealReduce(&emin);
+        bml_maxRealReduce(&emax);
+    }
+#endif
 
     eval[0] = emin;
     eval[1] = emax;

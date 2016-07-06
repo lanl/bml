@@ -10,6 +10,7 @@
 #include "bml_scale_dense.h"
 #include "bml_types.h"
 #include "bml_types_dense.h"
+#include "bml_parallel.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -39,11 +40,18 @@ void TYPED_FUNC(
 {
     REAL_T alpha_ = alpha;
     REAL_T beta_ = beta;
-    int nElems = B->N * B->N;
+    int myRank = bml_getMyRank();
+
+    //int nElems = B->N * B->N;
+    int nElems = B->domain->localRowExtent[myRank] * B->N;
+    int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-    C_BLAS(SCAL) (&nElems, &alpha_, A->matrix, &inc);
-    C_BLAS(AXPY) (&nElems, &beta_, B->matrix, &inc, A->matrix, &inc);
+    C_BLAS(SCAL) (&nElems, &alpha_, A->matrix+startIndex, &inc);
+    //C_BLAS(SCAL) (&nElems, &alpha_, A->matrix, &inc);
+    C_BLAS(AXPY) (&nElems, &beta_, B->matrix+startIndex, &inc, 
+        A->matrix+startIndex, &inc);
+    //C_BLAS(AXPY) (&nElems, &beta_, B->matrix, &inc, A->matrix, &inc);
 }
 
 /** Matrix addition and calculate TrNorm.
@@ -66,8 +74,19 @@ double TYPED_FUNC(
 {
     double trnorm = 0.0;
     REAL_T *B_matrix = (REAL_T *) B->matrix;
+    int myRank = bml_getMyRank();
+    int N = A->N;
 
-    for (int i = 0; i < A->N * A->N; i++)
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+#pragma omp parallel for \
+    default(none) \
+    shared(B_matrix, A_localRowMin, A_localRowMax) \
+    shared(N, myRank) \
+    reduction(+:trnorm)
+    //for (int i = 0; i < N * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
     {
         trnorm += B_matrix[i] * B_matrix[i];
     }
@@ -93,9 +112,20 @@ void TYPED_FUNC(
 {
     REAL_T beta_ = beta;
     REAL_T *A_matrix = (REAL_T *) A->matrix;
-    for (int i = 0; i < A->N; i++)
+
+    int N = A->N;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+    int myRank = bml_getMyRank();
+
+#pragma omp paralell for \
+    default(none) \
+    shared(A_matrix, A_localRowMin, A_localRowMax) \
+    shared(N, myRank, beta_) 
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
-        A_matrix[ROWMAJOR(i, i, A->N, A->N)] += beta_;
+        A_matrix[ROWMAJOR(i, i, N, N)] += beta_;
     }
 }
 

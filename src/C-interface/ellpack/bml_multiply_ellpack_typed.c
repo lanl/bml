@@ -7,6 +7,7 @@
 #include "bml_logger.h"
 #include "bml_multiply.h"
 #include "bml_multiply_ellpack.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
 
@@ -49,7 +50,7 @@ void TYPED_FUNC(
     else
     {
         bml_matrix_ellpack_t *A2 =
-            TYPED_FUNC(bml_zero_matrix_ellpack) (C->N, C->M);
+            TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M);
 
         if (A != NULL && A == B)
         {
@@ -82,6 +83,9 @@ void *TYPED_FUNC(
     bml_matrix_ellpack_t * X2,
     const double threshold)
 {
+    int * X_localRowMin = X->domain->localRowMin;
+    int * X_localRowMax = X->domain->localRowMax;
+
     int X_N = X->N;
     int X_M = X->M;
     int *X_index = X->index;
@@ -102,6 +106,8 @@ void *TYPED_FUNC(
 
     double *trace = bml_allocate_memory(sizeof(double) * 2);
 
+    int myRank = bml_getMyRank();
+
     memset(ix, 0, X_N * sizeof(int));
     memset(jx, 0, X_N * sizeof(int));
     memset(x, 0.0, X_N * sizeof(REAL_T));
@@ -109,10 +115,12 @@ void *TYPED_FUNC(
 #pragma omp parallel for \
     default(none) \
     firstprivate(ix, jx, x) \
-    shared(X_N, X_M, X_index, X_nnz, X_value) \
+    shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
+    shared(X_localRowMin, X_localRowMax) \
     reduction(+: traceX, traceX2)
-    for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
+    //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
+    for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++)       // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
@@ -151,7 +159,6 @@ void *TYPED_FUNC(
             //int jp = X2_index[ROWMAJOR(i, j, N, M)];
             int jp = jx[j];
             REAL_T xtmp = x[jp];
-            // The diagonal elements are stored in the first column
             if (jp == i)
             {
                 traceX2 = traceX2 + xtmp;
@@ -199,6 +206,8 @@ void TYPED_FUNC(
     int A_M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
 
     int B_N = B->N;
     int B_M = B->M;
@@ -217,6 +226,8 @@ void TYPED_FUNC(
     REAL_T *B_value = (REAL_T *) B->value;
     REAL_T *C_value = (REAL_T *) C->value;
 
+    int myRank = bml_getMyRank();
+
     memset(ix, 0, C->N * sizeof(int));
     memset(jx, 0, C->N * sizeof(int));
     memset(x, 0.0, C->N * sizeof(REAL_T));
@@ -225,9 +236,12 @@ void TYPED_FUNC(
     default(none) \
     firstprivate(ix, jx, x) \
     shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax) \
     shared(B_N, B_M, B_nnz, B_index, B_value) \
-    shared(C_N, C_M, C_nnz, C_index, C_value)
-    for (int i = 0; i < A_N; i++)
+    shared(C_N, C_M, C_nnz, C_index, C_value) \
+    shared(myRank)
+    //for (int i = 0; i < A_N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
@@ -263,7 +277,6 @@ void TYPED_FUNC(
             //int jp = C_index[ROWMAJOR(i, j, N, M)];
             int jp = jx[j];
             REAL_T xtmp = x[jp];
-            // Diagonal elements are saved in first column
             if (jp == i)
             {
                 C_value[ROWMAJOR(i, ll, C_N, C_M)] = xtmp;
@@ -305,6 +318,8 @@ void TYPED_FUNC(
     int A_M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
 
     int B_N = B->N;
     int B_M = B->M;
@@ -326,6 +341,8 @@ void TYPED_FUNC(
 
     REAL_T adjust_threshold = (REAL_T) threshold;
 
+    int myRank = bml_getMyRank();
+
     memset(ix, 0, C->N * sizeof(int));
     memset(jx, 0, C->N * sizeof(int));
     memset(x, 0.0, C->N * sizeof(REAL_T));
@@ -338,11 +355,13 @@ void TYPED_FUNC(
     default(none) \
     firstprivate(ix, jx, x) \
     shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax) \
     shared(B_N, B_M, B_nnz, B_index, B_value) \
     shared(C_N, C_M, C_nnz, C_index, C_value) \
-    shared(adjust_threshold) \
+    shared(adjust_threshold, myRank) \
     reduction(+:aflag)
-        for (int i = 0; i < A_N; i++)
+        //for (int i = 0; i < A_N; i++)
+        for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
             int l = 0;
             for (int jp = 0; jp < A_nnz[i]; jp++)

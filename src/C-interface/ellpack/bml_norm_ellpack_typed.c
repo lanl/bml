@@ -4,6 +4,7 @@
 #include "bml_norm_ellpack.h"
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
+#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>
@@ -26,15 +27,21 @@ double TYPED_FUNC(
     int M = A->M;
 
     int *A_nnz = (int *) A->nnz;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
+    int myRank = bml_getMyRank();
+
 #pragma omp parallel for  \
     default(none) \
     shared(N, M, A_value, A_nnz) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
     reduction(+:sum)
-    for (int i = 0; i < N; i++)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -116,6 +123,9 @@ double TYPED_FUNC(
     int *B_index = (int *) B->index;
     int *B_nnz = (int *) B->nnz;
 
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
@@ -126,6 +136,8 @@ double TYPED_FUNC(
     REAL_T y[A_N];
     int ix[A_N], jjb[A_N];
 
+    int myRank = bml_getMyRank();
+
     memset(y, 0.0, A_N * sizeof(REAL_T));
     memset(ix, 0, A_N * sizeof(int));
     memset(jjb, 0, A_N * sizeof(int));
@@ -135,9 +147,11 @@ double TYPED_FUNC(
     firstprivate(ix, jjb, y) \
     shared(alpha_, beta_) \
     shared(A_N, A_M, A_index, A_nnz, A_value) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
     shared(B_N, B_M, B_index, B_nnz, B_value) \
     reduction(+:sum)
-    for (int i = 0; i < A_N; i++)
+    //for (int i = 0; i < A_N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
@@ -192,6 +206,12 @@ double TYPED_FUNC(
     const bml_matrix_ellpack_t * A)
 {
     double fnorm = TYPED_FUNC(bml_sum_squares_ellpack) (A);
+#ifdef DO_MPI_BLOCK
+    if (bml_getNRanks() > 1)
+    {
+        bml_sumRealReduce(&fnorm);
+    }
+#endif
     fnorm = sqrt(fnorm);
 
     return (double) REAL_PART(fnorm);
@@ -217,6 +237,8 @@ double TYPED_FUNC(
 
     int * A_nnz = (int *) A->nnz;
     int * A_index = (int *) A->index;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
     REAL_T * A_value = (REAL_T *) A->value;
     int * B_nnz = (int *) B->nnz;
     int * B_index = (int *) B->index;
@@ -224,12 +246,17 @@ double TYPED_FUNC(
     
     REAL_T temp;
 
+    int myRank = bml_getMyRank();
+
 #pragma omp parallel for \
     default(none) \
     private(rvalue, temp) \
-    shared(N, M, A_nnz, A_index, A_value, B_nnz, B_index, B_value) \
+    shared(N, M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    shared(B_nnz, B_index, B_value) \
     reduction(+:fnorm)
-    for (int i = 0; i < N; i++)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -266,6 +293,13 @@ double TYPED_FUNC(
             }
         }
     }
+
+#ifdef DO_MPI_BLOCK
+    if (bml_getNRanks() > 1)
+    {
+        bml_sumRealReduce(&fnorm);
+    }
+#endif
 
     fnorm = sqrt(fnorm);
 

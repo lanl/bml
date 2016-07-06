@@ -39,7 +39,7 @@ void TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
 
 #ifdef DO_MPI
-/*    
+/*
     for (int i = 0; i < nRanks; i++)
     {
       printf("allgatherv %d: rank %d localRow %d %d %d\n", myRank, i, A_domain->localRowMin[i],

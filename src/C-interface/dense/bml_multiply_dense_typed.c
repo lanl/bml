@@ -3,6 +3,7 @@
 #include "../typed.h"
 #include "bml_multiply.h"
 #include "bml_trace.h"
+#include "bml_parallel.h"
 #include "bml_allocate.h"
 #include "bml_multiply_dense.h"
 #include "bml_trace_dense.h"
@@ -42,14 +43,11 @@ void TYPED_FUNC(
 {
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
-    /* LOG_DEBUG("entering " FUNC_STRING(TYPED_FUNC(bml_multiply_dense)) "()\n"); */
-    /* bml_print_dense_matrix(A->N, MATRIX_PRECISION, dense_row_major, A->matrix, 0, A->N, 0, A->N); */
-    /* bml_print_dense_matrix(B->N, MATRIX_PRECISION, dense_row_major, B->matrix, 0, B->N, 0, B->N); */
-    /* bml_print_dense_matrix(C->N, MATRIX_PRECISION, dense_row_major, C->matrix, 0, C->N, 0, C->N); */
-    /* LOG_DEBUG("calling " FUNC_STRING(C_BLAS(GEMM)) "()\n"); */
+
+    int myRank = bml_getMyRank();
+
     C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha_, B->matrix,
                   &A->N, A->matrix, &A->N, &beta_, C->matrix, &A->N);
-    /* bml_print_dense_matrix(C->N, MATRIX_PRECISION, dense_row_major, C->matrix, 0, C->N, 0, C->N); */
 }
 
 /** Matrix multiply.

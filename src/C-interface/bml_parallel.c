@@ -107,6 +107,45 @@ void bml_barrierParallel()
 #endif
 }
 
+void bml_sumRealReduce(double* value)
+{
+   double sLocal[1], sGlobal[1];
+
+   sLocal[0] = *value;
+
+#ifdef DO_MPI
+   MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_SUM, ccomm);
+#endif
+
+   *value = sGlobal[0];
+}
+
+void bml_minRealReduce(double* value)
+{
+   double sLocal[1], sGlobal[1];
+
+   sLocal[0] = *value;
+
+#ifdef DO_MPI
+   MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_MIN, ccomm);
+#endif
+
+   *value = sGlobal[0];
+}
+
+void bml_maxRealReduce(double* value)
+{
+   double sLocal[1], sGlobal[1];
+
+   sLocal[0] = *value;
+
+#ifdef DO_MPI
+   MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_MAX, ccomm);
+#endif
+
+   *value = sGlobal[0];
+}
+
 /** Exchange pieces of matrix across MPI ranks.
  *
  * \param A Matrix A

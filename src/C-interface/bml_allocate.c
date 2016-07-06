@@ -273,6 +273,8 @@ bml_default_domain(
     domain->localElements = bml_allocate_memory(nRanks * sizeof(int));
     domain->localDispl = bml_allocate_memory(nRanks * sizeof(int));
 
+    // For completely distributed
+
     /** For first rank */
     domain->localRowMin[0] = domain->globalRowMin;
     domain->localRowMax[0] = domain->globalRowMin + domain->maxLocalExtent;
@@ -300,6 +302,16 @@ bml_default_domain(
     {
       domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
       domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
+    }
+
+    // Default - each rank contains entire matrix, even when running distributed
+    for (int i = 0; i < nRanks; i++)
+    {
+      domain->localRowMin[i] = domain->globalRowMin;
+      domain->localRowMax[i] = domain->globalRowMax;
+      domain->localRowExtent[i] = domain->localRowMax[i] - domain->localRowMin[i];
+      domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
+      domain->localDispl[i] = 0;
     }
 
 /*

@@ -6,6 +6,7 @@
 #include "bml_types.h"
 #include "bml_types_dense.h"
 #include "bml_logger.h"
+#include "bml_parallel.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -25,11 +26,20 @@ double TYPED_FUNC(
 {
     int N = A->N;
 
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+    
     REAL_T trace = 0.0;
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for default(none) shared(N, A_matrix) reduction(+:trace)
-    for (int i = 0; i < N; i++)
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    reduction(+:trace)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         trace += A_matrix[ROWMAJOR(i, i, N, N)];
     }
@@ -57,13 +67,22 @@ double TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
+
     if (N != B->N )
     {
         LOG_ERROR("bml_traceMult_dense: Matrices A and B are different sizes.");
     }
 
-#pragma omp parallel for default(none) shared(N, A_matrix, B_matrix) reduction(+:trace)
-    for (int i = 0; i < N*N; i++)
+#pragma omp parallel for default(none) \
+    shared(N, A_matrix, B_matrix) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    reduction(+:trace)
+    //for (int i = 0; i < N*N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank]*N; i++)
     {
         trace += A_matrix[i] * B_matrix[i];
     }

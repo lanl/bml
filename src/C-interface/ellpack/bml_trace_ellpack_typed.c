@@ -4,12 +4,14 @@
 #include "bml_trace_ellpack.h"
 #include "bml_submatrix.h"
 #include "bml_submatrix_ellpack.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_types_ellpack.h"
 #include "bml_logger.h"
 
 #include <complex.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <omp.h>
 
@@ -29,12 +31,20 @@ double TYPED_FUNC(
 
     int *A_index = (int *) A->index;
     int *A_nnz = (int *) A->nnz;
+    int *A_localRowMin = (int *) A->domain->localRowMin;
+    int *A_localRowMax = (int *) A->domain->localRowMax;
 
     REAL_T trace = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz) reduction(+:trace)
-    for (int i = 0; i < N; i++)
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, M, A_value, A_index, A_nnz) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    reduction(+:trace)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -68,18 +78,27 @@ double TYPED_FUNC(
 
     int *A_index = (int *) A->index;
     int *A_nnz = (int *) A->nnz;
+    int *A_localRowMin = (int *) A->domain->localRowMin;
+    int *A_localRowMax = (int *) A->domain->localRowMax;
 
     REAL_T trace = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *rvalue;
+
+    int myRank = bml_getMyRank();
 
     if (A_N != B->N || A_M != B->M)
     {
         LOG_ERROR("bml_traceMult_ellpack: Matrices A and B have different sizes.");
     }
 
-#pragma omp parallel for default(none) private(rvalue) shared(B, A_N, A_M, A_value, A_index, A_nnz) reduction(+:trace)
-    for (int i = 0; i < A_N; i++)
+#pragma omp parallel for default(none) \
+    private(rvalue) \
+    shared(B, A_N, A_M, A_value, A_index, A_nnz) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    reduction(+:trace)
+    //for (int i = 0; i < A_N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         rvalue = TYPED_FUNC(bml_getVector_ellpack) (B, &A_index[ROWMAJOR(i, 0, A_N, A_M)], i, A_nnz[i]);
 

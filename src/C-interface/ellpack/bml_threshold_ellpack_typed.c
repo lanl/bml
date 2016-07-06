@@ -2,6 +2,7 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_threshold.h"
+#include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_threshold_ellpack.h"
@@ -34,13 +35,21 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
 
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz, B_value, B_index, B_nnz)
-    for (int i = 0; i < N; i++)
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for default(none) \
+    shared(N, M, A_value, A_index, A_nnz) \
+    shared(A_localRowMin, A_localRowMax, myRank) \
+    shared(B_value, B_index, B_nnz)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -77,10 +86,18 @@ void TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
+    int * A_localRowMin = A->domain->localRowMin;
+    int * A_localRowMax = A->domain->localRowMax;
+
+    int myRank = bml_getMyRank();
 
     int rlen;
-#pragma omp parallel for default(none) private(rlen) shared(N,M,A_value,A_index,A_nnz)
-    for (int i = 0; i < N; i++)
+#pragma omp parallel for default(none) \
+    private(rlen) \
+    shared(N,M,A_value,A_index,A_nnz) \
+    shared(A_localRowMin, A_localRowMax, myRank)
+    //for (int i = 0; i < N; i++)
+    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         rlen = 0;
         for (int j = 0; j < A_nnz[i]; j++)
