@@ -33,10 +33,18 @@ void bml_submatrix2matrix(
     const int llsize,
     const double threshold);
 
-// Return adjacency vectors
+// Return adjacency based on rows
 void bml_adjacency(
 	const bml_matrix_t * A,
 	int * xadj,
 	int * adjncy);
 	
+// Return adjacency based on groups of rows (ex. atom)
+void bml_adjacency_group(
+        const bml_matrix_t * A,
+        const int * hindex,
+        const int nnodes,
+        int * xadj,
+        int * adjncy);
+
 #endif

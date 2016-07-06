@@ -166,4 +166,11 @@ void bml_adjacency_ellpack(
     int * xadj,
     int * adjncy);
 
+void bml_adjacency_group_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int nnodes,
+    int * xadj,
+    int * adjncy);
+
 #endif

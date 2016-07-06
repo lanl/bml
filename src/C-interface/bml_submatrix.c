@@ -117,7 +117,7 @@ bml_submatrix2matrix(
     }
 }
 
-/** Assemble adjacency structures from matrix.
+/** Assemble adjacency structures from matrix based on rows.
  *
  * \ingroup submatrix_group_C
  *
@@ -144,4 +144,36 @@ bml_adjacency(
    	    LOG_ERROR("unknown matrix type\n");
 	    break;
 	}
+}
+
+/** Assemble adjacency structures from matrix based on groups of rows.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Submatrix A
+ * \param hindex Index for each node element
+ * \param xadj index to start of each row
+ * \param adjncy adjacency vector
+ */
+void
+bml_adjacency_group(
+    const bml_matrix_t * A,
+    const int * hindex,
+    const int nnodes,
+    int * xadj,
+    int * adjncy)
+{
+
+    switch (bml_get_type(A))
+    {
+        case dense:
+            LOG_ERROR("bml_adjacency_group routine is not implemented for dense\n");
+            break;
+        case ellpack:
+            bml_adjacency_group_ellpack(A, hindex, nnodes, xadj, adjncy);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+        }
 }

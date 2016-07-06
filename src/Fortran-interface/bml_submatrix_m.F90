@@ -11,6 +11,7 @@ module bml_submatrix_m
   public :: bml_matrix2submatrix
   public :: bml_submatrix2matrix
   public :: bml_adjacency
+  public :: bml_adjacency_group
 
 contains
 
@@ -119,5 +120,26 @@ contains
     call bml_adjacency_C(a%ptr, c_loc(xadj), c_loc(adjncy))
 
   end subroutine bml_adjacency
+
+  !> Assemble adjacency for a matrix based on groups.
+  !!
+  !! \ingroup submatrix_group_F
+  !!
+  !! \param a Matrix
+  !! \param hindex Indeces of nodes in matrix
+  !! \param nnodes Number of nodes
+  !! \param xadj Start indeces for each row
+  !! \param adjncy Indices of non-zero values
+  subroutine bml_adjacency_group(a, hindex, nnodes, xadj, adjncy)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer(C_INT), target, intent(in) :: hindex(*)
+    integer(C_INT), target, intent(in) :: xadj(*)
+    integer(C_INT), target, intent(in) :: adjncy(*)
+    integer(C_INT), intent(in) :: nnodes
+
+    call bml_adjacency_group_C(a%ptr, c_loc(hindex), nnodes, c_loc(xadj), c_loc(adjncy))
+
+  end subroutine bml_adjacency_group
 
 end module bml_submatrix_m

@@ -430,6 +430,16 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: adjncy
     end subroutine bml_adjacency_C
 
+    subroutine bml_adjacency_group_C(a, hindex, nnodes, xadj, adjncy) &
+      bind(C, name="bml_adjacency_group")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: hindex
+      integer(C_INT), value, intent(in) :: nnodes
+      type(C_PTR), value, intent(in) :: xadj
+      type(C_PTR), value, intent(in) :: adjncy
+    end subroutine bml_adjacency_group_C
+
     subroutine bml_threshold_C(a, threshold) bind(C, name="bml_threshold")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a

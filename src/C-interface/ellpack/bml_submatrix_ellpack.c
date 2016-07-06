@@ -235,3 +235,68 @@ bml_adjacency_ellpack(
         }
     }
 }
+
+/** Assemble adjacency structure from matrix based on groups of rows.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A
+ * \param hindex Indeces of nodes
+ * \param xadj Index of each row in adjncy
+ * \param adjncy Adjacency vector
+ */
+void
+bml_adjacency_group_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int nnodes,
+    int * xadj,
+    int * adjncy)
+{
+    int A_N = A->N; //rows
+
+    int A_M = A->M; //max size of nnz row
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+
+    xadj[0] = 0;
+    for (int i = 1; i < nnodes+1; i++)
+    {
+        // Index of group node and size of group - 1
+        int nstart = hindex[i+i-2]-1;
+        int ncount = hindex[2*i-1] - nstart;
+        xadj[i] = xadj[i-1] + A_nnz[nstart] - ncount;
+    }
+
+/*
+#pragma omp parallel for default(none) \
+    shared(A_N, A_M, A_index) \
+    shared(xadj, adjncy, hindex)
+    for (int i = 0; i < nnodes; i++)
+    {
+        int inode = hindex[2*i];
+
+        for (int j = xadj[i], jj = 0; j < xadj[i+1]; j++, jj++)
+        {
+            for (int m = 0; m < A_nnz[inode]; m++)
+            {
+                int nind = A_index[ROWMAJOR(inode, m, A_N, A_M)];
+                int aflag = 0;
+                for (int k = i+1; k < nnodes; k++)
+                {
+                    if (nind == hindex[k+k]) 
+                    {
+                        aflag = 1;
+                        break;
+                    }
+                }
+                if (aflag) 
+                {
+                    adjncy[j] = nind;
+                }
+            }
+        }
+    }
+*/
+}
+
