@@ -5,6 +5,7 @@
 #include "bml_adjungate_triangle.h"
 #include "bml_adjungate_triangle_dense.h"
 #include "bml_types.h"
+#include "bml_logger.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -23,13 +24,15 @@
 void TYPED_FUNC(
     bml_adjungate_triangle_dense) (
     bml_matrix_dense_t * A,
-    char triangle)
+    char *triangle)
 {
+
     int N = A->N;
+    char mychar;
 
     REAL_T *A_matrix = A->matrix;
 
-    switch (triangle)
+    switch (*triangle)
     {
         case 'u':
 #pragma omp parallel for default(none) shared(N, A_matrix)
@@ -54,5 +57,9 @@ void TYPED_FUNC(
                 }
             }
             break;
+      
+        default: 
+        LOG_ERROR("Unknown triangle type in bml_adjungate\n");
+
     }
 }

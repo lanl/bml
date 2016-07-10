@@ -7,22 +7,22 @@
 
 void bml_adjungate_triangle_ellpack(
     bml_matrix_ellpack_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_ellpack_single_real(
     bml_matrix_ellpack_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_ellpack_double_real(
     bml_matrix_ellpack_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
-    char triangle);
+    char *triangle);
 
 #endif

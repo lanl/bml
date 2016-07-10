@@ -5,22 +5,22 @@
 
 void bml_adjungate_triangle_dense(
     bml_matrix_dense_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_dense_single_real(
     bml_matrix_dense_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_dense_double_real(
     bml_matrix_dense_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_dense_single_complex(
     bml_matrix_dense_t * A,
-    char triangle);
+    char *triangle);
 
 void bml_adjungate_triangle_dense_double_complex(
     bml_matrix_dense_t * A,
-    char triangle);
+    char *triangle);
 
 #endif
