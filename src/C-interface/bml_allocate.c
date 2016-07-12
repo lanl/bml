@@ -252,20 +252,10 @@ bml_default_domain(
     const int N,
     const int M)
 {
+    int avgExtent, nleft;
     int nRanks = bml_getNRanks();
 
     bml_domain_t *domain = bml_allocate_memory(sizeof(bml_domain_t));
-
-    domain->totalProcs = nRanks;
-    domain->totalRows = N;
-    domain->totalCols = M;
-
-    domain->maxLocalExtent = ceil((float)N / (float)nRanks);
-    domain->minLocalExtent = N - (nRanks-1) * domain->maxLocalExtent;
-
-    domain->globalRowMin = 0;
-    domain->globalRowMax = domain->totalRows;
-    domain->globalRowExtent = domain->globalRowMax - domain->globalRowMin;
 
     domain->localRowMin = bml_allocate_memory(nRanks * sizeof(int));
     domain->localRowMax = bml_allocate_memory(nRanks * sizeof(int));
@@ -273,19 +263,42 @@ bml_default_domain(
     domain->localElements = bml_allocate_memory(nRanks * sizeof(int));
     domain->localDispl = bml_allocate_memory(nRanks * sizeof(int));
 
+    domain->totalProcs = nRanks;
+    domain->totalRows = N;
+    domain->totalCols = M;
+
+    avgExtent = N / nRanks;
+    domain->maxLocalExtent = ceil((float)N / (float)nRanks);
+    domain->minLocalExtent = avgExtent;
+
+    for (int i = 0; i < nRanks; i++)
+    {
+        domain->localRowExtent[i] = avgExtent;
+    }
+    nleft = N - nRanks*avgExtent;
+    if (nleft > 0)
+    {
+        for (int i = 0; i < nleft; i++)
+        {
+            domain->localRowExtent[i] + 1;
+        }
+    }
+
+    domain->globalRowMin = 0;
+    domain->globalRowMax = domain->totalRows;
+    domain->globalRowExtent = domain->globalRowMax - domain->globalRowMin;
+
     // For completely distributed
 
     /** For first rank */
     domain->localRowMin[0] = domain->globalRowMin;
-    domain->localRowMax[0] = domain->globalRowMin + domain->maxLocalExtent;
-    domain->localRowExtent[0] = domain->localRowMax[0] - domain->localRowMin[0];
+    domain->localRowMax[0] = domain->localRowExtent[0];
 
     /** For middle ranks */
     for (int i = 1; i < (nRanks-1); i++)
     {
-      domain->localRowMin[i] = domain->globalRowMin + i * domain->maxLocalExtent;
-      domain->localRowMax[i] = domain->globalRowMin + (i+1) * domain->maxLocalExtent;
-      domain->localRowExtent[i] = domain->localRowMax[i] - domain->localRowMin[i];
+      domain->localRowMin[i] = domain->localRowMax[i-1];
+      domain->localRowMax[i] = domain->localRowMin[i] + domain->localRowExtent[i];
     }
 
     /** For last rank */
@@ -293,8 +306,7 @@ bml_default_domain(
     {
       int last = nRanks - 1;
       domain->localRowMin[last] = domain->localRowMax[last-1];
-      domain->localRowMax[last] = domain->localRowMin[last] + domain->minLocalExtent;
-      domain->localRowExtent[last] = domain->localRowMax[last] - domain->localRowMin[last];
+      domain->localRowMax[last] = domain->localRowMin[last] + domain->localRowExtent[last];
     }
 
     /** Number of elements and displacement per rank */
@@ -304,6 +316,7 @@ bml_default_domain(
       domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
     }
 
+///*
     // Default - each rank contains entire matrix, even when running distributed
     for (int i = 0; i < nRanks; i++)
     {
@@ -313,6 +326,7 @@ bml_default_domain(
       domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
       domain->localDispl[i] = 0;
     }
+//*/
 
 /*
     if (bml_printRank() == 1)

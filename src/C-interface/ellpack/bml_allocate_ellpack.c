@@ -217,9 +217,9 @@ void bml_update_domain_ellpack(
    for (int i = 0; i < nprocs; i++)
    {
      int rtotal = 0;
-     for (int j = localPartMin[i]; j <= localPartMax[i]; j++)
+     for (int j = localPartMin[i]-1; j <= localPartMax[i]-1; j++)
      {
-         rtotal += nnodesInPart[j-1];
+         rtotal += nnodesInPart[j];
 /*
          if (bml_printRank() == 1)
            printf("rank %d localPart %d %d part %d nnodesPerPart %d rtotal %d\n",

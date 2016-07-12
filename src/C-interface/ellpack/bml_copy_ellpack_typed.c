@@ -81,12 +81,9 @@ void TYPED_FUNC(
   #pragma omp parallel for
   for (int i = 0; i < N; i++)
   {
-      if (perm[i] != i)
-      {
-          memcpy(&A_index[ROWMAJOR(perm[i], 0, N, M)], &B_index[ROWMAJOR(i, 0, N, M)], M*sizeof(int));
-          memcpy(&A_value[ROWMAJOR(perm[i], 0, N, M)], &B_value[ROWMAJOR(i, 0, N, M)], M*sizeof(REAL_T));
-          A_nnz[perm[i]] = B_nnz[i];
-      }
+      memcpy(&A_index[ROWMAJOR(perm[i], 0, N, M)], &B_index[ROWMAJOR(i, 0, N, M)], M*sizeof(int));
+      memcpy(&A_value[ROWMAJOR(perm[i], 0, N, M)], &B_value[ROWMAJOR(i, 0, N, M)], M*sizeof(REAL_T));
+      A_nnz[perm[i]] = B_nnz[i];
   }
 
   bml_deallocate_ellpack(B);
