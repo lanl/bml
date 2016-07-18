@@ -23,7 +23,7 @@
 void
 bml_adjungate_triangle_dense(
     bml_matrix_dense_t * A,
-    char triangle)
+    char *triangle)
 {
     switch (A->matrix_precision)
     {

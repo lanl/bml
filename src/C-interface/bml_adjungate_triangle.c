@@ -5,6 +5,7 @@
 #include "ellpack/bml_adjungate_triangle_ellpack.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 /** Adjungates a triangle of a matrix in place.
  *
@@ -16,7 +17,7 @@
 void
 bml_adjungate_triangle(
     bml_matrix_t * A,
-    char triangle)
+    char *triangle)
 {
     int status;
     switch (bml_get_type(A))

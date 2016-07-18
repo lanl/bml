@@ -22,13 +22,14 @@
 void TYPED_FUNC(
     bml_adjungate_triangle_ellpack) (
     bml_matrix_ellpack_t * A,
-    char triangle)
+    char *triangle)
 {
     int A_N = A->N;
     int A_M = A->M;
     int l;
     int ll;
     int j;
+    char mychar;
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
@@ -36,7 +37,7 @@ void TYPED_FUNC(
     omp_lock_t lock[A_M];
 #endif
 
-    switch (triangle)
+    switch (*triangle)
     {
         case 'u':
             for (int i = 0; i < A_M; i++)

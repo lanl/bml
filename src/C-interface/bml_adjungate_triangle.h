@@ -7,6 +7,6 @@
 
 void bml_adjungate_triangle(
     bml_matrix_t * A,
-    char triangle);
+    char *triangle);
 
 #endif
