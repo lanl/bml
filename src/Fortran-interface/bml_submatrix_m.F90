@@ -111,13 +111,15 @@ contains
   !! \param a Matrix
   !! \param xadj Start indeces for each row
   !! \param adjncy Indices of non-zero values
-  subroutine bml_adjacency(a, xadj, adjncy)
+  !! \param base_flag Return 0- or 1-based
+  subroutine bml_adjacency(a, xadj, adjncy, base_flag)
 
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), target, intent(in) :: xadj(*)
     integer(C_INT), target, intent(in) :: adjncy(*)
+    integer(C_INT), intent(in) :: base_flag
 
-    call bml_adjacency_C(a%ptr, c_loc(xadj), c_loc(adjncy))
+    call bml_adjacency_C(a%ptr, c_loc(xadj), c_loc(adjncy), base_flag)
 
   end subroutine bml_adjacency
 
@@ -130,15 +132,16 @@ contains
   !! \param nnodes Number of nodes
   !! \param xadj Start indeces for each row
   !! \param adjncy Indices of non-zero values
-  subroutine bml_adjacency_group(a, hindex, nnodes, xadj, adjncy)
+  !! \param base_flag Return 0- or 1-based
+  subroutine bml_adjacency_group(a, hindex, nnodes, xadj, adjncy, base_flag)
 
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), target, intent(in) :: hindex(*)
     integer(C_INT), target, intent(in) :: xadj(*)
     integer(C_INT), target, intent(in) :: adjncy(*)
-    integer(C_INT), intent(in) :: nnodes
+    integer(C_INT), intent(in) :: nnodes, base_flag
 
-    call bml_adjacency_group_C(a%ptr, c_loc(hindex), nnodes, c_loc(xadj), c_loc(adjncy))
+    call bml_adjacency_group_C(a%ptr, c_loc(hindex), nnodes, c_loc(xadj), c_loc(adjncy), base_flag)
 
   end subroutine bml_adjacency_group
 

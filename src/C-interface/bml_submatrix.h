@@ -37,7 +37,8 @@ void bml_submatrix2matrix(
 void bml_adjacency(
 	const bml_matrix_t * A,
 	int * xadj,
-	int * adjncy);
+	int * adjncy,
+        const int base_flag);
 	
 // Return adjacency based on groups of rows (ex. atom)
 void bml_adjacency_group(
@@ -45,6 +46,7 @@ void bml_adjacency_group(
         const int * hindex,
         const int nnodes,
         int * xadj,
-        int * adjncy);
+        int * adjncy,
+        const int base_flag);
 
 #endif

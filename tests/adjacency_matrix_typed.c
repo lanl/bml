@@ -41,7 +41,7 @@ int TYPED_FUNC(
 
     int * xadj = malloc(sizeof(int)*(N+1));
     int * adjncy = malloc(sizeof(int)*(N*M));
-    bml_adjacency(A, xadj, adjncy);
+    bml_adjacency(A, xadj, adjncy, 0);
 
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0, N, 0, N);
     

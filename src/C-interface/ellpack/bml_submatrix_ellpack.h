@@ -164,13 +164,15 @@ void *bml_getVector_ellpack_double_complex(
 void bml_adjacency_ellpack(
     const bml_matrix_ellpack_t * A,
     int * xadj,
-    int * adjncy);
+    int * adjncy,
+    const int base_flag);
 
 void bml_adjacency_group_ellpack(
     const bml_matrix_ellpack_t * A,
     const int * hindex,
     const int nnodes,
     int * xadj,
-    int * adjncy);
+    int * adjncy,
+    const int base_flag);
 
 #endif

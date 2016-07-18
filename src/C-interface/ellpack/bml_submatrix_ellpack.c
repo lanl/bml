@@ -206,16 +206,18 @@ bml_getVector_ellpack(
  * \param A Matrix A
  * \param xadj Index of each row in adjncy
  * \param adjncy Adjacency vector
+ * \param base_flag Return 0- or 1-based
  */
 void 
 bml_adjacency_ellpack(
     const bml_matrix_ellpack_t * A,
     int * xadj,
-    int * adjncy)
+    int * adjncy,
+    const int base_flag)
 {	
-    int A_N = A->N; //rows
-	
-    int A_M = A->M; //max size of nnz row
+    int A_N = A->N;
+    int A_M = A->M;
+
     int *A_nnz = A->nnz;
     int *A_index = A->index;
 
@@ -234,6 +236,23 @@ bml_adjacency_ellpack(
             adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
         }
     }
+
+    // Add 1 for 1-based
+    if (base_flag == 1)
+    {
+#pragma omp parallel for default(none) \
+    shared(xadj, A_N, adjncy)
+        for (int i = 0; i <= xadj[A_N]; i++)
+        {
+            adjncy[i] += 1;
+        }
+#pragma omp parallel for default(none) \
+    shared(xadj, A_N)
+        for (int i = 0; i < A_N+1; i++)
+        {
+            xadj[i] += 1;
+        }
+    }
 }
 
 /** Assemble adjacency structure from matrix based on groups of rows.
@@ -242,8 +261,10 @@ bml_adjacency_ellpack(
  *
  * \param A Matrix A
  * \param hindex Indeces of nodes
+ * \param nnodes Number of groups
  * \param xadj Index of each row in adjncy
  * \param adjncy Adjacency vector
+ * \param base_flag Return 0- or 1-based
  */
 void
 bml_adjacency_group_ellpack(
@@ -251,52 +272,78 @@ bml_adjacency_group_ellpack(
     const int * hindex,
     const int nnodes,
     int * xadj,
-    int * adjncy)
+    int * adjncy,
+    const int base_flag)
 {
-    int A_N = A->N; //rows
+    int A_N = A->N;
+    int A_M = A->M;
 
-    int A_M = A->M; //max size of nnz row
     int *A_nnz = A->nnz;
     int *A_index = A->index;
 
+    int *hnode = malloc(nnodes*sizeof(int));
+    for (int i = 0; i < nnodes; i++)
+    {
+        hnode[i] = hindex[i] - 1;
+    }
+
+    // Determine number of adjacent atoms per atom
     xadj[0] = 0;
     for (int i = 1; i < nnodes+1; i++)
     {
-        // Index of group node and size of group - 1
-        int nstart = hindex[i+i-2]-1;
-        int ncount = hindex[2*i-1] - nstart;
-        xadj[i] = xadj[i-1] + A_nnz[nstart] - ncount;
+        int hcount = 0;
+        for (int j = 0; j < nnodes; j++)
+        {
+            for (int k = 0; k < A_nnz[hnode[i-1]]; k++)
+            {
+                if (hnode[j] == A_index[ROWMAJOR(hnode[i-1], k, A_N, A_M)])
+                {
+                    hcount++; 
+                    break;
+                }
+            }            
+        }
+
+        xadj[i] = xadj[i-1] + hcount;
     }
 
-/*
+    // Fill in adjacent atoms
 #pragma omp parallel for default(none) \
-    shared(A_N, A_M, A_index) \
-    shared(xadj, adjncy, hindex)
+    shared(A_N, A_M, A_index, A_nnz) \
+    shared(xadj, adjncy, hnode)
     for (int i = 0; i < nnodes; i++)
     {
-        int inode = hindex[2*i];
+        int ll = xadj[i];
 
-        for (int j = xadj[i], jj = 0; j < xadj[i+1]; j++, jj++)
+        for (int j = 0; j < nnodes; j++)
         {
-            for (int m = 0; m < A_nnz[inode]; m++)
+            for (int k = 0; k < A_nnz[hnode[i]]; k++)
             {
-                int nind = A_index[ROWMAJOR(inode, m, A_N, A_M)];
-                int aflag = 0;
-                for (int k = i+1; k < nnodes; k++)
+                if (hnode[j] == A_index[ROWMAJOR(hnode[i], k, A_N, A_M)])
                 {
-                    if (nind == hindex[k+k]) 
-                    {
-                        aflag = 1;
-                        break;
-                    }
-                }
-                if (aflag) 
-                {
-                    adjncy[j] = nind;
+                    adjncy[ll] = hnode[j];
+                    ll++;
+                    break;
                 }
             }
         }
     }
-*/
-}
 
+    // Add 1 for 1-based
+    if (base_flag == 1)
+    {
+#pragma omp parallel for default(none) \
+    shared(xadj, A_N, adjncy)
+        for (int i = 0; i <= xadj[nnodes]; i++)
+        {
+            adjncy[i] += 1;
+        }
+#pragma omp parallel for default(none) \
+    shared(xadj, A_N)
+        for (int i = 0; i < nnodes+1; i++)
+        {
+            xadj[i] += 1;
+        }
+    }
+
+}

@@ -124,12 +124,14 @@ bml_submatrix2matrix(
  * \param A Submatrix A
  * \param xadj index to start of each row
  * \param adjncy adjacency vector
+ * \param base_flag to return 0- or 1-based
 */
 void 
 bml_adjacency(
     const bml_matrix_t * A,
     int * xadj,
-    int * adjncy)
+    int * adjncy,
+    const int base_flag)
 {
 
     switch (bml_get_type(A))
@@ -138,7 +140,7 @@ bml_adjacency(
 	    LOG_ERROR("bml_adjacency routine is not implemented for dense\n");
 	    break;
 	case ellpack:
-	    bml_adjacency_ellpack(A, xadj, adjncy);
+	    bml_adjacency_ellpack(A, xadj, adjncy, base_flag);
 	    break;
 	default:
    	    LOG_ERROR("unknown matrix type\n");
@@ -152,8 +154,10 @@ bml_adjacency(
  *
  * \param A Submatrix A
  * \param hindex Index for each node element
+ * \param nnodes Number of groups
  * \param xadj index to start of each row
  * \param adjncy adjacency vector
+ * \param base_flag return 0- or 1-based
  */
 void
 bml_adjacency_group(
@@ -161,7 +165,8 @@ bml_adjacency_group(
     const int * hindex,
     const int nnodes,
     int * xadj,
-    int * adjncy)
+    int * adjncy,
+    const int base_flag)
 {
 
     switch (bml_get_type(A))
@@ -170,7 +175,7 @@ bml_adjacency_group(
             LOG_ERROR("bml_adjacency_group routine is not implemented for dense\n");
             break;
         case ellpack:
-            bml_adjacency_group_ellpack(A, hindex, nnodes, xadj, adjncy);
+            bml_adjacency_group_ellpack(A, hindex, nnodes, xadj, adjncy, base_flag);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
