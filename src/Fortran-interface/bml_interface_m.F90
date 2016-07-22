@@ -58,7 +58,25 @@ module bml_interface_m
   !> The dense matrix element order.
   integer, parameter :: BML_DENSE_COLUMN_MAJOR = 1
 
-  public :: get_matrix_id, get_element_id
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Distribution mode is sequential.
+  integer, parameter :: bml_distribution_mode_sequential_enum_id = 0
+
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Distribution mode is distributed.
+  integer, parameter :: bml_distribution_mode_distributed_enum_id = 1
+
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
+  !! Distribution mode is graph distributed.
+  integer, parameter :: bml_distribution_mode_graph_distributed_enum_id = 2
+
+  public :: get_matrix_id, get_element_id, get_dmode_id
   public :: BML_DENSE_COLUMN_MAJOR
 
 contains
@@ -120,5 +138,30 @@ contains
     end select
 
   end function get_element_id
+
+  !> Convert the distribution mode strings into enum values.
+  !!
+  !! @param type_string The string used in the Fortran API to identify
+  !! the distribution mode.
+  !! @return The corresponding integer value matching the enum values
+  !! in bml_distribution_mode_t.
+  function get_dmode_id(dmode_string) result(id)
+
+    character(len=*), intent(in) :: dmode_string
+    integer(C_INT) :: id
+
+    select case (trim(dmode_string))
+    case(BML_DMODE_SEQUENTIAL)
+      id = bml_distribution_mode_sequential_enum_id
+    case(BML_DMODE_DISTRIBUTED)
+       id = bml_distribution_mode_distributed_enum_id
+    case(BML_DMODE_GRAPH_DISTRIBUTED)
+       id = bml_distribution_mode_graph_distributed_enum_id
+    case default
+       print *, "unknown distribution mode"//trim(dmode_string)
+       error stop
+    end select
+
+  end function get_dmode_id
 
 end module bml_interface_m

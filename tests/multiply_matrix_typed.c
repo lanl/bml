@@ -86,9 +86,9 @@ int TYPED_FUNC(
     const double beta = 0.8;
     const double threshold = 0.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    B = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    C = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
     bml_print_bml_matrix(A, 0, N, 0, N);
     bml_print_bml_matrix(B, 0, N, 0, N);

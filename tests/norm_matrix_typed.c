@@ -33,8 +33,8 @@ int TYPED_FUNC(
     double sqrt_sum = 0.0;
     double sqrt_sum2 = 0.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    B = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
     bml_print_bml_matrix(A, 0, N, 0, N);
     bml_print_bml_matrix(B, 0, N, 0, N);

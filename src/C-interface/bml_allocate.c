@@ -106,6 +106,7 @@ bml_deallocate(
  *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_t *
@@ -113,16 +114,17 @@ bml_zero_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("zero matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            return bml_zero_matrix_dense(matrix_precision, N);
+            return bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
             break;
         case ellpack:
-            return bml_zero_matrix_ellpack(matrix_precision, N, M);
+            return bml_zero_matrix_ellpack(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -142,6 +144,7 @@ bml_zero_matrix(
  *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_t *
@@ -149,16 +152,17 @@ bml_random_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("random matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            return bml_random_matrix_dense(matrix_precision, N);
+            return bml_random_matrix_dense(matrix_precision, N, distrib_mode);
             break;
         case ellpack:
-            return bml_random_matrix_ellpack(matrix_precision, N, M);
+            return bml_random_matrix_ellpack(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -178,6 +182,7 @@ bml_random_matrix(
  *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The bandwidth of the matrix.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_t *
@@ -185,16 +190,17 @@ bml_banded_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("banded matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            return bml_banded_matrix_dense(matrix_precision, N, M);
+            return bml_banded_matrix_dense(matrix_precision, N, M, distrib_mode);
             break;
         case ellpack:
-            return bml_banded_matrix_ellpack(matrix_precision, N, M);
+            return bml_banded_matrix_ellpack(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -214,6 +220,7 @@ bml_banded_matrix(
  *  \param matrix_precision The precision of the matrix.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_t *
@@ -221,16 +228,17 @@ bml_identity_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("identity matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
-            return bml_identity_matrix_dense(matrix_precision, N);
+            return bml_identity_matrix_dense(matrix_precision, N, distrib_mode);
             break;
         case ellpack:
-            return bml_identity_matrix_ellpack(matrix_precision, N, M);
+            return bml_identity_matrix_ellpack(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);

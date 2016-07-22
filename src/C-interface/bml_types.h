@@ -46,6 +46,17 @@ typedef void bml_vector_t;
 /** The matrix type. */
 typedef void bml_matrix_t;
 
+/** The supported distribution modes. */
+typedef enum
+{
+    /** Each rank works on the full matrix. */
+    sequential,
+    /** Each rank works on it's part of the matrix. */
+    distributed,
+    /** Each rank works on it's set of graph partitions. */
+    graph_distributed,
+} bml_distribution_mode_t;
+
 /** Decomposition for working in parallel. */
 struct bml_domain_t
 {

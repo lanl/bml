@@ -32,12 +32,12 @@ int TYPED_FUNC(
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     A_t = bml_transpose_new(A);
     bml_add(A, A_t, 0.5, 0.5, 0.0);
     bml_print_bml_matrix(A, 0, N, 0, N);
     eigenvalues = calloc(N, sizeof(double));
-    eigenvectors = bml_zero_matrix(matrix_type, matrix_precision, N, M);
+    eigenvectors = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
     bml_diagonalize(A, eigenvalues, eigenvectors);
     bml_print_dense_vector(N, double_real, eigenvalues, 0, N);
     bml_print_bml_matrix(eigenvectors, 0, N, 0, N);

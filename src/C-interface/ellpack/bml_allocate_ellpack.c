@@ -40,29 +40,31 @@ bml_deallocate_ellpack(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
 bml_zero_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A = NULL;
 
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_zero_matrix_ellpack_single_real(N, M);
+            A = bml_zero_matrix_ellpack_single_real(N, M, distrib_mode);
             break;
         case double_real:
-            A = bml_zero_matrix_ellpack_double_real(N, M);
+            A = bml_zero_matrix_ellpack_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            A = bml_zero_matrix_ellpack_single_complex(N, M);
+            A = bml_zero_matrix_ellpack_single_complex(N, M, distrib_mode);
             break;
         case double_complex:
-            A = bml_zero_matrix_ellpack_double_complex(N, M);
+            A = bml_zero_matrix_ellpack_double_complex(N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -83,27 +85,29 @@ bml_zero_matrix_ellpack(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
 bml_banded_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_banded_matrix_ellpack_single_real(N, M);
+            return bml_banded_matrix_ellpack_single_real(N, M, distrib_mode);
             break;
         case double_real:
-            return bml_banded_matrix_ellpack_double_real(N, M);
+            return bml_banded_matrix_ellpack_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            return bml_banded_matrix_ellpack_single_complex(N, M);
+            return bml_banded_matrix_ellpack_single_complex(N, M, distrib_mode);
             break;
         case double_complex:
-            return bml_banded_matrix_ellpack_double_complex(N, M);
+            return bml_banded_matrix_ellpack_double_complex(N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -124,27 +128,29 @@ bml_banded_matrix_ellpack(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
 bml_random_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_random_matrix_ellpack_single_real(N, M);
+            return bml_random_matrix_ellpack_single_real(N, M, distrib_mode);
             break;
         case double_real:
-            return bml_random_matrix_ellpack_double_real(N, M);
+            return bml_random_matrix_ellpack_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            return bml_random_matrix_ellpack_single_complex(N, M);
+            return bml_random_matrix_ellpack_single_complex(N, M, distrib_mode);
             break;
         case double_complex:
-            return bml_random_matrix_ellpack_double_complex(N, M);
+            return bml_random_matrix_ellpack_double_complex(N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -165,27 +171,29 @@ bml_random_matrix_ellpack(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
 bml_identity_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_identity_matrix_ellpack_single_real(N, M);
+            return bml_identity_matrix_ellpack_single_real(N, M, distrib_mode);
             break;
         case double_real:
-            return bml_identity_matrix_ellpack_double_real(N, M);
+            return bml_identity_matrix_ellpack_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            return bml_identity_matrix_ellpack_single_complex(N, M);
+            return bml_identity_matrix_ellpack_single_complex(N, M, distrib_mode);
             break;
         case double_complex:
-            return bml_identity_matrix_ellpack_double_complex(N, M);
+            return bml_identity_matrix_ellpack_double_complex(N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");

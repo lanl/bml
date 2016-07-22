@@ -163,3 +163,27 @@ bml_get_bandwidth(
     }
     return -1;
 }
+
+/** Return the distribution mode of a matrix.
+ *
+ * \param A The bml matrix.
+ * \return The distibution mode of matrix A.
+ */
+bml_distribution_mode_t
+bml_get_distribution_mode(
+    const bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_get_distribution_mode_dense(A);
+            break;
+        case ellpack:
+            return bml_get_distribution_mode_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown distribution mode\n");
+            break;
+    }
+    return -1;
+}

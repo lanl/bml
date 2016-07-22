@@ -254,7 +254,7 @@ void TYPED_FUNC(
     REAL_T alpha = (REAL_T) 1.0;
 
     bml_matrix_ellpack_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M);
+        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M, A->distribution_mode);
 
     TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
 
@@ -280,7 +280,7 @@ void TYPED_FUNC(
     const double threshold)
 {
     bml_matrix_ellpack_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M);
+        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M, A->distribution_mode);
 
     TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
 

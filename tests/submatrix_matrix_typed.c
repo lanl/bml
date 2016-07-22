@@ -68,7 +68,7 @@ int TYPED_FUNC(
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
 
-    D = bml_zero_matrix(matrix_type, matrix_precision, N, M);
+    D = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
 
     for (int i = 0; i < N; i++)
     {
@@ -80,7 +80,7 @@ int TYPED_FUNC(
         LOG_INFO("chlist size = %d cpos size %d\n", chlist_size, cpos_size);
 
         C = bml_zero_matrix(dense, matrix_precision, chlist_size,
-                            chlist_size);
+                            chlist_size, sequential);
 
         // Get submatrix
         bml_matrix2submatrix(A, C, chlist, chlist_size);

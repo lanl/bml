@@ -50,7 +50,7 @@ void TYPED_FUNC(
     else
     {
         bml_matrix_ellpack_t *A2 =
-            TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M);
+            TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, A->distribution_mode);
 
         if (A != NULL && A == B)
         {

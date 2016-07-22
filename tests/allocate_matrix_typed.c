@@ -17,7 +17,7 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     A_dense = bml_export_to_dense(A, dense_row_major);
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
                               N, A_dense, 0, M);
@@ -57,7 +57,7 @@ int TYPED_FUNC(
     bml_free_memory(B_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
     A_dense = bml_convert_to_dense(A, dense_row_major);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
@@ -91,7 +91,7 @@ int TYPED_FUNC(
     LOG_INFO("identity matrix test passed\n");
 
     bml_deallocate(&A);
-    A = bml_zero_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
     bml_deallocate(&A);
 
     return 0;

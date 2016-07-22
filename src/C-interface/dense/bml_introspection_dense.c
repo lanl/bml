@@ -22,6 +22,25 @@ bml_get_precision_dense(
     }
 }
 
+/** Return the matrix distribution mode.
+ *
+ * \param A The matrix.
+ * \return The distribution mode.
+ */
+bml_distribution_mode_t
+bml_get_distribution_mode_dense(
+    const bml_matrix_dense_t * A)
+{
+    if (A != NULL)
+    {
+        return A->distribution_mode;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
 /** Return the matrix size.
  *
  * \param A The matrix.
