@@ -49,7 +49,8 @@ void bml_deallocate_domain(
 
 bml_domain_t *bml_default_domain(
     const int N,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 void bml_update_domain(
     bml_matrix_t * A,

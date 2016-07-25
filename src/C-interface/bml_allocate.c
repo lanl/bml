@@ -251,14 +251,16 @@ bml_identity_matrix(
  *
  * \ingroup allocate_group_C
  *
- *  \param N number of rows
- *  \param M number of columns
+ *  \param N The number of rows
+ *  \param M The number of columns
+ *  \param distrib_mode The distribution mode
  *  \return The domain
  */
 bml_domain_t *
 bml_default_domain(
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     int avgExtent, nleft;
     int nRanks = bml_getNRanks();
@@ -275,66 +277,83 @@ bml_default_domain(
     domain->totalRows = N;
     domain->totalCols = M;
 
-    avgExtent = N / nRanks;
-    domain->maxLocalExtent = ceil((float)N / (float)nRanks);
-    domain->minLocalExtent = avgExtent;
-
-    for (int i = 0; i < nRanks; i++)
-    {
-        domain->localRowExtent[i] = avgExtent;
-    }
-    nleft = N - nRanks*avgExtent;
-    if (nleft > 0)
-    {
-        for (int i = 0; i < nleft; i++)
-        {
-            domain->localRowExtent[i] + 1;
-        }
-    }
-
     domain->globalRowMin = 0;
     domain->globalRowMax = domain->totalRows;
     domain->globalRowExtent = domain->globalRowMax - domain->globalRowMin;
-
-    // For completely distributed
-
-    /** For first rank */
-    domain->localRowMin[0] = domain->globalRowMin;
-    domain->localRowMax[0] = domain->localRowExtent[0];
-
-    /** For middle ranks */
-    for (int i = 1; i < (nRanks-1); i++)
+    
+    switch (distrib_mode)
     {
-      domain->localRowMin[i] = domain->localRowMax[i-1];
-      domain->localRowMax[i] = domain->localRowMin[i] + domain->localRowExtent[i];
-    }
+        case sequential:
+        {
+            // Default - each rank contains entire matrix, even when running distributed
+            for (int i = 0; i < nRanks; i++)
+            {
+                domain->localRowMin[i] = domain->globalRowMin;
+                domain->localRowMax[i] = domain->globalRowMax;
+                domain->localRowExtent[i] = domain->localRowMax[i] - domain->localRowMin[i];
+                domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
+                domain->localDispl[i] = 0;
+            }
 
-    /** For last rank */
-    if (nRanks > 1)
-    {
-      int last = nRanks - 1;
-      domain->localRowMin[last] = domain->localRowMax[last-1];
-      domain->localRowMax[last] = domain->localRowMin[last] + domain->localRowExtent[last];
-    }
+        }
+        break;
 
-    /** Number of elements and displacement per rank */
-    for (int i = 0; i < nRanks; i++)
-    {
-      domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
-      domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
-    }
+        case distributed:
+        {
+            // For completely distributed
+            avgExtent = N / nRanks;
+            domain->maxLocalExtent = ceil((float)N / (float)nRanks);
+            domain->minLocalExtent = avgExtent;
 
-///*
-    // Default - each rank contains entire matrix, even when running distributed
-    for (int i = 0; i < nRanks; i++)
-    {
-      domain->localRowMin[i] = domain->globalRowMin;
-      domain->localRowMax[i] = domain->globalRowMax;
-      domain->localRowExtent[i] = domain->localRowMax[i] - domain->localRowMin[i];
-      domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
-      domain->localDispl[i] = 0;
+            for (int i = 0; i < nRanks; i++)
+            {
+                domain->localRowExtent[i] = avgExtent;
+            }
+            nleft = N - nRanks*avgExtent;
+            if (nleft > 0)
+            {
+                for (int i = 0; i < nleft; i++)
+                {
+                    domain->localRowExtent[i] + 1;
+                }
+            }
+
+            /** For first rank */
+            domain->localRowMin[0] = domain->globalRowMin;
+            domain->localRowMax[0] = domain->localRowExtent[0];
+
+            /** For middle ranks */
+            for (int i = 1; i < (nRanks-1); i++)
+            {
+                domain->localRowMin[i] = domain->localRowMax[i-1];
+                domain->localRowMax[i] = domain->localRowMin[i] + domain->localRowExtent[i];
+            }
+
+            /** For last rank */
+            if (nRanks > 1)
+            {
+                int last = nRanks - 1;
+                domain->localRowMin[last] = domain->localRowMax[last-1];
+                domain->localRowMax[last] = domain->localRowMin[last] + domain->localRowExtent[last];
+            }
+
+            /** Number of elements and displacement per rank */
+            for (int i = 0; i < nRanks; i++)
+            {
+                domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
+                domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
+            }
+        }
+        break;
+
+        case graph_distributed:
+            LOG_ERROR("graph_distibuted not available\n");
+            break;
+
+        default:
+            LOG_ERROR("unknown distribution method\n");
+            break;
     }
-//*/
 
 /*
     if (bml_printRank() == 1)
