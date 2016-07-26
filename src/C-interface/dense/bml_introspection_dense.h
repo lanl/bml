@@ -16,6 +16,10 @@ int bml_get_row_bandwidth_dense(
     const bml_matrix_dense_t * A,
     const int i);
 
+bml_distribution_mode_t
+bml_get_distribution_mode_dense(
+    const bml_matrix_dense_t * A);
+
 int bml_get_row_bandwidth_dense_single_real(
     const bml_matrix_dense_t * A,
     const int i);

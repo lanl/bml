@@ -27,7 +27,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     const int N,
     const void *A)
 {
-    bml_matrix_dense_t *A_bml = TYPED_FUNC(bml_zero_matrix_dense) (N);
+    bml_matrix_dense_t *A_bml = TYPED_FUNC(bml_zero_matrix_dense) (N, sequential);
     switch (order)
     {
         case dense_row_major:

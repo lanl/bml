@@ -31,7 +31,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     const double threshold,
     const int M)
 {
-    bml_matrix_ellpack_t *A_bml = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
+    bml_matrix_ellpack_t *A_bml = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, sequential);
 
     int *A_index = A_bml->index;
     int *A_nnz = A_bml->nnz;

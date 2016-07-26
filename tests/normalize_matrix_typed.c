@@ -28,7 +28,7 @@ int TYPED_FUNC(
     double scale_factor = 2.5;
     double threshold = 0.0;
 
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
     bml_scale_inplace(scale_factor, A);
     A_gbnd = bml_gershgorin(A);
 

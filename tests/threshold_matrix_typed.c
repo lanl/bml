@@ -20,7 +20,7 @@ int TYPED_FUNC(
 
     double threshold = 0.5;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_threshold_new(A, threshold);
 
     A_dense = bml_convert_to_dense(A, dense_row_major);

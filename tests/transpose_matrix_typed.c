@@ -20,7 +20,7 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
     REAL_T *C_dense = NULL;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_transpose_new(A);
     C = bml_copy_new(A);
     bml_transpose(C);

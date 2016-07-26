@@ -35,26 +35,28 @@ bml_deallocate_dense(
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_dense_t *
 bml_zero_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
-    const int N)
+    const int N,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_zero_matrix_dense_single_real(N);
+            return bml_zero_matrix_dense_single_real(N, distrib_mode);
             break;
         case double_real:
-            return bml_zero_matrix_dense_double_real(N);
+            return bml_zero_matrix_dense_double_real(N, distrib_mode);
             break;
         case single_complex:
-            return bml_zero_matrix_dense_single_complex(N);
+            return bml_zero_matrix_dense_single_complex(N, distrib_mode);
             break;
         case double_complex:
-            return bml_zero_matrix_dense_double_complex(N);
+            return bml_zero_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -75,27 +77,29 @@ bml_zero_matrix_dense(
  * is double precision.
  * \param N The matrix size.
  * \param M The bandwidth.
+ * \param distrib_mode The distribution mode.
  * \return The matrix.
  */
 bml_matrix_dense_t *
 bml_banded_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_banded_matrix_dense_single_real(N, M);
+            return bml_banded_matrix_dense_single_real(N, M, distrib_mode);
             break;
         case double_real:
-            return bml_banded_matrix_dense_double_real(N, M);
+            return bml_banded_matrix_dense_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            return bml_banded_matrix_dense_single_complex(N, M);
+            return bml_banded_matrix_dense_single_complex(N, M, distrib_mode);
             break;
         case double_complex:
-            return bml_banded_matrix_dense_double_complex(N, M);
+            return bml_banded_matrix_dense_double_complex(N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -115,26 +119,28 @@ bml_banded_matrix_dense(
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_dense_t *
 bml_random_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
-    const int N)
+    const int N,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_random_matrix_dense_single_real(N);
+            return bml_random_matrix_dense_single_real(N, distrib_mode);
             break;
         case double_real:
-            return bml_random_matrix_dense_double_real(N);
+            return bml_random_matrix_dense_double_real(N, distrib_mode);
             break;
         case single_complex:
-            return bml_random_matrix_dense_single_complex(N);
+            return bml_random_matrix_dense_single_complex(N, distrib_mode);
             break;
         case double_complex:
-            return bml_random_matrix_dense_double_complex(N);
+            return bml_random_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -154,26 +160,28 @@ bml_random_matrix_dense(
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
  *  \param N The matrix size.
+ *  \param distrib_mode The distribution mode
  *  \return The matrix.
  */
 bml_matrix_dense_t *
 bml_identity_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
-    const int N)
+    const int N,
+    const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_identity_matrix_dense_single_real(N);
+            return bml_identity_matrix_dense_single_real(N, distrib_mode);
             break;
         case double_real:
-            return bml_identity_matrix_dense_double_real(N);
+            return bml_identity_matrix_dense_double_real(N, distrib_mode);
             break;
         case single_complex:
-            return bml_identity_matrix_dense_single_complex(N);
+            return bml_identity_matrix_dense_single_complex(N, distrib_mode);
             break;
         case double_complex:
-            return bml_identity_matrix_dense_double_complex(N);
+            return bml_identity_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");

@@ -22,12 +22,14 @@
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_zero_matrix_ellpack) (
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
@@ -35,6 +37,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->matrix_precision = MATRIX_PRECISION;
     A->N = N;
     A->M = M;
+    A->distribution_mode = distrib_mode;
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
@@ -56,14 +59,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_banded_matrix_ellpack) (
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;
@@ -99,14 +104,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_random_matrix_ellpack) (
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;
@@ -141,14 +148,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  *  is double precision.
  *  \param N The matrix size.
  *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_identity_matrix_ellpack) (
     const int N,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M);
+    bml_matrix_ellpack_t *A = TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
     REAL_T *A_value = A->value;
     int *A_index = A->index;

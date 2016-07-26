@@ -23,7 +23,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     const bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B =
-        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M);
+        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, A->distribution_mode);
 
     memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);

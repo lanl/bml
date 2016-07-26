@@ -13,6 +13,7 @@ module bml_introspection_m
   public :: bml_get_precision
   public :: bml_get_row_bandwidth
   public :: bml_get_bandwidth
+  public :: bml_get_distribution_mode
 
 contains
 
@@ -107,5 +108,18 @@ contains
     bml_get_precision = bml_get_precision_C(a%ptr)
 
   end function bml_get_precision
+
+!> Get the distribution mode of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml distribution mode of the matrix.
+  function bml_get_distribution_mode(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_distribution_mode
+
+    bml_get_distribution_mode = bml_get_distribution_mode_C(a%ptr)
+
+  end function bml_get_distribution_mode
 
 end module bml_introspection_m

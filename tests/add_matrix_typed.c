@@ -32,9 +32,9 @@ int TYPED_FUNC(
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_copy_new(A);
-    C = bml_random_matrix(matrix_type, matrix_precision, N, M);
+    C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
     bml_add(B, C, alpha, beta, threshold);
 

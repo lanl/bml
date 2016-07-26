@@ -78,13 +78,14 @@ module bml_c_interface_m
       character(C_CHAR), value, intent(in) :: triangle
     end subroutine bml_transpose_triangle_C
 
-    function bml_banded_matrix_C(matrix_type, matrix_precision, n, m) &
-        & bind(C, name="bml_banded_matrix")
+    function bml_banded_matrix_C(matrix_type, matrix_precision, n, m, &
+        & distrib_mode) bind(C, name="bml_banded_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
       integer(C_INT), value, intent(in) :: n
       integer(C_INT), value, intent(in) :: m
+      integer(C_INT), value, intent(in) :: distrib_mode 
       type(C_PTR) :: bml_banded_matrix_C
     end function bml_banded_matrix_C
 
@@ -216,6 +217,13 @@ module bml_c_interface_m
       integer(C_INT) :: bml_get_precision_C
     end function bml_get_precision_C
 
+    function bml_get_distribution_mode_C(a) &
+        & bind(C, name="bml_get_distribution_mode")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT) :: bml_get_distribution_mode_C
+    end function bml_get_distribution_mode_C
+
     subroutine bml_get_row_C(a, i, row) bind(C, name="bml_get_row")
       import :: C_PTR, C_INT
       type(C_PTR), value, intent(in) :: a
@@ -303,13 +311,14 @@ module bml_c_interface_m
       integer(C_INT) :: bml_get_bandwidth_C
     end function bml_get_bandwidth_C
 
-    function bml_identity_matrix_C(matrix_type, matrix_precision, n, m) &
-        & bind(C, name="bml_identity_matrix")
+    function bml_identity_matrix_C(matrix_type, matrix_precision, n, m, &
+        & distrib_mode) bind(C, name="bml_identity_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
       integer(C_INT), value, intent(in) :: n
       integer(C_INT), value, intent(in) :: m
+      integer(C_INT), value, intent(in) :: distrib_mode
       type(C_PTR) :: bml_identity_matrix_C
     end function bml_identity_matrix_C
 
@@ -333,13 +342,14 @@ module bml_c_interface_m
       type(C_PTR) :: bml_multiply_x2_C
     end function bml_multiply_x2_C
 
-    function bml_random_matrix_C(matrix_type, matrix_precision, n, m) &
-        & bind(C, name="bml_random_matrix")
+    function bml_random_matrix_C(matrix_type, matrix_precision, n, m, &
+        & distrib_mode) bind(C, name="bml_random_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
       integer(C_INT), value, intent(in) :: n
       integer(C_INT), value, intent(in) :: m
+      integer(C_INT), value, intent(in) :: distrib_mode
       type(C_PTR) :: bml_random_matrix_C
     end function bml_random_matrix_C
 
@@ -512,13 +522,14 @@ module bml_c_interface_m
       character(C_CHAR), intent(in) :: filename(*)
     end subroutine bml_write_bml_matrix_C
 
-    function bml_zero_matrix_C(matrix_type, matrix_precision, n, m) &
-        & bind(C, name="bml_zero_matrix")
+    function bml_zero_matrix_C(matrix_type, matrix_precision, n, m, &
+        & distrib_mode) bind(C, name="bml_zero_matrix")
       import :: C_INT, C_PTR
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
       integer(C_INT), value, intent(in) :: n
       integer(C_INT), value, intent(in) :: m
+      integer(C_INT), value, intent(in) :: distrib_mode
       type(C_PTR) :: bml_zero_matrix_C
     end function bml_zero_matrix_C
 

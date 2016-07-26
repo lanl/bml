@@ -22,10 +22,10 @@ int TYPED_FUNC(
 
     double scale_factor = 2.0;
 
-    //A = bml_random_matrix(matrix_type, matrix_precision, N, M);
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
+    //A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_scale_new(scale_factor, A);
-    C = bml_zero_matrix(matrix_type, matrix_precision, N, M);
+    C = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
     bml_scale(scale_factor, A, C);
     bml_scale(scale_factor, A, A);
 

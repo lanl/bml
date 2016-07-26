@@ -10,6 +10,8 @@ module bml_types_m
   public :: bml_deallocate
   public :: BML_MATRIX_DENSE, BML_MATRIX_ELLPACK
   public :: BML_ELEMENT_REAL, BML_ELEMENT_COMPLEX
+  public :: BML_DMODE_SEQUENTIAL, BML_DMODE_DISTRIBUTED
+  public :: BML_DMODE_GRAPH_DISTRIBUTED
 
   ! NOTE: The object oriented approach using destructors, which would make
   ! explicit bml_deallocate() unnecessary and would prevent memory leaks, has
@@ -50,6 +52,15 @@ module bml_types_m
 
   !> The double-precision identifier.
   character(len=*), parameter :: BML_ELEMENT_COMPLEX = "complex"
+
+  !> The sequential distribution mode.
+  character(len=*), parameter :: BML_DMODE_SEQUENTIAL = "sequential"
+
+  !> The distributed distribution mode.
+  character(len=*), parameter :: BML_DMODE_DISTRIBUTED = "distributed"
+
+  !> The graph distributed distribution mode.
+  character(len=*), parameter :: BML_DMODE_GRAPH_DISTRIBUTED = "graph_distributed"
 
 contains
 

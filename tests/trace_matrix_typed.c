@@ -34,7 +34,7 @@ int TYPED_FUNC(
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_scale_new(scalar, A);
     C = bml_scale_new(scalar, B);
 

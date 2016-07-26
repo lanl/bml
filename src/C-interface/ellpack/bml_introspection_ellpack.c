@@ -21,6 +21,25 @@ bml_get_precision_ellpack(
     }
 }
 
+/** Return the matrix distribution mode.
+ *
+ * \param A The matrix.
+ * \return The matrix distribution mode.
+ */
+bml_distribution_mode_t
+bml_get_distribution_mode_ellpack(
+    const bml_matrix_ellpack_t * A)
+{
+    if (A != NULL)
+    {
+        return A->distribution_mode;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
 /** Return the matrix size.
  *
  * \param A The matrix.
