@@ -3,6 +3,7 @@
 #include "bml_getters.h"
 #include "dense/bml_getters_dense.h"
 #include "ellpack/bml_getters_ellpack.h"
+#include <stdio.h>
 
 /*
 void
@@ -50,6 +51,7 @@ bml_get_diagonal(
       bml_get_diagonal_ellpack(A, diagonal);
       break;            
     default:            
+      printf("current type is %c",bml_get_type(A));
       LOG_ERROR("unknown matrix type in bml_get_diagonal\n");
       break;
   }
