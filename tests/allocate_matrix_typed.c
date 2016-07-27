@@ -90,8 +90,7 @@ int TYPED_FUNC(
     bml_free_memory(A_dense);
     LOG_INFO("identity matrix test passed\n");
 
-    bml_deallocate(&A);
-    A = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_clear(A);
     bml_deallocate(&A);
 
     return 0;

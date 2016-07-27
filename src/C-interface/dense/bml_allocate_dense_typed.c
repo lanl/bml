@@ -6,7 +6,23 @@
 #include "bml_types_dense.h"
 
 #include <complex.h>
+#include <string.h>
 #include <omp.h>
+
+/** Clear the matrix.
+ *
+ * All values are zeroed.
+ *
+ * \ingroup allocate_group
+ * 
+ *  \param A The matrix.
+ */
+void TYPED_FUNC(
+    bml_clear_dense) (
+    bml_matrix_dense_t * A)
+{
+    memset(A->matrix, 0.0, A->N * A->N * sizeof(REAL_T));    
+}
 
 /** Allocate the zero matrix.
  *

@@ -8,6 +8,7 @@ module bml_allocate_m
   implicit none
   private
 
+  public :: bml_clear
   public :: bml_banded_matrix
   public :: bml_identity_matrix
   public :: bml_random_matrix
@@ -15,6 +16,19 @@ module bml_allocate_m
   public :: bml_update_domain
 
 contains
+
+  !> Clear a matrix.
+  !!
+  !! \ingroup allocate_group_Fortran
+  !!
+  !! \param a The matrix.
+  subroutine bml_clear(a)
+  
+    type(bml_matrix_t), intent(inout) :: a
+
+    call bml_clear_C(a%ptr)
+
+  end subroutine bml_clear
 
   !> Create the zero matrix.
   !!

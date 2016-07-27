@@ -95,6 +95,29 @@ bml_deallocate(
     }
 }
 
+/** Clear a matrix.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param A The matrix.
+ */
+void
+bml_clear(bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_clear_dense(A);
+            break;
+        case ellpack:
+            bml_clear_ellpack(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
+            break;
+    }
+}
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ A \f$ will be newly allocated. The

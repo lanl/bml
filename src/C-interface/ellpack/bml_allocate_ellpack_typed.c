@@ -8,7 +8,25 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #include <omp.h>
+
+/** Clear a matrix.
+ *
+ * Numbers of non-zeroes, indeces, and values are set to zero.
+ *
+ * \ingroup allocate_group
+ *
+ * \param A The matrix.
+ */
+void TYPED_FUNC(
+    bml_clear_ellpack) (
+    bml_matrix_ellpack_t * A)
+{ 
+    memset(A->nnz, 0, A->N * sizeof(int));
+    memset(A->index, 0, A->N * A->M * sizeof(int));
+    memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
+}
 
 /** Allocate the zero matrix.
  *

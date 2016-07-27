@@ -16,6 +16,9 @@ void bml_free_memory(
 void bml_deallocate(
     bml_matrix_t ** A);
 
+void bml_clear(
+    bml_matrix_t * A);
+
 bml_matrix_t *bml_zero_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,

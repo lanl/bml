@@ -24,6 +24,36 @@ bml_deallocate_dense(
     bml_free_memory(A);
 }
 
+/** Clear a matrix.
+ *
+ * \ingroup allocate_group
+ *
+ * \param A The matrix.
+ */
+void
+bml_clear_dense(
+    bml_matrix_dense_t * A)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_clear_dense_single_real(A);
+            break;
+        case double_real:
+            return bml_clear_dense_double_real(A);
+            break;
+        case single_complex:
+            return bml_clear_dense_single_complex(A);
+            break;
+        case double_complex:
+            return bml_clear_dense_double_complex(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is

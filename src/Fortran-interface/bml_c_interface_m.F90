@@ -159,6 +159,11 @@ module bml_c_interface_m
       type(C_PTR) :: a
     end subroutine bml_deallocate_C
 
+    subroutine bml_clear_C(a) bind(C, name="bml_clear")
+      import :: C_PTR
+      type(C_PTR) :: a
+    end subroutine bml_clear_C
+
     function bml_get_single_real_C(a, i, j) bind(C, name="bml_get_single_real")
       import :: C_PTR, C_INT, C_FLOAT
       type(C_PTR), value, intent(in) :: a
