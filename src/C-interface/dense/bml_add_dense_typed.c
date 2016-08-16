@@ -118,7 +118,7 @@ void TYPED_FUNC(
     int * A_localRowMax = A->domain->localRowMax;
     int myRank = bml_getMyRank();
 
-#pragma omp paralell for \
+#pragma omp parallel for \
     default(none) \
     shared(A_matrix, A_localRowMin, A_localRowMax) \
     shared(N, myRank, beta_) 
