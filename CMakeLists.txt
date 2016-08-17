@@ -148,7 +148,7 @@ if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
     if(BML_OPENMP)
       set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
-        -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lm)
+        -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lm)
     else()
       set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
         -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm)
