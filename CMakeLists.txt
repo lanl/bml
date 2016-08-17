@@ -38,11 +38,11 @@ set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
-  -traceback)
-set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99)
+  -traceback -qopt-report=5)
+set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99 -qopt-report=5)
 set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -assume realloc_lhs
-  -traceback)
-set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs)
+  -traceback -qopt-report=5)
+set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs -qopt-report=5)
 
 set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
@@ -59,6 +59,9 @@ if(CMAKE_BUILD_TYPE)
         string(REPLACE ";" " "
           CMAKE_C_FLAGS_${BUILD_TYPE}
           "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
+	if(DEFINED EXTRA_CFLAGS)
+          set(CMAKE_C_FLAGS_${BUILD_TYPE} "${CMAKE_C_FLAGS_${BUILD_TYPE}} ${EXTRA_CFLAGS}")
+        endif()
         message(STATUS "Setting C compiler flags to "
           "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
       else()
@@ -74,6 +77,9 @@ if(CMAKE_BUILD_TYPE)
         string(REPLACE ";" " "
           CMAKE_Fortran_FLAGS_${BUILD_TYPE}
           "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
+	if(DEFINED EXTRA_FCFLAGS)
+          set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}} ${EXTRA_FCFLAGS}")
+	endif()
         message(STATUS "Setting Fortran compiler flags to "
           "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
       else()

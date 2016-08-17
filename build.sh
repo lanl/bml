@@ -37,6 +37,8 @@ EOF
   echo "CXX                Path to C++ compiler     (default is ${CXX})"
   echo "FC                 Path to Fortran compiler (default is ${FC})"
   echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
+  echo "EXTRA_CFLAGS       Extra C flags            (default is ${EXTRA_CFLAGS})"
+  echo "EXTRA_FCFLAGS      Extra fortran flags      (default is ${EXTRA_FCFLAGS})"
 }
 
 set_defaults() {
@@ -47,6 +49,8 @@ set_defaults() {
   BML_OPENMP=${BML_OPENMP:=yes}
   BML_MPI=${BML_MPI:=no}
   BLAS_VENDOR="${BLAS_VENDOR:=}"
+  EXTRA_CFLAGS="${EXTRA_CFLAGS:=}"
+  EXTRA_FCFLAGS="${EXTRA_FCFLAGS:=}"
   BML_TESTING=${BML_TESTING:=yes}
 }
 
@@ -101,6 +105,8 @@ configure() {
     -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
     -DBML_TESTING="${BML_TESTING:=yes}" \
     -DBLAS_VENDOR="${BLAS_VENDOR}" \
+    -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+    -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
     | tee -a "${LOG_FILE}"
   check_pipe_error
   cd "${TOP_DIR}"
