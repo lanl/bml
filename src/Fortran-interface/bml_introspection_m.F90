@@ -116,9 +116,21 @@ contains
   function bml_get_distribution_mode(a)
 
     type(bml_matrix_t), intent(in) :: a
-    integer :: bml_get_distribution_mode
+    integer :: dmode
+    character(20):: bml_get_distribution_mode
 
-    bml_get_distribution_mode = bml_get_distribution_mode_C(a%ptr)
+    dmode = bml_get_distribution_mode_C(a%ptr)
+
+    select case(dmode)
+      case(0)
+        bml_get_distribution_mode = "sequential"
+      case(1)
+        bml_get_distribution_mode = "distributed"
+      case(3)
+        bml_get_distribution_mode = "graph_distributed"
+      case default
+        stop 'Unknown distribution type in bml_get_distribution_mode'
+    end select
 
   end function bml_get_distribution_mode
 

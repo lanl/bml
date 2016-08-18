@@ -206,8 +206,8 @@ double TYPED_FUNC(
     const bml_matrix_ellpack_t * A)
 {
     double fnorm = TYPED_FUNC(bml_sum_squares_ellpack) (A);
-#ifdef DO_MPI_BLOCK
-    if (bml_getNRanks() > 1)
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_sumRealReduce(&fnorm);
     }
@@ -294,8 +294,8 @@ double TYPED_FUNC(
         }
     }
 
-#ifdef DO_MPI_BLOCK
-    if (bml_getNRanks() > 1)
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_sumRealReduce(&fnorm);
     }

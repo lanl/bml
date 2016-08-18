@@ -120,10 +120,10 @@ void *TYPED_FUNC(
 
     }
 
-//    printf("%d: emin = %e emax = %e\n", myRank, emin, emax);
+    //printf("%d: emin = %e emax = %e\n", myRank, emin, emax);
 
-#ifdef DO_MPI_BLOCK
-    if (bml_getNRanks() > 1)
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_minRealReduce(&emin);
         bml_maxRealReduce(&emax);

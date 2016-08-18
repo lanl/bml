@@ -103,7 +103,7 @@ void *TYPED_FUNC(
     }
 
 #ifdef DO_MPI
-    if (bml_getNRanks() > 1)
+    if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_minRealReduce(&emin);
         bml_maxRealReduce(&emax);

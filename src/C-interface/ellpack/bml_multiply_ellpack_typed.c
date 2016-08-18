@@ -61,6 +61,13 @@ void TYPED_FUNC(
             TYPED_FUNC(bml_multiply_AB_ellpack) (A, B, A2, threshold);
         }
 
+#ifdef DO_MPI
+  if (bml_getNRanks() > 1 && A2->distribution_mode == distributed)
+  {
+    bml_allGatherVParallel(A2); 
+  }
+#endif
+
         TYPED_FUNC(bml_add_ellpack) (C, A2, beta, alpha, threshold);
 
         bml_deallocate_ellpack(A2);

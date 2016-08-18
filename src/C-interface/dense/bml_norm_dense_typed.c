@@ -144,8 +144,9 @@ double TYPED_FUNC(
 {
     double sum = 0.0;
     sum = TYPED_FUNC(bml_sum_squares_dense) (A);
+
 #ifdef DO_MPI
-    if (bml_getNRanks() > 1)
+    if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_sumRealReduce(&sum);
     }
@@ -194,7 +195,7 @@ double TYPED_FUNC(
     }
 
 #ifdef DO_MPI
-    if (bml_getNRanks() > 1)
+    if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_sumRealReduce(&fnorm);
     }

@@ -39,8 +39,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-#if DO_MPI_BLOCK
-    C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
+#if DO_MPI
+    if (bml_getNRanks() > 1 && B->distribution_mode == distributed)
+    { 
+      C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
+    }
 #else
     C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
 #endif
@@ -73,11 +76,8 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-#ifdef DO_MPI_BLOCK
     C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
-#else
-    C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
-#endif
+    //C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
 }
 
 void TYPED_FUNC(
@@ -94,9 +94,6 @@ void TYPED_FUNC(
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 
-#if DO_MPI_BLOCK
     C_BLAS(SCAL) (&number_elements, &scale_factor_, &(A_value[startIndex]), &inc);
-#else
-    C_BLAS(SCAL) (&number_elements, &scale_factor_, A->value, &inc);
-#endif
+    //C_BLAS(SCAL) (&number_elements, &scale_factor_, A->value, &inc);
 }

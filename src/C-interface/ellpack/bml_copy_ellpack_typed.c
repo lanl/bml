@@ -45,12 +45,14 @@ void TYPED_FUNC(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
 {
-
     memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
     memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
-    bml_copy_domain(A->domain, B->domain);
-    bml_copy_domain(A->domain2, B->domain2);
+    if (A->distribution_mode == B->distribution_mode) 
+    {
+      bml_copy_domain(A->domain, B->domain);
+      bml_copy_domain(A->domain2, B->domain2);
+    }
 }
 
 /** Reorder an ellpack matrix.
