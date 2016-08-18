@@ -77,8 +77,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         {
             for (int k = 0; k < A_nnz[j]; k++)
             {
-                if (A_index[ROWMAJOR(j, k, N, M)] == i)
-                {
+                if (A_index[ROWMAJOR(j, k, N, M)] != i) {}
+                else {
                     B_index[ROWMAJOR(i, B_nnz[i], N, M)] = j;
                     B_value[ROWMAJOR(i, B_nnz[i], N, M)] = A_value[ROWMAJOR(j, k, N, M)];
                     B_nnz[i]++;
