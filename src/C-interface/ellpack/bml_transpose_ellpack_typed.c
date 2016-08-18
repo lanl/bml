@@ -45,6 +45,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     // Transpose all elements
 
+/*
 #pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -64,9 +65,10 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     return B;
 
-
+    
+*/
     // Transpose all elements
-/*
+
 #pragma omp parallel for default(none) \
     shared(N, M, B_index, B_value, B_nnz) \
     shared(A_index, A_value, A_nnz) \
@@ -90,8 +92,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     return B;
-*/
 }
+
 
 /** Transpose a matrix in place.
  *
