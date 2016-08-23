@@ -44,6 +44,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int myRank = bml_getMyRank();
 
     // Transpose all elements
+
 /*
 #pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz)
     for (int i = 0; i < N; i++)
@@ -51,9 +52,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         for (int j = 0; j < A_nnz[i]; j++)
         {
             int trow = A_index[ROWMAJOR(i, j, N, M)];
+	    int colcnt = B_nnz[trow];
 #pragma omp critical
             {
-                int colcnt = B_nnz[trow];
                 B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
                 B_value[ROWMAJOR(trow, colcnt, N, M)] =
                     A_value[ROWMAJOR(i, j, N, M)];
@@ -63,9 +64,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     return B;
-*/
 
+    
+*/
     // Transpose all elements
+
 #pragma omp parallel for default(none) \
     shared(N, M, B_index, B_value, B_nnz) \
     shared(A_index, A_value, A_nnz) \
@@ -89,8 +92,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     return B;
-
 }
+
 
 /** Transpose a matrix in place.
  *
