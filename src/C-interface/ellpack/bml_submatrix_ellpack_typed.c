@@ -24,8 +24,7 @@
  * \param nodelist List of node/orbital indeces
  * \param nsize Size of nodelist
  * \param core_halo_index List of core+halo indeces
- * \param core_pos List of core indeces in core_halo_index
- * \param vsize Size of core_halo_index and core_pos
+ * \param vsize Size of core_halo_index and number of cores
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
 void TYPED_FUNC(
@@ -35,7 +34,6 @@ void TYPED_FUNC(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag)
 {
@@ -49,15 +47,27 @@ void TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
 
-    int ix[A_N], lg[A_N];
+    int ix[A_N];
 
     memset(ix, 0, A_N * sizeof(int));
-    memset(lg, 0, A_N * sizeof(int));
 
     l = 0;
     ll = 0;
 
-    // Collect indeces from graph
+    // Cores are first followed by halos
+    for (int j = 0; j < nsize; j++)
+    {
+        ii = nodelist[j];
+        if (ix[ii] == 0)
+        {
+            ix[ii] = ii + 1;
+            core_halo_index[l] = ii;
+            l++; ll++;
+        }
+
+    }
+
+    // Collect halo indeces from graph
     for (int j = 0; j < nsize; j++)
     {
         ii = nodelist[j];
@@ -69,19 +79,12 @@ void TYPED_FUNC(
             {
                 ix[k] = ii + 1;
                 core_halo_index[l] = k;
-                lg[k] = l;
                 l++;
-            }
-            // Core diagonal elements
-            if (k == ii)
-            {
-                core_pos[ll] = lg[k];
-                ll++;
             }
         }
     }
 
-    // Add more new elements from H
+    // Add more halo elements from H
     for (int j = 0; j < nsize; j++)
     {
         ii = nodelist[j];
@@ -98,7 +101,7 @@ void TYPED_FUNC(
         }
     }
 
-    // Perform a "double jump" for extra elements
+    // Perform a "double jump" for extra halo elements
     // based on graph, like performing a symbolic X^2
     if (double_jump_flag == 1)
     {
@@ -172,7 +175,6 @@ void TYPED_FUNC(
  * \param B Matrix B
  * \param core_halo_index Set of submatrix row indeces
  * \param lsize Number of indeces
- * \param core_pos Set of positions in core_halo_index for core rows
  * \param llsize Number of core positions
  */
 void TYPED_FUNC(
@@ -181,7 +183,6 @@ void TYPED_FUNC(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold)
 {
@@ -199,22 +200,22 @@ void TYPED_FUNC(
 #pragma omp parallel for \
     default(none) \
     private(ii, icol) \
-    shared(core_halo_index, core_pos) \
+    shared(core_halo_index) \
     shared(A_N, A_matrix) \
     shared(B_N, B_M, B_nnz, B_index, B_value)
     for (int ja = 0; ja < llsize; ja++)
     {
-        ii = core_halo_index[core_pos[ja]];
+        ii = core_halo_index[ja];
 
         icol = 0;
         for (int jb = 0; jb < lsize; jb++)
         {
-            if (ABS(A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)]) >
+            if (ABS(A_matrix[ROWMAJOR(ja, jb, A_N, A_N)]) >
                 threshold)
             {
                 B_index[ROWMAJOR(ii, icol, B_N, B_M)] = core_halo_index[jb];
                 B_value[ROWMAJOR(ii, icol, B_N, B_M)] =
-                    A_matrix[ROWMAJOR(core_pos[ja], jb, A_N, A_N)];
+                    A_matrix[ROWMAJOR(ja, jb, A_N, A_N)];
                 icol++;
             }
         }
