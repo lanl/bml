@@ -12,7 +12,6 @@ void bml_matrix2submatrix_index_ellpack(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag);
 
@@ -22,7 +21,6 @@ void bml_matrix2submatrix_index_ellpack_single_real(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag);
 
@@ -32,7 +30,6 @@ void bml_matrix2submatrix_index_ellpack_double_real(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag);
 
@@ -42,7 +39,6 @@ void bml_matrix2submatrix_index_ellpack_single_complex(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag);
 
@@ -52,7 +48,6 @@ void bml_matrix2submatrix_index_ellpack_double_complex(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag);
 
@@ -91,7 +86,6 @@ void bml_submatrix2matrix_ellpack(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold);
 
@@ -100,7 +94,6 @@ void bml_submatrix2matrix_ellpack_single_real(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold);
 
@@ -109,7 +102,6 @@ void bml_submatrix2matrix_ellpack_double_real(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold);
 
@@ -118,7 +110,6 @@ void bml_submatrix2matrix_ellpack_single_complex(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold);
 
@@ -127,7 +118,6 @@ void bml_submatrix2matrix_ellpack_double_complex(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold);
 
@@ -153,7 +143,7 @@ void *bml_getVector_ellpack_single_complex(
     const bml_matrix_ellpack_t * A,
     const int *jj,
     const int irow,
-    const int colCn);
+    const int colCnt);
 
 void *bml_getVector_ellpack_double_complex(
     const bml_matrix_ellpack_t * A,

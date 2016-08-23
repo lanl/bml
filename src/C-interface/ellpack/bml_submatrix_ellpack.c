@@ -20,7 +20,6 @@
  * \param nodelist List of node/orbital indeces
  * \param nsize Size of nodelist
  * \param core_halo_index List of core+halo indeces
- * \param core_pos List of core indeces in core_halo_index
  * \param vsize Size of core_halo_index and core_pos
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
@@ -31,7 +30,6 @@ bml_matrix2submatrix_index_ellpack(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag)
 {
@@ -41,28 +39,28 @@ bml_matrix2submatrix_index_ellpack(
             bml_matrix2submatrix_index_ellpack_single_real(A, B, nodelist,
                                                            nsize,
                                                            core_halo_index,
-                                                           core_pos, vsize,
+                                                           vsize,
                                                            double_jump_flag);
             break;
         case double_real:
             bml_matrix2submatrix_index_ellpack_double_real(A, B, nodelist,
                                                            nsize,
                                                            core_halo_index,
-                                                           core_pos, vsize,
+                                                           vsize,
                                                            double_jump_flag);
             break;
         case single_complex:
             bml_matrix2submatrix_index_ellpack_single_complex(A, B, nodelist,
                                                               nsize,
                                                               core_halo_index,
-                                                              core_pos, vsize,
+                                                              vsize,
                                                               double_jump_flag);
             break;
         case double_complex:
             bml_matrix2submatrix_index_ellpack_double_complex(A, B, nodelist,
                                                               nsize,
                                                               core_halo_index,
-                                                              core_pos, vsize,
+                                                              vsize,
                                                               double_jump_flag);
             break;
         default:
@@ -119,7 +117,6 @@ bml_matrix2submatrix_ellpack(
  * \param B Matrix B
  * \param core_halo_index Set of submatrix row indeces
  * \param lsize Number of indeces
- * \param core_pos Set of positions in core_halo_index for core rows
  * \param llsize Number of core positions
  * \param threshold Threshold for elements
  */
@@ -129,7 +126,6 @@ bml_submatrix2matrix_ellpack(
     bml_matrix_ellpack_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold)
 {
@@ -137,22 +133,22 @@ bml_submatrix2matrix_ellpack(
     {
         case single_real:
             bml_submatrix2matrix_ellpack_single_real(A, B, core_halo_index,
-                                                     lsize, core_pos, llsize,
+                                                     lsize, llsize,
                                                      threshold);
             break;
         case double_real:
             bml_submatrix2matrix_ellpack_double_real(A, B, core_halo_index,
-                                                     lsize, core_pos, llsize,
+                                                     lsize, llsize,
                                                      threshold);
             break;
         case single_complex:
             bml_submatrix2matrix_ellpack_single_complex(A, B, core_halo_index,
-                                                        lsize, core_pos,
+                                                        lsize,
                                                         llsize, threshold);
             break;
         case double_complex:
             bml_submatrix2matrix_ellpack_double_complex(A, B, core_halo_index,
-                                                        lsize, core_pos,
+                                                        lsize,
                                                         llsize, threshold);
             break;
         default:
