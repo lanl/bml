@@ -12,7 +12,6 @@ void bml_matrix2submatrix_index(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag);
 
@@ -29,7 +28,6 @@ void bml_submatrix2matrix(
     bml_matrix_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold);
 

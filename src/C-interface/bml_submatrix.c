@@ -15,7 +15,6 @@
  * \param nodelist List of node/orbital indeces
  * \param nsize Size of nodelist
  * \param core_halo_index List of core+halo indeces
- * \param core_pos List of core indeces in core_halo_index
  * \param vsize Size of core_halo_index and core_pos
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
@@ -26,7 +25,6 @@ bml_matrix2submatrix_index(
     const int *nodelist,
     const int nsize,
     int *core_halo_index,
-    int *core_pos,
     int *vsize,
     const int double_jump_flag)
 {
@@ -39,7 +37,7 @@ bml_matrix2submatrix_index(
             break;
         case ellpack:
             bml_matrix2submatrix_index_ellpack(A, B, nodelist, nsize,
-                                               core_halo_index, core_pos,
+                                               core_halo_index,
                                                vsize, double_jump_flag);
             break;
         default:
@@ -79,7 +77,7 @@ bml_matrix2submatrix(
     }
 }
 
-/** Assemble submatrix into a full matrixi based on core+halo indeces.
+/** Assemble submatrix into a full matrix based on core+halo indeces.
  *
  * \ingroup submatrix_group_C
  *
@@ -87,7 +85,6 @@ bml_matrix2submatrix(
  * \param B Matrix B
  * \param core_halo_index Set of submatrix row indeces
  * \param lsize Number of indeces
- * \param core_pos Set of positions in core_halo_index for core rows
  * \param llsize Number of core positions
  */
 void
@@ -96,7 +93,6 @@ bml_submatrix2matrix(
     bml_matrix_t * B,
     const int *core_halo_index,
     const int lsize,
-    const int *core_pos,
     const int llsize,
     const double threshold)
 {
@@ -109,7 +105,7 @@ bml_submatrix2matrix(
             break;
         case ellpack:
             bml_submatrix2matrix_ellpack(A, B, core_halo_index, lsize,
-                                         core_pos, llsize, threshold);
+                                         llsize, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

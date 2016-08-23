@@ -28,7 +28,7 @@ int TYPED_FUNC(
     REAL_T *D_dense = NULL;
 
     int nlist[1];
-    int chlist[N], cpos[N];
+    int chlist[N];
     int vsize[2];
     int chlist_size, cpos_size;
 
@@ -74,7 +74,7 @@ int TYPED_FUNC(
     {
         // Get indices for submatrix
         nlist[0] = i;
-        bml_matrix2submatrix_index(B, A, nlist, 1, chlist, cpos, vsize, 0);
+        bml_matrix2submatrix_index(B, A, nlist, 1, chlist, vsize, 0);
         chlist_size = vsize[0];
         cpos_size = vsize[1];
         LOG_INFO("chlist size = %d cpos size %d\n", chlist_size, cpos_size);
@@ -89,8 +89,7 @@ int TYPED_FUNC(
         bml_print_dense_matrix(chlist_size, matrix_precision, dense_row_major,
                                C_dense, 0, chlist_size, 0, chlist_size);
         // Collect into matrix
-        bml_submatrix2matrix(C, D, chlist, chlist_size, cpos, cpos_size,
-                             threshold);
+        bml_submatrix2matrix(C, D, chlist, chlist_size, cpos_size, threshold);
         D_dense = bml_export_to_dense(D, dense_row_major);
         LOG_INFO("Matrix D %d:\n", i);
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense,
