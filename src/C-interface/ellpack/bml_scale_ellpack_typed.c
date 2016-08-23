@@ -39,14 +39,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-#if DO_MPI
-    if (bml_getNRanks() > 1 && B->distribution_mode == distributed)
-    { 
-      C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
-    }
-#else
-    C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
-#endif
+    C_BLAS(SCAL) (&nElems, &sfactor, &(B_value[startIndex]), &inc);
+    //C_BLAS(SCAL) (&nElems, &sfactor, B->value, &inc);
 
     return B;
 }
