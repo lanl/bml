@@ -28,6 +28,43 @@ void TYPED_FUNC(
     memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
 }
 
+/** Allocate a matrix with uninitialized values.
+ *
+ *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
+ *  already allocated then the matrix will be deallocated in the
+ *  process.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_ellpack_t *TYPED_FUNC(
+    bml_noinit_matrix_ellpack) (
+    const int N,
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
+{
+    bml_matrix_ellpack_t *A =
+        bml_noinit_allocate_memory(sizeof(bml_matrix_ellpack_t));
+    A->matrix_type = ellpack;
+    A->matrix_precision = MATRIX_PRECISION;
+    A->N = N;
+    A->M = M;
+    A->distribution_mode = distrib_mode;
+    A->index = bml_noinit_allocate_memory(sizeof(int) * N * M);
+    A->nnz = bml_allocate_memory(sizeof(int) * N);
+    A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * N * M);
+    A->domain = bml_default_domain(N, M, distrib_mode);
+    A->domain2 = bml_default_domain(N, M, distrib_mode);
+
+    return A;
+}
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is

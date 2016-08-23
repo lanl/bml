@@ -69,16 +69,20 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 */
     // Transpose all elements
 
+    int Alrmin = A_localRowMin[myRank];
+    int Alrmax = A_localRowMax[myRank];
+
 #pragma omp parallel for default(none) \
     shared(N, M, B_index, B_value, B_nnz) \
-    shared(A_index, A_value, A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank)
+    shared(A_index, A_value, A_nnz,Alrmin,Alrmax)	      
     //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+
+    for (int i = Alrmin; i < Alrmax; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            for (int k = 0; k < A_nnz[j]; k++)
+	    int Annzj = A_nnz[j];
+            for (int k = 0; k < Annzj; k++)
             {
                 if (A_index[ROWMAJOR(j, k, N, M)] != i) {}
                 else {

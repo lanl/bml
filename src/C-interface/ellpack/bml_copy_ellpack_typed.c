@@ -23,11 +23,29 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     const bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B =
-        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, A->distribution_mode);
+        TYPED_FUNC(bml_noinit_matrix_ellpack) (A->N, A->M, A->distribution_mode);
 
-    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
+  int N = A->N;
+  int M = A->M;
+
+  int * A_index = A->index;
+  int * A_nnz = A->nnz;
+  REAL_T * A_value = A->value;
+
+  int * B_index = B->index;
+  int * B_nnz = B->nnz;
+  REAL_T * B_value = B->value;
+
+    //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
-    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+    //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+#pragma omp parallel for
+    for (int i = 0; i < N; i++)
+      {
+         memcpy(&B_index[ROWMAJOR(i, 0, N, M)], &A_index[ROWMAJOR(i, 0, N, M)], M*sizeof(int));
+	 memcpy(&B_value[ROWMAJOR(i, 0, N, M)], &A_value[ROWMAJOR(i, 0, N, M)], M*sizeof(REAL_T));
+      //      A_nnz[perm[i]] = B_nnz[i];
+      }
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
     return B;
@@ -45,9 +63,26 @@ void TYPED_FUNC(
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
 {
-    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
+  int N = A->N;
+  int M = A->M;
+
+  int * A_index = A->index;
+  int * A_nnz = A->nnz;
+  REAL_T * A_value = A->value;
+
+  int * B_index = B->index;
+  int * B_nnz = B->nnz;
+  REAL_T * B_value = B->value;
+  // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
-    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+    //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
+#pragma omp parallel for
+    for (int i = 0; i < N; i++)
+      {
+         memcpy(&B_index[ROWMAJOR(i, 0, N, M)], &A_index[ROWMAJOR(i, 0, N, M)], M*sizeof(int));
+	 memcpy(&B_value[ROWMAJOR(i, 0, N, M)], &A_value[ROWMAJOR(i, 0, N, M)], M*sizeof(REAL_T));
+      //      A_nnz[perm[i]] = B_nnz[i];
+      }
     if (A->distribution_mode == B->distribution_mode) 
     {
       bml_copy_domain(A->domain, B->domain);

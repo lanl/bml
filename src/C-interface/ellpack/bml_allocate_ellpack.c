@@ -74,6 +74,51 @@ bml_clear_ellpack(
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
+bml_noinit_matrix_ellpack(
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
+{
+    bml_matrix_ellpack_t *A = NULL;
+
+    switch (matrix_precision)
+    {
+        case single_real:
+            A = bml_noinit_matrix_ellpack_single_real(N, M, distrib_mode);
+            break;
+        case double_real:
+            A = bml_noinit_matrix_ellpack_double_real(N, M, distrib_mode);
+            break;
+        case single_complex:
+            A = bml_noinit_matrix_ellpack_single_complex(N, M, distrib_mode);
+            break;
+        case double_complex:
+            A = bml_noinit_matrix_ellpack_double_complex(N, M, distrib_mode);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return A;
+}
+
+/** Allocate the zero matrix.
+ *
+ *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
+ *  already allocated then the matrix will be deallocated in the
+ *  process.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_ellpack_t *
 bml_zero_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const int N,

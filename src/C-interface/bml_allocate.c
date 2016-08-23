@@ -9,6 +9,25 @@
 #include <stdio.h>
 #include <math.h>
 
+/** Allocate a chunk of memory without initialization.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param size The size of the memory.
+ * \return A pointer to the allocated chunk.
+ */
+void *
+bml_noinit_allocate_memory(
+    const size_t size)
+{
+  void *ptr = malloc(size);
+    if (ptr == NULL)
+    {
+        LOG_ERROR("error allocating memory\n");
+    }
+    return ptr;
+}
+
 /** Allocate and zero a chunk of memory.
  *
  * \ingroup allocate_group_C
@@ -20,7 +39,7 @@ void *
 bml_allocate_memory(
     const size_t size)
 {
-    void *ptr = calloc(1, size);
+  void *ptr = calloc(1, size);
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory\n");
