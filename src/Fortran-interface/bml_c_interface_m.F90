@@ -536,6 +536,17 @@ module bml_c_interface_m
       type(C_PTR) :: bml_zero_matrix_C
     end function bml_zero_matrix_C
 
+    function bml_noinit_matrix_C(matrix_type, matrix_precision, n, m, &
+        & distrib_mode) bind(C, name="bml_noinit_matrix")
+      import :: C_INT, C_PTR
+      integer(C_INT), value, intent(in) :: matrix_type
+      integer(C_INT), value, intent(in) :: matrix_precision
+      integer(C_INT), value, intent(in) :: n
+      integer(C_INT), value, intent(in) :: m
+      integer(C_INT), value, intent(in) :: distrib_mode
+      type(C_PTR) :: bml_noinit_matrix_C
+    end function bml_noinit_matrix_C
+
   end interface
 
 end module bml_c_interface_m

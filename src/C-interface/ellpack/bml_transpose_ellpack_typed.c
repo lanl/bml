@@ -68,7 +68,32 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     
 */
     // Transpose all elements
+    omp_lock_t *row_lock = (omp_lock_t *)malloc(sizeof(omp_lock_t)*N);
 
+#pragma omp parallel for 
+for (int i = 0; i < N; i++) 
+{
+  omp_init_lock(&row_lock[i]);
+}
+
+#pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < A_nnz[i]; j++)
+        {
+            int trow = A_index[ROWMAJOR(i, j, N, M)];
+	    omp_set_lock(&row_lock[trow]);
+	    int colcnt = B_nnz[trow];
+	    B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
+	    B_value[ROWMAJOR(trow, colcnt, N, M)] =
+	      A_value[ROWMAJOR(i, j, N, M)];
+	    B_nnz[trow]++;
+	    omp_unset_lock(&row_lock[trow]);
+        }
+    }
+
+    return B;
+    /*
     int Alrmin = A_localRowMin[myRank];
     int Alrmax = A_localRowMax[myRank];
 
@@ -96,6 +121,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     return B;
+*/
 }
 
 

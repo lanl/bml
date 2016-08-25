@@ -175,6 +175,44 @@ bml_zero_matrix(
     return NULL;
 }
 
+/** Allocate a matrix without initializing.
+ *
+ *  Note that the matrix \f$ A \f$ will be newly allocated. The
+ *  function does not check whether the matrix is already allocated.
+ *
+ *  \ingroup allocate_group_C
+ *
+ *  \param matrix_type The matrix type.
+ *  \param matrix_precision The precision of the matrix.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_t *
+bml_noinit_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
+{
+    LOG_DEBUG("noinit matrix of size %d (or zero matrix for dense)\n", N);
+    switch (matrix_type)
+    {
+        case dense:
+            return bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
+            break;
+        case ellpack:
+            return bml_noinit_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return NULL;
+}
+
 /** Allocate a random matrix.
  *
  *  Note that the matrix \f$ A \f$ will be newly allocated. The
