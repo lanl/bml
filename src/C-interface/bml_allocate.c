@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <omp.h>
 
 /** Allocate a chunk of memory without initialization.
  *
@@ -39,12 +41,33 @@ void *
 bml_allocate_memory(
     const size_t size)
 {
-  void *ptr = calloc(1, size);
+  if (size>10000)
+  {
+    void *ptr = calloc(1, size);
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory\n");
     }
     return ptr;
+  } 
+  else 
+  {
+    void *ptr = malloc(size);
+    int nt = omp_get_num_threads();
+    int step = size/nt;
+    int maxi = step*(nt-1);
+    int r = size-maxi;
+#pragma omp parallel for default(none) shared(ptr,maxi,step)
+    for (int i = 0; i < maxi; i = i + step)
+    {
+      memset(ptr+i,0,step);
+    }
+    if (r > 0) 
+    {
+      memset(ptr+maxi+step,0,r);
+    }
+  return ptr;
+  }
 }
 
 /** Deallocate a chunk of memory.
