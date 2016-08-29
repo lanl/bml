@@ -9,8 +9,8 @@ module load openmpi/1.10.3-gcc_5.4.0
 module load cmake
 module load mkl
 
-FC=gfortran CC=gcc CMAKE_BUILD_TYPE=Release
-INSTALL_DIR=/home/USER/bml/install FC=gfortran BLAS_VENDOR=MKL
+FC=gfortran CC=gcc CMAKE_BUILD_TYPE=Release \
+INSTALL_DIR=/home/USER/bml/install FC=gfortran BLAS_VENDOR=MKL \
 BML_OPENMP=yes BML_TESTING=yes ./build.sh configure
 
 ~                                                                                                                                                                                              
