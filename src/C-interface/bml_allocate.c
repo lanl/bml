@@ -41,7 +41,8 @@ void *
 bml_allocate_memory(
     const size_t size)
 {
-  if (size>10000)
+  if (1==1)
+  //  if (size>10000)
   {
     void *ptr = calloc(1, size);
     if (ptr == NULL)
