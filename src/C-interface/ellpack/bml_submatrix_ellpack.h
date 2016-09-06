@@ -51,6 +51,46 @@ void bml_matrix2submatrix_index_ellpack_double_complex(
     int *vsize,
     const int double_jump_flag);
 
+void bml_matrix2submatrix_index_graph_ellpack(
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag);
+
+void bml_matrix2submatrix_index_graph_ellpack_single_real(
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,                                           
+    const int nsize,                                               
+    int *core_halo_index,                                          
+    int *vsize,                                                    
+    const int double_jump_flag);
+
+void bml_matrix2submatrix_index_graph_ellpack_double_real(
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,                                           
+    const int nsize,                                               
+    int *core_halo_index,                                          
+    int *vsize,                                                    
+    const int double_jump_flag);
+
+void bml_matrix2submatrix_index_graph_ellpack_single_complex(         
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag);
+
+void bml_matrix2submatrix_index_graph_ellpack_double_complex(
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag);
+
 void bml_matrix2submatrix_ellpack(
     const bml_matrix_ellpack_t * A,
     bml_matrix_dense_t * B,

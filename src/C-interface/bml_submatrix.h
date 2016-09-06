@@ -15,6 +15,15 @@ void bml_matrix2submatrix_index(
     int *vsize,
     const int double_jump_flag);
 
+// Determine core+halo indeces from graph only
+void bml_matrix2submatrix_index_graph(
+    const bml_matrix_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag);
+
 // Create contracted submatrix from a set of element indeces.
 void bml_matrix2submatrix(
     const bml_matrix_t * A,

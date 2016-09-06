@@ -46,6 +46,44 @@ bml_matrix2submatrix_index(
     }
 }
 
+/** Determine element indices for submatrix, given a set of nodes/orbitals.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param B Graph matrix B
+ * \param nodelist List of node/orbital indeces
+ * \param nsize Size of nodelist
+ * \param core_halo_index List of core+halo indeces
+ * \param vsize Size of core_halo_index and core_pos
+ * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
+ */
+void
+bml_matrix2submatrix_index_graph(
+    const bml_matrix_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag)
+{
+    switch (bml_get_type(B))
+    {
+        case dense:
+            //bml_matrix2submatrix_index_graph_dense(B, nodelist, nsize,
+            //    core_halo_index, core_pos, vsize, double_jump_flag);
+            LOG_ERROR("bml_matrix2submatrix_index_dense NOT available\n");
+            break;
+        case ellpack:
+            bml_matrix2submatrix_index_graph_ellpack(B, nodelist,
+               nsize, core_halo_index, vsize, double_jump_flag);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+
 /** Extract a submatrix from a matrix given a set of core+halo rows.
  *
  * \ingroup submatrix_group_C

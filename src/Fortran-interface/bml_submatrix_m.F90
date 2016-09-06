@@ -19,17 +19,17 @@ contains
   !!
   !! \ingroup submatrix_group_F
   !!
-  !! \param a Matrix
-  !! \param b Submatrix
+  !! \param a Hamiltonian matrix
+  !! \param b Graph as a matrix
   !! \param nodelist List of nodes to define submatrix
   !! \param nsize Number of nodes
   !! \param core_halo_index Indeces of core+halo
   !! \param vsize Sizes of core_halo_index and cores
   !! \param double_jump_flag Flag 0=no 1=yes
-  subroutine bml_matrix2submatrix_index(a, b, nodelist, nsize, &
-    core_halo_index, vsize, double_jump_flag)
+  subroutine bml_matrix2submatrix_index(b, nodelist, nsize, &
+    core_halo_index, vsize, double_jump_flag, a)
 
-    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), optional, intent(in) :: a
     type(bml_matrix_t), intent(in) :: b
     integer(C_INT), target, intent(in) :: nodelist(*)
     integer(C_INT), target, intent(inout) :: core_halo_index(*)
@@ -45,8 +45,15 @@ contains
       cflag = 0;
     endif
 
-    call bml_matrix2submatrix_index_C(a%ptr, b%ptr, c_loc(nodelist), &
-      nsize, c_loc(core_halo_index), c_loc(vsize), cflag)
+    if (present(a)) then
+      call bml_matrix2submatrix_index_C(a%ptr, b%ptr, &
+        c_loc(nodelist), nsize, c_loc(core_halo_index), &
+        c_loc(vsize), cflag)
+    else
+      call bml_matrix2submatrix_index_graph_C(b%ptr, &
+        c_loc(nodelist), nsize, c_loc(core_halo_index), &
+        c_loc(vsize), cflag)
+    endif
 
   end subroutine bml_matrix2submatrix_index
 

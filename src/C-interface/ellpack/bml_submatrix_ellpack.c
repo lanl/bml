@@ -69,6 +69,50 @@ bml_matrix2submatrix_index_ellpack(
     }
 }
 
+/** Determine element indices for submatrix, given a set of nodes/orbitals.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param B Graph matrix B
+ * \param nodelist List of node/orbital indeces
+ * \param nsize Size of nodelist
+ * \param core_halo_index List of core+halo indeces
+ * \param vsize Size of core_halo_index and core_pos
+ * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
+ */
+void
+bml_matrix2submatrix_index_graph_ellpack(
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag)
+{
+    switch (B->matrix_precision)
+    {
+        case single_real:
+            bml_matrix2submatrix_index_graph_ellpack_single_real(B, nodelist,
+             nsize, core_halo_index, vsize, double_jump_flag);
+            break;
+         case double_real:
+            bml_matrix2submatrix_index_graph_ellpack_single_real(B, nodelist,
+             nsize, core_halo_index, vsize, double_jump_flag);
+            break;
+        case single_complex:
+            bml_matrix2submatrix_index_graph_ellpack_double_complex(B, nodelist,
+              nsize, core_halo_index, vsize, double_jump_flag);
+            break;
+        case double_complex:                                       
+            bml_matrix2submatrix_index_graph_ellpack_double_complex(B, nodelist,                                                      
+              nsize, core_halo_index, vsize, double_jump_flag);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
 /** Extract a submatrix from a matrix given a set of core+halo rows.
  *
  * \ingroup submatrix_group_C

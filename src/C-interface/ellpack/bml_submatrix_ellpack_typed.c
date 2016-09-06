@@ -127,6 +127,92 @@ void TYPED_FUNC(
     vsize[1] = ll;
 }
 
+/** Determine element indices for submatrix, given a set of nodes/orbitals.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param B Graph matrix B
+ * \param nodelist List of node/orbital indeces
+ * \param nsize Size of nodelist
+ * \param core_halo_index List of core+halo indeces
+ * \param vsize Size of core_halo_index and number of cores
+ * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
+ */
+void TYPED_FUNC(
+    bml_matrix2submatrix_index_graph_ellpack) (
+    const bml_matrix_ellpack_t * B,
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
+    const int double_jump_flag)
+{
+    int l, ll, ii, ls, k;
+    int B_N = B->N;
+    int B_M = B->M;
+    int *B_index = B->index;
+    int *B_nnz = B->nnz;
+    int ix[B_N];
+
+    memset(ix, 0, B_N * sizeof(int));
+
+    l = 0;
+    ll = 0;
+
+    // Cores are first followed by halos
+    for (int j = 0; j < nsize; j++)
+    {
+        ii = nodelist[j];
+        if (ix[ii] == 0)
+        {
+            ix[ii] = ii + 1;
+            core_halo_index[l] = ii;
+            l++; ll++;
+        }
+    }
+
+    // Collext halo indeces from graph
+    for (int j = 0; j < nsize; j++)
+    {
+        ii = nodelist[j];
+
+        for (int jp = 0; jp < B_nnz[ii]; jp++)
+        {
+            k = B_index[ROWMAJOR(ii, jp, B_N, B_M)];
+            if (ix[k] == 0)
+            {
+                ix[k] = ii + 1;
+                core_halo_index[l] = k;
+                l++;
+            }
+        }
+    }
+
+    // Use graph for double jumps
+    if (double_jump_flag == 1)
+    {
+        ls = l;
+        for (int j = 0; j < ls; j++)
+        {
+            ii = core_halo_index[j];
+
+            for (int jp = 0; jp < B_nnz[ii]; jp++)
+            {
+                k = B_index[ROWMAJOR(ii, jp, B_N, B_M)];
+                if (ix[k] == 0)
+                {
+                    ix[k] = ii + 1;
+                    core_halo_index[l] = k;
+                    l++;
+                }
+            }
+        }
+    }
+
+    vsize[0] = l;
+    vsize[1] = ll;
+}
+
 /** Extract a submatrix from a matrix given a set of core+halo rows.
  *
  * \ingroup submatrix_group_C

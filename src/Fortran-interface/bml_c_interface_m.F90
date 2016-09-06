@@ -415,6 +415,17 @@ module bml_c_interface_m
       integer(C_INT), value, intent(in) :: dj_flag
     end subroutine bml_matrix2submatrix_index_C
 
+    subroutine bml_matrix2submatrix_index_graph_C(b, nodelist, nsize, &
+      chlist, vsize, dj_flag) bind(C, name="bml_matrix2submatrix_index_graph")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: b
+      type(C_PTR), value, intent(in) :: nodelist
+      integer(C_INT), value, intent(in) :: nsize
+      type(C_PTR), value, intent(in) :: chlist
+      type(C_PTR), value, intent(in) :: vsize
+      integer(C_INT), value, intent(in) :: dj_flag
+    end subroutine bml_matrix2submatrix_index_graph_C
+
     subroutine bml_matrix2submatrix_C(a, b, chlist, lsize) &
       bind(C, name="bml_matrix2submatrix")
       import :: C_PTR, C_INT
