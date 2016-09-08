@@ -361,7 +361,8 @@ bml_adjacency_group_ellpack(
             {
                 if (hnode[j] == A_index[ROWMAJOR(hnode[i], k, A_N, A_M)])
                 {
-                    adjncy[ll] = hnode[j];
+                    //adjncy[ll] = hnode[j];
+                    adjncy[ll] = j;
                     ll++;
                     break;
                 }

@@ -47,7 +47,7 @@ bml_allocate_memory(
     void *ptr = calloc(1, size);
     if (ptr == NULL)
     {
-        LOG_ERROR("error allocating memory\n");
+        LOG_ERROR("error allocating memory of size %d\n", size);
     }
     return ptr;
   } 
