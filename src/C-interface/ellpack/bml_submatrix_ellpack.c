@@ -239,6 +239,43 @@ bml_getVector_ellpack(
     return NULL;
 }
 
+/** Assemble matrix based on groups of rows from a matrix.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A
+ * \param hindex Indeces of nodes
+ * \param ngroups Number of groups
+ * \param threshold Threshold for graph
+ */
+bml_matrix_ellpack_t *
+bml_group_matrix_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_group_matrix_ellpack_single_real(A, hindex, ngroups, threshold);
+            break;
+        case double_real:
+            return bml_group_matrix_ellpack_double_real(A, hindex, ngroups, threshold);
+            break;
+        case single_complex:
+            return bml_group_matrix_ellpack_single_complex(A, hindex, ngroups, threshold);
+            break;
+        case double_complex:
+            return bml_group_matrix_ellpack_double_complex(A, hindex, ngroups, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return NULL;
+}
+
 /** Assemble adjacency structure from matrix.
  *
  * \ingroup submatrix_group_C

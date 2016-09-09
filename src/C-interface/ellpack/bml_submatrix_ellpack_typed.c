@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "bml_allocate.h"
 #include "dense/bml_allocate_dense.h"
+#include "bml_allocate_ellpack.h"
 #include "bml_submatrix.h"
 #include "bml_submatrix_ellpack.h"
 #include "bml_types.h"
@@ -344,4 +345,88 @@ void *TYPED_FUNC(
         }
     }
     return rvalue;
+}
+
+/** Assemble matrix based on groups of rows from a matrix.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A
+ * \param hindex Indeces of nodes
+ * \param ngroups Number of groups
+ * \param threshold Threshold for graph
+ */
+bml_matrix_ellpack_t *TYPED_FUNC(
+bml_group_matrix_ellpack)(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    REAL_T *A_value = A->value;
+
+    int ix[ngroups];
+    int hnode[A_N];
+
+    bml_matrix_ellpack_t *B =
+        TYPED_FUNC(bml_noinit_matrix_ellpack) (ngroups, ngroups, A->distribution_mode);
+
+    int B_N = B->N;
+    int B_M = B->M;
+    int *B_index = B->index;
+    int *B_nnz = B->nnz;
+    REAL_T *B_value = B->value;
+
+#pragma omp parallel for default(none) \
+    shared(hindex, hnode)
+    for (int i = 0; i < ngroups-1;i++)
+    {
+        for (int j = hindex[i]-1; j < hindex[i+1]-1; j++)
+        {
+            hnode[j] = i;
+        }
+    }
+
+#pragma omp parallel for default(none) \
+    shared(hindex, hnode, A_N)
+    for (int j = hindex[ngroups-1]-1; j < A_N; j++)
+    {
+        hnode[j] = ngroups-1;
+    }
+
+    memset(ix, 0, sizeof(int) * ngroups);
+
+#pragma omp parallel for \
+    default(none) \
+    firstprivate(ix) \
+    shared(hindex, hnode) \
+    shared(A_nnz, A_index, A_value, A_N, A_M) \
+    shared(B_nnz, B_index, B_value, B_N, B_M) 
+    for (int i = 0; i < ngroups-1; i++)
+    {
+        for (int j = hindex[i]-1; j < hindex[i+1]-1; j++)
+        {
+            for (int k = 0; k < A_nnz[k]; k++)
+            {
+                int ii = hnode[A_index[ROWMAJOR(j, k, A_N, A_M)]];
+                if (ix[ii] == 0 && 
+                    is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)], threshold))
+                {
+                    ix[ii] = i + 1;
+                    B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
+                    B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
+                    B_nnz[i]++;
+                }
+            }
+        }
+
+    }
+
+    bml_free_memory(hnode);
+
+    return B;
 }

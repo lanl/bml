@@ -83,6 +83,36 @@ bml_matrix2submatrix_index_graph(
     }
 }
 
+/** Assemble matrix based on groups of rows from a matrix.
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A
+ * \param hindex Indeces of nodes
+ * \param ngroups Number of groups
+ * \param threshold Threshold for graph
+ */
+bml_matrix_t * bml_group_matrix(
+    const bml_matrix_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            //return bml_group_matrix_dense(A, hindex, ngroups, threshold);
+            LOG_ERROR("bml_group_matrix_dense NOT available\n");
+            break;
+        case ellpack:
+            return bml_group_matrix_ellpack(A, hindex, ngroups, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return NULL;
+}
 
 /** Extract a submatrix from a matrix given a set of core+halo rows.
  *

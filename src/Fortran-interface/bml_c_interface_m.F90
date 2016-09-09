@@ -466,6 +466,16 @@ module bml_c_interface_m
       integer(C_INT), value, intent(in) :: base_flag
     end subroutine bml_adjacency_group_C
 
+    function bml_group_matrix_C(a, hindex, ngroups, threshold) &
+      bind(C, name="bml_group_matrix")
+      import :: C_PTR, C_INT, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: hindex
+      integer(C_INT), value, intent(in) :: ngroups
+      real(C_DOUBLE), value, intent(in) :: threshold
+      type(C_PTR) :: bml_group_matrix_C
+    end function bml_group_matrix_C
+
     subroutine bml_threshold_C(a, threshold) bind(C, name="bml_threshold")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value :: a

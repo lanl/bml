@@ -56,4 +56,11 @@ void bml_adjacency_group(
         int * adjncy,
         const int base_flag);
 
+// Return a group-based matrix from a matrix
+bml_matrix_t *bml_group_matrix(
+    const bml_matrix_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold);
+
 #endif

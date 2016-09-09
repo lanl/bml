@@ -191,6 +191,36 @@ void *bml_getVector_ellpack_double_complex(
     const int irow,
     const int colCnt);
     
+bml_matrix_ellpack_t *bml_group_matrix_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold);
+
+bml_matrix_ellpack_t *bml_group_matrix_ellpack_single_real(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold);
+
+bml_matrix_ellpack_t *bml_group_matrix_ellpack_double_real(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold);
+
+bml_matrix_ellpack_t *bml_group_matrix_ellpack_single_complex(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold);
+
+bml_matrix_ellpack_t *bml_group_matrix_ellpack_double_complex(
+    const bml_matrix_ellpack_t * A,
+    const int * hindex,
+    const int ngroups,
+    const double threshold);
+
 void bml_adjacency_ellpack(
     const bml_matrix_ellpack_t * A,
     int * xadj,

@@ -148,4 +148,26 @@ contains
 
   end subroutine bml_adjacency_group
 
+  !> Assemble group-based matrix from given matrix.
+  !!
+  !! \ingroup submatrix_group_F
+  !!
+  !! \param a Original matrix
+  !! \param b Group-based matrix
+  !! \param hindex Indeces of group nodes in matrix
+  !! \param ngroups Number of groups
+  !! \param threshold Threshold to determine positions
+  subroutine bml_group_matrix(a, b, hindex, ngroups, threshold)
+
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: b
+    integer(C_INT), target, intent(in) :: hindex(*)
+    integer(C_INT), target, intent(in) :: ngroups
+    real(C_DOUBLE), target, intent(in) :: threshold
+
+    call bml_deallocate(b)
+    b%ptr = bml_group_matrix_C(a%ptr, c_loc(hindex), ngroups, threshold)
+    
+  end subroutine bml_group_matrix
+    
 end module bml_submatrix_m
