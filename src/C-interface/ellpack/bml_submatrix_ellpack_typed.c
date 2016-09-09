@@ -410,7 +410,7 @@ bml_group_matrix_ellpack)(
     {
         for (int j = hindex[i]-1; j < hindex[i+1]-1; j++)
         {
-            for (int k = 0; k < A_nnz[k]; k++)
+            for (int k = 0; k < A_nnz[j]; k++)
             {
                 int ii = hnode[A_index[ROWMAJOR(j, k, A_N, A_M)]];
                 if (ix[ii] == 0 && 
