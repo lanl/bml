@@ -12,6 +12,7 @@ module bml_submatrix_m
   public :: bml_submatrix2matrix
   public :: bml_adjacency
   public :: bml_adjacency_group
+  public :: bml_group_matrix
 
 contains
 
