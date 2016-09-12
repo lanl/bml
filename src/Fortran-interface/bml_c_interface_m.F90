@@ -302,6 +302,13 @@ module bml_c_interface_m
       type(C_PTR) :: bml_gershgorin_C
     end function bml_gershgorin_C
 
+    function bml_gershgorin_partial_C(a, nrows) bind(C, name="bml_gershgorin_partial")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT), value, intent(in) :: nrows
+      type(C_PTR) :: bml_gershgorin_partial_C
+    end function bml_gershgorin_partial_C
+
     function bml_get_row_bandwidth_C(a, i) &
         & bind(C, name="bml_get_row_bandwidth")
       import :: C_PTR, C_INT

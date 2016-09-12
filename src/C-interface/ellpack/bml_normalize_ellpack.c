@@ -73,3 +73,38 @@ bml_gershgorin_ellpack(
     }
     return NULL;
 }
+
+/** Calculate gershgorin bounds for a partial ellpack matrix.
+ *
+ *  \ingroup normalize_group
+ *
+ *  \param A The matrix
+ *  \param nrows Number of rows to use
+ *  returns mineval Calculated min value
+ *  returns maxeval Calculated max value
+ */
+void *
+bml_gershgorin_partial_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const int nrows)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_gershgorin_partial_ellpack_single_real(A, nrows);
+            break;
+        case double_real:
+            return bml_gershgorin_partial_ellpack_double_real(A, nrows);
+            break;
+        case single_complex:
+            return bml_gershgorin_partial_ellpack_single_complex(A, nrows);
+            break;
+        case double_complex:
+            return bml_gershgorin_partial_ellpack_double_complex(A, nrows);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return NULL;
+}

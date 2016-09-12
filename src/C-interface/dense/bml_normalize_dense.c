@@ -80,3 +80,40 @@ bml_gershgorin_dense(
     }
     return NULL;
 }
+
+/** Calculate Gershgorin bounds for a partial dense matrix.
+ *
+ *  \ingroup normalize_group
+ *
+ *  \param A The matrix
+ *  \param nrows Number of rows used
+ *  returns mineval Calculated min value
+ *  returns maxeval Calculated max value
+ */
+void *
+bml_gershgorin_partial_dense(
+    const bml_matrix_dense_t * A,
+    const int nrows)
+{
+    assert(A != NULL);
+
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_gershgorin_partial_dense_single_real(A, nrows);
+            break;
+        case double_real:
+            return bml_gershgorin_partial_dense_double_real(A, nrows);
+            break;
+        case single_complex:
+            return bml_gershgorin_partial_dense_single_complex(A, nrows);
+            break;
+        case double_complex:
+            return bml_gershgorin_partial_dense_double_complex(A, nrows);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return NULL;
+}

@@ -115,3 +115,59 @@ void *TYPED_FUNC(
 
     return eval;
 }
+
+/** Calculate Gershgorin bounds for a partial dense matrix.
+ *
+ *  \ingroup gershgorin_group
+ *
+ *  \param A The matrix
+ *  \param nrows Number of rows used
+ *  returns mineval Calculated min value
+ *  returns maxeval Calculated max value
+ */
+void *TYPED_FUNC(
+    bml_gershgorin_partial_dense) (
+    const bml_matrix_dense_t * A,
+    const int nrows)
+{
+    REAL_T radius, dvalue, absham;
+
+    int N = A->N;
+    REAL_T *A_matrix = A->matrix;
+
+    double emin = 100000000000.0;
+    double emax = -100000000000.0;
+
+    double *eval = bml_allocate_memory(sizeof(double) * 2);
+
+#pragma omp parallel for \
+    default(none) \
+    shared(N, A_matrix) \
+    private(absham, radius, dvalue) \
+    reduction(max:emax) \
+    reduction(min:emin)
+    for (int i = 0; i < nrows; i++)
+    {
+        radius = 0.0;
+
+        for (int j = 0; j < N; j++)
+        {
+            absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
+            radius += (double) absham;
+        }
+
+        dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+
+        radius -= ABS(dvalue);
+
+        if (REAL_PART(dvalue + radius) > emax)
+            emax = REAL_PART(dvalue + radius);
+        if (REAL_PART(dvalue - radius) < emin)
+            emin = REAL_PART(dvalue - radius);
+    }
+
+    eval[0] = emin;
+    eval[1] = emax;
+
+    return eval;
+}

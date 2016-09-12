@@ -60,3 +60,32 @@ bml_gershgorin(
     }
     return NULL;
 }
+
+/** Calculate Gershgorin bounds for partial matrix.
+ *
+ * \ingroup normalize_group_C
+ *
+ * \param A Matrix to scale
+ * \param nrows Number of rows used
+ * returns mineval Calculated min value
+ * returns maxeval Calculated max value
+ */
+void *
+bml_gershgorin_partial(
+    const bml_matrix_t * A,
+    const int nrows)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_gershgorin_partial_dense(A, nrows);
+            break;
+        case ellpack:
+            return bml_gershgorin_partial_ellpack(A, nrows);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return NULL;
+}

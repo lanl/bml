@@ -15,6 +15,7 @@ module bml_normalize_m
 
   public :: bml_normalize
   public :: bml_gershgorin
+  public :: bml_gershgorin_partial
 
 contains
 
@@ -37,7 +38,7 @@ contains
 
   end subroutine bml_normalize
 
-  !> Calculate gershgorin bounds fro a matrix
+  !> Calculate gershgorin bounds for a matrix
   !!
   !! \ingroup normalize_group_F
   !!
@@ -62,5 +63,33 @@ contains
     deallocate(a_gbnd_ptr)
 
   end subroutine bml_gershgorin
+
+  !> Calculate gershgorin bounds for a partial matrix
+  !!
+  !! \ingroup normalize_group_F
+  !!
+  !! \param a Matrix
+  !! \param nrows Number of rows used
+  !! \param a_gbnd Calculated min and max
+  subroutine bml_gershgorin_partial(a, a_gbnd, nrows)
+
+    use bml_c_interface_m
+    use bml_types_m
+
+    type(bml_matrix_t), intent(in) :: a
+    integer, intent(in) :: nrows
+
+    double precision, allocatable, intent(inout) :: a_gbnd(:)
+
+    type(C_PTR) :: ag_ptr
+    double precision, pointer :: a_gbnd_ptr(:)
+
+    ag_ptr = bml_gershgorin_partial_C(a%ptr, nrows)
+    call c_f_pointer(ag_ptr, a_gbnd_ptr, [2])
+    a_gbnd = a_gbnd_ptr
+
+    deallocate(a_gbnd_ptr)
+
+  end subroutine bml_gershgorin_partial
 
 end module bml_normalize_m

@@ -15,4 +15,9 @@ void bml_normalize(
 void *bml_gershgorin(
     const bml_matrix_t * A);
 
+// Calcualte Gershgorin bounds for partial matrix
+void *bml_gershgorin_partial(
+    const bml_matrix_t * A,
+    const int nrows);
+
 #endif
