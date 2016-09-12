@@ -371,6 +371,7 @@ bml_group_matrix_ellpack)(
 
     int ix[ngroups];
     int hnode[A_N];
+    int hend;
 
     bml_matrix_ellpack_t *B =
         TYPED_FUNC(bml_noinit_matrix_ellpack) (ngroups, ngroups, A->distribution_mode);
@@ -382,33 +383,31 @@ bml_group_matrix_ellpack)(
     REAL_T *B_value = B->value;
 
 #pragma omp parallel for default(none) \
-    shared(hindex, hnode)
-    for (int i = 0; i < ngroups-1;i++)
+    private(hend) \
+    shared(hindex, hnode, A_N)
+    for (int i = 0; i < ngroups; i++)
     {
-        for (int j = hindex[i]-1; j < hindex[i+1]-1; j++)
+        hend = hindex[i+1]-1;
+        if (i == ngroups-1) hend = A_N;
+        for (int j = hindex[i]-1; j < hend; j++)
         {
             hnode[j] = i;
         }
     }
 
-#pragma omp parallel for default(none) \
-    shared(hindex, hnode, A_N)
-    for (int j = hindex[ngroups-1]-1; j < A_N; j++)
-    {
-        hnode[j] = ngroups-1;
-    }
-
-    memset(ix, 0, sizeof(int) * ngroups);
-
 #pragma omp parallel for \
     default(none) \
-    firstprivate(ix) \
+    private(ix, hend) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
     shared(B_nnz, B_index, B_value, B_N, B_M) 
-    for (int i = 0; i < ngroups-1; i++)
+    for (int i = 0; i < B_N; i++)
     {
-        for (int j = hindex[i]-1; j < hindex[i+1]-1; j++)
+        memset(ix, 0, sizeof(int) * ngroups);
+        B_nnz[i] = 0;
+        hend = hindex[i+1]-1;
+        if (i == B_N-1) hend = A_N;
+        for (int j = hindex[i]-1; j < hend; j++)
         {
             for (int k = 0; k < A_nnz[j]; k++)
             {
@@ -423,10 +422,7 @@ bml_group_matrix_ellpack)(
                 }
             }
         }
-
     }
-
-    bml_free_memory(hnode);
 
     return B;
 }
