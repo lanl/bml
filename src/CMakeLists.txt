@@ -13,6 +13,11 @@ add_library(bml
   $<TARGET_OBJECTS:bml-ellpack-single_complex>
   $<TARGET_OBJECTS:bml-ellpack-single_real>
   $<TARGET_OBJECTS:bml-ellpack>
+  $<TARGET_OBJECTS:bml-ellsort-double_complex>
+  $<TARGET_OBJECTS:bml-ellsort-double_real>
+  $<TARGET_OBJECTS:bml-ellsort-single_complex>
+  $<TARGET_OBJECTS:bml-ellsort-single_real>
+  $<TARGET_OBJECTS:bml-ellsort>
   $<TARGET_OBJECTS:bml-fortran>)
 
 install(TARGETS bml

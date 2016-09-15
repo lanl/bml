@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "dense/bml_threshold_dense.h"
 #include "ellpack/bml_threshold_ellpack.h"
+#include "ellsort/bml_threshold_ellsort.h"
 
 #include <stdlib.h>
 
@@ -26,6 +27,9 @@ bml_threshold_new(
             break;
         case ellpack:
             return bml_threshold_new_ellpack(A, threshold);
+            break;
+        case ellsort:
+            return bml_threshold_new_ellsort(A, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -54,6 +58,9 @@ bml_threshold(
             break;
         case ellpack:
             bml_threshold_ellpack(A, threshold);
+            break;
+        case ellsort:
+            bml_threshold_ellsort(A, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

@@ -5,6 +5,7 @@
 #include "bml_logger.h"
 #include "dense/bml_copy_dense.h"
 #include "ellpack/bml_copy_ellpack.h"
+#include "ellsort/bml_copy_ellsort.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -30,6 +31,9 @@ bml_copy_new(
             break;
         case ellpack:
             B = bml_copy_ellpack_new(A);
+            break;
+        case ellsort:
+            B = bml_copy_ellsort_new(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -71,6 +75,9 @@ bml_copy(
         case ellpack:
             bml_copy_ellpack(A, B);
             break;
+        case ellsort:
+            bml_copy_ellsort(A, B);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -96,6 +103,9 @@ bml_reorder(
             break;
         case ellpack:
             bml_reorder_ellpack(A, perm);
+            break;
+        case ellsort:
+            bml_reorder_ellsort(A, perm);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -138,6 +148,9 @@ void bml_save_domain(
         case ellpack:
             bml_save_domain_ellpack(A);
             break;
+        case ellsort:
+            bml_save_domain_ellsort(A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -158,6 +171,9 @@ void bml_restore_domain(
             break;
         case ellpack:
             bml_restore_domain_ellpack(A);
+            break;
+        case ellsort:
+            bml_restore_domain_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

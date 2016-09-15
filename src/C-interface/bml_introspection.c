@@ -3,6 +3,7 @@
 #include "bml_types.h"
 #include "dense/bml_introspection_dense.h"
 #include "ellpack/bml_introspection_ellpack.h"
+#include "ellsort/bml_introspection_ellsort.h"
 
 #include <stdlib.h>
 
@@ -49,6 +50,9 @@ bml_get_precision(
         case ellpack:
             return bml_get_precision_ellpack(A);
             break;
+        case ellsort:
+            return bml_get_precision_ellsort(A);
+            break;
         default:
             LOG_ERROR("unknown precision");
             break;
@@ -76,6 +80,9 @@ bml_get_N(
         case ellpack:
             return bml_get_N_ellpack(A);
             break;
+        case ellsort:
+            return bml_get_N_ellsort(A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -102,6 +109,9 @@ bml_get_M(
             break;
         case ellpack:
             return bml_get_M_ellpack(A);
+            break;
+        case ellsort:
+            return bml_get_M_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -133,6 +143,9 @@ bml_get_row_bandwidth(
         case ellpack:
             return bml_get_row_bandwidth_ellpack(A, i);
             break;
+        case ellsort:
+            return bml_get_row_bandwidth_ellsort(A, i);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -157,6 +170,9 @@ bml_get_bandwidth(
         case ellpack:
             return bml_get_bandwidth_ellpack(A);
             break;
+        case ellsort:
+            return bml_get_bandwidth_ellsort(A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -180,6 +196,9 @@ bml_get_distribution_mode(
             break;
         case ellpack:
             return bml_get_distribution_mode_ellpack(A);
+            break;
+        case ellsort:
+            return bml_get_distribution_mode_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown distribution mode\n");

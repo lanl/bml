@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "dense/bml_trace_dense.h"
 #include "ellpack/bml_trace_ellpack.h"
+#include "ellsort/bml_trace_ellsort.h"
 
 #include <stdlib.h>
 
@@ -24,6 +25,9 @@ bml_trace(
             break;
         case ellpack:
             return bml_trace_ellpack(A);
+            break;
+        case ellsort:
+            return bml_trace_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -52,6 +56,9 @@ bml_traceMult(
             break;
         case ellpack:
             return bml_traceMult_ellpack(A, B);
+            break;
+        case ellsort:
+            return bml_traceMult_ellsort(A, B);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

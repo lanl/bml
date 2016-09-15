@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "dense/bml_convert_dense.h"
 #include "ellpack/bml_convert_ellpack.h"
+#include "ellsort/bml_convert_ellsort.h"
 
 #include <stdlib.h>
 
@@ -40,6 +41,8 @@ bml_export_to_dense(
             return bml_convert_to_dense_dense(A, order);
         case ellpack:
             return bml_convert_to_dense_ellpack(A, order);
+        case ellsort:
+            return bml_convert_to_dense_ellsort(A, order);
         case type_uninitialized:
             return NULL;
             break;

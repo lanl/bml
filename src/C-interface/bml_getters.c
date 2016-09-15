@@ -3,6 +3,7 @@
 #include "bml_getters.h"
 #include "dense/bml_getters_dense.h"
 #include "ellpack/bml_getters_ellpack.h"
+#include "ellsort/bml_getters_ellsort.h"
 #include <stdio.h>
 
 /*
@@ -31,6 +32,9 @@ bml_get_row(
         case ellpack:
             bml_get_row_ellpack(A, i, row);
             break;
+        case ellsort:
+            bml_get_row_ellsort(A, i, row);
+            break;
         default:
             LOG_ERROR("unknown matrix type in bml_get_row\n");
             break;
@@ -49,6 +53,9 @@ bml_get_diagonal(
       break;
     case ellpack:
       bml_get_diagonal_ellpack(A, diagonal);
+      break;            
+    case ellsort:
+      bml_get_diagonal_ellsort(A, diagonal);
       break;            
     default:            
       printf("current type is %c",bml_get_type(A));

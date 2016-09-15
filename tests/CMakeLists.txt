@@ -63,7 +63,7 @@ endif()
 
 foreach(N add adjacency adjungate_triangle allocate convert copy diagonalize multiply norm  
     normalize scale submatrix threshold trace transpose)
-  foreach(T dense ellpack)
+  foreach(T dense ellpack ellsort)
     foreach(P single_real double_real single_complex double_complex)
       #if(BML_MPI)
         #add_test(${N}-${T}-${P} mpirun -np 1 bml-test -n ${N} -t ${T} -p ${P})

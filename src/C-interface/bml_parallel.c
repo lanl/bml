@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "dense/bml_parallel_dense.h"
 #include "ellpack/bml_parallel_ellpack.h"
+#include "ellsort/bml_parallel_ellsort.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -160,6 +161,9 @@ bml_allGatherVParallel(bml_matrix_t * A)
             break;
         case ellpack:
             bml_allGatherVParallel_ellpack(A);
+            break;
+        case ellsort:
+            bml_allGatherVParallel_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

@@ -4,6 +4,7 @@
 #include "bml_parallel.h"
 #include "dense/bml_allocate_dense.h"
 #include "ellpack/bml_allocate_ellpack.h"
+#include "ellsort/bml_allocate_ellsort.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -130,6 +131,9 @@ bml_deallocate(
             case ellpack:
                 bml_deallocate_ellpack(*A);
                 break;
+            case ellsort:
+                bml_deallocate_ellsort(*A);
+                break;
             default:
                 LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(*A));
                 break;
@@ -154,6 +158,9 @@ bml_clear(bml_matrix_t * A)
             break;
         case ellpack:
             bml_clear_ellpack(A);
+            break;
+        case ellsort:
+            bml_clear_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
@@ -191,6 +198,9 @@ bml_zero_matrix(
             break;
         case ellpack:
             return bml_zero_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            break;
+        case ellsort:
+            return bml_zero_matrix_ellsort(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -230,6 +240,9 @@ bml_noinit_matrix(
         case ellpack:
             return bml_noinit_matrix_ellpack(matrix_precision, N, M, distrib_mode);
             break;
+        case ellsort:
+            return bml_noinit_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -267,6 +280,9 @@ bml_random_matrix(
             break;
         case ellpack:
             return bml_random_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            break;
+        case ellsort:
+            return bml_random_matrix_ellsort(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -306,6 +322,9 @@ bml_banded_matrix(
         case ellpack:
             return bml_banded_matrix_ellpack(matrix_precision, N, M, distrib_mode);
             break;
+        case ellsort:
+            return bml_banded_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
             break;
@@ -343,6 +362,9 @@ bml_identity_matrix(
             break;
         case ellpack:
             return bml_identity_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            break;
+        case ellsort:
+            return bml_identity_matrix_ellsort(matrix_precision, N, M, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -498,6 +520,9 @@ bml_update_domain(
           break;
       case ellpack:
           bml_update_domain_ellpack(A, localPartMin, localPartMax, nnodesInPart);
+          break;
+      case ellsort:
+          bml_update_domain_ellsort(A, localPartMin, localPartMax, nnodesInPart);
           break;
       default:
           LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));

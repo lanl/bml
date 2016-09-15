@@ -18,6 +18,9 @@ bml_diagonalize(
         case ellpack:
             LOG_ERROR("diagonalize routine is not implemented for ellpack\n");
             break;
+        case ellsort:
+            LOG_ERROR("diagonalize routine is not implemented for ellsort\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

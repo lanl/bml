@@ -8,10 +8,10 @@ if [[ $# -gt 0 ]]; then
 else
     BASEDIR="$(dirname $0)"
     sed -i -e 's:\s\+$::' \
-           "${BASEDIR}"/src/C-interface/{,dense,ellpack}/*.{c,h} \
+           "${BASEDIR}"/src/C-interface/{,dense,ellpack,ellsort}/*.{c,h} \
            "${BASEDIR}"/src/Fortran-interface/*.F90 \
            "${BASEDIR}"/tests/*.{c,h}
     indent ${INDENT_ARGS} \
-           "${BASEDIR}"/src/C-interface/{,dense,ellpack}/*.{c,h} \
+           "${BASEDIR}"/src/C-interface/{,dense,ellpack,ellsort}/*.{c,h} \
            "${BASEDIR}"/tests/*.{c,h}
 fi

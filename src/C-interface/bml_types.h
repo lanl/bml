@@ -12,6 +12,8 @@ typedef enum
     dense,
     /** ELLPACK matrix. */
     ellpack,
+    /** ELLSORT matrix. */
+    ellsort,
     /** CSR matrix. */
     csr
 } bml_matrix_type_t;

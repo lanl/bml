@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "dense/bml_norm_dense.h"
 #include "ellpack/bml_norm_ellpack.h"
+#include "ellsort/bml_norm_ellsort.h"
 
 #include <stdlib.h>
 
@@ -24,6 +25,9 @@ bml_sum_squares(
             break;
         case ellpack:
             return bml_sum_squares_ellpack(A);
+            break;
+        case ellsort:
+            return bml_sum_squares_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -53,6 +57,9 @@ bml_sum_squares_submatrix(
             break;
         case ellpack:
             return bml_sum_squares_submatrix_ellpack(A, core_size);
+            break;
+        case ellsort:
+            return bml_sum_squares_submatrix_ellsort(A, core_size);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -88,6 +95,9 @@ bml_sum_squares2(
         case ellpack:
             return bml_sum_squares2_ellpack(A, B, alpha, beta, threshold);
             break;
+        case ellsort:
+            return bml_sum_squares2_ellsort(A, B, alpha, beta, threshold);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -113,6 +123,9 @@ bml_fnorm(
             break;
         case ellpack:
             return bml_fnorm_ellpack(A);
+            break;
+        case ellsort:
+            return bml_fnorm_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -141,6 +154,9 @@ bml_fnorm2(
             break;
         case ellpack:
             return bml_fnorm2_ellpack(A, B);
+            break;
+        case ellsort:
+            return bml_fnorm2_ellsort(A, B);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

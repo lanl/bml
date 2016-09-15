@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "dense/bml_transpose_dense.h"
 #include "ellpack/bml_transpose_ellpack.h"
+#include "ellsort/bml_transpose_ellsort.h"
 
 #include <stdlib.h>
 
@@ -24,6 +25,9 @@ bml_transpose_new(
             break;
         case ellpack:
             return bml_transpose_new_ellpack(A);
+            break;
+        case ellsort:
+            return bml_transpose_new_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -50,6 +54,9 @@ bml_transpose(
             break;
         case ellpack:
             bml_transpose_ellpack(A);
+            break;
+        case ellsort:
+            bml_transpose_ellsort(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
