@@ -9,35 +9,40 @@ bml_matrix_ellsort_t *bml_convert_from_dense_ellsort(
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_convert_from_dense_ellsort_single_real(
     const bml_dense_order_t order,
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_convert_from_dense_ellsort_double_real(
     const bml_dense_order_t order,
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_convert_from_dense_ellsort_single_complex(
     const bml_dense_order_t order,
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_convert_from_dense_ellsort_double_complex(
     const bml_dense_order_t order,
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 void *bml_convert_to_dense_ellsort(
     const bml_matrix_ellsort_t * A,

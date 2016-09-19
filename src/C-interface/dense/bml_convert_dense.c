@@ -25,23 +25,24 @@ bml_convert_from_dense_dense(
     const bml_dense_order_t order,
     const int N,
     const void *A,
-    const double threshold)
+    const double threshold,
+    const bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dense_t *A_bml = NULL;
 
     switch (matrix_precision)
     {
         case single_real:
-            A_bml = bml_convert_from_dense_dense_single_real(order, N, A);
+            A_bml = bml_convert_from_dense_dense_single_real(order, N, A, distrib_mode);
             break;
         case double_real:
-            A_bml = bml_convert_from_dense_dense_double_real(order, N, A);
+            A_bml = bml_convert_from_dense_dense_double_real(order, N, A, distrib_mode);
             break;
         case single_complex:
-            A_bml = bml_convert_from_dense_dense_single_complex(order, N, A);
+            A_bml = bml_convert_from_dense_dense_single_complex(order, N, A, distrib_mode);
             break;
         case double_complex:
-            A_bml = bml_convert_from_dense_dense_double_complex(order, N, A);
+            A_bml = bml_convert_from_dense_dense_double_complex(order, N, A, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");

@@ -134,6 +134,8 @@ void *TYPED_FUNC(
     eval[0] = emin;
     eval[1] = emax;
 
+    //printf("Global %d: emin = %e emax = %e\n", myRank, emin, emax);
+
     return eval;
 }
 

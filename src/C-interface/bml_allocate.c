@@ -440,7 +440,7 @@ bml_default_domain(
             {
                 for (int i = 0; i < nleft; i++)
                 {
-                    domain->localRowExtent[i] + 1;
+                    domain->localRowExtent[i]++;
                 }
             }
 

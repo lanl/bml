@@ -28,20 +28,21 @@ bml_import_from_dense(
     const int N,
     const void *A,
     const double threshold,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("importing dense matrix\n");
     switch (matrix_type)
     {
         case dense:
             return bml_convert_from_dense_dense(matrix_precision, order, N, A,
-                                                threshold);
+                                                threshold, distrib_mode);
         case ellpack:
             return bml_convert_from_dense_ellpack(matrix_precision, order, N,
-                                                  A, threshold, M);
+                                                  A, threshold, M, distrib_mode);
         case ellsort:
             return bml_convert_from_dense_ellsort(matrix_precision, order, N,
-                                                  A, threshold, M);
+                                                  A, threshold, M, distrib_mode);
         default:
             LOG_ERROR("unknown matrix type\n");
     }
@@ -58,8 +59,9 @@ bml_convert_from_dense(
     const int N,
     const void *A,
     const double threshold,
-    const int M)
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
 {
     return bml_import_from_dense(matrix_type, matrix_precision, order, N, A,
-                                 threshold, M);
+                                 threshold, M, distrib_mode);
 }

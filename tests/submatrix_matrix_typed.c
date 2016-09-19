@@ -52,7 +52,7 @@ int TYPED_FUNC(
         A_dense[i * N + i] = (REAL_T) 1.0;
     }
     A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, A_dense, 0, M);
+                              N, A_dense, 0, M, sequential);
     bml_free_memory(A_dense);
 
     bml_threshold(A, threshold2);

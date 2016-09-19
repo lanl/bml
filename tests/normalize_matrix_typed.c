@@ -35,7 +35,7 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
     A_dense[0] = scale_factor * scale_factor;
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, A_dense, threshold, M);
+                              N, A_dense, threshold, M, sequential);
     B_gbnd = bml_gershgorin(B);
 
     bml_free_memory(A_dense);

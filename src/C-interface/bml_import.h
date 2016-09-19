@@ -12,7 +12,8 @@ bml_matrix_t *bml_import_from_dense(
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_t *bml_convert_from_dense(
     const bml_matrix_type_t matrix_type,
@@ -21,6 +22,7 @@ bml_matrix_t *bml_convert_from_dense(
     const int N,
     const void *A,
     const double threshold,
-    const int M);
+    const int M,
+    const bml_distribution_mode_t distrib_mode);
 
 #endif
