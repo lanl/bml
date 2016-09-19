@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include <omp.h>
 
 /** Determine element indices for submatrix, given a set of nodes/orbitals.
@@ -276,6 +277,17 @@ bml_group_matrix_ellpack(
     return NULL;
 }
 
+int sortById(const void* a, const void* b)
+{
+   int aId = *((int*)a);
+   int bId = *((int*)b);
+   assert(aId != bId);
+
+   if (aId < bId)
+      return -1;
+   return 1;
+}
+
 /** Assemble adjacency structure from matrix.
  *
  * \ingroup submatrix_group_C
@@ -312,6 +324,13 @@ bml_adjacency_ellpack(
         {
             adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
         }
+    }
+
+#pragma omp parallel for default(none) \
+    shared(A_N, xadj, adjncy)
+    for (int i = 0; i < A_N; i++)
+    {
+        qsort(&adjncy[xadj[i]], xadj[i+1]-xadj[i], sizeof(int), sortById);
     }
 
     // Add 1 for 1-based
