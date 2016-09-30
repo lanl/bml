@@ -128,7 +128,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-    for (int j = 0; j < A_M; j++)
+    for (int j = 0; j < A_N; j++)
     {
 
         if (ABS(row[j]) > threshold)
@@ -139,7 +139,6 @@ void TYPED_FUNC(
             A_index[ROWMAJOR(i, ll, A_N, A_M)] = j;
 
         }
-
     }
     A_nnz[i] = ll + 1;
 
