@@ -29,9 +29,12 @@ bml_diagonalize_dense_single_real(
     float *work = calloc(lwork, sizeof(float));
     int info;
     float *A_matrix;
+//    void mkl_thread_free_buffers(void);
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+
+   // mkl_free_buffers();
 
     A_matrix = (float *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
@@ -47,6 +50,8 @@ bml_diagonalize_dense_single_real(
     free(evals);
     free(evecs);
     free(work);
+//    free(lwork);
+    mkl_thread_free_buffers();
 }
 
 void
@@ -79,6 +84,8 @@ bml_diagonalize_dense_double_real(
     free(evals);
     free(evecs);
     free(work);
+//    free(lwork);
+    mkl_thread_free_buffers();
 }
 
 void
