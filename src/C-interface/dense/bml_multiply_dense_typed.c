@@ -49,7 +49,7 @@ void TYPED_FUNC(
     C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha_, B->matrix,
                   &A->N, A->matrix, &A->N, &beta_, C->matrix, &A->N);
 
-    mkl_thread_free_buffers();  
+//    mkl_thread_free_buffers();  
 }
 
 /** Matrix multiply.
@@ -120,5 +120,5 @@ void TYPED_FUNC(
 
     C_BLAS(GEMM) ("T", "T", &A->N, &A->N, &A->N, &alpha, A->matrix,
                   &A->N, B->matrix, &A->N, &beta, C->matrix, &A->N);
-    mkl_thread_free_buffers();  
+//    mkl_thread_free_buffers();  
 }

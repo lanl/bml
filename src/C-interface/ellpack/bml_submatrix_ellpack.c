@@ -310,20 +310,30 @@ bml_adjacency_ellpack(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
 
+    int j;
+
     xadj[0] = 0;
     for (int i = 1; i < A_N+1; i++)
     {
-        xadj[i] = xadj[i-1] + A_nnz[i-1];
+        xadj[i] = xadj[i-1] + A_nnz[i-1] - 1;
     }
 
 #pragma omp parallel for default(none) \
-    shared(A_N, A_M, A_index, xadj, adjncy)
+    private(j) \
+    shared(A_N, A_M, A_index, A_nnz, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
-        for (int j = xadj[i], jj = 0; j < xadj[i+1]; j++, jj++)
+        j = xadj[i];
+        for (int jj = 0; jj < A_nnz[i]; jj++)
         {
-            adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
+            if (A_index[ROWMAJOR(i, jj, A_N, A_M)] != i)
+            {
+              adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
+              j++;
+            }
         }
+        //assert(j == (xadj[i+1]-1));
+        //printf("i = %d A_N = %d j = %d xadj = %d %d\n",i, A_nnz[i], j, xadj[i], xadj[i+1]);
     }
 
 #pragma omp parallel for default(none) \
@@ -338,9 +348,12 @@ bml_adjacency_ellpack(
     {
 #pragma omp parallel for default(none) \
     shared(xadj, A_N, adjncy)
-        for (int i = 0; i <= xadj[A_N]; i++)
+        for (int i = 0; i < A_N; i++)
         {
-            adjncy[i] += 1;
+          for (int j = xadj[i]; j < xadj[i+1]; j++)
+          {
+              adjncy[j] += 1;
+          }
         }
 #pragma omp parallel for default(none) \
     shared(xadj, A_N)

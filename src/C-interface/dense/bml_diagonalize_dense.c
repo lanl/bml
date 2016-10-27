@@ -51,7 +51,7 @@ bml_diagonalize_dense_single_real(
     free(evecs);
     free(work);
 //    free(lwork);
-    mkl_thread_free_buffers();
+//    mkl_thread_free_buffers();
 }
 
 void
@@ -85,7 +85,7 @@ bml_diagonalize_dense_double_real(
     free(evecs);
     free(work);
 //    free(lwork);
-    mkl_thread_free_buffers();
+//    mkl_thread_free_buffers();
 }
 
 void

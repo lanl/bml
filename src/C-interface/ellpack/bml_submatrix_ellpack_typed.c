@@ -387,8 +387,8 @@ bml_group_matrix_ellpack)(
     shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
     {
-        hend = hindex[i+1]-1;
         if (i == ngroups-1) hend = A_N;
+        else hend = hindex[i+1]-1;
         for (int j = hindex[i]-1; j < hend; j++)
         {
             hnode[j] = i;
@@ -404,22 +404,52 @@ bml_group_matrix_ellpack)(
     for (int i = 0; i < B_N; i++)
     {
         memset(ix, 0, sizeof(int) * ngroups);
-        B_nnz[i] = 0;
-        hend = hindex[i+1]-1;
+        ix[i] = i + 1;
+        B_index[ROWMAJOR(i, 0, B_N, B_M)] = i;
+        B_value[ROWMAJOR(i, 0, B_N, B_M)] = 1.0;
+        B_nnz[i] = 1;
         if (i == B_N-1) hend = A_N;
+        else hend = hindex[i+1]-1;
         for (int j = hindex[i]-1; j < hend; j++)
         {
             for (int k = 0; k < A_nnz[j]; k++)
             {
                 int ii = hnode[A_index[ROWMAJOR(j, k, A_N, A_M)]];
-                if (ix[ii] == 0 && 
-                    is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)], threshold))
+                if (ix[ii] == 0 && ii != i)
                 {
-                    ix[ii] = i + 1;
-                    B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
-                    B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
-                    B_nnz[i]++;
+                    //printf("row = %d col = %d val = %e\n", j, A_index[ROWMAJOR(j, k, A_N, A_M)], A_value[ROWMAJOR(j, k, A_N, A_M)]);
+                   if (is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)], 
+                       threshold))
+                   {
+                       ix[ii] = i + 1;
+                       B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
+                       B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
+                       B_nnz[i]++;
+                   }
+                   else
+                   {
+                       int kk = A_index[ROWMAJOR(j, k, A_N, A_M)];
+                       for (int l = 0; l < A_nnz[kk]; l++)
+                       {
+                           int jj = hnode[A_index[ROWMAJOR(kk, l, A_N, A_M)]];
+                           if (jj == i)
+                           {
+                               //printf("sym row = %d col = %d val = %e\n", kk, A_index[ROWMAJOR(kk, l, A_N, A_M)], A_value[ROWMAJOR(kk, l, A_N, A_M)]);
+
+                               if (is_above_threshold(A_value[ROWMAJOR(kk, l, A_N, A_M)],  
+                                   threshold))            
+                               {
+                                   ix[ii] = i + 1;
+                                   B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
+                                   B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
+                                   B_nnz[i]++;
+                                   break;
+                               }
+                           }
+                       }
+                   }
                 }
+
             }
         }
     }

@@ -21,7 +21,7 @@ int TYPED_FUNC(
     bml_matrix_t *A = NULL;
     REAL_T *A_dense = NULL;
 
-    if (matrix_type == dense)
+    if (matrix_type == dense || matrix_type == ellsort)
     {
         LOG_INFO("adjacency matrix test not available\n");
         return 0;
@@ -31,9 +31,23 @@ int TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
         int rsize = i*N;
-        for (int j = 0; j < i+1; j++)
+        // Diagonal
+        A_dense[rsize+i] = rand() / (double) RAND_MAX;
+        if (i == 0)
         {
-            A_dense[rsize+j] = rand() / (double) RAND_MAX;
+          A_dense[rsize+i+1] = rand() / (double) RAND_MAX;
+          A_dense[rsize+N+i] = rand() / (double) RAND_MAX;
+          A_dense[rsize+i+2] = rand() / (double) RAND_MAX;
+        }
+        else if (i < N-1)
+        {
+          A_dense[rsize+i+1] = rand() / (double) RAND_MAX;
+          A_dense[rsize+N+i] = rand() / (double) RAND_MAX;
+        }
+        else
+        {
+          A_dense[rsize+i-1] = rand() / (double) RAND_MAX;
+          A_dense[rsize-N+i] = rand() / (double) RAND_MAX;
         }
     }
     A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
@@ -68,8 +82,10 @@ int TYPED_FUNC(
             return -1;
         }
 
-        for (int j = 0; j < i+1; j++)
+        if (i == 0)
         {
+          for (int j = 1; j < 3; j++)
+          {
             if (adjncy[idx] != j)
             {
                 LOG_ERROR("adjncy values off, expected adjncy[%d] = %d, actual adjncy[%d] = %d\n",
@@ -77,8 +93,32 @@ int TYPED_FUNC(
                 return -1;
             }
             idx++;
+          }
         }
-    }
+        else if (i < N-1)
+        {
+          for (int j = i-1; j < i+2; j+=2)
+          {
+            if (adjncy[idx] != j)
+            {
+                LOG_ERROR("adjncy values off, expected adjncy[%d] = %d, actual adjncy[%d] = %d\n",
+                   idx, j, idx, adjncy[idx]);
+                return -1;
+            }
+            idx++;
+          }
+        }
+        else
+        {
+          if (adjncy[idx] != N-2)
+          {
+              LOG_ERROR("adjncy values off, expected adjncy[%d] = %d, actual adjncy[%d] = %d\n",
+                 idx, N-2, idx, adjncy[idx]);
+              return -1;
+          }
+          idx++;
+        }
+      }
 
     if (xadj[N] != idx)
     {
