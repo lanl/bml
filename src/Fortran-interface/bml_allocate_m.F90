@@ -9,6 +9,7 @@ module bml_allocate_m
   private
 
   public :: bml_clear
+  public :: bml_allocated
   public :: bml_banded_matrix
   public :: bml_identity_matrix
   public :: bml_random_matrix
@@ -30,6 +31,26 @@ contains
     call bml_clear_C(a%ptr)
 
   end subroutine bml_clear
+
+  !> Check if matrix is allocated.
+  !!
+  !!\param a The matrix.
+  !!\return true/false
+  function bml_allocated(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    logical :: bml_allocated
+    integer :: aflag
+
+    aflag = bml_allocated_C(a%ptr)
+
+    if (aflag .gt. 0) then
+      bml_allocated = .true.
+    else
+      bml_allocated = .false.
+    end if
+
+  end function bml_allocated
 
   !> Create the zero matrix.
   !!

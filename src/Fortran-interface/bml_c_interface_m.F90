@@ -41,6 +41,13 @@ module bml_c_interface_m
       real(C_DOUBLE) :: bml_add_norm_C
     end function bml_add_norm_C
 
+    function bml_allocated_C(a) &
+        & bind(C, name="bml_allocated")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT) :: bml_allocated_C
+    end function bml_allocated_C
+
     subroutine bml_add_identity_C(a, beta, threshold) &
         & bind(C, name="bml_add_identity")
       import :: C_PTR, C_DOUBLE

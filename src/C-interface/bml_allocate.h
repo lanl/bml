@@ -22,6 +22,9 @@ void bml_deallocate(
 void bml_clear(
     bml_matrix_t * A);
 
+int bml_allocated(
+    const bml_matrix_t * A);
+
 bml_matrix_t *bml_noinit_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,

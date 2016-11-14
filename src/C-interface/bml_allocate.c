@@ -12,6 +12,20 @@
 #include <string.h>
 #include <omp.h>
 
+/** Check if matrix is allocated.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param A Matrix
+ * \return >0 if allocated, else -1
+ */
+int
+bml_allocated(
+    const bml_matrix_t * A)
+{
+  return bml_get_N(A);
+}
+
 /** Allocate a chunk of memory without initialization.
  *
  * \ingroup allocate_group_C

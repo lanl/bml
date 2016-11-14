@@ -24,7 +24,7 @@ int TYPED_FUNC(
     double *eigenvalues = NULL;
     bml_matrix_t *eigenvectors = NULL;
 
-    if (matrix_type != dense)
+    if (matrix_type != dense && matrix_type != ellpack)
     {
         LOG_INFO("diagonalization for this matrix type is not implemented\n");
         return 0;
@@ -37,7 +37,7 @@ int TYPED_FUNC(
     bml_add(A, A_t, 0.5, 0.5, 0.0);
     bml_print_bml_matrix(A, 0, N, 0, N);
     eigenvalues = calloc(N, sizeof(double));
-    eigenvectors = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+    eigenvectors = bml_zero_matrix(dense, matrix_precision, N, N, sequential);
     bml_diagonalize(A, eigenvalues, eigenvectors);
     bml_print_dense_vector(N, double_real, eigenvalues, 0, N);
     bml_print_bml_matrix(eigenvectors, 0, N, 0, N);

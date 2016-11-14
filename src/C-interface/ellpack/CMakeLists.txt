@@ -6,6 +6,7 @@ set(HEADERS-ELLPACK
   bml_adjungate_triangle_ellpack.h
   bml_convert_ellpack.h
   bml_copy_ellpack.h
+  bml_diagonalize_ellpack.h
   bml_elemental_ellpack.h
   bml_getters_ellpack.h
   bml_introspection_ellpack.h
@@ -28,6 +29,7 @@ set(SOURCES-ELLPACK
   bml_adjungate_triangle_ellpack.c
   bml_convert_ellpack.c
   bml_copy_ellpack.c
+  bml_diagonalize_ellpack.c
   bml_elemental_ellpack.c
   bml_getters_ellpack.c
   bml_introspection_ellpack.c
@@ -55,6 +57,7 @@ set(SOURCES-ELLPACK-TYPED
   bml_adjungate_triangle_ellpack_typed.c
   bml_convert_ellpack_typed.c
   bml_copy_ellpack_typed.c
+  bml_diagonalize_ellpack_typed.c
   bml_getters_ellpack_typed.c
   bml_multiply_ellpack_typed.c
   bml_norm_ellpack_typed.c

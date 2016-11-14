@@ -3,6 +3,7 @@
 #include "bml_logger.h"
 #include "bml_types.h"
 #include "dense/bml_diagonalize_dense.h"
+#include "ellpack/bml_diagonalize_ellpack.h"
 
 void
 bml_diagonalize(
@@ -16,7 +17,7 @@ bml_diagonalize(
             bml_diagonalize_dense(A, eigenvalues, eigenvectors);
             break;
         case ellpack:
-            LOG_ERROR("diagonalize routine is not implemented for ellpack\n");
+            bml_diagonalize_ellpack(A, eigenvalues, eigenvectors);
             break;
         case ellsort:
             LOG_ERROR("diagonalize routine is not implemented for ellsort\n");

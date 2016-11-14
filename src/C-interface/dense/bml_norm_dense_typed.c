@@ -52,7 +52,6 @@ double TYPED_FUNC(
  *  \ingroup norm_group
  *
  *  \param A The matrix
- *  \param core_pos Core rows of submatrix
  *  \param core_size Number of core rows
  *  \return The sum of squares of A
  */
@@ -69,14 +68,22 @@ double TYPED_FUNC(
 #pragma omp parallel for default(none) \
     shared(N, A_matrix) \
     reduction(+:sum)
+    for (int i = 0; i < core_size * N; i++)
+    {
+        sum += A_matrix[i] * A_matrix[i];
+    }
+
+/*
     for (int i = 0; i < core_size; i++)
     {
-        for (int j = 0; j < core_size; j++)
+        //for (int j = 0; j < core_size; j++)
+        for (int j = 0; j < N; j++)
         {
             REAL_T value = A_matrix[ROWMAJOR(i, j, N, N)];
             sum += value * value;
         }
     }
+*/
 
     return (double) REAL_PART(sum);
 }

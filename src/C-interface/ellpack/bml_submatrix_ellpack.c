@@ -311,11 +311,27 @@ bml_adjacency_ellpack(
     int *A_index = A->index;
 
     int j;
+    int check;
 
     xadj[0] = 0;
+
+    // Check if diagonal elements are included
+    check = 0;
+    for (int i = 0; i < A_nnz[0]; i++)
+    {
+        if (A_index[ROWMAJOR(0, i, A_N, A_M)] == 0)
+        {
+          check = 1;
+          break;
+        }
+    }
+
     for (int i = 1; i < A_N+1; i++)
     {
-        xadj[i] = xadj[i-1] + A_nnz[i-1] - 1;
+        if (check == 1)
+            xadj[i] = xadj[i-1] + A_nnz[i-1] - 1;
+        else
+            xadj[i] = xadj[i-1] + A_nnz[i-1];
     }
 
 #pragma omp parallel for default(none) \
@@ -332,8 +348,7 @@ bml_adjacency_ellpack(
               j++;
             }
         }
-        //assert(j == (xadj[i+1]-1));
-        //printf("i = %d A_N = %d j = %d xadj = %d %d\n",i, A_nnz[i], j, xadj[i], xadj[i+1]);
+        //assert(j == xadj[i+1]);
     }
 
 #pragma omp parallel for default(none) \
