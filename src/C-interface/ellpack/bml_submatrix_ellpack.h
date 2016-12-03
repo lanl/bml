@@ -61,21 +61,21 @@ void bml_matrix2submatrix_index_graph_ellpack(
 
 void bml_matrix2submatrix_index_graph_ellpack_single_real(
     const bml_matrix_ellpack_t * B,
-    const int *nodelist,                                           
-    const int nsize,                                               
-    int *core_halo_index,                                          
-    int *vsize,                                                    
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
     const int double_jump_flag);
 
 void bml_matrix2submatrix_index_graph_ellpack_double_real(
     const bml_matrix_ellpack_t * B,
-    const int *nodelist,                                           
-    const int nsize,                                               
-    int *core_halo_index,                                          
-    int *vsize,                                                    
+    const int *nodelist,
+    const int nsize,
+    int *core_halo_index,
+    int *vsize,
     const int double_jump_flag);
 
-void bml_matrix2submatrix_index_graph_ellpack_single_complex(         
+void bml_matrix2submatrix_index_graph_ellpack_single_complex(
     const bml_matrix_ellpack_t * B,
     const int *nodelist,
     const int nsize,
@@ -190,49 +190,49 @@ void *bml_getVector_ellpack_double_complex(
     const int *jj,
     const int irow,
     const int colCnt);
-    
+
 bml_matrix_ellpack_t *bml_group_matrix_ellpack(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold);
 
 bml_matrix_ellpack_t *bml_group_matrix_ellpack_single_real(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold);
 
 bml_matrix_ellpack_t *bml_group_matrix_ellpack_double_real(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold);
 
 bml_matrix_ellpack_t *bml_group_matrix_ellpack_single_complex(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold);
 
 bml_matrix_ellpack_t *bml_group_matrix_ellpack_double_complex(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold);
 
 void bml_adjacency_ellpack(
     const bml_matrix_ellpack_t * A,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag);
 
 void bml_adjacency_group_ellpack(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int nnodes,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag);
 
 #endif

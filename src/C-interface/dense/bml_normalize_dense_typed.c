@@ -56,8 +56,8 @@ void *TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 

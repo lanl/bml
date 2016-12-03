@@ -93,19 +93,33 @@ bml_matrix2submatrix_index_graph_ellsort(
     {
         case single_real:
             bml_matrix2submatrix_index_graph_ellsort_single_real(B, nodelist,
-             nsize, core_halo_index, vsize, double_jump_flag);
+                                                                 nsize,
+                                                                 core_halo_index,
+                                                                 vsize,
+                                                                 double_jump_flag);
             break;
-         case double_real:
+        case double_real:
             bml_matrix2submatrix_index_graph_ellsort_single_real(B, nodelist,
-             nsize, core_halo_index, vsize, double_jump_flag);
+                                                                 nsize,
+                                                                 core_halo_index,
+                                                                 vsize,
+                                                                 double_jump_flag);
             break;
         case single_complex:
-            bml_matrix2submatrix_index_graph_ellsort_double_complex(B, nodelist,
-              nsize, core_halo_index, vsize, double_jump_flag);
+            bml_matrix2submatrix_index_graph_ellsort_double_complex(B,
+                                                                    nodelist,
+                                                                    nsize,
+                                                                    core_halo_index,
+                                                                    vsize,
+                                                                    double_jump_flag);
             break;
-        case double_complex:                                       
-            bml_matrix2submatrix_index_graph_ellsort_double_complex(B, nodelist,                                                      
-              nsize, core_halo_index, vsize, double_jump_flag);
+        case double_complex:
+            bml_matrix2submatrix_index_graph_ellsort_double_complex(B,
+                                                                    nodelist,
+                                                                    nsize,
+                                                                    core_halo_index,
+                                                                    vsize,
+                                                                    double_jump_flag);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -251,23 +265,27 @@ bml_getVector_ellsort(
 bml_matrix_ellsort_t *
 bml_group_matrix_ellsort(
     const bml_matrix_ellsort_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_group_matrix_ellsort_single_real(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellsort_single_real(A, hindex, ngroups,
+                                                        threshold);
             break;
         case double_real:
-            return bml_group_matrix_ellsort_double_real(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellsort_double_real(A, hindex, ngroups,
+                                                        threshold);
             break;
         case single_complex:
-            return bml_group_matrix_ellsort_single_complex(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellsort_single_complex(A, hindex, ngroups,
+                                                           threshold);
             break;
         case double_complex:
-            return bml_group_matrix_ellsort_double_complex(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellsort_double_complex(A, hindex, ngroups,
+                                                           threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -285,13 +303,13 @@ bml_group_matrix_ellsort(
  * \param adjncy Adjacency vector
  * \param base_flag Return 0- or 1-based
  */
-void 
+void
 bml_adjacency_ellsort(
     const bml_matrix_ellsort_t * A,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag)
-{	
+{
     int A_N = A->N;
     int A_M = A->M;
 
@@ -299,16 +317,16 @@ bml_adjacency_ellsort(
     int *A_index = A->index;
 
     xadj[0] = 0;
-    for (int i = 1; i < A_N+1; i++)
+    for (int i = 1; i < A_N + 1; i++)
     {
-        xadj[i] = xadj[i-1] + A_nnz[i-1];
+        xadj[i] = xadj[i - 1] + A_nnz[i - 1];
     }
 
 #pragma omp parallel for default(none) \
     shared(A_N, A_M, A_index, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
-        for (int j = xadj[i], jj = 0; j < xadj[i+1]; j++, jj++)
+        for (int j = xadj[i], jj = 0; j < xadj[i + 1]; j++, jj++)
         {
             adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
         }
@@ -325,7 +343,7 @@ bml_adjacency_ellsort(
         }
 #pragma omp parallel for default(none) \
     shared(xadj, A_N)
-        for (int i = 0; i < A_N+1; i++)
+        for (int i = 0; i < A_N + 1; i++)
         {
             xadj[i] += 1;
         }
@@ -346,10 +364,10 @@ bml_adjacency_ellsort(
 void
 bml_adjacency_group_ellsort(
     const bml_matrix_ellsort_t * A,
-    const int * hindex,
+    const int *hindex,
     const int nnodes,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag)
 {
     int A_N = A->N;
@@ -358,7 +376,7 @@ bml_adjacency_group_ellsort(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
 
-    int *hnode = malloc(nnodes*sizeof(int));
+    int *hnode = malloc(nnodes * sizeof(int));
     for (int i = 0; i < nnodes; i++)
     {
         hnode[i] = hindex[i] - 1;
@@ -366,22 +384,22 @@ bml_adjacency_group_ellsort(
 
     // Determine number of adjacent atoms per atom
     xadj[0] = 0;
-    for (int i = 1; i < nnodes+1; i++)
+    for (int i = 1; i < nnodes + 1; i++)
     {
         int hcount = 0;
         for (int j = 0; j < nnodes; j++)
         {
-            for (int k = 0; k < A_nnz[hnode[i-1]]; k++)
+            for (int k = 0; k < A_nnz[hnode[i - 1]]; k++)
             {
-                if (hnode[j] == A_index[ROWMAJOR(hnode[i-1], k, A_N, A_M)])
+                if (hnode[j] == A_index[ROWMAJOR(hnode[i - 1], k, A_N, A_M)])
                 {
-                    hcount++; 
+                    hcount++;
                     break;
                 }
-            }            
+            }
         }
 
-        xadj[i] = xadj[i-1] + hcount;
+        xadj[i] = xadj[i - 1] + hcount;
     }
 
     // Fill in adjacent atoms
@@ -418,7 +436,7 @@ bml_adjacency_group_ellsort(
         }
 #pragma omp parallel for default(none) \
     shared(xadj, A_N)
-        for (int i = 0; i < nnodes+1; i++)
+        for (int i = 0; i < nnodes + 1; i++)
         {
             xadj[i] += 1;
         }

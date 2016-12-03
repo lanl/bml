@@ -28,14 +28,14 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int N = A->N;
     int M = A->M;
 
-    bml_matrix_ellpack_t *B = 
+    bml_matrix_ellpack_t *B =
         TYPED_FUNC(bml_noinit_matrix_ellpack) (N, M, A->distribution_mode);
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = B->index;
@@ -65,16 +65,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     return B;
 
-    
+
 */
     // Transpose all elements
-    omp_lock_t *row_lock = (omp_lock_t *)malloc(sizeof(omp_lock_t)*N);
+    omp_lock_t *row_lock = (omp_lock_t *) malloc(sizeof(omp_lock_t) * N);
 
-#pragma omp parallel for 
-for (int i = 0; i < N; i++) 
-{
-  omp_init_lock(&row_lock[i]);
-}
+#pragma omp parallel for
+    for (int i = 0; i < N; i++)
+    {
+        omp_init_lock(&row_lock[i]);
+    }
 
 #pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
     for (int i = 0; i < N; i++)
@@ -82,46 +82,46 @@ for (int i = 0; i < N; i++)
         for (int j = 0; j < A_nnz[i]; j++)
         {
             int trow = A_index[ROWMAJOR(i, j, N, M)];
-	    omp_set_lock(&row_lock[trow]);
-	    int colcnt = B_nnz[trow];
-	    B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
-	    B_value[ROWMAJOR(trow, colcnt, N, M)] =
-	      A_value[ROWMAJOR(i, j, N, M)];
-	    B_nnz[trow]++;
-	    omp_unset_lock(&row_lock[trow]);
+            omp_set_lock(&row_lock[trow]);
+            int colcnt = B_nnz[trow];
+            B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
+            B_value[ROWMAJOR(trow, colcnt, N, M)] =
+                A_value[ROWMAJOR(i, j, N, M)];
+            B_nnz[trow]++;
+            omp_unset_lock(&row_lock[trow]);
         }
     }
 
     return B;
     /*
-    int Alrmin = A_localRowMin[myRank];
-    int Alrmax = A_localRowMax[myRank];
+       int Alrmin = A_localRowMin[myRank];
+       int Alrmax = A_localRowMax[myRank];
 
-#pragma omp parallel for default(none) \
-    shared(N, M, B_index, B_value, B_nnz) \
-    shared(A_index, A_value, A_nnz,Alrmin,Alrmax)	      
-    //for (int i = 0; i < N; i++)
+       #pragma omp parallel for default(none) \
+       shared(N, M, B_index, B_value, B_nnz) \
+       shared(A_index, A_value, A_nnz,Alrmin,Alrmax)
+       //for (int i = 0; i < N; i++)
 
-    for (int i = Alrmin; i < Alrmax; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-	    int Annzj = A_nnz[j];
-            for (int k = 0; k < Annzj; k++)
-            {
-                if (A_index[ROWMAJOR(j, k, N, M)] != i) {}
-                else {
-                    B_index[ROWMAJOR(i, B_nnz[i], N, M)] = j;
-                    B_value[ROWMAJOR(i, B_nnz[i], N, M)] = A_value[ROWMAJOR(j, k, N, M)];
-                    B_nnz[i]++;
-                    break;
-                }
-            }
-        }
-    }
+       for (int i = Alrmin; i < Alrmax; i++)
+       {
+       for (int j = 0; j < N; j++)
+       {
+       int Annzj = A_nnz[j];
+       for (int k = 0; k < Annzj; k++)
+       {
+       if (A_index[ROWMAJOR(j, k, N, M)] != i) {}
+       else {
+       B_index[ROWMAJOR(i, B_nnz[i], N, M)] = j;
+       B_value[ROWMAJOR(i, B_nnz[i], N, M)] = A_value[ROWMAJOR(j, k, N, M)];
+       B_nnz[i]++;
+       break;
+       }
+       }
+       }
+       }
 
-    return B;
-*/
+       return B;
+     */
 }
 
 

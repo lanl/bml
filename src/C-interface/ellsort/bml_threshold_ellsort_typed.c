@@ -30,14 +30,14 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int N = A->N;
     int M = A->M;
 
-    bml_matrix_ellsort_t *B = 
+    bml_matrix_ellsort_t *B =
         TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, A->distribution_mode);
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = B->index;
@@ -87,8 +87,8 @@ void TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 

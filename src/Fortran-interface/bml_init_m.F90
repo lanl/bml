@@ -20,7 +20,7 @@ contains
   !! \param Comm from Fortran
   subroutine bml_initF(fcomm)
 
-    integer(C_INT), intent(in) ::fcomm 
+    integer(C_INT), intent(in) ::fcomm
 
     call bml_initF_C(fcomm)
 

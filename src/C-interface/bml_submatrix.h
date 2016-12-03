@@ -42,24 +42,24 @@ void bml_submatrix2matrix(
 
 // Return adjacency based on rows
 void bml_adjacency(
-	const bml_matrix_t * A,
-	int * xadj,
-	int * adjncy,
-        const int base_flag);
-	
+    const bml_matrix_t * A,
+    int *xadj,
+    int *adjncy,
+    const int base_flag);
+
 // Return adjacency based on groups of rows (ex. atom)
 void bml_adjacency_group(
-        const bml_matrix_t * A,
-        const int * hindex,
-        const int nnodes,
-        int * xadj,
-        int * adjncy,
-        const int base_flag);
+    const bml_matrix_t * A,
+    const int *hindex,
+    const int nnodes,
+    int *xadj,
+    int *adjncy,
+    const int base_flag);
 
 // Return a group-based matrix from a matrix
 bml_matrix_t *bml_group_matrix(
     const bml_matrix_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold);
 

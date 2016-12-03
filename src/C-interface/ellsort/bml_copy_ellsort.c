@@ -86,7 +86,7 @@ bml_copy_ellsort(
 void
 bml_reorder_ellsort(
     bml_matrix_ellsort_t * A,
-    int * perm)
+    int *perm)
 {
 
     switch (A->matrix_precision)

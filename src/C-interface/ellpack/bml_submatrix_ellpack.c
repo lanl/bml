@@ -94,19 +94,33 @@ bml_matrix2submatrix_index_graph_ellpack(
     {
         case single_real:
             bml_matrix2submatrix_index_graph_ellpack_single_real(B, nodelist,
-             nsize, core_halo_index, vsize, double_jump_flag);
+                                                                 nsize,
+                                                                 core_halo_index,
+                                                                 vsize,
+                                                                 double_jump_flag);
             break;
-         case double_real:
+        case double_real:
             bml_matrix2submatrix_index_graph_ellpack_single_real(B, nodelist,
-             nsize, core_halo_index, vsize, double_jump_flag);
+                                                                 nsize,
+                                                                 core_halo_index,
+                                                                 vsize,
+                                                                 double_jump_flag);
             break;
         case single_complex:
-            bml_matrix2submatrix_index_graph_ellpack_double_complex(B, nodelist,
-              nsize, core_halo_index, vsize, double_jump_flag);
+            bml_matrix2submatrix_index_graph_ellpack_double_complex(B,
+                                                                    nodelist,
+                                                                    nsize,
+                                                                    core_halo_index,
+                                                                    vsize,
+                                                                    double_jump_flag);
             break;
-        case double_complex:                                       
-            bml_matrix2submatrix_index_graph_ellpack_double_complex(B, nodelist,                                                      
-              nsize, core_halo_index, vsize, double_jump_flag);
+        case double_complex:
+            bml_matrix2submatrix_index_graph_ellpack_double_complex(B,
+                                                                    nodelist,
+                                                                    nsize,
+                                                                    core_halo_index,
+                                                                    vsize,
+                                                                    double_jump_flag);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -252,23 +266,27 @@ bml_getVector_ellpack(
 bml_matrix_ellpack_t *
 bml_group_matrix_ellpack(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_group_matrix_ellpack_single_real(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellpack_single_real(A, hindex, ngroups,
+                                                        threshold);
             break;
         case double_real:
-            return bml_group_matrix_ellpack_double_real(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellpack_double_real(A, hindex, ngroups,
+                                                        threshold);
             break;
         case single_complex:
-            return bml_group_matrix_ellpack_single_complex(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellpack_single_complex(A, hindex, ngroups,
+                                                           threshold);
             break;
         case double_complex:
-            return bml_group_matrix_ellpack_double_complex(A, hindex, ngroups, threshold);
+            return bml_group_matrix_ellpack_double_complex(A, hindex, ngroups,
+                                                           threshold);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -277,15 +295,18 @@ bml_group_matrix_ellpack(
     return NULL;
 }
 
-int sortById(const void* a, const void* b)
+int
+sortById(
+    const void *a,
+    const void *b)
 {
-   int aId = *((int*)a);
-   int bId = *((int*)b);
-   assert(aId != bId);
+    int aId = *((int *) a);
+    int bId = *((int *) b);
+    assert(aId != bId);
 
-   if (aId < bId)
-      return -1;
-   return 1;
+    if (aId < bId)
+        return -1;
+    return 1;
 }
 
 /** Assemble adjacency structure from matrix.
@@ -297,13 +318,13 @@ int sortById(const void* a, const void* b)
  * \param adjncy Adjacency vector
  * \param base_flag Return 0- or 1-based
  */
-void 
+void
 bml_adjacency_ellpack(
     const bml_matrix_ellpack_t * A,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag)
-{	
+{
     int A_N = A->N;
     int A_M = A->M;
 
@@ -321,17 +342,17 @@ bml_adjacency_ellpack(
     {
         if (A_index[ROWMAJOR(0, i, A_N, A_M)] == 0)
         {
-          check = 1;
-          break;
+            check = 1;
+            break;
         }
     }
 
-    for (int i = 1; i < A_N+1; i++)
+    for (int i = 1; i < A_N + 1; i++)
     {
         if (check == 1)
-            xadj[i] = xadj[i-1] + A_nnz[i-1] - 1;
+            xadj[i] = xadj[i - 1] + A_nnz[i - 1] - 1;
         else
-            xadj[i] = xadj[i-1] + A_nnz[i-1];
+            xadj[i] = xadj[i - 1] + A_nnz[i - 1];
     }
 
 #pragma omp parallel for default(none) \
@@ -344,8 +365,8 @@ bml_adjacency_ellpack(
         {
             if (A_index[ROWMAJOR(i, jj, A_N, A_M)] != i)
             {
-              adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
-              j++;
+                adjncy[j] = A_index[ROWMAJOR(i, jj, A_N, A_M)];
+                j++;
             }
         }
         //assert(j == xadj[i+1]);
@@ -355,7 +376,7 @@ bml_adjacency_ellpack(
     shared(A_N, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
-        qsort(&adjncy[xadj[i]], xadj[i+1]-xadj[i], sizeof(int), sortById);
+        qsort(&adjncy[xadj[i]], xadj[i + 1] - xadj[i], sizeof(int), sortById);
     }
 
     // Add 1 for 1-based
@@ -365,14 +386,14 @@ bml_adjacency_ellpack(
     shared(xadj, A_N, adjncy)
         for (int i = 0; i < A_N; i++)
         {
-          for (int j = xadj[i]; j < xadj[i+1]; j++)
-          {
-              adjncy[j] += 1;
-          }
+            for (int j = xadj[i]; j < xadj[i + 1]; j++)
+            {
+                adjncy[j] += 1;
+            }
         }
 #pragma omp parallel for default(none) \
     shared(xadj, A_N)
-        for (int i = 0; i < A_N+1; i++)
+        for (int i = 0; i < A_N + 1; i++)
         {
             xadj[i] += 1;
         }
@@ -393,10 +414,10 @@ bml_adjacency_ellpack(
 void
 bml_adjacency_group_ellpack(
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int nnodes,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag)
 {
     int A_N = A->N;
@@ -405,7 +426,7 @@ bml_adjacency_group_ellpack(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
 
-    int *hnode = malloc(nnodes*sizeof(int));
+    int *hnode = malloc(nnodes * sizeof(int));
     for (int i = 0; i < nnodes; i++)
     {
         hnode[i] = hindex[i] - 1;
@@ -413,22 +434,22 @@ bml_adjacency_group_ellpack(
 
     // Determine number of adjacent atoms per atom
     xadj[0] = 0;
-    for (int i = 1; i < nnodes+1; i++)
+    for (int i = 1; i < nnodes + 1; i++)
     {
         int hcount = 0;
         for (int j = 0; j < nnodes; j++)
         {
-            for (int k = 0; k < A_nnz[hnode[i-1]]; k++)
+            for (int k = 0; k < A_nnz[hnode[i - 1]]; k++)
             {
-                if (hnode[j] == A_index[ROWMAJOR(hnode[i-1], k, A_N, A_M)])
+                if (hnode[j] == A_index[ROWMAJOR(hnode[i - 1], k, A_N, A_M)])
                 {
-                    hcount++; 
+                    hcount++;
                     break;
                 }
-            }            
+            }
         }
 
-        xadj[i] = xadj[i-1] + hcount;
+        xadj[i] = xadj[i - 1] + hcount;
     }
 
     // Fill in adjacent atoms
@@ -465,7 +486,7 @@ bml_adjacency_group_ellpack(
         }
 #pragma omp parallel for default(none) \
     shared(xadj, A_N)
-        for (int i = 0; i < nnodes+1; i++)
+        for (int i = 0; i < nnodes + 1; i++)
         {
             xadj[i] += 1;
         }

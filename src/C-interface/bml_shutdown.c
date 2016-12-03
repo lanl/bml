@@ -8,8 +8,9 @@
  * \ingroup shutdown_group_C
  *
  */
-void 
-bml_shutdown()
+void
+bml_shutdown(
+    )
 {
     bml_shutdownParallel();
 }
@@ -20,7 +21,8 @@ bml_shutdown()
  *
  */
 void
-bml_shutdownF()
+bml_shutdownF(
+    )
 {
     bml_shutdownParallelF();
     // Fortran is expected to do the MPI_Finalize

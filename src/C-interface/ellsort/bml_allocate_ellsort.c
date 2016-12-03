@@ -179,10 +179,12 @@ bml_banded_matrix_ellsort(
             return bml_banded_matrix_ellsort_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            return bml_banded_matrix_ellsort_single_complex(N, M, distrib_mode);
+            return bml_banded_matrix_ellsort_single_complex(N, M,
+                                                            distrib_mode);
             break;
         case double_complex:
-            return bml_banded_matrix_ellsort_double_complex(N, M, distrib_mode);
+            return bml_banded_matrix_ellsort_double_complex(N, M,
+                                                            distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -222,10 +224,12 @@ bml_random_matrix_ellsort(
             return bml_random_matrix_ellsort_double_real(N, M, distrib_mode);
             break;
         case single_complex:
-            return bml_random_matrix_ellsort_single_complex(N, M, distrib_mode);
+            return bml_random_matrix_ellsort_single_complex(N, M,
+                                                            distrib_mode);
             break;
         case double_complex:
-            return bml_random_matrix_ellsort_double_complex(N, M, distrib_mode);
+            return bml_random_matrix_ellsort_double_complex(N, M,
+                                                            distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -259,16 +263,20 @@ bml_identity_matrix_ellsort(
     switch (matrix_precision)
     {
         case single_real:
-            return bml_identity_matrix_ellsort_single_real(N, M, distrib_mode);
+            return bml_identity_matrix_ellsort_single_real(N, M,
+                                                           distrib_mode);
             break;
         case double_real:
-            return bml_identity_matrix_ellsort_double_real(N, M, distrib_mode);
+            return bml_identity_matrix_ellsort_double_real(N, M,
+                                                           distrib_mode);
             break;
         case single_complex:
-            return bml_identity_matrix_ellsort_single_complex(N, M, distrib_mode);
+            return bml_identity_matrix_ellsort_single_complex(N, M,
+                                                              distrib_mode);
             break;
         case double_complex:
-            return bml_identity_matrix_ellsort_double_complex(N, M, distrib_mode);
+            return bml_identity_matrix_ellsort_double_complex(N, M,
+                                                              distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -277,7 +285,7 @@ bml_identity_matrix_ellsort(
     return NULL;
 }
 
-/** Update the ellsort matrix domain. 
+/** Update the ellsort matrix domain.
  *
  * \ingroup allocate_group
  *
@@ -286,54 +294,58 @@ bml_identity_matrix_ellsort(
  * \param localPartMin last part on each rank
  * \param nnodesInPart number of nodes per part
  */
-void bml_update_domain_ellsort(
+void
+bml_update_domain_ellsort(
     bml_matrix_ellsort_t * A,
-    int * localPartMin,
-    int * localPartMax,
-    int * nnodesInPart)
+    int *localPartMin,
+    int *localPartMax,
+    int *nnodesInPart)
 {
-    bml_domain_t * A_domain = A->domain;
+    bml_domain_t *A_domain = A->domain;
 
     int myRank = bml_getMyRank();
     int nprocs = bml_getNRanks();
 
-   for (int i = 0; i < nprocs; i++)
-   {
-     int rtotal = 0;
-     for (int j = localPartMin[i]-1; j <= localPartMax[i]-1; j++)
-     {
-         rtotal += nnodesInPart[j];
+    for (int i = 0; i < nprocs; i++)
+    {
+        int rtotal = 0;
+        for (int j = localPartMin[i] - 1; j <= localPartMax[i] - 1; j++)
+        {
+            rtotal += nnodesInPart[j];
 /*
          if (bml_printRank() == 1)
            printf("rank %d localPart %d %d part %d nnodesPerPart %d rtotal %d\n",
              i, localPartMin[i], localPartMax[i], j, nnodesInPart[j-1], rtotal);
 */
-     }
+        }
 
-     if (i == 0)
-         A_domain->localRowMin[0] = A_domain->globalRowMin;
-     else
-         A_domain->localRowMin[i] = A_domain->localRowMax[i-1];
+        if (i == 0)
+            A_domain->localRowMin[0] = A_domain->globalRowMin;
+        else
+            A_domain->localRowMin[i] = A_domain->localRowMax[i - 1];
 
-     A_domain->localRowMax[i] = A_domain->localRowMin[i] + rtotal;
-     A_domain->localRowExtent[i] = A_domain->localRowMax[i] - A_domain->localRowMin[i];
-     A_domain->localElements[i] = A_domain->localRowExtent[i] * A_domain->totalCols;
+        A_domain->localRowMax[i] = A_domain->localRowMin[i] + rtotal;
+        A_domain->localRowExtent[i] =
+            A_domain->localRowMax[i] - A_domain->localRowMin[i];
+        A_domain->localElements[i] =
+            A_domain->localRowExtent[i] * A_domain->totalCols;
 
-     if (i == 0)
-       A_domain->localDispl[0] = 0;
-     else
-       A_domain->localDispl[i] = A_domain->localDispl[i-1] + A_domain->localElements[i-1];
-   }
+        if (i == 0)
+            A_domain->localDispl[0] = 0;
+        else
+            A_domain->localDispl[i] =
+                A_domain->localDispl[i - 1] + A_domain->localElements[i - 1];
+    }
 
-   A_domain->minLocalExtent = A_domain->localRowExtent[0];
-   A_domain->maxLocalExtent = A_domain->localRowExtent[0];
-   for (int i = 1; i < nprocs; i++)
-   {
-     if (A_domain->localRowExtent[i] < A_domain->minLocalExtent)
-       A_domain->minLocalExtent = A_domain->localRowExtent[i];
-     if (A_domain->localRowExtent[i] > A_domain->maxLocalExtent)
-       A_domain->maxLocalExtent = A_domain->localRowExtent[i];
-   }
+    A_domain->minLocalExtent = A_domain->localRowExtent[0];
+    A_domain->maxLocalExtent = A_domain->localRowExtent[0];
+    for (int i = 1; i < nprocs; i++)
+    {
+        if (A_domain->localRowExtent[i] < A_domain->minLocalExtent)
+            A_domain->minLocalExtent = A_domain->localRowExtent[i];
+        if (A_domain->localRowExtent[i] > A_domain->maxLocalExtent)
+            A_domain->maxLocalExtent = A_domain->localRowExtent[i];
+    }
 
 /*
     if (bml_printRank() == 1)
@@ -342,7 +354,7 @@ void bml_update_domain_ellsort(
       for (int i = 0; i < nprocs; i++)
       {
         printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
-          i, A_domain->localRowMin[i], A_domain->localRowMax[i], 
+          i, A_domain->localRowMin[i], A_domain->localRowMax[i],
           A_domain->localRowExtent[i], A_domain->localElements[i],
           A_domain->localDispl[i]);
       }

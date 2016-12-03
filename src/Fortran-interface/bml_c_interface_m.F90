@@ -92,7 +92,7 @@ module bml_c_interface_m
       integer(C_INT), value, intent(in) :: matrix_precision
       integer(C_INT), value, intent(in) :: n
       integer(C_INT), value, intent(in) :: m
-      integer(C_INT), value, intent(in) :: distrib_mode 
+      integer(C_INT), value, intent(in) :: distrib_mode
       type(C_PTR) :: bml_banded_matrix_C
     end function bml_banded_matrix_C
 
@@ -250,7 +250,7 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: diagonal
     end subroutine bml_get_diagonal_C
-    
+
     subroutine bml_initF_C(fcomm) bind(C, name="bml_initF")
       import :: C_PTR, C_INT
       integer(C_INT), value, intent(in) :: fcomm

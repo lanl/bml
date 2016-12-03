@@ -40,28 +40,28 @@ void bml_copy_dense_double_complex(
 
 void bml_reorder_dense(
     bml_matrix_dense_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_dense_single_real(
     bml_matrix_dense_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_dense_double_real(
     bml_matrix_dense_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_dense_single_complex(
     bml_matrix_dense_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_dense_double_complex(
     bml_matrix_dense_t * A,
-    int * perm);
+    int *perm);
 
 void bml_save_domain_dense(
-     bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
 void bml_restore_domain_dense(
-     bml_matrix_dense_t * A);
+    bml_matrix_dense_t * A);
 
 #endif

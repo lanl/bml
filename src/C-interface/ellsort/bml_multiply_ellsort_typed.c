@@ -50,7 +50,8 @@ void TYPED_FUNC(
     else
     {
         bml_matrix_ellsort_t *A2 =
-            TYPED_FUNC(bml_noinit_matrix_ellsort) (A->N, A->M, A->distribution_mode);
+            TYPED_FUNC(bml_noinit_matrix_ellsort) (A->N, A->M,
+                                                   A->distribution_mode);
 
         if (A != NULL && A == B)
         {
@@ -62,10 +63,10 @@ void TYPED_FUNC(
         }
 
 #ifdef DO_MPI
-  if (bml_getNRanks() > 1 && A2->distribution_mode == distributed)
-  {
-    bml_allGatherVParallel(A2); 
-  }
+        if (bml_getNRanks() > 1 && A2->distribution_mode == distributed)
+        {
+            bml_allGatherVParallel(A2);
+        }
 #endif
 
         TYPED_FUNC(bml_add_ellsort) (C, A2, beta, alpha, threshold);
@@ -90,8 +91,8 @@ void *TYPED_FUNC(
     bml_matrix_ellsort_t * X2,
     const double threshold)
 {
-    int * X_localRowMin = X->domain->localRowMin;
-    int * X_localRowMax = X->domain->localRowMax;
+    int *X_localRowMin = X->domain->localRowMin;
+    int *X_localRowMax = X->domain->localRowMax;
 
     int X_N = X->N;
     int X_M = X->M;
@@ -127,7 +128,7 @@ void *TYPED_FUNC(
     shared(X_localRowMin, X_localRowMax) \
     reduction(+: traceX, traceX2)
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
-    for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++)       // CALCULATES THRESHOLDED X^2
+    for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
     {
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
@@ -213,8 +214,8 @@ void TYPED_FUNC(
     int A_M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int B_N = B->N;
     int B_M = B->M;
@@ -325,8 +326,8 @@ void TYPED_FUNC(
     int A_M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int B_N = B->N;
     int B_M = B->M;

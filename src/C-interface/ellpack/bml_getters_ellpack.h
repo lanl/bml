@@ -10,27 +10,27 @@
 // Getters for diagonal
 
 void bml_get_diagonal_ellpack(
-  bml_matrix_ellpack_t * A,
-  void *diagonal);
+    bml_matrix_ellpack_t * A,
+    void *diagonal);
 
 void bml_get_diagonal_ellpack_single_real(
-  bml_matrix_ellpack_t * A,
-  float *diagonal);
+    bml_matrix_ellpack_t * A,
+    float *diagonal);
 
 void bml_get_diagonal_ellpack_double_real(
-  bml_matrix_ellpack_t * A,
-  double *diagonal);
+    bml_matrix_ellpack_t * A,
+    double *diagonal);
 
 void bml_get_diagonal_ellpack_single_complex(
-  bml_matrix_ellpack_t * A,
-  float complex * diagonal);
+    bml_matrix_ellpack_t * A,
+    float complex * diagonal);
 
 void bml_get_diagonal_ellpack_double_complex(
-  bml_matrix_ellpack_t * A,
-  double complex * diagonal);
+    bml_matrix_ellpack_t * A,
+    double complex * diagonal);
 
 
-// Getters for row 
+// Getters for row
 
 void bml_get_row_ellpack(
     bml_matrix_ellpack_t * A,

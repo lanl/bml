@@ -111,7 +111,8 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
 
     // Only write from rank 0
-    if (bml_printRank() != 1) return;
+    if (bml_printRank() != 1)
+        return;
 
     mFile = fopen(filename, "w");
 

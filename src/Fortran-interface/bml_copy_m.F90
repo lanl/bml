@@ -70,7 +70,7 @@ contains
   !!
   !! \ingroup copy_group_F
   !!
-  !! \param a Matrix's domain to save 
+  !! \param a Matrix's domain to save
   subroutine bml_save_domain(a)
 
     use bml_types_m

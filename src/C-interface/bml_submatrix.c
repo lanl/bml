@@ -81,11 +81,13 @@ bml_matrix2submatrix_index_graph(
             break;
         case ellpack:
             bml_matrix2submatrix_index_graph_ellpack(B, nodelist,
-               nsize, core_halo_index, vsize, double_jump_flag);
+                                                     nsize, core_halo_index,
+                                                     vsize, double_jump_flag);
             break;
         case ellsort:
             bml_matrix2submatrix_index_graph_ellsort(B, nodelist,
-               nsize, core_halo_index, vsize, double_jump_flag);
+                                                     nsize, core_halo_index,
+                                                     vsize, double_jump_flag);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -102,9 +104,10 @@ bml_matrix2submatrix_index_graph(
  * \param ngroups Number of groups
  * \param threshold Threshold for graph
  */
-bml_matrix_t * bml_group_matrix(
+bml_matrix_t *
+bml_group_matrix(
     const bml_matrix_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold)
 {
@@ -210,29 +213,29 @@ bml_submatrix2matrix(
  * \param adjncy adjacency vector
  * \param base_flag to return 0- or 1-based
 */
-void 
+void
 bml_adjacency(
     const bml_matrix_t * A,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag)
 {
 
     switch (bml_get_type(A))
     {
-	case dense:
-	    LOG_ERROR("bml_adjacency routine is not implemented for dense\n");
-	    break;
-	case ellpack:
-	    bml_adjacency_ellpack(A, xadj, adjncy, base_flag);
-	    break;
-	case ellsort:
-	    bml_adjacency_ellsort(A, xadj, adjncy, base_flag);
-	    break;
-	default:
-   	    LOG_ERROR("unknown matrix type\n");
-	    break;
-	}
+        case dense:
+            LOG_ERROR("bml_adjacency routine is not implemented for dense\n");
+            break;
+        case ellpack:
+            bml_adjacency_ellpack(A, xadj, adjncy, base_flag);
+            break;
+        case ellsort:
+            bml_adjacency_ellsort(A, xadj, adjncy, base_flag);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
 }
 
 /** Assemble adjacency structures from matrix based on groups of rows.
@@ -249,26 +252,29 @@ bml_adjacency(
 void
 bml_adjacency_group(
     const bml_matrix_t * A,
-    const int * hindex,
+    const int *hindex,
     const int nnodes,
-    int * xadj,
-    int * adjncy,
+    int *xadj,
+    int *adjncy,
     const int base_flag)
 {
 
     switch (bml_get_type(A))
     {
         case dense:
-            LOG_ERROR("bml_adjacency_group routine is not implemented for dense\n");
+            LOG_ERROR
+                ("bml_adjacency_group routine is not implemented for dense\n");
             break;
         case ellpack:
-            bml_adjacency_group_ellpack(A, hindex, nnodes, xadj, adjncy, base_flag);
+            bml_adjacency_group_ellpack(A, hindex, nnodes, xadj, adjncy,
+                                        base_flag);
             break;
         case ellsort:
-            bml_adjacency_group_ellsort(A, hindex, nnodes, xadj, adjncy, base_flag);
+            bml_adjacency_group_ellsort(A, hindex, nnodes, xadj, adjncy,
+                                        base_flag);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
-        }
+    }
 }

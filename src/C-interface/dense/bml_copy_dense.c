@@ -88,7 +88,7 @@ bml_copy_dense(
 void
 bml_reorder_dense(
     bml_matrix_dense_t * A,
-    int * perm)
+    int *perm)
 {
     switch (A->matrix_precision)
     {

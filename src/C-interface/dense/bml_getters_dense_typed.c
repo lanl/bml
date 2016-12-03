@@ -10,19 +10,19 @@
 // Getter for diagonal
 
 void TYPED_FUNC(
-  bml_get_diagonal_dense) (
+    bml_get_diagonal_dense) (
     bml_matrix_dense_t * A,
     REAL_T * diagonal)
-  {
+{
     int N = bml_get_N(A);
     REAL_T *A_matrix = A->matrix;
-    
+
     for (int j = 0; j < N; j++)
     {
-      diagonal[j] = A_matrix[ROWMAJOR(j, j, N, N)];
+        diagonal[j] = A_matrix[ROWMAJOR(j, j, N, N)];
     }
-  }
-  
+}
+
 
 // Getter for row
 

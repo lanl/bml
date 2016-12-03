@@ -5,8 +5,10 @@
 
 #include "bml_types.h"
 
-void bml_shutdown();
+void bml_shutdown(
+    );
 
-void bml_shutdownF();
+void bml_shutdownF(
+    );
 
 #endif

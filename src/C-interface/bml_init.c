@@ -10,10 +10,10 @@
  * \param argc Number of args
  * \param argv Args
  */
-void 
+void
 bml_init(
-    int * argc,
-    char *** argv)
+    int *argc,
+    char ***argv)
 {
     bml_initParallel(argc, argv);
 }

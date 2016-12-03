@@ -29,8 +29,8 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_matrix = A->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 
@@ -39,7 +39,8 @@ double TYPED_FUNC(
     shared(A_localRowMin, A_localRowMax, myRank) \
     reduction(+:sum)
     //for (int i = 0; i < N * N; i++)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
     {
         sum += A_matrix[i] * A_matrix[i];
     }
@@ -113,8 +114,8 @@ double TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
@@ -128,7 +129,8 @@ double TYPED_FUNC(
     shared(A_localRowMin, A_localRowMax, myRank) \
     reduction(+:sum)
     //for (int i = 0; i < N * N; i++)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
     {
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
         if (ABS(temp) > threshold)
@@ -177,11 +179,11 @@ double TYPED_FUNC(
 {
     int N = A->N;
 
-    REAL_T * A_matrix = (REAL_T *) A->matrix;
-    REAL_T * B_matrix = (REAL_T *) B->matrix;
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     double fnorm = 0.0;
     REAL_T temp;
@@ -195,7 +197,8 @@ double TYPED_FUNC(
     shared(A_localRowMin, A_localRowMax, myRank) \
     reduction(+:fnorm)
     //for (int i = 0; i < N*N;i++)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
     {
         temp = A_matrix[i] - B_matrix[i];
         fnorm += temp * temp;

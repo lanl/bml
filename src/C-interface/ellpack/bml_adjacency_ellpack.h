@@ -5,8 +5,8 @@
 
 
 void bml_adjacency_ellpack(
-	bml_matrix_t * A,
-	int * xadj,
-	int * adjncy);
+    bml_matrix_t * A,
+    int *xadj,
+    int *adjncy);
 
 #endif

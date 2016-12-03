@@ -20,24 +20,24 @@ void bml_get_dense(
 // Getters for diagonal
 
 void bml_get_diagonal_dense(
-  bml_matrix_dense_t * A,
-  void *diagonal);
+    bml_matrix_dense_t * A,
+    void *diagonal);
 
 void bml_get_diagonal_dense_single_real(
-  bml_matrix_dense_t * A,
-  float *diagonal);
+    bml_matrix_dense_t * A,
+    float *diagonal);
 
 void bml_get_diagonal_dense_double_real(
-  bml_matrix_dense_t * A,
-  double *diagonal);
+    bml_matrix_dense_t * A,
+    double *diagonal);
 
 void bml_get_diagonal_dense_single_complex(
-  bml_matrix_dense_t * A,
-  float complex * diagonal);
+    bml_matrix_dense_t * A,
+    float complex * diagonal);
 
 void bml_get_diagonal_dense_double_complex(
-  bml_matrix_dense_t * A,
-  double complex * diagonal);
+    bml_matrix_dense_t * A,
+    double complex * diagonal);
 
 
 // Getters for row

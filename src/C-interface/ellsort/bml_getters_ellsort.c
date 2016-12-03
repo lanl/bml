@@ -8,31 +8,31 @@
 
 void
 bml_get_diagonal_ellsort(
-  bml_matrix_ellsort_t * A,
-  void *diagonal)
+    bml_matrix_ellsort_t * A,
+    void *diagonal)
 {
-  switch (bml_get_precision(A))
-  {
-    case single_real:
-      bml_get_diagonal_ellsort_single_real(A, diagonal);
-      break;
-    case double_real:
-      bml_get_diagonal_ellsort_double_real(A, diagonal);
-      break;
-    case single_complex:
-      bml_get_diagonal_ellsort_single_complex(A, diagonal);
-      break;
-    case double_complex:
-      bml_get_diagonal_ellsort_double_complex(A, diagonal);
-      break;
-    default:
-      LOG_ERROR("unkonwn precision in bml_get_diagonal_ellsort\n");
-      break;
-  }
+    switch (bml_get_precision(A))
+    {
+        case single_real:
+            bml_get_diagonal_ellsort_single_real(A, diagonal);
+            break;
+        case double_real:
+            bml_get_diagonal_ellsort_double_real(A, diagonal);
+            break;
+        case single_complex:
+            bml_get_diagonal_ellsort_single_complex(A, diagonal);
+            break;
+        case double_complex:
+            bml_get_diagonal_ellsort_double_complex(A, diagonal);
+            break;
+        default:
+            LOG_ERROR("unkonwn precision in bml_get_diagonal_ellsort\n");
+            break;
+    }
 }
 
 
-// Getters for row 
+// Getters for row
 
 void
 bml_get_row_ellsort(

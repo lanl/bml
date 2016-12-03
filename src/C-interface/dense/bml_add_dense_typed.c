@@ -47,10 +47,10 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-    C_BLAS(SCAL) (&nElems, &alpha_, A->matrix+startIndex, &inc);
+    C_BLAS(SCAL) (&nElems, &alpha_, A->matrix + startIndex, &inc);
     //C_BLAS(SCAL) (&nElems, &alpha_, A->matrix, &inc);
-    C_BLAS(AXPY) (&nElems, &beta_, B->matrix+startIndex, &inc, 
-        A->matrix+startIndex, &inc);
+    C_BLAS(AXPY) (&nElems, &beta_, B->matrix + startIndex, &inc,
+                  A->matrix + startIndex, &inc);
     //C_BLAS(AXPY) (&nElems, &beta_, B->matrix, &inc, A->matrix, &inc);
 }
 
@@ -77,8 +77,8 @@ double TYPED_FUNC(
     int myRank = bml_getMyRank();
     int N = A->N;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
 #pragma omp parallel for \
     default(none) \
@@ -86,7 +86,8 @@ double TYPED_FUNC(
     shared(N, myRank) \
     reduction(+:trnorm)
     //for (int i = 0; i < N * N; i++)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
     {
         trnorm += B_matrix[i] * B_matrix[i];
     }
@@ -114,14 +115,14 @@ void TYPED_FUNC(
     REAL_T *A_matrix = (REAL_T *) A->matrix;
 
     int N = A->N;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
     int myRank = bml_getMyRank();
 
 #pragma omp parallel for \
     default(none) \
     shared(A_matrix, A_localRowMin, A_localRowMax) \
-    shared(N, myRank, beta_) 
+    shared(N, myRank, beta_)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {

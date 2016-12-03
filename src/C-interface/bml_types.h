@@ -63,33 +63,33 @@ typedef enum
 struct bml_domain_t
 {
    /** number of processors */
-   int totalProcs;
+    int totalProcs;
    /** total number of rows */
-   int totalRows;
+    int totalRows;
    /** total number of columns */
-   int totalCols;
-   
+    int totalCols;
+
    /** global minimum row number */
-   int globalRowMin;
+    int globalRowMin;
    /** global maximum row number */
-   int globalRowMax;
+    int globalRowMax;
    /** global total rows */
-   int globalRowExtent;
-   
+    int globalRowExtent;
+
    /** maximum extent for most processors */
-   int maxLocalExtent;
+    int maxLocalExtent;
    /** minimum extent for last processors */
-   int minLocalExtent;
+    int minLocalExtent;
    /** minimum row per rank */
-   int* localRowMin;
+    int *localRowMin;
    /** maximum row per rank */
-   int* localRowMax;
+    int *localRowMax;
    /** extent of rows per rank, localRowMax - localRowMin */
-   int* localRowExtent;
+    int *localRowExtent;
    /** local number of elements per rank */
-   int* localElements;
+    int *localElements;
    /** local displacements per rank for 2D */
-   int* localDispl;
+    int *localDispl;
 };
 typedef struct bml_domain_t bml_domain_t;
 

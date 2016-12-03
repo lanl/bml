@@ -27,13 +27,13 @@ bml_matrix_dense_t *TYPED_FUNC(
 {
     int N = A->N;
 
-    bml_matrix_dense_t *B = 
+    bml_matrix_dense_t *B =
         TYPED_FUNC(bml_zero_matrix_dense) (N, A->distribution_mode);
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 

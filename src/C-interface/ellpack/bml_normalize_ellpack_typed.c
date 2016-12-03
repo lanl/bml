@@ -63,8 +63,8 @@ void *TYPED_FUNC(
     int M = A->M;
     int *A_nnz = (int *) A->nnz;
     int *A_index = (int *) A->index;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 
@@ -208,6 +208,6 @@ void *TYPED_FUNC(
 
     eval[0] = emin;
     eval[1] = emax;
-    
+
     return eval;
 }

@@ -94,7 +94,7 @@ bml_copy(
 void
 bml_reorder(
     bml_matrix_t * A,
-    int * perm)
+    int *perm)
 {
     switch (bml_get_type(A))
     {
@@ -125,11 +125,11 @@ bml_copy_domain(
 {
     int nRanks = bml_getNRanks();
 
-    memcpy(B->localRowMin, A->localRowMin, nRanks*sizeof(int));
-    memcpy(B->localRowMax, A->localRowMax, nRanks*sizeof(int));
-    memcpy(B->localRowExtent, A->localRowExtent, nRanks*sizeof(int));
-    memcpy(B->localDispl, A->localDispl, nRanks*sizeof(int));
-    memcpy(B->localElements, A->localElements, nRanks*sizeof(int));
+    memcpy(B->localRowMin, A->localRowMin, nRanks * sizeof(int));
+    memcpy(B->localRowMax, A->localRowMax, nRanks * sizeof(int));
+    memcpy(B->localRowExtent, A->localRowExtent, nRanks * sizeof(int));
+    memcpy(B->localDispl, A->localDispl, nRanks * sizeof(int));
+    memcpy(B->localElements, A->localElements, nRanks * sizeof(int));
 }
 
 
@@ -137,7 +137,8 @@ bml_copy_domain(
  *
  * \param A Matrix with domain
  */
-void bml_save_domain(
+void
+bml_save_domain(
     bml_matrix_t * A)
 {
     switch (bml_get_type(A))
@@ -161,7 +162,8 @@ void bml_save_domain(
  *
  * \param A Matrix with domain
  */
-void bml_restore_domain(
+void
+bml_restore_domain(
     bml_matrix_t * A)
 {
     switch (bml_get_type(A))

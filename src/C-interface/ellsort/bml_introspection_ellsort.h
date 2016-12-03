@@ -6,8 +6,7 @@
 bml_matrix_precision_t bml_get_precision_ellsort(
     const bml_matrix_ellsort_t * A);
 
-bml_distribution_mode_t
-bml_get_distribution_mode_ellsort(
+bml_distribution_mode_t bml_get_distribution_mode_ellsort(
     const bml_matrix_ellsort_t * A);
 
 int bml_get_N_ellsort(

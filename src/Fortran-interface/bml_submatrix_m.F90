@@ -168,7 +168,7 @@ contains
 
     call bml_deallocate(b)
     b%ptr = bml_group_matrix_C(a%ptr, c_loc(hindex), ngroups, threshold)
-    
+
   end subroutine bml_group_matrix
-    
+
 end module bml_submatrix_m

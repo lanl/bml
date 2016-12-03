@@ -34,7 +34,7 @@ bml_diagonalize_dense_single_real(
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
 
-   // mkl_free_buffers();
+    // mkl_free_buffers();
 
     A_matrix = (float *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)

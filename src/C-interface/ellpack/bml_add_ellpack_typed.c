@@ -42,8 +42,8 @@ void TYPED_FUNC(
 
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int *B_nnz = B->nnz;
     int *B_index = B->index;
@@ -68,35 +68,35 @@ void TYPED_FUNC(
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
-        if (alpha > (double)0.0 || alpha < (double)0.0)
-        for (int jp = 0; jp < A_nnz[i]; jp++)
-        {
-            int k = A_index[ROWMAJOR(i, jp, N, A_M)];
-            if (ix[k] == 0)
+        if (alpha > (double) 0.0 || alpha < (double) 0.0)
+            for (int jp = 0; jp < A_nnz[i]; jp++)
             {
-                x[k] = 0.0;
-                ix[k] = i + 1;
-                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
-                jx[l] = k;
-                l++;
+                int k = A_index[ROWMAJOR(i, jp, N, A_M)];
+                if (ix[k] == 0)
+                {
+                    x[k] = 0.0;
+                    ix[k] = i + 1;
+                    //A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                    jx[l] = k;
+                    l++;
+                }
+                x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
             }
-            x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
-        }
 
-        if (beta > (double)0.0 || beta < (double)0.0)
-        for (int jp = 0; jp < B_nnz[i]; jp++)
-        {
-            int k = B_index[ROWMAJOR(i, jp, N, B_M)];
-            if (ix[k] == 0)
+        if (beta > (double) 0.0 || beta < (double) 0.0)
+            for (int jp = 0; jp < B_nnz[i]; jp++)
             {
-                x[k] = 0.0;
-                ix[k] = i + 1;
-                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
-                jx[l] = k;
-                l++;
+                int k = B_index[ROWMAJOR(i, jp, N, B_M)];
+                if (ix[k] == 0)
+                {
+                    x[k] = 0.0;
+                    ix[k] = i + 1;
+                    //A_index[ROWMAJOR(i, l, N, A_M)] = k;
+                    jx[l] = k;
+                    l++;
+                }
+                x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
             }
-            x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
-        }
         A_nnz[i] = l;
 
         int ll = 0;
@@ -145,8 +145,8 @@ double TYPED_FUNC(
 
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int *B_nnz = B->nnz;
     int *B_index = B->index;
@@ -254,7 +254,8 @@ void TYPED_FUNC(
     REAL_T alpha = (REAL_T) 1.0;
 
     bml_matrix_ellpack_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M, A->distribution_mode);
+        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M,
+                                                 A->distribution_mode);
 
     TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
 
@@ -280,7 +281,8 @@ void TYPED_FUNC(
     const double threshold)
 {
     bml_matrix_ellpack_t *Id =
-        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M, A->distribution_mode);
+        TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M,
+                                                 A->distribution_mode);
 
     TYPED_FUNC(bml_add_ellpack) (A, Id, alpha, beta, threshold);
 

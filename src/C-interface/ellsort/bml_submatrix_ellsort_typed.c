@@ -63,7 +63,8 @@ void TYPED_FUNC(
         {
             ix[ii] = ii + 1;
             core_halo_index[l] = ii;
-            l++; ll++;
+            l++;
+            ll++;
         }
 
     }
@@ -168,7 +169,8 @@ void TYPED_FUNC(
         {
             ix[ii] = ii + 1;
             core_halo_index[l] = ii;
-            l++; ll++;
+            l++;
+            ll++;
         }
     }
 
@@ -297,8 +299,7 @@ void TYPED_FUNC(
         icol = 0;
         for (int jb = 0; jb < lsize; jb++)
         {
-            if (ABS(A_matrix[ROWMAJOR(ja, jb, A_N, A_N)]) >
-                threshold)
+            if (ABS(A_matrix[ROWMAJOR(ja, jb, A_N, A_N)]) > threshold)
             {
                 B_index[ROWMAJOR(ii, icol, B_N, B_M)] = core_halo_index[jb];
                 B_value[ROWMAJOR(ii, icol, B_N, B_M)] =
@@ -357,9 +358,9 @@ void *TYPED_FUNC(
  * \param threshold Threshold for graph
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
-bml_group_matrix_ellsort)(
+    bml_group_matrix_ellsort) (
     const bml_matrix_ellsort_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold)
 {
@@ -374,7 +375,8 @@ bml_group_matrix_ellsort)(
     int hend;
 
     bml_matrix_ellsort_t *B =
-        TYPED_FUNC(bml_noinit_matrix_ellsort) (ngroups, ngroups, A->distribution_mode);
+        TYPED_FUNC(bml_noinit_matrix_ellsort) (ngroups, ngroups,
+                                               A->distribution_mode);
 
     int B_N = B->N;
     int B_M = B->M;
@@ -387,9 +389,10 @@ bml_group_matrix_ellsort)(
     shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
     {
-        hend = hindex[i+1]-1;
-        if (i == ngroups-1) hend = A_N;
-        for (int j = hindex[i]-1; j < hend; j++)
+        hend = hindex[i + 1] - 1;
+        if (i == ngroups - 1)
+            hend = A_N;
+        for (int j = hindex[i] - 1; j < hend; j++)
         {
             hnode[j] = i;
         }
@@ -400,20 +403,22 @@ bml_group_matrix_ellsort)(
     private(ix, hend) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M) 
+    shared(B_nnz, B_index, B_value, B_N, B_M)
     for (int i = 0; i < B_N; i++)
     {
         memset(ix, 0, sizeof(int) * ngroups);
         B_nnz[i] = 0;
-        hend = hindex[i+1]-1;
-        if (i == B_N-1) hend = A_N;
-        for (int j = hindex[i]-1; j < hend; j++)
+        hend = hindex[i + 1] - 1;
+        if (i == B_N - 1)
+            hend = A_N;
+        for (int j = hindex[i] - 1; j < hend; j++)
         {
             for (int k = 0; k < A_nnz[j]; k++)
             {
                 int ii = hnode[A_index[ROWMAJOR(j, k, A_N, A_M)]];
-                if (ix[ii] == 0 && 
-                    is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)], threshold))
+                if (ix[ii] == 0 &&
+                    is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)],
+                                       threshold))
                 {
                     ix[ii] = i + 1;
                     B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;

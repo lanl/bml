@@ -40,23 +40,23 @@ void bml_copy_ellsort_double_complex(
 
 void bml_reorder_ellsort(
     bml_matrix_ellsort_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellsort_single_real(
     bml_matrix_ellsort_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellsort_double_real(
     bml_matrix_ellsort_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
-    int * perm);
+    int *perm);
 
 void bml_save_domain_ellsort(
     bml_matrix_ellsort_t * A);

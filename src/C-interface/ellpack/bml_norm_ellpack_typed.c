@@ -123,8 +123,8 @@ double TYPED_FUNC(
     int *B_index = (int *) B->index;
     int *B_nnz = (int *) B->nnz;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
@@ -235,15 +235,15 @@ double TYPED_FUNC(
     double fnorm = 0.0;
     REAL_T rvalue;
 
-    int * A_nnz = (int *) A->nnz;
-    int * A_index = (int *) A->index;
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
-    REAL_T * A_value = (REAL_T *) A->value;
-    int * B_nnz = (int *) B->nnz;
-    int * B_index = (int *) B->index;
-    REAL_T * B_value = (REAL_T *) B->value;
-    
+    int *A_nnz = (int *) A->nnz;
+    int *A_index = (int *) A->index;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
+    REAL_T *A_value = (REAL_T *) A->value;
+    int *B_nnz = (int *) B->nnz;
+    int *B_index = (int *) B->index;
+    REAL_T *B_value = (REAL_T *) B->value;
+
     REAL_T temp;
 
     int myRank = bml_getMyRank();
@@ -262,7 +262,8 @@ double TYPED_FUNC(
         {
             for (int k = 0; k < B_nnz[i]; k++)
             {
-                if (A_index[ROWMAJOR(i, j, N, M)] == B_index[ROWMAJOR(i, k, N, M)])
+                if (A_index[ROWMAJOR(i, j, N, M)] ==
+                    B_index[ROWMAJOR(i, k, N, M)])
                 {
                     rvalue = B_value[ROWMAJOR(i, k, N, M)];
                     break;
@@ -278,7 +279,8 @@ double TYPED_FUNC(
         {
             for (int k = 0; k < A_nnz[i]; k++)
             {
-                if (A_index[ROWMAJOR(i, k, N, M)] == B_index[ROWMAJOR(i, j, N, M)])
+                if (A_index[ROWMAJOR(i, k, N, M)] ==
+                    B_index[ROWMAJOR(i, j, N, M)])
                 {
                     rvalue = A_value[ROWMAJOR(i, k, N, M)];
                     break;

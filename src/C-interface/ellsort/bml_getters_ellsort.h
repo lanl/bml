@@ -10,27 +10,27 @@
 // Getters for diagonal
 
 void bml_get_diagonal_ellsort(
-  bml_matrix_ellsort_t * A,
-  void *diagonal);
+    bml_matrix_ellsort_t * A,
+    void *diagonal);
 
 void bml_get_diagonal_ellsort_single_real(
-  bml_matrix_ellsort_t * A,
-  float *diagonal);
+    bml_matrix_ellsort_t * A,
+    float *diagonal);
 
 void bml_get_diagonal_ellsort_double_real(
-  bml_matrix_ellsort_t * A,
-  double *diagonal);
+    bml_matrix_ellsort_t * A,
+    double *diagonal);
 
 void bml_get_diagonal_ellsort_single_complex(
-  bml_matrix_ellsort_t * A,
-  float complex * diagonal);
+    bml_matrix_ellsort_t * A,
+    float complex * diagonal);
 
 void bml_get_diagonal_ellsort_double_complex(
-  bml_matrix_ellsort_t * A,
-  double complex * diagonal);
+    bml_matrix_ellsort_t * A,
+    double complex * diagonal);
 
 
-// Getters for row 
+// Getters for row
 
 void bml_get_row_ellsort(
     bml_matrix_ellsort_t * A,

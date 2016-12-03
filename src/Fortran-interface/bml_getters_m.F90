@@ -20,15 +20,15 @@ module bml_getters_m
      module procedure bml_get_diagonal_single_complex
      module procedure bml_get_diagonal_double_complex
   end interface bml_get_diagonal
-  
+
   public :: bml_get_row, bml_get_diagonal
 
 contains
-  
+
   !Getters for diagonal
 
   !> Get the diagonal i of matrix a
-  !! \param a The matrix 
+  !! \param a The matrix
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_single_real(a, diagonal)
 
@@ -40,7 +40,7 @@ contains
   end subroutine bml_get_diagonal_single_real
 
   !> Get the diagonal i of matrix a
-  !! \param a The matrix 
+  !! \param a The matrix
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_double_real(a, diagonal)
 
@@ -52,7 +52,7 @@ contains
   end subroutine bml_get_diagonal_double_real
 
   !> Get the diagonal i of matrix a
-  !! \param a The matrix 
+  !! \param a The matrix
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_single_complex(a, diagonal)
 
@@ -64,8 +64,8 @@ contains
   end subroutine bml_get_diagonal_single_complex
 
   !> Get the diagonal i of matrix a
-  !! \param a The matrix 
-  !! \param diagonal The diagonal that is extracted  
+  !! \param a The matrix
+  !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_double_complex(a, diagonal)
 
     type(bml_matrix_t), intent(in) :: a
@@ -76,7 +76,7 @@ contains
   end subroutine bml_get_diagonal_double_complex
 
   !Getter for row
-  
+
   !> Get the row i of matrix a
   !! \param a The matrix
   !! \param i The row number

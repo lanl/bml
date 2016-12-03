@@ -63,7 +63,8 @@ void TYPED_FUNC(
         {
             ix[ii] = ii + 1;
             core_halo_index[l] = ii;
-            l++; ll++;
+            l++;
+            ll++;
         }
 
     }
@@ -168,7 +169,8 @@ void TYPED_FUNC(
         {
             ix[ii] = ii + 1;
             core_halo_index[l] = ii;
-            l++; ll++;
+            l++;
+            ll++;
         }
     }
 
@@ -297,8 +299,7 @@ void TYPED_FUNC(
         icol = 0;
         for (int jb = 0; jb < lsize; jb++)
         {
-            if (ABS(A_matrix[ROWMAJOR(ja, jb, A_N, A_N)]) >
-                threshold)
+            if (ABS(A_matrix[ROWMAJOR(ja, jb, A_N, A_N)]) > threshold)
             {
                 B_index[ROWMAJOR(ii, icol, B_N, B_M)] = core_halo_index[jb];
                 B_value[ROWMAJOR(ii, icol, B_N, B_M)] =
@@ -357,9 +358,9 @@ void *TYPED_FUNC(
  * \param threshold Threshold for graph
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
-bml_group_matrix_ellpack)(
+    bml_group_matrix_ellpack) (
     const bml_matrix_ellpack_t * A,
-    const int * hindex,
+    const int *hindex,
     const int ngroups,
     const double threshold)
 {
@@ -374,7 +375,8 @@ bml_group_matrix_ellpack)(
     int hend;
 
     bml_matrix_ellpack_t *B =
-        TYPED_FUNC(bml_noinit_matrix_ellpack) (ngroups, ngroups, A->distribution_mode);
+        TYPED_FUNC(bml_noinit_matrix_ellpack) (ngroups, ngroups,
+                                               A->distribution_mode);
 
     int B_N = B->N;
     int B_M = B->M;
@@ -387,9 +389,11 @@ bml_group_matrix_ellpack)(
     shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
     {
-        if (i == ngroups-1) hend = A_N;
-        else hend = hindex[i+1]-1;
-        for (int j = hindex[i]-1; j < hend; j++)
+        if (i == ngroups - 1)
+            hend = A_N;
+        else
+            hend = hindex[i + 1] - 1;
+        for (int j = hindex[i] - 1; j < hend; j++)
         {
             hnode[j] = i;
         }
@@ -400,7 +404,7 @@ bml_group_matrix_ellpack)(
     private(ix, hend) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M) 
+    shared(B_nnz, B_index, B_value, B_N, B_M)
     for (int i = 0; i < B_N; i++)
     {
         memset(ix, 0, sizeof(int) * ngroups);
@@ -408,9 +412,11 @@ bml_group_matrix_ellpack)(
         B_index[ROWMAJOR(i, 0, B_N, B_M)] = i;
         B_value[ROWMAJOR(i, 0, B_N, B_M)] = 1.0;
         B_nnz[i] = 1;
-        if (i == B_N-1) hend = A_N;
-        else hend = hindex[i+1]-1;
-        for (int j = hindex[i]-1; j < hend; j++)
+        if (i == B_N - 1)
+            hend = A_N;
+        else
+            hend = hindex[i + 1] - 1;
+        for (int j = hindex[i] - 1; j < hend; j++)
         {
             for (int k = 0; k < A_nnz[j]; k++)
             {
@@ -418,36 +424,40 @@ bml_group_matrix_ellpack)(
                 if (ix[ii] == 0 && ii != i)
                 {
                     //printf("row = %d col = %d val = %e\n", j, A_index[ROWMAJOR(j, k, A_N, A_M)], A_value[ROWMAJOR(j, k, A_N, A_M)]);
-                   if (is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)], 
-                       threshold))
-                   {
-                       ix[ii] = i + 1;
-                       B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
-                       B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
-                       B_nnz[i]++;
-                   }
-                   else
-                   {
-                       int kk = A_index[ROWMAJOR(j, k, A_N, A_M)];
-                       for (int l = 0; l < A_nnz[kk]; l++)
-                       {
-                           int jj = hnode[A_index[ROWMAJOR(kk, l, A_N, A_M)]];
-                           if (jj == i)
-                           {
-                               //printf("sym row = %d col = %d val = %e\n", kk, A_index[ROWMAJOR(kk, l, A_N, A_M)], A_value[ROWMAJOR(kk, l, A_N, A_M)]);
+                    if (is_above_threshold(A_value[ROWMAJOR(j, k, A_N, A_M)],
+                                           threshold))
+                    {
+                        ix[ii] = i + 1;
+                        B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
+                        B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
+                        B_nnz[i]++;
+                    }
+                    else
+                    {
+                        int kk = A_index[ROWMAJOR(j, k, A_N, A_M)];
+                        for (int l = 0; l < A_nnz[kk]; l++)
+                        {
+                            int jj =
+                                hnode[A_index[ROWMAJOR(kk, l, A_N, A_M)]];
+                            if (jj == i)
+                            {
+                                //printf("sym row = %d col = %d val = %e\n", kk, A_index[ROWMAJOR(kk, l, A_N, A_M)], A_value[ROWMAJOR(kk, l, A_N, A_M)]);
 
-                               if (is_above_threshold(A_value[ROWMAJOR(kk, l, A_N, A_M)],  
-                                   threshold))            
-                               {
-                                   ix[ii] = i + 1;
-                                   B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = ii;
-                                   B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] = 1.0;
-                                   B_nnz[i]++;
-                                   break;
-                               }
-                           }
-                       }
-                   }
+                                if (is_above_threshold
+                                    (A_value[ROWMAJOR(kk, l, A_N, A_M)],
+                                     threshold))
+                                {
+                                    ix[ii] = i + 1;
+                                    B_index[ROWMAJOR(i, B_nnz[i], B_N, B_M)] =
+                                        ii;
+                                    B_value[ROWMAJOR(i, B_nnz[i], B_N, B_M)] =
+                                        1.0;
+                                    B_nnz[i]++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
 
             }

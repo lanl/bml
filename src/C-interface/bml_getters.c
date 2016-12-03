@@ -43,23 +43,23 @@ bml_get_row(
 
 void
 bml_get_diagonal(
-  bml_matrix_t * A,
-  void *diagonal)
+    bml_matrix_t * A,
+    void *diagonal)
 {
-  switch (bml_get_type(A))
-  {
-    case dense:          
-      bml_get_diagonal_dense(A, diagonal);
-      break;
-    case ellpack:
-      bml_get_diagonal_ellpack(A, diagonal);
-      break;            
-    case ellsort:
-      bml_get_diagonal_ellsort(A, diagonal);
-      break;            
-    default:            
-      printf("current type is %c",bml_get_type(A));
-      LOG_ERROR("unknown matrix type in bml_get_diagonal\n");
-      break;
-  }
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_get_diagonal_dense(A, diagonal);
+            break;
+        case ellpack:
+            bml_get_diagonal_ellpack(A, diagonal);
+            break;
+        case ellsort:
+            bml_get_diagonal_ellsort(A, diagonal);
+            break;
+        default:
+            printf("current type is %c", bml_get_type(A));
+            LOG_ERROR("unknown matrix type in bml_get_diagonal\n");
+            break;
+    }
 }

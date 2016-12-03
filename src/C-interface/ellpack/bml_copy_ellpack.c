@@ -86,7 +86,7 @@ bml_copy_ellpack(
 void
 bml_reorder_ellpack(
     bml_matrix_ellpack_t * A,
-    int * perm)
+    int *perm)
 {
 
     switch (A->matrix_precision)

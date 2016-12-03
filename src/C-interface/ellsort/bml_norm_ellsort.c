@@ -57,16 +57,20 @@ bml_sum_squares_submatrix_ellsort(
     switch (A->matrix_precision)
     {
         case single_real:
-            return bml_sum_squares_submatrix_ellsort_single_real(A, core_size);
+            return bml_sum_squares_submatrix_ellsort_single_real(A,
+                                                                 core_size);
             break;
         case double_real:
-            return bml_sum_squares_submatrix_ellsort_double_real(A, core_size);
+            return bml_sum_squares_submatrix_ellsort_double_real(A,
+                                                                 core_size);
             break;
         case single_complex:
-            return bml_sum_squares_submatrix_ellsort_single_complex(A, core_size);
+            return bml_sum_squares_submatrix_ellsort_single_complex(A,
+                                                                    core_size);
             break;
         case double_complex:
-            return bml_sum_squares_submatrix_ellsort_double_complex(A, core_size);
+            return bml_sum_squares_submatrix_ellsort_double_complex(A,
+                                                                    core_size);
             break;
         default:
             LOG_ERROR("unknown precision\n");

@@ -40,23 +40,23 @@ void bml_copy_ellpack_double_complex(
 
 void bml_reorder_ellpack(
     bml_matrix_ellpack_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellpack_single_real(
     bml_matrix_ellpack_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellpack_double_real(
     bml_matrix_ellpack_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
-    int * perm);
+    int *perm);
 
 void bml_reorder_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
-    int * perm);
+    int *perm);
 
 void bml_save_domain_ellpack(
     bml_matrix_ellpack_t * A);

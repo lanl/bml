@@ -10,8 +10,8 @@
 #endif
 
 void bml_init(
-    int * argc,
-    char *** argv);
+    int *argc,
+    char ***argv);
 
 #ifdef DO_MPI
 void bml_initF(

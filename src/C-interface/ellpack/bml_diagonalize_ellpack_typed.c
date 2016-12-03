@@ -29,21 +29,22 @@
  *  \return The sum of squares of A
  */
 void TYPED_FUNC(
-    bml_diagonalize_ellpack)(
+    bml_diagonalize_ellpack) (
     const bml_matrix_ellpack_t * A,
     double *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
     double threshold = 0.0;
-    bml_matrix_dense_t * D;
+    bml_matrix_dense_t *D;
     REAL_T *A_dense;
 
     // Need to convert to dense for ELLPACK
     A_dense = bml_convert_to_dense_ellpack(A, dense_row_major);
-    D = bml_convert_from_dense_dense(A->matrix_precision, dense_row_major, 
-            A->N, A_dense, threshold, A->distribution_mode);
+    D = bml_convert_from_dense_dense(A->matrix_precision, dense_row_major,
+                                     A->N, A_dense, threshold,
+                                     A->distribution_mode);
 
-    TYPED_FUNC(bml_diagonalize_dense)(D, eigenvalues, eigenvectors);
+    TYPED_FUNC(bml_diagonalize_dense) (D, eigenvalues, eigenvectors);
 
     bml_deallocate_dense(D);
     free(A_dense);

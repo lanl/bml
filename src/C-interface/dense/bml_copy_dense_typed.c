@@ -22,7 +22,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_copy_dense_new) (
     const bml_matrix_dense_t * A)
 {
-    bml_matrix_dense_t *B = TYPED_FUNC(bml_zero_matrix_dense) (A->N, A->distribution_mode);
+    bml_matrix_dense_t *B =
+        TYPED_FUNC(bml_zero_matrix_dense) (A->N, A->distribution_mode);
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
@@ -44,8 +45,8 @@ void TYPED_FUNC(
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
     if (A->distribution_mode == B->distribution_mode)
     {
-      bml_copy_domain(A->domain, B->domain);
-      bml_copy_domain(A->domain2, B->domain2);
+        bml_copy_domain(A->domain, B->domain);
+        bml_copy_domain(A->domain2, B->domain2);
     }
 }
 
@@ -59,7 +60,7 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_reorder_dense) (
     bml_matrix_dense_t * A,
-    int * perm)
+    int *perm)
 {
     int N = A->N;
 
@@ -68,23 +69,25 @@ void TYPED_FUNC(
     REAL_T *B_matrix = B->matrix;
 
     // Reorder rows - need to copy
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-      memcpy(&A_matrix[ROWMAJOR(perm[i], 0, N, N)], &B_matrix[ROWMAJOR(i, 0, N, N)], N*sizeof(REAL_T));
+        memcpy(&A_matrix[ROWMAJOR(perm[i], 0, N, N)],
+               &B_matrix[ROWMAJOR(i, 0, N, N)], N * sizeof(REAL_T));
     }
 
     // Reorder elements in each row - just change index
     REAL_T tmp;
-    #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-      for (int j = 0; j < N; j++)
-      {
-        tmp = A_matrix[ROWMAJOR(i, j, N, N)];
-        A_matrix[ROWMAJOR(i, j, N, N)] = B_matrix[ROWMAJOR(i, perm[j], N, N)];
-      }
+        for (int j = 0; j < N; j++)
+        {
+            tmp = A_matrix[ROWMAJOR(i, j, N, N)];
+            A_matrix[ROWMAJOR(i, j, N, N)] =
+                B_matrix[ROWMAJOR(i, perm[j], N, N)];
+        }
     }
-    
+
     bml_deallocate_dense(B);
 }

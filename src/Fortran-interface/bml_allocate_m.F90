@@ -25,7 +25,7 @@ contains
   !!
   !! \param a The matrix.
   subroutine bml_clear(a)
-  
+
     type(bml_matrix_t), intent(inout) :: a
 
     call bml_clear_C(a%ptr)
@@ -213,7 +213,7 @@ contains
     type(bml_matrix_t), intent(inout) :: a
 
     character(len=20) :: distrib_mode_
-    
+
     if (present(distrib_mode)) then
       distrib_mode_ = distrib_mode
     else

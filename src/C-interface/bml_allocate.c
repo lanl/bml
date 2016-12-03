@@ -23,7 +23,7 @@ int
 bml_allocated(
     const bml_matrix_t * A)
 {
-  return bml_get_N(A);
+    return bml_get_N(A);
 }
 
 /** Allocate a chunk of memory without initialization.
@@ -37,7 +37,7 @@ void *
 bml_noinit_allocate_memory(
     const size_t size)
 {
-  void *ptr = malloc(size);
+    void *ptr = malloc(size);
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory\n");
@@ -56,34 +56,34 @@ void *
 bml_allocate_memory(
     const size_t size)
 {
-  if (1==1)
-  //  if (size>10000)
-  {
-    void *ptr = calloc(1, size);
-    if (ptr == NULL)
+    if (1 == 1)
+        //  if (size>10000)
     {
-        LOG_ERROR("error allocating memory of size %d\n", size);
+        void *ptr = calloc(1, size);
+        if (ptr == NULL)
+        {
+            LOG_ERROR("error allocating memory of size %d\n", size);
+        }
+        return ptr;
     }
-    return ptr;
-  } 
-  else 
-  {
-    void *ptr = malloc(size);
-    int nt = omp_get_num_threads();
-    int step = size/nt;
-    int maxi = step*(nt-1);
-    int r = size-maxi;
+    else
+    {
+        void *ptr = malloc(size);
+        int nt = omp_get_num_threads();
+        int step = size / nt;
+        int maxi = step * (nt - 1);
+        int r = size - maxi;
 #pragma omp parallel for default(none) shared(ptr,maxi,step)
-    for (int i = 0; i < maxi; i = i + step)
-    {
-      memset(ptr+i,0,step);
+        for (int i = 0; i < maxi; i = i + step)
+        {
+            memset(ptr + i, 0, step);
+        }
+        if (r > 0)
+        {
+            memset(ptr + maxi + step, 0, r);
+        }
+        return ptr;
     }
-    if (r > 0) 
-    {
-      memset(ptr+maxi+step,0,r);
-    }
-  return ptr;
-  }
 }
 
 /** Deallocate a chunk of memory.
@@ -163,7 +163,8 @@ bml_deallocate(
  * \param A The matrix.
  */
 void
-bml_clear(bml_matrix_t * A)
+bml_clear(
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -211,10 +212,12 @@ bml_zero_matrix(
             return bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
             break;
         case ellpack:
-            return bml_zero_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            return bml_zero_matrix_ellpack(matrix_precision, N, M,
+                                           distrib_mode);
             break;
         case ellsort:
-            return bml_zero_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            return bml_zero_matrix_ellsort(matrix_precision, N, M,
+                                           distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -252,10 +255,12 @@ bml_noinit_matrix(
             return bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
             break;
         case ellpack:
-            return bml_noinit_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            return bml_noinit_matrix_ellpack(matrix_precision, N, M,
+                                             distrib_mode);
             break;
         case ellsort:
-            return bml_noinit_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            return bml_noinit_matrix_ellsort(matrix_precision, N, M,
+                                             distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -293,10 +298,12 @@ bml_random_matrix(
             return bml_random_matrix_dense(matrix_precision, N, distrib_mode);
             break;
         case ellpack:
-            return bml_random_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            return bml_random_matrix_ellpack(matrix_precision, N, M,
+                                             distrib_mode);
             break;
         case ellsort:
-            return bml_random_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            return bml_random_matrix_ellsort(matrix_precision, N, M,
+                                             distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -331,13 +338,16 @@ bml_banded_matrix(
     switch (matrix_type)
     {
         case dense:
-            return bml_banded_matrix_dense(matrix_precision, N, M, distrib_mode);
+            return bml_banded_matrix_dense(matrix_precision, N, M,
+                                           distrib_mode);
             break;
         case ellpack:
-            return bml_banded_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            return bml_banded_matrix_ellpack(matrix_precision, N, M,
+                                             distrib_mode);
             break;
         case ellsort:
-            return bml_banded_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            return bml_banded_matrix_ellsort(matrix_precision, N, M,
+                                             distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -372,13 +382,16 @@ bml_identity_matrix(
     switch (matrix_type)
     {
         case dense:
-            return bml_identity_matrix_dense(matrix_precision, N, distrib_mode);
+            return bml_identity_matrix_dense(matrix_precision, N,
+                                             distrib_mode);
             break;
         case ellpack:
-            return bml_identity_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+            return bml_identity_matrix_ellpack(matrix_precision, N, M,
+                                               distrib_mode);
             break;
         case ellsort:
-            return bml_identity_matrix_ellsort(matrix_precision, N, M, distrib_mode);
+            return bml_identity_matrix_ellsort(matrix_precision, N, M,
+                                               distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
@@ -420,7 +433,7 @@ bml_default_domain(
     domain->globalRowMin = 0;
     domain->globalRowMax = domain->totalRows;
     domain->globalRowExtent = domain->globalRowMax - domain->globalRowMin;
-    
+
     switch (distrib_mode)
     {
         case sequential:
@@ -430,26 +443,28 @@ bml_default_domain(
             {
                 domain->localRowMin[i] = domain->globalRowMin;
                 domain->localRowMax[i] = domain->globalRowMax;
-                domain->localRowExtent[i] = domain->localRowMax[i] - domain->localRowMin[i];
-                domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
+                domain->localRowExtent[i] =
+                    domain->localRowMax[i] - domain->localRowMin[i];
+                domain->localElements[i] =
+                    domain->localRowExtent[i] * domain->totalCols;
                 domain->localDispl[i] = 0;
             }
 
         }
-        break;
+            break;
 
         case distributed:
         {
             // For completely distributed
             avgExtent = N / nRanks;
-            domain->maxLocalExtent = ceil((float)N / (float)nRanks);
+            domain->maxLocalExtent = ceil((float) N / (float) nRanks);
             domain->minLocalExtent = avgExtent;
 
             for (int i = 0; i < nRanks; i++)
             {
                 domain->localRowExtent[i] = avgExtent;
             }
-            nleft = N - nRanks*avgExtent;
+            nleft = N - nRanks * avgExtent;
             if (nleft > 0)
             {
                 for (int i = 0; i < nleft; i++)
@@ -463,28 +478,34 @@ bml_default_domain(
             domain->localRowMax[0] = domain->localRowExtent[0];
 
             /** For middle ranks */
-            for (int i = 1; i < (nRanks-1); i++)
+            for (int i = 1; i < (nRanks - 1); i++)
             {
-                domain->localRowMin[i] = domain->localRowMax[i-1];
-                domain->localRowMax[i] = domain->localRowMin[i] + domain->localRowExtent[i];
+                domain->localRowMin[i] = domain->localRowMax[i - 1];
+                domain->localRowMax[i] =
+                    domain->localRowMin[i] + domain->localRowExtent[i];
             }
 
             /** For last rank */
             if (nRanks > 1)
             {
                 int last = nRanks - 1;
-                domain->localRowMin[last] = domain->localRowMax[last-1];
-                domain->localRowMax[last] = domain->localRowMin[last] + domain->localRowExtent[last];
+                domain->localRowMin[last] = domain->localRowMax[last - 1];
+                domain->localRowMax[last] =
+                    domain->localRowMin[last] + domain->localRowExtent[last];
             }
 
             /** Number of elements and displacement per rank */
             for (int i = 0; i < nRanks; i++)
             {
-                domain->localElements[i] = domain->localRowExtent[i] * domain->totalCols;
-                domain->localDispl[i] = (i == 0) ? 0 : domain->localDispl[i-1] + domain->localElements[i-1];
+                domain->localElements[i] =
+                    domain->localRowExtent[i] * domain->totalCols;
+                domain->localDispl[i] =
+                    (i ==
+                     0) ? 0 : domain->localDispl[i - 1] +
+                    domain->localElements[i - 1];
             }
         }
-        break;
+            break;
 
         case graph_distributed:
             LOG_ERROR("graph_distibuted not available\n");
@@ -502,11 +523,11 @@ bml_default_domain(
       for (int i = 0; i < nRanks; i++)
       {
         printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
-          i, domain->localRowMin[i], domain->localRowMax[i], 
+          i, domain->localRowMin[i], domain->localRowMax[i],
           domain->localRowExtent[i], domain->localElements[i],
           domain->localDispl[i]);
       }
-    }    
+    }
 */
     return domain;
 }
@@ -520,26 +541,29 @@ bml_default_domain(
  * \param localPartMax Last part on each rank
  * \param nnodesInPart Number of nodes in each part
  */
-void 
+void
 bml_update_domain(
     bml_matrix_t * A,
-    int * localPartMin,
-    int * localPartMax,
-    int * nnodesInPart)
+    int *localPartMin,
+    int *localPartMax,
+    int *nnodesInPart)
 {
     switch (bml_get_type(A))
     {
-      case dense:
-          bml_update_domain_dense(A, localPartMin, localPartMax, nnodesInPart);
-          break;
-      case ellpack:
-          bml_update_domain_ellpack(A, localPartMin, localPartMax, nnodesInPart);
-          break;
-      case ellsort:
-          bml_update_domain_ellsort(A, localPartMin, localPartMax, nnodesInPart);
-          break;
-      default:
-          LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
-          break;
+        case dense:
+            bml_update_domain_dense(A, localPartMin, localPartMax,
+                                    nnodesInPart);
+            break;
+        case ellpack:
+            bml_update_domain_ellpack(A, localPartMin, localPartMax,
+                                      nnodesInPart);
+            break;
+        case ellsort:
+            bml_update_domain_ellsort(A, localPartMin, localPartMax,
+                                      nnodesInPart);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
+            break;
     }
 }

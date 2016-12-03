@@ -34,7 +34,7 @@ void TYPED_FUNC(
 
     int *A_nnz = (int *) A->nnz;
     int *A_index = (int *) A->index;
-    bml_domain_t * A_domain = (bml_domain_t *)A->domain;
+    bml_domain_t *A_domain = (bml_domain_t *) A->domain;
 
     REAL_T *A_value = (REAL_T *) A->value;
 
@@ -44,7 +44,7 @@ void TYPED_FUNC(
     {
       printf("allgatherv %d: rank %d localRow %d %d %d\n", myRank, i, A_domain->localRowMin[i],
         A_domain->localRowMax[i], A_domain->localRowExtent[i]);
-      printf("allgatherv %d before: rank %d nnz  %d %d %d %d\n", myRank, i, A_nnz[0], 
+      printf("allgatherv %d before: rank %d nnz  %d %d %d %d\n", myRank, i, A_nnz[0],
         A_nnz[3071], A_nnz[3072], A_nnz[6143]);
     }
 */
@@ -69,7 +69,7 @@ void TYPED_FUNC(
     {
       printf("allgatherv %d: rank %d localRow %d %d %d\n", myRank, i, A_domain->localRowMin[i],
         A_domain->localRowMax[i], A_domain->localRowExtent[i]);
-      printf("allgatherv %d after: rank %d nnz  %d %d %d %d\n", myRank, i, A_nnz[0], 
+      printf("allgatherv %d after: rank %d nnz  %d %d %d %d\n", myRank, i, A_nnz[0],
         A_nnz[3071], A_nnz[3072], A_nnz[6143]);
     }
 */

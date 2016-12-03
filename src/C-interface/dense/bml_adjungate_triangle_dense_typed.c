@@ -57,9 +57,9 @@ void TYPED_FUNC(
                 }
             }
             break;
-      
-        default: 
-        LOG_ERROR("Unknown triangle type in bml_adjungate\n");
+
+        default:
+            LOG_ERROR("Unknown triangle type in bml_adjungate\n");
 
     }
 }

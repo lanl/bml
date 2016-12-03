@@ -14,14 +14,14 @@
  * All values are zeroed.
  *
  * \ingroup allocate_group
- * 
+ *
  *  \param A The matrix.
  */
 void TYPED_FUNC(
     bml_clear_dense) (
     bml_matrix_dense_t * A)
 {
-    memset(A->matrix, 0.0, A->N * A->N * sizeof(REAL_T));    
+    memset(A->matrix, 0.0, A->N * A->N * sizeof(REAL_T));
 }
 
 /** Allocate the zero matrix.
@@ -73,7 +73,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     const int M,
     const bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
+    bml_matrix_dense_t *A =
+        TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
 #pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
@@ -107,7 +108,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     const int N,
     const bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
+    bml_matrix_dense_t *A =
+        TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
 #pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
@@ -139,7 +141,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     const int N,
     const bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dense_t *A = TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
+    bml_matrix_dense_t *A =
+        TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
 #pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)

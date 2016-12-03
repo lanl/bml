@@ -5,8 +5,8 @@
 
 
 void bml_adjacency_ellsort(
-	bml_matrix_t * A,
-	int * xadj,
-	int * adjncy);
+    bml_matrix_t * A,
+    int *xadj,
+    int *adjncy);
 
 #endif

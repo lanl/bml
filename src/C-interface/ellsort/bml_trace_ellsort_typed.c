@@ -89,7 +89,8 @@ double TYPED_FUNC(
 
     if (A_N != B->N || A_M != B->M)
     {
-        LOG_ERROR("bml_traceMult_ellsort: Matrices A and B have different sizes.");
+        LOG_ERROR
+            ("bml_traceMult_ellsort: Matrices A and B have different sizes.");
     }
 
 #pragma omp parallel for default(none) \
@@ -100,7 +101,11 @@ double TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
-        rvalue = TYPED_FUNC(bml_getVector_ellsort) (B, &A_index[ROWMAJOR(i, 0, A_N, A_M)], i, A_nnz[i]);
+        rvalue =
+            TYPED_FUNC(bml_getVector_ellsort) (B,
+                                               &A_index[ROWMAJOR
+                                                        (i, 0, A_N, A_M)], i,
+                                               A_nnz[i]);
 
         for (int j = 0; j < A_nnz[i]; j++)
         {

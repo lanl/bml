@@ -27,13 +27,13 @@ bml_matrix_dense_t *TYPED_FUNC(
     const double threshold)
 {
     int N = A->N;
-    bml_matrix_dense_t *B = 
+    bml_matrix_dense_t *B =
         TYPED_FUNC(bml_zero_matrix_dense) (N, A->distribution_mode);
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 
@@ -41,7 +41,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     shared(N, A_matrix, B_matrix) \
     shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N * N; i++)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
     {
         if (is_above_threshold(A_matrix[i], threshold))
         {
@@ -67,8 +68,8 @@ void TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
-    int * A_localRowMin = A->domain->localRowMin;
-    int * A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 
@@ -76,7 +77,8 @@ void TYPED_FUNC(
     shared(N, A_matrix) \
     shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N * N; i++)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
     {
         if (!is_above_threshold(A_matrix[i], threshold))
         {

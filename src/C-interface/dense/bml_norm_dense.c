@@ -65,10 +65,12 @@ bml_sum_squares_submatrix_dense(
             return bml_sum_squares_submatrix_dense_double_real(A, core_size);
             break;
         case single_complex:
-            return bml_sum_squares_submatrix_dense_single_complex(A, core_size);
+            return bml_sum_squares_submatrix_dense_single_complex(A,
+                                                                  core_size);
             break;
         case double_complex:
-            return bml_sum_squares_submatrix_dense_double_complex(A, core_size);
+            return bml_sum_squares_submatrix_dense_double_complex(A,
+                                                                  core_size);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -187,4 +189,3 @@ bml_fnorm2_dense(
     }
     return 0;
 }
-
