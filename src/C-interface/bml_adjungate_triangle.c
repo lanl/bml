@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/** Adjungates a triangle of a matrix in place.
+/** Adjungates (conjugate transpose) a triangle of a matrix in place.
  *
  *  \ingroup adjungate_triangle_group
  *

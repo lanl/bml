@@ -8,19 +8,19 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 14;
+const int NUM_TESTS = 15;
 
 const char *test_name[] =
-    { "add", "allocate", "adjacency", "convert", "copy", "diagonalize",
-"multiply",
-    "norm", "normalize", "scale", "submatrix", "threshold", "trace",
-    "transpose"
+    { "add", "allocate", "adjacency", "adjungate_triangle", "convert", "copy",
+    "diagonalize", "multiply", "norm", "normalize", "scale", "submatrix",
+    "threshold", "trace", "transpose"
 };
 
 const char *test_description[] = {
     "Add two bml matrices",
     "Allcate bml matrices",
-    "adjacency CSR arrays for metis",
+    "Adjacency CSR arrays for metis",
+    "Adjungate triangle (conjugate transpose) of bml matrices",
     "Convert bml matrices",
     "Copy bml matrices",
     "Diagonalize a bml matrix",
@@ -38,6 +38,7 @@ const test_function_t testers[] = {
     test_add,
     test_allocate,
     test_adjacency,
+    test_adjungate_triangle,
     test_convert,
     test_copy,
     test_diagonalize,

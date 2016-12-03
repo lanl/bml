@@ -12,6 +12,7 @@ typedef int (
 
 #include "add_matrix.h"
 #include "adjacency_matrix.h"
+#include "adjungate_triangle_matrix.h"
 #include "allocate_matrix.h"
 #include "convert_matrix.h"
 #include "copy_matrix.h"
