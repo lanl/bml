@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Replace USER by your user name
+ 
+rm -r build
+rm -r install
+HOME=`pwd`
+
+CC=gcc FC=gfortran \
+BML_MPI=no \
+CMAKE_INSTALL_PREFIX=$HOME/bml/install \
+CMAKE_BUILD_TYPE=Release BLAS_VENDOR=MKL BML_OPENMP=yes BML_TESTING=yes ./build.sh configure
