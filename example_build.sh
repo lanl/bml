@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Make sure all the path are correct
+# Make sure all the paths are correct
 
 rm -r build
 rm -r install
@@ -10,8 +10,8 @@ rm -r install
 #module load cmake
 #module load mkl
 
-FC=gfortran CC=gcc CMAKE_BUILD_TYPE=Release \
-INSTALL_DIR=$HOME/bml/install FC=gfortran BLAS_VENDOR=MKL \
+FC=mpif90 CC=mpicc BML_MPI=yes CMAKE_BUILD_TYPE=Release \
+INSTALL_DIR=$HOME/bml/install  BLAS_VENDOR=MKL \
 BML_OPENMP=yes BML_TESTING=yes ./build.sh configure
 
                                                                                                                                                                                               
