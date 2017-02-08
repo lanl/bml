@@ -1,7 +1,5 @@
 include_directories(..)
 
-set(COMPILE_FLAGS "-fPIC")
-
 set(HEADERS-ELLSORT
   bml_add_ellsort.h
   bml_allocate_ellsort.h
@@ -46,6 +44,9 @@ set(SOURCES-ELLSORT
   bml_utilities_ellsort.c)
 
 add_library(bml-ellsort OBJECT ${SOURCES-ELLSORT})
+set_target_properties(bml-ellsort
+  PROPERTIES
+  POSITION_INDEPENDENT_CODE yes)
 if(OPENMP_FOUND)
   set_target_properties(bml-ellsort
     PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
@@ -77,11 +78,11 @@ bml_add_typed_library(bml-ellsort single_complex "${SOURCES-ELLSORT-TYPED}")
 bml_add_typed_library(bml-ellsort double_complex "${SOURCES-ELLSORT-TYPED}")
 if(OPENMP_FOUND)
   set_target_properties(bml-ellsort-single_real
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellsort-double_real
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellsort-single_complex
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellsort-double_complex
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()

@@ -1,7 +1,5 @@
 include_directories(..)
 
-set(COMPILE_FLAGS "-fPIC")
-
 set(HEADERS-DENSE
   bml_add_dense.h
   bml_adjungate_triangle_dense.h
@@ -48,9 +46,12 @@ set(SOURCES-DENSE
   bml_utilities_dense.c)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
+set_target_properties(bml-dense
+  PROPERTIES
+  POSITION_INDEPENDENT_CODE yes)
 if(OPENMP_FOUND)
   set_target_properties(bml-dense
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
 
 set(SOURCES-DENSE-TYPED
@@ -80,11 +81,11 @@ bml_add_typed_library(bml-dense single_complex "${SOURCES-DENSE-TYPED}")
 bml_add_typed_library(bml-dense double_complex "${SOURCES-DENSE-TYPED}")
 if(OPENMP_FOUND)
   set_target_properties(bml-dense-single_real
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-dense-double_real
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-dense-single_complex
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-dense-double_complex
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()

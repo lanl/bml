@@ -19,6 +19,10 @@ add_library(bml
   $<TARGET_OBJECTS:bml-ellsort-single_real>
   $<TARGET_OBJECTS:bml-ellsort>
   $<TARGET_OBJECTS:bml-fortran>)
+set_target_properties(bml
+  PROPERTIES
+  SOVERSION ${PROJECT_VERSION}
+  POSITION_INDEPENDENT_CODE yes)
 
 install(TARGETS bml
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

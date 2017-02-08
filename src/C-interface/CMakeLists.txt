@@ -69,14 +69,16 @@ set(SOURCES-C
   bml_transpose_triangle.c
   bml_utilities.c)
 add_library(bml-c OBJECT ${SOURCES-C})
-set(COMPILE_FLAGS "-fPIC")
+set_target_properties(bml-c
+  PROPERTIES
+  POSITION_INDEPENDENT_CODE yes)
 if(OPENMP_FOUND)
   set_target_properties(bml-c
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
 if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
   set_target_properties(bml-c
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${MPI_C_COMPILE_FLAGS}")
+    PROPERTIES COMPILE_FLAGS ${MPI_C_COMPILE_FLAGS})
 endif()
 
 add_subdirectory(dense)
