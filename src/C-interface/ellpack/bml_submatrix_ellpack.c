@@ -10,7 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Determine element indices for submatrix, given a set of nodes/orbitals.
  *

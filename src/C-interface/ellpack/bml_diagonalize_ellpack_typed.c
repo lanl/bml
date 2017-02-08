@@ -17,7 +17,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Diagonalize matrix.
  *

@@ -12,7 +12,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Transpose a matrix.
  *
@@ -68,6 +71,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
 */
     // Transpose all elements
+#ifdef _OPENMP
     omp_lock_t *row_lock = (omp_lock_t *) malloc(sizeof(omp_lock_t) * N);
 
 #pragma omp parallel for
@@ -75,6 +79,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     {
         omp_init_lock(&row_lock[i]);
     }
+#endif
 
 #pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
     for (int i = 0; i < N; i++)
@@ -82,13 +87,17 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         for (int j = 0; j < A_nnz[i]; j++)
         {
             int trow = A_index[ROWMAJOR(i, j, N, M)];
+#ifdef _OPENMP
             omp_set_lock(&row_lock[trow]);
+#endif
             int colcnt = B_nnz[trow];
             B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
             B_value[ROWMAJOR(trow, colcnt, N, M)] =
                 A_value[ROWMAJOR(i, j, N, M)];
             B_nnz[trow]++;
+#ifdef _OPENMP
             omp_unset_lock(&row_lock[trow]);
+#endif
         }
     }
 

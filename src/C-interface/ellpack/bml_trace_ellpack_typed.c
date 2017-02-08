@@ -13,7 +13,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Calculate the trace of a matrix.
  *

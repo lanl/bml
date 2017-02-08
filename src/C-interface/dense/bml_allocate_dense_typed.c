@@ -7,7 +7,10 @@
 
 #include <complex.h>
 #include <string.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Clear the matrix.
  *

@@ -9,7 +9,10 @@
 #include <stdlib.h>
 #include <complex.h>
 #include <math.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Adjungates a triangle of a matrix in place.
  *

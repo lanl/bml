@@ -11,7 +11,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Calculate the sum of squares of all the elements of a matrix.
  *

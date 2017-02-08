@@ -15,7 +15,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /* Normalize ellpack matrix given Gershgorin bounds.
  *

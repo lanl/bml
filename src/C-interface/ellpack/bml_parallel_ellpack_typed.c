@@ -10,7 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 #ifdef DO_MPI
 #include <mpi.h>
