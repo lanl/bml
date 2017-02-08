@@ -11,10 +11,13 @@ module bml_init_m
   implicit none
   private
 
+#ifdef DO_MPI
   public :: bml_initF
+#endif
 
 contains
 
+#ifdef DO_MPI
   !> Initialize from Fortran when using MPI.
   !!
   !! \param Comm from Fortran
@@ -25,5 +28,6 @@ contains
     call bml_initF_C(fcomm)
 
   end subroutine bml_initF
+#endif
 
 end module bml_init_m
