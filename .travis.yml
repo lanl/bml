@@ -11,15 +11,21 @@ addons:
     - g++-4.8
     - g++-4.9
     - g++-5
+    - g++-6
+    - g++-7
     - gcc-4.7
     - gcc-4.8
     - gcc-4.9
     - gcc-5
+    - gcc-6
+    - gcc-7
     - gfortran
     - gfortran-4.7
     - gfortran-4.8
     - gfortran-4.9
     - gfortran-5
+    - gfortran-6
+    - gfortran-7
     - indent
     - texlive
     - valgrind
@@ -34,6 +40,10 @@ env:
   - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 CMAKE_BUILD_TYPE=Debug BML_OPENMP=yes VERBOSE_MAKEFILE=yes COMMAND=testing
   - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   CMAKE_BUILD_TYPE=Debug BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=testing
   - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   CMAKE_BUILD_TYPE=Debug BML_OPENMP=yes VERBOSE_MAKEFILE=yes COMMAND=testing
+  - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   CMAKE_BUILD_TYPE=Debug BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=testing
+  - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   CMAKE_BUILD_TYPE=Debug BML_OPENMP=yes VERBOSE_MAKEFILE=yes COMMAND=testing
+  - CC=gcc-7   CXX=g++-7   FC=gfortran-7   GCOV=gcov-7   CMAKE_BUILD_TYPE=Debug BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=testing
+  - CC=gcc-7   CXX=g++-7   FC=gfortran-7   GCOV=gcov-7   CMAKE_BUILD_TYPE=Debug BML_OPENMP=yes VERBOSE_MAKEFILE=yes COMMAND=testing
   - CMAKE_BUILD_TYPE=Debug BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=docs
   - CMAKE_BUILD_TYPE=Debug BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=indent
 
