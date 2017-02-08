@@ -1,5 +1,7 @@
 include_directories(${CMAKE_SOURCE_DIR}/src/C-interface)
 
+set(COMPILE_FLAGS "-fPIC")
+
 set(SOURCES_TYPED
   add_matrix_typed.c
   adjacency_matrix_typed.c
@@ -22,6 +24,22 @@ bml_add_typed_library(bmltests single_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests single_complex "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_complex "${SOURCES_TYPED}")
+
+set_target_properties(bmltests-single_real
+  PROPERTIES
+  COMPILE_FLAGS ${COMPILE_FLAGS})
+
+set_target_properties(bmltests-double_real
+  PROPERTIES
+  COMPILE_FLAGS ${COMPILE_FLAGS})
+
+set_target_properties(bmltests-single_complex
+  PROPERTIES
+  COMPILE_FLAGS ${COMPILE_FLAGS})
+
+set_target_properties(bmltests-double_complex
+  PROPERTIES
+  COMPILE_FLAGS ${COMPILE_FLAGS})
 
 add_library(bmltests
   $<TARGET_OBJECTS:bmltests-single_real>
@@ -53,13 +71,13 @@ set_target_properties(bml-test
 if(OPENMP_FOUND)
   set_target_properties(bml-test
     PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS}
+    COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}"
     LINK_FLAGS ${OpenMP_C_FLAGS})
 endif()
 if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
   set_target_properties(bml-test
     PROPERTIES
-    COMPILE_FLAGS ${MPI_C_COMPILE_FLAGS}
+    COMPILE_FLAGS "${COMPILE_FLAGS} ${MPI_C_COMPILE_FLAGS}"
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 

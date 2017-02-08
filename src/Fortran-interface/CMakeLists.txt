@@ -1,5 +1,7 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../C-interface)
 
+set(COMPILE_FLAGS "-fPIC")
+
 set(FORTRAN-SOURCES-PUBLIC
   bml.F90
   bml_add_m.F90
@@ -60,7 +62,7 @@ endforeach()
 add_library(bml-fortran OBJECT ${FORTRAN-SOURCES-PUBLIC} ${FORTRAN-SOURCES-PRIVATE})
 if(OPENMP_FOUND)
   set_target_properties(bml-fortran
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
 endif()
 
 foreach(S ${FORTRAN-SOURCES-PUBLIC})
