@@ -3,7 +3,7 @@
 | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=develop)](https://travis-ci.org/qmmd/bml) |
 | [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=master)](https://codecov.io/github/qmmd/bml?branch=master) | [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=develop)](https://codecov.io/github/qmmd/bml?branch=develop) |
 
-# Build Instructions #
+# Build Instructions
 
 The bml library is built with CMake.  For your convenience, we provide
 a shell script which goes through the necessary motions and builds the
@@ -37,15 +37,16 @@ To build with MPI, OpenMP, and use Intel MKL do the following.
 
     $ CC=mpicc FC=mpif90 BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
 
-## Prerequisites ##
+## Prerequisites
 
 In order to build the library, the following tools need to be installed:
 
 - `gcc` with Fortran support
 - `>=cmake-2.8.8`
 - `>=python-2.7`
+- `>=OpenMP-3.1` (i.e. `>=gcc-4.7)
 
-## If the build fails ##
+## If the build fails
 
 In case the build fails for some reason, please email the developers
 at <qmmd-all@lanl.gov> or open an issue on github
@@ -54,14 +55,14 @@ at <qmmd-all@lanl.gov> or open an issue on github
     build/CMakeFiles/CMakeOutput.log
     build/CMakeFiles/CMakeError.log
 
-# Developer Suggested Workflow #
+# Developer Suggested Workflow
 
 We do our main development on the `develop` branch.  If you would like
 to contribute your work to the bml project, please fork the project on
 github, hack away at the forked `develop` branch and send us a pull
 request once you think we should have a look and integrate your work.
 
-## Coding Style ##
+## Coding Style
 
 Please indent your C code using
 
@@ -69,7 +70,7 @@ Please indent your C code using
 
 You can use the script `indent.sh` to indent all C code.
 
-# Citing #
+# Citing
 
 If you find this library useful, we encourage you to cite us. Our project has
 a citable DOI:
@@ -85,7 +86,7 @@ with the following `bibtex` snipped:
       year = 2016
     }
 
-# License #
+# License
 
 The bml library is licensed under the BSD 3-clause license.
 
