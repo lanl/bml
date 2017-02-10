@@ -19,9 +19,6 @@ bml_deallocate_ellsort(
 {
     bml_deallocate_domain(A->domain);
     bml_deallocate_domain(A->domain2);
-
-    bml_free_memory(A->domain);
-    bml_free_memory(A->domain2);
     bml_free_memory(A->value);
     bml_free_memory(A->index);
     bml_free_memory(A->nnz);

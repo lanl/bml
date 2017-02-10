@@ -114,6 +114,7 @@ bml_deallocate_domain(
     bml_free_memory(D->localRowExtent);
     bml_free_memory(D->localDispl);
     bml_free_memory(D->localElements);
+    bml_free_memory(D);
 }
 
 /** Deallocate a matrix.
@@ -423,8 +424,8 @@ bml_default_domain(
     domain->localRowMin = bml_allocate_memory(nRanks * sizeof(int));
     domain->localRowMax = bml_allocate_memory(nRanks * sizeof(int));
     domain->localRowExtent = bml_allocate_memory(nRanks * sizeof(int));
-    domain->localElements = bml_allocate_memory(nRanks * sizeof(int));
     domain->localDispl = bml_allocate_memory(nRanks * sizeof(int));
+    domain->localElements = bml_allocate_memory(nRanks * sizeof(int));
 
     domain->totalProcs = nRanks;
     domain->totalRows = N;

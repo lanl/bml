@@ -17,9 +17,6 @@ bml_deallocate_dense(
 {
     bml_deallocate_domain(A->domain);
     bml_deallocate_domain(A->domain2);
-
-    bml_free_memory(A->domain);
-    bml_free_memory(A->domain2);
     bml_free_memory(A->matrix);
     bml_free_memory(A);
 }

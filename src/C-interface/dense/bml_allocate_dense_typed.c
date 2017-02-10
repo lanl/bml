@@ -88,9 +88,6 @@ bml_matrix_dense_t *TYPED_FUNC(
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
         }
     }
-
-    A->domain = bml_default_domain(N, N, distrib_mode);
-    A->domain2 = bml_default_domain(N, N, distrib_mode);
     return A;
 }
 
@@ -122,8 +119,6 @@ bml_matrix_dense_t *TYPED_FUNC(
             A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
         }
     }
-    A->domain = bml_default_domain(N, N, distrib_mode);
-    A->domain2 = bml_default_domain(N, N, distrib_mode);
     return A;
 }
 
@@ -152,7 +147,5 @@ bml_matrix_dense_t *TYPED_FUNC(
     {
         A_dense[ROWMAJOR(i, i, N, N)] = 1;
     }
-    A->domain = bml_default_domain(N, N, distrib_mode);
-    A->domain2 = bml_default_domain(N, N, distrib_mode);
     return A;
 }
