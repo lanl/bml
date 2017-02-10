@@ -146,8 +146,6 @@ bml_matrix_ellsort_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
-    A->domain = bml_default_domain(N, M, distrib_mode);
-    A->domain2 = bml_default_domain(N, M, distrib_mode);
     return A;
 }
 
@@ -191,8 +189,6 @@ bml_matrix_ellsort_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
-    A->domain = bml_default_domain(N, M, distrib_mode);
-    A->domain2 = bml_default_domain(N, M, distrib_mode);
     return A;
 }
 
@@ -231,7 +227,5 @@ bml_matrix_ellsort_t *TYPED_FUNC(
         A_index[ROWMAJOR(i, 0, N, M)] = i;
         A_nnz[i] = 1;
     }
-    A->domain = bml_default_domain(N, M, distrib_mode);
-    A->domain2 = bml_default_domain(N, M, distrib_mode);
     return A;
 }
