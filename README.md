@@ -3,6 +3,11 @@
 | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=develop)](https://travis-ci.org/qmmd/bml) |
 | [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=master)](https://codecov.io/github/qmmd/bml?branch=master) | [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=develop)](https://codecov.io/github/qmmd/bml?branch=develop) |
 
+# Binary Packages
+
+We offer binary packages of the bml library through [SUSE's OpenBuild
+Service](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml).
+
 # Build Instructions
 
 The bml library is built with CMake.  For your convenience, we provide
