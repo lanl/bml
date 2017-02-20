@@ -1,6 +1,10 @@
 ---
 title: BML
 ---
+# Binary Packages
+
+We offer binary packages of the bml library through [SUSE's OpenBuild
+Service](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml).
 
 # Build Instructions
 
@@ -60,9 +64,9 @@ files
 
 # Developer Suggested Workflow
 
-We do our main development on the `develop` branch.  If you would like to
+We do our main development on the `master` branch.  If you would like to
 contribute your work to the bml project, please fork the project on github,
-hack away at the forked `develop` branch and send us a pull request once you
+hack away at the forked `master` branch and send us a pull request once you
 think we should have a look and integrate your work.
 
 ## Coding Style
