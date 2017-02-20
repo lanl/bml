@@ -1,7 +1,7 @@
-| master | develop |
+| master |
 | ------ | ------- |
-| [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=develop)](https://travis-ci.org/qmmd/bml) |
-| [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=master)](https://codecov.io/github/qmmd/bml?branch=master) | [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=develop)](https://codecov.io/github/qmmd/bml?branch=develop) |
+| [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) |
+| [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=master)](https://codecov.io/github/qmmd/bml?branch=master) |
 
 # Binary Packages
 
@@ -66,9 +66,9 @@ files
 
 # Developer Suggested Workflow
 
-We do our main development on the `develop` branch.  If you would like to
+We do our main development on the `master` branch.  If you would like to
 contribute your work to the bml project, please fork the project on github,
-hack away at the forked `develop` branch and send us a pull request once you
+hack away at the forked `master` branch and send us a pull request once you
 think we should have a look and integrate your work.
 
 ## Coding Style
