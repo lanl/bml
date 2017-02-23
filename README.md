@@ -53,7 +53,7 @@ In order to build the library, the following tools need to be installed:
 - `gcc` with Fortran support
 - `>=cmake-2.8.8`
 - `>=python-2.7`
-- `>=OpenMP-3.1` (i.e. `>=gcc-4.7)
+- `>=OpenMP-3.1` (i.e. `>=gcc-4.7`)
 
 ## If the build fails
 
