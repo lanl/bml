@@ -49,7 +49,8 @@ set_target_properties(bml-ellsort
   POSITION_INDEPENDENT_CODE yes)
 if(OPENMP_FOUND)
   set_target_properties(bml-ellsort
-    PROPERTIES COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
+    PROPERTIES
+    COMPILE_FLAGS "${COMPILE_FLAGS} ${OpenMP_C_FLAGS}")
 endif()
 
 set(SOURCES-ELLSORT-TYPED
@@ -78,11 +79,15 @@ bml_add_typed_library(bml-ellsort single_complex "${SOURCES-ELLSORT-TYPED}")
 bml_add_typed_library(bml-ellsort double_complex "${SOURCES-ELLSORT-TYPED}")
 if(OPENMP_FOUND)
   set_target_properties(bml-ellsort-single_real
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellsort-double_real
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellsort-single_complex
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellsort-double_complex
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()

@@ -23,6 +23,12 @@ set_target_properties(bml
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
+if(OPENMP_FOUND)
+  set_target_properties(bml
+    PROPERTIES
+    LINK_FLAGS ${OpenMP_Fortran_FLAGS})
+endif()
+target_link_libraries(bml ${LINK_LIBRARIES})
 
 install(TARGETS bml
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
