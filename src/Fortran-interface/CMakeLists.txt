@@ -63,7 +63,8 @@ set_target_properties(bml-fortran
   POSITION_INDEPENDENT_CODE yes)
 if(OPENMP_FOUND)
   set_target_properties(bml-fortran
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
 
 foreach(S ${FORTRAN-SOURCES-PUBLIC})

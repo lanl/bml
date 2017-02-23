@@ -33,23 +33,32 @@ endif()
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Wno-unknown-pragmas --coverage
   -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99)
+set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
   -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
+set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
   -traceback -qopt-report=5)
 set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99 -qopt-report=5)
+set(Intel_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -qopt-report=5 -DNDEBUG)
 set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -assume realloc_lhs
   -traceback -qopt-report=5)
 set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs -qopt-report=5)
+set(Intel_Fortran_FLAGS_RELWITHDEBINFO -O2 -g -assume realloc_lhs
+  -qopt-report=5 -DNDEBUG)
 
 set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
+set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
 if(CMAKE_BUILD_TYPE)
   string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
-  if(BUILD_TYPE STREQUAL "DEBUG" OR BUILD_TYPE STREQUAL "RELEASE")
+  message(STATUS "BUILD_TYPE = ${BUILD_TYPE}")
+  if(BUILD_TYPE STREQUAL "DEBUG" 
+      OR BUILD_TYPE STREQUAL "RELEASE" 
+      OR BUILD_TYPE STREQUAL "RELWITHDEBINFO")
     if(CMAKE_C_FLAGS STREQUAL "")
       if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
           OR CMAKE_C_COMPILER_ID STREQUAL "Intel"
@@ -59,7 +68,7 @@ if(CMAKE_BUILD_TYPE)
         string(REPLACE ";" " "
           CMAKE_C_FLAGS_${BUILD_TYPE}
           "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
-	if(DEFINED EXTRA_CFLAGS)
+        if(DEFINED EXTRA_CFLAGS)
           set(CMAKE_C_FLAGS_${BUILD_TYPE} "${CMAKE_C_FLAGS_${BUILD_TYPE}} ${EXTRA_CFLAGS}")
         endif()
         message(STATUS "Setting C compiler flags to "
@@ -77,9 +86,9 @@ if(CMAKE_BUILD_TYPE)
         string(REPLACE ";" " "
           CMAKE_Fortran_FLAGS_${BUILD_TYPE}
           "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
-	if(DEFINED EXTRA_FCFLAGS)
+        if(DEFINED EXTRA_FCFLAGS)
           set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}} ${EXTRA_FCFLAGS}")
-	endif()
+        endif()
         message(STATUS "Setting Fortran compiler flags to "
           "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
       else()
@@ -90,11 +99,11 @@ if(CMAKE_BUILD_TYPE)
 endif()
 
 if(CMAKE_C_FLAGS STRGREATER "")
-  message(STATUS "Using user supplied C compiler flags ${CMAKE_C_FLAGS}")
+  message(STATUS "Using user supplied C compiler flags: ${CMAKE_C_FLAGS}")
 endif()
 
 if(CMAKE_Fortran_FLAGS STRGREATER "")
-  message(STATUS "Using user supplied Fortran compiler flags ${CMAKE_Fortran_FLAGS}")
+  message(STATUS "Using user supplied Fortran compiler flags: ${CMAKE_Fortran_FLAGS}")
 endif()
 
 include(FindThreads)

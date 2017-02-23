@@ -51,7 +51,8 @@ set_target_properties(bml-ellpack
   POSITION_INDEPENDENT_CODE yes)
 if(OPENMP_FOUND)
   set_target_properties(bml-ellpack
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
 
 set(SOURCES-ELLPACK-TYPED
@@ -81,11 +82,15 @@ bml_add_typed_library(bml-ellpack single_complex "${SOURCES-ELLPACK-TYPED}")
 bml_add_typed_library(bml-ellpack double_complex "${SOURCES-ELLPACK-TYPED}")
 if(OPENMP_FOUND)
   set_target_properties(bml-ellpack-single_real
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellpack-double_real
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellpack-single_complex
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
   set_target_properties(bml-ellpack-double_complex
-    PROPERTIES COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
