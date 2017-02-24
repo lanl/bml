@@ -27,18 +27,19 @@ step and the build:
 
 EOF
   set_defaults
-  echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
-  echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
-  echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
-  echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
-  echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
-  echo "CC                 Path to C compiler       (default is ${CC})"
   echo "CMAKE_BUILD_TYPE   {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
+  echo "CC                 Path to C compiler       (default is ${CC})"
   echo "CXX                Path to C++ compiler     (default is ${CXX})"
   echo "FC                 Path to Fortran compiler (default is ${FC})"
+  echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
+  echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
+  echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
+  echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
+  echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
   echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
   echo "EXTRA_CFLAGS       Extra C flags            (default is ${EXTRA_CFLAGS})"
   echo "EXTRA_FCFLAGS      Extra fortran flags      (default is ${EXTRA_FCFLAGS})"
+  echo "EXTRA_LINK_FLAGS   Any extra link flag      (default is ${EXTRA_LINK_FLAGS})"
 }
 
 set_defaults() {
@@ -51,6 +52,7 @@ set_defaults() {
   BLAS_VENDOR="${BLAS_VENDOR:=}"
   EXTRA_CFLAGS="${EXTRA_CFLAGS:=}"
   EXTRA_FCFLAGS="${EXTRA_FCFLAGS:=}"
+  EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:=""}
   BML_TESTING=${BML_TESTING:=yes}
 }
 
@@ -107,6 +109,7 @@ configure() {
     -DBLAS_VENDOR="${BLAS_VENDOR}" \
     -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
     -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
+    -DEXTRA_LINK_FLAGS="${EXTRA_LINK_FLAGS}" \
     | tee -a "${LOG_FILE}"
   check_pipe_error
   cd "${TOP_DIR}"
