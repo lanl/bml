@@ -22,91 +22,131 @@
 
     <section class="main-content">
 
-      <table class="build-status">
+      <table align="center" class="build-status">
         <caption>Current Build Status</caption>
         <tr>
           <th>master</th>
-          <th>develop</th>
-        </tr>
-        <tr>
           <td align="center">
             <a href="https://travis-ci.org/qmmd/bml"> <img
                src="https://travis-ci.org/qmmd/bml.svg?branch=master"
                alt="Build status"></a>
           </td>
-          <td align="center">
-            <a href="https://travis-ci.org/qmmd/bml"> <img
-               src="https://travis-ci.org/qmmd/bml.svg?branch=develop"
-               alt="Build status"></a>
-          </td>
         </tr>
       </table>
 
+<h1 id="binary-packages">Binary Packages</h1>
+
+<p>We offer binary packages of the bml library in <a href="http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&amp;package=bml">RPM
+format</a>
+thanks to SUSE’s OpenBuild Service and for Ubuntu in <a href="https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd">DEB
+format</a>.</p>
+
 <h1 id="build-instructions">Build Instructions</h1>
 
-<p>The bml library is built with CMake.  For your convenience, we provide
-a shell script which goes through the necessary motions and builds the
-library, runs the tests, and installs it (in the <code>install</code> directory).
-Simply run:</p>
+<p>The bml library is built with CMake.  For convenience, we provide a shell
+script which goes through the necessary motions and builds the library, runs
+the tests, and installs it (in the <code class="highlighter-rouge">install</code> directory). Simply run:</p>
 
-<pre><code>$ ./build.sh compile
+<div class="highlighter-rouge"><pre class="highlight"><code>$ ./build.sh install
 </code></pre>
+</div>
 
-<p>and the library will be built in the <code>build</code> directory.  In case you
-change any sources and simply want to rebuild the library, you don’t
-have to run <code>build.sh</code> again, but rather</p>
+<p>and the library will be built in the <code class="highlighter-rouge">build</code> directory and installed in the
+<code class="highlighter-rouge">install</code> directory.  In case you change any sources and simply want to
+rebuild the library, you don’t have to run <code class="highlighter-rouge">build.sh</code> again, but rather</p>
 
-<pre><code>$ make -C build
+<div class="highlighter-rouge"><pre class="highlight"><code>$ make -C build
 </code></pre>
+</div>
 
 <p>The compiled library can be installed by running</p>
 
-<pre><code>$ make -C build install
+<div class="highlighter-rouge"><pre class="highlight"><code>$ make -C build install
 </code></pre>
+</div>
 
-<p>which by default installs in <code>/usr/local</code>.  The install directory can
-be modified by running</p>
+<p>The install directory can be modified by running</p>
 
-<pre><code>$ CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+<div class="highlighter-rouge"><pre class="highlight"><code>$ CMAKE_INSTALL_PREFIX=/some/path ./build.sh install
 </code></pre>
+</div>
 
 <p>(which assumes that you are using the bash shell).</p>
+
+<p>To build with GNU compilers, OpenMP, and Intel MKL do the following.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ CC=gcc FC=gfortran \
+    BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
+    BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path \
+    ./build.sh install
+</code></pre>
+</div>
+
+<p>To build with MPI, OpenMP, and use Intel MKL do the following.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ CC=mpicc FC=mpif90 \
+    BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
+    BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path \
+    ./build.sh install
+</code></pre>
+</div>
 
 <h2 id="prerequisites">Prerequisites</h2>
 
 <p>In order to build the library, the following tools need to be installed:</p>
 
 <ul>
-  <li><code>gcc</code> with Fortran support</li>
-  <li><code>&gt;=cmake-2.8.8</code></li>
-  <li><code>&gt;=python-2.7</code></li>
+  <li><code class="highlighter-rouge">gcc</code> with Fortran support</li>
+  <li><code class="highlighter-rouge">&gt;=cmake-2.8.8</code></li>
+  <li><code class="highlighter-rouge">&gt;=python-2.7</code></li>
+  <li><code class="highlighter-rouge">&gt;=OpenMP-3.1</code> (i.e. <code class="highlighter-rouge">&gt;=gcc-4.7</code>)</li>
 </ul>
 
 <h2 id="if-the-build-fails">If the build fails</h2>
 
-<p>In case the build fails for some reason, please email the developers
-at <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#113;&#109;&#109;&#100;&#045;&#097;&#108;&#108;&#064;&#108;&#097;&#110;&#108;&#046;&#103;&#111;&#118;">&#113;&#109;&#109;&#100;&#045;&#097;&#108;&#108;&#064;&#108;&#097;&#110;&#108;&#046;&#103;&#111;&#118;</a> or open an issue on github
-(https://github.com/qmmd/bml/issues) and attach the files</p>
+<p>In case the build fails for some reason, please contact the developers by
+opening an issue on GitHub (https://github.com/qmmd/bml/issues) and attach the
+files</p>
 
-<pre><code>build/CMakeFiles/CMakeOutput.log
+<div class="highlighter-rouge"><pre class="highlight"><code>build/CMakeFiles/CMakeOutput.log
 build/CMakeFiles/CMakeError.log
 </code></pre>
+</div>
 
 <h1 id="developer-suggested-workflow">Developer Suggested Workflow</h1>
 
-<p>We do our main development on the <code>develop</code> branch.  If you would like
-to contribute your work to the bml project, please fork the project on
-github, hack away at the forked <code>develop</code> branch and send us a pull
-request once you think we should have a look and integrate your work.</p>
+<p>We do our main development on the <code class="highlighter-rouge">master</code> branch.  If you would like to
+contribute your work to the bml project, please fork the project on github,
+hack away at the forked <code class="highlighter-rouge">master</code> branch and send us a pull request once you
+think we should have a look and integrate your work.</p>
 
 <h2 id="coding-style">Coding Style</h2>
 
 <p>Please indent your C code using</p>
 
-<pre><code>$ indent -gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda
+<div class="highlighter-rouge"><pre class="highlight"><code>$ indent -gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda
 </code></pre>
+</div>
 
-<p>You can use the script <code>indent.sh</code> to indent all C code.</p>
+<p>You can use the script <code class="highlighter-rouge">indent.sh</code> to indent all C code.</p>
+
+<h1 id="citing">Citing</h1>
+
+<p>If you find this library useful, we encourage you to cite us. Our project has
+a citable DOI:</p>
+
+<p><a href="https://zenodo.org/badge/latestdoi/20454/qmmd/bml"><img src="https://zenodo.org/badge/20454/qmmd/bml.svg" alt="DOI" /></a></p>
+
+<p>with the following <code class="highlighter-rouge">bibtex</code> snipped:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@misc{bml,
+  url = {\url{https://qmmd.github.io}}
+  author = {Aradi, B\'{a}lint and Bock, Nicolas and Mniszewski, Susan M.
+    and Mohd-Yusof, Jamaludin and Negre, Christian},
+  year = 2017
+}
+</code></pre>
+</div>
 
 <h1 id="license">License</h1>
 
@@ -126,17 +166,16 @@ as not to confuse it with the version available from LANL.</p>
 <p>Additionally, redistribution and use in source and binary forms, with
 or without modification, are permitted provided that the following
 conditions are met:</p>
-
 <ul>
-  <li>Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.</li>
-  <li>Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation
-and/or other materials provided with the distribution.</li>
-  <li>Neither the name of Los Alamos National Security, LLC, Los Alamos National
-Laboratory, LANL, the U.S. Government, nor the names of its contributors may
-be used to endorse or promote products derived from this software without
-specific prior written permission</li>
+  <li>Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.</li>
+  <li>Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.</li>
+  <li>Neither the name of Los Alamos National Security, LLC, Los Alamos
+National Laboratory, LANL, the U.S. Government, nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission</li>
 </ul>
 
 <p>THIS SOFTWARE IS PROVIDED BY LOS ALAMOS NATIONAL SECURITY, LLC AND
@@ -151,6 +190,69 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+<h1 id="la-cc">LA-CC</h1>
+
+<p>NOTICE OF OSS COPYRIGHT ASSERTION:</p>
+
+<p>LANS has asserted copyright on the software package entitled <em>Basic
+Matrix Library (bml), Version 0.x (C16006)</em>.</p>
+
+<h2 id="abstract">ABSTRACT</h2>
+
+<p>The basic matrix library (bml) is a collection of various matrix data
+formats (in dense and sparse) and their associated algorithms for basic
+matrix operations.</p>
+
+<p>This code is unclassified and has been assigned LA-CC-<strong>15-093</strong>. Los Alamos
+National Laboratory’s Export Control Team made an in-house determination that
+this software is controlled under Department of Commerce regulations and the
+Export Control Classification Number (ECCN) <strong>EAR99</strong>. The export control
+review is attached.</p>
+
+<p>The developers intend to distribute this software package under the OSI
+Certified <strong>BSD 3-Clause License</strong>
+(http://www.opensource.org/licenses/BSD-3-Clause)</p>
+
+<p>This code was developed using funding from the LANL Laboratory-Directed
+Research Development (LDRD) Program. Larry Kwei, LAFO Program Manager, has
+granted his concurrence to asserting copyright and then distributing the
+<strong>Basic Matrix Library (bml), Version 0.x</strong> code using an open source software
+license. See attached memo.</p>
+
+<p>LANS acknowledges that it will comply with the DOE OSS policy as follows:</p>
+
+<ol>
+  <li>submit form DOE F 241.4 to the Energy Science and Technology Software
+Center (ESTSC),</li>
+  <li>provide the unique URL on the form for ESTSC to distribute, and</li>
+  <li>maintain an OSS Record available for inspection by DOE.</li>
+</ol>
+
+<p>Following is a table briefly summarizes information for this software package:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>CODE NAME</th>
+      <th>Basic Matrix Library (bml), Version 0.x (C16006)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Classification Review Number</td>
+      <td><strong>LA-CC-15-093</strong></td>
+    </tr>
+    <tr>
+      <td>Export Control Classification Number (ECCN)</td>
+      <td><strong>EAR99</strong></td>
+    </tr>
+    <tr>
+      <td>B&amp;R Code</td>
+      <td><strong>YN0100000</strong></td>
+    </tr>
+  </tbody>
+</table>
 
       <footer class="site-footer">
 
