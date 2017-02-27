@@ -5,8 +5,10 @@
 
 # Binary Packages
 
-We offer binary packages of the bml library through [SUSE's OpenBuild
-Service](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml).
+We offer binary packages of the bml library in [RPM
+format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml)
+thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
+format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
 # Build Instructions
 

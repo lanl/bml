@@ -3,8 +3,10 @@ title: BML
 ---
 # Binary Packages
 
-We offer binary packages of the bml library through [SUSE's OpenBuild
-Service](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml).
+We offer binary packages of the bml library in [RPM
+format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml)
+thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
+format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
 # Build Instructions
 
@@ -51,7 +53,7 @@ In order to build the library, the following tools need to be installed:
 - `gcc` with Fortran support
 - `>=cmake-2.8.8`
 - `>=python-2.7`
-- `>=OpenMP-3.1` (i.e. `>=gcc-4.7)
+- `>=OpenMP-3.1` (i.e. `>=gcc-4.7`)
 
 ## If the build fails
 
