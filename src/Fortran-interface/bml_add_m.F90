@@ -34,17 +34,17 @@ contains
   !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
   !! 1.
   !!
-  !! \param alpha Factor \f$ \alpha \f$
   !! \param a Matrix \f$ A \f$
-  !! \param beta Factor \f$ \beta \f$
   !! \param b Matrix \f$ B \f$
+  !! \param alpha Factor \f$ \alpha \f$
+  !! \param beta Factor \f$ \beta \f$
   !! \param threshold \f$ threshold \f$
-  subroutine add_two(alpha, a, beta, b, threshold)
+  subroutine add_two(a, b, alpha, beta, threshold)
 
-    real(C_DOUBLE), intent(in) :: alpha
     type(bml_matrix_t), intent(inout) :: a
-    real(C_DOUBLE), intent(in) :: beta
     type(bml_matrix_t), intent(in) :: b
+    real(C_DOUBLE), intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: beta
     real(C_DOUBLE), optional, intent(in) :: threshold
 
     real(C_DOUBLE) :: threshold_
@@ -65,12 +65,12 @@ contains
   !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
   !! 1.
   !!
-  !! \param alpha Factor \f$ \alpha \f$
   !! \param a Matrix \f$ A \f$
-  !! \param beta Factor \f$ \beta \f$
   !! \param b Matrix \f$ B \f$
+  !! \param alpha Factor \f$ \alpha \f$
+  !! \param beta Factor \f$ \beta \f$
   !! \param threshold \f$ threshold \f$
-  function bml_add_norm(alpha, a, beta, b, threshold) result(trnorm)
+  function bml_add_norm(a, b, alpha, beta, threshold) result(trnorm)
 
     real(C_DOUBLE), intent(in) :: alpha
     class(bml_matrix_t), intent(in) :: a
