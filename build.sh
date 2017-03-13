@@ -83,8 +83,8 @@ check_pipe_error() {
 }
 
 create() {
-  mkdir -v -p "${BUILD_DIR}" || die
-  mkdir -v -p "${INSTALL_DIR}" || die
+    mkdir -v -p "${BUILD_DIR}" || die
+    mkdir -v -p "${INSTALL_DIR}" || die
 }
 
 configure() {
