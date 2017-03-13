@@ -110,15 +110,14 @@ configure() {
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
         -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
         -DEXTRA_LINK_FLAGS="${EXTRA_LINK_FLAGS}" \
+        -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
         | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
 
 compile() {
-    make -C "${BUILD_DIR}" \
-        $([[ "${VERBOSE_MAKEFILE}" = "yes" ]] && echo "VERBOSE=1") 2>&1 \
-        | tee -a "${LOG_FILE}"
+    make -C "${BUILD_DIR}" | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
