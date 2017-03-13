@@ -10,16 +10,15 @@ Service](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3
 
 # Build Instructions
 
-The bml library is built with CMake.  For your convenience, we provide
-a shell script which goes through the necessary motions and builds the
-library, runs the tests, and installs it (in the `install` directory).
-Simply run:
+The bml library is built with CMake.  For convenience, we provide a shell
+script which goes through the necessary motions and builds the library, runs
+the tests, and installs it (in the `install` directory). Simply run:
 
-    $ ./build.sh compile
+    $ ./build.sh install
 
-and the library will be built in the `build` directory.  In case you
-change any sources and simply want to rebuild the library, you don't
-have to run `build.sh` again, but rather
+and the library will be built in the `build` directory and installed in the
+`install` directory.  In case you change any sources and simply want to
+rebuild the library, you don't have to run `build.sh` again, but rather
 
     $ make -C build
 
@@ -27,20 +26,25 @@ The compiled library can be installed by running
 
     $ make -C build install
 
-which by default installs in `/usr/local`.  The install directory can
-be modified by running
+The install directory can be modified by running
 
-    $ CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+    $ CMAKE_INSTALL_PREFIX=/some/path ./build.sh install
 
 (which assumes that you are using the bash shell).
 
 To build with GNU compilers, OpenMP, and Intel MKL do the following.
 
-    $ CC=gcc FC=gfortran BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+    $ CC=gcc FC=gfortran \
+        BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
+        BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path \
+        ./build.sh install
 
 To build with MPI, OpenMP, and use Intel MKL do the following.
 
-    $ CC=mpicc FC=mpif90 BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path ./build.sh configure
+    $ CC=mpicc FC=mpif90 \
+        BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
+        BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path \
+        ./build.sh install
 
 ## Prerequisites
 
