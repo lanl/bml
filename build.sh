@@ -39,7 +39,6 @@ EOF
     echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
     echo "EXTRA_CFLAGS       Extra C flags            (default is ${EXTRA_CFLAGS})"
     echo "EXTRA_FCFLAGS      Extra fortran flags      (default is ${EXTRA_FCFLAGS})"
-    echo "EXTRA_LINK_FLAGS   Any extra link flag      (default is ${EXTRA_LINK_FLAGS})"
 }
 
 set_defaults() {
@@ -52,7 +51,6 @@ set_defaults() {
     BLAS_VENDOR="${BLAS_VENDOR:=}"
     EXTRA_CFLAGS="${EXTRA_CFLAGS:=}"
     EXTRA_FCFLAGS="${EXTRA_FCFLAGS:=}"
-    EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:=""}
     BML_TESTING=${BML_TESTING:=yes}
 }
 
@@ -109,7 +107,6 @@ configure() {
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
         -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
-        -DEXTRA_LINK_FLAGS="${EXTRA_LINK_FLAGS}" \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
         | tee -a "${LOG_FILE}"
     check_pipe_error
