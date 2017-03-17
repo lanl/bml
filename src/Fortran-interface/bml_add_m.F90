@@ -14,6 +14,10 @@ module bml_add_m
      module procedure add_two
   end interface bml_add
 
+  interface bml_add_deprecated
+     module procedure add_two_deprecated
+   end interface bml_add_deprecated
+
   !> Add identity matrix to a matrix.
   interface bml_add_identity
      module procedure add_identity_one
@@ -21,6 +25,7 @@ module bml_add_m
   !> @}
 
   public :: bml_add
+  public :: bml_add_deprecated
   public :: bml_add_norm
   public :: bml_add_identity
   public :: bml_scale_add_identity
@@ -57,6 +62,37 @@ contains
     call bml_add_C(a%ptr, b%ptr, alpha, beta, threshold_)
 
   end subroutine add_two
+
+  !> \deprecated Add two matrices.
+  !!
+  !! \f$ A \leftarrow \alpha A + \beta B \f$
+  !!
+  !! The optional scalars \f$ \alpha \f$ and \f$ \beta \f$ default to
+  !! 1.
+  !!
+  !! \param alpha Factor \f$ \alpha \f$
+  !! \param a Matrix \f$ A \f$
+  !! \param beta Factor \f$ \beta \f$
+  !! \param b Matrix \f$ B \f$
+  !! \param threshold \f$ threshold \f$
+  subroutine add_two_deprecated(alpha, a, beta, b, threshold)
+
+    real(C_DOUBLE), intent(in) :: alpha
+    type(bml_matrix_t), intent(inout) :: a
+    real(C_DOUBLE), intent(in) :: beta
+    type(bml_matrix_t), intent(in) :: b
+    real(C_DOUBLE), optional, intent(in) :: threshold
+
+    real(C_DOUBLE) :: threshold_
+
+    if(present(threshold)) then
+       threshold_ = threshold
+    else
+       threshold_ = 0.0_C_DOUBLE
+    end if
+    call add_two(a, b, alpha, beta, threshold_)
+
+  end subroutine add_two_deprecated
 
   !> Add two matrices and calculate trnorm.
   !!
