@@ -24,11 +24,9 @@ bml_init(
  *
  * \param Comm from Fortran
  */
-#ifdef DO_MPI
 void
 bml_initF(
-    MPI_Fint fcomm)
+    int fcomm)
 {
     bml_initParallelF(fcomm);
 }
-#endif

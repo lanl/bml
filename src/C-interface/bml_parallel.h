@@ -3,10 +3,6 @@
 #ifndef __BML_PARALLEL_H
 #define __BML_PARALLEL_H
 
-#ifdef DO_MPI
-#include <mpi.h>
-#endif
-
 #include "bml_types.h"
 
 #ifdef DO_MPI
@@ -30,10 +26,8 @@ int bml_getMyRank(
     void);
 
 // Initialize from Fortran MPI
-#ifdef DO_MPI
 void bml_initParallelF(
-    MPI_Fint fcomm);
-#endif
+    int fcomm);
 
 // Shutdown from Fortran MPI
 void bml_shutdownParallelF(

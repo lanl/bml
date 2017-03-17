@@ -11,6 +11,10 @@
 #include <string.h>
 #include <assert.h>
 
+#ifdef DO_MPI
+#include <mpi.h>
+#endif
+
 static int myRank = 0;
 static int nRanks = 1;
 #ifdef DO_MPI
@@ -46,11 +50,12 @@ bml_getMyRank(
     return myRank;
 }
 
-//
-/// \details
-/// For now this is just a check for rank 0 but in principle it could be
-/// more complex.  It is also possible to suppress practically all
-/// output by causing this function to return 0 for all ranks.
+/* \details
+ *
+ * For now this is just a check for rank 0 but in principle it could be more
+ * complex.  It is also possible to suppress practically all output by causing
+ * this function to return 0 for all ranks.
+ */
 int
 bml_printRank(
     )
@@ -80,11 +85,11 @@ bml_initParallel(
 #endif
 }
 
-#ifdef DO_MPI
 void
 bml_initParallelF(
-    MPI_Fint fcomm)
+    int fcomm)
 {
+#ifdef DO_MPI
     ccomm = MPI_Comm_f2c(fcomm);
     MPI_Comm_rank(ccomm, &myRank);
     MPI_Comm_size(ccomm, &nRanks);
@@ -98,8 +103,8 @@ bml_initParallelF(
     {
         rUsed[i] = 0;
     }
-}
 #endif
+}
 
 void
 bml_shutdownParallelF(
