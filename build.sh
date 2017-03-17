@@ -37,8 +37,8 @@ EOF
     echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
     echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
     echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
-    echo "EXTRA_CFLAGS       Extra C flags            (default is ${EXTRA_CFLAGS})"
-    echo "EXTRA_FCFLAGS      Extra fortran flags      (default is ${EXTRA_FCFLAGS})"
+    echo "EXTRA_CFLAGS       Extra C flags            (default is '${EXTRA_CFLAGS}')"
+    echo "EXTRA_FCFLAGS      Extra fortran flags      (default is '${EXTRA_FCFLAGS}')"
 }
 
 set_defaults() {
