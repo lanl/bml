@@ -1,5 +1,5 @@
 | master |
-| ------ | ------- |
+| ------ |
 | [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) |
 | [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=master)](https://codecov.io/github/qmmd/bml?branch=master) |
 
