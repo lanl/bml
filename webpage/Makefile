@@ -3,3 +3,6 @@ webpage:
 
 update:
 	bundle update
+
+install:
+	bundle install
