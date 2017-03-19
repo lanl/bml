@@ -1,8 +1,3 @@
-# We build on a matrix across difference compiler versions. If we specify C or
-# C++ for the language, then Travis-CI will export either the CC or CXX
-# variable to the environment but not both. Setting the language to something
-# other we avoid this behavior and drive the build matrix solely through the
-# environment.
 language: python
 
 addons:
@@ -52,7 +47,9 @@ before_script:
     - pip install codecov
 
 script:
-    - CMAKE_BUILD_TYPE=Debug BUILD_SHARED_LIBS=yes VERBOSE_MAKEFILE=yes ./build.sh ${COMMAND}
+    - >
+        OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug BUILD_SHARED_LIBS=yes
+        VERBOSE_MAKEFILE=yes ./build.sh ${COMMAND}
 
 after_success:
     - codecov --gcov-exec ${GCOV}
