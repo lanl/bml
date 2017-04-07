@@ -32,7 +32,7 @@ endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Wno-unknown-pragmas --coverage
   -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99)
+set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
   -ffree-line-length-none)
@@ -41,7 +41,7 @@ set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
   -traceback -qopt-report=5)
-set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99 -qopt-report=5)
+set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99 -qopt-report=5 -DNDEBUG)
 set(Intel_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -qopt-report=5 -DNDEBUG)
 set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -assume realloc_lhs
   -traceback -qopt-report=5)
@@ -50,7 +50,7 @@ set(Intel_Fortran_FLAGS_RELWITHDEBINFO -O2 -g -assume realloc_lhs
   -qopt-report=5 -DNDEBUG)
 
 set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
-set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99)
+set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
 if(CMAKE_BUILD_TYPE)
