@@ -6,10 +6,12 @@
 #include "ellpack/bml_allocate_ellpack.h"
 #include "ellsort/bml_allocate_ellsort.h"
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <errno.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
 #include <omp.h>
 
 /** Check if matrix is allocated.
@@ -40,7 +42,7 @@ bml_noinit_allocate_memory(
     void *ptr = malloc(size);
     if (ptr == NULL)
     {
-        LOG_ERROR("error allocating memory\n");
+        LOG_ERROR("error allocating memory: %s\n", strerror(errno));
     }
     return ptr;
 }
@@ -62,7 +64,8 @@ bml_allocate_memory(
         void *ptr = calloc(1, size);
         if (ptr == NULL)
         {
-            LOG_ERROR("error allocating memory of size %d\n", size);
+            LOG_ERROR("error allocating memory of size %d: %s\n", size,
+                      strerror(errno));
         }
         return ptr;
     }
