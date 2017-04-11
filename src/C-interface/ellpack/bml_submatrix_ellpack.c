@@ -305,11 +305,13 @@ sortById(
 {
     int aId = *((int *) a);
     int bId = *((int *) b);
-    assert(aId != bId);
 
     if (aId < bId)
         return -1;
-    return 1;
+    else if (aId == bId)
+        return 0;
+    else
+        return 1;
 }
 
 /** Assemble adjacency structure from matrix.
