@@ -157,18 +157,21 @@ if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
     if(BML_OPENMP)
       set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
-        -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lm)
+        -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread
+        -lpthread -lm)
     else()
       set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
         -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm)
     endif()
   else()
     if(BML_OPENMP)
-      set(BLAS_LIBRARIES -Wl,--no-as-needed "-L${MKLROOT}/lib/intel64"
-        -lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core -lmkl_gnu_thread -lmkl_core -ldl -lpthread -lm)
+      set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
+        -Wl,--no-as-needed -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core -lgomp
+        -lpthread -lm -ldl)
     else()
       set(BLAS_LIBRARIES -Wl,--no-as-needed "-L${MKLROOT}/lib/intel64"
-        -lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_sequential -lmkl_core -lmkl_sequential -lmkl_core -lpthread -lm)
+        -lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_sequential -lmkl_core
+        -lmkl_sequential -lmkl_core -lpthread -lm)
     endif()
   endif()
   set(BLAS_FOUND TRUE)
