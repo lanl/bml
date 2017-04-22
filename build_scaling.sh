@@ -1,9 +1,7 @@
 #!/bin/bash
 
-: ${BLAS_VENDOR:=Intel}
-: ${BUILD_SHARED_LIBS:=yes}
+export BLAS_VENDOR=${BLAS_VENDOR:-Intel}
+export BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:-yes}
+export COMMAND=${1:-compile}
 
-export BLAS_VENDOR
-export BUILD_SHARED_LIBS
-
-./build.sh install
+./build.sh ${COMMAND}
