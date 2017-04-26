@@ -1,10 +1,10 @@
 #!/bin/bash
 
 TOP_DIR="${PWD}"
-BUILD_DIR="${BUILD_DIR:=${TOP_DIR}/build}"
-INSTALL_DIR="${INSTALL_DIR:=${TOP_DIR}/install}"
+: ${BUILD_DIR:=${TOP_DIR}/build}
+: ${INSTALL_DIR:=${TOP_DIR}/install}
 LOG_FILE="${TOP_DIR}/build.log"
-VERBOSE_MAKEFILE="${VERBOSE_MAKEFILE:=no}"
+: ${VERBOSE_MAKEFILE:=no}
 
 help() {
     cat <<EOF
@@ -42,16 +42,16 @@ EOF
 }
 
 set_defaults() {
-    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}
-    CC="${CC:=gcc}"
-    CXX="${CXX:=g++}"
-    FC="${FC:=gfortran}"
-    BML_OPENMP=${BML_OPENMP:=yes}
-    BML_MPI=${BML_MPI:=no}
-    BLAS_VENDOR="${BLAS_VENDOR:=}"
-    EXTRA_CFLAGS="${EXTRA_CFLAGS:=}"
-    EXTRA_FCFLAGS="${EXTRA_FCFLAGS:=}"
-    BML_TESTING=${BML_TESTING:=yes}
+    : ${CMAKE_BUILD_TYPE:=Release}
+    : ${CC:=gcc}
+    : ${CXX:=g++}
+    : ${FC:=gfortran}
+    : ${BML_OPENMP:=yes}
+    : ${BML_MPI:=no}
+    : ${BLAS_VENDOR:=}
+    : ${EXTRA_CFLAGS:=}
+    : ${EXTRA_FCFLAGS:=}
+    : ${BML_TESTING:=yes}
 }
 
 die() {
