@@ -3,6 +3,7 @@
 #include "bml_diagonalize_ellpack.h"
 #include "bml_types_ellpack.h"
 #include "dense/bml_types_dense.h"
+#include "../bml_utilities.h"
 
 #include <string.h>
 
@@ -13,8 +14,8 @@
 void
 bml_diagonalize_ellpack(
     const bml_matrix_ellpack_t * A,
-    double *eigenvalues,
-    bml_matrix_dense_t * eigenvectors)
+    void *eigenvalues,
+    bml_matrix_t * eigenvectors)
 {
     switch (A->matrix_precision)
     {

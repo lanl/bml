@@ -5,7 +5,7 @@
 
 void bml_diagonalize(
     const bml_matrix_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_t * eigenvectors);
 
 #endif

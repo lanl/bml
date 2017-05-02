@@ -6,8 +6,10 @@
 #include "bml_allocate_dense.h"
 #include "bml_diagonalize_dense.h"
 #include "bml_types_dense.h"
+#include "../bml_utilities.h"
 
 #include <string.h>
+#include <stdio.h>
 
 /** \page diagonalize
  *
@@ -20,7 +22,7 @@
 void
 bml_diagonalize_dense_single_real(
     const bml_matrix_dense_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
     float *evecs = calloc(A->N * A->N, sizeof(float));
@@ -29,6 +31,8 @@ bml_diagonalize_dense_single_real(
     float *work = calloc(lwork, sizeof(float));
     int info;
     float *A_matrix;
+    float *typed_eigenvalues = (float *) eigenvalues;
+
 //    void mkl_thread_free_buffers(void);
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
@@ -39,7 +43,7 @@ bml_diagonalize_dense_single_real(
     A_matrix = (float *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
-        eigenvalues[i] = (double) evals[i];
+        typed_eigenvalues[i] = (float) evals[i];
         for (int j = 0; j < A->N; j++)
         {
             A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
@@ -57,7 +61,7 @@ bml_diagonalize_dense_single_real(
 void
 bml_diagonalize_dense_double_real(
     const bml_matrix_dense_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
     double *evecs = calloc(A->N * A->N, sizeof(double));
@@ -66,6 +70,7 @@ bml_diagonalize_dense_double_real(
     double *work = calloc(lwork, sizeof(double));
     int info;
     double *A_matrix;
+    double *typed_eigenvalues = (double *) eigenvalues;
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
     C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
@@ -73,7 +78,7 @@ bml_diagonalize_dense_double_real(
     A_matrix = (double *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
-        eigenvalues[i] = (double) evals[i];
+        typed_eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
             A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
@@ -91,7 +96,7 @@ bml_diagonalize_dense_double_real(
 void
 bml_diagonalize_dense_single_complex(
     const bml_matrix_dense_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
     int *isuppz = calloc(2 * A->N, sizeof(int));
@@ -108,6 +113,7 @@ bml_diagonalize_dense_single_complex(
     float complex *A_matrix;
     float complex *evecs = calloc(A->N * A->N, sizeof(float complex));
     float complex *work = calloc(lwork, sizeof(float complex));
+    float complex *typed_eigenvalues = (float complex *) eigenvalues;
 
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(float complex));
     C_CHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
@@ -117,7 +123,7 @@ bml_diagonalize_dense_single_complex(
     A_matrix = (float complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
-        eigenvalues[i] = (double) evals[i];
+        typed_eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
             A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
@@ -137,7 +143,7 @@ bml_diagonalize_dense_single_complex(
 void
 bml_diagonalize_dense_double_complex(
     const bml_matrix_dense_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
 {
     int *isuppz = calloc(2 * A->N, sizeof(int));
@@ -154,6 +160,7 @@ bml_diagonalize_dense_double_complex(
     double complex *A_matrix;
     double complex *evecs = calloc(A->N * A->N, sizeof(double complex));
     double complex *work = calloc(lwork, sizeof(double complex));
+    double complex *typed_eigenvalues = (double complex *) eigenvalues;
 
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(double complex));
     C_ZHEEVR("V", "A", "U", &A->N, A_copy, &A->N, NULL, NULL, NULL, NULL,
@@ -163,7 +170,7 @@ bml_diagonalize_dense_double_complex(
     A_matrix = (double complex *) eigenvectors->matrix;
     for (int i = 0; i < A->N; i++)
     {
-        eigenvalues[i] = (double) evals[i];
+        typed_eigenvalues[i] = (double) evals[i];
         for (int j = 0; j < A->N; j++)
         {
             A_matrix[ROWMAJOR(i, j, A->N, A->N)] =
@@ -183,7 +190,7 @@ bml_diagonalize_dense_double_complex(
 void
 bml_diagonalize_dense(
     const bml_matrix_dense_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_t * eigenvectors)
 {
     switch (A->matrix_precision)

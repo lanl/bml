@@ -3,8 +3,10 @@
 #include "../bml_introspection.h"
 #include "bml_setters_dense.h"
 #include "bml_types_dense.h"
+#include "../bml_utilities.h"
 
 #include <complex.h>
+#include <stdio.h>
 
 void TYPED_FUNC(
     bml_set_element_dense) (

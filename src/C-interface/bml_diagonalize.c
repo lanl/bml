@@ -1,5 +1,6 @@
 #include "bml_diagonalize.h"
 #include "bml_introspection.h"
+#include "bml_utilities.h"
 #include "bml_logger.h"
 #include "bml_types.h"
 #include "dense/bml_diagonalize_dense.h"
@@ -8,7 +9,7 @@
 void
 bml_diagonalize(
     const bml_matrix_t * A,
-    double *eigenvalues,
+    void *eigenvalues,
     bml_matrix_t * eigenvectors)
 {
     switch (bml_get_type(A))
@@ -26,4 +27,5 @@ bml_diagonalize(
             LOG_ERROR("unknown matrix type\n");
             break;
     }
+
 }
