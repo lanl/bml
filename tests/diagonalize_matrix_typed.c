@@ -45,16 +45,16 @@ int TYPED_FUNC(
 
     switch (matrix_precision)
     {
-        case 1:
+        case single_real:
             eigenvalues = calloc(N, sizeof(float));
             break;
-        case 2:
+        case double_real:
             eigenvalues = calloc(N, sizeof(double));
             break;
-        case 3:
+        case single_complex:
             eigenvalues = calloc(N, sizeof(float complex));
             break;
-        case 4:
+        case double_complex:
             eigenvalues = calloc(N, sizeof(double complex));
             break;
         default:
