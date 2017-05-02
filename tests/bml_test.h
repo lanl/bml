@@ -21,6 +21,7 @@ typedef int (
 #include "norm_matrix.h"
 #include "normalize_matrix.h"
 #include "scale_matrix.h"
+#include "set_diagonal.h"
 #include "submatrix_matrix.h"
 #include "threshold_matrix.h"
 #include "trace_matrix.h"
