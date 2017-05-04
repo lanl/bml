@@ -14,19 +14,19 @@ test_template(
     {
         case single_real:
             return test_template_single_real(N, matrix_type, matrix_precision,
-                                          M);
+                                             M);
             break;
         case double_real:
             return test_template_double_real(N, matrix_type, matrix_precision,
-                                          M);
+                                             M);
             break;
         case single_complex:
-            return test_template_single_complex(N, matrix_type, matrix_precision,
-                                             M);
+            return test_template_single_complex(N, matrix_type,
+                                                matrix_precision, M);
             break;
         case double_complex:
-            return test_template_double_complex(N, matrix_type, matrix_precision,
-                                             M);
+            return test_template_double_complex(N, matrix_type,
+                                                matrix_precision, M);
             break;
         default:
             fprintf(stderr, "unknown matrix precision\n");
