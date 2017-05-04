@@ -1,19 +1,19 @@
-#include "../macros.h"
-#include "../typed.h"
-#include "../bml_utilities.h"
-#include "../bml_diagonalize.h"
-#include "bml_diagonalize_ellpack.h"
-#include "../bml_allocate.h"
 #include "bml_allocate_ellpack.h"
-#include "../dense/bml_allocate_dense.h"
-#include "bml_convert.h"
+#include "../bml_allocate.h"
 #include "bml_convert_ellpack.h"
+#include "bml_convert.h"
 #include "bml_copy_ellpack.h"
+#include "bml_diagonalize_ellpack.h"
+#include "../bml_diagonalize.h"
+#include "bml_types_ellpack.h"
+#include "../bml_types.h"
+#include "../bml_utilities.h"
+#include "../dense/bml_allocate_dense.h"
 #include "../dense/bml_convert_dense.h"
 #include "../dense/bml_diagonalize_dense.h"
-#include "../bml_types.h"
-#include "bml_types_ellpack.h"
 #include "../dense/bml_types_dense.h"
+#include "../macros.h"
+#include "../typed.h"
 
 #include <complex.h>
 #include <math.h>
@@ -43,7 +43,7 @@ void TYPED_FUNC(
     bml_matrix_dense_t *D;
     bml_matrix_dense_t *eigenvectors_bml_dense;
     REAL_T *A_dense;
-    REAL_T *eigenvectors_dense;;
+    REAL_T *eigenvectors_dense;
     REAL_T *typed_eigenvalues = (REAL_T *) eigenvalues;
     bml_matrix_ellpack_t *myeigenvectors =
         (bml_matrix_ellpack_t *) eigenvectors;
@@ -85,7 +85,7 @@ void TYPED_FUNC(
     // This is done in order to pass the changes back to the upper level
     bml_copy_ellpack(myeigenvectors, eigenvectors);
 
-    bml_deallocate(&myeigenvectors);
+    bml_deallocate_ellpack(myeigenvectors);
 
     return;
 }
