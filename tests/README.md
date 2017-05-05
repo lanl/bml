@@ -2,7 +2,7 @@ ADDING A TEST
 =============
 
 It is essential to add a proper test for each function we create. We would even
-recommend to add a test before adding the functionality to have a peace of code
+recommend to add a test before adding the functionality to have a piece of code
 that could be executed. To do this, we have provided this step-by-step tutorial.
 Let's consider that we are adding a test which name is "mytest".
 
@@ -48,16 +48,21 @@ We will add the name as follows:
 	#include "testN.h"
 
 
-Finally, we will modify the bml_test.c file in four positions. We will first indicate that there is going to be an extra test by increasing the NUM_TEST variable:
+Finally, we will modify the bml_test.c file in four positions. We will first
+indicate that there is going to be an extra test by increasing the NUM_TEST
+variable:
 
 	const int NUM_TESTS = <N>;
 
-where N has to be replace by the total number of tests. Next we will add the test name in the test_name array:
+where N has to be replace by the total number of tests. Next we will add the
+test name in the test_name array:
 
 	const char *test_name[] =
  			{ "test1", ... , "mytest", ... , "testN"}
 
-This will be followed by a descrition of the test:
+Please ensure that the number of entries in test_name, test_description, and
+testers matches the value of NUM_TEST.
+This will be followed by a description of the test:
 
 	const char *test_description[] = {
 			 "Description of test 1",
@@ -127,9 +132,12 @@ For this we could run valgrind as following:
 
 	$ valgrind ./bml-test -n mytest -t ellpack -p double_complex
 
-After all the tests passed, we should indent the new files using the indent.sh
-script located in the main bml folder.
+You can also trigger tests by running ctest directly.
 
-	$ ./indent.sh ./tests/mytest.c
-  $ ./indent.sh ./tests/mytest.h
-  $ ./indent.sh ./tests/mytest_typed.c
+  $ cd build
+  $ ctest -R mytest --output-on-failure
+
+After all the tests passed, we should indent the new files using the indent.sh
+Running indent.sh (located in the main folder) will indent all files.
+
+	$ ./indent.sh
