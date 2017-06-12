@@ -317,6 +317,12 @@ module bml_c_interface_m
       type(C_PTR) :: bml_identity_matrix_C
     end function bml_identity_matrix_C
 
+    function bml_inverse_C(a) bind(C, name="bml_inverse")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR) :: bml_inverse_C
+    end function bml_inverse_C
+
     subroutine bml_multiply_C(a, b, c, alpha, beta, threshold) &
         & bind(C, name="bml_multiply")
       import :: C_PTR, C_DOUBLE

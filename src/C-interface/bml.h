@@ -208,6 +208,7 @@
 #include "bml_import.h"
 #include "bml_init.h"
 #include "bml_introspection.h"
+#include "bml_inverse.h"
 #include "bml_logger.h"
 #include "bml_multiply.h"
 #include "bml_normalize.h"

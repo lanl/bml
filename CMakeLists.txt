@@ -294,6 +294,10 @@ if(LAPACK_FOUND)
   check_fortran_function_exists(dsyev HAVE_DSYEV)
   check_fortran_function_exists(cheevr HAVE_CHEEVR)
   check_fortran_function_exists(zheevr HAVE_ZHEEVR)
+  check_fortran_function_exists(sgetrf HAVE_SGETRF)
+  check_fortran_function_exists(dgetrf HAVE_DGETRF)
+  check_fortran_function_exists(cgetri HAVE_CGETRI)
+  check_fortran_function_exists(zgetri HAVE_ZGETRI)
   if(NOT (HAVE_SSYEV AND HAVE_DSYEV AND HAVE_CHEEVR AND HAVE_ZHEEVR))
     message(FATAL_ERROR "Could not find {s,d}syev or {c,z}heevr")
   endif()
@@ -305,11 +309,27 @@ if(LAPACK_FOUND)
   bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
   bml_check_C_Fortran_function_exists(zheevr C_ZHEEVR REQUIRED)
+  bml_check_C_Fortran_function_exists(sgetrf C_SGETRF REQUIRED)
+  bml_check_C_Fortran_function_exists(dgetrf C_DGETRF REQUIRED)
+  bml_check_C_Fortran_function_exists(cgetrf C_CGETRF REQUIRED)
+  bml_check_C_Fortran_function_exists(zgetrf C_ZGETRF REQUIRED)
+  bml_check_C_Fortran_function_exists(sgetri C_SGETRI REQUIRED)
+  bml_check_C_Fortran_function_exists(dgetri C_DGETRI REQUIRED)
+  bml_check_C_Fortran_function_exists(cgetri C_CGETRI REQUIRED)
+  bml_check_C_Fortran_function_exists(zgetri C_ZGETRI REQUIRED)
   add_definitions(
     -DC_SSYEV=${C_SSYEV}
     -DC_DSYEV=${C_DSYEV}
     -DC_CHEEVR=${C_CHEEVR}
-    -DC_ZHEEVR=${C_ZHEEVR})
+    -DC_ZHEEVR=${C_ZHEEVR}
+    -DC_SGETRF=${C_SGETRF}
+    -DC_DGETRF=${C_DGETRF}
+    -DC_CGETRF=${C_CGETRF}
+    -DC_ZGETRF=${C_ZGETRF}
+    -DC_SGETRI=${C_SGETRI}
+    -DC_DGETRI=${C_DGETRI}
+    -DC_CGETRI=${C_CGETRI}
+    -DC_ZGETRI=${C_ZGETRI})
 
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()

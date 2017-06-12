@@ -13,6 +13,7 @@ void C_SSYEV(
     float *WORK,
     const int *LWORK,
     int *INFO);
+
 void C_DSYEV(
     const char *JOBZ,
     const char *UPLO,
@@ -23,6 +24,7 @@ void C_DSYEV(
     double *WORK,
     const int *LWORK,
     int *INFO);
+
 void C_SSYEVR(
     const char *JOBZ,
     const char *RANGE,
@@ -45,6 +47,7 @@ void C_SSYEVR(
     int *IWORK,
     const int *LIWORK,
     int *INFO);
+
 void C_DSYEVR(
     const char *JOBZ,
     const char *RANGE,
@@ -67,6 +70,7 @@ void C_DSYEVR(
     int *IWORK,
     const int *LIWORK,
     int *INFO);
+
 void C_CHEEVR(
     const char *JOBZ,
     const char *RANGE,
@@ -91,6 +95,7 @@ void C_CHEEVR(
     int *IWORK,
     const int *LIWORK,
     int *INFO);
+
 void C_ZHEEVR(
     const char *JOBZ,
     const char *RANGE,
@@ -114,6 +119,74 @@ void C_ZHEEVR(
     int *LRWORK,
     int *IWORK,
     const int *LIWORK,
+    int *INFO);
+
+void C_SGETRF(
+    const int *M,
+    const int *N,
+    float *A,
+    const int *LDA,
+    int *IPIV,
+    int *INFO);
+
+void C_DGETRF(
+    const int *M,
+    const int *N,
+    double *A,
+    const int *LDA,
+    int *IPIV,
+    int *INFO);
+
+void C_CGETRF(
+    const int *M,
+    const int *N,
+    float complex * A,
+    const int *LDA,
+    int *IPIV,
+    int *INFO);
+
+void C_ZGETRF(
+    const int *M,
+    const int *N,
+    double complex * A,
+    const int *LDA,
+    int *IPIV,
+    int *INFO);
+
+void C_SGETRI(
+    const int *N,
+    float *A,
+    const int *LDA,
+    int *IPIV,
+    float *WORK,
+    const int *LWORK,
+    int *INFO);
+
+void C_DGETRI(
+    const int *N,
+    double *A,
+    const int *LDA,
+    int *IPIV,
+    double *WORK,
+    const int *LWORK,
+    int *INFO);
+
+void C_CGETRI(
+    const int *N,
+    float *A,
+    const int *LDA,
+    int *IPIV,
+    float complex * WORK,
+    const int *LWORK,
+    int *INFO);
+
+void C_ZGETRI(
+    const int *N,
+    double *A,
+    const int *LDA,
+    int *IPIV,
+    double complex * WORK,
+    const int *LWORK,
     int *INFO);
 
 #endif
