@@ -13,14 +13,17 @@ Usage:
 This script can be used to build and test the bml library.  The script has to
 be given a command. Known commands are:
 
-create      - Create the build and install directories ('build' and 'install')
-configure   - Configure the build system
-compile     - Compile the sources
-install     - Install the compiled sources
-testing     - Run the test suite
-docs        - Generate the API documentation
-indent      - Indent the sources
-dist        - Generate a tar file (this only works with git)
+cleanup         - Clean up and remove build and install directories
+create          - Create the build and install directories
+configure       - Configure the build system
+compile         - Compile the sources
+install         - Install the compiled sources
+testing         - Run the test suite
+docs            - Generate the API documentation
+indent          - Indent the sources
+check_indent    - Check the indentation of the sources
+tags            - Create tags file for vim and emacs
+dist            - Generate a tar file (this only works with git)
 
 The following environment variables can be set to influence the configuration
 step and the build:
@@ -78,6 +81,11 @@ check_pipe_error() {
     if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
         die ${PIPESTATUS[0]}
     fi
+}
+
+cleanup() {
+    rm -vrf "${BUILD_DIR}" || die
+    rm -vrf "${INSTALL_DIR}" || die
 }
 
 create() {
@@ -144,6 +152,12 @@ indent() {
     cd "${BUILD_DIR}"
     "${TOP_DIR}/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
+}
+
+check_indent() {
+    cd "${BUILD_DIR}"
+    "${TOP_DIR}/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
     cd "${TOP_DIR}"
     git diff 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
@@ -152,6 +166,11 @@ indent() {
         echo "sources were not formatted correctly"
         die
     fi
+}
+
+tags() {
+    ctags --recurse --C-kinds=+lxzLp
+    etags $(find . -name '*.[ch]' -o -name '*.F90')
 }
 
 dist() {
@@ -168,17 +187,15 @@ if [[ $# -gt 0 ]]; then
     fi
 
     case "$1" in
+        "cleanup")
+            cleanup
+            ;;
         "create")
             create
             ;;
         "configure")
             create
             configure
-            ;;
-        "docs")
-            create
-            configure
-            docs
             ;;
         "compile")
             create
@@ -196,9 +213,20 @@ if [[ $# -gt 0 ]]; then
             compile
             testing
             ;;
-        "indent")
+        "docs")
             create
+            configure
+            docs
+            ;;
+        "indent")
             indent
+            ;;
+        "check_indent")
+            create
+            check_indent
+            ;;
+        "tags")
+            tags
             ;;
         "dist")
             create
