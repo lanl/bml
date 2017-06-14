@@ -13,7 +13,6 @@ set(HEADERS-C
   bml_convert.h
   bml_copy.h
   bml_diagonalize.h
-  bml_elemental.h
   bml_export.h
   bml_getters.h
   bml_import.h
@@ -48,7 +47,6 @@ set(SOURCES-C
   bml_convert.c
   bml_copy.c
   bml_diagonalize.c
-  bml_elemental.c
   bml_export.c
   bml_getters.c
   bml_import.c

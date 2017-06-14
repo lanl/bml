@@ -23,19 +23,15 @@ int TYPED_FUNC(
     {
         case single_real:
             A_diagonal = calloc(N, sizeof(float));
-            B_diagonal = calloc(N, sizeof(float));
             break;
         case double_real:
             A_diagonal = calloc(N, sizeof(double));
-            B_diagonal = calloc(N, sizeof(double));
             break;
         case single_complex:
             A_diagonal = calloc(N, sizeof(float complex));
-            B_diagonal = calloc(N, sizeof(float complex));
             break;
         case double_complex:
             A_diagonal = calloc(N, sizeof(double complex));
-            B_diagonal = calloc(N, sizeof(double complex));
             break;
         default:
             LOG_DEBUG("matrix_precision is not set");
@@ -54,7 +50,7 @@ int TYPED_FUNC(
 
     bml_print_bml_matrix(A, 0, N, 0, N);
 
-    bml_get_diagonal(A, B_diagonal);
+    B_diagonal = bml_get_diagonal(A);
 
     for (int i = 0; i < N; i++)
     {

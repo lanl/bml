@@ -7,64 +7,64 @@
 
 #include <complex.h>
 
-/*
-void bml_get_dense(
-    bml_matrix_dense_t * A,
+void *bml_get_dense(
+    const bml_matrix_dense_t * A,
     const int i,
-    const int j,
-    void *value);
-*/
+    const int j);
 
-
-
-// Getters for diagonal
-
-void bml_get_diagonal_dense(
-    bml_matrix_dense_t * A,
-    void *diagonal);
-
-void bml_get_diagonal_dense_single_real(
-    bml_matrix_dense_t * A,
-    float *diagonal);
-
-void bml_get_diagonal_dense_double_real(
-    bml_matrix_dense_t * A,
-    double *diagonal);
-
-void bml_get_diagonal_dense_single_complex(
-    bml_matrix_dense_t * A,
-    float complex * diagonal);
-
-void bml_get_diagonal_dense_double_complex(
-    bml_matrix_dense_t * A,
-    double complex * diagonal);
-
-
-// Getters for row
-
-void bml_get_row_dense(
-    bml_matrix_dense_t * A,
+float *bml_get_dense_single_real(
+    const bml_matrix_dense_t * A,
     const int i,
-    void *row);
+    const int j);
 
-void bml_get_row_dense_single_real(
-    bml_matrix_dense_t * A,
+double *bml_get_dense_double_real(
+    const bml_matrix_dense_t * A,
     const int i,
-    float *row);
+    const int j);
 
-void bml_get_row_dense_double_real(
-    bml_matrix_dense_t * A,
+float complex *bml_get_dense_single_complex(
+    const bml_matrix_dense_t * A,
     const int i,
-    double *row);
+    const int j);
 
-void bml_get_row_dense_single_complex(
-    bml_matrix_dense_t * A,
+double complex *bml_get_dense_double_complex(
+    const bml_matrix_dense_t * A,
     const int i,
-    float complex * row);
+    const int j);
 
-void bml_get_row_dense_double_complex(
+void *bml_get_row_dense(
     bml_matrix_dense_t * A,
-    const int i,
-    double complex * row);
+    const int i);
+
+void *bml_get_row_dense_single_real(
+    bml_matrix_dense_t * A,
+    const int i);
+
+void *bml_get_row_dense_double_real(
+    bml_matrix_dense_t * A,
+    const int i);
+
+void *bml_get_row_dense_single_complex(
+    bml_matrix_dense_t * A,
+    const int i);
+
+void *bml_get_row_dense_double_complex(
+    bml_matrix_dense_t * A,
+    const int i);
+
+void *bml_get_diagonal_dense(
+    bml_matrix_dense_t * A);
+
+void *bml_get_diagonal_dense_single_real(
+    bml_matrix_dense_t * A);
+
+void *bml_get_diagonal_dense_double_real(
+    bml_matrix_dense_t * A);
+
+void *bml_get_diagonal_dense_single_complex(
+    bml_matrix_dense_t * A);
+
+void *bml_get_diagonal_dense_double_complex(
+    bml_matrix_dense_t * A);
 
 #endif

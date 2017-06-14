@@ -17,6 +17,7 @@ typedef int (
 #include "convert_matrix.h"
 #include "copy_matrix.h"
 #include "diagonalize_matrix.h"
+#include "get_element.h"
 #include "multiply_matrix.h"
 #include "norm_matrix.h"
 #include "normalize_matrix.h"

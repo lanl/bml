@@ -8,12 +8,12 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 17;
+const int NUM_TESTS = 18;
 
 const char *test_name[] = {
     "add", "allocate", "adjacency", "adjungate_triangle", "convert", "copy",
-    "diagonalize", "multiply", "norm", "normalize", "scale", "set_diagonal",
-    "set_row", "submatrix", "threshold", "trace", "transpose"
+    "diagonalize", "get_element", "multiply", "norm", "normalize", "scale",
+    "set_diagonal", "set_row", "submatrix", "threshold", "trace", "transpose"
 };
 
 const char *test_description[] = {
@@ -24,6 +24,7 @@ const char *test_description[] = {
     "Convert bml matrices",
     "Copy bml matrices",
     "Diagonalize a bml matrix",
+    "Get an element from a bml matrix",
     "Multiply two bml matrices",
     "Norm of bml matrix",
     "Normalize bml matrices",
@@ -44,6 +45,7 @@ const test_function_t testers[] = {
     test_convert,
     test_copy,
     test_diagonalize,
+    test_get_element,
     test_multiply,
     test_norm,
     test_normalize,
