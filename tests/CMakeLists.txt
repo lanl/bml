@@ -8,6 +8,7 @@ set(SOURCES_TYPED
   convert_matrix_typed.c
   copy_matrix_typed.c
   diagonalize_matrix_typed.c
+  get_element_typed.c
   multiply_matrix_typed.c
   normalize_matrix_typed.c
   norm_matrix_typed.c
@@ -43,6 +44,7 @@ add_executable(bml-test
   convert_matrix.c
   copy_matrix.c
   diagonalize_matrix.c
+  get_element.c
   multiply_matrix.c
   normalize_matrix.c
   norm_matrix.c
@@ -71,8 +73,8 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
 endif()
 
 foreach(N add adjacency adjungate_triangle allocate convert copy diagonalize
-    multiply norm  normalize scale set_diagonal set_row submatrix threshold
-    trace transpose)
+    get_element multiply norm  normalize scale set_diagonal set_row submatrix
+    threshold trace transpose)
   foreach(T dense ellpack ellsort)
     foreach(P single_real double_real single_complex double_complex)
       #if(BML_MPI)

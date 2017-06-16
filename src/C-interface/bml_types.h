@@ -53,10 +53,10 @@ typedef enum
 {
     /** Each rank works on the full matrix. */
     sequential,
-    /** Each rank works on it's part of the matrix. */
+    /** Each rank works on its part of the matrix. */
     distributed,
-    /** Each rank works on it's set of graph partitions. */
-    graph_distributed,
+    /** Each rank works on its set of graph partitions. */
+    graph_distributed
 } bml_distribution_mode_t;
 
 /** Decomposition for working in parallel. */

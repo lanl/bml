@@ -1,4 +1,3 @@
-
 module bml_getters_m
 
   use bml_c_interface_m

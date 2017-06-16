@@ -7,54 +7,64 @@
 
 #include <complex.h>
 
-// Getters for diagonal
-
-void bml_get_diagonal_ellsort(
-    bml_matrix_ellsort_t * A,
-    void *diagonal);
-
-void bml_get_diagonal_ellsort_single_real(
-    bml_matrix_ellsort_t * A,
-    float *diagonal);
-
-void bml_get_diagonal_ellsort_double_real(
-    bml_matrix_ellsort_t * A,
-    double *diagonal);
-
-void bml_get_diagonal_ellsort_single_complex(
-    bml_matrix_ellsort_t * A,
-    float complex * diagonal);
-
-void bml_get_diagonal_ellsort_double_complex(
-    bml_matrix_ellsort_t * A,
-    double complex * diagonal);
-
-
-// Getters for row
-
-void bml_get_row_ellsort(
-    bml_matrix_ellsort_t * A,
+void *bml_get_ellsort(
+    const bml_matrix_ellsort_t * A,
     const int i,
-    void *row);
+    const int j);
 
-void bml_get_row_ellsort_single_real(
-    bml_matrix_ellsort_t * A,
+float *bml_get_ellsort_single_real(
+    const bml_matrix_ellsort_t * A,
     const int i,
-    float *row);
+    const int j);
 
-void bml_get_row_ellsort_double_real(
-    bml_matrix_ellsort_t * A,
+double *bml_get_ellsort_double_real(
+    const bml_matrix_ellsort_t * A,
     const int i,
-    double *row);
+    const int j);
 
-void bml_get_row_ellsort_single_complex(
-    bml_matrix_ellsort_t * A,
+float complex *bml_get_ellsort_single_complex(
+    const bml_matrix_ellsort_t * A,
     const int i,
-    float complex * row);
+    const int j);
 
-void bml_get_row_ellsort_double_complex(
-    bml_matrix_ellsort_t * A,
+double complex *bml_get_ellsort_double_complex(
+    const bml_matrix_ellsort_t * A,
     const int i,
-    double complex * row);
+    const int j);
+
+void *bml_get_row_ellsort(
+    bml_matrix_ellsort_t * A,
+    const int i);
+
+void *bml_get_row_ellsort_single_real(
+    bml_matrix_ellsort_t * A,
+    const int i);
+
+void *bml_get_row_ellsort_double_real(
+    bml_matrix_ellsort_t * A,
+    const int i);
+
+void *bml_get_row_ellsort_single_complex(
+    bml_matrix_ellsort_t * A,
+    const int i);
+
+void *bml_get_row_ellsort_double_complex(
+    bml_matrix_ellsort_t * A,
+    const int i);
+
+void *bml_get_diagonal_ellsort(
+    bml_matrix_ellsort_t * A);
+
+void *bml_get_diagonal_ellsort_single_real(
+    bml_matrix_ellsort_t * A);
+
+void *bml_get_diagonal_ellsort_double_real(
+    bml_matrix_ellsort_t * A);
+
+void *bml_get_diagonal_ellsort_single_complex(
+    bml_matrix_ellsort_t * A);
+
+void *bml_get_diagonal_ellsort_double_complex(
+    bml_matrix_ellsort_t * A);
 
 #endif

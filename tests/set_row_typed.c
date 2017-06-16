@@ -24,19 +24,15 @@ int TYPED_FUNC(
     {
         case single_real:
             A_row = calloc(N, sizeof(float));
-            B_row = calloc(N, sizeof(float));
             break;
         case double_real:
             A_row = calloc(N, sizeof(double));
-            B_row = calloc(N, sizeof(double));
             break;
         case single_complex:
             A_row = calloc(N, sizeof(float complex));
-            B_row = calloc(N, sizeof(float complex));
             break;
         case double_complex:
             A_row = calloc(N, sizeof(double complex));
-            B_row = calloc(N, sizeof(double complex));
             break;
         default:
             LOG_DEBUG("matrix_precision is not set");
@@ -54,7 +50,7 @@ int TYPED_FUNC(
     bml_set_row(A, 2, A_row, 1.0e-10);
 
     // Retrive the second row
-    bml_get_row(A, 2, B_row);
+    B_row = bml_get_row(A, 2);
 
     for (int i = 0; i < N; i++)
     {

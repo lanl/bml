@@ -7,7 +7,6 @@ set(HEADERS-ELLPACK
   bml_convert_ellpack.h
   bml_copy_ellpack.h
   bml_diagonalize_ellpack.h
-  bml_elemental_ellpack.h
   bml_getters_ellpack.h
   bml_introspection_ellpack.h
   bml_multiply_ellpack.h
@@ -30,7 +29,6 @@ set(SOURCES-ELLPACK
   bml_convert_ellpack.c
   bml_copy_ellpack.c
   bml_diagonalize_ellpack.c
-  bml_elemental_ellpack.c
   bml_getters_ellpack.c
   bml_introspection_ellpack.c
   bml_multiply_ellpack.c

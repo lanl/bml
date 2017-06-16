@@ -1,61 +1,82 @@
+#include "bml_getters_ellsort.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
-#include "bml_getters_ellsort.h"
 #include "bml_types_ellsort.h"
 
-
-// Getters diagonal
-
-void
-bml_get_diagonal_ellsort(
-    bml_matrix_ellsort_t * A,
-    void *diagonal)
+void *
+bml_get_ellsort(
+    const bml_matrix_ellsort_t * A,
+    const int i,
+    const int j)
 {
     switch (bml_get_precision(A))
     {
         case single_real:
-            bml_get_diagonal_ellsort_single_real(A, diagonal);
+            return bml_get_ellsort_single_real(A, i, j);
             break;
         case double_real:
-            bml_get_diagonal_ellsort_double_real(A, diagonal);
+            return bml_get_ellsort_double_real(A, i, j);
             break;
         case single_complex:
-            bml_get_diagonal_ellsort_single_complex(A, diagonal);
+            return bml_get_ellsort_single_complex(A, i, j);
             break;
         case double_complex:
-            bml_get_diagonal_ellsort_double_complex(A, diagonal);
+            return bml_get_ellsort_double_complex(A, i, j);
             break;
         default:
-            LOG_ERROR("unkonwn precision in bml_get_diagonal_ellsort\n");
+            LOG_ERROR("unkonwn precision in bml_get_ellsort\n");
             break;
     }
+    return NULL;
 }
 
-
-// Getters for row
-
-void
+void *
 bml_get_row_ellsort(
     bml_matrix_ellsort_t * A,
-    const int i,
-    void *row)
+    const int i)
 {
     switch (bml_get_precision(A))
     {
         case single_real:
-            bml_get_row_ellsort_single_real(A, i, row);
+            return bml_get_row_ellsort_single_real(A, i);
             break;
         case double_real:
-            bml_get_row_ellsort_double_real(A, i, row);
+            return bml_get_row_ellsort_double_real(A, i);
             break;
         case single_complex:
-            bml_get_row_ellsort_single_complex(A, i, row);
+            return bml_get_row_ellsort_single_complex(A, i);
             break;
         case double_complex:
-            bml_get_row_ellsort_double_complex(A, i, row);
+            return bml_get_row_ellsort_double_complex(A, i);
             break;
         default:
             LOG_ERROR("unkonwn precision in bml_get_row_ellsort\n");
             break;
     }
+    return NULL;
+}
+
+void *
+bml_get_diagonal_ellsort(
+    bml_matrix_ellsort_t * A)
+{
+    switch (bml_get_precision(A))
+    {
+        case single_real:
+            return bml_get_diagonal_ellsort_single_real(A);
+            break;
+        case double_real:
+            return bml_get_diagonal_ellsort_double_real(A);
+            break;
+        case single_complex:
+            return bml_get_diagonal_ellsort_single_complex(A);
+            break;
+        case double_complex:
+            return bml_get_diagonal_ellsort_double_complex(A);
+            break;
+        default:
+            LOG_ERROR("unkonwn precision in bml_get_diagonal_ellsort\n");
+            break;
+    }
+    return NULL;
 }

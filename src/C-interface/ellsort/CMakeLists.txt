@@ -6,7 +6,6 @@ set(HEADERS-ELLSORT
   bml_adjungate_triangle_ellsort.h
   bml_convert_ellsort.h
   bml_copy_ellsort.h
-  bml_elemental_ellsort.h
   bml_getters_ellsort.h
   bml_introspection_ellsort.h
   bml_multiply_ellsort.h
@@ -28,7 +27,6 @@ set(SOURCES-ELLSORT
   bml_adjungate_triangle_ellsort.c
   bml_convert_ellsort.c
   bml_copy_ellsort.c
-  bml_elemental_ellsort.c
   bml_getters_ellsort.c
   bml_introspection_ellsort.c
   bml_multiply_ellsort.c
