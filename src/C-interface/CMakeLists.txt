@@ -18,6 +18,7 @@ set(HEADERS-C
   bml_import.h
   bml_init.h
   bml_introspection.h
+  bml_inverse.h
   bml_logger.h
   bml_multiply.h
   bml_norm.h
@@ -52,6 +53,7 @@ set(SOURCES-C
   bml_import.c
   bml_init.c
   bml_introspection.c
+  bml_inverse.c
   bml_logger.c
   bml_multiply.c
   bml_norm.c

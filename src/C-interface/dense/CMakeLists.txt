@@ -9,6 +9,7 @@ set(HEADERS-DENSE
   bml_diagonalize_dense.h
   bml_getters_dense.h
   bml_introspection_dense.h
+  bml_inverse_dense.h
   bml_multiply_dense.h
   bml_norm_dense.h
   bml_normalize_dense.h
@@ -31,6 +32,7 @@ set(SOURCES-DENSE
   bml_diagonalize_dense.c
   bml_getters_dense.c
   bml_introspection_dense.c
+  bml_inverse_dense.c
   bml_multiply_dense.c
   bml_norm_dense.c
   bml_normalize_dense.c
@@ -61,6 +63,7 @@ set(SOURCES-DENSE-TYPED
   bml_copy_dense_typed.c
   bml_getters_dense_typed.c
   bml_introspection_dense_typed.c
+  bml_inverse_dense_typed.c
   bml_multiply_dense_typed.c
   bml_norm_dense_typed.c
   bml_normalize_dense_typed.c
