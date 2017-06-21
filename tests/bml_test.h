@@ -19,6 +19,7 @@ typedef int (
 #include "diagonalize_matrix.h"
 #include "get_element.h"
 #include "inverse_matrix.h"
+#include "get_sparsity.h"
 #include "multiply_matrix.h"
 #include "normalize_matrix.h"
 #include "norm_matrix.h"

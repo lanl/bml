@@ -22,4 +22,25 @@ int bml_get_row_bandwidth_ellsort(
 int bml_get_bandwidth_ellsort(
     const bml_matrix_ellsort_t * A);
 
+    // Get the sparsity of a bml matrix
+    double bml_get_sparsity_ellsort(
+        const bml_matrix_ellsort_t * A,
+        const double threshold);
+
+    double bml_get_sparsity_ellsort_single_real(
+        const bml_matrix_ellsort_t * A,
+        const double threshold);
+
+    double bml_get_sparsity_ellsort_double_real(
+        const bml_matrix_ellsort_t * A,
+        const double threshold);
+
+    double bml_get_sparsity_ellsort_single_complex(
+        const bml_matrix_ellsort_t * A,
+        const double threshold);
+
+    double bml_get_sparsity_ellsort_double_complex(
+        const bml_matrix_ellsort_t * A,
+        const double threshold);
+
 #endif

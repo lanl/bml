@@ -201,7 +201,35 @@ bml_get_distribution_mode(
             return bml_get_distribution_mode_ellsort(A);
             break;
         default:
-            LOG_ERROR("unknown distribution mode\n");
+            LOG_ERROR("unknown matrix type in bml_get_distribution_mode\n");
+            break;
+    }
+    return -1;
+}
+
+/** Return the sparsity of a matrix.
+ *
+ * \param A The bml matrix.
+ * \return The sparsity of matrix A.
+ */
+double
+bml_get_sparsity(
+    const bml_matrix_t * A,
+    const double threshold)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_get_sparsity_dense(A, threshold);
+            break;
+        case ellpack:
+            return bml_get_sparsity_ellpack(A, threshold);
+            break;
+        case ellsort:
+            return bml_get_sparsity_ellsort(A, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type in bml_get_sparsity\n");
             break;
     }
     return -1;
