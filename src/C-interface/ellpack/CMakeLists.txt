@@ -64,6 +64,7 @@ set(SOURCES-ELLPACK-TYPED
   bml_diagonalize_ellpack_typed.c
   bml_getters_ellpack_typed.c
   bml_inverse_ellpack_typed.c
+  bml_introspection_ellpack_typed.c
   bml_multiply_ellpack_typed.c
   bml_norm_ellpack_typed.c
   bml_normalize_ellpack_typed.c

@@ -50,4 +50,25 @@ int bml_get_bandwidth_dense_single_complex(
 int bml_get_bandwidth_dense_double_complex(
     const bml_matrix_dense_t * A);
 
+// Get the sparsity of a bml matrix
+double bml_get_sparsity_dense(
+    const bml_matrix_dense_t * A,
+    const double threshold);
+
+double bml_get_sparsity_dense_single_real(
+    const bml_matrix_dense_t * A,
+    const double threshold);
+
+double bml_get_sparsity_dense_double_real(
+    const bml_matrix_dense_t * A,
+    const double threshold);
+
+double bml_get_sparsity_dense_single_complex(
+    const bml_matrix_dense_t * A,
+    const double threshold);
+
+double bml_get_sparsity_dense_double_complex(
+    const bml_matrix_dense_t * A,
+    const double threshold);
+
 #endif
