@@ -11,7 +11,7 @@ rm -r install
 #module load mkl
 
 FC=gfortran CC=gcc BML_MPI=no CMAKE_BUILD_TYPE=Release \
-INSTALL_DIR=$HOME/bml/install  BLAS_VENDOR=MKL \
+INSTALL_DIR=$HOME/bml/install  BLAS_VENDOR=GNU \
 BML_OPENMP=yes BML_TESTING=yes ./build.sh configure
 
                                                                                                                                                                                               
