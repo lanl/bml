@@ -22,4 +22,25 @@ int bml_get_row_bandwidth_ellpack(
 int bml_get_bandwidth_ellpack(
     const bml_matrix_ellpack_t * A);
 
+    // Get the sparsity of a bml matrix
+double bml_get_sparsity_ellpack(
+    const bml_matrix_ellpack_t * A,
+    const double threshold);
+
+double bml_get_sparsity_ellpack_single_real(
+    const bml_matrix_ellpack_t * A,
+    const double threshold);
+
+double bml_get_sparsity_ellpack_double_real(
+    const bml_matrix_ellpack_t * A,
+    const double threshold);
+
+double bml_get_sparsity_ellpack_single_complex(
+    const bml_matrix_ellpack_t * A,
+    const double threshold);
+
+double bml_get_sparsity_ellpack_double_complex(
+    const bml_matrix_ellpack_t * A,
+    const double threshold);
+
 #endif
