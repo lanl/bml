@@ -13,9 +13,9 @@ const int NUM_TESTS = 20;
 const char *test_name[] = {
     "add", "allocate", "adjacency", "adjungate_triangle", "convert", "copy",
     "diagonalize", "get_element", "get_sparsity", "inverse", "multiply",
-        "norm",
+    "norm",
     "normalize", "scale", "set_diagonal", "set_row", "submatrix", "threshold",
-        "trace", "transpose"
+    "trace", "transpose"
 };
 
 const char *test_description[] = {
