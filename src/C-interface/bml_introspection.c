@@ -210,6 +210,7 @@ bml_get_distribution_mode(
 /** Return the sparsity of a matrix.
  *
  * \param A The bml matrix.
+ * \param threshold The threshold used to compute the sparsity.
  * \return The sparsity of matrix A.
  */
 double

@@ -69,6 +69,7 @@ int TYPED_FUNC(
 /** Return the sparsity of a matrix.
  *
  * \param A The bml matrix.
+ * \param threshold The threshold used to compute the sparsity.
  * \return The sparsity of a matrix.
  */
 double TYPED_FUNC(
@@ -96,6 +97,7 @@ double TYPED_FUNC(
     }
 
     sparsity = (1.0 - (double) nnzs / ((double) (N * N)));
+    // printf("sparsity,%f\n", sparsity);
 
     return sparsity;
 }

@@ -14,6 +14,7 @@ module bml_introspection_m
   public :: bml_get_row_bandwidth
   public :: bml_get_bandwidth
   public :: bml_get_distribution_mode
+  public :: bml_get_sparsity
 
 contains
 
@@ -96,7 +97,7 @@ contains
 
   end function bml_get_type
 
-!> Get the precision of a matrix.
+  !> Get the precision of a matrix.
   !!
   !! @param a The matrix.
   !! @returns The bml format precision of the matrix.
@@ -109,7 +110,7 @@ contains
 
   end function bml_get_precision
 
-!> Get the distribution mode of a matrix.
+  !> Get the distribution mode of a matrix.
   !!
   !! @param a The matrix.
   !! @returns The bml distribution mode of the matrix.
@@ -133,5 +134,23 @@ contains
     end select
 
   end function bml_get_distribution_mode
+
+
+  !> Get the sparsity of a bml matrix.
+  !!
+  !! @param a The matrix.
+  !! @params threshold The threshold parameter.
+  !! @returns The sparsity of the matrix.
+  function bml_get_sparsity(a, threshold) result(sparsity)
+
+    type(bml_matrix_t), intent(in) :: a
+    real(C_DOUBLE), intent(in) :: threshold
+    real(C_DOUBLE) :: sparsity
+
+    write(111,*)"AAaa", threshold
+
+    sparsity = bml_get_sparsity_C(a%ptr, threshold)
+
+  end function bml_get_sparsity
 
 end module bml_introspection_m

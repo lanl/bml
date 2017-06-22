@@ -40,11 +40,13 @@ double TYPED_FUNC(
     {
         // printf("Annz,%d\n", A_nnz[i]);
         for (int j = 0; j < A_nnz[i]; j++)
+        {
             // printf("Avalue,%f\n", A_value[ROWMAJOR(i, j,A_nnz[i], A_N)]);
             if (ABS(A_value[ROWMAJOR(i, j, A_nnz[i], A_N)]) > threshold)
             {
                 nnzs++;
             }
+        }
     }
 
     sparsity = (1.0 - (double) nnzs / ((double) (A_N * A_N)));
