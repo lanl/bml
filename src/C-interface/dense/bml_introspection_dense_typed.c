@@ -33,7 +33,7 @@ int TYPED_FUNC(
     return bandwidth;
 }
 
-/** Return the bandwidth of a row in the matrix.
+/** Return the bandwidth of a matrix.
  *
  * \param A The bml matrix.
  * \return The bandwidth of the matrix.
@@ -64,4 +64,40 @@ int TYPED_FUNC(
         }
     }
     return bandwidth;
+}
+
+/** Return the sparsity of a matrix.
+ *
+ * \param A The bml matrix.
+ * \param threshold The threshold used to compute the sparsity.
+ * \return The sparsity of a matrix.
+ */
+double TYPED_FUNC(
+    bml_get_sparsity_dense) (
+    const bml_matrix_dense_t * A,
+    const double threshold)
+{
+
+    REAL_T *A_matrix = A->matrix;
+    int nnzs = 0;
+    int row_bandwidth = 0;
+    int N = A->N;
+    double sparsity;
+
+    nnzs = 0;
+    for (int i = 0; i < A->N; i++)
+    {
+        for (int j = 0; j < A->N; j++)
+        {
+            if (ABS(A_matrix[ROWMAJOR(i, j, A->N, A->N)]) > threshold)
+            {
+                nnzs++;
+            }
+        }
+    }
+
+    sparsity = (1.0 - (double) nnzs / ((double) (N * N)));
+    // printf("sparsity,%f\n", sparsity);
+
+    return sparsity;
 }

@@ -58,6 +58,7 @@ set(SOURCES-ELLSORT-TYPED
   bml_convert_ellsort_typed.c
   bml_copy_ellsort_typed.c
   bml_getters_ellsort_typed.c
+  bml_introspection_ellsort_typed.c
   bml_multiply_ellsort_typed.c
   bml_norm_ellsort_typed.c
   bml_normalize_ellsort_typed.c

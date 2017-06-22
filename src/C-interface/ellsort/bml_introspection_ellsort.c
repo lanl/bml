@@ -1,5 +1,13 @@
 #include "bml_introspection_ellsort.h"
+#include "bml_types_ellsort.h"
+#include "bml_logger.h"
+#include "../macros.h"
+#include "../bml_types.h"
+#include "../bml_introspection.h"
+#include "../bml_logger.h"
 
+#include <complex.h>
+#include <math.h>
 #include <stdlib.h>
 
 /** Return the matrix precision.
@@ -108,4 +116,46 @@ bml_get_bandwidth_ellsort(
             (A->nnz[i] > max_bandwidth ? A->nnz[i] : max_bandwidth);
     }
     return max_bandwidth;
+}
+
+/** Return the sparsity of a matrix.
+ *
+ *  Note that the the sparsity of a matrix is defined
+ *  as NumberOfZeroes/N*N where N is the matrix dimension.
+ *  The density of matrix A will be defined as 1-sparsity(A)
+ *
+ * \ingroup introspection_group_C
+ *
+ * \param A The bml matrix.
+ * \param threshold The threshold used to compute the sparsity.
+ * \return The sparsity of A.
+ */
+double
+bml_get_sparsity_ellsort(
+    const bml_matrix_ellsort_t * A,
+    const double threshold)
+{
+    double sparsity;
+    switch (bml_get_precision_ellsort(A))
+    {
+        case single_real:
+            return bml_get_sparsity_ellsort_single_real(A, threshold);
+            break;
+        case double_real:
+            return bml_get_sparsity_ellsort_double_real(A, threshold);
+            break;
+        case single_complex:
+            return bml_get_sparsity_ellsort_single_complex(A, threshold);
+            break;
+        case double_complex:
+            return bml_get_sparsity_ellsort_double_complex(A, threshold);
+            break;
+        case precision_uninitialized:
+            LOG_ERROR("precision not initialized");
+            break;
+        default:
+            LOG_ERROR("fatal logic error\n");
+            break;
+    }
+    return -1;
 }
