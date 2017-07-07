@@ -99,3 +99,33 @@ bml_scale_inplace(
             break;
     }
 }
+
+/** Scale a matrix by a complex factor - resulting matrix exists.
+ *
+ * \ingroup scale_group_C
+ *
+ * \param scale_factor Scale factor for A
+ * \param A Matrix to scale
+ * \param B Scaled Matrix
+ */
+void
+bml_scale_cmplx(
+    const double complex scale_factor,
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_scale_cmplx_dense(scale_factor, A);
+            break;
+        case ellpack:
+            bml_scale_cmplx_ellpack(scale_factor, A);
+            break;
+        case ellsort:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}

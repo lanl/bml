@@ -91,3 +91,28 @@ void TYPED_FUNC(
                   &inc);
     //C_BLAS(SCAL) (&number_elements, &scale_factor_, A->matrix, &inc);
 }
+
+/** Scale a dense matrix.
+ *
+ *  \ingroup scale_group
+ *
+ *  \param A The matrix to be scaled
+ *  \param B Scaled version of matrix A
+ */
+ void TYPED_FUNC(
+     bml_scale_cmplx_dense) (
+     const double complex scale_factor,
+     bml_matrix_dense_t * A)
+ {
+     REAL_T sfactor = scale_factor;
+     REAL_T *A_matrix = A->matrix;
+     int myRank = bml_getMyRank();
+     //int number_elements = A->N * A->N;
+     int number_elements = A->domain->localRowExtent[myRank] * A->N;
+     int startIndex = A->domain->localDispl[myRank];
+     int inc = 1;
+
+     C_BLAS(SCAL) (&number_elements, &sfactor, &(A_matrix[startIndex]),
+                   &inc);
+     //C_BLAS(SCAL) (&number_elements, &scale_factor_, A->matrix, &inc);
+ }

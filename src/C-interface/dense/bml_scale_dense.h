@@ -2,6 +2,7 @@
 #define __BML_SCALE_DENSE_H
 
 #include "bml_types_dense.h"
+#include <complex.h>
 
 bml_matrix_dense_t *bml_scale_dense_new(
     const double scale_factor,
@@ -66,6 +67,10 @@ void bml_scale_inplace_dense_single_complex(
 
 void bml_scale_inplace_dense_double_complex(
     const double scale_factor,
+    bml_matrix_dense_t * A);
+
+void bml_scale_cmplx_dense_double_complex(
+    const double complex scale_factor,
     bml_matrix_dense_t * A);
 
 #endif

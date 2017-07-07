@@ -2,6 +2,7 @@
 #define __BML_SCALE_ELLPACK_H
 
 #include "bml_types_ellpack.h"
+#include <complex.h>
 
 bml_matrix_ellpack_t *bml_scale_ellpack_new(
     const double scale_factor,
@@ -66,6 +67,10 @@ void bml_scale_inplace_ellpack_single_complex(
 
 void bml_scale_inplace_ellpack_double_complex(
     const double scale_factor,
+    bml_matrix_ellpack_t * A);
+
+void bml_scale_cmplx_ellpack_double_complex(
+    const double complex scale_factor,
     bml_matrix_ellpack_t * A);
 
 #endif

@@ -11,6 +11,7 @@ module bml_scale_m
   interface bml_scale
      module procedure scale_one
      module procedure scale_two
+     module procedure bml_scale_cmplx
   end interface bml_scale
 
   public :: bml_scale
@@ -48,5 +49,21 @@ contains
     call bml_scale_C(alpha, a%ptr, c%ptr)
 
   end subroutine scale_two
+
+  !> Scale a bml matrix by a complex parameter.
+  !!
+  !! \f$ C \leftarrow \alpha A \f$
+  !!
+  !! \param alpha The complex factor
+  !! \param a The matrix
+  !! \param c The matrix
+  subroutine bml_scale_cmplx(alpha, a)
+
+    complex(C_DOUBLE_COMPLEX), target, intent(in) :: alpha
+    type(bml_matrix_t), intent(inout) :: a
+
+    call bml_scale_cmplx_c(c_loc(alpha), a%ptr)
+
+  end subroutine bml_scale_cmplx
 
 end module bml_scale_m

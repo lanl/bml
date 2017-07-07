@@ -11,6 +11,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <complex.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -77,6 +78,25 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_scale_inplace_ellpack) (
     const double scale_factor,
+    bml_matrix_ellpack_t * A)
+{
+    REAL_T *A_value = A->value;
+    REAL_T scale_factor_ = (REAL_T) scale_factor;
+
+    int myRank = bml_getMyRank();
+    //int number_elements = A->N * A->M;
+    int number_elements = A->domain->localRowExtent[myRank] * A->M;
+    int startIndex = A->domain->localDispl[myRank];
+    int inc = 1;
+
+    C_BLAS(SCAL) (&number_elements, &scale_factor_, &(A_value[startIndex]),
+                  &inc);
+    //C_BLAS(SCAL) (&number_elements, &scale_factor_, A->value, &inc);
+}
+
+void TYPED_FUNC(
+    bml_scale_cmplx_ellpack) (
+    const double complex scale_factor,
     bml_matrix_ellpack_t * A)
 {
     REAL_T *A_value = A->value;

@@ -374,6 +374,12 @@ module bml_c_interface_m
       type(C_PTR), value :: a
     end subroutine bml_scale_inplace_C
 
+    subroutine bml_scale_cmplx_C(alpha, a) bind(C, name="bml_scale_cmplx")
+      import :: C_PTR, C_DOUBLE_COMPLEX
+      real(C_DOUBLE_COMPLEX), value, intent(in) :: alpha
+      type(C_PTR), value :: a
+    end subroutine bml_scale_cmplx_C
+
     subroutine bml_set_row_C(a, i, row, threshold) bind(C, name="bml_set_row")
       import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
