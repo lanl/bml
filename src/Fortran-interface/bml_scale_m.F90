@@ -11,10 +11,10 @@ module bml_scale_m
   interface bml_scale
      module procedure scale_one
      module procedure scale_two
-     module procedure bml_scale_cmplx
+    !  module procedure bml_scale_cmplx
   end interface bml_scale
 
-  public :: bml_scale
+  public :: bml_scale, bml_scale_cmplx
 
 contains
 
