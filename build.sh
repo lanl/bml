@@ -169,8 +169,9 @@ check_indent() {
 }
 
 tags() {
-    ctags --recurse --C-kinds=+lxzLp
-    etags $(find . -name '*.[ch]' -o -name '*.F90')
+    local files=$(find . -name '*.[ch]' -o -name '*.F90')
+    ctags --recurse --C-kinds=+lxzLp ${files}
+    etags ${files}
 }
 
 dist() {
