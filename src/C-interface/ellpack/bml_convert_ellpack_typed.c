@@ -2,7 +2,6 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
-#include "bml_convert.h"
 #include "bml_convert_ellpack.h"
 #include "bml_logger.h"
 #include "bml_types.h"

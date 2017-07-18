@@ -59,5 +59,7 @@ bml_convert_to_dense(
     const bml_matrix_t * A,
     const bml_dense_order_t order)
 {
+    LOG_WARN("This function is deprecated and may be removed in future "
+             "versions. Please use bml_export_to_dense instead.\n");
     return bml_export_to_dense(A, order);
 }

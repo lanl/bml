@@ -64,6 +64,8 @@ bml_convert_from_dense(
     const int M,
     const bml_distribution_mode_t distrib_mode)
 {
+    LOG_WARN("This function is deprecated and may be removed in future "
+             "versions. Please use bml_import_from_dense instead.\n");
     return bml_import_from_dense(matrix_type, matrix_precision, order, N, A,
                                  threshold, M, distrib_mode);
 }
