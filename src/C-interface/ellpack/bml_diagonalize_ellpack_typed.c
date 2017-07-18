@@ -48,12 +48,12 @@ void TYPED_FUNC(
         (bml_matrix_ellpack_t *) eigenvectors;
 
     // Form ellpack_bml to dense_array
-    A_dense = bml_convert_to_dense_ellpack(A, dense_row_major);
+    A_dense = bml_export_to_dense_ellpack(A, dense_row_major);
 
     // From dense_array to dense_bml
-    D = bml_convert_from_dense_dense(A->matrix_precision, dense_row_major,
-                                     A->N, A_dense, threshold,
-                                     A->distribution_mode);
+    D = bml_import_from_dense_dense(A->matrix_precision, dense_row_major,
+                                    A->N, A_dense, threshold,
+                                    A->distribution_mode);
     free(A_dense);
 
     // Allocate eigenvectors matrix in dense_bml
@@ -70,15 +70,15 @@ void TYPED_FUNC(
 
     // From dense_bml to dense_array
     eigenvectors_dense =
-        bml_convert_to_dense_dense(eigenvectors_bml_dense, dense_row_major);
+        bml_export_to_dense_dense(eigenvectors_bml_dense, dense_row_major);
     bml_deallocate_dense(eigenvectors_bml_dense);
 
     // From dense_array to ellpack_bml
-    myeigenvectors = bml_convert_from_dense_ellpack(A->matrix_precision,
-                                                    dense_row_major, A->N,
-                                                    eigenvectors_dense,
-                                                    threshold, A->M,
-                                                    A->distribution_mode);
+    myeigenvectors = bml_import_from_dense_ellpack(A->matrix_precision,
+                                                   dense_row_major, A->N,
+                                                   eigenvectors_dense,
+                                                   threshold, A->M,
+                                                   A->distribution_mode);
     free(eigenvectors_dense);
 
     // This is done in order to pass the changes back to the upper level

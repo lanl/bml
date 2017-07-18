@@ -38,11 +38,11 @@ bml_export_to_dense(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_convert_to_dense_dense(A, order);
+            return bml_export_to_dense_dense(A, order);
         case ellpack:
-            return bml_convert_to_dense_ellpack(A, order);
+            return bml_export_to_dense_ellpack(A, order);
         case ellsort:
-            return bml_convert_to_dense_ellsort(A, order);
+            return bml_export_to_dense_ellsort(A, order);
         case type_uninitialized:
             return NULL;
             break;

@@ -41,26 +41,26 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *A_dense;
 
     // From ellpack_bml to dense_array
-    A_dense = bml_convert_to_dense_ellpack(A, dense_row_major);
+    A_dense = bml_export_to_dense_ellpack(A, dense_row_major);
 
     // From dense_array to dense_bml
-    D = bml_convert_from_dense_dense(A->matrix_precision, dense_row_major,
-                                     A->N, A_dense, threshold,
-                                     A->distribution_mode);
+    D = bml_import_from_dense_dense(A->matrix_precision, dense_row_major,
+                                    A->N, A_dense, threshold,
+                                    A->distribution_mode);
 
     bml_free_memory(A_dense);
 
     // Calculate inverse in dense_bml
     TYPED_FUNC(bml_inverse_inplace_dense) (D);
 
-    A_dense = bml_convert_to_dense_dense(D, dense_row_major);
+    A_dense = bml_export_to_dense_dense(D, dense_row_major);
     bml_deallocate_dense(D);
 
     // From dense_array to ellpack_bml
-    B = bml_convert_from_dense_ellpack(A->matrix_precision,
-                                       dense_row_major, A->N,
-                                       A_dense,
-                                       threshold, A->M, A->distribution_mode);
+    B = bml_import_from_dense_ellpack(A->matrix_precision,
+                                      dense_row_major, A->N,
+                                      A_dense,
+                                      threshold, A->M, A->distribution_mode);
     bml_free_memory(A_dense);
 
     return B;
