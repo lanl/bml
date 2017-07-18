@@ -51,7 +51,7 @@ int TYPED_FUNC(
         }
     }
     A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, A_dense, 0, M, sequential);
+                              N, M, A_dense, 0, sequential);
 
     int *xadj = malloc(sizeof(int) * (N + 1));
     int *adjncy = malloc(sizeof(int) * (N * M));
