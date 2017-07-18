@@ -183,61 +183,65 @@ echo "Writing output to ${LOG_FILE}"
 if [[ $# -gt 0 ]]; then
     if [[ "$1" = "-h" || "$1" = "--help" ]]; then
         help
-        exit 0
+        shift
     fi
 
-    case "$1" in
-        "cleanup")
-            cleanup
-            ;;
-        "create")
-            create
-            ;;
-        "configure")
-            create
-            configure
-            ;;
-        "compile")
-            create
-            configure
-            compile
-            ;;
-        "install")
-            create
-            configure
-            install
-            ;;
-        "testing")
-            create
-            configure
-            compile
-            testing
-            ;;
-        "docs")
-            create
-            configure
-            docs
-            ;;
-        "indent")
-            indent
-            ;;
-        "check_indent")
-            create
-            check_indent
-            ;;
-        "tags")
-            tags
-            ;;
-        "dist")
-            create
-            configure
-            dist
-            ;;
-        *)
-            echo "unknown command $1"
-            exit 1
-            ;;
-    esac
+    while [[ $# -gt 0 ]]; do
+        echo "Running command $1"
+        case "$1" in
+            "cleanup")
+                cleanup
+                ;;
+            "create")
+                create
+                ;;
+            "configure")
+                create
+                configure
+                ;;
+            "compile")
+                create
+                configure
+                compile
+                ;;
+            "install")
+                create
+                configure
+                install
+                ;;
+            "testing")
+                create
+                configure
+                compile
+                testing
+                ;;
+            "docs")
+                create
+                configure
+                docs
+                ;;
+            "indent")
+                indent
+                ;;
+            "check_indent")
+                create
+                check_indent
+                ;;
+            "tags")
+                tags
+                ;;
+            "dist")
+                create
+                configure
+                dist
+                ;;
+            *)
+                echo "unknown command $1"
+                exit 1
+                ;;
+        esac
+        shift
+    done
 else
     echo "missing action"
     help
