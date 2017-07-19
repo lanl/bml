@@ -28,15 +28,15 @@ int TYPED_FUNC(
     REAL_T *C_dense = NULL;
 
     double traceA, traceB, traceC;
-    double scalar = 0.8;
+    REAL_T scalar = 0.8;
 
     double rel_diff;
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
-    B = bml_scale_new(scalar, A);
-    C = bml_scale_new(scalar, B);
+    B = bml_scale_new(&scalar, A);
+    C = bml_scale_new(&scalar, B);
 
     traceA = bml_trace(A);
     traceB = bml_trace(B);
@@ -106,8 +106,8 @@ int TYPED_FUNC(
     A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
                               N, M, A_dense, 0, sequential);
     bml_free_memory(A_dense);
-    B = bml_scale_new(scalar, A);
-    C = bml_scale_new(scalar, B);
+    B = bml_scale_new(&scalar, A);
+    C = bml_scale_new(&scalar, B);
 
     traceA = bml_trace(A);
     traceB = bml_trace(B);

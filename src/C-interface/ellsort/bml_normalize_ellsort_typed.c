@@ -36,10 +36,10 @@ void TYPED_FUNC(
 {
     double maxminusmin = maxeval - mineval;
     double gershfact = maxeval / maxminusmin;
-    double scalar = (double) -1.0 / maxminusmin;
+    REAL_T scalar = (REAL_T) - 1.0 / maxminusmin;
     double threshold = 0.0;
 
-    bml_scale_inplace_ellsort(scalar, A);
+    bml_scale_inplace_ellsort(&scalar, A);
     bml_add_identity_ellsort(A, gershfact, threshold);
 }
 

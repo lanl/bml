@@ -20,7 +20,7 @@
  */
 bml_matrix_dense_t *
 bml_scale_dense_new(
-    const double scale_factor,
+    const void *scale_factor,
     const bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = NULL;
@@ -57,7 +57,7 @@ bml_scale_dense_new(
  */
 void
 bml_scale_dense(
-    const double scale_factor,
+    const void *scale_factor,
     const bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
@@ -85,7 +85,7 @@ bml_scale_dense(
 
 void
 bml_scale_inplace_dense(
-    const double scale_factor,
+    const void *scale_factor,
     bml_matrix_dense_t * A)
 {
     switch (A->matrix_precision)

@@ -363,14 +363,14 @@ module bml_c_interface_m
 
     subroutine bml_scale_C(alpha, a, b) bind(C, name="bml_scale")
       import :: C_PTR, C_DOUBLE
-      real(C_DOUBLE), value, intent(in) :: alpha
-      type(C_PTR), value :: a
+      type(C_PTR), value, intent(in) :: alpha
+      type(C_PTR), value, intent(in) :: a
       type(C_PTR), value :: b
     end subroutine bml_scale_C
 
     subroutine bml_scale_inplace_C(alpha, a) bind(C, name="bml_scale_inplace")
       import :: C_PTR, C_DOUBLE
-      real(C_DOUBLE), value, intent(in) :: alpha
+      type(C_PTR), value, intent(in) :: alpha
       type(C_PTR), value :: a
     end subroutine bml_scale_inplace_C
 

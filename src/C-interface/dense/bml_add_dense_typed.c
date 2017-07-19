@@ -146,6 +146,8 @@ void TYPED_FUNC(
     const double alpha,
     const double beta)
 {
-    bml_scale_inplace_dense(alpha, A);
+    REAL_T _alpha = (REAL_T) alpha;
+
+    bml_scale_inplace_dense(&_alpha, A);
     bml_add_identity_dense(A, beta);
 }

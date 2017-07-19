@@ -80,42 +80,4 @@ contains
 
   end subroutine bml_deallocate
 
-  !subroutine bml_vector_t_assign(this, other)
-  !  class(bml_vector_t), intent(inout) :: this
-  !  class(bml_vector_t), intent(in) :: other
-  !
-  !  print *, "Direct assignment between vectors not implemented"
-  !  error stop
-  !
-  !end subroutine bml_vector_t_assign
-  !
-  !
-  !subroutine destruct_bml_vector_t(this)
-  !  type(bml_vector_t), intent(inout) :: this
-  !
-  !  print *, "DESTRUCTOR for bml_vector not implemented yet."
-  !  print *, "You possibly leak memory here."
-  !  this%ptr = C_NULL_PTR
-  !
-  !end subroutine destruct_bml_vector_t
-  !
-  !
-  !subroutine bml_matrix_t_assign(this, other)
-  !  class(bml_matrix_t), intent(out) :: this
-  !  class(bml_matrix_t), intent(in) :: other
-  !
-  !  if (c_associated(other%ptr)) then
-  !    this%ptr = bml_copy_new_C(other%ptr)
-  !  end if
-  !
-  !end subroutine bml_matrix_t_assign
-  !
-  !
-  !subroutine destruct_bml_matrix_t(this)
-  !  type(bml_matrix_t), intent(inout) :: this
-  !
-  !    call bml_deallocate(this)
-  !
-  !end subroutine destruct_bml_matrix_t
-
 end module bml_types_m
