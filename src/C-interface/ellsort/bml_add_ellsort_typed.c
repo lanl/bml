@@ -154,8 +154,6 @@ double TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
 
-    int ind, ind2;
-
     REAL_T x[N];
     REAL_T y[N];
     REAL_T *A_value = (REAL_T *) A->value;

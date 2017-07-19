@@ -31,8 +31,6 @@ void TYPED_FUNC(
     int A_M = A->M;
     int l;
     int ll;
-    int j;
-    char mychar;
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
@@ -49,7 +47,7 @@ void TYPED_FUNC(
 #endif
 
 #pragma omp parallel for default(none) shared(A_N,A_M,A_index,A_nnz,A_value,lock) \
-      private(j,l,ll)
+      private(l,ll)
             //    WARNING: Please, check for race conditions ...
 
             for (int i = 0; i < A_N; i++)       // For every row
@@ -91,7 +89,7 @@ void TYPED_FUNC(
 #endif
 
 #pragma omp parallel for default(none) shared(lock,A_N,A_M,A_index,A_nnz,A_value) \
-      private(j,l,ll)
+      private(l,ll)
             //    WARNING: Please, check for race conditions and parallel performances ...
             for (int i = 0; i < A_N; i++)
             {
