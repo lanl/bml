@@ -1,5 +1,5 @@
 #include "bml.h"
-#include "typed.h"
+#include "../typed.h"
 #include "bml_getters.h"
 #include "bml_setters.h"
 

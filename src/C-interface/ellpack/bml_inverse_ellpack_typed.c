@@ -11,7 +11,7 @@
 #include "../dense/bml_convert_dense.h"
 #include "../dense/bml_inverse_dense.h"
 #include "../dense/bml_types_dense.h"
-#include "../macros.h"
+#include "../../macros.h"
 #include "../typed.h"
 
 #include <complex.h>

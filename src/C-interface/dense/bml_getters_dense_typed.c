@@ -1,7 +1,7 @@
+#include "../../macros.h"
 #include "bml_getters_dense.h"
 #include "../bml_introspection.h"
 #include "bml_types_dense.h"
-#include "../macros.h"
 #include "../typed.h"
 
 #include <complex.h>

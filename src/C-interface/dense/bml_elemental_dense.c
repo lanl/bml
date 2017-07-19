@@ -1,5 +1,5 @@
+#include "../../macros.h"
 #include "../bml_logger.h"
-#include "../macros.h"
 #include "bml_elemental_dense.h"
 #include "bml_types_dense.h"
 

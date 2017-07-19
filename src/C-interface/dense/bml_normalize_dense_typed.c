@@ -1,4 +1,4 @@
-#include "../macros.h"
+#include "../../macros.h"
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_normalize.h"
@@ -39,7 +39,6 @@ void TYPED_FUNC(
     double alpha = (double) -1.0 / maxminusmin;
 
     TYPED_FUNC(bml_scale_add_identity_dense) (A, alpha, beta);
-
 }
 
 /** Calculate Gershgorin bounds for a dense matrix.

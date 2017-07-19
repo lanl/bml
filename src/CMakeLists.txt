@@ -1,8 +1,13 @@
 add_subdirectory(Fortran-interface)
 add_subdirectory(C-interface)
+add_subdirectory(internal-blas)
 
 add_library(bml
   $<TARGET_OBJECTS:bml-c>
+  $<TARGET_OBJECTS:bml-internal-blas-double_complex>
+  $<TARGET_OBJECTS:bml-internal-blas-double_real>
+  $<TARGET_OBJECTS:bml-internal-blas-single_complex>
+  $<TARGET_OBJECTS:bml-internal-blas-single_real>
   $<TARGET_OBJECTS:bml-dense-double_complex>
   $<TARGET_OBJECTS:bml-dense-double_real>
   $<TARGET_OBJECTS:bml-dense-single_complex>

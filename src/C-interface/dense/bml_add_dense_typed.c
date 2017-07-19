@@ -1,16 +1,16 @@
-#include "../blas.h"
 #include "../macros.h"
+#include "../blas.h"
 #include "../typed.h"
-#include "bml_add.h"
 #include "bml_add_dense.h"
-#include "bml_allocate.h"
+#include "bml_add.h"
 #include "bml_allocate_dense.h"
+#include "bml_allocate.h"
 #include "bml_copy_dense.h"
-#include "bml_scale.h"
-#include "bml_scale_dense.h"
-#include "bml_types.h"
-#include "bml_types_dense.h"
 #include "bml_parallel.h"
+#include "bml_scale_dense.h"
+#include "bml_scale.h"
+#include "bml_types_dense.h"
+#include "bml_types.h"
 
 #include <complex.h>
 #include <stdlib.h>

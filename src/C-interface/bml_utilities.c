@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "bml_export.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
@@ -6,7 +7,6 @@
 #include "dense/bml_utilities_dense.h"
 #include "ellpack/bml_utilities_ellpack.h"
 #include "ellsort/bml_utilities_ellsort.h"
-#include "macros.h"
 
 #include <complex.h>
 #include <stdio.h>

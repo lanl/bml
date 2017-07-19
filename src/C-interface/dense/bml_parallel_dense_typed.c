@@ -1,4 +1,4 @@
-#include "../macros.h"
+#include "../../macros.h"
 #include "../typed.h"
 #include "bml_parallel.h"
 #include "bml_parallel_dense.h"
@@ -32,11 +32,8 @@ void TYPED_FUNC(
     bml_domain_t *A_domain = A->domain;
 
 #ifdef DO_MPI
-
     MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
                    A_matrix, A_domain->localElements,
                    A_domain->localDispl, REAL_MPI_TYPE, ccomm);
-
 #endif
-
 }

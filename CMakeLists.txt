@@ -149,8 +149,18 @@ if(BML_OPENCL)
   include(FindOpenCL)
 endif()
 
+set(BML_INTERNAL_BLAS FALSE
+  CACHE BOOL "Use internal BLAS functions")
+
+set(BML_INTERNAL_GEMM ${BML_INTERNAL_BLAS}
+  CACHE BOOL "Use internal version of ?gemm BLAS functions")
+if(BML_INTERNAL_GEMM)
+  message(STATUS "Will use internal gemm")
+  add_definitions(-DBML_INTERNAL_GEMM)
+endif()
+
 set(BLAS_VENDOR ""
-  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,MKL,ACML}")
+  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,MKL,ACML,GNU}")
 
 if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
@@ -205,6 +215,10 @@ elseif(BLAS_VENDOR STREQUAL "GNU")
   endif()
   set(BLAS_FOUND TRUE)
   set(LAPACK_FOUND TRUE)
+elseif(BLAS_VENDOR STREQUAL "")
+  message(STATUS "I will rely on the default paths to find BLAS/LAPACK")
+else()
+  message(FATAL_ERROR "Unknown BLAS_VENDOR ${BLAS_VENDOR}")
 endif()
 
 if(NOT (BLAS_LIBRARIES OR BLAS_FOUND))
