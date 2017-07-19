@@ -3,7 +3,7 @@
 
 #include "bml_types_ellpack.h"
 
-bml_matrix_ellpack_t *bml_convert_from_dense_ellpack(
+bml_matrix_ellpack_t *bml_import_from_dense_ellpack(
     const bml_matrix_precision_t matrix_precision,
     const bml_dense_order_t order,
     const int N,
@@ -12,7 +12,7 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack(
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_single_real(
+bml_matrix_ellpack_t *bml_import_from_dense_ellpack_single_real(
     const bml_dense_order_t order,
     const int N,
     const void *A,
@@ -20,7 +20,7 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_single_real(
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_double_real(
+bml_matrix_ellpack_t *bml_import_from_dense_ellpack_double_real(
     const bml_dense_order_t order,
     const int N,
     const void *A,
@@ -28,7 +28,7 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_double_real(
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_single_complex(
+bml_matrix_ellpack_t *bml_import_from_dense_ellpack_single_complex(
     const bml_dense_order_t order,
     const int N,
     const void *A,
@@ -36,7 +36,7 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_single_complex(
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_double_complex(
+bml_matrix_ellpack_t *bml_import_from_dense_ellpack_double_complex(
     const bml_dense_order_t order,
     const int N,
     const void *A,
@@ -44,23 +44,23 @@ bml_matrix_ellpack_t *bml_convert_from_dense_ellpack_double_complex(
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-void *bml_convert_to_dense_ellpack(
+void *bml_export_to_dense_ellpack(
     const bml_matrix_ellpack_t * A,
     const bml_dense_order_t order);
 
-void *bml_convert_to_dense_ellpack_single_real(
+void *bml_export_to_dense_ellpack_single_real(
     const bml_matrix_ellpack_t * A,
     const bml_dense_order_t order);
 
-void *bml_convert_to_dense_ellpack_double_real(
+void *bml_export_to_dense_ellpack_double_real(
     const bml_matrix_ellpack_t * A,
     const bml_dense_order_t order);
 
-void *bml_convert_to_dense_ellpack_single_complex(
+void *bml_export_to_dense_ellpack_single_complex(
     const bml_matrix_ellpack_t * A,
     const bml_dense_order_t order);
 
-void *bml_convert_to_dense_ellpack_double_complex(
+void *bml_export_to_dense_ellpack_double_complex(
     const bml_matrix_ellpack_t * A,
     const bml_dense_order_t order);
 

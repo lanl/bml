@@ -22,7 +22,7 @@ int TYPED_FUNC(
         A_dense[i] = rand() / (double) RAND_MAX;
     }
     A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, A_dense, 0, M, sequential);
+                              N, M, A_dense, 0, sequential);
     B_dense = bml_export_to_dense(A, dense_row_major);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);

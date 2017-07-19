@@ -96,9 +96,9 @@ module bml_c_interface_m
       type(C_PTR) :: bml_banded_matrix_C
     end function bml_banded_matrix_C
 
-    function bml_convert_from_dense_C(matrix_type, matrix_precision, order, &
-        & n, a, threshold, m, distrib_mode) &
-        bind(C, name="bml_convert_from_dense")
+    function bml_import_from_dense_C(matrix_type, matrix_precision, order, &
+        & n, m, a, threshold, distrib_mode) &
+        bind(C, name="bml_import_from_dense")
       import :: C_INT, C_PTR, C_DOUBLE
       integer(C_INT), value, intent(in) :: matrix_type
       integer(C_INT), value, intent(in) :: matrix_precision
@@ -107,16 +107,16 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       real(C_DOUBLE), value, intent(in) :: threshold
       integer(C_INT), value, intent(in) :: distrib_mode
-      type(C_PTR) :: bml_convert_from_dense_C
-    end function bml_convert_from_dense_C
+      type(C_PTR) :: bml_import_from_dense_C
+    end function bml_import_from_dense_C
 
-    function bml_convert_to_dense_C(a, order) &
-        & bind(C, name="bml_convert_to_dense")
+    function bml_export_to_dense_C(a, order) &
+        & bind(C, name="bml_export_to_dense")
       import :: C_INT, C_PTR
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: order
-      type(C_PTR) :: bml_convert_to_dense_C
-    end function bml_convert_to_dense_C
+      type(C_PTR) :: bml_export_to_dense_C
+    end function bml_export_to_dense_C
 
     subroutine bml_copy_C(a, b) bind(C, name="bml_copy")
       import :: C_PTR

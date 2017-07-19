@@ -30,8 +30,8 @@ else()
   add_definitions(-DGLOBAL_DEBUG=BML_LOG_INFO)
 endif()
 
-set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Wno-unknown-pragmas --coverage
-  -save-temps -std=c99)
+set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
+  -Wno-unknown-pragmas --coverage -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all

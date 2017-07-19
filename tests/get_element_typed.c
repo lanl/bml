@@ -32,7 +32,7 @@ int TYPED_FUNC(
     }
 
     A = bml_convert_from_dense(matrix_type, matrix_precision, dense_row_major,
-                               N, A_dense, 0.0, M, sequential);
+                               N, M, A_dense, 0.0, sequential);
 
     for (int i = 0; i < N; i++)
     {

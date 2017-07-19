@@ -2,7 +2,6 @@
 #include "../typed.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellsort.h"
-#include "bml_convert.h"
 #include "bml_convert_ellsort.h"
 #include "bml_logger.h"
 #include "bml_types.h"
@@ -27,7 +26,7 @@
  * \return The bml matrix
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
-    bml_convert_from_dense_ellsort) (
+    bml_import_from_dense_ellsort) (
     const bml_dense_order_t order,
     const int N,
     const void *A,
@@ -83,7 +82,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  * \return The dense matrix
  */
 void *TYPED_FUNC(
-    bml_convert_to_dense_ellsort) (
+    bml_export_to_dense_ellsort) (
     const bml_matrix_ellsort_t * A,
     const bml_dense_order_t order)
 {
