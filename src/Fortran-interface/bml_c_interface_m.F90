@@ -306,6 +306,13 @@ module bml_c_interface_m
       integer(C_INT) :: bml_get_bandwidth_C
     end function bml_get_bandwidth_C
 
+    function bml_get_sparsity_C(a, threshold) bind(C, name="bml_get_sparsity")
+      import :: C_PTR, C_DOUBLE, C_INT
+      type(C_PTR), value, intent(in) :: a
+      real(C_DOUBLE), value, intent(in) :: threshold
+      real(C_DOUBLE) :: bml_get_sparsity_C
+    end function bml_get_sparsity_C
+
     function bml_identity_matrix_C(matrix_type, matrix_precision, n, m, &
         & distrib_mode) bind(C, name="bml_identity_matrix")
       import :: C_INT, C_PTR

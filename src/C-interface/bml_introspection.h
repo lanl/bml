@@ -24,6 +24,10 @@ int bml_get_row_bandwidth(
 int bml_get_bandwidth(
     const bml_matrix_t * A);
 
+double bml_get_sparsity(
+    const bml_matrix_t * A,
+    const double threshold);
+
 bml_distribution_mode_t bml_get_distribution_mode(
     const bml_matrix_t * A);
 
