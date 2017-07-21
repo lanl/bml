@@ -45,6 +45,7 @@ contains
     integer, optional, intent(in) :: m
     character(len=*), optional, intent(in) :: distrib_mode
 
+    integer(C_INT) :: n_
     integer(C_INT) :: m_
     real(C_DOUBLE) :: threshold_
     character(len=20) :: distrib_mode_
@@ -61,6 +62,8 @@ contains
        threshold_ = 0
     end if
 
+    n_ = size(a_dense, 1, C_INT)
+
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
@@ -70,7 +73,7 @@ contains
       if (present(m)) then
         m_ = m
       else
-        m_ = 0
+        m_ = n_
       end if
     end if
 
@@ -78,7 +81,7 @@ contains
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_REAL, C_FLOAT), &
-           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, C_INT), m_, &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
            & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
     end associate
 
@@ -102,6 +105,7 @@ contains
     integer, optional, intent(in) :: m
     character(len=*), optional, intent(in) :: distrib_mode
 
+    integer(C_INT) :: n_
     integer(C_INT) :: m_
     real(C_DOUBLE) :: threshold_
     character(len=20) :: distrib_mode_
@@ -118,6 +122,8 @@ contains
        threshold_ = 0
     end if
 
+    n_ = size(a_dense, 1, C_INT)
+
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
@@ -127,7 +133,7 @@ contains
       if (present(m)) then
         m_ = m
       else
-        m_ = 0
+        m_ = n_
       end if
     end if
 
@@ -135,7 +141,7 @@ contains
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_REAL, C_DOUBLE), &
-           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), m_, &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
            & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
     end associate
 
@@ -159,6 +165,7 @@ contains
     integer, optional, intent(in) :: m
     character(len=*), optional, intent(in) :: distrib_mode
 
+    integer(C_INT) :: n_
     integer(C_INT) :: m_
     real(C_DOUBLE) :: threshold_
     character(len=20) :: distrib_mode_
@@ -175,6 +182,8 @@ contains
        threshold_ = 0
     end if
 
+    n_ = size(a_dense, 1, C_INT)
+
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
@@ -184,7 +193,7 @@ contains
       if (present(m)) then
         m_ = m
       else
-        m_ = 0
+        m_ = n_
       end if
     end if
 
@@ -192,7 +201,7 @@ contains
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_COMPLEX, C_FLOAT_COMPLEX), &
-           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), m_, &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
            & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
     end associate
 
@@ -216,6 +225,7 @@ contains
     integer, optional, intent(in) :: m
     character(len=*), optional, intent(in) :: distrib_mode
 
+    integer(C_INT) :: n_
     integer(C_INT) :: m_
     real(C_DOUBLE) :: threshold_
     character(len=20) :: distrib_mode_
@@ -232,6 +242,8 @@ contains
        threshold_ = 0
     end if
 
+    n_ = size(a_dense, 1, C_INT)
+
     if (matrix_type /= BML_MATRIX_DENSE) then
       if (.not. present(m)) then
         write(*, *) "missing parameter m; number of non-zeros per row"
@@ -241,7 +253,7 @@ contains
       if (present(m)) then
         m_ = m
       else
-        m_ = 0
+        m_ = n_
       end if
     end if
 
@@ -249,7 +261,7 @@ contains
     associate(a_ptr => a_dense(lbound(a_dense, 1), lbound(a_dense, 2)))
       a%ptr = bml_import_from_dense_C(get_matrix_id(matrix_type), &
            & get_element_id(BML_ELEMENT_COMPLEX, C_DOUBLE_COMPLEX), &
-           & BML_DENSE_COLUMN_MAJOR, size(a_dense, 1, kind=C_INT), m_, &
+           & BML_DENSE_COLUMN_MAJOR, n_, m_, &
            & c_loc(a_ptr), threshold_, get_dmode_id(distrib_mode_))
     end associate
 
