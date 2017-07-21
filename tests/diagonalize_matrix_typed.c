@@ -8,7 +8,7 @@
 
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 1e-5
+#define REL_TOL 1.2e-5
 #else
 #define REL_TOL 1e-11
 #endif
