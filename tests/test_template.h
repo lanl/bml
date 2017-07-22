@@ -1,5 +1,5 @@
-#ifndef __TEMPLATE_MATRIX_H
-#define __TEMPLATE_MATRIX_H
+#ifndef __TEST_TEMPLATE_H
+#define __TEST_TEMPLATE_H
 
 #include <bml.h>
 
