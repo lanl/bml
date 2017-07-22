@@ -8,31 +8,56 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 20;
+const int NUM_TESTS = 21;
+
+typedef struct
+{
+    char *test_name;
+    char *test_description;
+    const test_function_t tester;
+} tests_t;
 
 const char *test_name[] = {
-    "add", "allocate", "adjacency", "adjungate_triangle", "convert", "copy",
-    "diagonalize", "get_element", "get_sparsity", "inverse", "multiply",
+    "add",
+    "adjacency",
+    "adjungate_triangle",
+    "allocate",
+    "bml_gemm",
+    "convert",
+    "copy",
+    "diagonalize",
+    "get_element",
+    "get_set_diagonal",
+    "get_sparsity",
+    "inverse",
+    "multiply",
     "norm",
-    "normalize", "scale", "get_set_diagonal", "set_row", "submatrix", "threshold",
-    "trace", "transpose"
+    "normalize",
+    "scale",
+    "set_row",
+    "submatrix",
+    "threshold",
+    "trace",
+    "transpose"
 };
 
 const char *test_description[] = {
     "Add two bml matrices",
-    "Allcate bml matrices",
     "Adjacency CSR arrays for metis",
     "Adjungate triangle (conjugate transpose) of bml matrices",
+    "Allocate bml matrices",
+    "Internal GEMM implmentation",
     "Convert bml matrices",
     "Copy bml matrices",
     "Diagonalize a bml matrix",
     "Get an element from a bml matrix",
+    "Set the diagonal elements of bml matrices",
+    "Get the sparsity",
     "Matrix inverse",
     "Multiply two bml matrices",
     "Norm of bml matrix",
     "Normalize bml matrices",
     "Scale bml matrices",
-    "Set the diagonal elements of bml matrices",
     "Set the elements of a row in a bml matrix",
     "Submatrix bml matrices",
     "Threshold bml matrices",
@@ -45,6 +70,7 @@ const test_function_t testers[] = {
     test_adjacency,
     test_adjungate_triangle,
     test_allocate,
+    test_bml_gemm,
     test_convert,
     test_copy,
     test_diagonalize,

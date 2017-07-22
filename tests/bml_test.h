@@ -27,6 +27,7 @@ typedef int (
 #include "scale_matrix.h"
 #include "set_row.h"
 #include "submatrix_matrix.h"
+#include "test_bml_gemm.h"
 #include "threshold_matrix.h"
 #include "trace_matrix.h"
 #include "transpose_matrix.h"

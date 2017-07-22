@@ -1,7 +1,7 @@
 #include "../macros.h"
 #include "../typed.h"
 #include "../C-interface/blas.h"
-#include "bml_logger.h"
+#include "../C-interface/bml_logger.h"
 
 #include <complex.h>
 

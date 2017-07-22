@@ -5,6 +5,7 @@ set(SOURCES_TYPED
   adjacency_matrix_typed.c
   adjungate_triangle_matrix_typed.c
   allocate_matrix_typed.c
+  test_bml_gemm_typed.c
   convert_matrix_typed.c
   copy_matrix_typed.c
   diagonalize_matrix_typed.c
@@ -56,6 +57,7 @@ add_executable(bml-test
   get_set_diagonal.c
   set_row.c
   submatrix_matrix.c
+  test_bml_gemm.c
   threshold_matrix.c
   trace_matrix.c
   transpose_matrix.c)
@@ -76,9 +78,28 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
-foreach(N add adjacency adjungate_triangle allocate convert copy diagonalize
-    get_element get_sparsity inverse multiply norm  normalize scale
-    get_set_diagonal set_row submatrix threshold trace transpose)
+foreach(N
+    add
+    adjacency
+    adjungate_triangle
+    allocate convert
+    bml_gemm
+    convert
+    copy
+    diagonalize
+    get_element
+    get_set_diagonal
+    get_sparsity
+    inverse
+    multiply
+    norm
+    normalize
+    scale
+    set_row
+    submatrix
+    threshold
+    trace
+    transpose)
   foreach(T dense ellpack ellsort)
     foreach(P single_real double_real single_complex double_complex)
       #if(BML_MPI)
