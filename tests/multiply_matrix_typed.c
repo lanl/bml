@@ -5,8 +5,8 @@
 #include <math.h>
 #include <stdlib.h>
 
-void TYPED_FUNC(
-    multiply) (
+static void TYPED_FUNC(
+    ref_multiply) (
     const int N,
     const REAL_T * A,
     const REAL_T * B,
@@ -34,7 +34,7 @@ void TYPED_FUNC(
 #define ABS_TOL 1e-12
 #endif
 
-int TYPED_FUNC(
+static int TYPED_FUNC(
     compare_matrix) (
     const int N,
     const bml_matrix_precision_t matrix_precision,
@@ -102,8 +102,8 @@ int TYPED_FUNC(
     bml_multiply(A, B, C, alpha, beta, threshold);
     E_dense = bml_export_to_dense(C, dense_row_major);
 
-    TYPED_FUNC(multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
-                          threshold);
+    TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
+                              threshold);
 
     if (TYPED_FUNC(compare_matrix) (N, matrix_precision, D_dense, E_dense) !=
         0)
