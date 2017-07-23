@@ -169,7 +169,8 @@ check_indent() {
 }
 
 tags() {
-    local files=$(find . -name '*.[ch]' -o -name '*.F90')
+    local basedir=$(git rev-parse --show-toplevel)
+    local files=$(git ls-files ${basedir}/*.{c,h,F90})
     ctags --recurse --C-kinds=+lxzLp ${files}
     etags ${files}
 }
