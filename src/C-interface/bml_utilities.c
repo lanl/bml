@@ -163,7 +163,6 @@ bml_print_dense_matrix(
     const int j_l,
     const int j_u)
 {
-    LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
     switch (matrix_precision)
     {
         case single_real:
