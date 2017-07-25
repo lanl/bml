@@ -30,11 +30,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int M = A->M;
 
     int *A_index = A->index;
-    int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
 
     int *B_index = B->index;
-    int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
     //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
@@ -47,7 +45,6 @@ bml_matrix_ellsort_t *TYPED_FUNC(
                M * sizeof(int));
         memcpy(&B_value[ROWMAJOR(i, 0, N, M)], &A_value[ROWMAJOR(i, 0, N, M)],
                M * sizeof(REAL_T));
-        //      A_nnz[perm[i]] = B_nnz[i];
     }
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
@@ -70,11 +67,9 @@ void TYPED_FUNC(
     int M = A->M;
 
     int *A_index = A->index;
-    int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
 
     int *B_index = B->index;
-    int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
     // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
@@ -86,7 +81,6 @@ void TYPED_FUNC(
                M * sizeof(int));
         memcpy(&B_value[ROWMAJOR(i, 0, N, M)], &A_value[ROWMAJOR(i, 0, N, M)],
                M * sizeof(REAL_T));
-        //      A_nnz[perm[i]] = B_nnz[i];
     }
     if (A->distribution_mode == B->distribution_mode)
     {

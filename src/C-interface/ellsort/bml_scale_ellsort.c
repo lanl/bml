@@ -16,7 +16,7 @@
  */
 bml_matrix_ellsort_t *
 bml_scale_ellsort_new(
-    const double scale_factor,
+    const void * scale_factor,
     const bml_matrix_ellsort_t * A)
 {
     bml_matrix_ellsort_t *B = NULL;
@@ -51,7 +51,7 @@ bml_scale_ellsort_new(
  */
 void
 bml_scale_ellsort(
-    const double scale_factor,
+    const void * scale_factor,
     const bml_matrix_ellsort_t * A,
     const bml_matrix_ellsort_t * B)
 {
@@ -77,7 +77,7 @@ bml_scale_ellsort(
 
 void
 bml_scale_inplace_ellsort(
-    const double scale_factor,
+    const void * scale_factor,
     bml_matrix_ellsort_t * A)
 {
     switch (A->matrix_precision)

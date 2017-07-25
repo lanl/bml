@@ -29,9 +29,7 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     char *triangle)
 {
-
     int N = A->N;
-    char mychar;
 
     REAL_T *A_matrix = A->matrix;
 

@@ -20,14 +20,14 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
     REAL_T *C_dense = NULL;
 
-    double scale_factor = 2.0;
+    REAL_T scale_factor = 2.0;
 
     //A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
-    B = bml_scale_new(scale_factor, A);
+    B = bml_scale_new(&scale_factor, A);
     C = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_scale(scale_factor, A, C);
-    bml_scale(scale_factor, A, A);
+    bml_scale(&scale_factor, A, C);
+    bml_scale(&scale_factor, A, A);
 
     A_dense = bml_convert_to_dense(A, dense_row_major);
     B_dense = bml_convert_to_dense(B, dense_row_major);

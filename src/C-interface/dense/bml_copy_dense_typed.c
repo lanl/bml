@@ -77,13 +77,11 @@ void TYPED_FUNC(
     }
 
     // Reorder elements in each row - just change index
-    REAL_T tmp;
 #pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            tmp = A_matrix[ROWMAJOR(i, j, N, N)];
             A_matrix[ROWMAJOR(i, j, N, N)] =
                 B_matrix[ROWMAJOR(i, perm[j], N, N)];
         }

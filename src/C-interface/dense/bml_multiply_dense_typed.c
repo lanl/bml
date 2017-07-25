@@ -44,12 +44,8 @@ void TYPED_FUNC(
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
 
-    int myRank = bml_getMyRank();
-
     C_BLAS(GEMM) ("N", "N", &A->N, &A->N, &A->N, &alpha_, B->matrix,
                   &A->N, A->matrix, &A->N, &beta_, C->matrix, &A->N);
-
-//    mkl_thread_free_buffers();
 }
 
 /** Matrix multiply.

@@ -10,7 +10,10 @@ module bml_scale_m
   !> Scale a matrix.
   interface bml_scale
      module procedure scale_one
-     module procedure scale_two
+     module procedure scale_two_single_real
+     module procedure scale_two_double_real
+     module procedure scale_two_single_complex
+     module procedure scale_two_double_complex
   end interface bml_scale
 
   public :: bml_scale
@@ -25,10 +28,10 @@ contains
   !! \param a The matrix
   subroutine scale_one(alpha, a)
 
-    real(C_DOUBLE), intent(in) :: alpha
+    real(C_DOUBLE), target, intent(in) :: alpha
     type(bml_matrix_t), intent(inout) :: a
 
-    call bml_scale_inplace_C(alpha, a%ptr)
+    call bml_scale_inplace_C(c_loc(alpha), a%ptr)
 
   end subroutine scale_one
 
@@ -39,14 +42,81 @@ contains
   !! \param alpha The factor
   !! \param a The matrix
   !! \param c The matrix
-  subroutine scale_two(alpha, a, c)
+  subroutine scale_two_single_real(alpha, a, c)
 
-    real(C_DOUBLE), intent(in) :: alpha
+    use bml_introspection_m
+
+    real(C_FLOAT), target, intent(in) :: alpha
     type(bml_matrix_t), intent(in) :: a
     type(bml_matrix_t), intent(inout) :: c
 
-    call bml_scale_C(alpha, a%ptr, c%ptr)
+    integer :: prec_a, prec_c
 
-  end subroutine scale_two
+    call bml_scale_C(c_loc(alpha), a%ptr, c%ptr)
+
+  end subroutine scale_two_single_real
+
+  !> Scale a bml matrix.
+  !!
+  !! \f$ C \leftarrow \alpha A \f$
+  !!
+  !! \param alpha The factor
+  !! \param a The matrix
+  !! \param c The matrix
+  subroutine scale_two_double_real(alpha, a, c)
+
+    use bml_introspection_m
+
+    real(C_DOUBLE), target, intent(in) :: alpha
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: c
+
+    integer :: prec_a, prec_c
+
+    call bml_scale_C(c_loc(alpha), a%ptr, c%ptr)
+
+  end subroutine scale_two_double_real
+
+  !> Scale a bml matrix.
+  !!
+  !! \f$ C \leftarrow \alpha A \f$
+  !!
+  !! \param alpha The factor
+  !! \param a The matrix
+  !! \param c The matrix
+  subroutine scale_two_single_complex(alpha, a, c)
+
+    use bml_introspection_m
+
+    complex(C_FLOAT_COMPLEX), target, intent(in) :: alpha
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: c
+
+    integer :: prec_a, prec_c
+
+    call bml_scale_C(c_loc(alpha), a%ptr, c%ptr)
+
+  end subroutine scale_two_single_complex
+
+  !> Scale a bml matrix.
+  !!
+  !! \f$ C \leftarrow \alpha A \f$
+  !!
+  !! \param alpha The factor
+  !! \param a The matrix
+  !! \param c The matrix
+  subroutine scale_two_double_complex(alpha, a, c)
+
+    use bml_introspection_m
+
+    complex(C_DOUBLE_COMPLEX), target, intent(in) :: alpha
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(inout) :: c
+
+    integer :: prec_a, prec_c
+
+    call bml_scale_C(c_loc(alpha), a%ptr, c%ptr)
+
+  end subroutine scale_two_double_complex
 
 end module bml_scale_m

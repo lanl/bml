@@ -25,11 +25,11 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
-    double scale_factor = 2.5;
+    REAL_T scale_factor = 2.5;
     double threshold = 0.0;
 
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_scale_inplace(scale_factor, A);
+    bml_scale_inplace(&scale_factor, A);
     A_gbnd = bml_gershgorin(A);
 
     A_dense = bml_export_to_dense(A, dense_row_major);

@@ -16,7 +16,7 @@
  */
 bml_matrix_ellpack_t *
 bml_scale_ellpack_new(
-    const double scale_factor,
+    const void * scale_factor,
     const bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B = NULL;
@@ -51,7 +51,7 @@ bml_scale_ellpack_new(
  */
 void
 bml_scale_ellpack(
-    const double scale_factor,
+    const void * scale_factor,
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B)
 {
@@ -77,7 +77,7 @@ bml_scale_ellpack(
 
 void
 bml_scale_inplace_ellpack(
-    const double scale_factor,
+    const void * scale_factor,
     bml_matrix_ellpack_t * A)
 {
     switch (A->matrix_precision)
