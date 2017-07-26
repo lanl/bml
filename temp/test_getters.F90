@@ -3,8 +3,7 @@ program test_getters
   use bml
 
   double precision, parameter :: REL_TOL = 1d-12
-  integer, parameter :: N = 11
-  integer, parameter :: M = 11
+  integer, parameter :: N = 4
 
   type(bml_matrix_t) :: A
   double precision :: A_dense(N, N)
@@ -13,8 +12,14 @@ program test_getters
   integer :: i, j
 
   call random_number(A_dense)
+  A_dense(1,1) = 1
+  A_dense(1,2) = 2
+  A_dense(2,1) = 3
+  write(*, "(A)") "A_dense ="
+  call print_dense_matrix(A_dense)
 
-  call bml_convert_from_dense(BML_MATRIX_DENSE, A_dense, A, 0d0, M, BML_DMODE_SEQUENTIAL)
+  call bml_convert_from_dense(BML_MATRIX_DENSE, A_dense, A)
+  call bml_print_matrix("A", A, 1, N, 1, N)
 
   do i = 1, N
     call bml_get_row(A, i, row)
@@ -22,9 +27,6 @@ program test_getters
       rel_diff = abs((A_dense(i, j) - row(j)) / A_dense(i, j))
       if (rel_diff > REL_TOL) then
         write(*, "(A,I2,',',I2,A)") "matrices are not identical at A(", i, j, ")"
-        write(*, "(A)") "A_dense ="
-        call print_dense_matrix(A_dense)
-        call bml_print_matrix("A", A, 1, N, 1, N)
         write(*, "(A,I2)") "getting row ", i
         call print_dense_vector(row)
         error stop
