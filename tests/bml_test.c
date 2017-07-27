@@ -14,7 +14,7 @@ const char *test_name[] = {
     "add", "allocate", "adjacency", "adjungate_triangle", "convert", "copy",
     "diagonalize", "get_element", "get_sparsity", "inverse", "multiply",
     "norm",
-    "normalize", "scale", "set_diagonal", "set_row", "submatrix", "threshold",
+    "normalize", "scale", "get_set_diagonal", "set_row", "submatrix", "threshold",
     "trace", "transpose"
 };
 
@@ -55,7 +55,7 @@ const test_function_t testers[] = {
     test_norm,
     test_normalize,
     test_scale,
-    test_set_diagonal,
+    test_get_set_diagonal,
     test_set_row,
     test_submatrix,
     test_threshold,
