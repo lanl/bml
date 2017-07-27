@@ -8,7 +8,7 @@
 
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 1e-4
+#define REL_TOL 5e-4
 #else
 #define REL_TOL 1e-11
 #endif
@@ -37,12 +37,15 @@ int TYPED_FUNC(
 
     A_inverse = bml_inverse(A);
 
+    LOG_INFO("A:\n");
     bml_print_bml_matrix(A, 0, N, 0, N);
+    LOG_INFO("A_inverse:\n");
     bml_print_bml_matrix(A_inverse, 0, N, 0, N);
 
     aux = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
 
     bml_multiply(A, A_inverse, aux, 1.0, 0.0, 0.0);     // A*A_inverse
+    LOG_INFO("A*A^{-1}:\n");
     bml_print_bml_matrix(aux, 0, N, 0, N);
 
     ssum = bml_sum_squares(aux) - (float) N;
