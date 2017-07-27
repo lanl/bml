@@ -1,4 +1,5 @@
 language: python
+dist: precise
 
 addons:
     apt:
@@ -26,6 +27,8 @@ addons:
             - gfortran-5
             - gfortran-6
             - indent
+            - libblas-dev
+            - liblapack-dev
             - texlive
             - valgrind
 
