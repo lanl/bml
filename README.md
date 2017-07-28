@@ -1,7 +1,7 @@
 | master |
 | ------ |
-| [![Build Status](https://travis-ci.org/qmmd/bml.svg?branch=master)](https://travis-ci.org/qmmd/bml) |
-| [![codecov.io](https://codecov.io/github/qmmd/bml/coverage.svg?branch=master)](https://codecov.io/github/qmmd/bml?branch=master) |
+| [![Build Status](https://travis-ci.org/lanl/bml.svg?branch=master)](https://travis-ci.org/lanl/bml) |
+| [![codecov.io](https://codecov.io/github/lanl/bml/coverage.svg?branch=master)](https://codecov.io/github/lanl/bml?branch=master) |
 
 # Binary Packages
 
@@ -60,7 +60,7 @@ In order to build the library, the following tools need to be installed:
 ## If the build fails
 
 In case the build fails for some reason, please contact the developers by
-opening an issue on GitHub (https://github.com/qmmd/bml/issues) and attach the
+opening an issue on GitHub (https://github.com/lanl/bml/issues) and attach the
 files
 
     build/CMakeFiles/CMakeOutput.log
