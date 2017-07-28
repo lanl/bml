@@ -38,7 +38,8 @@ EOF
     echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
     echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
     echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR        {,Intel,MKL,ACML}        (default is '${BLAS_VENDOR}')"
+    echo "BLAS_VENDOR        {,Intel,MKL,ACML,GNU}    (default is '${BLAS_VENDOR}')"
+    echo "BML_INTERNAL_BLAS  {yes,no}                 (default is ${BML_INTERNAL_BLAS})"
     echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
     echo "EXTRA_CFLAGS       Extra C flags            (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FCFLAGS      Extra fortran flags      (default is '${EXTRA_FCFLAGS}')"
@@ -52,6 +53,7 @@ set_defaults() {
     : ${BML_OPENMP:=yes}
     : ${BML_MPI:=no}
     : ${BLAS_VENDOR:=}
+    : ${BML_INTERNAL_BLAS:=no}
     : ${EXTRA_CFLAGS:=}
     : ${EXTRA_FCFLAGS:=}
     : ${BML_TESTING:=yes}
@@ -113,6 +115,7 @@ configure() {
         -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
+        -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
         -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
@@ -169,7 +172,8 @@ check_indent() {
 }
 
 tags() {
-    local files=$(find . -name '*.[ch]' -o -name '*.F90')
+    local basedir=$(git rev-parse --show-toplevel)
+    local files=$(git ls-files ${basedir}/*.{c,h,F90})
     ctags --recurse --C-kinds=+lxzLp ${files}
     etags ${files}
 }

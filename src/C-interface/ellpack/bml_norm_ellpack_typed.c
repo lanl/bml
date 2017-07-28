@@ -1,4 +1,4 @@
-#include "../macros.h"
+#include "../../macros.h"
 #include "../typed.h"
 #include "bml_norm.h"
 #include "bml_norm_ellpack.h"

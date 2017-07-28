@@ -1,5 +1,5 @@
 #include "bml.h"
-#include "typed.h"
+#include "../typed.h"
 
 #include <complex.h>
 #include <math.h>
@@ -23,7 +23,7 @@ int TYPED_FUNC(
     bml_deallocate(&A);
     free(array);
 
-    LOG_INFO("bml_template passed\n");
+    LOG_INFO("test_template passed\n");
 
     return 0;
 }

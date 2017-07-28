@@ -1,8 +1,8 @@
 #include "bml.h"
-#include "typed.h"
+#include "../macros.h"
+#include "../typed.h"
 #include "bml_introspection.h"
 #include "bml_export.h"
-#include "macros.h"
 
 #include <complex.h>
 #include <math.h>

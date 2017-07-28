@@ -1,5 +1,5 @@
 #include "bml.h"
-#include "typed.h"
+#include "../typed.h"
 #include "bml_getters.h"
 
 #include <complex.h>

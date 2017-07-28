@@ -1,3 +1,4 @@
+#include "../macros.h"
 #include "bml_export.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
@@ -6,7 +7,6 @@
 #include "dense/bml_utilities_dense.h"
 #include "ellpack/bml_utilities_ellpack.h"
 #include "ellsort/bml_utilities_ellsort.h"
-#include "macros.h"
 
 #include <complex.h>
 #include <stdio.h>
@@ -163,7 +163,6 @@ bml_print_dense_matrix(
     const int j_l,
     const int j_u)
 {
-    LOG_DEBUG("printing matrix [%d:%d][%d:%d]\n", i_l, i_u, j_l, j_u);
     switch (matrix_precision)
     {
         case single_real:
