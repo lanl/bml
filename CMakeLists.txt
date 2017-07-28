@@ -23,8 +23,8 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 
-string(TOUPPER ${CMAKE_BUILD_TYPE} TEMP)
-if(TEMP STREQUAL DEBUG)
+string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
+if(CMAKE_BUILD_TYPE_UPPER STREQUAL DEBUG)
   add_definitions(-DGLOBAL_DEBUG=BML_LOG_DEBUG)
 else()
   add_definitions(-DGLOBAL_DEBUG=BML_LOG_INFO)
@@ -53,26 +53,25 @@ set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
-if(CMAKE_BUILD_TYPE)
-  string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
-  message(STATUS "BUILD_TYPE = ${BUILD_TYPE}")
-  if(BUILD_TYPE STREQUAL "DEBUG" 
-      OR BUILD_TYPE STREQUAL "RELEASE" 
-      OR BUILD_TYPE STREQUAL "RELWITHDEBINFO")
+if(CMAKE_BUILD_TYPE_UPPER)
+  if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG" 
+      OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE" 
+      OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELWITHDEBINFO")
     if(CMAKE_C_FLAGS STREQUAL "")
       if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
           OR CMAKE_C_COMPILER_ID STREQUAL "Intel"
           OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
-        set(CMAKE_C_FLAGS_${BUILD_TYPE}
-          ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${BUILD_TYPE}})
+        set(CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+          ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}})
         string(REPLACE ";" " "
-          CMAKE_C_FLAGS_${BUILD_TYPE}
-          "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
+          CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+          "${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
         if(DEFINED EXTRA_CFLAGS)
-          set(CMAKE_C_FLAGS_${BUILD_TYPE} "${CMAKE_C_FLAGS_${BUILD_TYPE}} ${EXTRA_CFLAGS}")
+          set(CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+            "${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}} ${EXTRA_CFLAGS}")
         endif()
         message(STATUS "Setting C compiler flags to "
-          "${CMAKE_C_FLAGS_${BUILD_TYPE}}")
+          "${CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
       else()
         message(STATUS "Unknown C compiler ${CMAKE_C_COMPILER_ID}")
       endif()
@@ -81,16 +80,17 @@ if(CMAKE_BUILD_TYPE)
     if(CMAKE_Fortran_FLAGS STREQUAL "")
       if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU"
           OR CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-        set(CMAKE_Fortran_FLAGS_${BUILD_TYPE}
-          ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${BUILD_TYPE}})
+        set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+          ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}})
         string(REPLACE ";" " "
-          CMAKE_Fortran_FLAGS_${BUILD_TYPE}
-          "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
+          CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+          "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
         if(DEFINED EXTRA_FCFLAGS)
-          set(CMAKE_Fortran_FLAGS_${BUILD_TYPE} "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}} ${EXTRA_FCFLAGS}")
+          set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+            "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}} ${EXTRA_FCFLAGS}")
         endif()
         message(STATUS "Setting Fortran compiler flags to "
-          "${CMAKE_Fortran_FLAGS_${BUILD_TYPE}}")
+          "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
       else()
         message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
       endif()
