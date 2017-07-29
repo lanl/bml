@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TOP_DIR="${PWD}"
+TOP_DIR="$(readlink --canonicalize-existing $(dirname "$0"))"
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
 LOG_FILE="${TOP_DIR}/build.log"
