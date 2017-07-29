@@ -41,12 +41,12 @@ void bml_scale_ellpack_double_real(
     const bml_matrix_ellpack_t * B);
 
 void bml_scale_ellpack_single_complex(
-    const float complex *scale_factor,
+    const float complex * scale_factor,
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B);
 
 void bml_scale_ellpack_double_complex(
-    const double complex *scale_factor,
+    const double complex * scale_factor,
     const bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B);
 
@@ -63,11 +63,11 @@ void bml_scale_inplace_ellpack_double_real(
     bml_matrix_ellpack_t * A);
 
 void bml_scale_inplace_ellpack_single_complex(
-    const float complex *scale_factor,
+    const float complex * scale_factor,
     bml_matrix_ellpack_t * A);
 
 void bml_scale_inplace_ellpack_double_complex(
-    const double complex *scale_factor,
+    const double complex * scale_factor,
     bml_matrix_ellpack_t * A);
 
 #endif
