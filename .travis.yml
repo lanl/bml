@@ -48,7 +48,7 @@ env:
     - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
     - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
     - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=docs
-    - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=indent
+    - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=check_indent
 
 before_script:
     - pip install codecov
