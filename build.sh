@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TOP_DIR="${PWD}"
+TOP_DIR="$(readlink --canonicalize-existing $(dirname "$0"))"
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
 LOG_FILE="${TOP_DIR}/build.log"
@@ -172,10 +172,8 @@ check_indent() {
 }
 
 tags() {
-    local basedir=$(git rev-parse --show-toplevel)
-    local files=$(git ls-files ${basedir}/*.{c,h,F90})
-    ctags --recurse --C-kinds=+lxzLp ${files}
-    etags ${files}
+    "${TOP_DIR}/update_tags.sh" 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
 }
 
 dist() {
