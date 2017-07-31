@@ -40,7 +40,6 @@ void TYPED_FUNC(
     int N = A->N;
     int A_M = A->M;
     int B_M = B->M;
-
     int ix[N], jx[N];
 
     int *A_nnz = A->nnz;
@@ -67,7 +66,6 @@ void TYPED_FUNC(
     shared(A_index, A_value, A_nnz) \
     shared(A_localRowMin, A_localRowMax) \
     shared(B_index, B_value, B_nnz)
-    //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
@@ -79,7 +77,6 @@ void TYPED_FUNC(
                 {
                     x[k] = 0.0;
                     ix[k] = i + 1;
-                    //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                     jx[l] = k;
                     l++;
                 }
@@ -94,7 +91,6 @@ void TYPED_FUNC(
                 {
                     x[k] = 0.0;
                     ix[k] = i + 1;
-                    //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                     jx[l] = k;
                     l++;
                 }
@@ -106,7 +102,6 @@ void TYPED_FUNC(
         for (int jp = 0; jp < l; jp++)
         {
             int jind = jx[jp];
-            //REAL_T xTmp = x[A_index[ROWMAJOR(i, jp, N, A_M)]];
             REAL_T xTmp = x[jind];
             if (is_above_threshold(xTmp, threshold))
             {
@@ -154,8 +149,6 @@ double TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
 
-    int ind, ind2;
-
     REAL_T x[N];
     REAL_T y[N];
     REAL_T *A_value = (REAL_T *) A->value;
@@ -177,7 +170,6 @@ double TYPED_FUNC(
     shared(A_localRowMin, A_localRowMax) \
     shared(B_index, B_value, B_nnz) \
     reduction(+:trnorm)
-    //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
         int l = 0;
@@ -190,7 +182,6 @@ double TYPED_FUNC(
                 x[k] = 0.0;
                 ix[k] = i + 1;
                 y[k] = 0.0;
-                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                 jx[l] = k;
                 l++;
             }
@@ -207,7 +198,6 @@ double TYPED_FUNC(
                 x[k] = 0.0;
                 ix[k] = i + 1;
                 y[k] = 0.0;
-                //A_index[ROWMAJOR(i, l, N, A_M)] = k;
                 jx[l] = k;
                 l++;
             }
