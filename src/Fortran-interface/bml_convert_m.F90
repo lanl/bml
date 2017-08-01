@@ -56,7 +56,7 @@ contains
       distrib_mode_ = bml_dmode_sequential
     endif
 
-    if(present(threshold)) then
+    if (present(threshold)) then
        threshold_ = threshold
     else
        threshold_ = 0
@@ -69,12 +69,12 @@ contains
         write(*, *) "missing parameter m; number of non-zeros per row"
         error stop
       end if
+    end if
+
+    if (present(m)) then
+      m_ = m
     else
-      if (present(m)) then
-        m_ = m
-      else
-        m_ = n_
-      end if
+      m_ = n_
     end if
 
     call bml_deallocate(a)
@@ -129,12 +129,12 @@ contains
         write(*, *) "missing parameter m; number of non-zeros per row"
         error stop
       end if
+    end if
+
+    if (present(m)) then
+      m_ = m
     else
-      if (present(m)) then
-        m_ = m
-      else
-        m_ = n_
-      end if
+      m_ = n_
     end if
 
     call bml_deallocate(a)
@@ -176,7 +176,7 @@ contains
       distrib_mode_ = bml_dmode_sequential
     endif
 
-    if(present(threshold)) then
+    if (present(threshold)) then
        threshold_ = threshold
     else
        threshold_ = 0
@@ -189,12 +189,12 @@ contains
         write(*, *) "missing parameter m; number of non-zeros per row"
         error stop
       end if
+    end if
+
+    if (present(m)) then
+      m_ = m
     else
-      if (present(m)) then
-        m_ = m
-      else
-        m_ = n_
-      end if
+      m_ = n_
     end if
 
     call bml_deallocate(a)
@@ -236,7 +236,7 @@ contains
       distrib_mode_ = bml_dmode_sequential
     endif
 
-    if(present(threshold)) then
+    if (present(threshold)) then
        threshold_ = threshold
     else
        threshold_ = 0
@@ -249,12 +249,12 @@ contains
         write(*, *) "missing parameter m; number of non-zeros per row"
         error stop
       end if
+    end if
+
+    if (present(m)) then
+      m_ = m
     else
-      if (present(m)) then
-        m_ = m
-      else
-        m_ = n_
-      end if
+      m_ = n_
     end if
 
     call bml_deallocate(a)
