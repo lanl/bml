@@ -97,6 +97,20 @@ with the following `bibtex` snipped:
       year = 2017
     }
 
+# Authors
+
+The core developers of the bml in alphabetical order:
+
+* Christian Negre <cnegre@lanl.gov>
+* Jamaludin Mohd-Yusof <jamal@lanl.gov>
+* Nicolas Bock <nbock@lanl.gov>
+* Susan M. Mniszewski <smm@lanl.gov>
+
+# Contributors
+
+* Bálint Aradi <aradi@uni-bremen.de>
+* Mike Wall <mewall@lanl.gov>
+
 # License
 
 The bml library is licensed under the BSD 3-clause license.
