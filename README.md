@@ -68,10 +68,28 @@ files
 
 # Developer Suggested Workflow
 
-We do our main development on the `master` branch.  If you would like to
-contribute your work to the bml project, please fork the project on github,
-hack away at the forked `master` branch and send us a pull request once you
-think we should have a look and integrate your work.
+Our main development happens on the `master` branch and is continuously
+verified for correctness. If you would like to contribute your work to the bml
+project, please follow the instructions at the GitHub help page ["About pull
+requests"](https://help.github.com/articles/about-pull-requests/). To
+summarize:
+
+- Fork the project on github
+- Clone that forked repository
+- Create a branch in it
+- Commit any changes to the branch
+- Push the branch to your forked repository
+- Go to https://github.com/lanl/bml and click on 'Create Pull Request'
+
+During the review process you might want to change your pull request. Simply
+commit the changes on your local branch and push them GitHub. Please don't
+`amend` your commits. This makes it more difficult for the reviewers to follow
+your work.
+
+Please make sure your pull request contains only one logical change (see
+["Structural split of
+change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
+for further details.
 
 ## Coding Style
 
