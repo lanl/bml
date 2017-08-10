@@ -43,22 +43,23 @@ addons:
 env:
     global:
         - secure: "W/BwWphH/Kc1JyF4ch94Egtb2ps2r8O44F1dm68gpYeD09dosgO7WnK4HPBMO7qAKpR+ZWvaPyFhokz+3ruE2ipl9SXFQ8ozJe9TjaEeY2TrkSembClnGdRgXUZXfXyLvvmvRhQ8I1OzwZ63k99PrKRYKiZUA7Pz2NMn8WrLlWBTxMtMkL4Kv8IPoJ7zA4FLhEfT/SUo9nB27/bHWWoCy/2CSyiMC4p1c1soJTIyPKB3BdlRvFhg3P1QZeHME6J4J8DFj+Yedc9n/WPcR4GdoUQfgDdbPe81CH4uV2z2HBi3x4TwHUCFwdDhBcElWBOpFtwnneVvNRdglEj65MNjtNSrShQOkhgPt8XpuITxaNAo03bC3yK8FXt2cRKvXDaOMrDK1J3W+nLOM5qga6XY/v7MvZV82Sxlhw3vPOkIHZdU6NJZAQ5Dl2gVnVxTOmOe8g5aNqQiaJqbRueAJwCgVnlHaB8QTP99T1d6kPbdXdJfIgucNoFmQVov9wgt+FrN/7WNrOiFFjecGiarcvuXUqzNb5V7b03acHHnrZZMBfueEyrWsGRq+fS/PmhIK2LzPlsbmq+qMwo69dO2jD7HHqMbqYQ/3hPq7z5hAKO1jOd/UI3QaGrmhLMeFWxqOt3qEYZcVmpjNc0cY70EDQpO9kkBTuTLe6C4li8+OTSk6dE="
-    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
-    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
-    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
-    - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
-    - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=docs
-    - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=check_indent
+    matrix:
+        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-4.8 CXX=g++-4.8 FC=gfortran-4.8 GCOV=gcov-4.8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-4.9 CXX=g++-4.9 FC=gfortran-4.9 GCOV=gcov-4.9 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-5   CXX=g++-5   FC=gfortran-5   GCOV=gcov-5   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
+        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
+        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=docs
+        - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=indent
 
 before_script:
     - pip install codecov
