@@ -23,6 +23,7 @@ program test_getters
 
   do i = 1, N
     call bml_get_row(A, i, row)
+    call print_dense_vector(row)
     do j = 1, N
       rel_diff = abs((A_dense(i, j) - row(j)) / A_dense(i, j))
       if (rel_diff > REL_TOL) then

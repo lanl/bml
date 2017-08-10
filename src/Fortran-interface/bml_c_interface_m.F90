@@ -216,7 +216,7 @@ module bml_c_interface_m
       import :: C_PTR, C_INT, C_double
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i
-      real(C_DOUBLE) :: bml_get_row_C(*)
+      type(C_PTR) :: bml_get_row_C
     end function bml_get_row_C
 
     subroutine bml_get_diagonal_C(a, diagonal) bind(C, name="bml_get_diagonal")
