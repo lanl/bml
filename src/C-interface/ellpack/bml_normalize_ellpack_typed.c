@@ -11,9 +11,10 @@
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
+#include <float.h>
 #include <math.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef _OPENMP
@@ -57,8 +58,9 @@ void *TYPED_FUNC(
     const bml_matrix_ellpack_t * A)
 {
     REAL_T radius, absham, dvalue;
-    double emin = 100000000000.0;
-    double emax = -100000000000.0;
+
+    double emin = DBL_MAX;
+    double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
@@ -157,8 +159,9 @@ void *TYPED_FUNC(
     const int nrows)
 {
     REAL_T radius, absham, dvalue;
-    double emin = 100000000000.0;
-    double emax = -100000000000.0;
+
+    double emin = DBL_MAX;
+    double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
