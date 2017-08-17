@@ -12,6 +12,7 @@
 #include "bml_types_dense.h"
 
 #include <complex.h>
+#include <float.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,8 +64,8 @@ void *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-    double emin = 100000000000.0;
-    double emax = -100000000000.0;
+    double emin = DBL_MAX;
+    double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
@@ -137,8 +138,8 @@ void *TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
-    double emin = 100000000000.0;
-    double emax = -100000000000.0;
+    double emin = DBL_MAX;
+    double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
