@@ -12,6 +12,7 @@
 #include "bml_types_dense.h"
 
 #include <complex.h>
+#include <float.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,45 +64,73 @@ void *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-    double emin = 100000000000.0;
-    double emax = -100000000000.0;
+    double emin = DBL_MAX;
+    double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
-#pragma omp parallel for \
+#ifdef _OPENMP
+    int num_threads = omp_get_num_threads();
+#else
+    int num_threads = 1;
+#endif
+
+    double _emin[num_threads];
+    double _emax[num_threads];
+
+#pragma omp parallel for shared(_emin, _emax)
+    for (int i = 0; i < num_threads; i++)
+    {
+        _emin[i] = emin;
+        _emax[i] = emax;
+    }
+
+#pragma omp parallel \
     default(none) \
     shared(N, A_matrix) \
     shared(A_localRowMin, A_localRowMax, myRank) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    shared(_emin, _emax) \
+    private(absham, radius, dvalue)
     {
-        radius = 0.0;
+#ifdef _OPENMP
+        int thread_num = omp_get_thread_num();
+#else
+        int thread_num = 1;
+#endif
 
-        for (int j = 0; j < N; j++)
+#pragma omp for
+        for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
-            absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
-            radius += (double) absham;
+            radius = 0.0;
+
+            for (int j = 0; j < N; j++)
+            {
+                absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
+                radius += (double) absham;
+            }
+
+            dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+
+            radius -= ABS(dvalue);
+
+            if (REAL_PART(dvalue + radius) > _emax[thread_num])
+                _emax[thread_num] = REAL_PART(dvalue + radius);
+            if (REAL_PART(dvalue - radius) < _emin[thread_num])
+                _emin[thread_num] = REAL_PART(dvalue - radius);
+        }
+    }
+
+    for (int i = 0; i < num_threads; i++)
+    {
+        if (_emax[i] > emax)
+        {
+            emax = _emax[i];
         }
 
-        dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
-
-        radius -= ABS(dvalue);
-
-/*
-        emax =
-            (emax >
-             REAL_PART(dvalue + radius) ? emax : REAL_PART(dvalue + radius));
-        emin =
-            (emin <
-             REAL_PART(dvalue - radius) ? emin : REAL_PART(dvalue - radius));
-*/
-        if (REAL_PART(dvalue + radius) > emax)
-            emax = REAL_PART(dvalue + radius);
-        if (REAL_PART(dvalue - radius) < emin)
-            emin = REAL_PART(dvalue - radius);
+        if (_emin[i] < emin)
+        {
+            emin = _emin[i];
+        }
     }
 
 #ifdef DO_MPI
@@ -137,35 +166,53 @@ void *TYPED_FUNC(
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 
-    double emin = 100000000000.0;
-    double emax = -100000000000.0;
+    double emin = DBL_MAX;
+    double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
-#pragma omp parallel for \
+#pragma omp parallel \
     default(none) \
     shared(N, A_matrix) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
-    for (int i = 0; i < nrows; i++)
+    shared(emin, emax) \
+    private(absham, radius, dvalue)
     {
-        radius = 0.0;
+        double _emin = emin;
+        double _emax = emax;
 
-        for (int j = 0; j < N; j++)
+#pragma omp for nowait
+        for (int i = 0; i < nrows; i++)
         {
-            absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
-            radius += (double) absham;
+            radius = 0.0;
+
+            for (int j = 0; j < N; j++)
+            {
+                absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
+                radius += (double) absham;
+            }
+
+            dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+
+            radius -= ABS(dvalue);
+
+            if (REAL_PART(dvalue + radius) > _emax)
+                _emax = REAL_PART(dvalue + radius);
+            if (REAL_PART(dvalue - radius) < _emin)
+                _emin = REAL_PART(dvalue - radius);
         }
 
-        dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+#pragma omp critical
+        {
+            if (_emax > emax)
+            {
+                emax = _emax;
+            }
 
-        radius -= ABS(dvalue);
-
-        if (REAL_PART(dvalue + radius) > emax)
-            emax = REAL_PART(dvalue + radius);
-        if (REAL_PART(dvalue - radius) < emin)
-            emin = REAL_PART(dvalue - radius);
+            if (_emin < emin)
+            {
+                emin = _emin;
+            }
+        }
     }
 
     eval[0] = emin;
