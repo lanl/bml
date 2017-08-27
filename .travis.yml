@@ -62,6 +62,8 @@ env:
         - BML_OPENMP=no  VERBOSE_MAKEFILE=yes COMMAND=indent
 
 before_script:
+    - bundle install
+    - bundle exec danger
     - pip install codecov
 
 before_install:
