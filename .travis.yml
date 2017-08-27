@@ -70,6 +70,7 @@ before_install:
         openssl s_client -connect scan.coverity.com:443 |
         sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' |
         sudo tee -a /etc/ssl/certs/ca-
+    - pip install cpp-coveralls
 
 script:
     - >
@@ -78,3 +79,4 @@ script:
 
 after_success:
     - codecov --gcov-exec ${GCOV}
+    - coveralls
