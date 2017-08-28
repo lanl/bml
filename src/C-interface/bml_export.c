@@ -1,7 +1,7 @@
 #include "bml_export.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
-#include "dense/bml_convert_dense.h"
+#include "dense/bml_export_dense.h"
 #include "ellpack/bml_convert_ellpack.h"
 #include "ellsort/bml_convert_ellsort.h"
 

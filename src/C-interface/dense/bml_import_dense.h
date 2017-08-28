@@ -1,5 +1,5 @@
-#ifndef __BML_CONVERT_DENSE_H
-#define __BML_CONVERT_DENSE_H
+#ifndef __BML_IMPORT_DENSE_H
+#define __BML_IMPORT_DENSE_H
 
 #include "bml_types_dense.h"
 

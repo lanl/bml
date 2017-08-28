@@ -8,7 +8,7 @@
 #include "../bml_types.h"
 #include "../bml_utilities.h"
 #include "../dense/bml_allocate_dense.h"
-#include "../dense/bml_convert_dense.h"
+#include "../dense/bml_import_dense.h"
 #include "../dense/bml_diagonalize_dense.h"
 #include "../dense/bml_types_dense.h"
 #include "../../macros.h"
