@@ -4,15 +4,16 @@ set(HEADERS-DENSE
   bml_add_dense.h
   bml_adjungate_triangle_dense.h
   bml_allocate_dense.h
-  bml_convert_dense.h
   bml_copy_dense.h
   bml_diagonalize_dense.h
+  bml_export_dense.h
   bml_getters_dense.h
+  bml_import_dense.h
   bml_introspection_dense.h
   bml_inverse_dense.h
   bml_multiply_dense.h
-  bml_norm_dense.h
   bml_normalize_dense.h
+  bml_norm_dense.h
   bml_parallel_dense.h
   bml_scale_dense.h
   bml_setters_dense.h
@@ -27,15 +28,16 @@ set(SOURCES-DENSE
   bml_add_dense.c
   bml_adjungate_triangle_dense.c
   bml_allocate_dense.c
-  bml_convert_dense.c
   bml_copy_dense.c
   bml_diagonalize_dense.c
+  bml_export_dense.c
   bml_getters_dense.c
+  bml_import_dense.c
   bml_introspection_dense.c
   bml_inverse_dense.c
   bml_multiply_dense.c
-  bml_norm_dense.c
   bml_normalize_dense.c
+  bml_norm_dense.c
   bml_parallel_dense.c
   bml_scale_dense.c
   bml_setters_dense.c
@@ -59,14 +61,15 @@ set(SOURCES-DENSE-TYPED
   bml_add_dense_typed.c
   bml_adjungate_triangle_dense_typed.c
   bml_allocate_dense_typed.c
-  bml_convert_dense_typed.c
   bml_copy_dense_typed.c
+  bml_export_dense_typed.c
   bml_getters_dense_typed.c
+  bml_import_dense_typed.c
   bml_introspection_dense_typed.c
   bml_inverse_dense_typed.c
   bml_multiply_dense_typed.c
-  bml_norm_dense_typed.c
   bml_normalize_dense_typed.c
+  bml_norm_dense_typed.c
   bml_parallel_dense_typed.c
   bml_scale_dense_typed.c
   bml_setters_dense_typed.c

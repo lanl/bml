@@ -2,15 +2,16 @@ include_directories(..)
 
 set(HEADERS-ELLSORT
   bml_add_ellsort.h
-  bml_allocate_ellsort.h
   bml_adjungate_triangle_ellsort.h
-  bml_convert_ellsort.h
+  bml_allocate_ellsort.h
   bml_copy_ellsort.h
+  bml_export_ellsort.h
   bml_getters_ellsort.h
+  bml_import_ellsort.h
   bml_introspection_ellsort.h
   bml_multiply_ellsort.h
-  bml_norm_ellsort.h
   bml_normalize_ellsort.h
+  bml_norm_ellsort.h
   bml_parallel_ellsort.h
   bml_scale_ellsort.h
   bml_setters_ellsort.h
@@ -23,15 +24,16 @@ set(HEADERS-ELLSORT
 
 set(SOURCES-ELLSORT
   bml_add_ellsort.c
-  bml_allocate_ellsort.c
   bml_adjungate_triangle_ellsort.c
-  bml_convert_ellsort.c
+  bml_allocate_ellsort.c
   bml_copy_ellsort.c
+  bml_export_ellsort.c
   bml_getters_ellsort.c
+  bml_import_ellsort.c
   bml_introspection_ellsort.c
   bml_multiply_ellsort.c
-  bml_norm_ellsort.c
   bml_normalize_ellsort.c
+  bml_norm_ellsort.c
   bml_parallel_ellsort.c
   bml_scale_ellsort.c
   bml_setters_ellsort.c
@@ -53,15 +55,16 @@ endif()
 
 set(SOURCES-ELLSORT-TYPED
   bml_add_ellsort_typed.c
-  bml_allocate_ellsort_typed.c
   bml_adjungate_triangle_ellsort_typed.c
-  bml_convert_ellsort_typed.c
+  bml_allocate_ellsort_typed.c
   bml_copy_ellsort_typed.c
+  bml_export_ellsort_typed.c
   bml_getters_ellsort_typed.c
+  bml_import_ellsort_typed.c
   bml_introspection_ellsort_typed.c
   bml_multiply_ellsort_typed.c
-  bml_norm_ellsort_typed.c
   bml_normalize_ellsort_typed.c
+  bml_norm_ellsort_typed.c
   bml_parallel_ellsort_typed.c
   bml_scale_ellsort_typed.c
   bml_setters_ellsort_typed.c

@@ -1,5 +1,5 @@
-#ifndef __BML_CONVERT_ELLSORT_H
-#define __BML_CONVERT_ELLSORT_H
+#ifndef __BML_IMPORT_ELLSORT_H
+#define __BML_IMPORT_ELLSORT_H
 
 #include "bml_types_ellsort.h"
 
@@ -43,25 +43,5 @@ bml_matrix_ellsort_t *bml_import_from_dense_ellsort_double_complex(
     const double threshold,
     const int M,
     const bml_distribution_mode_t distrib_mode);
-
-void *bml_export_to_dense_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order);
-
-void *bml_export_to_dense_ellsort_single_real(
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order);
-
-void *bml_export_to_dense_ellsort_double_real(
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order);
-
-void *bml_export_to_dense_ellsort_single_complex(
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order);
-
-void *bml_export_to_dense_ellsort_double_complex(
-    const bml_matrix_ellsort_t * A,
-    const bml_dense_order_t order);
 
 #endif
