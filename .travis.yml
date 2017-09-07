@@ -77,8 +77,12 @@ before_install:
 
 script:
     - >
-        OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug
-        VERBOSE_MAKEFILE=yes ./build.sh ${COMMAND}
+        if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then \
+            OMP_NUM_THREADS=4 \
+            CMAKE_BUILD_TYPE=Debug \
+            VERBOSE_MAKEFILE=yes \
+            ./build.sh ${COMMAND}; \
+        fi
 
 after_success:
     - codecov --gcov-exec ${GCOV}
