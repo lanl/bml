@@ -3,6 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/lanl/bml/badge.svg?branch=master)](https://coveralls.io/github/lanl/bml?branch=master)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/cdnjs/cdnjs.svg)](https://github.com/lanl/bml/pulls)
 
 # Binary Packages
 
