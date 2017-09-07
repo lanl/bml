@@ -375,7 +375,7 @@ if(DOXYGEN_FOUND)
       ${CMAKE_SOURCE_DIR}/src/Fortran-interface)
   endif()
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
-  configure_file(docs/Doxyfile.in Doxyfile)
+  configure_file(documentation/Doxyfile.in Doxyfile)
   add_custom_target(docs
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 else()
