@@ -12,6 +12,10 @@ static bml_log_level_t global_log_level = GLOBAL_DEBUG;
 #define TRACE_DEPTH 20
 #define BUFFER_SIZE 512
 
+#ifndef ADDR2LINE
+#define ADDR2LINE "false"
+#endif
+
 /** Resolve line number in backtrace.
  */
 static void
@@ -26,7 +30,7 @@ resolve_linenumber(
      * everything before that is the file name. (Don't go beyond 0 though
      * (string terminator)
      */
-    size_t p = 0;
+    int p = 0;
     while (string[p] != '(' && string[p] != ' ' && string[p] != 0)
     {
         ++p;
@@ -68,7 +72,7 @@ print_backtrace(
 
     for (i = 3; i < size; i++)
     {
-#ifdef ADDR2LINE
+#ifdef HAVE_ADDR2LINE
         resolve_linenumber(buffer[i], strings[i]);
 #else
         printf("%s\n", strings[i]);
