@@ -20,6 +20,7 @@ typedef int (
 #include "get_element.h"
 #include "get_set_diagonal.h"
 #include "get_sparsity.h"
+#include "import_export_matrix.h"
 #include "inverse_matrix.h"
 #include "multiply_matrix.h"
 #include "normalize_matrix.h"

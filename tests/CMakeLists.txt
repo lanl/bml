@@ -5,20 +5,21 @@ set(SOURCES_TYPED
   adjacency_matrix_typed.c
   adjungate_triangle_matrix_typed.c
   allocate_matrix_typed.c
-  test_bml_gemm_typed.c
   convert_matrix_typed.c
   copy_matrix_typed.c
   diagonalize_matrix_typed.c
   get_element_typed.c
+  get_set_diagonal_typed.c
   get_sparsity_typed.c
+  import_export_matrix_typed.c
   inverse_matrix_typed.c
   multiply_matrix_typed.c
   normalize_matrix_typed.c
   norm_matrix_typed.c
   scale_matrix_typed.c
-  get_set_diagonal_typed.c
   set_row_typed.c
   submatrix_matrix_typed.c
+  test_bml_gemm_typed.c
   threshold_matrix_typed.c
   trace_matrix_typed.c
   transpose_matrix_typed.c)
@@ -48,19 +49,21 @@ add_executable(bml-test
   copy_matrix.c
   diagonalize_matrix.c
   get_element.c
+  get_set_diagonal.c
   get_sparsity.c
+  import_export_matrix.c
   inverse_matrix.c
   multiply_matrix.c
   normalize_matrix.c
   norm_matrix.c
   scale_matrix.c
-  get_set_diagonal.c
   set_row.c
   submatrix_matrix.c
   test_bml_gemm.c
   threshold_matrix.c
   trace_matrix.c
   transpose_matrix.c)
+
 target_link_libraries(bml-test bmltests bml ${LINK_LIBRARIES})
 set_target_properties(bml-test
   PROPERTIES
@@ -82,7 +85,7 @@ foreach(N
     add
     adjacency
     adjungate_triangle
-    allocate convert
+    allocate
     bml_gemm
     convert
     copy
@@ -90,6 +93,7 @@ foreach(N
     get_element
     get_set_diagonal
     get_sparsity
+    import_export
     inverse
     multiply
     norm

@@ -200,6 +200,7 @@
 
 #include "bml_add.h"
 #include "bml_allocate.h"
+#include "bml_convert.h"
 #include "bml_copy.h"
 #include "bml_diagonalize.h"
 #include "bml_export.h"

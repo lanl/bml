@@ -46,7 +46,7 @@ bml_clear_dense(
             return bml_clear_dense_double_complex(A);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", A->matrix_precision);
             break;
     }
 }
@@ -86,7 +86,7 @@ bml_zero_matrix_dense(
             return bml_zero_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -129,7 +129,7 @@ bml_banded_matrix_dense(
             return bml_banded_matrix_dense_double_complex(N, M, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -170,7 +170,7 @@ bml_random_matrix_dense(
             return bml_random_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -211,7 +211,7 @@ bml_identity_matrix_dense(
             return bml_identity_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -244,11 +244,6 @@ bml_update_domain_dense(
         for (int j = localPartMin[i]; j <= localPartMax[i]; j++)
         {
             rtotal += nnodesInPart[j - 1];
-/*
-         if (bml_printRank() == 1)
-           printf("rank %d localPart %d %d part %d nnodesPerPart %d rtotal %d\n",
-             i, localPartMin[i], localPartMax[i], j, nnodesInPart[j-1], rtotal);
-*/
         }
 
         if (i == 0)
@@ -278,19 +273,4 @@ bml_update_domain_dense(
         if (A_domain->localRowExtent[i] > A_domain->maxLocalExtent)
             A_domain->maxLocalExtent = A_domain->localRowExtent[i];
     }
-
-/*
-    if (bml_printRank() == 1)
-    {
-      printf("Updated Domain\n");
-      for (int i = 0; i < nprocs; i++)
-      {
-        printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
-          i, A_domain->localRowMin[i], A_domain->localRowMax[i],
-          A_domain->localRowExtent[i], A_domain->localElements[i],
-          A_domain->localDispl[i]);
-      }
-    }
-*/
-
 }
