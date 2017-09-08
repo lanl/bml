@@ -46,7 +46,7 @@ bml_clear_dense(
             return bml_clear_dense_double_complex(A);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", A->matrix_precision);
             break;
     }
 }
@@ -86,7 +86,7 @@ bml_zero_matrix_dense(
             return bml_zero_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -129,7 +129,7 @@ bml_banded_matrix_dense(
             return bml_banded_matrix_dense_double_complex(N, M, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -170,7 +170,7 @@ bml_random_matrix_dense(
             return bml_random_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;
@@ -211,7 +211,7 @@ bml_identity_matrix_dense(
             return bml_identity_matrix_dense_double_complex(N, distrib_mode);
             break;
         default:
-            LOG_ERROR("unknown precision\n");
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
             break;
     }
     return NULL;

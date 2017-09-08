@@ -348,6 +348,12 @@ if(LAPACK_FOUND)
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
+find_program(ADDR2LINE addr2line)
+if(ADDR2LINE)
+  message(STATUS "Found addr2line, backtrace will resolve line numbers")
+  add_definitions(-DADDR2LINE="${ADDR2LINE}")
+endif()
+
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 set(DIST_FILES CMakeLists.txt)

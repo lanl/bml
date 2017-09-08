@@ -1,10 +1,82 @@
+#define _POSIX_C_SOURCE 200809L
+
 #include "bml_logger.h"
 
+#include <execinfo.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
 static bml_log_level_t global_log_level = GLOBAL_DEBUG;
+
+#define TRACE_DEPTH 20
+#define BUFFER_SIZE 512
+
+/** Resolve line number in backtrace.
+ */
+static void
+resolve_linenumber(
+    void *trace,
+    char *string)
+{
+    char buffer[BUFFER_SIZE];
+    char *line;
+
+    /* Find first occurence of '(' or ' ' in strings[i] and assume
+     * everything before that is the file name. (Don't go beyond 0 though
+     * (string terminator)
+     */
+    size_t p = 0;
+    while (string[p] != '(' && string[p] != ' ' && string[p] != 0)
+    {
+        ++p;
+    }
+
+    char syscom[512];
+    sprintf(syscom, ADDR2LINE " %p -e %.*s", trace, p, string);
+
+    /* last parameter is the file name of the symbol */
+    FILE *output = popen(syscom, "r");
+    if (!output)
+    {
+        fprintf(stderr, "error executing %s\n", syscom);
+        exit(EXIT_FAILURE);
+    }
+
+    while ((line = fgets(buffer, BUFFER_SIZE, output)) != NULL)
+    {
+        printf("%s", line);
+    }
+    pclose(output);
+}
+
+/** Print out backtrace.
+ */
+static void
+print_backtrace(
+    void)
+{
+    void *buffer[TRACE_DEPTH];
+    size_t size;
+    char **strings;
+    size_t i;
+
+    size = backtrace(buffer, TRACE_DEPTH);
+    strings = backtrace_symbols(buffer, size);
+
+    printf("Obtained %zd stack frames.\n", size);
+
+    for (i = 3; i < size; i++)
+    {
+#ifdef ADDR2LINE
+        resolve_linenumber(buffer[i], strings[i]);
+#else
+        printf("%s\n", strings[i]);
+#endif
+    }
+
+    free(strings);
+}
 
 /** Log a message.
  *
@@ -34,7 +106,8 @@ bml_log_real(
 
         if (log_level == BML_LOG_ERROR)
         {
-            exit(-1);
+            print_backtrace();
+            exit(EXIT_FAILURE);
         }
     }
 }
