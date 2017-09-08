@@ -9,7 +9,7 @@ addons:
         notification_email: nicolasbock@gmail.com
         build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=no -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
         build_command: "make"
-        branch_pattern: master
+        branch_pattern: coverty_scan
     apt:
         sources:
             - ubuntu-toolchain-r-test
@@ -73,7 +73,10 @@ before_install:
     - pip install cpp-coveralls
 
 script:
-    - OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug VERBOSE_MAKEFILE=yes ./build.sh ${COMMAND}
+    - export OMP_NUM_THREADS=4
+    - export CMAKE_BUILD_TYPE=Debug
+    - export VERBOSE_MAKEFILE=yes
+    - if [ "${COVERITY_SCAN_BRANCH}" != "1" ]; then ./build.sh ${COMMAND}; else echo "skipping script"; fi
 
 after_success:
     - codecov --gcov-exec ${GCOV}
