@@ -13,10 +13,10 @@
 
 /** Scale a dense matrix - result in new matrix.
  *
- *  \ingroup scale_group
+ * \ingroup scale_group
  *
- *  \param A The matrix to be scaled
- *  \return A scaled version of matrix A.
+ * \param A The matrix to be scaled
+ * \return A scaled version of matrix A.
  */
 bml_matrix_dense_t *
 bml_scale_dense_new(
