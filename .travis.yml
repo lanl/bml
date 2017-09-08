@@ -5,12 +5,11 @@ addons:
     coverity_scan:
         project:
             name: "lanl/bml"
-            description: "<Your project description here>"
-            version: 1.0
+            description: "Build submitted via Travis CI"
         notification_email: nicolasbock@gmail.com
-        build_command_prepend: "./build.sh configure"
-        build_command: "make -C build"
-        branch_pattern: coverity_scan
+        build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=no -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
+        build_command: "make"
+        branch_pattern: master
     apt:
         sources:
             - ubuntu-toolchain-r-test
@@ -43,7 +42,9 @@ addons:
 
 env:
     global:
-        - secure: "W/BwWphH/Kc1JyF4ch94Egtb2ps2r8O44F1dm68gpYeD09dosgO7WnK4HPBMO7qAKpR+ZWvaPyFhokz+3ruE2ipl9SXFQ8ozJe9TjaEeY2TrkSembClnGdRgXUZXfXyLvvmvRhQ8I1OzwZ63k99PrKRYKiZUA7Pz2NMn8WrLlWBTxMtMkL4Kv8IPoJ7zA4FLhEfT/SUo9nB27/bHWWoCy/2CSyiMC4p1c1soJTIyPKB3BdlRvFhg3P1QZeHME6J4J8DFj+Yedc9n/WPcR4GdoUQfgDdbPe81CH4uV2z2HBi3x4TwHUCFwdDhBcElWBOpFtwnneVvNRdglEj65MNjtNSrShQOkhgPt8XpuITxaNAo03bC3yK8FXt2cRKvXDaOMrDK1J3W+nLOM5qga6XY/v7MvZV82Sxlhw3vPOkIHZdU6NJZAQ5Dl2gVnVxTOmOe8g5aNqQiaJqbRueAJwCgVnlHaB8QTP99T1d6kPbdXdJfIgucNoFmQVov9wgt+FrN/7WNrOiFFjecGiarcvuXUqzNb5V7b03acHHnrZZMBfueEyrWsGRq+fS/PmhIK2LzPlsbmq+qMwo69dO2jD7HHqMbqYQ/3hPq7z5hAKO1jOd/UI3QaGrmhLMeFWxqOt3qEYZcVmpjNc0cY70EDQpO9kkBTuTLe6C4li8+OTSk6dE="
+        # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+        #   via the "travis encrypt" command using the project repo's public key
+        - secure: "itC06I482XliT7b2yyoit5eWHdbIa/Wpp+cNIsZElMnWhUyBHCuKiLQHLgyovlhCR6UsL7ISDdyxxNz4Kn7Os1EdPhQ1Q+P+8vZf8pROK1LBIZLrTWM7npea3ydo3PCdpgJdr9qHAEvXhBG9mshmrBgJLdmDuNtJ7yFn2l8nLegCnmsdExkjN1ZbprRutPd9OH6iIu9C8lPAiYR1bcDEPm+fgF3VnE2JFztYvkUt+PBiwIveVFlwAQRjrBqvvF/fk2TqFmD97KFDQ6stdr6MzUmQ1m05arololkLp+y6aQxWYbwug66vorAHma+axXJClkd1Rmt/K7kyRBhRUOwE9CKKnHKL9lKYKvfyv5e7HDasg60PACErfBR1/SIyNOWATIV8KCyejn4qI8Q+QjyYGlIM3D2oUCIhIgy/FPnmb6IWGJmqE7Y2kk6BAYZv0PIXLWrffuht7L2qJnl1FI4nVsej9Kf71zJfhxfa2XY9vuFm40ldOMF0DuSOc5KNKHuIGliLhBFKws91cYqz2GnIJV2SU0Ut0ICJ935R9qz+vKE8dGlyV80RIR9+ILVCOOh/XRu5Ljb2fAT+NvlBfG5of3PwiEzQLZPHM0vtZD0wDd9N39GInYe510DwzRRPVfYpbXYSDhISEUugB4F7ASjsVNrJ7kbgZFMwU17YSe+i5DI="
     matrix:
         - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
         - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
@@ -68,21 +69,11 @@ before_script:
     - pip install codecov
 
 before_install:
-    - >
-        echo -n |
-        openssl s_client -connect scan.coverity.com:443 |
-        sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' |
-        sudo tee -a /etc/ssl/certs/ca-
+    - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
     - pip install cpp-coveralls
 
 script:
-    - >
-        if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then \
-            OMP_NUM_THREADS=4 \
-            CMAKE_BUILD_TYPE=Debug \
-            VERBOSE_MAKEFILE=yes \
-            ./build.sh ${COMMAND}; \
-        fi
+    - OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug VERBOSE_MAKEFILE=yes ./build.sh ${COMMAND}
 
 after_success:
     - codecov --gcov-exec ${GCOV}
