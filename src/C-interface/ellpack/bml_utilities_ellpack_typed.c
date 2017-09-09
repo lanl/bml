@@ -50,7 +50,7 @@ void TYPED_FUNC(
         LOG_ERROR("read error\n");
     }
 
-    char *FMT;
+    char *FMT = "";
     switch (A->matrix_precision)
     {
         case single_real:
