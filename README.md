@@ -123,7 +123,7 @@ The core developers of the bml in alphabetical order:
 
 * Christian Negre <cnegre@lanl.gov>
 * Jamaludin Mohd-Yusof <jamal@lanl.gov>
-* Nicolas Bock <nbock@lanl.gov>
+* Nicolas Bock <nicolasbock@gmail.com>
 * Susan M. Mniszewski <smm@lanl.gov>
 
 # Contributors
