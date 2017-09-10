@@ -14,7 +14,8 @@ bml_matrix_dense_t *TYPED_FUNC(
     const bml_distribution_mode_t distrib_mode)
 {
     int N = bml_get_N(A);
-    bml_matrix_dense_t *B = bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
+    bml_matrix_dense_t *B =
+        bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
     REAL_T *Bij = (REAL_T *) B->matrix;
 
     for (int i = 0; i < N; i++)

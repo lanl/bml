@@ -16,7 +16,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     const bml_distribution_mode_t distrib_mode)
 {
     int N = bml_get_N(A);
-    bml_matrix_ellpack_t *B = bml_zero_matrix_ellpack(matrix_precision, N, M, distrib_mode);
+    bml_matrix_ellpack_t *B =
+        bml_zero_matrix_ellpack(matrix_precision, N, M, distrib_mode);
 
     for (int i = 0; i < N; i++)
     {
