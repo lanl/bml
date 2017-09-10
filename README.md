@@ -110,11 +110,18 @@ a citable DOI:
 
 with the following `bibtex` snipped:
 
-    @misc{bml,
-      url = {\url{https://qmmd.github.io}}
-      author = {Aradi, B\'{a}lint and Bock, Nicolas and Mniszewski, Susan M.
-        and Mohd-Yusof, Jamaludin and Negre, Christian},
-      year = 2017
+    @misc{nicolas_bock_2017_841949,
+      author       = {Nicolas Bock and
+                      Susan Mniszewski and
+                      Bálint Aradi and
+                      Michael Wall and
+                      Christian F. A. Negre and
+                      Jamal Mohd-Yusof},
+      title        = {qmmd/bml v1.0.0},
+      month        = aug,
+      year         = 2017,
+      doi          = {10.5281/zenodo.841949},
+      url          = {https://doi.org/10.5281/zenodo.841949}
     }
 
 # Authors
