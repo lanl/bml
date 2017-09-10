@@ -119,3 +119,19 @@ foreach(N
     endforeach()
   endforeach()
 endforeach()
+
+add_executable(test-backtrace test_backtrace.c)
+target_link_libraries(test-backtrace bml)
+add_test(backtrace test-backtrace)
+if(ADDR2LINE)
+  set_tests_properties(backtrace
+    PROPERTIES
+    # For some compiler combinations source line resolution is not working. In
+    # this case the backtrace will print out something like '??:0' which makes
+    # this test not very useful unfortunately.
+    PASS_REGULAR_EXPRESSION "test_backtrace.c:6[\\n]*.*test_backtrace.c:12;[?]+:[0?]")
+else()
+  set_tests_properties(backtrace
+    PROPERTIES
+    PASS_REGULAR_EXPRESSION "test-backtrace[(]foo.*[\\n]*.*test-backtrace[(]main;[?]+:[0?]")
+endif()
