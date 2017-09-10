@@ -9,6 +9,7 @@
 
 static bml_log_level_t global_log_level = GLOBAL_DEBUG;
 
+#define FMT_LENGTH 10000
 #define TRACE_DEPTH 20
 #define BUFFER_SIZE 512
 
@@ -36,8 +37,9 @@ resolve_linenumber(
         ++p;
     }
 
-    char syscom[512];
-    sprintf(syscom, ADDR2LINE " %p -e %.*s", trace, p, string);
+    char syscom[BUFFER_SIZE];
+    snprintf(syscom, BUFFER_SIZE - 1, ADDR2LINE " %p -e %.*s", trace, p,
+             string);
 
     /* last parameter is the file name of the symbol */
     FILE *output = popen(syscom, "r");
@@ -94,17 +96,17 @@ bml_log_real(
     const char *format,
     va_list ap)
 {
-    char new_format[10000];
+    char new_format[FMT_LENGTH];
 
     if (log_level >= global_log_level)
     {
         if (log_level == BML_LOG_DEBUG)
         {
-            snprintf(new_format, 10000, "[DEBUG] %s", format);
+            snprintf(new_format, FMT_LENGTH - 1, "[DEBUG] %s", format);
         }
         else
         {
-            strncpy(new_format, format, 10000);
+            strncpy(new_format, format, FMT_LENGTH - 1);
         }
         vprintf(new_format, ap);
 
@@ -150,9 +152,10 @@ bml_log_location(
     ...)
 {
     va_list ap;
-    char new_format[10000];
+    char new_format[FMT_LENGTH];
 
-    snprintf(new_format, 10000, "[%s:%d] %s", filename, linenumber, format);
+    snprintf(new_format, FMT_LENGTH - 1, "[%s:%d] %s", filename, linenumber,
+             format);
     va_start(ap, format);
     bml_log_real(log_level, new_format, ap);
     va_end(ap);
