@@ -66,3 +66,4 @@ script:
 after_success:
     - codecov --gcov-exec ${GCOV}
     - coveralls
+    - if [ "${COVERITY_SCAN_BRANCH}" = "1" ]; then ls -lh cov-int; echo "build-log.txt"; cat cov-int/build-log.txt; echo "scm_log.txt"; cat cov-int/scm_log.txt; echo "done"; fi
