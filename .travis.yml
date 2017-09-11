@@ -67,6 +67,7 @@ script:
     - export OMP_NUM_THREADS=4
     - export CMAKE_BUILD_TYPE=Debug
     - export VERBOSE_MAKEFILE=yes
+    - export PARALLEL_TEST_JOBS=2
     - if [ "${COVERITY_SCAN_BRANCH}" != "1" ]; then ./build.sh ${COMMAND}; fi
 
 after_success:
