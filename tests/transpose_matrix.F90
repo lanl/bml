@@ -34,8 +34,8 @@ contains
     call bml_transpose(a, b)
     call bml_copy_new(a, c)
 
-    call bml_convert_to_dense(a, a_dense)
-    call bml_convert_to_dense(b, b_dense)
+    call bml_export_to_dense(a, a_dense)
+    call bml_export_to_dense(b, b_dense)
 
     if(maxval(abs(a_dense-transpose(b_dense))) > 1e-12) then
        test_result = .false.

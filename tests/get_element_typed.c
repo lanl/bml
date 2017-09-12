@@ -31,8 +31,8 @@ int TYPED_FUNC(
         A_dense[i] = (REAL_T) (rand() / (double) RAND_MAX);
     }
 
-    A = bml_convert_from_dense(matrix_type, matrix_precision, dense_row_major,
-                               N, M, A_dense, 0.0, sequential);
+    A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
+                              N, M, A_dense, 0.0, sequential);
 
     for (int i = 0; i < N; i++)
     {

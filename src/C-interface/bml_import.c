@@ -50,22 +50,3 @@ bml_import_from_dense(
     }
     return NULL;
 }
-
-/** \deprecated Deprecated API.
- */
-bml_matrix_t *
-bml_convert_from_dense(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const bml_dense_order_t order,
-    const int N,
-    const int M,
-    const void *A,
-    const double threshold,
-    const bml_distribution_mode_t distrib_mode)
-{
-    LOG_WARN("This function is deprecated and may be removed in future "
-             "versions. Please use bml_import_from_dense instead.\n");
-    return bml_import_from_dense(matrix_type, matrix_precision, order, N, M,
-                                 A, threshold, distrib_mode);
-}

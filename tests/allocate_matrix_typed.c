@@ -58,7 +58,7 @@ int TYPED_FUNC(
     bml_deallocate(&A);
     bml_deallocate(&B);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
-    A_dense = bml_convert_to_dense(A, dense_row_major);
+    A_dense = bml_export_to_dense(A, dense_row_major);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
     for (int i = 0; i < N; i++)
