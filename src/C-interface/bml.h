@@ -65,8 +65,8 @@
  *
  * The library supports the following matrix operations:
  *     - Format Conversion
- *         - bml_convert::bml_convert_from_dense
- *         - bml_convert::bml_convert_to_dense
+ *         - bml_import::bml_import_from_dense
+ *         - bml_export::bml_export_to_dense
  *         - bml_convert::bml_convert
  *     - Masking
  *         - Masked operations (restricted to a subgraph)

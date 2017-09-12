@@ -42,7 +42,7 @@ contains
     tr_a = bml_trace(a)
 
     tr_reference = 0
-    call bml_convert_to_dense(a, a_dense)
+    call bml_export_to_dense(a, a_dense)
     do i = 1, n
        tr_reference = tr_reference+a_dense(i, i)
     end do

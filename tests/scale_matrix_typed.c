@@ -29,9 +29,9 @@ int TYPED_FUNC(
     bml_scale(&scale_factor, A, C);
     bml_scale(&scale_factor, A, A);
 
-    A_dense = bml_convert_to_dense(A, dense_row_major);
-    B_dense = bml_convert_to_dense(B, dense_row_major);
-    C_dense = bml_convert_to_dense(C, dense_row_major);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    B_dense = bml_export_to_dense(B, dense_row_major);
+    C_dense = bml_export_to_dense(C, dense_row_major);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,

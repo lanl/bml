@@ -23,8 +23,8 @@ test_function(
     B = bml_zero_matrix(matrix_type, matrix_precision, N, M);
     bml_read_bml_matrix(B, "ctest_matrix.mtx");
 
-    A_dense = bml_convert_to_dense(A, dense_row_major);
-    B_dense = bml_convert_to_dense(B, dense_row_major);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    B_dense = bml_export_to_dense(B, dense_row_major);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,

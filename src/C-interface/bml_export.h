@@ -5,10 +5,6 @@
 
 #include "bml_types.h"
 
-void *bml_convert_to_dense(
-    const bml_matrix_t * A,
-    const bml_dense_order_t order);
-
 void *bml_export_to_dense(
     const bml_matrix_t * A,
     const bml_dense_order_t order);

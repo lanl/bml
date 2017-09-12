@@ -42,9 +42,9 @@ int TYPED_FUNC(
     traceB = bml_trace(B);
     traceC = bml_trace(C);
 
-    A_dense = bml_convert_to_dense(A, dense_row_major);
-    B_dense = bml_convert_to_dense(B, dense_row_major);
-    C_dense = bml_convert_to_dense(C, dense_row_major);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    B_dense = bml_export_to_dense(B, dense_row_major);
+    C_dense = bml_export_to_dense(C, dense_row_major);
 
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
@@ -124,9 +124,9 @@ int TYPED_FUNC(
     traceB = bml_trace(B);
     traceC = bml_trace(C);
 
-    A_dense = bml_convert_to_dense(A, dense_row_major);
-    B_dense = bml_convert_to_dense(B, dense_row_major);
-    C_dense = bml_convert_to_dense(C, dense_row_major);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    B_dense = bml_export_to_dense(B, dense_row_major);
+    C_dense = bml_export_to_dense(C, dense_row_major);
 
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
