@@ -5,6 +5,7 @@ TOP_DIR="$(readlink --canonicalize-existing $(dirname "$0"))"
 : ${INSTALL_DIR:=${TOP_DIR}/install}
 LOG_FILE="${TOP_DIR}/build.log"
 : ${VERBOSE_MAKEFILE:=no}
+: ${PARALLEL_TEST_JOBS:=1}
 
 help() {
     cat <<EOF
@@ -43,6 +44,7 @@ EOF
     echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
     echo "EXTRA_CFLAGS       Extra C flags            (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FCFLAGS      Extra fortran flags      (default is '${EXTRA_FCFLAGS}')"
+    echo "PARALLEL_TEST_JOBS The number of test jobs  (default is ${PARALLEL_TEST_JOBS})"
 }
 
 set_defaults() {
@@ -146,7 +148,7 @@ install() {
 
 testing() {
     cd "${BUILD_DIR}"
-    ctest --output-on-failure 2>&1 | tee -a "${LOG_FILE}"
+    ctest --output-on-failure --parallel ${PARALLEL_TEST_JOBS} 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
