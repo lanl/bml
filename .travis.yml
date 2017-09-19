@@ -1,5 +1,4 @@
 language: python
-dist: precise
 
 addons:
     coverity_scan:

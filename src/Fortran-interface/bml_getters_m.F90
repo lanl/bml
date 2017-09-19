@@ -31,10 +31,16 @@ contains
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_single_real(a, diagonal)
 
-    type(bml_matrix_t), intent(in) :: a
-    real(C_FLOAT), target, intent(out) :: diagonal(*)
+    use bml_introspection_m
 
-    call bml_get_diagonal_C(a%ptr, c_loc(diagonal))
+    type(bml_matrix_t), intent(in) :: a
+    real(C_FLOAT), allocatable, intent(inout) :: diagonal(:)
+    real(C_FLOAT), pointer :: diagonal_ptr(:)
+    type(C_PTR) :: ptr
+
+    ptr = bml_get_diagonal_C(a%ptr)
+    call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
+    diagonal = diagonal_ptr
 
   end subroutine bml_get_diagonal_single_real
 
@@ -43,10 +49,16 @@ contains
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_double_real(a, diagonal)
 
-    type(bml_matrix_t), intent(in) :: a
-    real(C_DOUBLE), target, intent(out) :: diagonal(*)
+    use bml_introspection_m
 
-    call bml_get_diagonal_C(a%ptr, c_loc(diagonal))
+    type(bml_matrix_t), intent(in) :: a
+    real(C_DOUBLE), allocatable, intent(inout) :: diagonal(:)
+    real(C_DOUBLE), pointer :: diagonal_ptr(:)
+    type(C_PTR) :: ptr
+
+    ptr = bml_get_diagonal_C(a%ptr)
+    call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
+    diagonal = diagonal_ptr
 
   end subroutine bml_get_diagonal_double_real
 
@@ -55,10 +67,16 @@ contains
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_single_complex(a, diagonal)
 
-    type(bml_matrix_t), intent(in) :: a
-    complex(C_FLOAT_COMPLEX), target, intent(out) :: diagonal(*)
+    use bml_introspection_m
 
-    call bml_get_diagonal_C(a%ptr, c_loc(diagonal))
+    type(bml_matrix_t), intent(in) :: a
+    complex(C_FLOAT), allocatable, intent(inout) :: diagonal(:)
+    complex(C_FLOAT), pointer :: diagonal_ptr(:)
+    type(C_PTR) :: ptr
+
+    ptr = bml_get_diagonal_C(a%ptr)
+    call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
+    diagonal = diagonal_ptr
 
   end subroutine bml_get_diagonal_single_complex
 
@@ -67,10 +85,16 @@ contains
   !! \param diagonal The diagonal that is extracted
   subroutine bml_get_diagonal_double_complex(a, diagonal)
 
-    type(bml_matrix_t), intent(in) :: a
-    complex(C_DOUBLE_COMPLEX), target, intent(out) :: diagonal(*)
+    use bml_introspection_m
 
-    call bml_get_diagonal_C(a%ptr, c_loc(diagonal))
+    type(bml_matrix_t), intent(in) :: a
+    complex(C_DOUBLE), allocatable, intent(inout) :: diagonal(:)
+    complex(C_DOUBLE), pointer :: diagonal_ptr(:)
+    type(C_PTR) :: ptr
+
+    ptr = bml_get_diagonal_C(a%ptr)
+    call c_f_pointer(ptr, diagonal_ptr, [bml_get_N(a)])
+    diagonal = diagonal_ptr
 
   end subroutine bml_get_diagonal_double_complex
 
@@ -82,11 +106,17 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_single_real(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    real(C_FLOAT), target, intent(out) :: row(*)
+    real(C_FLOAT), allocatable, intent(inout) :: row(:)
+    real(C_FLOAT), pointer :: row_ptr(:)
+    type(C_PTR) :: ptr
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    ptr = bml_get_row_C(a%ptr, i - 1)
+    call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_single_real
 
@@ -96,11 +126,17 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_double_real(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    real(C_DOUBLE), target, intent(out) :: row(*)
+    real(C_DOUBLE), allocatable, intent(inout) :: row(:)
+    real(C_DOUBLE), pointer :: row_ptr(:)
+    type(C_PTR) :: ptr
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    ptr = bml_get_row_C(a%ptr, i - 1)
+    call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_double_real
 
@@ -110,11 +146,17 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_single_complex(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    complex(C_FLOAT_COMPLEX), target, intent(out) :: row(*)
+    complex(C_FLOAT_COMPLEX), allocatable, intent(inout) :: row(:)
+    complex(C_FLOAT_COMPLEX), pointer :: row_ptr(:)
+    type(C_PTR) :: ptr
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    ptr = bml_get_row_C(a%ptr, i - 1)
+    call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_single_complex
 
@@ -124,11 +166,17 @@ contains
   !! \param row The row that is extracted
   subroutine bml_get_row_double_complex(a, i, row)
 
+    use bml_introspection_m
+
     type(bml_matrix_t), intent(in) :: a
     integer(C_INT), intent(in) :: i
-    complex(C_DOUBLE_COMPLEX), target, intent(out) :: row(*)
+    complex(C_DOUBLE_COMPLEX), allocatable, intent(inout) :: row(:)
+    complex(C_DOUBLE_COMPLEX), pointer :: row_ptr(:)
+    type(C_PTR) :: ptr
 
-    call bml_get_row_C(a%ptr, i-1, c_loc(row))
+    ptr = bml_get_row_C(a%ptr, i - 1)
+    call c_f_pointer(ptr, row_ptr, [bml_get_N(a)])
+    row = row_ptr
 
   end subroutine bml_get_row_double_complex
 
