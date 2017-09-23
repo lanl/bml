@@ -8,6 +8,13 @@ title: BML
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
+[![Stories in Ready](https://badge.waffle.io/lanl/bml.png?label=ready&title=Ready)](http://waffle.io/lanl/bml)
+
+# Activity
+
+[![Throughput Graph](https://graphs.waffle.io/lanl/bml/throughput.svg)](https://waffle.io/lanl/bml/metrics/throughput)
+
+# Introduction
 
 This website is intended to provide some guidance on how to get and install
 the BML library. LA-UR number LA-UR-**17-27373**.
