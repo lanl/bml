@@ -27,7 +27,7 @@ formats for representing matrix data: dense and ELLPACK.
 This year we are participating in
 [Hacktoberfest](https://hacktoberfest.digitalocean.com/)!
 
-![Hacktoberfest 2017](hacktoberfest_logo.svg)
+![Hacktoberfest 2017](docs/hacktoberfest_logo.svg)
 
 Please have a look at our outstanding issues and submit pull requests!
 Thanks already!
