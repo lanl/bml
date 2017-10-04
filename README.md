@@ -118,10 +118,10 @@ summarize:
 - Push the branch to your forked repository
 - Go to https://github.com/lanl/bml and click on 'Create Pull Request'
 
-During the review process you might want to change your pull request. Simply
-commit the changes on your local branch and push them GitHub. Please don't
-`amend` your commits. This makes it more difficult for the reviewers to follow
-your work.
+During the review process it might become necessary to update your
+pull request. Simply commit the changes on your local branch and push
+them to GitHub. Please don't `amend` your commits. This makes it more
+difficult for the reviewers to follow your work.
 
 Please make sure your pull request contains only one logical change (see
 ["Structural split of
