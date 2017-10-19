@@ -12,7 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Check if matrix is allocated.
  *
@@ -72,7 +74,11 @@ bml_allocate_memory(
     else
     {
         void *ptr = malloc(size);
+#ifdef _OPENMP
         int nt = omp_get_num_threads();
+#else
+        int nt = 1;
+#endif
         int step = size / nt;
         int maxi = step * (nt - 1);
         int r = size - maxi;
