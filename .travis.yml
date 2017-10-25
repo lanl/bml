@@ -15,6 +15,7 @@ addons:
             - ubuntu-toolchain-r-test
             - george-edison55-precise-backports
         packages:
+            - clang
             - cmake
             - cmake-data
             - doxygen
@@ -55,6 +56,10 @@ env:
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
+        - CC=clang   CXX=clang   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=clang   CXX=clang   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
+        - CC=clang   CXX=clang   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
+        - CC=clang   CXX=clang   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing
 
 before_install:
     # If this is a coverty scan which is not the first matrix job we will exit
