@@ -45,6 +45,7 @@ EOF
     echo "EXTRA_CFLAGS       Extra C flags            (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FCFLAGS      Extra fortran flags      (default is '${EXTRA_FCFLAGS}')"
     echo "PARALLEL_TEST_JOBS The number of test jobs  (default is ${PARALLEL_TEST_JOBS})"
+    echo "EXTRA_LINK_FLAGS   Add extra link flags     (default is '${EXTRA_LINK_FLAGS}')"
 }
 
 set_defaults() {
@@ -59,6 +60,7 @@ set_defaults() {
     : ${EXTRA_CFLAGS:=}
     : ${EXTRA_FCFLAGS:=}
     : ${BML_TESTING:=yes}
+    : ${EXTRA_LINK_FLAGS:=""}
 }
 
 die() {
@@ -121,6 +123,7 @@ configure() {
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
         -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
+        -DBML_LINK_FLAGS=${EXTRA_LINK_FLAGS} \
         | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
