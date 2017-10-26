@@ -106,6 +106,9 @@ if(CMAKE_Fortran_FLAGS STRGREATER "")
   message(STATUS "Using user supplied Fortran compiler flags: ${CMAKE_Fortran_FLAGS}")
 endif()
 
+set(BML_LINK_FLAGS "" CACHE STRING "Additional linker flags")
+list(APPEND LINK_LIBRARIES ${BML_LINK_FLAGS})
+
 include(FindThreads)
 list(APPEND LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 
