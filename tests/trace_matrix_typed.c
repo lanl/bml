@@ -71,7 +71,7 @@ int TYPED_FUNC(
            traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
 #endif
 
-    if ((rel_diff = ABS(traceA - (double) N) / (double) N) > REL_TOL)
+    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
     {
         LOG_ERROR
             ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
@@ -79,7 +79,7 @@ int TYPED_FUNC(
         return -1;
     }
     if ((rel_diff =
-         ABS(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
+         fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
         REL_TOL)
     {
         LOG_ERROR
@@ -88,8 +88,8 @@ int TYPED_FUNC(
         return -1;
     }
     if ((rel_diff =
-         ABS(traceC -
-             (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
+         fabs(traceC -
+              (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
         REL_TOL)
     {
         LOG_ERROR
@@ -153,7 +153,7 @@ int TYPED_FUNC(
            traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
 #endif
 
-    if ((rel_diff = ABS(traceA - (double) N) / (double) N) > REL_TOL)
+    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
     {
         LOG_ERROR
             ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
@@ -161,7 +161,7 @@ int TYPED_FUNC(
         return -1;
     }
     if ((rel_diff =
-         ABS(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
+         fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
         REL_TOL)
     {
         LOG_ERROR
@@ -170,8 +170,8 @@ int TYPED_FUNC(
         return -1;
     }
     if ((rel_diff =
-         ABS(traceC -
-             (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
+         fabs(traceC -
+              (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
         REL_TOL)
     {
         LOG_ERROR
