@@ -54,8 +54,8 @@ set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
 if(CMAKE_BUILD_TYPE_UPPER)
-  if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG" 
-      OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE" 
+  if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG"
+      OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE"
       OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELWITHDEBINFO")
     if(CMAKE_C_FLAGS STREQUAL "")
       if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
@@ -75,6 +75,10 @@ if(CMAKE_BUILD_TYPE_UPPER)
       else()
         message(STATUS "Unknown C compiler ${CMAKE_C_COMPILER_ID}")
       endif()
+    else()
+      message(STATUS "Using user supplied C compiler flags: ${CMAKE_C_FLAGS}")
+      set(CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+        ${CMAKE_C_FLAGS})
     endif()
 
     if(CMAKE_Fortran_FLAGS STREQUAL "")
@@ -85,25 +89,21 @@ if(CMAKE_BUILD_TYPE_UPPER)
         string(REPLACE ";" " "
           CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
           "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
-        if(DEFINED EXTRA_FCFLAGS)
+        if(DEFINED EXTRA_FFLAGS)
           set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
-            "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}} ${EXTRA_FCFLAGS}")
+            "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}} ${EXTRA_FFLAGS}")
         endif()
         message(STATUS "Setting Fortran compiler flags to "
           "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
       else()
         message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
       endif()
+    else()
+      message(STATUS "Using user supplied Fortran compiler flags: ${CMAKE_Fortran_FLAGS}")
+      set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+      ${CMAKE_Fortran_FLAGS})
     endif()
   endif()
-endif()
-
-if(CMAKE_C_FLAGS STRGREATER "")
-  message(STATUS "Using user supplied C compiler flags: ${CMAKE_C_FLAGS}")
-endif()
-
-if(CMAKE_Fortran_FLAGS STRGREATER "")
-  message(STATUS "Using user supplied Fortran compiler flags: ${CMAKE_Fortran_FLAGS}")
 endif()
 
 set(BML_LINK_FLAGS "" CACHE STRING "Additional linker flags")
