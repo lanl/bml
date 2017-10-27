@@ -43,7 +43,7 @@ EOF
     echo "BML_INTERNAL_BLAS    {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
     echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
     echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
-    echo "EXTRA_FCFLAGS        Extra fortran flags         (default is '${EXTRA_FCFLAGS}')"
+    echo "EXTRA_FFLAGS         Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
     echo "CMAKE_C_FLAGS        Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
     echo "CMAKE_CXX_FLAGS      Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
@@ -60,8 +60,8 @@ set_defaults() {
     : ${BML_MPI:=no}
     : ${BLAS_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
-    : ${EXTRA_CFLAGS:=}
-    : ${EXTRA_FCFLAGS:=}
+    : ${EXTRA_CFLAGS:=""}
+    : ${EXTRA_FFLAGS:=""}
     : ${BML_TESTING:=yes}
     : ${FORTRAN_FLAGS:=""}
     : ${EXTRA_LINK_FLAGS:=""}
@@ -125,7 +125,7 @@ configure() {
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-        -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
+        -DEXTRA_FFLAGS="${EXTRA_FFLAGS}" \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
         -DBML_LINK_FLAGS=${EXTRA_LINK_FLAGS} \
         | tee -a "${LOG_FILE}"
