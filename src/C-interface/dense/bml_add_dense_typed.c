@@ -6,6 +6,7 @@
 #include "bml_allocate_dense.h"
 #include "bml_allocate.h"
 #include "bml_copy_dense.h"
+#include "bml_logger.h"
 #include "bml_parallel.h"
 #include "bml_scale_dense.h"
 #include "bml_scale.h"
@@ -46,9 +47,14 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&nElems, &alpha_, A->matrix + startIndex, &inc);
     C_BLAS(AXPY) (&nElems, &beta_, B->matrix + startIndex, &inc,
                   A->matrix + startIndex, &inc);
+#endif
+
 }
 
 /** Matrix addition and calculate TrNorm.

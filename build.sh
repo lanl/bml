@@ -31,20 +31,24 @@ step and the build:
 
 EOF
     set_defaults
-    echo "CMAKE_BUILD_TYPE   {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
-    echo "CC                 Path to C compiler       (default is ${CC})"
-    echo "CXX                Path to C++ compiler     (default is ${CXX})"
-    echo "FC                 Path to Fortran compiler (default is ${FC})"
-    echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
-    echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
-    echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
-    echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR        {,Intel,MKL,ACML,GNU}    (default is '${BLAS_VENDOR}')"
-    echo "BML_INTERNAL_BLAS  {yes,no}                 (default is ${BML_INTERNAL_BLAS})"
-    echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
-    echo "EXTRA_CFLAGS       Extra C flags            (default is '${EXTRA_CFLAGS}')"
-    echo "EXTRA_FCFLAGS      Extra fortran flags      (default is '${EXTRA_FCFLAGS}')"
-    echo "PARALLEL_TEST_JOBS The number of test jobs  (default is ${PARALLEL_TEST_JOBS})"
+    echo "CMAKE_BUILD_TYPE     {Release,Debug}             (default is ${CMAKE_BUILD_TYPE})"
+    echo "CC                   Path to C compiler          (default is ${CC})"
+    echo "CXX                  Path to C++ compiler        (default is ${CXX})"
+    echo "FC                   Path to Fortran compiler    (default is ${FC})"
+    echo "BML_OPENMP           {yes,no}                    (default is ${BML_OPENMP})"
+    echo "BML_MPI              {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_TESTING          {yes,no}                    (default is ${BML_TESTING})"
+    echo "BUILD_DIR            Path to build dir           (default is ${BUILD_DIR})"
+    echo "BLAS_VENDOR          {,Intel,MKL,ACML,GNU}       (default is '${BLAS_VENDOR}')"
+    echo "BML_INTERNAL_BLAS    {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
+    echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
+    echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
+    echo "EXTRA_FCFLAGS        Extra fortran flags         (default is '${EXTRA_FCFLAGS}')"
+    echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
+    echo "CMAKE_C_FLAGS        Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
+    echo "CMAKE_CXX_FLAGS      Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
+    echo "CMAKE_Fortran_FLAGS  Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
+    echo "EXTRA_LINK_FLAGS     Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
 }
 
 set_defaults() {
@@ -59,6 +63,8 @@ set_defaults() {
     : ${EXTRA_CFLAGS:=}
     : ${EXTRA_FCFLAGS:=}
     : ${BML_TESTING:=yes}
+    : ${FORTRAN_FLAGS:=""}
+    : ${EXTRA_LINK_FLAGS:=""}
 }
 
 die() {
@@ -121,6 +127,7 @@ configure() {
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
         -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
+        -DBML_LINK_FLAGS=${EXTRA_LINK_FLAGS} \
         | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
