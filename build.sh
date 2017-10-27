@@ -41,13 +41,13 @@ EOF
     echo "BUILD_DIR            Path to build dir           (default is ${BUILD_DIR})"
     echo "BLAS_VENDOR          {,Intel,MKL,ACML,GNU}       (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS    {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
-    echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
-    echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
-    echo "EXTRA_FFLAGS         Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
+    echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
     echo "CMAKE_C_FLAGS        Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
     echo "CMAKE_CXX_FLAGS      Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
     echo "CMAKE_Fortran_FLAGS  Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
+    echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
+    echo "EXTRA_FFLAGS         Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "EXTRA_LINK_FLAGS     Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
 }
 
