@@ -45,9 +45,9 @@ EOF
     echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FFLAGS         Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
-    echo "CMAKE_C_FLAGS        Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
-    echo "CMAKE_CXX_FLAGS      Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
-    echo "CMAKE_Fortran_FLAGS  Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
+    echo "CFLAGS               Set C compiler flags        (default is '${CFLAGS}')"
+    echo "CXXFLAGS             Set C++ compiler flags      (default is '${CXXFLAGS}')"
+    echo "FFLAGS               Set Fortran compiler flags  (default is '${CFLAGS}')"
     echo "EXTRA_LINK_FLAGS     Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
 }
 
@@ -64,6 +64,9 @@ set_defaults() {
     : ${EXTRA_FFLAGS:=""}
     : ${BML_TESTING:=yes}
     : ${FORTRAN_FLAGS:=""}
+    : ${FFLAGS:=""}
+    : ${CFLAGS:=""}
+    : ${CXXFLAGS:=""}
     : ${EXTRA_LINK_FLAGS:=""}
 }
 
@@ -126,6 +129,9 @@ configure() {
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
         -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
         -DEXTRA_FFLAGS="${EXTRA_FFLAGS}" \
+        -DCMAKE_Fortran_FLAGS="${FFLAGS}" \
+        -DCMAKE_C_FLAGS="${CFLAGS}" \
+        -DCMAKE_CXX_FLAGS="${CXXLAGS}" \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
         -DBML_LINK_FLAGS=${EXTRA_LINK_FLAGS} \
         | tee -a "${LOG_FILE}"
