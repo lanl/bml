@@ -7,3 +7,5 @@ host: localhost
 baseurl: /bml
 exclude: [ Gemfile, Gemfile.lock, Makefile ]
 google_analytics: UA-108808764-1
+plugins:
+    - jekyll-seo-tag
