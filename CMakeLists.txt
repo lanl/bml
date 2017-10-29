@@ -437,14 +437,16 @@ else()
   add_custom_target(dist)
 endif()
 
-string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
-string(STRIP "${LINKLINE}" LINKLINE)
-message(STATUS "Use '${LINKLINE}' when linking the bml library")
+message(STATUS "When building executables with the bml library, please use the following link flags")
 
 if(OPENMP_FOUND)
   message(STATUS "Additional Fortran compiler link flags: '${OpenMP_Fortran_FLAGS}'")
   message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
 endif()
+
+string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
+string(STRIP "${LINKLINE}" LINKLINE)
+message(STATUS "Link flags: '${LINKLINE}'")
 
 configure_file(src/bml.pc.in bml.pc)
 install(FILES ${CMAKE_BINARY_DIR}/bml.pc

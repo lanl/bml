@@ -22,19 +22,19 @@ add_library(bml
   $<TARGET_OBJECTS:bml-ellsort-double_real>
   $<TARGET_OBJECTS:bml-ellsort-single_complex>
   $<TARGET_OBJECTS:bml-ellsort-single_real>
-  $<TARGET_OBJECTS:bml-ellsort>
-  $<TARGET_OBJECTS:bml-fortran>)
+  $<TARGET_OBJECTS:bml-ellsort>)
 set_target_properties(bml
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}
   POSITION_INDEPENDENT_CODE yes)
-if(OPENMP_FOUND)
-  set_target_properties(bml
-    PROPERTIES
-    LINK_FLAGS ${OpenMP_Fortran_FLAGS})
-endif()
-target_link_libraries(bml ${LINK_LIBRARIES})
 
-install(TARGETS bml
+add_library(bml_fortran
+  $<TARGET_OBJECTS:bml-fortran>)
+set_target_properties(bml_fortran
+  PROPERTIES
+  SOVERSION ${PROJECT_VERSION}
+  POSITION_INDEPENDENT_CODE yes)
+
+install(TARGETS bml bml_fortran
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
