@@ -1,12 +1,13 @@
 #include "../typed.h"
 #include "../blas.h"
 #include "bml_allocate.h"
-#include "bml_scale.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_copy_ellpack.h"
+#include "bml_logger.h"
+#include "bml_parallel.h"
+#include "bml_scale.h"
 #include "bml_scale_ellpack.h"
+#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>
