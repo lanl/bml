@@ -121,7 +121,16 @@ foreach(N
 endforeach()
 
 add_executable(test-backtrace test_backtrace.c)
-target_link_libraries(test-backtrace bml)
+target_link_libraries(test-backtrace bml ${LINK_LIBRARIES})
+set_target_properties(test-backtrace
+  PROPERTIES
+  LINK_FLAGS "--coverage")
+if(OPENMP_FOUND)
+  set_target_properties(test-backtrace
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS}
+    LINK_FLAGS ${OpenMP_C_FLAGS})
+endif()
 add_test(backtrace test-backtrace)
 if(ADDR2LINE)
   set_tests_properties(backtrace
