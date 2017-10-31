@@ -114,9 +114,9 @@ configure() {
         -DCMAKE_C_COMPILER="${CC}" \
         -DCMAKE_CXX_COMPILER="${CXX}" \
         -DCMAKE_Fortran_COMPILER="${FC}" \
-        $([[ -n ${CMAKE_C_FLAGS} ]] && echo "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}") \
-        $([[ -n ${CMAKE_CXX_FLAGS} ]] && echo "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}") \
-        $([[ -n ${CMAKE_Fortran_FLAGS} ]] && echo "-DCMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS}") \
+        ${CMAKE_C_FLAGS:+-DCMAKE_C_FLAGS="${CMAKE_C_FLAGS}"} \
+        ${CMAKE_CXX_FLAGS:+-DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"} \
+        ${CMAKE_Fortran_FLAGS:+-DCMAKE_Fortran_FLAGS="${CMAKE_Fortran_FLAGS}"} \
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
@@ -124,10 +124,10 @@ configure() {
         -DBML_TESTING="${BML_TESTING:=yes}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
-        -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-        -DEXTRA_FFLAGS="${EXTRA_FFLAGS}" \
+        ${EXTRA_CFLAGS:+-DEXTRA_CFLAGS="${EXTRA_CFLAGS}"} \
+        ${EXTRA_FFLAGS:+-DEXTRA_FFLAGS="${EXTRA_FFLAGS}"} \
+        ${EXTRA_LINK_FLAGS:+-DBML_LINK_FLAGS="${EXTRA_LINK_FLAGS}"} \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
-        -DBML_LINK_FLAGS=${EXTRA_LINK_FLAGS} \
         | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
