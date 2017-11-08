@@ -125,6 +125,9 @@ if(BML_OPENMP)
         "not the case, please send email to <nbock@lanl.gov>.")
       set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
     endif()
+    if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
+      list(APPEND LINK_LIBRARIES "-latomic")
+    endif()
   else()
     message(WARNING "Could not get the compilers to use OpenMP. "
       "Will pretend that this never happened and compile the library "
