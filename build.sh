@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 TOP_DIR="$(readlink --canonicalize-existing $(dirname "$0"))"
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
@@ -32,6 +34,7 @@ step and the build:
 EOF
     set_defaults
     echo "CMAKE_BUILD_TYPE     {Release,Debug}             (default is ${CMAKE_BUILD_TYPE})"
+    echo "BUILD_SHARED_LIBS    Build a shared library      (default is ${BUILD_SHARED_LIBS})"
     echo "CC                   Path to C compiler          (default is ${CC})"
     echo "CXX                  Path to C++ compiler        (default is ${CXX})"
     echo "FC                   Path to Fortran compiler    (default is ${FC})"
@@ -53,6 +56,7 @@ EOF
 
 set_defaults() {
     : ${CMAKE_BUILD_TYPE:=Release}
+    : ${BUILD_SHARED_LIBS:=no}
     : ${CC:=gcc}
     : ${CXX:=g++}
     : ${FC:=gfortran}
@@ -120,7 +124,7 @@ configure() {
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
-        -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
+        -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
