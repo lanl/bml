@@ -22,6 +22,12 @@ operations. Application programming interfaces (API) are available for both C
 and FORTRAN. The current status of this library allows us to use two different
 formats for representing matrix data: dense and ELLPACK.
 
+# Mailing list
+
+We are running the following mailing list for discussions on usage and features of the bml library:
+
+* [bml](https://groups.io/g/bml/signup)
+
 # Supported Matrix Formats
 
 The bml library supports the following matrix formats:
