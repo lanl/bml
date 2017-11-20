@@ -30,7 +30,7 @@ formats for representing matrix data: dense and ELLPACK.
 
 We are running the following mailing list for discussions on usage and features of the bml library:
 
-* [bml](* [bml](https://groups.io/g/bml)
+* [bml](https://groups.io/g/bml)
   * [Subscribe](https://groups.io/g/bml/signup)
   * [Archives](https://groups.io/g/bml/topics)
 
