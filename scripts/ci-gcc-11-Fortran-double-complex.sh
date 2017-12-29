@@ -2,7 +2,13 @@
 
 set -e -u -x
 
-basedir=$(readlink --canonicalize $(dirname $0)/..)
+for READLINK in readlink greadlink; do
+    if ${READLINK} --canonicalize ${HOME}; then
+        break
+    fi
+done
+
+basedir=$(${READLINK} --canonicalize $(dirname $0)/..)
 
 export CC=${CC:-gcc-11}
 export CXX=${CXX:-g++-11}
