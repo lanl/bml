@@ -227,18 +227,18 @@ configure() {
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         -DINTEL_OPT="${INTEL_OPT:=no}" \
         ${CMAKE_ARGS} \
-        | tee --append "${LOG_FILE}"
+        | tee -a "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
 
 compile() {
-    ${CMAKE} --build "${BUILD_DIR}" | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
 docs() {
-    ${CMAKE} --build "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target docs 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
     #check_pipe_error
@@ -248,7 +248,7 @@ docs() {
 }
 
 install() {
-    ${CMAKE} --build "${BUILD_DIR}" --target install 2>&1 | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target install 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
@@ -257,7 +257,7 @@ testing() {
     ctest --verbose \
         --parallel ${PARALLEL_TEST_JOBS} \
         ${TESTING_EXTRA_ARGS} \
-        2>&1 | tee --append "${LOG_FILE}"
+        2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
 
     # Get skipped tests and re-run them with verbose output.
@@ -271,7 +271,7 @@ testing() {
             ctest --verbose \
                 ${TESTING_EXTRA_ARGS} \
                 --tests-regex "${skipped}" \
-                2>&1 | tee --append "${LOG_FILE}"
+                2>&1 | tee -a "${LOG_FILE}"
         done
     fi
     cd "${TOP_DIR}"
@@ -279,17 +279,17 @@ testing() {
 
 check_indent() {
     cd "${TOP_DIR}"
-    "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
+    "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
 tags() {
-    "${TOP_DIR}/scripts/update_tags.sh" 2>&1 | tee --append "${LOG_FILE}"
+    "${TOP_DIR}/scripts/update_tags.sh" 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
 dist() {
-    ${CMAKE} --build "${BUILD_DIR}" --target dist 2>&1 | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target dist 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
 }
 
@@ -299,7 +299,7 @@ set_defaults
 
 if [[ -n ${BLA_VENDOR} ]]; then
     if [[ -n ${BLAS_VENDOR} ]]; then
-        echo "WARNING: BLAS_VENDOR (${BLAS_VENDOR}) will be used instead of BLA_VENDOR (${BLA_VENDOR})" | tee --append "${LOG_FILE}"
+        echo "WARNING: BLAS_VENDOR (${BLAS_VENDOR}) will be used instead of BLA_VENDOR (${BLA_VENDOR})" | tee -a "${LOG_FILE}"
     else
         BLAS_VENDOR=${BLA_VENDOR}
     fi
