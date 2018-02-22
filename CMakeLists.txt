@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(bml C CXX Fortran)
+
+set(LANGUAGES C CXX)
+set(BML_BUILD_FORTRAN_INTERFACE TRUE CACHE BOOL
+  "Build the Fortran API (requires a Fortran compiler)")
+if(BML_BUILD_FORTRAN_INTERFACE)
+  #set(LANGUAGES "${LANGUAGES} Fortran")
+  list(APPEND LANGUAGES Fortran)
+endif()
+
+project(bml ${LANGUAGES})
 
 # The library version is versioned off the major version. If the API
 # changes, the library version should be bumped.
