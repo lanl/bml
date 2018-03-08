@@ -8,14 +8,15 @@ module bml_allocate_m
   implicit none
   private
 
-  public :: bml_clear
   public :: bml_allocated
   public :: bml_banded_matrix
+  public :: bml_clear
+  public :: bml_free
   public :: bml_identity_matrix
-  public :: bml_random_matrix
-  public :: bml_zero_matrix
   public :: bml_noinit_matrix
+  public :: bml_random_matrix
   public :: bml_update_domain
+  public :: bml_zero_matrix
 
 contains
 
@@ -31,6 +32,19 @@ contains
     call bml_clear_C(a%ptr)
 
   end subroutine bml_clear
+
+  !> Free a c_ptr.
+  !!
+  !! \ingroup allocate_group_Fortran
+  !!
+  !! \param cptr The C pointer.
+  subroutine bml_free(cptr)
+
+    type(C_PTR), intent(inout) :: cptr
+
+    call bml_free_C(cptr)
+
+  end subroutine bml_free
 
   !> Check if matrix is allocated.
   !!

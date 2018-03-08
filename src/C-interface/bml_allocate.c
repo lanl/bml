@@ -108,6 +108,20 @@ bml_free_memory(
     free(ptr);
 }
 
+/** De-allocate a chunk of memory that was allocated inside a C
+ * function.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param ptr A pointer to the previously allocated chunk.
+ */
+void
+bml_free_ptr(
+    void **ptr)
+{
+    free(*ptr);
+}
+
 /** Deallocate a domain.
  *
  * \ingroup allocate_group_C
