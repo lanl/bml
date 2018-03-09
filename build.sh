@@ -2,7 +2,14 @@
 
 set -u
 
-TOP_DIR="$(readlink --canonicalize-existing $(dirname "$0"))"
+TOP_DIR="$(dirname "$0")"
+TOP_DIR="$(readlink --canonicalize-existing ${TOP_DIR} 2> /dev/null)"
+if (( $? != 0 )); then
+    # Fall back to bash function `pwd`. Note that this fallback
+    # depends on using bash.
+    TOP_DIR=$(pwd -P $TOP_DIR)
+fi
+
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
 LOG_FILE="${TOP_DIR}/build.log"
