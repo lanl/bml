@@ -64,11 +64,14 @@ set_defaults() {
     : ${BML_MPI:=no}
     : ${BLAS_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
-    : ${EXTRA_CFLAGS:=""}
-    : ${EXTRA_FFLAGS:=""}
+    : ${EXTRA_CFLAGS:=}
+    : ${EXTRA_FFLAGS:=}
+    : ${CMAKE_C_FLAGS:=}
+    : ${CMAKE_CXX_FLAGS:=}
+    : ${CMAKE_Fortran_FLAGS:=}
     : ${BML_TESTING:=yes}
-    : ${FORTRAN_FLAGS:=""}
-    : ${EXTRA_LINK_FLAGS:=""}
+    : ${FORTRAN_FLAGS:=}
+    : ${EXTRA_LINK_FLAGS:=}
 }
 
 die() {
