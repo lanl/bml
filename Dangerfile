@@ -11,7 +11,7 @@ if git.commits.any? { |c| c.message =~ /^Merge branch/ }
 end
 
 # Look for prose issues.
-#prose.lint_files markdown_files
+prose.lint_files
 
 # Look for spelling issues.
 #prose.check_spelling markdown_files
