@@ -22,7 +22,7 @@ operations. Application programming interfaces (API) are available for both C
 and FORTRAN. The current status of this library allows us to use two different
 formats for representing matrix data: dense and ELLPACK.
 
-# Mailing list
+# Mailing List
 
 We are running the following mailing list for discussions on usage and features of the bml library:
 
@@ -142,16 +142,16 @@ a citable DOI:
 
 with the following `bibtex` snipped:
 
-    @misc{nicolas_bock_2017_841949,
+    @misc{bml,
       author       = {Nicolas Bock and
                       Susan Mniszewski and
                       Bálint Aradi and
                       Michael Wall and
                       Christian F. A. Negre and
                       Jamal Mohd-Yusof},
-      title        = {qmmd/bml v1.0.0},
-      month        = aug,
-      year         = 2017,
+      title        = {qmmd/bml v1.2.3},
+      month        = feb,
+      year         = 2018,
       doi          = {10.5281/zenodo.841949},
       url          = {https://doi.org/10.5281/zenodo.841949}
     }
