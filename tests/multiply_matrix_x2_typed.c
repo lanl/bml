@@ -85,7 +85,8 @@ int TYPED_FUNC(
     const double alpha = 1.0;
     const double beta = 0.0;
     const double threshold = 0.0;
-    const double trace;
+    REAL_T* trace;
+
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_copy_new(A);
@@ -100,7 +101,8 @@ int TYPED_FUNC(
     C_dense = bml_export_to_dense(C, dense_row_major);
     D_dense = bml_export_to_dense(C, dense_row_major);
 
-    bml_multiply_x2(A, C, threshold);
+    //bml_multiply(A, B, C, alpha, beta, threshold);
+    trace = bml_multiply_x2(A, C, threshold);
     E_dense = bml_export_to_dense(C, dense_row_major);
 
     TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
@@ -123,6 +125,7 @@ int TYPED_FUNC(
     bml_free_memory(C_dense);
     bml_free_memory(D_dense);
     bml_free_memory(E_dense);
+    bml_free_memory(trace);
 
     return 0;
 }
