@@ -14,6 +14,7 @@ set(SOURCES_TYPED
   import_export_matrix_typed.c
   inverse_matrix_typed.c
   multiply_matrix_typed.c
+  multiply_matrix_x2_typed.c
   normalize_matrix_typed.c
   norm_matrix_typed.c
   scale_matrix_typed.c
@@ -54,6 +55,7 @@ add_executable(bml-test
   import_export_matrix.c
   inverse_matrix.c
   multiply_matrix.c
+  multiply_matrix_x2.c
   normalize_matrix.c
   norm_matrix.c
   scale_matrix.c
@@ -96,6 +98,7 @@ foreach(N
     import_export
     inverse
     multiply
+    multiply_x2
     norm
     normalize
     scale
