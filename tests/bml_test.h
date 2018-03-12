@@ -23,6 +23,7 @@ typedef int (
 #include "import_export_matrix.h"
 #include "inverse_matrix.h"
 #include "multiply_matrix.h"
+#include "multiply_matrix_x2.h"
 #include "normalize_matrix.h"
 #include "norm_matrix.h"
 #include "scale_matrix.h"
