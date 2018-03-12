@@ -85,7 +85,7 @@ int TYPED_FUNC(
     const double alpha = 1.0;
     const double beta = 0.0;
     const double threshold = 0.0;
-    REAL_T* trace;
+    REAL_T *trace;
 
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
