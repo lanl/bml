@@ -2,16 +2,33 @@
 
 INDENT_ARGS="-gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda"
 
+declare -a C_FILES
+declare -a FORTRAN_FILES
+
 if [[ $# -gt 0 ]]; then
-    sed -i -e 's:\s\+$::' $*
-    indent ${INDENT_ARGS} $*
+    for f in "$@"; do
+        case "${f##*.}" in
+            "c" | "h")
+                C_FILES[${#C_FILES[@]}]="$f"
+                ;;
+            "F90")
+                FORTRAN_FILES[${#FORTRAN_FILES[@]}]="$f"
+                ;;
+            *)
+                echo "unknown suffix"
+                ;;
+        esac
+    done
 else
     BASEDIR="$(dirname $0)"
-    sed -i -e 's:\s\+$::' \
-           "${BASEDIR}"/src/C-interface/{,dense,ellpack,ellsort}/*.{c,h} \
-           "${BASEDIR}"/src/Fortran-interface/*.F90 \
-           "${BASEDIR}"/tests/*.{c,h}
-    indent ${INDENT_ARGS} \
-           "${BASEDIR}"/src/C-interface/{,dense,ellpack,ellsort}/*.{c,h} \
-           "${BASEDIR}"/tests/*.{c,h}
+    C_FILES=($(find "${BASEDIR}" -name '*.c' -o -name '*.h'))
+    FORTRAN_FILES=($(find "${BASEDIR}" -name '*.F90'))
 fi
+
+for f in ${C_FILES[@]} ${FORTRAN_FILES[@]}; do
+    sed -i -e 's:\s\+$::' "${f}"
+done
+
+for f in ${C_FILES[@]}; do
+    indent ${INDENT_ARGS} "${f}"
+done

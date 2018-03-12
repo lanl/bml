@@ -270,12 +270,12 @@ void TYPED_FUNC(
     const int *ldc)
 {
 #ifdef BML_INTERNAL_GEMM
-    TYPED_FUNC(bml_gemm_internal)(transa, transb, m, n, k, alpha, a,
-                  lda, b, ldb, beta, c, ldc);
+    TYPED_FUNC(bml_gemm_internal) (transa, transb, m, n, k, alpha, a,
+                                   lda, b, ldb, beta, c, ldc);
 #else
 
 #ifdef NOBLAS
-     LOG_ERROR("No BLAS library");
+    LOG_ERROR("No BLAS library");
 #else
     C_BLAS(GEMM) (transa, transb, m, n, k, alpha, a,
                   lda, b, ldb, beta, c, ldc);
