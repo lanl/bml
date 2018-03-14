@@ -64,7 +64,7 @@ before_install:
     - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then pip install proselint; fi
 
 before_script:
-    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then bundle exec danger; fi
+    - if [ "${TRAVIS_JOB_NUMBER##*.}" = "${DANGER_JOB_NUMBER}" ]; then bundle exec danger || echo "**NOTE** ignoring danger failure"; fi
 
 script:
     - export OMP_NUM_THREADS=4
