@@ -13,12 +13,6 @@ end
 # Look for prose issues.
 prose.lint_files
 
-# Look for spelling issues.
-#prose.check_spelling markdown_files
-
-# Get information about the conflict between PRs.
-#conflict_checker.check_conflict
-
 # Running plugin with reviewers count specified. Find maximum two
 # reviewers.
 mention.run(2, [], [])
