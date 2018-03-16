@@ -21,7 +21,7 @@ main(
     const double alpha = 1.2;
     const double beta = 0.8;
     const double threshold = 0.0;
-    void *trace;
+    double *trace;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
@@ -30,6 +30,7 @@ main(
     trace = bml_multiply_x2(A, C, threshold);   // C=A*A
     bml_multiply(A, B, C, alpha, beta, threshold);      // C=alpha* A*B + beta*C
 
+    free(trace);
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&C);
