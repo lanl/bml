@@ -6,12 +6,14 @@
 #include <math.h>
 #include <stdlib.h>
 
-int main ()
+int
+main(
+    )
 {
     bml_matrix_t *A;
     bml_matrix_t *B;
     bml_matrix_t *C;
-    
+
     const int N = 1000;
     const int M = 1000;
     bml_matrix_precision_t matrix_precision = double_real;
@@ -25,8 +27,8 @@ int main ()
     B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
-    trace = bml_multiply_x2(A, C, threshold); // C=A*A
-    bml_multiply(A, B, C, alpha, beta, threshold); // C=alpha* A*B + beta*C
+    trace = bml_multiply_x2(A, C, threshold);   // C=A*A
+    bml_multiply(A, B, C, alpha, beta, threshold);      // C=alpha* A*B + beta*C
 
     bml_deallocate(&A);
     bml_deallocate(&B);
