@@ -11,6 +11,7 @@ module bml_introspection_m
   public :: bml_get_M
   public :: bml_get_type
   public :: bml_get_element_precision
+  public :: bml_get_precision
   public :: bml_get_element_type
   public :: bml_get_row_bandwidth
   public :: bml_get_bandwidth
@@ -97,6 +98,24 @@ contains
     end select
 
   end function bml_get_type
+
+  !> Get the precision/type index of the elements of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml type and precision index for the matrix elements.
+  !! 0 = not initialized
+  !! 1 = single real
+  !! 2 = double real
+  !! 3 = single complex
+  !! 4 = double complex
+  function bml_get_precision(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_precision
+
+    bml_get_precision = bml_get_precision_C(a%ptr)
+
+  end function bml_get_precision
 
   !> Get the precision of the elements of a matrix.
   !!
