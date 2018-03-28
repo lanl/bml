@@ -5,14 +5,20 @@
 rm -r build
 rm -r install
 
-#module load gcc/5.4.0
-#module load openmpi/1.10.3-gcc_5.4.0
-#module load cmake
-#module load mkl
+MY_PATH=`pwd`
 
-FC=gfortran CC=gcc BML_MPI=no CMAKE_BUILD_TYPE=Release \
-INSTALL_DIR=$HOME/bml/install  BLAS_VENDOR=GNU \
-BML_OPENMP=yes BML_TESTING=yes ./build.sh configure
+export CC=${CC:=gcc}
+export FC=${FC:=gfortran}
+export CXX=${CXX:=g++}
+export BLAS_VENDOR=${BLAS_VENDOR:=MKL}
+export BML_OPENMP=${BML_OPENMP:=yes}
+export INSTALL_DIR=${INSTALL_DIR:="${MY_PATH}/install"}
+export BML_TESTING=${BML_TESTING:=yes}
+export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}
+export EXTRA_CFLAGS=${EXTRA_CFLAGS:=""}
+export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:=""}
+
+./build.sh configure
 
                                                                                                                                                                                               
                                     

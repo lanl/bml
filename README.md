@@ -49,11 +49,25 @@ format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
 The bml library is built with CMake.  For convenience, we provide a shell
 script which goes through the necessary motions and builds the library, runs
-the tests, and installs it (in the `install` directory). Simply run:
+the tests, and installs it (in the `install` directory).
+
+## For a quick installation
+
+We suggest to take a look at the `example_build.sh` script that sets
+the most important
+environmental variables needed by `build.sh` script. Change the Variables
+according to the compilers and architecture. The script can be run just by
+doing:
+
+    $ ./example_build.sh
+
+## For a more involved installation
+
+By running:
 
     $ ./build.sh install
 
-and the library will be built in the `build` directory and installed in the
+the library will be built in the `build` directory and installed in the
 `install` directory.  In case you change any sources and simply want to
 rebuild the library, you don't have to run `build.sh` again, but rather
 
