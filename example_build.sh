@@ -5,7 +5,7 @@
 rm -r build
 rm -r install
 
-MY_PATH=`pwd`
+MY_PATH=$(pwd)
 
 export CC=${CC:=gcc}
 export FC=${FC:=gfortran}
