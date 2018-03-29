@@ -8,7 +8,7 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 22;
+const int NUM_TESTS = 23;
 
 typedef struct
 {
@@ -32,6 +32,7 @@ const char *test_name[] = {
     "get_sparsity",
     "inverse",
     "multiply",
+    "multiply_x2",
     "norm",
     "normalize",
     "scale",
@@ -57,6 +58,7 @@ const char *test_description[] = {
     "Get the sparsity",
     "Matrix inverse",
     "Multiply two bml matrices",
+    "Multiply two identical matrices",
     "Norm of bml matrix",
     "Normalize bml matrices",
     "Scale bml matrices",
@@ -78,13 +80,14 @@ const test_function_t testers[] = {
     test_copy,
     test_diagonalize,
     test_get_element,
+    test_get_set_diagonal,
     test_get_sparsity,
     test_inverse,
     test_multiply,
+    test_multiply_x2,
     test_norm,
     test_normalize,
     test_scale,
-    test_get_set_diagonal,
     test_set_row,
     test_submatrix,
     test_threshold,

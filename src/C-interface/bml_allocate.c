@@ -12,7 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 /** Check if matrix is allocated.
  *
@@ -72,7 +74,11 @@ bml_allocate_memory(
     else
     {
         void *ptr = malloc(size);
+#ifdef _OPENMP
         int nt = omp_get_num_threads();
+#else
+        int nt = 1;
+#endif
         int step = size / nt;
         int maxi = step * (nt - 1);
         int r = size - maxi;
@@ -100,6 +106,20 @@ bml_free_memory(
     void *ptr)
 {
     free(ptr);
+}
+
+/** De-allocate a chunk of memory that was allocated inside a C
+ * function.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param ptr A pointer to the previously allocated chunk.
+ */
+void
+bml_free_ptr(
+    void **ptr)
+{
+    free(*ptr);
 }
 
 /** Deallocate a domain.

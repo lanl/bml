@@ -20,6 +20,18 @@ typedef enum
     BML_LOG_ERROR
 } bml_log_level_t;
 
+void bml_log(
+    const bml_log_level_t log_level,
+    const char *format,
+    ...);
+
+void bml_log_location(
+    const bml_log_level_t log_level,
+    const char *filename,
+    const int linenumber,
+    const char *format,
+    ...);
+
 /** Convenience macro to write a BML_LOG_DEBUG level message. */
 #define LOG_DEBUG(format, ...) \
     bml_log_location(BML_LOG_DEBUG, __FILE__, __LINE__, format, ##__VA_ARGS__)
@@ -32,17 +44,5 @@ typedef enum
 /** Convenience macro to write a BML_LOG_ERROR level message. */
 #define LOG_ERROR(format, ...) \
     bml_log_location(BML_LOG_ERROR, __FILE__, __LINE__, format, ##__VA_ARGS__)
-
-void bml_log(
-    const bml_log_level_t log_level,
-    const char *format,
-    ...);
-
-void bml_log_location(
-    const bml_log_level_t log_level,
-    const char *filename,
-    const int linenumber,
-    const char *format,
-    ...);
 
 #endif

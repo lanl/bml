@@ -58,8 +58,12 @@ void TYPED_FUNC(
     int *ipiv = bml_allocate_memory(N * sizeof(int));
     REAL_T *work = bml_allocate_memory(lwork * sizeof(REAL_T));
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(GETRF) (&M, &N, A->matrix, &lda, ipiv, &info);
     C_BLAS(GETRI) (&N, A->matrix, &N, ipiv, work, &lwork, &info);
+#endif
 
     bml_free_memory(ipiv);
     bml_free_memory(work);

@@ -1,11 +1,20 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(bml C CXX Fortran)
+
+set(LANGUAGES C CXX)
+set(BML_BUILD_FORTRAN_INTERFACE TRUE CACHE BOOL
+  "Build the Fortran API (requires a Fortran compiler)")
+if(BML_BUILD_FORTRAN_INTERFACE)
+  #set(LANGUAGES "${LANGUAGES} Fortran")
+  list(APPEND LANGUAGES Fortran)
+endif()
+
+project(bml ${LANGUAGES})
 
 # The library version is versioned off the major version. If the API
 # changes, the library version should be bumped.
 set(PROJECT_VERSION_MAJOR "1")
-set(PROJECT_VERSION_MINOR "0")
-set(PROJECT_VERSION_PATCH "0")
+set(PROJECT_VERSION_MINOR "2")
+set(PROJECT_VERSION_PATCH "3")
 
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 set(PROJECT_DESCRIPTION
@@ -54,8 +63,8 @@ set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
 if(CMAKE_BUILD_TYPE_UPPER)
-  if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG" 
-      OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE" 
+  if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG"
+      OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE"
       OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELWITHDEBINFO")
     if(CMAKE_C_FLAGS STREQUAL "")
       if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
@@ -75,6 +84,10 @@ if(CMAKE_BUILD_TYPE_UPPER)
       else()
         message(STATUS "Unknown C compiler ${CMAKE_C_COMPILER_ID}")
       endif()
+    else()
+      message(STATUS "Using user supplied C compiler flags: ${CMAKE_C_FLAGS}")
+      set(CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+        ${CMAKE_C_FLAGS})
     endif()
 
     if(CMAKE_Fortran_FLAGS STREQUAL "")
@@ -85,26 +98,25 @@ if(CMAKE_BUILD_TYPE_UPPER)
         string(REPLACE ";" " "
           CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
           "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
-        if(DEFINED EXTRA_FCFLAGS)
+        if(DEFINED EXTRA_FFLAGS)
           set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
-            "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}} ${EXTRA_FCFLAGS}")
+            "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}} ${EXTRA_FFLAGS}")
         endif()
         message(STATUS "Setting Fortran compiler flags to "
           "${CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}}")
       else()
         message(STATUS "Unknown Fortran compiler ${CMAKE_Fortran_COMPILER_ID}")
       endif()
+    else()
+      message(STATUS "Using user supplied Fortran compiler flags: ${CMAKE_Fortran_FLAGS}")
+      set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
+      ${CMAKE_Fortran_FLAGS})
     endif()
   endif()
 endif()
 
-if(CMAKE_C_FLAGS STRGREATER "")
-  message(STATUS "Using user supplied C compiler flags: ${CMAKE_C_FLAGS}")
-endif()
-
-if(CMAKE_Fortran_FLAGS STRGREATER "")
-  message(STATUS "Using user supplied Fortran compiler flags: ${CMAKE_Fortran_FLAGS}")
-endif()
+set(BML_LINK_FLAGS "" CACHE STRING "Additional linker flags")
+list(APPEND LINK_LIBRARIES ${BML_LINK_FLAGS})
 
 include(FindThreads)
 list(APPEND LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
@@ -215,20 +227,27 @@ elseif(BLAS_VENDOR STREQUAL "GNU")
   endif()
   set(BLAS_FOUND TRUE)
   set(LAPACK_FOUND TRUE)
+elseif(BLAS_VENDOR STREQUAL "None")
+  set(NOBLAS TRUE)
+  add_definitions(-DNOBLAS)
+elseif(BLAS_VENDOR STREQUAL "Auto")
+  set(BLAS_FOUND TRUE)
+  set(LAPACK_FOUND TRUE)
+  message(STATUS "I will skip BLAS/LAPACK detection")
 elseif(BLAS_VENDOR STREQUAL "")
   message(STATUS "I will rely on the default paths to find BLAS/LAPACK")
 else()
   message(FATAL_ERROR "Unknown BLAS_VENDOR ${BLAS_VENDOR}")
 endif()
 
-if(NOT (BLAS_LIBRARIES OR BLAS_FOUND))
+if(NOT (BLAS_LIBRARIES OR BLAS_FOUND OR NOBLAS))
   include(FindBLAS)
   if(NOT BLAS_FOUND)
     message(FATAL_ERROR "Can not find suitable BLAS library")
   endif()
 endif()
 
-if(NOT (LAPACK_LIBRARIES OR LAPACK_FOUND))
+if(NOT (LAPACK_LIBRARIES OR LAPACK_FOUND OR NOBLAS))
   include(FindLAPACK)
   if(NOT LAPACK_FOUND)
     message(FATAL_ERROR "Can not find suitable LAPACK library")
@@ -245,11 +264,11 @@ if(NOT HAVE_FABS)
 endif()
 list(APPEND LINK_LIBRARIES -lm)
 
-if(NOT BLAS_FOUND)
+if(NOT (BLAS_FOUND OR NOBLAS))
   message(FATAL_ERROR "Could not find BLAS library.")
 endif()
 
-if(NOT LAPACK_FOUND)
+if(NOT (LAPACK_FOUND OR NOBLAS))
   message(FATAL_ERROR "Could not find LAPACK library.")
 endif()
 
@@ -431,14 +450,16 @@ else()
   add_custom_target(dist)
 endif()
 
-string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
-string(STRIP "${LINKLINE}" LINKLINE)
-message(STATUS "Use '${LINKLINE}' when linking the bml library")
+message(STATUS "When building executables with the bml library, please use the following link flags")
 
 if(OPENMP_FOUND)
   message(STATUS "Additional Fortran compiler link flags: '${OpenMP_Fortran_FLAGS}'")
   message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
 endif()
+
+string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
+string(STRIP "${LINKLINE}" LINKLINE)
+message(STATUS "Link flags: '${LINKLINE}'")
 
 configure_file(src/bml.pc.in bml.pc)
 install(FILES ${CMAKE_BINARY_DIR}/bml.pc

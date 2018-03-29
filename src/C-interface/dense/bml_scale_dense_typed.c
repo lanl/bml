@@ -1,12 +1,13 @@
 #include "../typed.h"
 #include "../blas.h"
 #include "bml_allocate.h"
-#include "bml_scale.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
+#include "bml_logger.h"
+#include "bml_parallel.h"
+#include "bml_scale.h"
 #include "bml_scale_dense.h"
+#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -36,7 +37,11 @@ bml_matrix_dense_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
+#endif
 
     return B;
 }
@@ -63,7 +68,12 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
+#endif
+
 }
 
 void TYPED_FUNC(
@@ -77,6 +87,11 @@ void TYPED_FUNC(
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_matrix[startIndex]),
                   &inc);
+#endif
+
 }

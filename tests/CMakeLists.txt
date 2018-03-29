@@ -14,6 +14,7 @@ set(SOURCES_TYPED
   import_export_matrix_typed.c
   inverse_matrix_typed.c
   multiply_matrix_typed.c
+  multiply_matrix_x2_typed.c
   normalize_matrix_typed.c
   norm_matrix_typed.c
   scale_matrix_typed.c
@@ -54,6 +55,7 @@ add_executable(bml-test
   import_export_matrix.c
   inverse_matrix.c
   multiply_matrix.c
+  multiply_matrix_x2.c
   normalize_matrix.c
   norm_matrix.c
   scale_matrix.c
@@ -96,6 +98,7 @@ foreach(N
     import_export
     inverse
     multiply
+    multiply_x2
     norm
     normalize
     scale
@@ -121,7 +124,16 @@ foreach(N
 endforeach()
 
 add_executable(test-backtrace test_backtrace.c)
-target_link_libraries(test-backtrace bml)
+target_link_libraries(test-backtrace bml ${LINK_LIBRARIES})
+set_target_properties(test-backtrace
+  PROPERTIES
+  LINK_FLAGS "--coverage")
+if(OPENMP_FOUND)
+  set_target_properties(test-backtrace
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS}
+    LINK_FLAGS ${OpenMP_C_FLAGS})
+endif()
 add_test(backtrace test-backtrace)
 if(ADDR2LINE)
   set_tests_properties(backtrace

@@ -4,7 +4,7 @@
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
-[![Stories in Ready](https://badge.waffle.io/lanl/bml.png?label=ready&title=Ready)](http://waffle.io/lanl/bml)
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/lanl/bml.svg?columns=all)](https://waffle.io/lanl/bml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
 
 # Activity
@@ -21,6 +21,14 @@ The basic matrix library (bml) is a collection of various matrix data formats
 operations. Application programming interfaces (API) are available for both C
 and FORTRAN. The current status of this library allows us to use two different
 formats for representing matrix data: dense and ELLPACK.
+
+# Mailing List
+
+We are running the following mailing list for discussions on usage and features of the bml library:
+
+* [bml](https://groups.io/g/bml)
+  * [Subscribe](https://groups.io/g/bml/signup)
+  * [Archives](https://groups.io/g/bml/topics)
 
 # Supported Matrix Formats
 
@@ -108,12 +116,11 @@ summarize:
 - Push the branch to your forked repository
 - Go to https://github.com/lanl/bml and click on 'Create Pull Request'
 
-During the review process you might want to change your pull request. Simply
-commit the changes on your local branch and push them GitHub. Please don't
-`amend` your commits. This makes it more difficult for the reviewers to follow
-your work.
-
-Please make sure your pull request contains only one logical change (see
+During the review process you might want to update your pull
+request. Please add commits or `amend` your existing commits as
+necessary. If you amend any commits you need to add the
+`--force-with-lease` option to the `git push` command. Please make
+sure that your pull request contains only one logical change (see
 ["Structural split of
 change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
 for further details.
@@ -135,16 +142,16 @@ a citable DOI:
 
 with the following `bibtex` snipped:
 
-    @misc{nicolas_bock_2017_841949,
+    @misc{bml,
       author       = {Nicolas Bock and
                       Susan Mniszewski and
                       Bálint Aradi and
                       Michael Wall and
                       Christian F. A. Negre and
                       Jamal Mohd-Yusof},
-      title        = {qmmd/bml v1.0.0},
-      month        = aug,
-      year         = 2017,
+      title        = {qmmd/bml v1.2.3},
+      month        = feb,
+      year         = 2018,
       doi          = {10.5281/zenodo.841949},
       url          = {https://doi.org/10.5281/zenodo.841949}
     }

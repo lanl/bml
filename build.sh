@@ -1,6 +1,15 @@
 #!/bin/bash
 
-TOP_DIR="$(readlink --canonicalize-existing $(dirname "$0"))"
+set -u
+
+TOP_DIR="$(dirname "$0")"
+TOP_DIR="$(readlink --canonicalize-existing ${TOP_DIR} 2> /dev/null)"
+if (( $? != 0 )); then
+    # Fall back to bash function `pwd`. Note that this fallback
+    # depends on using bash.
+    TOP_DIR=$(pwd -P $TOP_DIR)
+fi
+
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
 LOG_FILE="${TOP_DIR}/build.log"
@@ -31,24 +40,30 @@ step and the build:
 
 EOF
     set_defaults
-    echo "CMAKE_BUILD_TYPE   {Release,Debug}          (default is ${CMAKE_BUILD_TYPE})"
-    echo "CC                 Path to C compiler       (default is ${CC})"
-    echo "CXX                Path to C++ compiler     (default is ${CXX})"
-    echo "FC                 Path to Fortran compiler (default is ${FC})"
-    echo "BML_OPENMP         {yes,no}                 (default is ${BML_OPENMP})"
-    echo "BML_MPI            {yes,no}                 (default is ${BML_MPI})"
-    echo "BML_TESTING        {yes,no}                 (default is ${BML_TESTING})"
-    echo "BUILD_DIR          Path to build dir        (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR        {,Intel,MKL,ACML,GNU}    (default is '${BLAS_VENDOR}')"
-    echo "BML_INTERNAL_BLAS  {yes,no}                 (default is ${BML_INTERNAL_BLAS})"
-    echo "INSTALL_DIR        Path to install dir      (default is ${INSTALL_DIR})"
-    echo "EXTRA_CFLAGS       Extra C flags            (default is '${EXTRA_CFLAGS}')"
-    echo "EXTRA_FCFLAGS      Extra fortran flags      (default is '${EXTRA_FCFLAGS}')"
-    echo "PARALLEL_TEST_JOBS The number of test jobs  (default is ${PARALLEL_TEST_JOBS})"
+    echo "CMAKE_BUILD_TYPE     {Release,Debug}             (default is ${CMAKE_BUILD_TYPE})"
+    echo "BUILD_SHARED_LIBS    Build a shared library      (default is ${BUILD_SHARED_LIBS})"
+    echo "CC                   Path to C compiler          (default is ${CC})"
+    echo "CXX                  Path to C++ compiler        (default is ${CXX})"
+    echo "FC                   Path to Fortran compiler    (default is ${FC})"
+    echo "BML_OPENMP           {yes,no}                    (default is ${BML_OPENMP})"
+    echo "BML_MPI              {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_TESTING          {yes,no}                    (default is ${BML_TESTING})"
+    echo "BUILD_DIR            Path to build dir           (default is ${BUILD_DIR})"
+    echo "BLAS_VENDOR          {,Intel,MKL,ACML,GNU,Auto}  (default is '${BLAS_VENDOR}')"
+    echo "BML_INTERNAL_BLAS    {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
+    echo "PARALLEL_TEST_JOBS   The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
+    echo "INSTALL_DIR          Path to install dir         (default is ${INSTALL_DIR})"
+    echo "CMAKE_C_FLAGS        Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
+    echo "CMAKE_CXX_FLAGS      Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
+    echo "CMAKE_Fortran_FLAGS  Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
+    echo "EXTRA_CFLAGS         Extra C flags               (default is '${EXTRA_CFLAGS}')"
+    echo "EXTRA_FFLAGS         Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
+    echo "EXTRA_LINK_FLAGS     Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
 }
 
 set_defaults() {
     : ${CMAKE_BUILD_TYPE:=Release}
+    : ${BUILD_SHARED_LIBS:=no}
     : ${CC:=gcc}
     : ${CXX:=g++}
     : ${FC:=gfortran}
@@ -57,8 +72,13 @@ set_defaults() {
     : ${BLAS_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
     : ${EXTRA_CFLAGS:=}
-    : ${EXTRA_FCFLAGS:=}
+    : ${EXTRA_FFLAGS:=}
+    : ${CMAKE_C_FLAGS:=}
+    : ${CMAKE_CXX_FLAGS:=}
+    : ${CMAKE_Fortran_FLAGS:=}
     : ${BML_TESTING:=yes}
+    : ${FORTRAN_FLAGS:=}
+    : ${EXTRA_LINK_FLAGS:=}
 }
 
 die() {
@@ -108,18 +128,19 @@ configure() {
         -DCMAKE_C_COMPILER="${CC}" \
         -DCMAKE_CXX_COMPILER="${CXX}" \
         -DCMAKE_Fortran_COMPILER="${FC}" \
-        $([[ -n ${CMAKE_C_FLAGS} ]] && echo "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}") \
-        $([[ -n ${CMAKE_CXX_FLAGS} ]] && echo "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}") \
-        $([[ -n ${CMAKE_Fortran_FLAGS} ]] && echo "-DCMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS}") \
+        ${CMAKE_C_FLAGS:+-DCMAKE_C_FLAGS="${CMAKE_C_FLAGS}"} \
+        ${CMAKE_CXX_FLAGS:+-DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"} \
+        ${CMAKE_Fortran_FLAGS:+-DCMAKE_Fortran_FLAGS="${CMAKE_Fortran_FLAGS}"} \
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
-        -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS:=no}" \
+        -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
-        -DEXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-        -DEXTRA_FCFLAGS="${EXTRA_FCFLAGS}" \
+        ${EXTRA_CFLAGS:+-DEXTRA_CFLAGS="${EXTRA_CFLAGS}"} \
+        ${EXTRA_FFLAGS:+-DEXTRA_FFLAGS="${EXTRA_FFLAGS}"} \
+        ${EXTRA_LINK_FLAGS:+-DBML_LINK_FLAGS="${EXTRA_LINK_FLAGS}"} \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
         | tee -a "${LOG_FILE}"
     check_pipe_error

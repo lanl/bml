@@ -1,12 +1,13 @@
 #include "../typed.h"
 #include "../blas.h"
 #include "bml_allocate.h"
-#include "bml_scale.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_copy_ellsort.h"
+#include "bml_logger.h"
+#include "bml_parallel.h"
+#include "bml_scale.h"
 #include "bml_scale_ellsort.h"
+#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>
@@ -36,7 +37,11 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
+#endif
 
     return B;
 }
@@ -63,7 +68,12 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
+#endif
+
 }
 
 void TYPED_FUNC(
@@ -78,6 +88,11 @@ void TYPED_FUNC(
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_value[startIndex]),
                   &inc);
+#endif
+
 }
