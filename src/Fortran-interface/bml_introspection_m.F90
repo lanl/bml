@@ -10,7 +10,9 @@ module bml_introspection_m
   public :: bml_get_N
   public :: bml_get_M
   public :: bml_get_type
+  public :: bml_get_element_precision
   public :: bml_get_precision
+  public :: bml_get_element_type
   public :: bml_get_row_bandwidth
   public :: bml_get_bandwidth
   public :: bml_get_distribution_mode
@@ -97,10 +99,15 @@ contains
 
   end function bml_get_type
 
-  !> Get the precision of a matrix.
+  !> Get the precision/type index of the elements of a matrix.
   !!
   !! @param a The matrix.
-  !! @returns The bml format precision of the matrix.
+  !! @returns The bml type and precision index for the matrix elements.
+  !! 0 = not initialized
+  !! 1 = single real
+  !! 2 = double real
+  !! 3 = single complex
+  !! 4 = double complex
   function bml_get_precision(a)
 
     type(bml_matrix_t), intent(in) :: a
@@ -109,6 +116,61 @@ contains
     bml_get_precision = bml_get_precision_C(a%ptr)
 
   end function bml_get_precision
+
+  !> Get the precision of the elements of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml format precision the matrix elements.
+  function bml_get_element_precision(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_precision_id
+    integer :: bml_get_element_precision
+
+    bml_precision_id = bml_get_precision_C(a%ptr)
+
+    select case(bml_precision_id)
+      case(0)
+        stop 'Type/precision elements not initialized'
+      case(1)
+        bml_get_element_precision = kind(1.0)
+      case(2)
+        bml_get_element_precision = kind(1.0d0)
+      case default
+        stop 'Unknown elements type/precision'
+    end select
+
+  end function bml_get_element_precision
+
+
+  !> Get the elements type of a matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml format type of all the elements of the matrix.
+  function bml_get_element_type(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_precision_id
+    character(20) :: bml_get_element_type
+
+    bml_precision_id = bml_get_precision_C(a%ptr)
+
+    select case(bml_precision_id)
+      case(0)
+        stop 'Type/precision elements not initialized'
+      case(1)
+        bml_get_element_type = "real"
+      case(2)
+        bml_get_element_type = "real"
+      case(3)
+        bml_get_element_type = "complex"
+      case(4)
+        bml_get_element_type = "complex"
+      case default
+      stop 'Unknown elements type/precision'
+    end select
+
+  end function bml_get_element_type
 
   !> Get the distribution mode of a matrix.
   !!
