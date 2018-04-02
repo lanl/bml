@@ -1,9 +1,10 @@
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "../bml_introspection.h"
+#include "../bml_logger.h"
+#include "../bml_utilities.h"
 #include "bml_setters_dense.h"
 #include "bml_types_dense.h"
-#include "../bml_utilities.h"
 
 #include <complex.h>
 #include <stdio.h>
@@ -16,6 +17,12 @@ void TYPED_FUNC(
     const void *value)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     A_matrix[ROWMAJOR(i, j, N, N)] = *((REAL_T *) value);
 }
@@ -27,6 +34,12 @@ void TYPED_FUNC(
     const REAL_T * row)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
@@ -40,6 +53,12 @@ void TYPED_FUNC(
     const REAL_T * diagonal)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
