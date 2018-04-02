@@ -3,6 +3,7 @@
 #include "bml_allocate_dense.h"
 #include "bml_getters.h"
 #include "bml_introspection.h"
+#include "bml_logger.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -14,6 +15,12 @@ bml_matrix_dense_t *TYPED_FUNC(
     const bml_distribution_mode_t distrib_mode)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not initialized\n");
+    }
+
     bml_matrix_dense_t *B =
         bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
     REAL_T *Bij = (REAL_T *) B->matrix;

@@ -1,9 +1,10 @@
-#include "../macros.h"
-#include "../typed.h"
+#include "../../macros.h"
+#include "../../typed.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_getters.h"
-#include "bml_setters.h"
 #include "bml_introspection.h"
+#include "bml_setters.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
@@ -16,6 +17,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     const bml_distribution_mode_t distrib_mode)
 {
     int N = bml_get_N(A);
+
+    if (N < 0)
+    {
+        LOG_ERROR("A is not intialized\n");
+    }
+
     bml_matrix_ellpack_t *B =
         bml_zero_matrix_ellpack(matrix_precision, N, M, distrib_mode);
 
