@@ -175,6 +175,7 @@ set(BLAS_VENDOR ""
   CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,MKL,ACML,GNU}")
 
 if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
+  set(MKLROOT $ENV{MKLROOT})
   message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
   if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
     if(BML_OPENMP)
@@ -250,6 +251,7 @@ if(NOT (LAPACK_LIBRARIES OR LAPACK_FOUND OR NOBLAS))
   endif()
 endif()
 
+message(STATUS "BLAS_LIBRARIES=${BLAS_LIBRARIES}")
 include(CheckFunctionExists)
 include(CheckFortranFunctionExists)
 
