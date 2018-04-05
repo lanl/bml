@@ -1,5 +1,5 @@
-#include "../../typed.h"
 #include "../../macros.h"
+#include "../../typed.h"
 #include "../bml_logger.h"
 #include "../bml_utilities.h"
 #include "bml_types_dense.h"
@@ -40,6 +40,8 @@ void TYPED_FUNC(
         LOG_ERROR("read error\n");
     }
 
+    int symflag = strcmp(header5, "symmetric");
+
     // Read N, N, # of non-zeroes
     if (fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz) < 3)
     {
@@ -76,6 +78,12 @@ void TYPED_FUNC(
         irow--;
         icol--;
         A_value[ROWMAJOR(irow, icol, N, N)] = val;
+
+        // Set symmetric value if necessary
+        if (symflag == 0 && icol != irow)
+        {
+            A_value[ROWMAJOR(icol, irow, N, N)] = val;
+        }
     }
 
     fclose(hFile);

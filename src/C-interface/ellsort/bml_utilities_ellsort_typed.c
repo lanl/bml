@@ -44,6 +44,8 @@ void TYPED_FUNC(
         LOG_ERROR("read error on header\n");
     }
 
+    int symflag = strcmp(header5, "symmetric");
+
     // Read N, N, # of non-zeroes
     if (fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz) != 3)
     {
@@ -83,6 +85,15 @@ void TYPED_FUNC(
         A_index[ROWMAJOR(irow, ind, N, M)] = icol;
         A_value[ROWMAJOR(irow, ind, N, M)] = val;
         A_nnz[irow]++;
+
+        // Set symmetric value if necessary
+        if (symflag == 0 && icol != irow)
+        {
+            ind = A_nnz[icol];
+            A_index[ROWMAJOR(icol, ind, N, M)] = irow;
+            A_value[ROWMAJOR(icol, ind, N, M)] = val;
+            A_nnz[icol]++;
+        }
     }
 
     fclose(hFile);
