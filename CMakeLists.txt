@@ -58,6 +58,13 @@ set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs -qopt-report=5)
 set(Intel_Fortran_FLAGS_RELWITHDEBINFO -O2 -g -assume realloc_lhs
   -qopt-report=5 -DNDEBUG)
 
+set(XL_C_FLAGS_DEBUG -O0 -g)
+set(XL_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
+set(XL_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
+set(XL_Fortran_FLAGS_DEBUG -O0 -g)
+set(XL_Fortran_FLAGS_RELEASE -O3 -g)
+set(XL_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -DNDEBUG)
+
 set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
@@ -69,7 +76,8 @@ if(CMAKE_BUILD_TYPE_UPPER)
     if(CMAKE_C_FLAGS STREQUAL "")
       if(CMAKE_C_COMPILER_ID STREQUAL "GNU"
           OR CMAKE_C_COMPILER_ID STREQUAL "Intel"
-          OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+          OR CMAKE_C_COMPILER_ID STREQUAL "Clang"
+          OR CMAKE_C_COMPILER_ID STREQUAL "XL")
         set(CMAKE_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
           ${${CMAKE_C_COMPILER_ID}_C_FLAGS_${CMAKE_BUILD_TYPE_UPPER}})
         string(REPLACE ";" " "
@@ -92,7 +100,8 @@ if(CMAKE_BUILD_TYPE_UPPER)
 
     if(CMAKE_Fortran_FLAGS STREQUAL "")
       if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU"
-          OR CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+          OR CMAKE_Fortran_COMPILER_ID STREQUAL "Intel"
+          OR CMAKE_Fortran_COMPILER_ID STREQUAL "XL")
         set(CMAKE_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}
           ${${CMAKE_Fortran_COMPILER_ID}_Fortran_FLAGS_${CMAKE_BUILD_TYPE_UPPER}})
         string(REPLACE ";" " "
@@ -165,6 +174,8 @@ if(BML_GPU)
     set(OpenMP_CXX_OFFLOAD_FLAG "-foffload='-lm'")
   elseif(MAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(OpenMP_CXX_OFFLOAD_FLAG "-fopenmp-targets=nvptx64-nvidia-cuda --cuda-path=${CUDA_TOOLKIT_ROOT_DIR}")
+  elseif(MAKE_CXX_COMPILER_ID STREQUAL "XL")
+    set(OpenMP_CXX_OFFLOAD_FLAG "-qsmp=omp -qoffload")
   endif()
   check_cxx_compiler_flag("${OpenMP_CXX_OFFLOAD_FLAG}" OFFLOAD_CXX_FOUND)
   if(OFFLOAD_CXX_FOUND)
