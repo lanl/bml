@@ -11,6 +11,16 @@ module bml_fc_tools_m
 
 contains
 
+  !> Returns the trimmed length of the string with NULL termination added.
+  pure function len_f_c_string(fstr) result(strlen)
+
+    character(len=*, kind=C_CHAR), intent(in) :: fstr
+    integer :: strlen
+
+    strlen = len_trim(fstr) + LEN_C_NULL_CHAR
+
+  end function len_f_c_string
+
   !> Returns a NULL terminated C-style string.
   !!
   !! \param fstr  Fortran string.
@@ -23,15 +33,5 @@ contains
     cstr = trim(fstr)//C_NULL_CHAR
 
   end function f_c_string
-
-  !> Returns the trimmed length of the string with NULL termination added.
-  pure function len_f_c_string(fstr) result(strlen)
-
-    character(len=*, kind=C_CHAR), intent(in) :: fstr
-    integer :: strlen
-
-    strlen = len_trim(fstr) + LEN_C_NULL_CHAR
-
-  end function len_f_c_string
 
 end module bml_fc_tools_m

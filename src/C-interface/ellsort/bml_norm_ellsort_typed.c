@@ -43,6 +43,7 @@ double TYPED_FUNC(
   shared(N, M, A_value, A_nnz)                  \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:sum)
+
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -153,6 +154,7 @@ double TYPED_FUNC(
   shared(A_localRowMin, A_localRowMax, myRank)  \
   shared(B_N, B_M, B_index, B_nnz, B_value)     \
   reduction(+:sum)
+
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {

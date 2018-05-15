@@ -407,6 +407,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
   shared(hindex, hnode)                         \
   shared(A_nnz, A_index, A_value, A_N, A_M)     \
   shared(B_nnz, B_index, B_value, B_N, B_M)
+
     for (int i = 0; i < B_N; i++)
     {
         memset(ix, 0, sizeof(int) * ngroups);

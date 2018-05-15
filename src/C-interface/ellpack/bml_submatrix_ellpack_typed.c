@@ -402,15 +402,20 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
     }
 
-#pragma omp parallel for \
+#pragma omp parallel \
     default(none) \
-    private(ix, hend) \
+    private(hend) \
+    shared(ix) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
     shared(B_nnz, B_index, B_value, B_N, B_M)
+
+    memset(ix, 0, sizeof(int) * ngroups);
+
+#pragma omp for
     for (int i = 0; i < B_N; i++)
     {
-        memset(ix, 0, sizeof(int) * ngroups);
+        //memset(ix, 0, sizeof(int) * ngroups);
         ix[i] = i + 1;
         B_index[ROWMAJOR(i, 0, B_N, B_M)] = i;
         B_value[ROWMAJOR(i, 0, B_N, B_M)] = 1.0;
