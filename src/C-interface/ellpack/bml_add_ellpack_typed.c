@@ -137,6 +137,10 @@ void TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
+
+    //bml_free_memory(ix);
+    //bml_free_memory(jx);
+    //bml_free_memory(x);
 }
 
 /** Matrix addition.
@@ -185,10 +189,6 @@ double TYPED_FUNC(
     REAL_T x[N];
     REAL_T y[N];
 
-    memset(ix, 0, N * sizeof(int));
-    memset(jx, 0, N * sizeof(int));
-    memset(x, 0.0, N * sizeof(REAL_T));
-    memset(y, 0.0, N * sizeof(REAL_T));
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -198,6 +198,7 @@ double TYPED_FUNC(
     shared(A_index, A_value, A_nnz) \
     shared(A_localRowMin, A_localRowMax) \
     shared(B_index, B_value, B_nnz) \
+    shared(ix, jx, x, y) \
     reduction(+:trnorm)
 #else
 #pragma omp parallel for \
@@ -275,6 +276,11 @@ double TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
+
+    //bml_free_memory(ix);
+    //bml_free_memory(jx);
+    //bml_free_memory(x);
+    //bml_free_memory(y);
 
     return trnorm;
 }
