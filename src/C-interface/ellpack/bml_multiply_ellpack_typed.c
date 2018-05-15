@@ -125,9 +125,11 @@ void *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+/*
     memset(ix, 0, X_N * sizeof(int));
     memset(jx, 0, X_N * sizeof(int));
     memset(x, 0.0, X_N * sizeof(REAL_T));
+*/
 
 #pragma omp parallel for                                \
   default(none)                                         \
@@ -136,6 +138,7 @@ void *TYPED_FUNC(
   shared(X2_M, X2_index, X2_nnz, X2_value)              \
   shared(X_localRowMin, X_localRowMax)                  \
   reduction(+: traceX, traceX2)
+
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
     for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
     {
@@ -245,9 +248,11 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+/*
     memset(ix, 0, C->N * sizeof(int));
     memset(jx, 0, C->N * sizeof(int));
     memset(x, 0.0, C->N * sizeof(REAL_T));
+*/
 
 #pragma omp parallel for                        \
   default(none)                                 \
@@ -257,6 +262,7 @@ void TYPED_FUNC(
   shared(B_M, B_nnz, B_index, B_value)          \
   shared(C_M, C_nnz, C_index, C_value)          \
   shared(myRank)
+
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -360,9 +366,11 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+/*
     memset(ix, 0, C->N * sizeof(int));
     memset(jx, 0, C->N * sizeof(int));
     memset(x, 0.0, C->N * sizeof(REAL_T));
+*/
 
     while (aflag > 0)
     {
@@ -377,6 +385,7 @@ void TYPED_FUNC(
   shared(C_M, C_nnz, C_index, C_value)          \
   shared(adjust_threshold, myRank)              \
   reduction(+:aflag)
+
         //for (int i = 0; i < A_N; i++)
         for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
