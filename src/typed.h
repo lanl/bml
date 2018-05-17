@@ -20,7 +20,7 @@
 #define IMAGINARY_PART(x) (0)
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabs(x))
-#define is_above_threshold(x, t) (fabs(x) > (t))
+#define is_above_threshold(x, t) (fabs(x) > (double) (t))
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float complex
 #define FUNC_SUFFIX single_complex
@@ -30,7 +30,7 @@
 #define IMAGINARY_PART(x) (cimagf(x))
 #define COMPLEX_CONJUGATE(x) (conjf(x))
 #define ABS(x) (cabsf(x))
-#define is_above_threshold(x, t) (cabsf(x) > cabsf((float) (t)))
+#define is_above_threshold(x, t) (cabsf(x) > (float) (t))
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double complex
 #define FUNC_SUFFIX double_complex
@@ -40,7 +40,7 @@
 #define IMAGINARY_PART(x) (cimag(x))
 #define COMPLEX_CONJUGATE(x) (conj(x))
 #define ABS(x) (cabs(x))
-#define is_above_threshold(x, t) (cabs(x) > cabs(t))
+#define is_above_threshold(x, t) (cabs(x) > (double) (t))
 #else
 #error Unknown precision type
 #endif

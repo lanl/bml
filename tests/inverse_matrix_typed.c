@@ -50,7 +50,7 @@ int TYPED_FUNC(
 
     ssum = bml_sum_squares(aux) - (float) N;
 
-    if (ABS(ssum) > REL_TOL)
+    if (fabsf(ssum) > REL_TOL)
     {
         LOG_ERROR("Error in matrix inverse; ssum(A*A_inverse) = %e\n", ssum);
         return -1;

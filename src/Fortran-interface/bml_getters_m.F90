@@ -70,8 +70,8 @@ contains
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
-    complex(C_FLOAT), allocatable, intent(inout) :: diagonal(:)
-    complex(C_FLOAT), pointer :: diagonal_ptr(:)
+    complex(C_FLOAT_COMPLEX), allocatable, intent(inout) :: diagonal(:)
+    complex(C_FLOAT_COMPLEX), pointer :: diagonal_ptr(:)
     type(C_PTR) :: ptr
 
     ptr = bml_get_diagonal_C(a%ptr)
@@ -88,8 +88,8 @@ contains
     use bml_introspection_m
 
     type(bml_matrix_t), intent(in) :: a
-    complex(C_DOUBLE), allocatable, intent(inout) :: diagonal(:)
-    complex(C_DOUBLE), pointer :: diagonal_ptr(:)
+    complex(C_DOUBLE_COMPLEX), allocatable, intent(inout) :: diagonal(:)
+    complex(C_DOUBLE_COMPLEX), pointer :: diagonal_ptr(:)
     type(C_PTR) :: ptr
 
     ptr = bml_get_diagonal_C(a%ptr)
