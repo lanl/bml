@@ -48,7 +48,8 @@ int TYPED_FUNC(
     sum = bml_sum_squares(A);
     fnorm = bml_fnorm(A);
 
-    if (ABS(sum - sum2) > REL_TOL)
+    //if (ABS(sum - sum2) > REL_TOL)
+    if (fabs(sum - sum2) > REL_TOL)
     {
         LOG_ERROR
             ("incorrect sum of squares or sum of squares2; sum = %e sum2 = %e\n",
@@ -59,9 +60,9 @@ int TYPED_FUNC(
     sqrt_sum = sqrt(sum);
     sqrt_sum2 = sqrt(sum2);
 
-    if ((ABS(sqrt_sum - sqrt_sum2) > REL_TOL) ||
-        (ABS(sqrt_sum - fnorm) > REL_TOL) ||
-        (ABS(sqrt_sum2 - fnorm) > REL_TOL))
+    if ((fabs(sqrt_sum - sqrt_sum2) > REL_TOL) ||
+        (fabs(sqrt_sum - fnorm) > REL_TOL) ||
+        (fabs(sqrt_sum2 - fnorm) > REL_TOL))
     {
         LOG_ERROR
             ("incorrect sqrt(sum) or sqrt(sum2) of fnorm ; sqrt_sum = %e sqrt_sum2 = %e fnorm = %e\n",
