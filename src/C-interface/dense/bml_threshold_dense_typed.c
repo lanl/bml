@@ -55,7 +55,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {
-        if (is_above_threshold(A_matrix[i], threshold))
+        if (is_above_threshold(A_matrix[i], (REAL_T) threshold))
         {
             B_matrix[i] = A_matrix[i];
         }
@@ -95,7 +95,7 @@ void TYPED_FUNC(
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {
-        if (!is_above_threshold(A_matrix[i], threshold))
+        if (!is_above_threshold(A_matrix[i], (REAL_T) threshold))
         {
             A_matrix[i] = (REAL_T) 0.0;
         }

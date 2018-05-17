@@ -43,7 +43,7 @@ int TYPED_FUNC(
 
     sparsity_ref = (1.0 - (double) nnzs / ((double) (N * N)));
 
-    if (ABS(sparsity - sparsity_ref) > 1e-12)
+    if (fabs(sparsity - sparsity_ref) > 1e-12)
     {
         LOG_ERROR("bml_get_sparsity is corrupted\n");
         return -1;
