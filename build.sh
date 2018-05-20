@@ -124,7 +124,6 @@ create() {
 }
 
 configure() {
-    set_defaults
     cd "${BUILD_DIR}"
     if [[ -f "${BUILD_DIR}/CMakeCache.txt" ]]; then
         rm -v "${BUILD_DIR}/CMakeCache.txt" || die
@@ -215,6 +214,8 @@ dist() {
 
 echo "Writing output to ${LOG_FILE}"
 
+set_defaults
+
 if [[ $# -gt 0 ]]; then
     if [[ "$1" = "-h" || "$1" = "--help" ]]; then
         help
@@ -245,6 +246,10 @@ if [[ $# -gt 0 ]]; then
                 install
                 ;;
             "testing")
+                if [[ ${BML_TESTING} != "yes" ]]; then
+                    echo "The testing step requires BML_TESTING to be true"
+                    exit 1
+                fi
                 create
                 configure
                 compile
