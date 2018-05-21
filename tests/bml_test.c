@@ -153,6 +153,7 @@ main(
     int M = -1;
     char *test = NULL;
     int test_index = -1;
+    int test_result;
     bml_matrix_type_t matrix_type = dense;
     bml_matrix_precision_t precision = single_real;
 
@@ -278,7 +279,9 @@ main(
     fprintf(stderr, "N = %d\n", N);
     free(test);
 
+    test_result = testers[test_index] (N, matrix_type, precision, M);
+
     bml_shutdown();
 
-    return testers[test_index] (N, matrix_type, precision, M);
+    return test_result;
 }
