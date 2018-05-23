@@ -442,6 +442,7 @@ if(DOXYGEN_FOUND)
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(documentation/Doxyfile.in Doxyfile)
   add_custom_target(docs
+    COMMAND rm -rvf ${CMAKE_SOURCE_DIR}/docs/API/*
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 else()
   add_custom_target(docs)
