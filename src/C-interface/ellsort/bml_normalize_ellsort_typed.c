@@ -78,13 +78,13 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) \
-    shared(N, M, A_nnz, A_index, A_value) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    shared(rad, dval) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
+#pragma omp parallel for default(none)          \
+  shared(N, M, A_nnz, A_index, A_value)         \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(rad, dval)                             \
+  private(absham, radius, dvalue)               \
+  reduction(max:emax)                           \
+  reduction(min:emin)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -173,12 +173,12 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) \
-    shared(N, M, A_nnz, A_index, A_value) \
-    shared(rad, dval) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
+#pragma omp parallel for default(none)          \
+  shared(N, M, A_nnz, A_index, A_value)         \
+  shared(rad, dval)                             \
+  private(absham, radius, dvalue)               \
+  reduction(max:emax)                           \
+  reduction(min:emin)
     for (int i = 0; i < nrows; i++)
     {
         radius = 0.0;

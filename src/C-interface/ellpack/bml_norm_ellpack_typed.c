@@ -38,11 +38,11 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for  \
-    default(none) \
-    shared(N, M, A_value, A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    reduction(+:sum)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  shared(N, M, A_value, A_nnz)                  \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:sum)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -79,9 +79,9 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none) \
-    shared(N, M, A_index, A_nnz, A_value) \
-    reduction(+:sum)
+#pragma omp parallel for default(none)          \
+  shared(N, M, A_index, A_nnz, A_value)         \
+  reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
@@ -145,14 +145,14 @@ double TYPED_FUNC(
     memset(ix, 0, A_N * sizeof(int));
     memset(jjb, 0, A_N * sizeof(int));
 
-#pragma omp parallel for \
-    default(none) \
-    firstprivate(ix, jjb, y) \
-    shared(alpha_, beta_) \
-    shared(A_N, A_M, A_index, A_nnz, A_value) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    shared(B_N, B_M, B_index, B_nnz, B_value) \
-    reduction(+:sum)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  firstprivate(ix, jjb, y)                      \
+  shared(alpha_, beta_)                         \
+  shared(A_N, A_M, A_index, A_nnz, A_value)     \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(B_N, B_M, B_index, B_nnz, B_value)     \
+  reduction(+:sum)
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -251,13 +251,13 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for \
-    default(none) \
-    private(rvalue, temp) \
-    shared(N, M, A_nnz, A_index, A_value) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    shared(B_nnz, B_index, B_value) \
-    reduction(+:fnorm)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  private(rvalue, temp)                         \
+  shared(N, M, A_nnz, A_index, A_value)         \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(B_nnz, B_index, B_value)               \
+  reduction(+:fnorm)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {

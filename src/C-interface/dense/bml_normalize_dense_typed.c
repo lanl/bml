@@ -69,13 +69,13 @@ void *TYPED_FUNC(
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
-#pragma omp parallel for \
-    default(none) \
-    shared(N, A_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  shared(N, A_matrix)                           \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  private(absham, radius, dvalue)               \
+  reduction(max:emax)                           \
+  reduction(min:emin)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -143,12 +143,12 @@ void *TYPED_FUNC(
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
-#pragma omp parallel for \
-    default(none) \
-    shared(N, A_matrix) \
-    private(absham, radius, dvalue) \
-    reduction(max:emax) \
-    reduction(min:emin)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  shared(N, A_matrix)                           \
+  private(absham, radius, dvalue)               \
+  reduction(max:emax)                           \
+  reduction(min:emin)
     for (int i = 0; i < nrows; i++)
     {
         radius = 0.0;

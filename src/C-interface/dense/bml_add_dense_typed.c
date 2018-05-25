@@ -83,11 +83,11 @@ double TYPED_FUNC(
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
 
-#pragma omp parallel for \
-    default(none) \
-    shared(B_matrix, A_localRowMin, A_localRowMax) \
-    shared(N, myRank) \
-    reduction(+:trnorm)
+#pragma omp parallel for                                \
+  default(none)                                         \
+  shared(B_matrix, A_localRowMin, A_localRowMax)        \
+  shared(N, myRank)                                     \
+  reduction(+:trnorm)
     //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
@@ -122,10 +122,10 @@ void TYPED_FUNC(
     int *A_localRowMax = A->domain->localRowMax;
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for \
-    default(none) \
-    shared(A_matrix, A_localRowMin, A_localRowMax) \
-    shared(N, myRank, beta_)
+#pragma omp parallel for                                \
+  default(none)                                         \
+  shared(A_matrix, A_localRowMin, A_localRowMax)        \
+  shared(N, myRank, beta_)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {

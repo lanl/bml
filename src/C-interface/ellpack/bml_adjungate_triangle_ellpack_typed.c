@@ -49,9 +49,10 @@ void TYPED_FUNC(
                 omp_init_lock(&(lock[i]));
 #endif
 
-#pragma omp parallel for default(none) shared(A_N,A_M,A_index,A_nnz,A_value,lock) \
-      private(j,l,ll)
-            //    WARNING: Please, check for race conditions ...
+#pragma omp parallel for default(none)            \
+  shared(A_N, A_M, A_index, A_nnz, A_value, lock) \
+  private(l, ll)
+            // WARNING: Please, check for race conditions ...
 
             for (int i = 0; i < A_N; i++)       // For every row
             {
@@ -91,8 +92,9 @@ void TYPED_FUNC(
                 omp_init_lock(&(lock[i]));
 #endif
 
-#pragma omp parallel for default(none) shared(lock,A_N,A_M,A_index,A_nnz,A_value) \
-      private(j,l,ll)
+#pragma omp parallel for default(none)                  \
+  shared(lock, A_N, A_M, A_index, A_nnz, A_value)       \
+  private(l, ll)
             //    WARNING: Please, check for race conditions and parallel performances ...
             for (int i = 0; i < A_N; i++)
             {

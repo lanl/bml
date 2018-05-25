@@ -37,10 +37,10 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none) \
-    shared(N, A_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    reduction(+:sum)
+#pragma omp parallel for default(none)          \
+  shared(N, A_matrix)                           \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:sum)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {
@@ -68,9 +68,9 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_matrix = A->matrix;
 
-#pragma omp parallel for default(none) \
-    shared(N, A_matrix) \
-    reduction(+:sum)
+#pragma omp parallel for default(none)          \
+  shared(N, A_matrix)                           \
+  reduction(+:sum)
     for (int i = 0; i < core_size * N; i++)
     {
         sum += A_matrix[i] * A_matrix[i];
@@ -124,12 +124,12 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for \
-    default(none) \
-    shared(alpha_, beta_) \
-    shared(N, A_matrix, B_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    reduction(+:sum)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  shared(alpha_, beta_)                         \
+  shared(N, A_matrix, B_matrix)                 \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:sum)
     //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
@@ -192,12 +192,12 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for \
-    default(none) \
-    shared(temp) \
-    shared(N, A_matrix, B_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    reduction(+:fnorm)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  shared(temp)                                  \
+  shared(N, A_matrix, B_matrix)                 \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:fnorm)
     //for (int i = 0; i < N*N;i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)

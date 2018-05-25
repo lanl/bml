@@ -325,8 +325,8 @@ bml_adjacency_ellsort(
         xadj[i] = xadj[i - 1] + A_nnz[i - 1];
     }
 
-#pragma omp parallel for default(none) \
-    shared(A_N, A_M, A_index, xadj, adjncy)
+#pragma omp parallel for default(none)          \
+  shared(A_N, A_M, A_index, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
         for (int j = xadj[i], jj = 0; j < xadj[i + 1]; j++, jj++)
@@ -338,14 +338,14 @@ bml_adjacency_ellsort(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N, adjncy)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N, adjncy)
         for (int i = 0; i <= xadj[A_N]; i++)
         {
             adjncy[i] += 1;
         }
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N)
         for (int i = 0; i < A_N + 1; i++)
         {
             xadj[i] += 1;
@@ -406,9 +406,9 @@ bml_adjacency_group_ellsort(
     }
 
     // Fill in adjacent atoms
-#pragma omp parallel for default(none) \
-    shared(A_N, A_M, A_index, A_nnz) \
-    shared(xadj, adjncy, hnode)
+#pragma omp parallel for default(none)          \
+  shared(A_N, A_M, A_index, A_nnz)              \
+  shared(xadj, adjncy, hnode)
     for (int i = 0; i < nnodes; i++)
     {
         int ll = xadj[i];
@@ -431,14 +431,14 @@ bml_adjacency_group_ellsort(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N, adjncy)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N, adjncy)
         for (int i = 0; i <= xadj[nnodes]; i++)
         {
             adjncy[i] += 1;
         }
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N)
         for (int i = 0; i < nnodes + 1; i++)
         {
             xadj[i] += 1;

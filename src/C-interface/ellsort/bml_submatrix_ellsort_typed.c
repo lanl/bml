@@ -240,11 +240,11 @@ void TYPED_FUNC(
     int B_N = B->N;
     REAL_T *B_matrix = B->matrix;
 
-#pragma omp parallel for \
-    default(none) \
-    private(rvalue) \
-    shared(core_halo_index) \
-    shared(A, B_matrix, B_N)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  private(rvalue)                               \
+  shared(core_halo_index)                       \
+  shared(A, B_matrix, B_N)
     for (int jb = 0; jb < lsize; jb++)
     {
         rvalue = TYPED_FUNC(bml_getVector_ellsort) (A, core_halo_index,
@@ -289,12 +289,12 @@ void TYPED_FUNC(
 
     int ii, icol;
 
-#pragma omp parallel for \
-    default(none) \
-    private(ii, icol) \
-    shared(core_halo_index) \
-    shared(A_N, A_matrix) \
-    shared(B_N, B_M, B_nnz, B_index, B_value)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  private(ii, icol)                             \
+  shared(core_halo_index)                       \
+  shared(A_N, A_matrix)                         \
+  shared(B_N, B_M, B_nnz, B_index, B_value)
     for (int ja = 0; ja < llsize; ja++)
     {
         ii = core_halo_index[ja];
@@ -387,9 +387,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
-#pragma omp parallel for default(none) \
-    private(hend) \
-    shared(hindex, hnode, A_N)
+#pragma omp parallel for default(none)          \
+  private(hend)                                 \
+  shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
     {
         hend = hindex[i + 1] - 1;
@@ -401,12 +401,12 @@ bml_matrix_ellsort_t *TYPED_FUNC(
         }
     }
 
-#pragma omp parallel for \
-    default(none) \
-    private(ix, hend) \
-    shared(hindex, hnode) \
-    shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M)
+#pragma omp parallel for                        \
+  default(none)                                 \
+  private(ix, hend)                             \
+  shared(hindex, hnode)                         \
+  shared(A_nnz, A_index, A_value, A_N, A_M)     \
+  shared(B_nnz, B_index, B_value, B_N, B_M)
     for (int i = 0; i < B_N; i++)
     {
         memset(ix, 0, sizeof(int) * ngroups);
