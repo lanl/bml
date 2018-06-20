@@ -163,6 +163,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  *  \param M The number of non-zeroes per row.
  *  \param distrib_mode The distribution mode.
  *  \return The matrix.
+ *
+ *  Note: Do not use OpenMP when setting values for a random matrix,
+ *  this makes the operation non-repeatable.
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_random_matrix_ellsort) (
@@ -177,7 +180,6 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
         int jind = 0;

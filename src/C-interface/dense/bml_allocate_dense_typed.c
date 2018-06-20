@@ -102,6 +102,9 @@ bml_matrix_dense_t *TYPED_FUNC(
  *  \param N The matrix size.
  *  \param distrib_mode The distribution mode.
  *  \return The matrix.
+ *
+ *  Note: Do not use OpenMP when setting values for a random matrix,
+ *  this makes the operation non-repeatable.
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_random_matrix_dense) (
@@ -111,7 +114,6 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (N, distrib_mode);
     REAL_T *A_dense = A->matrix;
-#pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
