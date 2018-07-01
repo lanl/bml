@@ -44,7 +44,7 @@ env:
         - BML_OPENMP=no VERBOSE_MAKEFILE=yes COMMAND=check_indent # 1. Job will be analyzed by coverty scan and danger.
         - BML_OPENMP=no VERBOSE_MAKEFILE=yes COMMAND=docs # 2.
         - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing # 3.
-        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes  COMMAND=testing # 4. Job will be analyzed by coverage tools.
+        - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes COMMAND=testing # 4. Job will be analyzed by coverage tools.
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  COMMAND=testing
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes COMMAND=testing
         - CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  COMMAND=testing
