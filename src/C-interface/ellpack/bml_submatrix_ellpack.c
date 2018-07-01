@@ -360,9 +360,9 @@ bml_adjacency_ellpack(
             xadj[i] = xadj[i - 1] + A_nnz[i - 1];
     }
 
-#pragma omp parallel for default(none) \
-    private(j) \
-    shared(A_N, A_M, A_index, A_nnz, xadj, adjncy)
+#pragma omp parallel for default(none)                  \
+  private(j)                                            \
+  shared(A_N, A_M, A_index, A_nnz, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
         j = xadj[i];
@@ -377,8 +377,8 @@ bml_adjacency_ellpack(
         //assert(j == xadj[i+1]);
     }
 
-#pragma omp parallel for default(none) \
-    shared(A_N, xadj, adjncy)
+#pragma omp parallel for default(none)          \
+  shared(A_N, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
         qsort(&adjncy[xadj[i]], xadj[i + 1] - xadj[i], sizeof(int), sortById);
@@ -387,8 +387,8 @@ bml_adjacency_ellpack(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N, adjncy)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N, adjncy)
         for (int i = 0; i < A_N; i++)
         {
             for (int j = xadj[i]; j < xadj[i + 1]; j++)
@@ -396,8 +396,8 @@ bml_adjacency_ellpack(
                 adjncy[j] += 1;
             }
         }
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N)
         for (int i = 0; i < A_N + 1; i++)
         {
             xadj[i] += 1;
@@ -458,9 +458,9 @@ bml_adjacency_group_ellpack(
     }
 
     // Fill in adjacent atoms
-#pragma omp parallel for default(none) \
-    shared(A_N, A_M, A_index, A_nnz) \
-    shared(xadj, adjncy, hnode)
+#pragma omp parallel for default(none)          \
+  shared(A_N, A_M, A_index, A_nnz)              \
+  shared(xadj, adjncy, hnode)
     for (int i = 0; i < nnodes; i++)
     {
         int ll = xadj[i];
@@ -483,14 +483,14 @@ bml_adjacency_group_ellpack(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N, adjncy)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N, adjncy)
         for (int i = 0; i <= xadj[nnodes]; i++)
         {
             adjncy[i] += 1;
         }
-#pragma omp parallel for default(none) \
-    shared(xadj, A_N)
+#pragma omp parallel for default(none)          \
+  shared(xadj, A_N)
         for (int i = 0; i < nnodes + 1; i++)
         {
             xadj[i] += 1;

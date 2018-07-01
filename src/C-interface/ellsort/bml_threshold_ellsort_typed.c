@@ -48,10 +48,10 @@ bml_matrix_ellsort_t *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none) \
-    shared(N, M, A_value, A_index, A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    shared(B_value, B_index, B_nnz)
+#pragma omp parallel for default(none)          \
+  shared(N, M, A_value, A_index, A_nnz)         \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(B_value, B_index, B_nnz)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -96,10 +96,10 @@ void TYPED_FUNC(
     int myRank = bml_getMyRank();
 
     int rlen;
-#pragma omp parallel for default(none) \
-    private(rlen) \
-    shared(N,M,A_value,A_index,A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank)
+#pragma omp parallel for default(none)          \
+  private(rlen)                                 \
+  shared(N,M,A_value,A_index,A_nnz)             \
+  shared(A_localRowMin, A_localRowMax, myRank)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {

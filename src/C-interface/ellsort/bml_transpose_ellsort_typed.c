@@ -81,7 +81,8 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     }
 #endif
 
-#pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
+#pragma omp parallel for default(none) \
+  shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)

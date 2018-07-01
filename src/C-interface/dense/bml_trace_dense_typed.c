@@ -37,10 +37,10 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none) \
-    shared(N, A_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    reduction(+:trace)
+#pragma omp parallel for default(none)          \
+  shared(N, A_matrix)                           \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:trace)
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
@@ -81,10 +81,10 @@ double TYPED_FUNC(
             ("bml_traceMult_dense: Matrices A and B are different sizes.");
     }
 
-#pragma omp parallel for default(none) \
-    shared(N, A_matrix, B_matrix) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    reduction(+:trace)
+#pragma omp parallel for default(none)          \
+  shared(N, A_matrix, B_matrix)                 \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:trace)
     //for (int i = 0; i < N*N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
