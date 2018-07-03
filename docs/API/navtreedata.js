@@ -17,19 +17,14 @@ var NAVTREE =
       [ "Developer Suggested Workflow", "developer_documentation.html#workflow", null ],
       [ "Coding Style", "developer_documentation.html#coding_style", null ]
     ] ],
-    [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
-      [ "Namespace Members", "namespacemembers.html", [
-        [ "All", "namespacemembers.html", null ],
-        [ "Functions", "namespacemembers_func.html", null ],
-        [ "Variables", "namespacemembers_vars.html", null ]
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", null ],
+        [ "Variables", "functions_vars.html", null ]
       ] ]
-    ] ],
-    [ "Classes", null, [
-      [ "Class List", "annotated.html", "annotated" ],
-      [ "Class Index", "classes.html", null ]
     ] ],
     [ "Files", null, [
       [ "File List", "files.html", "files" ],
@@ -48,7 +43,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "C_usage.html",
-"namespacebml__multiply__m.html"
+"structbml__domain__t.html#a587a4b292cb6278115500bf495eca5b4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
