@@ -4,6 +4,7 @@ libdir=@CMAKE_INSTALL_FULL_LIBDIR@
 
 Name: bml
 Description: The basic matrix library
+URL: https://lanl.github.io/bml/
 Version: @PROJECT_VERSION@
 Cflags: -I@CMAKE_INSTALL_FULL_INCLUDEDIR@
 Libs: -L@CMAKE_INSTALL_FULL_LIBDIR@ -lbml_fortran -lbml @LINKLINE@
