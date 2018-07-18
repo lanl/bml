@@ -158,6 +158,11 @@ double TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+        REAL_T y[A_N];
+        int ix[A_N], jjb[A_N];
+
+        memset(ix, 0, A_N * sizeof(int));
+
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {

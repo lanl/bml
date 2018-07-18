@@ -42,6 +42,7 @@ void TYPED_FUNC(
     int B_M = B->M;
 
     int ix[N], jx[N];
+    REAL_T x[N];
 
     int *A_nnz = A->nnz;
     int *A_index = A->index;
@@ -51,7 +52,6 @@ void TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
 
-    REAL_T x[N];
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
 
@@ -71,6 +71,11 @@ void TYPED_FUNC(
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+        int ix[N], jx[N];
+        REAL_T x[N];
+
+        memset(ix, 0, N * sizeof(int));
+
         int l = 0;
         if (alpha > (double) 0.0 || alpha < (double) 0.0)
             for (int jp = 0; jp < A_nnz[i]; jp++)
@@ -145,7 +150,10 @@ double TYPED_FUNC(
     int N = A->N;
     int A_M = A->M;
     int B_M = B->M;
+
     int ix[N], jx[N];
+    REAL_T x[N];
+    REAL_T y[N];
 
     int *A_nnz = A->nnz;
     int *A_index = A->index;
@@ -155,8 +163,6 @@ double TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
 
-    REAL_T x[N];
-    REAL_T y[N];
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
 
@@ -180,6 +186,12 @@ double TYPED_FUNC(
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+        int ix[N], jx[N];
+        REAL_T x[N];
+        REAL_T y[N];
+
+        memset(ix, 0, N * sizeof(int));
+
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
