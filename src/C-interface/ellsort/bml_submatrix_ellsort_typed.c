@@ -395,7 +395,10 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
 
+/*
     int ix[ngroups];
+*/
+
     int hnode[A_N];
     int hend;
 
@@ -433,7 +436,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
 
     for (int i = 0; i < B_N; i++)
     {
-        //memset(ix, 0, sizeof(int) * ngroups);
+        int ix[ngroups];
+        memset(ix, 0, sizeof(int) * ngroups);
+
         B_nnz[i] = 0;
         hend = hindex[i + 1] - 1;
         if (i == B_N - 1)

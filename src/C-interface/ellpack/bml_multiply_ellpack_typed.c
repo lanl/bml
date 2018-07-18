@@ -113,8 +113,10 @@ void *TYPED_FUNC(
     int *X2_index = X2->index;
     int *X2_nnz = X2->nnz;
 
+/*
     int ix[X_N], jx[X_N];
     REAL_T x[X_N];
+*/
 
     REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
@@ -142,6 +144,11 @@ void *TYPED_FUNC(
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
     for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
     {
+        int ix[X_N], jx[X_N];
+        REAL_T x[X_N];
+
+        memset(ix, 0, X_N * sizeof(int));
+
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
         {
@@ -239,8 +246,10 @@ void TYPED_FUNC(
     int *C_nnz = C->nnz;
     int *C_index = C->index;
 
+/*
     int ix[C->N], jx[C->N];
     REAL_T x[C->N];
+*/
 
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
@@ -266,6 +275,11 @@ void TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+        int ix[C_N], jx[C_N];
+        REAL_T x[C_N];
+
+        memset(ix, 0, C_N * sizeof(int));
+
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
@@ -354,9 +368,12 @@ void TYPED_FUNC(
     int *C_nnz = C->nnz;
     int *C_index = C->index;
 
+/*
     int ix[C->N], jx[C->N];
-    int aflag = 1;
     REAL_T x[C->N];
+*/
+
+    int aflag = 1;
 
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
@@ -389,6 +406,11 @@ void TYPED_FUNC(
         //for (int i = 0; i < A_N; i++)
         for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
+            int ix[C_N], jx[C_N];
+            REAL_T x[C_N];
+
+            memset(ix, 0, C_N * sizeof(int));
+
             int l = 0;
             for (int jp = 0; jp < A_nnz[i]; jp++)
             {
