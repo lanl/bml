@@ -107,8 +107,10 @@ void *TYPED_FUNC(
     int *X2_index = X2->index;
     int *X2_nnz = X2->nnz;
 
+/*
     int ix[X_N], jx[X_N];
     REAL_T x[X_N];
+*/
 
     REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
@@ -125,23 +127,21 @@ void *TYPED_FUNC(
     memset(x, 0.0, X_N * sizeof(REAL_T));
 */
 
-#pragma omp parallel \
+#pragma omp parallel for \
     default(none) \
     shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
     shared(X_localRowMin, X_localRowMax) \
-    shared(ix, jx, x) \
     reduction(+: traceX, traceX2)
-
-    memset(ix, 0, X_N * sizeof(int));
-    memset(jx, 0, X_N * sizeof(int));
-    memset(x, 0.0, X_N * sizeof(REAL_T));
-
-#pragma omp for 
 
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
     for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
     {
+        int ix[X_N], jx[X_N];
+        REAL_T x[X_N];
+
+        memset(ix, 0, X_N * sizeof(int));
+
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
         {
@@ -239,8 +239,10 @@ void TYPED_FUNC(
     int *C_nnz = C->nnz;
     int *C_index = C->index;
 
+/*
     int ix[C->N], jx[C->N];
     REAL_T x[C->N];
+*/
 
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
@@ -254,23 +256,22 @@ void TYPED_FUNC(
     memset(x, 0.0, C->N * sizeof(REAL_T));
 */
 
-#pragma omp parallel \
+#pragma omp parallel for \
     default(none) \
-    shared(ix, jx, x) \
     shared(A_N, A_M, A_nnz, A_index, A_value) \
     shared(A_localRowMin, A_localRowMax) \
     shared(B_N, B_M, B_nnz, B_index, B_value) \
     shared(C_N, C_M, C_nnz, C_index, C_value) \
     shared(myRank)
 
-    memset(ix, 0, C_N * sizeof(int));
-    memset(jx, 0, C_N * sizeof(int));
-    memset(x, 0.0, C_N * sizeof(REAL_T));
-
-#pragma omp for
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+        int ix[C_N], jx[C_N];
+        REAL_T x[C_N];
+
+        memset(ix, 0, C_N * sizeof(int));
+
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
@@ -359,9 +360,12 @@ void TYPED_FUNC(
     int *C_nnz = C->nnz;
     int *C_index = C->index;
 
+/*
     int ix[C->N], jx[C->N];
-    int aflag = 1;
     REAL_T x[C->N];
+*/
+
+    int aflag = 1;
 
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
@@ -381,9 +385,8 @@ void TYPED_FUNC(
     {
         aflag = 0;
 
-#pragma omp parallel \
+#pragma omp parallel for \
     default(none) \
-    shared(ix, jx, x) \
     shared(A_N, A_M, A_nnz, A_index, A_value) \
     shared(A_localRowMin, A_localRowMax) \
     shared(B_N, B_M, B_nnz, B_index, B_value) \
@@ -391,14 +394,14 @@ void TYPED_FUNC(
     shared(adjust_threshold, myRank) \
     reduction(+:aflag)
 
-    memset(ix, 0, C_N * sizeof(int));
-    memset(jx, 0, C_N * sizeof(int));
-    memset(x, 0.0, C_N * sizeof(REAL_T));
-
-#pragma omp for
         //for (int i = 0; i < A_N; i++)
         for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
+            int ix[C_N], jx[C_N];
+            REAL_T x[C_N];
+
+            memset(ix, 0, C_N * sizeof(int));
+
             int l = 0;
             for (int jp = 0; jp < A_nnz[i]; jp++)
             {

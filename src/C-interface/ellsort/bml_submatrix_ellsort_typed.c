@@ -373,7 +373,10 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
 
+/*
     int ix[ngroups];
+*/
+
     int hnode[A_N];
     int hend;
 
@@ -401,20 +404,18 @@ bml_matrix_ellsort_t *TYPED_FUNC(
         }
     }
 
-#pragma omp parallel \
+#pragma omp parallel for \
     default(none) \
     private(hend) \
-    shared(ix) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
     shared(B_nnz, B_index, B_value, B_N, B_M)
 
-    memset(ix, 0, sizeof(int) * ngroups);
-
-#pragma omp for
     for (int i = 0; i < B_N; i++)
     {
-        //memset(ix, 0, sizeof(int) * ngroups);
+        int ix[ngroups];
+        memset(ix, 0, sizeof(int) * ngroups);
+
         B_nnz[i] = 0;
         hend = hindex[i + 1] - 1;
         if (i == B_N - 1)
