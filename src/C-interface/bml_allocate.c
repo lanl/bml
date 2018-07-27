@@ -30,6 +30,26 @@ bml_allocated(
     return bml_get_N(A);
 }
 
+/** Allocate and zero a chunk of memory.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param size The size of the memory.
+ * \return A pointer to the allocated chunk.
+ */
+void *
+bml_allocate_memory(
+    const size_t size)
+{
+    void *ptr = calloc(1, size);
+    if (ptr == NULL)
+    {
+        LOG_ERROR("error allocating memory of size %d: %s\n", size,
+                  strerror(errno));
+    }
+    return ptr;
+}
+
 /** Allocate a chunk of memory without initialization.
  *
  * \ingroup allocate_group_C
@@ -47,52 +67,6 @@ bml_noinit_allocate_memory(
         LOG_ERROR("error allocating memory: %s\n", strerror(errno));
     }
     return ptr;
-}
-
-/** Allocate and zero a chunk of memory.
- *
- * \ingroup allocate_group_C
- *
- * \param size The size of the memory.
- * \return A pointer to the allocated chunk.
- */
-void *
-bml_allocate_memory(
-    const size_t size)
-{
-    if (1 == 1)
-        //  if (size>10000)
-    {
-        void *ptr = calloc(1, size);
-        if (ptr == NULL)
-        {
-            LOG_ERROR("error allocating memory of size %d: %s\n", size,
-                      strerror(errno));
-        }
-        return ptr;
-    }
-    else
-    {
-        void *ptr = malloc(size);
-#ifdef _OPENMP
-        int nt = omp_get_num_threads();
-#else
-        int nt = 1;
-#endif
-        int step = size / nt;
-        int maxi = step * (nt - 1);
-        int r = size - maxi;
-#pragma omp parallel for default(none) shared(ptr,maxi,step)
-        for (int i = 0; i < maxi; i = i + step)
-        {
-            memset(ptr + i, 0, step);
-        }
-        if (r > 0)
-        {
-            memset(ptr + maxi + step, 0, r);
-        }
-        return ptr;
-    }
 }
 
 /** Deallocate a chunk of memory.
@@ -120,24 +94,6 @@ bml_free_ptr(
     void **ptr)
 {
     free(*ptr);
-}
-
-/** Deallocate a domain.
- *
- * \ingroup allocate_group_C
- *
- * \param D The domain.
- */
-void
-bml_deallocate_domain(
-    bml_domain_t * D)
-{
-    bml_free_memory(D->localRowMin);
-    bml_free_memory(D->localRowMax);
-    bml_free_memory(D->localRowExtent);
-    bml_free_memory(D->localDispl);
-    bml_free_memory(D->localElements);
-    bml_free_memory(D);
 }
 
 /** Deallocate a matrix.
@@ -180,6 +136,24 @@ bml_deallocate(
     }
 }
 
+/** Deallocate a domain.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param D The domain.
+ */
+void
+bml_deallocate_domain(
+    bml_domain_t * D)
+{
+    bml_free_memory(D->localRowMin);
+    bml_free_memory(D->localRowMax);
+    bml_free_memory(D->localRowExtent);
+    bml_free_memory(D->localDispl);
+    bml_free_memory(D->localElements);
+    bml_free_memory(D);
+}
+
 /** Clear a matrix.
  *
  * \ingroup allocate_group_C
@@ -205,6 +179,56 @@ bml_clear(
             LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
             break;
     }
+}
+
+/** Allocate a matrix without initializing.
+ *
+ *  Note that the matrix \f$ A \f$ will be newly allocated. The
+ *  function does not check whether the matrix is already allocated.
+ *
+ *  \ingroup allocate_group_C
+ *
+ *  \param matrix_type The matrix type.
+ *  \param matrix_precision The precision of the matrix.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_t *
+bml_noinit_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const int N,
+    const int M,
+    const bml_distribution_mode_t distrib_mode)
+{
+    LOG_DEBUG("noinit matrix of size %d (or zero matrix for dense)\n",
+              N);
+    switch (matrix_type)
+    {
+        case dense:
+            return bml_zero_matrix_dense(matrix_precision,
+                                         N,
+                                         distrib_mode);
+            break;
+        case ellpack:
+            return bml_noinit_matrix_ellpack(matrix_precision,
+                                             N,
+                                             M,
+                                             distrib_mode);
+            break;
+        case ellsort:
+            return bml_noinit_matrix_ellsort(matrix_precision,
+                                             N,
+                                             M,
+                                             distrib_mode);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return NULL;
 }
 
 /** Allocate the zero matrix.
@@ -242,49 +266,6 @@ bml_zero_matrix(
         case ellsort:
             return bml_zero_matrix_ellsort(matrix_precision, N, M,
                                            distrib_mode);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
-            break;
-    }
-    return NULL;
-}
-
-/** Allocate a matrix without initializing.
- *
- *  Note that the matrix \f$ A \f$ will be newly allocated. The
- *  function does not check whether the matrix is already allocated.
- *
- *  \ingroup allocate_group_C
- *
- *  \param matrix_type The matrix type.
- *  \param matrix_precision The precision of the matrix.
- *  \param N The matrix size.
- *  \param M The number of non-zeroes per row.
- *  \param distrib_mode The distribution mode.
- *  \return The matrix.
- */
-bml_matrix_t *
-bml_noinit_matrix(
-    const bml_matrix_type_t matrix_type,
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
-{
-    LOG_DEBUG("noinit matrix of size %d (or zero matrix for dense)\n", N);
-    switch (matrix_type)
-    {
-        case dense:
-            return bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
-            break;
-        case ellpack:
-            return bml_noinit_matrix_ellpack(matrix_precision, N, M,
-                                             distrib_mode);
-            break;
-        case ellsort:
-            return bml_noinit_matrix_ellsort(matrix_precision, N, M,
-                                             distrib_mode);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -540,19 +521,6 @@ bml_default_domain(
             break;
     }
 
-/*
-    if (bml_printRank() == 1)
-    {
-      printf("Default Domain\n");
-      for (int i = 0; i < nRanks; i++)
-      {
-        printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
-          i, domain->localRowMin[i], domain->localRowMax[i],
-          domain->localRowExtent[i], domain->localElements[i],
-          domain->localDispl[i]);
-      }
-    }
-*/
     return domain;
 }
 
