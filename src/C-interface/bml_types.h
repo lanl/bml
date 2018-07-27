@@ -48,6 +48,17 @@ typedef void bml_vector_t;
 /** The matrix type. */
 typedef void bml_matrix_t;
 
+/** The matrix dimensions. */
+typedef struct
+{
+    /** The number of rows. */
+    int N_rows;
+    /** The number of columns. */
+    int N_cols;
+    /** The maximum number of non-zeros per row (for ellpack). */
+    int N_nz_max;
+} bml_matrix_dimension_t;
+
 /** The supported distribution modes. */
 typedef enum
 {
