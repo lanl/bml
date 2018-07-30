@@ -212,9 +212,7 @@ bml_noinit_rectangular_matrix(
             break;
         case ellpack:
             return bml_noinit_matrix_ellpack(matrix_precision,
-                                             matrix_dimension.N_rows,
-                                             matrix_dimension.N_rows,
-                                             distrib_mode);
+                                             matrix_dimension, distrib_mode);
             break;
         case ellsort:
             return bml_noinit_matrix_ellsort(matrix_precision,

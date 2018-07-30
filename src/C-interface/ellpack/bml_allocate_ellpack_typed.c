@@ -41,29 +41,27 @@ void TYPED_FUNC(
  *
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
- *  \param N The matrix size.
- *  \param M The number of non-zeroes per row.
+ *  \param matrix_dimension The matrix size.
  *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_noinit_matrix_ellpack) (
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         bml_noinit_allocate_memory(sizeof(bml_matrix_ellpack_t));
     A->matrix_type = ellpack;
     A->matrix_precision = MATRIX_PRECISION;
-    A->N = N;
-    A->M = M;
+    A->N = matrix_dimension.N_rows;
+    A->M = matrix_dimension.N_nz_max;
     A->distribution_mode = distrib_mode;
-    A->index = bml_noinit_allocate_memory(sizeof(int) * N * M);
-    A->nnz = bml_allocate_memory(sizeof(int) * N);
-    A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * N * M);
-    A->domain = bml_default_domain(N, M, distrib_mode);
-    A->domain2 = bml_default_domain(N, M, distrib_mode);
+    A->index = bml_noinit_allocate_memory(sizeof(int) * A->N * A->M);
+    A->nnz = bml_allocate_memory(sizeof(int) * A->N);
+    A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * A->N * A->M);
+    A->domain = bml_default_domain(A->N, A->M, distrib_mode);
+    A->domain2 = bml_default_domain(A->N, A->M, distrib_mode);
 
     return A;
 }

@@ -65,16 +65,14 @@ bml_clear_ellpack(
  *
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
- *  \param N The matrix size.
- *  \param M The number of non-zeroes per row.
+ *  \param matrix_dimension The matrix size.
  *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_ellpack_t *
 bml_noinit_matrix_ellpack(
     const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A = NULL;
@@ -82,16 +80,20 @@ bml_noinit_matrix_ellpack(
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_noinit_matrix_ellpack_single_real(N, M, distrib_mode);
+            A = bml_noinit_matrix_ellpack_single_real(matrix_dimension,
+                                                      distrib_mode);
             break;
         case double_real:
-            A = bml_noinit_matrix_ellpack_double_real(N, M, distrib_mode);
+            A = bml_noinit_matrix_ellpack_double_real(matrix_dimension,
+                                                      distrib_mode);
             break;
         case single_complex:
-            A = bml_noinit_matrix_ellpack_single_complex(N, M, distrib_mode);
+            A = bml_noinit_matrix_ellpack_single_complex(matrix_dimension,
+                                                         distrib_mode);
             break;
         case double_complex:
-            A = bml_noinit_matrix_ellpack_double_complex(N, M, distrib_mode);
+            A = bml_noinit_matrix_ellpack_double_complex(matrix_dimension,
+                                                         distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
