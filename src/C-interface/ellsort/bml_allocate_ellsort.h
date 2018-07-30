@@ -23,28 +23,23 @@ void bml_clear_ellsort_double_complex(
 
 bml_matrix_ellsort_t *bml_noinit_matrix_ellsort(
     const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_single_real(
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_double_real(
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_single_complex(
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_noinit_matrix_ellsort_double_complex(
-    const int N,
-    const int M,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_ellsort_t *bml_zero_matrix_ellsort(
