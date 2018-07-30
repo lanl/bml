@@ -207,8 +207,7 @@ bml_noinit_rectangular_matrix(
     {
         case dense:
             return bml_zero_matrix_dense(matrix_precision,
-                                         matrix_dimension.N_rows,
-                                         distrib_mode);
+                                         matrix_dimension, distrib_mode);
             break;
         case ellpack:
             return bml_noinit_matrix_ellpack(matrix_precision,
@@ -275,10 +274,12 @@ bml_zero_matrix(
     const bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("zero matrix of size %d\n", N);
+    bml_matrix_dimension_t matrix_dimension = { N, N, M };
     switch (matrix_type)
     {
         case dense:
-            return bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
+            return bml_zero_matrix_dense(matrix_precision, matrix_dimension,
+                                         distrib_mode);
             break;
         case ellpack:
             return bml_zero_matrix_ellpack(matrix_precision, N, M,

@@ -21,8 +21,10 @@ bml_matrix_dense_t *TYPED_FUNC(
         LOG_ERROR("A is not initialized\n");
     }
 
+    bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *B =
-        bml_zero_matrix_dense(matrix_precision, N, distrib_mode);
+        bml_zero_matrix_dense(matrix_precision, matrix_dimension,
+                              distrib_mode);
     REAL_T *Bij = (REAL_T *) B->matrix;
 
     for (int i = 0; i < N; i++)

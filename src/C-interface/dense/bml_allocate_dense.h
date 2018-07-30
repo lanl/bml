@@ -23,23 +23,23 @@ void bml_clear_dense_double_complex(
 
 bml_matrix_dense_t *bml_zero_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
-    const int N,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_dense_t *bml_zero_matrix_dense_single_real(
-    const int N,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_dense_t *bml_zero_matrix_dense_double_real(
-    const int N,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_dense_t *bml_zero_matrix_dense_single_complex(
-    const int N,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_dense_t *bml_zero_matrix_dense_double_complex(
-    const int N,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_dense_t *bml_banded_matrix_dense(

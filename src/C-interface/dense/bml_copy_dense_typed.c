@@ -22,8 +22,10 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_copy_dense_new) (
     const bml_matrix_dense_t * A)
 {
+    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
     bml_matrix_dense_t *B =
-        TYPED_FUNC(bml_zero_matrix_dense) (A->N, A->distribution_mode);
+        TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension,
+                                           A->distribution_mode);
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
