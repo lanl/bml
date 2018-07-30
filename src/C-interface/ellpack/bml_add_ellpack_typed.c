@@ -185,6 +185,10 @@ double TYPED_FUNC(
     REAL_T x[N];
     REAL_T y[N];
 
+    memset(ix, 0, N * sizeof(int));
+    memset(jx, 0, N * sizeof(int));
+    memset(x, 0.0, N * sizeof(REAL_T));
+    memset(y, 0.0, N * sizeof(REAL_T));
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)

@@ -80,7 +80,6 @@ void TYPED_FUNC(
     firstprivate(ix, jx, x)
 #endif
 
-
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {

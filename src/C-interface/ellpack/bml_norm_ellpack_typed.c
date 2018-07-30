@@ -136,6 +136,8 @@ double TYPED_FUNC(
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
 
+    int myRank = bml_getMyRank();
+
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     REAL_T y[A_N];
     int ix[A_N], jjb[A_N];
@@ -144,8 +146,6 @@ double TYPED_FUNC(
     memset(ix, 0, A_N * sizeof(int));
     memset(jjb, 0, A_N * sizeof(int));
 #endif
-
-    int myRank = bml_getMyRank();
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
