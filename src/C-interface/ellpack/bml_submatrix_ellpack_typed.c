@@ -395,9 +395,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
 
-/*
-  int ix[ngroups];
-*/
+#if !(defined(__IBMC_) || defined(__ibmxl__))
+    int ix[ngroups];
+
+    memset(ix, 0, sizeof(int) * ngroups);
+#endif
 
     int hnode[A_N];
     int hend;
@@ -428,18 +430,31 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
     }
 
+#if defined(__IBMC_) || defined(__ibmxl__)
 #pragma omp parallel for \
     default(none) \
     private(hend) \
     shared(hindex, hnode) \
     shared(A_nnz, A_index, A_value, A_N, A_M) \
     shared(B_nnz, B_index, B_value, B_N, B_M)
+#else
+#pragma omp parallel for \
+    default(none) \
+    private(hend) \
+    shared(hindex, hnode) \
+    shared(A_nnz, A_index, A_value, A_N, A_M) \
+    shared(B_nnz, B_index, B_value, B_N, B_M) \
+    firstprivate(ix)
+#endif
 
     for (int i = 0; i < B_N; i++)
     {
+
+#if defined(__IBMC_) || defined(__ibmxl__)
         int ix[ngroups];
    
         memset(ix, 0, sizeof(int) * ngroups);
+#endif
 
         ix[i] = i + 1;
         B_index[ROWMAJOR(i, 0, B_N, B_M)] = i;

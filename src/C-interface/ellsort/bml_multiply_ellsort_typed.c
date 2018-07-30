@@ -113,11 +113,6 @@ void *TYPED_FUNC(
     int *X2_index = X2->index;
     int *X2_nnz = X2->nnz;
 
-/*
-    int ix[X_N], jx[X_N];
-    REAL_T x[X_N];
-*/
-
     REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
     REAL_T *X_value = (REAL_T *) X->value;
@@ -127,27 +122,42 @@ void *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-/*
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[X_N], jx[X_N];
+    REAL_T x[X_N];
+
     memset(ix, 0, X_N * sizeof(int));
     memset(jx, 0, X_N * sizeof(int));
     memset(x, 0.0, X_N * sizeof(REAL_T));
-*/
+#endif
 
-#pragma omp parallel for                                \
-  default(none)                                         \
-  firstprivate(ix, jx, x)                               \
-  shared(X_N, X_M, X_index, X_nnz, X_value, myRank)     \
-  shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)        \
-  shared(X_localRowMin, X_localRowMax)                  \
-  reduction(+: traceX, traceX2)
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel \
+    default(none) \
+    shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
+    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
+    shared(X_localRowMin, X_localRowMax) \
+    reduction(+: traceX, traceX2)
+#else
+#pragma omp parallel \
+    default(none) \
+    shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
+    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
+    shared(X_localRowMin, X_localRowMax) \
+    firstprivate(ix, jx, x) \
+    reduction(+: traceX, traceX2)
+#endif
 
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
     for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
     {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
         int ix[X_N], jx[X_N];
         REAL_T x[X_N];
 
         memset(ix, 0, X_N * sizeof(int));
+#endif
 
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
@@ -246,39 +256,49 @@ void TYPED_FUNC(
     int *C_nnz = C->nnz;
     int *C_index = C->index;
 
-/*
-    int ix[C->N], jx[C->N];
-    REAL_T x[C->N];
-*/
-
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *B_value = (REAL_T *) B->value;
     REAL_T *C_value = (REAL_T *) C->value;
 
     int myRank = bml_getMyRank();
 
-/*
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[C->N], jx[C->N];
+    REAL_T x[C->N];
+
     memset(ix, 0, C->N * sizeof(int));
     memset(jx, 0, C->N * sizeof(int));
     memset(x, 0.0, C->N * sizeof(REAL_T));
-*/
+#endif
 
-#pragma omp parallel for                        \
-  default(none)                                 \
-  firstprivate(ix, jx, x)                       \
-  shared(A_N, A_M, A_nnz, A_index, A_value)     \
-  shared(A_localRowMin, A_localRowMax)          \
-  shared(B_N, B_M, B_nnz, B_index, B_value)     \
-  shared(C_N, C_M, C_nnz, C_index, C_value)     \
-  shared(myRank)
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for \
+    default(none) \
+    shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_N, B_M, B_nnz, B_index, B_value) \
+    shared(C_N, C_M, C_nnz, C_index, C_value) \
+    shared(myRank)
+#else
+#pragma omp parallel for \
+    default(none) \
+    shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_N, B_M, B_nnz, B_index, B_value) \
+    shared(C_N, C_M, C_nnz, C_index, C_value) \
+    shared(myRank) \
+    firstprivate(ix, jx, x)
+#endif
 
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+#if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
         REAL_T x[C_N];
 
         memset(ix, 0, C_N * sizeof(int));
+#endif
 
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
@@ -368,11 +388,6 @@ void TYPED_FUNC(
     int *C_nnz = C->nnz;
     int *C_index = C->index;
 
-/*
-    int ix[C->N], jx[C->N];
-    REAL_T x[C->N];
-*/
-
     int aflag = 1;
 
     REAL_T *A_value = (REAL_T *) A->value;
@@ -383,33 +398,50 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-/*
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[C->N], jx[C->N];
+    REAL_T x[C->N];
+
     memset(ix, 0, C->N * sizeof(int));
     memset(jx, 0, C->N * sizeof(int));
     memset(x, 0.0, C->N * sizeof(REAL_T));
-*/
+#endif
 
     while (aflag > 0)
     {
         aflag = 0;
 
-#pragma omp parallel for                        \
-  default(none)                                 \
-  firstprivate(ix, jx, x)                       \
-  shared(A_N, A_M, A_nnz, A_index, A_value)     \
-  shared(A_localRowMin, A_localRowMax)          \
-  shared(B_N, B_M, B_nnz, B_index, B_value)     \
-  shared(C_N, C_M, C_nnz, C_index, C_value)     \
-  shared(adjust_threshold, myRank)              \
-  reduction(+:aflag)
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for \
+    default(none) \
+    shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_N, B_M, B_nnz, B_index, B_value) \
+    shared(C_N, C_M, C_nnz, C_index, C_value) \
+    shared(adjust_threshold, myRank) \
+    reduction(+:aflag)
+#else
+#pragma omp parallel for \
+    default(none) \
+    shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_N, B_M, B_nnz, B_index, B_value) \
+    shared(C_N, C_M, C_nnz, C_index, C_value) \
+    shared(adjust_threshold, myRank) \
+    firstprivate(ix, jx, x) \
+    reduction(+:aflag)
+#endif
 
         //for (int i = 0; i < A_N; i++)
         for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
         {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
             int ix[C_N], jx[C_N];
             REAL_T x[C_N];
 
             memset(ix, 0, C_N * sizeof(int));
+#endif
 
             int l = 0;
             for (int jp = 0; jp < A_nnz[i]; jp++)
