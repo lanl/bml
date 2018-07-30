@@ -40,7 +40,7 @@ else()
 endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wno-unknown-pragmas --coverage -save-temps -std=c99)
+  -Wunused-variable -Wno-unknown-pragmas --coverage -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
@@ -459,6 +459,7 @@ if(DOXYGEN_FOUND)
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(documentation/Doxyfile.in Doxyfile)
   add_custom_target(docs
+    COMMAND rm -rvf ${CMAKE_SOURCE_DIR}/docs/API/*
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile)
 else()
   add_custom_target(docs)

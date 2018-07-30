@@ -41,11 +41,6 @@ void TYPED_FUNC(
     int A_M = A->M;
     int B_M = B->M;
 
-/*
-    int ix[N], jx[N];
-    REAL_T x[N];
-*/
-
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int *A_localRowMin = A->domain->localRowMin;
@@ -59,26 +54,43 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-/*
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[N], jx[N];
+    REAL_T x[N];
+
     memset(ix, 0, N * sizeof(int));
     memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
-*/
+#endif
 
+#if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
     default(none) \
     shared(N, A_M, B_M, myRank) \
     shared(A_index, A_value, A_nnz) \
     shared(A_localRowMin, A_localRowMax) \
     shared(B_index, B_value, B_nnz)
+#else
+#pragma omp parallel for \
+    default(none) \
+    shared(N, A_M, B_M, myRank) \
+    shared(A_index, A_value, A_nnz) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_index, B_value, B_nnz) \
+    firstprivate(ix, jx, x)
+#endif
+
 
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
         int ix[N], jx[N];
         REAL_T x[N];
 
         memset(ix, 0, N * sizeof(int));
+#endif
 
         int l = 0;
         if (alpha > (double) 0.0 || alpha < (double) 0.0)
@@ -155,12 +167,6 @@ double TYPED_FUNC(
     int A_M = A->M;
     int B_M = B->M;
 
-/*
-    int ix[N], jx[N];
-    REAL_T x[N];
-    REAL_T y[N];
-*/
-
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int *A_localRowMin = A->domain->localRowMin;
@@ -176,13 +182,18 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-/*
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[N], jx[N];
+    REAL_T x[N];
+    REAL_T y[N];
+
     memset(ix, 0, N * sizeof(int));
     memset(jx, 0, N * sizeof(int));
     memset(x, 0.0, N * sizeof(REAL_T));
     memset(y, 0.0, N * sizeof(REAL_T));
-*/
+#endif
 
+#if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
     default(none) \
     shared(N, A_M, B_M, myRank) \
@@ -190,15 +201,28 @@ double TYPED_FUNC(
     shared(A_localRowMin, A_localRowMax) \
     shared(B_index, B_value, B_nnz) \
     reduction(+:trnorm)
+#else
+#pragma omp parallel for \
+    default(none) \
+    shared(N, A_M, B_M, myRank) \
+    shared(A_index, A_value, A_nnz) \
+    shared(A_localRowMin, A_localRowMax) \
+    shared(B_index, B_value, B_nnz) \
+    firstprivate(ix, jx, x, y) \
+    reduction(+:trnorm)
+#endif
 
     //for (int i = 0; i < N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
         int ix[N], jx[N];
         REAL_T x[N];
         REAL_T y[N];
 
         memset(ix, 0, N * sizeof(int));
+#endif
 
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
