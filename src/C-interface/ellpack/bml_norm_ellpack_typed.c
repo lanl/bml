@@ -154,6 +154,7 @@ double TYPED_FUNC(
     shared(A_N, A_M, A_index, A_nnz, A_value) \
     shared(A_localRowMin, A_localRowMax, myRank) \
     shared(B_N, B_M, B_index, B_nnz, B_value) \
+    firstprivate(ix, jjb, y) \
     reduction(+:sum)
 #else
 #pragma omp parallel for \
