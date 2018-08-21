@@ -8,22 +8,6 @@ addons:
     update: true
     sources:
       - ubuntu-toolchain-r-test
-    packages:
-      - cmake
-      - cmake-data
-      - doxygen
-      - g++-4.7
-      - g++-6
-      - gcc-4.7
-      - gcc-6
-      - gfortran
-      - gfortran-4.7
-      - gfortran-6
-      - indent
-      - libblas-dev
-      - liblapack-dev
-      - texlive
-      - valgrind
 
 jobs:
   include:
@@ -33,21 +17,46 @@ jobs:
         - bundle install
         - bundle exec danger
     - stage: test
-      script: env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script: env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script: env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script: env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
+      script:
+        - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
+    - script:
+        - sudo apt-get install cmake cmake-data gcc-6 g++-6 gfortran-6 libblas-dev liblapack-dev valgrind
+        - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - stage: coverage
       script:
         - pip install cpp-coveralls codecov
+        - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
         - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes  COMMAND=testing
       after_success:
         - codecov --gcov-exec ${GCOV}
