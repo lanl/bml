@@ -64,7 +64,7 @@ jobs:
     - stage: coverage
       script:
         - pip install cpp-coveralls codecov
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" /.install_packages.sh
+        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
         - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
       after_success:
         - codecov --gcov-exec ${GCOV}
