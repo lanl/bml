@@ -25,53 +25,41 @@ jobs:
         - bundle exec danger
     - stage: test-simple
       script:
-        - export packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
         - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
     - stage: test-full
       script:
-        - export packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
         - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
         - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-4.7 g++-4.7 gfortran-4.7" ./install_packages.sh
         - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=no  BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=yes ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
     - script:
-        - export packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6"
-        - for i in $(seq 5); do sudo apt-get install ${packages}; if (( $? == 0 )); then break; else exit 1; fi; done
+        - env packages="${DEVEL_PACKAGES} gcc-6 g++-6 gfortran-6" ./install_packages.sh
         - env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - stage: coverage
       script:
