@@ -27,6 +27,11 @@ env: OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug VERBOSE_MAKEFILE=yes PARALLEL_TEST
 
 jobs:
   include:
+    - stage: linter
+      script:
+        - pip install proselint
+        - bundle install
+        - bundle exec danger
     - stage: test
       script: CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
     - script: CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
