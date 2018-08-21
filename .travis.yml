@@ -16,11 +16,12 @@ jobs:
         - pip install proselint
         - bundle install
         - bundle exec danger
-    - stage: test
+    - stage: test-simple
       script:
         - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
         - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
-    - script:
+    - stage: test-full
+      script:
         - sudo apt-get install cmake cmake-data gcc-4.7 g++-4.7 gfortran-4.7 libblas-dev liblapack-dev valgrind
         - env CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - script:
