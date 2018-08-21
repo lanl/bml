@@ -1,28 +1,6 @@
 language: python
 rvm: 2.0
 
-addons:
-  apt:
-    update: true
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - cmake
-      - cmake-data
-      - doxygen
-      - g++-4.7
-      - g++-6
-      - gcc-4.7
-      - gcc-6
-      - gfortran
-      - gfortran-4.7
-      - gfortran-6
-      - indent
-      - libblas-dev
-      - liblapack-dev
-      - texlive
-      - valgrind
-
 env: OMP_NUM_THREADS=4 CMAKE_BUILD_TYPE=Debug VERBOSE_MAKEFILE=yes PARALLEL_TEST_JOBS=2
 
 jobs:
@@ -33,6 +11,27 @@ jobs:
         - bundle install
         - bundle exec danger
     - stage: test
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - cmake
+            - cmake-data
+            - doxygen
+            - g++-4.7
+            - g++-6
+            - gcc-4.7
+            - gcc-6
+            - gfortran
+            - gfortran-4.7
+            - gfortran-6
+            - indent
+            - libblas-dev
+            - liblapack-dev
+            - texlive
+            - valgrind
       script: CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=no  ./build.sh testing
     - script: CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - script: CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no  ./build.sh testing
