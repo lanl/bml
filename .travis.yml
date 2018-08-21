@@ -19,8 +19,8 @@ jobs:
   include:
     - stage: linter
       script:
-        - pip install proselint
         - bundle install
+        - pip install proselint
         - bundle exec danger
     - stage: test-simple
       script:
