@@ -47,8 +47,7 @@ jobs:
     - script: env CC=gcc-6   CXX=g++-6   FC=gfortran-6   GCOV=gcov-6   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh testing
     - stage: coverage
       script:
-        - pip install cpp-coveralls
-        - pip install codecov
+        - pip install cpp-coveralls codecov
         - CC=gcc-4.7 CXX=g++-4.7 FC=gfortran-4.7 GCOV=gcov-4.7 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes  COMMAND=testing
       after_success:
         - codecov --gcov-exec ${GCOV}
