@@ -16,6 +16,14 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
 
+stages:
+  - linter
+  - test-simple
+  - test-full
+  - coverage
+  - name: docs
+    if: branch = master
+
 jobs:
   include:
     - stage: linter
