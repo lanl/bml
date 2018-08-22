@@ -7,6 +7,9 @@
 
 #include <stdlib.h>
 
+int bml_allocated(
+    const bml_matrix_t * A);
+
 void *bml_allocate_memory(
     const size_t s);
 
@@ -22,11 +25,17 @@ void bml_free_ptr(
 void bml_deallocate(
     bml_matrix_t ** A);
 
+void bml_deallocate_domain(
+    bml_domain_t * D);
+
 void bml_clear(
     bml_matrix_t * A);
 
-int bml_allocated(
-    const bml_matrix_t * A);
+bml_matrix_t *bml_noinit_rectangular_matrix(
+    const bml_matrix_type_t matrix_type,
+    const bml_matrix_precision_t matrix_precision,
+    const bml_matrix_dimension_t matrix_dimension,
+    const bml_distribution_mode_t distrib_mode);
 
 bml_matrix_t *bml_noinit_matrix(
     const bml_matrix_type_t matrix_type,
@@ -42,14 +51,14 @@ bml_matrix_t *bml_zero_matrix(
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-bml_matrix_t *bml_banded_matrix(
+bml_matrix_t *bml_random_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
     const int N,
     const int M,
     const bml_distribution_mode_t distrib_mode);
 
-bml_matrix_t *bml_random_matrix(
+bml_matrix_t *bml_banded_matrix(
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
     const int N,
@@ -62,9 +71,6 @@ bml_matrix_t *bml_identity_matrix(
     const int N,
     const int M,
     const bml_distribution_mode_t distrib_mode);
-
-void bml_deallocate_domain(
-    bml_domain_t * D);
 
 bml_domain_t *bml_default_domain(
     const int N,

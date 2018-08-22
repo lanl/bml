@@ -61,29 +61,33 @@ bml_clear_dense(
  *
  *  \param matrix_precision The precision of the matrix. The default
  *  is double precision.
- *  \param N The matrix size.
+ *  \param matrix_dimension The matrix size.
  *  \param distrib_mode The distribution mode.
  *  \return The matrix.
  */
 bml_matrix_dense_t *
 bml_zero_matrix_dense(
     const bml_matrix_precision_t matrix_precision,
-    const int N,
+    const bml_matrix_dimension_t matrix_dimension,
     const bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
         case single_real:
-            return bml_zero_matrix_dense_single_real(N, distrib_mode);
+            return bml_zero_matrix_dense_single_real(matrix_dimension,
+                                                     distrib_mode);
             break;
         case double_real:
-            return bml_zero_matrix_dense_double_real(N, distrib_mode);
+            return bml_zero_matrix_dense_double_real(matrix_dimension,
+                                                     distrib_mode);
             break;
         case single_complex:
-            return bml_zero_matrix_dense_single_complex(N, distrib_mode);
+            return bml_zero_matrix_dense_single_complex(matrix_dimension,
+                                                        distrib_mode);
             break;
         case double_complex:
-            return bml_zero_matrix_dense_double_complex(N, distrib_mode);
+            return bml_zero_matrix_dense_double_complex(matrix_dimension,
+                                                        distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision (%d)\n", matrix_precision);

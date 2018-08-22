@@ -377,8 +377,9 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int hnode[A_N];
     int hend;
 
+    bml_matrix_dimension_t matrix_dimension = { ngroups, ngroups, ngroups };
     bml_matrix_ellsort_t *B =
-        TYPED_FUNC(bml_noinit_matrix_ellsort) (ngroups, ngroups,
+        TYPED_FUNC(bml_noinit_matrix_ellsort) (matrix_dimension,
                                                A->distribution_mode);
 
     int B_N = B->N;

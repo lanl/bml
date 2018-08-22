@@ -28,11 +28,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     bml_transpose_new_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
-    int N = A->N;
-    int M = A->M;
+    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
 
     bml_matrix_ellpack_t *B =
-        TYPED_FUNC(bml_noinit_matrix_ellpack) (N, M, A->distribution_mode);
+        TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
+                                               A->distribution_mode);
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
@@ -47,54 +47,38 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int myRank = bml_getMyRank();
 
     // Transpose all elements
-
-/*
-#pragma omp parallel for default(none) shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz)
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < A_nnz[i]; j++)
-        {
-            int trow = A_index[ROWMAJOR(i, j, N, M)];
-	    int colcnt = B_nnz[trow];
-#pragma omp critical
-            {
-                B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
-                B_value[ROWMAJOR(trow, colcnt, N, M)] =
-                    A_value[ROWMAJOR(i, j, N, M)];
-                B_nnz[trow]++;
-            }
-        }
-    }
-
-    return B;
-
-
-*/
-    // Transpose all elements
 #ifdef _OPENMP
-    omp_lock_t *row_lock = (omp_lock_t *) malloc(sizeof(omp_lock_t) * N);
+    omp_lock_t *row_lock =
+        (omp_lock_t *) malloc(sizeof(omp_lock_t) * matrix_dimension.N_rows);
 
 #pragma omp parallel for
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < matrix_dimension.N_rows; i++)
     {
         omp_init_lock(&row_lock[i]);
     }
 #endif
 
 #pragma omp parallel for default(none)                                  \
-  shared(N, M, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
-    for (int i = 0; i < N; i++)
+  shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
+    for (int i = 0; i < matrix_dimension.N_rows; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            int trow = A_index[ROWMAJOR(i, j, N, M)];
+            int trow = A_index[ROWMAJOR(i, j, matrix_dimension.N_rows,
+                                        matrix_dimension.N_nz_max)];
 #ifdef _OPENMP
             omp_set_lock(&row_lock[trow]);
 #endif
             int colcnt = B_nnz[trow];
-            B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
-            B_value[ROWMAJOR(trow, colcnt, N, M)] =
-                A_value[ROWMAJOR(i, j, N, M)];
+            B_index[ROWMAJOR
+                    (trow, colcnt, matrix_dimension.N_rows,
+                     matrix_dimension.N_nz_max)] = i;
+            B_value[ROWMAJOR
+                    (trow, colcnt, matrix_dimension.N_rows,
+                     matrix_dimension.N_nz_max)] =
+                A_value[ROWMAJOR
+                        (i, j, matrix_dimension.N_rows,
+                         matrix_dimension.N_nz_max)];
             B_nnz[trow]++;
 #ifdef _OPENMP
             omp_unset_lock(&row_lock[trow]);
