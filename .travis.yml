@@ -27,7 +27,7 @@ jobs:
         - env BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh check_indent
     - stage: docs
       script:
-        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
+        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8 doxygen texlive" ./install_packages.sh
         - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BML_OPENMP=no VERBOSE_MAKEFILE=yes ./build.sh docs
     - stage: test-simple
       script:
