@@ -56,12 +56,12 @@ void TYPED_FUNC(
     const double beta)
 {
 #ifdef BML_USE_MAGMA
-    MAGMA_T alpha__ = MAGMACOMPLEX(MAKE) (alpha, 0.);
-    MAGMA_T beta__ = MAGMACOMPLEX(MAKE) (beta, 0.);
+    MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
+    MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
 
     MAGMA(gemm) (MagmaNoTrans, MagmaNoTrans,
-                 A->N, A->N, A->N, alpha__, B->matrix, B->ld,
-                 A->matrix, A->ld, beta__, C->matrix, C->ld, C->queue);
+                 A->N, A->N, A->N, alpha_, B->matrix, B->ld,
+                 A->matrix, A->ld, beta_, C->matrix, C->ld, C->queue);
     magma_queue_sync(C->queue);
 #else
     REAL_T alpha_ = (REAL_T) alpha;

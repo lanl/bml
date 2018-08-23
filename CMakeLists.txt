@@ -234,7 +234,6 @@ if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
   if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
     message(STATUS "Look for MKL in ${MKLROOT}")
-    set(MKLDIR "${MKLROOT}/lib/intel64")
     if(BML_OPENMP)
       set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
         -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread

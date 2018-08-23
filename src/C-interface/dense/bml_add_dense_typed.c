@@ -52,10 +52,10 @@ void TYPED_FUNC(
 
 #ifdef BML_USE_MAGMA
     nElems = B->N * B->ld;
-    MAGMA_T alpha__ = MAGMACOMPLEX(MAKE) (alpha, 0.);
-    MAGMA_T beta__ = MAGMACOMPLEX(MAKE) (beta, 0.);
-    MAGMA(scal) (nElems, alpha__, A->matrix, inc, A->queue);
-    MAGMA(axpy) (nElems, beta__, B->matrix, inc,
+    MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
+    MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
+    MAGMA(scal) (nElems, alpha_, A->matrix, inc, A->queue);
+    MAGMA(axpy) (nElems, beta_, B->matrix, inc,
                  A->matrix + startIndex, inc, A->queue);
 #else
     REAL_T alpha_ = alpha;
