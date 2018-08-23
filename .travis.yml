@@ -9,8 +9,8 @@ env:
     - VERBOSE_MAKEFILE=yes
     - PARALLEL_TEST_JOBS=2
     - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev"
-    # COVERTY_SCAN_TOKEN
-    - secure: "tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g="
+    # COVERITY_SCAN_TOKEN
+    - secure: "fwGBveBukwWDaaGIqGV3CkOVk1ZdIEaHuVp+B1WvzpyZ2/4zYxyOe0bSgCOA8usWYeuYSsvhNU7IjTiiEyU/tpRYreHjO70dnfPyNW9SREx791RLaMolZz4QrXZINsbDx/A0mMOXQGttOEtlfZauJ+1l4WvntlYumC/TbMWiwWQ6Rzm7lfVjWODclG3K9yiV4EvhCGOo+TPA0qCBonOP6DiP5OLtCLANcXP7gV1PPHk2fYKbBS/jD9i0o2vX8rSt8bZI1cMf/x9bgz11h2s0TnIG2RHHScKaRl7c57cLj9eX9DfcMYrBLjuqzdApdZ8n2sfRGMwl+I5+aNQAXkgphquewdHctMgh6J19hYHouGntxgOki5qVzJQ32RvtHGGLX1+0cSCDQfsxLNYsUuC+3Z5wWoppy+wHYgwCQAtxazFtYguj0F0lDsViSp4DR9NCykvt2pDzhL9ZVJ6M8L9Q3JGoG/QQ3c3CefODKaFXqkFZ97pfMvvs/dHkxeSrW7Znqb9MkBU6h0Q86s8pUzoJGHsJ/LidCFneAJbvRR1SpHBxZ3BHOe15oJtcQsA/czRd4kic6UajlYGbV9/7FjM9KOVTduxuwG6RdVxOd2M6dnV10SZVtVR7b7b9TfXntiUWNkpRvFTGiHBQuywI42Ix+bMbDr3VJxcg7VPXJ9sO5uQ="
 
 addons:
   apt:
@@ -24,21 +24,21 @@ addons:
         notification_email: nicolasbock@gmail.com
         build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
         build_command: "make"
-        branch_pattern: coverty_scan
+        branch_pattern: coverity_scan
 
 stages:
   - name: linter
-    if: branch != coverty_scan
+    if: branch != coverity_scan
   - name: test-simple
-    if: branch != coverty_scan
+    if: branch != coverity_scan
   - name: test-full
-    if: branch != coverty_scan
+    if: branch != coverity_scan
   - name: coverage
-    if: branch != coverty_scan
+    if: branch != coverity_scan
   - name: docs
     if: branch = master
-  - name: coverty
-    if: branch = coverty_scan
+  - name: coverity
+    if: branch = coverity_scan
 
 jobs:
   include:
@@ -99,6 +99,9 @@ jobs:
       after_success:
         - codecov --gcov-exec ${GCOV}
         - coveralls
-    - stage: coverty
+    - stage: coverity
       before_install:
         - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+      script:
+        - env packages="${DEVEL_PACKAGES} gcc-8 g++-8 gfortran-8" ./install_packages.sh
+        - env CC=gcc-8 CXX=g++-8 FC=gfortran-8 GCOV=gcov-8 BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes ./build.sh compile
