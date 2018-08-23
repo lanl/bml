@@ -27,10 +27,14 @@ addons:
         branch_pattern: coverty_scan
 
 stages:
-  - linter
-  - test-simple
-  - test-full
-  - coverage
+  - name: linter
+    if: branch != coverty_scan
+  - name: test-simple
+    if: branch != coverty_scan
+  - name: test-full
+    if: branch != coverty_scan
+  - name: coverage
+    if: branch != coverty_scan
   - name: docs
     if: branch = master
   - name: coverty
