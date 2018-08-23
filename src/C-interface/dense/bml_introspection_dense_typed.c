@@ -1,6 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
 #include "bml_introspection_dense.h"
+#include "bml_export_dense.h"
+#include "bml_export.h"
 
 #include <assert.h>
 #include <complex.h>
@@ -78,7 +80,11 @@ double TYPED_FUNC(
     const double threshold)
 {
 
+#ifdef BML_USE_MAGMA
+    REAL_T *A_matrix = bml_export_to_dense(A, dense_row_major);
+#else
     REAL_T *A_matrix = A->matrix;
+#endif
     int nnzs = 0;
     int N = A->N;
     double sparsity;
@@ -94,7 +100,9 @@ double TYPED_FUNC(
             }
         }
     }
-
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+#endif
     sparsity = (1.0 - (double) nnzs / ((double) (N * N)));
 
     return sparsity;

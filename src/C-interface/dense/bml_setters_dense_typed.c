@@ -1,3 +1,7 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../bml_introspection.h"
@@ -40,11 +44,16 @@ void TYPED_FUNC(
         LOG_ERROR("A is not intialized\n");
     }
 
+#ifdef BML_USE_MAGMA
+    MAGMA(setvector) (N, (MAGMA_T *) row, 1,
+                      (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+#else
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
         A_matrix[ROWMAJOR(i, j, N, N)] = row[j];
     }
+#endif
 }
 
 void TYPED_FUNC(
@@ -59,9 +68,20 @@ void TYPED_FUNC(
         LOG_ERROR("A is not intialized\n");
     }
 
+#ifdef BML_USE_MAGMA
+    MAGMA_T *diagonal_ = malloc(N * sizeof(MAGMA_T));
+    for (int j = 0; j < N; j++)
+    {
+        diagonal_[j] = MAGMACOMPLEX(MAKE) (diagonal[j], 0);
+    }
+    MAGMA(setvector) (N, diagonal_, 1, (MAGMA_T *) A->matrix, A->ld + 1,
+                      A->queue);
+    free(diagonal_);
+#else
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
     {
         A_matrix[ROWMAJOR(j, j, N, N)] = diagonal[j];
     }
+#endif
 }

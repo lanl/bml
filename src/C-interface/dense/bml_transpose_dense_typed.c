@@ -1,3 +1,7 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../macros.h"
 #include "../../typed.h"
 #include "bml_allocate.h"
@@ -42,6 +46,10 @@ bml_matrix_dense_t *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+#ifdef BML_USE_MAGMA
+    MAGMABLAS(transpose) (A->N, A->N, A->matrix, A->ld,
+                          B->matrix, B->ld, A->queue);
+#else
 #pragma omp parallel for default(none)          \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)
@@ -53,6 +61,7 @@ bml_matrix_dense_t *TYPED_FUNC(
             B_matrix[ROWMAJOR(i, j, N, N)] = A_matrix[ROWMAJOR(j, i, N, N)];
         }
     }
+#endif
     return B;
 }
 
@@ -69,6 +78,9 @@ void TYPED_FUNC(
 {
     int N = A->N;
 
+#ifdef BML_USE_MAGMA
+    MAGMABLAS(transpose_inplace) (A->N, A->matrix, A->ld, A->queue);
+#else
     REAL_T *A_matrix = A->matrix;
     REAL_T tmp;
 
@@ -88,4 +100,5 @@ void TYPED_FUNC(
             }
         }
     }
+#endif
 }

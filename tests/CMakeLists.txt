@@ -66,6 +66,7 @@ add_executable(bml-test
   trace_matrix.c
   transpose_matrix.c)
 
+message(STATUS "tests: LINK_LIBRARIES=${LINK_LIBRARIES}")
 target_link_libraries(bml-test bmltests bml ${LINK_LIBRARIES})
 set_target_properties(bml-test
   PROPERTIES

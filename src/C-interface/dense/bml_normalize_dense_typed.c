@@ -9,6 +9,7 @@
 #include "bml_normalize_dense.h"
 #include "bml_scale_dense.h"
 #include "bml_add_dense.h"
+#include "bml_getters_dense.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>
@@ -83,11 +84,19 @@ void *TYPED_FUNC(
 
         for (int j = 0; j < N; j++)
         {
+#ifdef BML_USE_MAGMA
+            absham = ABS(*((REAL_T *) (bml_get_dense(A, i, j))));
+#else
             absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
+#endif
             radius += (double) absham;
         }
 
+#ifdef BML_USE_MAGMA
+        dvalue = *((REAL_T *) (bml_get_dense(A, i, i)));
+#else
         dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
+#endif
 
         radius -= ABS(dvalue);
 

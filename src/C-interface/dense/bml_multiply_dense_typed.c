@@ -1,3 +1,7 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../internal-blas/bml_gemm.h"
 #include "../bml_logger.h"
 #include "../../typed.h"
@@ -51,11 +55,21 @@ void TYPED_FUNC(
     const double alpha,
     const double beta)
 {
+#ifdef BML_USE_MAGMA
+    MAGMA_T alpha__ = MAGMACOMPLEX(MAKE) (alpha, 0.);
+    MAGMA_T beta__ = MAGMACOMPLEX(MAKE) (beta, 0.);
+
+    MAGMA(gemm) (MagmaNoTrans, MagmaNoTrans,
+                 A->N, A->N, A->N, alpha__, B->matrix, B->ld,
+                 A->matrix, A->ld, beta__, C->matrix, C->ld, C->queue);
+    magma_queue_sync(C->queue);
+#else
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
 
     TYPED_FUNC(bml_gemm) ("N", "N", &A->N, &A->N, &A->N, &alpha_, B->matrix,
                           &A->N, A->matrix, &A->N, &beta_, C->matrix, &A->N);
+#endif
 }
 
 /** Matrix multiply.

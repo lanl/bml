@@ -5,6 +5,10 @@
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 

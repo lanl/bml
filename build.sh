@@ -61,6 +61,8 @@ EOF
     echo "EXTRA_LINK_FLAGS       Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
     echo "BML_GPU                {yes,no}                    (default is ${BML_GPU})"
     echo "GPU_ARCH               GPU architecture            (default is ${GPU_ARCH})"
+    echo "BML_CUDA               Build with CUDA             (default is ${BML_CUDA})"
+    echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
 }
 
@@ -84,6 +86,8 @@ set_defaults() {
     : ${EXTRA_LINK_FLAGS:=}
     : ${BML_GPU:=no}
     : ${GPU_ARCH:=}
+    : ${BML_CUDA:=no}
+    : ${BML_MAGMA:=no}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
 }
 
@@ -149,6 +153,8 @@ configure() {
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
         -DBML_GPU="${BML_GPU}" \
         -DGPU_ARCH="${GPU_ARCH}" \
+        -DBML_CUDA="${BML_CUDA}" \
+        -DBML_MAGMA="${BML_MAGMA}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         | tee -a "${LOG_FILE}"
     check_pipe_error

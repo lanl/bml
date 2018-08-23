@@ -15,9 +15,17 @@ void
 bml_deallocate_dense(
     bml_matrix_dense_t * A)
 {
+#ifdef BML_USE_MAGMA
+    magma_queue_destroy(A->queue);
+#endif
     bml_deallocate_domain(A->domain);
     bml_deallocate_domain(A->domain2);
+#ifdef BML_USE_MAGMA
+    magma_int_t ret = magma_free(A->matrix);
+    assert(ret == MAGMA_SUCCESS);
+#else
     bml_free_memory(A->matrix);
+#endif
     bml_free_memory(A);
 }
 

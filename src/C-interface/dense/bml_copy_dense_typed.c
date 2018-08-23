@@ -7,9 +7,14 @@
 #include "bml_copy_dense.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /** Copy a dense matrix - result in new matrix.
  *
@@ -26,7 +31,12 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *B =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension,
                                            A->distribution_mode);
+#ifdef BML_USE_MAGMA
+    MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
+                       B->matrix, B->ld, A->queue);
+#else
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
+#endif
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
     return B;
@@ -44,7 +54,12 @@ void TYPED_FUNC(
     const bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
+#ifdef BML_USE_MAGMA
+    MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
+                       B->matrix, B->ld, A->queue);
+#else
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
+#endif
     if (A->distribution_mode == B->distribution_mode)
     {
         bml_copy_domain(A->domain, B->domain);
