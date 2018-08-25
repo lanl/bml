@@ -1,9 +1,14 @@
-#include "../../macros.h"
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../typed.h"
+#include "../../macros.h"
 #include "../bml_logger.h"
 #include "../bml_utilities.h"
 #include "bml_types_dense.h"
 #include "bml_utilities_dense.h"
+#include "bml_export_dense.h"
 
 #include <complex.h>
 #include <math.h>
@@ -39,8 +44,6 @@ void TYPED_FUNC(
     {
         LOG_ERROR("read error\n");
     }
-
-    int symflag = strcmp(header5, "symmetric");
 
     // Read N, N, # of non-zeroes
     if (fscanf(hFile, "%d %d %d", &hdimx, &hdimx, &nnz) < 3)
@@ -78,12 +81,6 @@ void TYPED_FUNC(
         irow--;
         icol--;
         A_value[ROWMAJOR(irow, icol, N, N)] = val;
-
-        // Set symmetric value if necessary
-        if (symflag == 0 && icol != irow)
-        {
-            A_value[ROWMAJOR(icol, irow, N, N)] = val;
-        }
     }
 
     fclose(hFile);
@@ -127,4 +124,20 @@ void TYPED_FUNC(
     }
 
     fclose(mFile);
+}
+
+void TYPED_FUNC(
+    bml_print_bml_matrix_dense) (
+    const bml_matrix_dense_t * A,
+    const int i_l,
+    const int i_u,
+    const int j_l,
+    const int j_u)
+{
+#ifdef BML_USE_MAGMA
+    MAGMAGPU(print) (A->N, A->N, A->matrix, A->ld, A->queue);
+#else
+    bml_print_dense_matrix(A->N, A->matrix_precision, dense_row_major,
+                           A->matrix, i_l, i_u, j_l, j_u);
+#endif
 }

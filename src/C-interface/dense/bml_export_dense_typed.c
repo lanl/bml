@@ -7,6 +7,10 @@
 #include "bml_types.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,13 +28,26 @@ void *TYPED_FUNC(
     const bml_dense_order_t order)
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+
     switch (order)
     {
         case dense_row_major:
+#ifdef BML_USE_MAGMA
+            MAGMA(getmatrix) (A->N, A->N,
+                              A->matrix, A->ld,
+                              (MAGMA_T *) A_dense, A->N, A->queue);
+#else
             memcpy(A_dense, A->matrix, sizeof(REAL_T) * A->N * A->N);
+#endif
             break;
         case dense_column_major:
         {
+#ifdef BML_USE_MAGMA
+            MAGMABLAS(transpose_inplace) (A->N, A->matrix, A->ld, A->queue);
+            MAGMA(getmatrix) (A->N, A->N,
+                              A->matrix, A->ld,
+                              (MAGMA_T *) A_dense, A->N, A->queue);
+#else
             REAL_T *B_ptr = (REAL_T *) A->matrix;
             for (int i = 0; i < A->N; i++)
             {
@@ -40,6 +57,7 @@ void *TYPED_FUNC(
                         B_ptr[ROWMAJOR(i, j, A->N, A->N)];
                 }
             }
+#endif
             break;
         }
         default:

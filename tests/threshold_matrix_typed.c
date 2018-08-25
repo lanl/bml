@@ -20,6 +20,14 @@ int TYPED_FUNC(
 
     double threshold = 0.5;
 
+#ifdef BML_USE_MAGMA
+    if (matrix_type == dense)
+    {
+        LOG_INFO("submatrix matrix test not available\n");
+        return 0;
+    }
+#endif
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_threshold_new(A, threshold);
 

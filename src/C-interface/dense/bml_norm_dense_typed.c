@@ -1,3 +1,8 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#include "bml_allocate.h"
+#endif
+
 #include "../../macros.h"
 #include "../blas.h"
 #include "../../typed.h"
@@ -28,8 +33,32 @@ double TYPED_FUNC(
     const bml_matrix_dense_t * A)
 {
     int N = A->N;
-
     REAL_T sum = 0.0;
+
+#ifdef BML_USE_MAGMA
+#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    MAGMA_T tsum = MAGMACOMPLEX(MAKE) (0., 0.);
+    for (int i = 0; i < N; i++)
+    {
+        tsum =
+            MAGMACOMPLEX(ADD) (tsum,
+                               MAGMA(dotu) (N,
+                                            (MAGMA_T *) A->matrix + i * A->ld,
+                                            1,
+                                            (MAGMA_T *) A->matrix + i * A->ld,
+                                            1, A->queue));
+    }
+    sum = MAGMACOMPLEX(REAL) (tsum) + I * MAGMACOMPLEX(IMAG) (tsum);
+#else
+    for (int i = 0; i < N; i++)
+    {
+        sum += MAGMA(dot) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
+                           (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+    }
+#endif
+
+#else
+
     REAL_T *A_matrix = A->matrix;
 
     int *A_localRowMin = A->domain->localRowMin;
@@ -46,6 +75,7 @@ double TYPED_FUNC(
     {
         sum += A_matrix[i] * A_matrix[i];
     }
+#endif
 
     return (double) REAL_PART(sum);
 }
@@ -113,14 +143,27 @@ double TYPED_FUNC(
     int N = A->N;
 
     REAL_T sum = 0.0;
+#ifdef BML_USE_MAGMA            //do work on CPU for now...
+    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N, A->queue);
+    MAGMA_T *B_matrix = bml_allocate_memory(sizeof(MAGMA_T) * B->N * B->N);
+    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N, B->queue);
+
+#else
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
+#endif
 
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
 
+#ifdef BML_USE_MAGMA
+    MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
+    MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
+#else
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;
+#endif
 
     int myRank = bml_getMyRank();
 
@@ -134,11 +177,22 @@ double TYPED_FUNC(
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {
+#ifdef BML_USE_MAGMA
+        MAGMA_T ttemp =
+            MAGMACOMPLEX(ADD) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
+                               MAGMACOMPLEX(MUL) (beta_, B_matrix[i]));
+        REAL_T temp =
+            MAGMACOMPLEX(REAL) (ttemp) + I * MAGMACOMPLEX(IMAG) (ttemp);
+#else
         REAL_T temp = alpha_ * A_matrix[i] + beta_ * B_matrix[i];
+#endif
         if (ABS(temp) > threshold)
             sum += temp * temp;
     }
-
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+    free(B_matrix);
+#endif
     return (double) REAL_PART(sum);
 }
 
@@ -154,6 +208,13 @@ double TYPED_FUNC(
     const bml_matrix_dense_t * A)
 {
     double sum = 0.0;
+//#ifdef BML_USE_MAGMA
+//    int lwork=A->N;
+//    MAGMA_T *dwork;
+//    MAGMA(malloc)(&dwork,lwork);
+//    sum = MAGMABLAS(lange)(MagmaFrobeniusNorm, A->N, A->N, A->matrix, A->ld,
+//                           dwork, lwork, A->queue);
+//#else
     sum = TYPED_FUNC(bml_sum_squares_dense) (A);
 
 #ifdef DO_MPI
@@ -162,6 +223,7 @@ double TYPED_FUNC(
         bml_sumRealReduce(&sum);
     }
 #endif
+//#endif
 
     return (double) REAL_PART(sqrt(sum));
 }

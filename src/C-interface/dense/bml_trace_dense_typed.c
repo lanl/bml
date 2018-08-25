@@ -1,3 +1,7 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../macros.h"
 #include "../blas.h"
 #include "../../typed.h"
@@ -29,10 +33,33 @@ double TYPED_FUNC(
 {
     int N = A->N;
 
+    REAL_T trace = 0.0;
+#ifdef BML_USE_MAGMA
+    MAGMA_T *dtmp;
+    int ld = magma_roundup(N, 32);
+    magma_int_t ret = MAGMA(malloc) ((MAGMA_T **) & dtmp, ld);
+    assert(ret == MAGMA_SUCCESS);
+
+    MAGMA_T *htmp = malloc(N * sizeof(MAGMA_T));
+    for (int i = 0; i < N; i++)
+        htmp[i] = MAGMACOMPLEX(MAKE) (1., 0.);
+
+    MAGMA(setvector) (N, htmp, 1, dtmp, 1, A->queue);
+#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    MAGMA_T ttrace = MAGMA(dotu) (N, (MAGMA_T *) A->matrix, A->ld + 1,
+                                  dtmp, 1, A->queue);
+    trace = MAGMACOMPLEX(REAL) (ttrace) + I * MAGMACOMPLEX(IMAG) (ttrace);
+#else
+    trace = MAGMA(dot) (N, (REAL_T *) A->matrix, A->ld + 1,
+                        dtmp, 1, A->queue);
+#endif
+
+    magma_free(dtmp);
+    free(htmp);
+#else
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
 
-    REAL_T trace = 0.0;
     REAL_T *A_matrix = A->matrix;
 
     int myRank = bml_getMyRank();
@@ -46,7 +73,7 @@ double TYPED_FUNC(
     {
         trace += A_matrix[ROWMAJOR(i, i, N, N)];
     }
-
+#endif
     return (double) REAL_PART(trace);
 }
 

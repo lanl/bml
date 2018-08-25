@@ -166,7 +166,6 @@ if(BML_GPU)
   elseif(MAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(OpenMP_CXX_OFFLOAD_FLAG "-fopenmp-targets=nvptx64-nvidia-cuda --cuda-path=${CUDA_TOOLKIT_ROOT_DIR}")
   endif()
-
   check_cxx_compiler_flag("${OpenMP_CXX_OFFLOAD_FLAG}" OFFLOAD_CXX_FOUND)
   if(OFFLOAD_CXX_FOUND)
     message(STATUS "Found GPU offload flags")
@@ -187,14 +186,34 @@ if(BML_GPU)
   message("CUDA CUBLAS libraries: ${CUDA_CUBLAS_LIBRARIES}")
 endif()
 
-option(BML_CUDA "Whether to compile with CUDA support" FALSE)
+set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
 if(BML_CUDA)
   include(FindCUDA)
+endif()
+if (CUDA_FOUND)
+   include_directories(${CUDA_INCLUDE_DIRS})
 endif()
 
 set(BML_OPENCL FALSE CACHE BOOL "Whether to compiler with OpenCL support")
 if(BML_OPENCL)
   include(FindOpenCL)
+endif()
+
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+set(BML_MAGMA FALSE CACHE BOOL "Whether to use MAGMA library")
+if(BML_MAGMA)
+  FIND_PACKAGE(MAGMA)
+endif()
+if (MAGMA_FOUND)
+  add_definitions(-DBML_USE_MAGMA)
+  message(STATUS
+    "MAGMA was found:\n"
+    "  MAGMA_INCLUDE_DIRS: ${MAGMA_INCLUDE_DIRS}\n"
+    "  MAGMA_LIBRARY_DIRS: ${MAGMA_LIBRARY_DIRS}\n"
+    "  MAGMA_LIBRARIES: ${MAGMA_LIBRARIES}"
+  )
+  include_directories(${MAGMA_INCLUDE_DIRS})
 endif()
 
 set(BML_INTERNAL_BLAS FALSE
@@ -214,6 +233,7 @@ if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
   set(MKLROOT $ENV{MKLROOT})
   message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
   if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
+    message(STATUS "Look for MKL in ${MKLROOT}")
     if(BML_OPENMP)
       set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
         -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread
@@ -276,22 +296,24 @@ elseif(BLAS_VENDOR STREQUAL "")
 else()
   message(FATAL_ERROR "Unknown BLAS_VENDOR ${BLAS_VENDOR}")
 endif()
+message(STATUS "BLAS_LIBRARIES=${BLAS_LIBRARIES}")
 
 if(NOT (BLAS_LIBRARIES OR BLAS_FOUND OR NOBLAS))
   include(FindBLAS)
+  message(STATUS "BLA_VENDOR=${BLA_VENDOR}")
+  message(STATUS "BLAS_LIBRARIES=${BLAS_LIBRARIES}")
   if(NOT BLAS_FOUND)
     message(FATAL_ERROR "Can not find suitable BLAS library")
   endif()
 endif()
 
-if(NOT (LAPACK_LIBRARIES OR LAPACK_FOUND OR NOBLAS))
+if(NOT (LAPACK_LIBRARIES OR LAPACK_FOUND OR NOBLAS OR MAGMA_FOUND))
   include(FindLAPACK)
   if(NOT LAPACK_FOUND)
     message(FATAL_ERROR "Can not find suitable LAPACK library")
   endif()
 endif()
 
-message(STATUS "BLAS_LIBRARIES=${BLAS_LIBRARIES}")
 include(CheckFunctionExists)
 include(CheckFortranFunctionExists)
 
@@ -307,10 +329,17 @@ if(NOT (BLAS_FOUND OR NOBLAS))
 endif()
 
 if(NOT (LAPACK_FOUND OR NOBLAS))
-  message(FATAL_ERROR "Could not find LAPACK library.")
+  if(NOT (MAGMA_FOUND) )
+    message(FATAL_ERROR "Could not find LAPACK library.")
+  endif()
 endif()
 
 include(${CMAKE_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
+if(MAGMA_FOUND)
+  set(CMAKE_REQUIRED_LIBRARIES
+    ${MAGMA_LIBRARIES})
+  list(APPEND LINK_LIBRARIES ${MAGMA_LIBRARIES})
+endif()
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
@@ -496,6 +525,7 @@ if(OPENMP_FOUND)
   message(STATUS "Additional C compiler link flags: '${OpenMP_C_FLAGS}'")
 endif()
 
+message(STATUS "LINK_LIBRARIES=${LINK_LIBRARIES}")
 string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
 string(STRIP "${LINKLINE}" LINKLINE)
 message(STATUS "Link flags: '${LINKLINE}'")

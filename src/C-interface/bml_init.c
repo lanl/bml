@@ -1,6 +1,10 @@
 #include "bml_init.h"
 #include "bml_parallel.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <stdlib.h>
 
 /** Initialize.
@@ -15,6 +19,9 @@ bml_init(
     int *argc,
     char ***argv)
 {
+#ifdef BML_USE_MAGMA
+    magma_init();
+#endif
     bml_initParallel(argc, argv);
 }
 

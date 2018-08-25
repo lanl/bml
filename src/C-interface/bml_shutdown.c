@@ -1,6 +1,10 @@
 #include "bml_shutdown.h"
 #include "bml_parallel.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <stdlib.h>
 
 /** Shutdown.
@@ -13,6 +17,9 @@ bml_shutdown(
     )
 {
     bml_shutdownParallel();
+#ifdef BML_USE_MAGMA
+    magma_finalize();
+#endif
 }
 
 /** Shutdown from Fortran.

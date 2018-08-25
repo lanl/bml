@@ -1,3 +1,7 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../macros.h"
 #include "../../typed.h"
 #include "bml_allocate_dense.h"
@@ -25,7 +29,11 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *B =
         bml_zero_matrix_dense(matrix_precision, matrix_dimension,
                               distrib_mode);
+#ifdef BML_USE_MAGMA
+    REAL_T *Bij = calloc(N * N, sizeof(REAL_T));
+#else
     REAL_T *Bij = (REAL_T *) B->matrix;
+#endif
 
     for (int i = 0; i < N; i++)
     {
@@ -34,6 +42,9 @@ bml_matrix_dense_t *TYPED_FUNC(
             Bij[ROWMAJOR(i, j, N, N)] = *(REAL_T *) bml_get(A, i, j);
         }
     }
-
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (N, N, (MAGMA_T *) Bij, N, B->matrix, B->ld, B->queue);
+    free(Bij);
+#endif
     return B;
 }

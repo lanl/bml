@@ -6,6 +6,7 @@
 #include "bml_allocate_dense.h"
 #include "bml_threshold_dense.h"
 #include "bml_types_dense.h"
+#include "bml_logger.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -29,6 +30,11 @@ bml_matrix_dense_t *TYPED_FUNC(
     const bml_matrix_dense_t * A,
     const double threshold)
 {
+#ifdef BML_USE_MAGMA
+    LOG_ERROR
+        ("bml_threshold_new_dense() not implemented for MAGMA matrices\n");
+#endif
+
     int N = A->N;
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
     bml_matrix_dense_t *B =
@@ -70,6 +76,10 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     const double threshold)
 {
+#ifdef BML_USE_MAGMA
+    LOG_ERROR("bml_threshold_dense() not implemented for MAGMA matrices\n");
+#endif
+
     int N = A->N;
     REAL_T *A_matrix = A->matrix;
 

@@ -1,3 +1,8 @@
+/*needs to be included before #include <complex.h>*/
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../blas.h"
@@ -39,13 +44,22 @@ void TYPED_FUNC(
     const double alpha,
     const double beta)
 {
-    REAL_T alpha_ = alpha;
-    REAL_T beta_ = beta;
     int myRank = bml_getMyRank();
 
     int nElems = B->domain->localRowExtent[myRank] * B->N;
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
+
+#ifdef BML_USE_MAGMA
+    nElems = B->N * B->ld;
+    MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
+    MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
+    MAGMA(scal) (nElems, alpha_, A->matrix, inc, A->queue);
+    MAGMA(axpy) (nElems, beta_, B->matrix, inc,
+                 A->matrix + startIndex, inc, A->queue);
+#else
+    REAL_T alpha_ = alpha;
+    REAL_T beta_ = beta;
 
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -55,6 +69,7 @@ void TYPED_FUNC(
                   A->matrix + startIndex, &inc);
 #endif
 
+#endif
 }
 
 /** Matrix addition and calculate TrNorm.
@@ -114,10 +129,18 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     const double beta)
 {
-    REAL_T beta_ = beta;
-    REAL_T *A_matrix = (REAL_T *) A->matrix;
-
     int N = A->N;
+#if BML_USE_MAGMA
+    MAGMA_T *A_matrix = (MAGMA_T *) A->matrix;
+    MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
+    bml_matrix_dense_t *B =
+        TYPED_FUNC(bml_identity_matrix_dense) (N, sequential);
+    MAGMABLAS(geadd) (N, N, beta_, (MAGMA_T *) B->matrix, B->ld,
+                      A_matrix, A->ld, A->queue);
+    bml_deallocate_dense(B);
+#else
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    REAL_T beta_ = beta;
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
     int myRank = bml_getMyRank();
@@ -131,6 +154,7 @@ void TYPED_FUNC(
     {
         A_matrix[ROWMAJOR(i, i, N, N)] += beta_;
     }
+#endif
 }
 
 /** Matrix addition.
