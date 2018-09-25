@@ -170,6 +170,8 @@ with the following `bibtex` snipped:
       url          = {https://doi.org/10.5281/zenodo.841949}
     }
 
+Another citation source is the following journal article: [BMLPaper](https://link.springer.com/article/10.1007/s11227-018-2533-0)
+
 # Authors
 
 The core developers of the bml in alphabetical order:
