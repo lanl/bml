@@ -293,6 +293,7 @@ void TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
         REAL_T x[C_N];
