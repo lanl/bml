@@ -407,20 +407,20 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     }
 
 #if defined(__IBMC_) || defined(__ibmxl__)
-#pragma omp parallel for \
-    default(none) \
-    private(hend) \
-    shared(hindex, hnode) \
-    shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M)
+#pragma omp parallel for                     \
+  default(none)                              \
+  private(hend)                              \
+  shared(hindex, hnode)                      \
+  shared(A_nnz, A_index, A_value, A_N, A_M)  \
+  shared(B_nnz, B_index, B_value, B_N, B_M)
 #else
-#pragma omp parallel for \
-    default(none) \
-    private(hend) \
-    shared(hindex, hnode) \
-    shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M) \
-    firstprivate(ix)
+#pragma omp parallel for                     \
+  default(none)                              \
+  private(hend)                              \
+  shared(hindex, hnode)                      \
+  shared(A_nnz, A_index, A_value, A_N, A_M)  \
+  shared(B_nnz, B_index, B_value, B_N, B_M)  \
+  firstprivate(ix)
 #endif
 
     for (int i = 0; i < B_N; i++)
