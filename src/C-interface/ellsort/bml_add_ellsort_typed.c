@@ -64,20 +64,20 @@ void TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
-    default(none) \
-    shared(N, A_M, B_M, myRank) \
-    shared(A_index, A_value, A_nnz) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_index, B_value, B_nnz)
+#pragma omp parallel for                \
+  default(none)                         \
+  shared(N, A_M, B_M, myRank)           \
+  shared(A_index, A_value, A_nnz)       \
+  shared(A_localRowMin, A_localRowMax)  \
+  shared(B_index, B_value, B_nnz)
 #else
-#pragma omp parallel for \
-    default(none) \
-    shared(N, A_M, B_M, myRank) \
-    shared(A_index, A_value, A_nnz) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_index, B_value, B_nnz) \
-    firstprivate(ix, jx, x)
+#pragma omp parallel for                \
+  default(none)                         \
+  shared(N, A_M, B_M, myRank)           \
+  shared(A_index, A_value, A_nnz)       \
+  shared(A_localRowMin, A_localRowMax)  \
+  shared(B_index, B_value, B_nnz)       \
+  firstprivate(ix, jx, x)
 #endif
 
     //for (int i = 0; i < N; i++)
@@ -193,22 +193,22 @@ double TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
-    default(none) \
-    shared(N, A_M, B_M, myRank) \
-    shared(A_index, A_value, A_nnz) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_index, B_value, B_nnz) \
-    reduction(+:trnorm)
+#pragma omp parallel for                \
+  default(none)                         \
+  shared(N, A_M, B_M, myRank)           \
+  shared(A_index, A_value, A_nnz)       \
+  shared(A_localRowMin, A_localRowMax)  \
+  shared(B_index, B_value, B_nnz)       \
+  reduction(+:trnorm)
 #else
-#pragma omp parallel for \
-    default(none) \
-    shared(N, A_M, B_M, myRank) \
-    shared(A_index, A_value, A_nnz) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_index, B_value, B_nnz) \
-    firstprivate(ix, jx, x, y) \
-    reduction(+:trnorm)
+#pragma omp parallel for                \
+  default(none)                         \
+  shared(N, A_M, B_M, myRank)           \
+  shared(A_index, A_value, A_nnz)       \
+  shared(A_localRowMin, A_localRowMax)  \
+  shared(B_index, B_value, B_nnz)       \
+  firstprivate(ix, jx, x, y)            \
+  reduction(+:trnorm)
 #endif
 
     //for (int i = 0; i < N; i++)

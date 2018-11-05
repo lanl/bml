@@ -132,20 +132,20 @@ void *TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel \
-    default(none) \
-    shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
-    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
-    shared(X_localRowMin, X_localRowMax) \
-    reduction(+: traceX, traceX2)
+#pragma omp parallel                                 \
+  default(none)                                      \
+  shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
+  shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
+  shared(X_localRowMin, X_localRowMax)               \
+  reduction(+: traceX, traceX2)
 #else
-#pragma omp parallel \
-    default(none) \
-    shared(X_N, X_M, X_index, X_nnz, X_value, myRank) \
-    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value) \
-    shared(X_localRowMin, X_localRowMax) \
-    firstprivate(ix, jx, x) \
-    reduction(+: traceX, traceX2)
+#pragma omp parallel                                 \
+  default(none)                                      \
+  shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
+  shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
+  shared(X_localRowMin, X_localRowMax)               \
+  firstprivate(ix, jx, x)                            \
+  reduction(+: traceX, traceX2)
 #endif
 
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
@@ -272,22 +272,22 @@ void TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
-    default(none) \
-    shared(A_N, A_M, A_nnz, A_index, A_value) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_N, B_M, B_nnz, B_index, B_value) \
-    shared(C_N, C_M, C_nnz, C_index, C_value) \
-    shared(myRank)
+#pragma omp parallel for                     \
+  default(none)                              \
+  shared(A_N, A_M, A_nnz, A_index, A_value)  \
+  shared(A_localRowMin, A_localRowMax)       \
+  shared(B_N, B_M, B_nnz, B_index, B_value)  \
+  shared(C_N, C_M, C_nnz, C_index, C_value)  \
+  shared(myRank)
 #else
-#pragma omp parallel for \
-    default(none) \
-    shared(A_N, A_M, A_nnz, A_index, A_value) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_N, B_M, B_nnz, B_index, B_value) \
-    shared(C_N, C_M, C_nnz, C_index, C_value) \
-    shared(myRank) \
-    firstprivate(ix, jx, x)
+#pragma omp parallel for                     \
+  default(none)                              \
+  shared(A_N, A_M, A_nnz, A_index, A_value)  \
+  shared(A_localRowMin, A_localRowMax)       \
+  shared(B_N, B_M, B_nnz, B_index, B_value)  \
+  shared(C_N, C_M, C_nnz, C_index, C_value)  \
+  shared(myRank)                             \
+  firstprivate(ix, jx, x)
 #endif
 
     //for (int i = 0; i < A_N; i++)
@@ -413,23 +413,23 @@ void TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
-    default(none) \
-    shared(A_N, A_M, A_nnz, A_index, A_value) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_N, B_M, B_nnz, B_index, B_value) \
-    shared(C_N, C_M, C_nnz, C_index, C_value) \
-    shared(adjust_threshold, myRank) \
-    reduction(+:aflag)
+  default(none)                              \
+  shared(A_N, A_M, A_nnz, A_index, A_value)  \
+  shared(A_localRowMin, A_localRowMax)       \
+  shared(B_N, B_M, B_nnz, B_index, B_value)  \
+  shared(C_N, C_M, C_nnz, C_index, C_value)  \
+  shared(adjust_threshold, myRank)           \
+  reduction(+:aflag)
 #else
-#pragma omp parallel for \
-    default(none) \
-    shared(A_N, A_M, A_nnz, A_index, A_value) \
-    shared(A_localRowMin, A_localRowMax) \
-    shared(B_N, B_M, B_nnz, B_index, B_value) \
-    shared(C_N, C_M, C_nnz, C_index, C_value) \
-    shared(adjust_threshold, myRank) \
-    firstprivate(ix, jx, x) \
-    reduction(+:aflag)
+#pragma omp parallel for                     \
+  default(none)                              \
+  shared(A_N, A_M, A_nnz, A_index, A_value)  \
+  shared(A_localRowMin, A_localRowMax)       \
+  shared(B_N, B_M, B_nnz, B_index, B_value)  \
+  shared(C_N, C_M, C_nnz, C_index, C_value)  \
+  shared(adjust_threshold, myRank)           \
+  firstprivate(ix, jx, x)                    \
+  reduction(+:aflag)
 #endif
 
         //for (int i = 0; i < A_N; i++)
