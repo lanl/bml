@@ -46,12 +46,18 @@ void TYPED_FUNC(
     const double ONE = 1.0;
     const double ZERO = 0.0;
 
-    if (A != NULL && A == B && alpha == ONE && beta == ZERO)
+    if (A == NULL || B == NULL)
+    {
+        LOG_ERROR("Either matrix A or B are NULL\n");
+    }
+
+    if (A == B && alpha == ONE && beta == ZERO)
     {
         TYPED_FUNC(bml_multiply_x2_ellsort) (A, C, threshold);
     }
     else
     {
+        bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
         bml_matrix_ellsort_t *A2 =
             TYPED_FUNC(bml_noinit_matrix_ellsort) (A->N, A->M,
                                                    A->distribution_mode);

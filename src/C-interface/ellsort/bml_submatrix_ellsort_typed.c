@@ -238,7 +238,11 @@ void TYPED_FUNC(
     REAL_T *rvalue;
 
     int B_N = B->N;
+#ifdef BML_USE_MAGMA
+    REAL_T *B_matrix = bml_allocate_memory(sizeof(REAL_T) * B->N * B->N);
+#else
     REAL_T *B_matrix = B->matrix;
+#endif
 
 #pragma omp parallel for                        \
   default(none)                                 \
@@ -257,6 +261,11 @@ void TYPED_FUNC(
 
         free(rvalue);
     }
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (B_N, B_N, (MAGMA_T *) B_matrix, B_N,
+                      B->matrix, B->ld, B->queue);
+    free(B_matrix);
+#endif
 }
 
 /** Assemble submatrix into a full matrix based on core+halo indeces.
@@ -279,7 +288,13 @@ void TYPED_FUNC(
     const double threshold)
 {
     int A_N = A->N;
+#ifdef BML_USE_MAGMA
+    REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N,
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
+#else
     REAL_T *A_matrix = A->matrix;
+#endif
 
     int B_N = B->N;
     int B_M = B->M;
@@ -317,6 +332,9 @@ void TYPED_FUNC(
 
         B_nnz[ii] = icol;
     }
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+#endif
 }
 
 // Get matching vector of values
