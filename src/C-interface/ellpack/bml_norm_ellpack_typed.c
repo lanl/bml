@@ -148,21 +148,21 @@ double TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
-    default(none) \
-    shared(alpha_, beta_) \
-    shared(A_N, A_M, A_index, A_nnz, A_value) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    shared(B_N, B_M, B_index, B_nnz, B_value) \
+#pragma omp parallel for                          \
+    default(none)                                 \
+    shared(alpha_, beta_)                         \
+    shared(A_N, A_M, A_index, A_nnz, A_value)     \
+    shared(A_localRowMin, A_localRowMax, myRank)  \
+    shared(B_N, B_M, B_index, B_nnz, B_value)     \
     reduction(+:sum)
 #else
-#pragma omp parallel for \
-    default(none) \
-    shared(alpha_, beta_) \
-    shared(A_N, A_M, A_index, A_nnz, A_value) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
-    shared(B_N, B_M, B_index, B_nnz, B_value) \
-    firstprivate(ix, jjb, y) \
+#pragma omp parallel for                          \
+    default(none)                                 \
+    shared(alpha_, beta_)                         \
+    shared(A_N, A_M, A_index, A_nnz, A_value)     \
+    shared(A_localRowMin, A_localRowMax, myRank)  \
+    shared(B_N, B_M, B_index, B_nnz, B_value)     \
+    firstprivate(ix, jjb, y)                      \
     reduction(+:sum)
 #endif
 

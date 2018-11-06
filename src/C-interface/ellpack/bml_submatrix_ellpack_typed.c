@@ -248,10 +248,10 @@ void TYPED_FUNC(
     REAL_T *B_matrix = B->matrix;
 #endif
 
-#pragma omp parallel for \
-    default(none) \
-    private(rvalue) \
-    shared(core_halo_index) \
+#pragma omp parallel for     \
+    default(none)            \
+    private(rvalue)          \
+    shared(core_halo_index)  \
     shared(A, B_matrix, B_N)
     for (int jb = 0; jb < lsize; jb++)
     {
@@ -308,11 +308,11 @@ void TYPED_FUNC(
 
     int ii, icol;
 
-#pragma omp parallel for \
-    default(none) \
-    private(ii, icol) \
-    shared(core_halo_index) \
-    shared(A_N, A_matrix) \
+#pragma omp parallel for                      \
+    default(none)                             \
+    private(ii, icol)                         \
+    shared(core_halo_index)                   \
+    shared(A_N, A_matrix)                     \
     shared(B_N, B_M, B_nnz, B_index, B_value)
     for (int ja = 0; ja < llsize; ja++)
     {
@@ -416,7 +416,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *B_value = B->value;
 
 #pragma omp parallel for default(none) \
-    private(hend) \
+    private(hend)                      \
     shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
     {
@@ -431,19 +431,19 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
 #if defined(__IBMC_) || defined(__ibmxl__)
-#pragma omp parallel for \
-    default(none) \
-    private(hend) \
-    shared(hindex, hnode) \
-    shared(A_nnz, A_index, A_value, A_N, A_M) \
+#pragma omp parallel for                       \
+    default(none)                              \
+    private(hend)                              \
+    shared(hindex, hnode)                      \
+    shared(A_nnz, A_index, A_value, A_N, A_M)  \
     shared(B_nnz, B_index, B_value, B_N, B_M)
 #else
-#pragma omp parallel for \
-    default(none) \
-    private(hend) \
-    shared(hindex, hnode) \
-    shared(A_nnz, A_index, A_value, A_N, A_M) \
-    shared(B_nnz, B_index, B_value, B_N, B_M) \
+#pragma omp parallel for                       \
+    default(none)                              \
+    private(hend)                              \
+    shared(hindex, hnode)                      \
+    shared(A_nnz, A_index, A_value, A_N, A_M)  \
+    shared(B_nnz, B_index, B_value, B_N, B_M)  \
     firstprivate(ix)
 #endif
 
