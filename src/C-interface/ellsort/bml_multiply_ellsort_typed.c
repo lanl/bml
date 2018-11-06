@@ -57,7 +57,6 @@ void TYPED_FUNC(
     }
     else
     {
-        bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
         bml_matrix_ellsort_t *A2 =
             TYPED_FUNC(bml_noinit_matrix_ellsort) (A->N, A->M,
                                                    A->distribution_mode);
