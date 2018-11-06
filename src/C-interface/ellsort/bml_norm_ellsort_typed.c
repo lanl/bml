@@ -170,7 +170,7 @@ double TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
- 
+
 #if defined(__IBMC__) || defined(__ibmxl__)
         REAL_T y[A_N];
         int ix[A_N], jjb[A_N];

@@ -452,7 +452,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
 #if defined(__IBMC_) || defined(__ibmxl__)
         int ix[ngroups];
-   
+
         memset(ix, 0, sizeof(int) * ngroups);
 #endif
 

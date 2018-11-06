@@ -87,7 +87,7 @@ void TYPED_FUNC(
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[N], jx[N];
         REAL_T x[N];
- 
+
         memset(ix, 0, N * sizeof(int));
 #endif
 
