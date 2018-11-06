@@ -94,7 +94,8 @@ double TYPED_FUNC(
     {
         for (int j = 0; j < A->N; j++)
         {
-            if (is_above_threshold(A_matrix[ROWMAJOR(i, j, A->N, A->N)], threshold))
+            if (is_above_threshold
+                (A_matrix[ROWMAJOR(i, j, A->N, A->N)], threshold))
             {
                 nnzs++;
             }

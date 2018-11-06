@@ -62,7 +62,8 @@ int TYPED_FUNC(
         return -1;
     }
 
-    if ((fabs(B_gbnd[1] - REAL_PART(scale_factor * scale_factor))) > REL_TOL ||
+    if ((fabs(B_gbnd[1] - REAL_PART(scale_factor * scale_factor))) > REL_TOL
+        ||
         (fabs
          ((B_gbnd[1] - B_gbnd[0]) -
           REAL_PART(scale_factor * scale_factor - scale_factor))) > REL_TOL)
