@@ -248,10 +248,10 @@ void TYPED_FUNC(
     REAL_T *B_matrix = B->matrix;
 #endif
 
-#pragma omp parallel for \
-    default(none) \
-    private(rvalue) \
-    shared(core_halo_index) \
+#pragma omp parallel for     \
+    default(none)            \
+    private(rvalue)          \
+    shared(core_halo_index)  \
     shared(A, B_matrix, B_N)
     for (int jb = 0; jb < lsize; jb++)
     {
@@ -308,11 +308,11 @@ void TYPED_FUNC(
 
     int ii, icol;
 
-#pragma omp parallel for \
-    default(none) \
-    private(ii, icol) \
-    shared(core_halo_index) \
-    shared(A_N, A_matrix) \
+#pragma omp parallel for                      \
+    default(none)                             \
+    private(ii, icol)                         \
+    shared(core_halo_index)                   \
+    shared(A_N, A_matrix)                     \
     shared(B_N, B_M, B_nnz, B_index, B_value)
     for (int ja = 0; ja < llsize; ja++)
     {
@@ -395,7 +395,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
 
+#if !(defined(__IBMC_) || defined(__ibmxl__))
     int ix[ngroups];
+
+    memset(ix, 0, sizeof(int) * ngroups);
+#endif
+
     int hnode[A_N];
     int hend;
 
@@ -411,7 +416,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *B_value = B->value;
 
 #pragma omp parallel for default(none) \
-    private(hend) \
+    private(hend)                      \
     shared(hindex, hnode, A_N)
     for (int i = 0; i < ngroups; i++)
     {
@@ -425,15 +430,32 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
     }
 
-#pragma omp parallel for \
-    default(none) \
-    private(ix, hend) \
-    shared(hindex, hnode) \
-    shared(A_nnz, A_index, A_value, A_N, A_M) \
+#if defined(__IBMC_) || defined(__ibmxl__)
+#pragma omp parallel for                       \
+    default(none)                              \
+    private(hend)                              \
+    shared(hindex, hnode)                      \
+    shared(A_nnz, A_index, A_value, A_N, A_M)  \
     shared(B_nnz, B_index, B_value, B_N, B_M)
+#else
+#pragma omp parallel for                       \
+    default(none)                              \
+    private(hend)                              \
+    shared(hindex, hnode)                      \
+    shared(A_nnz, A_index, A_value, A_N, A_M)  \
+    shared(B_nnz, B_index, B_value, B_N, B_M)  \
+    firstprivate(ix)
+#endif
+
     for (int i = 0; i < B_N; i++)
     {
+
+#if defined(__IBMC_) || defined(__ibmxl__)
+        int ix[ngroups];
+
         memset(ix, 0, sizeof(int) * ngroups);
+#endif
+
         ix[i] = i + 1;
         B_index[ROWMAJOR(i, 0, B_N, B_M)] = i;
         B_value[ROWMAJOR(i, 0, B_N, B_M)] = 1.0;

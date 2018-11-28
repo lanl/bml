@@ -87,7 +87,7 @@ int TYPED_FUNC(
 
     fnorm = bml_fnorm(aux);
 
-    if (ABS(fnorm) > REL_TOL)
+    if (fabsf(fnorm) > REL_TOL)
     {
         LOG_ERROR
             ("Error in matrix diagonalization; fnorm(CDC^t-A) = %e\n", fnorm);
