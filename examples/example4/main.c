@@ -14,8 +14,8 @@ main(
     bml_matrix_t *B;
     bml_matrix_t *C;
 
-    const int N = 1000;
-    const int M = 1000;
+    const int N = 300;
+    const int M = 300;
     bml_matrix_precision_t matrix_precision = double_real;
     bml_matrix_type_t matrix_type = dense;
     const double alpha = 1.2;
@@ -29,7 +29,10 @@ main(
 
     trace = bml_multiply_x2(A, C, threshold);   // C=A*A
     bml_multiply(A, B, C, alpha, beta, threshold);      // C=alpha* A*B + beta*C
-
+     
+ // print result
+    bml_print_bml_matrix(C, 0, 10, 0, 10);
+    
     free(trace);
     bml_deallocate(&A);
     bml_deallocate(&B);
