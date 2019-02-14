@@ -17,7 +17,6 @@ export INSTALL_DIR=${INSTALL_DIR:="${MY_PATH}/install"}
 export BML_TESTING=${BML_TESTING:=yes}
 export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}
 export EXTRA_CFLAGS=${EXTRA_CFLAGS:="-qsmp=omp"}
-export CMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS:="-qxlf2003=polymorphic -qthreaded"}
 export CMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS:="-qxlf2003=polymorphic -qthreaded -L/sw/summitdev/essl/6.1.0/essl/6.1/lib64 -lessl -lesslsmp "}
 export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:="-qsmp=omp"}
 
