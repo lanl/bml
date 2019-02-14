@@ -1,6 +1,8 @@
 #!/bin/bash
 
-basedir=$(dirname $0)
+set -x
+
+basedir=$(readlink --canonicalize $(dirname $0))
 files=$(git ls-tree --full-tree -r HEAD \
     | grep '.\(c\|h\|F90\)$' \
     | awk '{print $4}')
