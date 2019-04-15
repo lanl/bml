@@ -25,7 +25,8 @@ int TYPED_FUNC(
     bml_matrix_t *aux = NULL;
     float ssum;
 
-    if (matrix_type != dense && matrix_type != ellpack)
+    if (matrix_type != dense && matrix_type != ellpack
+        && matrix_type != ellblock)
     {
         LOG_INFO("inverse for this matrix type is not implemented\n");
         return 0;

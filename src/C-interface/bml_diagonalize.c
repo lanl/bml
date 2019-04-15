@@ -5,6 +5,7 @@
 #include "bml_types.h"
 #include "dense/bml_diagonalize_dense.h"
 #include "ellpack/bml_diagonalize_ellpack.h"
+#include "ellblock/bml_diagonalize_ellblock.h"
 
 void
 bml_diagonalize(
@@ -22,6 +23,9 @@ bml_diagonalize(
             break;
         case ellsort:
             LOG_ERROR("diagonalize routine is not implemented for ellsort\n");
+            break;
+        case ellblock:
+            bml_diagonalize_ellblock(A, eigenvalues, eigenvectors);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

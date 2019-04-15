@@ -4,6 +4,7 @@
 #include "dense/bml_introspection_dense.h"
 #include "ellpack/bml_introspection_ellpack.h"
 #include "ellsort/bml_introspection_ellsort.h"
+#include "ellblock/bml_introspection_ellblock.h"
 
 #include <stdlib.h>
 
@@ -53,6 +54,9 @@ bml_get_precision(
         case ellsort:
             return bml_get_precision_ellsort(A);
             break;
+        case ellblock:
+            return bml_get_precision_ellblock(A);
+            break;
         default:
             LOG_ERROR("unknown precision");
             break;
@@ -83,6 +87,9 @@ bml_get_N(
         case ellsort:
             return bml_get_N_ellsort(A);
             break;
+        case ellblock:
+            return bml_get_N_ellblock(A);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -112,6 +119,37 @@ bml_get_M(
             break;
         case ellsort:
             return bml_get_M_ellsort(A);
+            break;
+        case ellblock:
+            return bml_get_M_ellblock(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return -1;
+}
+
+int
+bml_get_NB(
+    const bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case type_uninitialized:
+            return 0;
+            break;
+        case dense:
+            return 1;
+            break;
+        case ellpack:
+            return 1;
+            break;
+        case ellsort:
+            return 1;
+            break;
+        case ellblock:
+            return bml_get_NB_ellblock(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -228,6 +266,9 @@ bml_get_sparsity(
             break;
         case ellsort:
             return bml_get_sparsity_ellsort(A, threshold);
+            break;
+        case ellblock:
+            return bml_get_sparsity_ellblock(A, threshold);
             break;
         default:
             LOG_ERROR("unknown matrix type in bml_get_sparsity\n");

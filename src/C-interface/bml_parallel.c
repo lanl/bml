@@ -194,6 +194,9 @@ bml_allGatherVParallel(
         case ellsort:
             bml_allGatherVParallel_ellsort(A);
             break;
+        case ellblock:
+            LOG_ERROR
+                ("bml_allGatherVParallel function not implemented for ellblock\n");
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

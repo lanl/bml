@@ -17,6 +17,9 @@ int bml_get_N(
 int bml_get_M(
     const bml_matrix_t * A);
 
+int bml_get_NB(
+    const bml_matrix_t * A);
+
 int bml_get_row_bandwidth(
     const bml_matrix_t * A,
     const int i);

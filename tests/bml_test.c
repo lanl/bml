@@ -114,6 +114,7 @@ print_usage(
     printf("  dense\n");
     printf("  ellpack\n");
     printf("  ellsort\n");
+    printf("  ellblock\n");
     printf("\n");
     printf("Recognized precisions:\n");
     printf("\n");
@@ -212,6 +213,10 @@ main(
                 else if (strcasecmp(optarg, "ellsort") == 0)
                 {
                     matrix_type = ellsort;
+                }
+                else if (strcasecmp(optarg, "ellblock") == 0)
+                {
+                    matrix_type = ellblock;
                 }
                 else
                 {
