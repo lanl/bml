@@ -21,7 +21,6 @@ export CMAKE_Fortran_FLAGS=${CMAKE_Fortran_FLAGS:="-qxlf2003=polymorphic -qthrea
 export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:="-qsmp=omp"}
 
 
-
 ./build.sh configure
 
                                                                                                                                                                                               
