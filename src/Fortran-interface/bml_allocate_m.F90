@@ -17,6 +17,7 @@ module bml_allocate_m
   public :: bml_random_matrix
   public :: bml_update_domain
   public :: bml_zero_matrix
+  public :: bml_block_matrix
 
 contains
 
@@ -100,6 +101,32 @@ contains
         & n, m, get_dmode_id(distrib_mode_))
 
   end subroutine bml_zero_matrix
+
+  subroutine bml_block_matrix(matrix_type, element_type, element_precision, &
+      & nb, mb, bsizes, a, distrib_mode)
+
+    character(len=*), intent(in) :: matrix_type, element_type
+    character(len=*), optional, intent(in) :: distrib_mode
+    integer, intent(in) :: element_precision
+    integer(C_INT), intent(in) :: nb, mb
+    integer, allocatable, intent(in) :: bsizes(:)
+    type(bml_matrix_t), intent(inout) :: a
+
+    character(len=20) :: distrib_mode_
+
+    if (present(distrib_mode)) then
+      distrib_mode_ = distrib_mode
+    else
+      distrib_mode_ = bml_dmode_sequential
+    endif
+
+    call bml_deallocate(a)
+    print*,'bsizes=',bsizes(1)
+    a%ptr = bml_block_matrix_C(get_matrix_id(matrix_type), &
+        & get_element_id(element_type, element_precision), &
+        & nb, mb, bsizes, get_dmode_id(distrib_mode_))
+
+  end subroutine bml_block_matrix
 
   !> Create a matrix without initializing.
   !!

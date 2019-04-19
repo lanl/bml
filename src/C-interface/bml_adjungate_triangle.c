@@ -27,6 +27,10 @@ bml_adjungate_triangle(
         case ellpack:
             bml_adjungate_triangle_ellpack(A, triangle);
             break;
+        case ellblock:
+            LOG_ERROR
+                ("bml_adjungate_triangle function is not implemented for ellblock\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type in bml_adjungate_triangle\n");
             break;

@@ -12,6 +12,8 @@ typedef enum
     dense,
     /** ELLPACK matrix. */
     ellpack,
+    /** BLOCK ELLPACK matrix. */
+    ellblock,
     /** ELLSORT matrix. */
     ellsort,
     /** CSR matrix. */
@@ -57,6 +59,10 @@ typedef struct
     int N_cols;
     /** The maximum number of non-zeros per row (for ellpack). */
     int N_nz_max;
+    /** The block sizes (for block_ellpack). */
+    int *bsizes;
+    /** The number of blocks/row (or column). */
+    int NB;
 } bml_matrix_dimension_t;
 
 /** The supported distribution modes. */

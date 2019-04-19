@@ -18,6 +18,11 @@ add_library(bml
   $<TARGET_OBJECTS:bml-ellpack-single_complex>
   $<TARGET_OBJECTS:bml-ellpack-single_real>
   $<TARGET_OBJECTS:bml-ellpack>
+  $<TARGET_OBJECTS:bml-ellblock-double_complex>
+  $<TARGET_OBJECTS:bml-ellblock-double_real>
+  $<TARGET_OBJECTS:bml-ellblock-single_complex>
+  $<TARGET_OBJECTS:bml-ellblock-single_real>
+  $<TARGET_OBJECTS:bml-ellblock>
   $<TARGET_OBJECTS:bml-ellsort-double_complex>
   $<TARGET_OBJECTS:bml-ellsort-double_real>
   $<TARGET_OBJECTS:bml-ellsort-single_complex>
