@@ -165,6 +165,8 @@ double TYPED_FUNC(
         }
     }
 
+    for (int ib = 0; ib < NB; ib++)
+        free(y_ptr[ib]);
     return (double) REAL_PART(sum);
 }
 
