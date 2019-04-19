@@ -2,6 +2,13 @@ language: python
 rvm: 2.0
 sudo: required
 
+cache:
+  directories:
+    - /home/travis/.bundle
+    - /home/travis/.gem
+    - /home/travis/.nvm
+    - /home/travis/.rvm
+
 env:
   global:
     - OMP_NUM_THREADS=4
