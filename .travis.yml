@@ -4,10 +4,10 @@ sudo: required
 
 cache:
   directories:
-    - /home/travis/.bundle
-    - /home/travis/.gem
-    - /home/travis/.nvm
-    - /home/travis/.rvm
+    - "/home/travis/.bundle"
+    - "/home/travis/.gem"
+    - "/home/travis/.nvm"
+    - "/home/travis/.rvm"
 
 env:
   global:
