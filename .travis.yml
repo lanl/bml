@@ -4,10 +4,10 @@ sudo: required
 
 cache:
   directories:
-    - /home/travis/.bundle
-    - /home/travis/.gem
-    - /home/travis/.nvm
-    - /home/travis/.rvm
+    - "/home/travis/.bundle"
+    - "/home/travis/.gem"
+    - "/home/travis/.nvm"
+    - "/home/travis/.rvm"
 
 env:
   global:
@@ -17,7 +17,7 @@ env:
     - PARALLEL_TEST_JOBS=2
     - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev"
     # COVERTY_SCAN_TOKEN
-    - secure: "tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g="
+    - secure: tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g=
 
 addons:
   apt:
@@ -25,13 +25,24 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     coverity_scan:
-        project:
-            name: "lanl/bml"
-            description: "Build submitted via Travis CI"
-        notification_email: nicolasbock@gmail.com
-        build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
-        build_command: "make"
-        branch_pattern: coverty_scan
+      project:
+        name: lanl/bml
+        description: Build submitted via Travis CI
+      notification_email: nicolasbock@gmail.com
+      build_command_prepend: cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes .
+      build_command: make
+      branch_pattern: coverty_scan
+
+deploy:
+  - provider: launchpad
+    slug: "~nicolasbock/bml/+git/master"
+    oauth_token:
+      secure: jFNStG4BmWYA5tHi6WkWbLFQZXjsE3wNXpLiPGDGA2VT62tEERdeoFsZ27HWrZ51feV1J/B4UKdXW+QXlkhw86iSSoTRTSQpDC5tRMbvb760ZYm+DM/KinhWiAcry2T6/nedRXX69xLqVIQ7l6YVdYyxbFNRlEsIAPdCCzKxHShWseO4ECFQBEQ3rdL81gjY0k4kvcJ7yGBI5zSw3BsAfnmlkhY2B0GfY0VnCX9dPjxqKzgWK8//wNDM/7iZG6Y8PkckretLluys2yej4nXuaZLoPAJg4DlhzwGp2UebKLZtKf7VA+rYHU9ZpWAkm3MEWoB2aW/EYiWBmdOFi9KnyCIGLJ6GN8S7Qls9pdOi3YP2H6kzGgGg0J3eGRYDW0V5YZd2DED/XMUh2jCIaY3Rty5Y0GNzI0BsWBrOjhIcTPQHz9htpE/+KZxUYjPs67Oww6yj0hnpG2tgH8+B8Fvr+inCAOcuwvWZ5kFS3nYbDh3mlasHVCpYkkLxysD9l8dl7TK+NeAw1ahw0AgPSfaVL6eE+RsttOSGxCXfRReucoOx+WpnCpY9RVailQij+L8F0lO+4IY0AdVi4NXooJjmR/LmN5X6wBW6rrWoTLJn9pt0bkshRHLDoLlJ03HRj+fkoSBoju48Myc4m+3B16rVgItEmssbjCzWmwxzhK22+Mw=
+    oauth_token_secret:
+      secure: NzMoMuB8u1l9FDn52fSRFbDIht3Au7imkZy2cfuClqEMJTw2+WlVwD8wmCC1iKzYBzKVOrPwfSzLRCro+E/zg/yH+Vpeyzt88HKxUJj/XuR/T/jwofREGoUNfEOujNhaUMo+9Pz2vnwqVA2ZmMpu54TAqQVPj/BoKykeeFjYul5Ce/cZ9xy6Ew2+ZjEIc+8p57Q7Xe88kNwLYc51zRGr0tryyXpYelJoY4NigOZaKvpAtDGcja9kjyXLJWpHp8ABv9M8beCVXp9RKqd/8PmE0rXysQxElOwia98GG5hfacDenzw+pC9AhBjF0vBFrfp8/NVm/feBWn1DVx13F/LVK67s435HEDWJRQTBoj616mGy/gHWvEhUTDF7BliANrwkFvOoJyxq+YEIr0KEH1xqoPiJKkdCMoz6JtCg78UY2+Fsmz1sPzIbzNDpAzqDbFhFZohp/qaDdhlO1k40AQ1u6rWbIfIixivG7hMV2ClIz/xxnEJ31YPwBvvERk/SkHQPwbVG397n9H+PB3/jSMAtACiP09SK2LqoYyUvZT0roiAn0OcFNiukLLke3X/+o2wgLUlj68uCIYiYe1eC+ZmtjH465UPHx1hgtOGvNNMo8NXJbm7jrT0ZdKKPoqCd6RqCJvW8xI6Ovavbn83nRkcIAni8jsYkG9Y7W3JOKDulITg=
+    # on:
+    #   branch: master
+    #   # tags: true
 
 stages:
   - name: linter
