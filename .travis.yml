@@ -25,13 +25,13 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     coverity_scan:
-        project:
-            name: "lanl/bml"
-            description: "Build submitted via Travis CI"
-        notification_email: nicolasbock@gmail.com
-        build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes ."
-        build_command: "make"
-        branch_pattern: coverty_scan
+      project:
+        name: lanl/bml
+        description: Build submitted via Travis CI
+      notification_email: nicolasbock@gmail.com
+      build_command_prepend: cmake -DCMAKE_BUILD_TYPE=Debug -DBML_OPENMP=no -DBML_TESTING=yes -DBML_INTERNAL_BLAS=yes -DBML_INTERNAL_GEMM=yes .
+      build_command: make
+      branch_pattern: coverty_scan
 
 deploy:
   - provider: launchpad
