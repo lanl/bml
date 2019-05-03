@@ -85,4 +85,5 @@ endif()
 
 add_subdirectory(dense)
 add_subdirectory(ellpack)
+add_subdirectory(ellblock)
 add_subdirectory(ellsort)

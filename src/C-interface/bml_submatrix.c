@@ -46,6 +46,9 @@ bml_matrix2submatrix_index(
                                                core_halo_index,
                                                vsize, double_jump_flag);
             break;
+        case ellblock:
+            LOG_ERROR("bml_matrix2submatrix_index_ellblock NOT available\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -89,6 +92,9 @@ bml_matrix2submatrix_index_graph(
                                                      nsize, core_halo_index,
                                                      vsize, double_jump_flag);
             break;
+        case ellblock:
+            LOG_ERROR("bml_matrix2submatrix_index_ellblock NOT available\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -122,6 +128,9 @@ bml_group_matrix(
             break;
         case ellsort:
             return bml_group_matrix_ellsort(A, hindex, ngroups, threshold);
+            break;
+        case ellblock:
+            LOG_ERROR("bml_group_matrix_ellblock NOT available\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -157,6 +166,9 @@ bml_matrix2submatrix(
             break;
         case ellsort:
             bml_matrix2submatrix_ellsort(A, B, core_halo_index, lsize);
+            break;
+        case ellblock:
+            LOG_ERROR("bml_matrix2submatrix_ellblock NOT available\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -198,6 +210,9 @@ bml_submatrix2matrix(
             bml_submatrix2matrix_ellsort(A, B, core_halo_index, lsize,
                                          llsize, threshold);
             break;
+        case ellblock:
+            LOG_ERROR("bml_submatrix2matrix_ellblock NOT available\n");
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -231,6 +246,10 @@ bml_adjacency(
             break;
         case ellsort:
             bml_adjacency_ellsort(A, xadj, adjncy, base_flag);
+            break;
+        case ellblock:
+            LOG_ERROR
+                ("bml_adjacency routine is not implemented for ellblock\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -272,6 +291,10 @@ bml_adjacency_group(
         case ellsort:
             bml_adjacency_group_ellsort(A, hindex, nnodes, xadj, adjncy,
                                         base_flag);
+            break;
+        case ellblock:
+            LOG_ERROR
+                ("bml_adjacency_group routine is not implemented for ellblock\n");
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

@@ -5,6 +5,7 @@
 #include "bml_types.h"
 #include "dense/bml_inverse_dense.h"
 #include "ellpack/bml_inverse_ellpack.h"
+#include "ellblock/bml_inverse_ellblock.h"
 
 bml_matrix_t *
 bml_inverse(
@@ -22,6 +23,9 @@ bml_inverse(
             break;
         case ellsort:
             LOG_ERROR("inverse routine is not implemented for ellsort\n");
+            break;
+        case ellblock:
+            B = bml_inverse_ellblock(A);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
