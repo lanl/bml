@@ -30,6 +30,7 @@ double TYPED_FUNC(
     int M = A->M;
 
     int *A_nnz = (int *) A->nnz;
+    int *A_index = (int *) A->index;
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
 
@@ -37,6 +38,7 @@ double TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
 
     int myRank = bml_getMyRank();
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 #pragma omp parallel for                        \
   default(none)                                 \
@@ -79,7 +81,7 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none)          \
+#pragma omp target parallel for default(none)          \
   shared(N, M, A_index, A_nnz, A_value)         \
   reduction(+:sum)
     for (int i = 0; i < core_size; i++)
@@ -270,6 +272,9 @@ double TYPED_FUNC(
     REAL_T temp;
 
     int myRank = bml_getMyRank();
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 
 #pragma omp parallel for                        \
   default(none)                                 \

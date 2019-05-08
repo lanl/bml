@@ -37,11 +37,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+    int N = A->N;
+    int M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    int *A_value = A->value;
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
 #endif
+
+    // push result to GPU
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 
     return B;
 }
@@ -68,11 +82,25 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+    int N = A->N;
+    int M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    int *A_value = A->value;
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
 #endif
+
+    // push result to GPU
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 
 }
 
@@ -88,11 +116,22 @@ void TYPED_FUNC(
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 
+    int N = A->N;
+    int M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_value[startIndex]),
                   &inc);
 #endif
+
+    // push result to GPU
+
+#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 }

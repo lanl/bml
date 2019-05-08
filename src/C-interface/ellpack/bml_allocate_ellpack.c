@@ -17,6 +17,15 @@ void
 bml_deallocate_ellpack(
     bml_matrix_ellpack_t * A)
 {
+    int N = A->N;
+    int M = A->M;
+
+    int *A_nnz      =   A->nnz;
+    int *A_index    =   A->index;
+    // JAMAL: need to make a typed deallocator
+    double *A_value = A->value;
+
+#pragma omp target exit data map(delete: A_nnz[:N], A_index[:N*M], A_value[:N*M])
     bml_deallocate_domain(A->domain);
     bml_deallocate_domain(A->domain2);
     bml_free_memory(A->value);

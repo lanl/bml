@@ -18,6 +18,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 {
     int N = bml_get_N(A);
 
+    bml_matrix_type_t A_type = bml_get_type(A);
+    if (A_type == ellpack) {
+        bml_matrix_ellpack_t *A_ellpack = (bml_matrix_ellpack_t*)A;
+        int *A_nnz = A_ellpack->nnz;
+        int *A_index = A_ellpack->index;
+        REAL_T *A_value = A_ellpack->value;
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+    }
+
     if (N < 0)
     {
         LOG_ERROR("A is not intialized\n");
@@ -34,5 +44,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
     }
 
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+    REAL_T *B_value = B->value;
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
     return B;
 }

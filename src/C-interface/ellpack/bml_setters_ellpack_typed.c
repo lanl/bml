@@ -39,6 +39,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#pragma omp target 
     A_value[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = *((REAL_T *) element);
     A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
     A_nnz[i]++;
@@ -75,6 +76,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
     ll = 0;
     if (A_nnz[i] > 2)
     {
@@ -100,6 +102,7 @@ void TYPED_FUNC(
         A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
         A_nnz[i]++;
     }
+#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 }
 
 /** Set row i of matrix A.
@@ -128,6 +131,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
     for (int j = 0; j < A_N; j++)
     {
 
@@ -141,6 +145,7 @@ void TYPED_FUNC(
         }
     }
     A_nnz[i] = ll + 1;
+#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 
 }
 
@@ -166,6 +171,7 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
     int ll = 0;
 
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
     for (int i = 0; i < A_N; i++)
     {
         ll = 0;
@@ -198,4 +204,5 @@ void TYPED_FUNC(
         }
 
     }
+#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 }

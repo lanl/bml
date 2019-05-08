@@ -57,6 +57,9 @@ void TYPED_FUNC(
 
     int ix[A_N];
 
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M])
+
     memset(ix, 0, A_N * sizeof(int));
 
     l = 0;
@@ -168,6 +171,8 @@ void TYPED_FUNC(
     l = 0;
     ll = 0;
 
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M])
+
     // Cores are first followed by halos
     for (int j = 0; j < nsize; j++)
     {
@@ -248,6 +253,13 @@ void TYPED_FUNC(
     REAL_T *B_matrix = B->matrix;
 #endif
 
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M])
+
 #pragma omp parallel for     \
     default(none)            \
     private(rvalue)          \
@@ -308,6 +320,8 @@ void TYPED_FUNC(
 
     int ii, icol;
 
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+
 #pragma omp parallel for                      \
     default(none)                             \
     private(ii, icol)                         \
@@ -339,6 +353,7 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     free(A_matrix);
 #endif
+#pragma omp target update to(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 }
 
 // Get matching vector of values
@@ -394,6 +409,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
+
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 
 #if !(defined(__IBMC_) || defined(__ibmxl__))
     int ix[ngroups];
@@ -513,4 +530,5 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
     return B;
+#pragma omp target update to(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 }

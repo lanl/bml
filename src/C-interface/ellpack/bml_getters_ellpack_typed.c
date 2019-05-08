@@ -25,6 +25,11 @@ REAL_T *TYPED_FUNC(
     static REAL_T ZERO = 0;
     REAL_T *A_value = (REAL_T *) A->value;
 
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
     if (i < 0 || i >= A->N)
     {
         LOG_ERROR("row index out of bounds\n");
@@ -67,6 +72,7 @@ void *TYPED_FUNC(
     int *A_nnz = A->nnz;
     REAL_T *row = calloc(A_N, sizeof(REAL_T));
 
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
     for (int i = 0; i < A_N; i++)
     {
         row[i] = 0.0;
@@ -103,6 +109,7 @@ void *TYPED_FUNC(
     int *A_nnz = A->nnz;
     REAL_T *diagonal = calloc(A_N, sizeof(REAL_T));
 
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
     for (int i = 0; i < A_N; i++)
     {
         diagonal[i] = 0.0;

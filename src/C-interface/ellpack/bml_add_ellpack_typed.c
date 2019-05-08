@@ -54,6 +54,9 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[N], jx[N];
     REAL_T x[N];
@@ -137,6 +140,9 @@ void TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
+#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
+
 }
 
 /** Matrix addition.
@@ -179,6 +185,9 @@ double TYPED_FUNC(
     double trnorm = 0.0;
 
     int myRank = bml_getMyRank();
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+#pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[N], jx[N];
@@ -275,6 +284,9 @@ double TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
+
+#pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
+#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
 
     return trnorm;
 }

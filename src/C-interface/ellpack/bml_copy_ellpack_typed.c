@@ -38,6 +38,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
     //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
     //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
@@ -50,6 +51,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
                M * sizeof(REAL_T));
         //      A_nnz[perm[i]] = B_nnz[i];
     }
+// push the data to the GPU
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
     return B;
@@ -77,6 +81,8 @@ void TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
     // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
     //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
@@ -89,6 +95,9 @@ void TYPED_FUNC(
                M * sizeof(REAL_T));
         //      A_nnz[perm[i]] = B_nnz[i];
     }
+// push the data to the GPU
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+
     if (A->distribution_mode == B->distribution_mode)
     {
         bml_copy_domain(A->domain, B->domain);

@@ -32,12 +32,17 @@ void *TYPED_FUNC(
     int M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
     REAL_T *A_value = A->value;
 
+    REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
     switch (order)
     {
         case dense_row_major:
+            // copy data from device
+
+            // export to dense format
 #pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
             for (int i = 0; i < N; i++)
             {
@@ -48,8 +53,12 @@ void *TYPED_FUNC(
                              N)] = A_value[ROWMAJOR(i, j, N, M)];
                 }
             }
+//#pragma omp target update from(A_dense[:N*N])
             break;
         case dense_column_major:
+            // copy data from device
+
+            // export to dense format
 #pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
             for (int i = 0; i < N; i++)
             {

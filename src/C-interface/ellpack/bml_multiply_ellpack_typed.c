@@ -131,6 +131,8 @@ void *TYPED_FUNC(
     memset(x, 0.0, X_N * sizeof(REAL_T));
 #endif
 
+#pragma omp target update from(X_nnz[:X_N], X_index[:X_N*X_M], X_value[:X_N*X_M])
+
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
     default(none)                                      \
@@ -215,6 +217,8 @@ void *TYPED_FUNC(
         X2_nnz[i] = ll;
     }
 
+#pragma omp target update to(X2_nnz[:X2_N], X2_index[:X2_N*X2_M], X2_value[:X2_N*X2_M])
+
     trace[0] = traceX;
     trace[1] = traceX2;
 
@@ -261,6 +265,9 @@ void TYPED_FUNC(
     REAL_T *C_value = (REAL_T *) C->value;
 
     int myRank = bml_getMyRank();
+
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[C->N], jx[C->N];
@@ -351,6 +358,7 @@ void TYPED_FUNC(
         }
         C_nnz[i] = ll;
     }
+#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
 }
 
 /** Matrix multiply with threshold adjustment.
@@ -397,6 +405,9 @@ void TYPED_FUNC(
     REAL_T adjust_threshold = (REAL_T) threshold;
 
     int myRank = bml_getMyRank();
+
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[C->N], jx[C->N];
@@ -498,4 +509,5 @@ void TYPED_FUNC(
 
         adjust_threshold *= (REAL_T) 2.0;
     }
+#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
 }

@@ -31,8 +31,13 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
 
     bml_matrix_ellpack_t *B =
-        TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
+        //TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
+                                               //A->distribution_mode);
+        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, 
                                                A->distribution_mode);
+
+    int N = A->N;
+    int M = A->M;
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
@@ -57,6 +62,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         omp_init_lock(&row_lock[i]);
     }
 #endif
+
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 
 #pragma omp parallel for default(none)                                  \
   shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
@@ -85,6 +93,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #endif
         }
     }
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 
     return B;
     /*
@@ -137,6 +146,9 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+    // bring all the data back to the CPU and transpose in place
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+
 #pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -181,5 +193,7 @@ void TYPED_FUNC(
             }
         }
     }
+    // push data back to GPU
+#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 }
