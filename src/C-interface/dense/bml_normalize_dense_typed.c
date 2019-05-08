@@ -72,7 +72,7 @@ void *TYPED_FUNC(
 
 #pragma omp parallel for                        \
   default(none)                                 \
-  shared(N, A_matrix)                           \
+  shared(N, A_matrix, A)                           \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   private(absham, radius, dvalue)               \
   reduction(max:emax)                           \
