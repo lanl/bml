@@ -1,4 +1,5 @@
 #include "../../typed.h"
+#include "../../macros.h"
 #include "../blas.h"
 #include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
@@ -41,8 +42,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    int *A_value = A->value;
+    REAL_T *A_value = A->value;
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+    REAL_T scale = *scale_factor;
 
+#ifdef NOGPU
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 #ifdef NOBLAS
@@ -52,10 +57,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #endif
 
     // push result to GPU
-    int *B_nnz = B->nnz;
-    int *B_index = B->index;
 
 #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+#endif
+
+#pragma omp target teams distribute parallel for collapse(2)
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
+        }
+    }
 
     return B;
 }
@@ -86,8 +99,10 @@ void TYPED_FUNC(
     int M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    int *A_value = A->value;
+    REAL_T *A_value = A->value;
+    REAL_T scale = *scale_factor;
 
+#ifdef NOGPU
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 #ifdef NOBLAS
@@ -101,6 +116,16 @@ void TYPED_FUNC(
     int *B_index = B->index;
 
 #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+#endif
+
+#pragma omp target teams distribute parallel for collapse(2)
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
+        }
+    }
 
 }
 
@@ -120,7 +145,9 @@ void TYPED_FUNC(
     int M = A->M;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
+    REAL_T scale = *scale_factor;
 
+#ifdef NOGPU
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 #ifdef NOBLAS
@@ -133,5 +160,15 @@ void TYPED_FUNC(
     // push result to GPU
 
 #pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
+
+#pragma omp target teams distribute parallel for collapse(2)
+    for (int i = 0; i < N; i++) 
+    {
+        for (int j = 0; j < M; j++)
+        {
+            A_value[ROWMAJOR(i,j,M,N)] = scale*A_value[ROWMAJOR(i,j,M,N)];
+        }
+    }
 
 }
