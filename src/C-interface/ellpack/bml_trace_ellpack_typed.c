@@ -42,6 +42,8 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+
 #pragma omp parallel for default(none)          \
   shared(N, M, A_value, A_index, A_nnz)         \
   shared(A_localRowMin, A_localRowMax, myRank)  \
@@ -88,6 +90,13 @@ double TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     REAL_T *rvalue;
 
+    int B_N = B->N;
+    int B_M = B->M;
+
+    REAL_T *B_value = (REAL_T *) B->value;
+    int *B_index = (int *) B->index;
+    int *B_nnz = (int *) B->nnz;
+
     int myRank = bml_getMyRank();
 
     if (A_N != B->N || A_M != B->M)
@@ -95,6 +104,9 @@ double TYPED_FUNC(
         LOG_ERROR
             ("bml_traceMult_ellpack: Matrices A and B have different sizes.");
     }
+
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 
 #pragma omp parallel for default(none)          \
   private(rvalue)                               \
