@@ -38,6 +38,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
+#ifdef NOGPU
+    // copy to host and copy back
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
     //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
@@ -53,6 +55,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 // push the data to the GPU
 #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+#endif // NOGPU
+
+    // all work on device
+
+#pragma omp target teams distribute parallel for 
+    for (int i = 0; i < N; i++)
+    {
+        B_nnz[i] = A_nnz[i];
+    }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_index[ROWMAJOR(i,j,N,M)] = A_index[ROWMAJOR(i, j, N, M)];
+            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
+        }
+    }
 
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
@@ -82,6 +103,7 @@ void TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
+#ifdef NOGPU
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
     // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
@@ -97,6 +119,26 @@ void TYPED_FUNC(
     }
 // push the data to the GPU
 #pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+
+#endif // NOGPU
+
+// All data and copy stays on deveice
+#pragma omp target teams distribute parallel for 
+    for (int i = 0; i < N; i++)
+    {
+        B_nnz[i] = A_nnz[i];
+    }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_index[ROWMAJOR(i,j,N,M)] = A_index[ROWMAJOR(i, j, N, M)];
+            B_value[ROWMAJOR(i,j,N,M)] = A_value[ROWMAJOR(i, j, N, M)];
+        }
+    }
+
 
     if (A->distribution_mode == B->distribution_mode)
     {
