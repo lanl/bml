@@ -31,11 +31,34 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
+
+#ifdef NOGPU
 #pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+
     memset(A->nnz, 0, A->N * sizeof(int));
     memset(A->index, 0, A->N * A->M * sizeof(int));
     memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
+
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
+
+    // All data and copy stays on deveice
+#pragma omp target teams distribute parallel for 
+    for (int i = 0; i < N; i++)
+        {
+             A_nnz[i] = 0;
+        }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            A_index[ROWMAJOR(i,j,N,M)] = 0;
+            A_value[ROWMAJOR(i,j,N,M)] = 0.0;
+        }
+    }
+
 }
 
 /** Allocate a matrix with uninitialized values.
@@ -64,6 +87,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->N = matrix_dimension.N_rows;
     A->M = matrix_dimension.N_nz_max;
     A->distribution_mode = distrib_mode;
+    // need to keep these allocates for host copy
     A->index = bml_noinit_allocate_memory(sizeof(int) * A->N * A->M);
     A->nnz = bml_allocate_memory(sizeof(int) * A->N);
     A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * A->N * A->M);
@@ -75,7 +99,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
+
+#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
     return A;
@@ -109,6 +134,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->N = N;
     A->M = M;
     A->distribution_mode = distrib_mode;
+    // need to keep these allocates for host copy
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
@@ -118,9 +144,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
     REAL_T *A_value = A->value;
-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
-#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
+#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
+
+    // All arrays set on device
+#pragma omp target teams distribute parallel for 
+    for (int i = 0; i < N; i++)
+        {
+             A_nnz[i] = 0;
+        }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            A_index[ROWMAJOR(i,j,N,M)] = 0;
+            A_value[ROWMAJOR(i,j,N,M)] = 0.0;
+        }
+    }
     return A;
 }
 
@@ -152,6 +194,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
 #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -165,7 +208,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
-#pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
     return A;
@@ -258,8 +300,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         A_index[ROWMAJOR(i, 0, N, M)] = i;
         A_nnz[i] = 1;
     }
-    // GPU version and CPU version out of sync
-//#pragma omp target update from(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
     return A;
 }
