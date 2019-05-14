@@ -1,7 +1,7 @@
 #ifndef __TYPED_H
 #define __TYPED_H
 
-#if defined(SINGLE_REAL)
+#if defined(SINGLE_REAL) || (defined(SINGLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T float
 #define MAGMA_T float
 #define FUNC_SUFFIX single_real
@@ -13,7 +13,7 @@
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabsf(x))
 #define is_above_threshold(x, t) (fabsf(x) > (float) (t))
-#elif defined(DOUBLE_REAL)
+#elif defined(DOUBLE_REAL) || (defined(DOUBLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T double
 #define MAGMA_T double
 #define FUNC_SUFFIX double_real
