@@ -96,6 +96,31 @@ double TYPED_FUNC(
     int N = A->N;
 
     REAL_T sum = 0.0;
+
+#ifdef BML_USE_MAGMA
+#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    MAGMA_T tsum = MAGMACOMPLEX(MAKE) (0., 0.);
+    for (int i = 0; i < core_size; i++)
+    {
+        tsum =
+            MAGMACOMPLEX(ADD) (tsum,
+                               MAGMA(dotu) (N,
+                                            (MAGMA_T *) A->matrix + i * A->ld,
+                                            1,
+                                            (MAGMA_T *) A->matrix + i * A->ld,
+                                            1, A->queue));
+    }
+    sum = MAGMACOMPLEX(REAL) (tsum) + I * MAGMACOMPLEX(IMAG) (tsum);
+#else
+    for (int i = 0; i < core_size; i++)
+    {
+        sum += MAGMA(dot) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
+                           (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+    }
+#endif
+
+#else
+
     REAL_T *A_matrix = A->matrix;
 
 #pragma omp parallel for default(none)          \
@@ -117,6 +142,7 @@ double TYPED_FUNC(
         }
     }
 */
+#endif
 
     return (double) REAL_PART(sum);
 }
