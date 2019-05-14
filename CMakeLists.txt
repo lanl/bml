@@ -450,6 +450,28 @@ if(LAPACK_FOUND)
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
+# Check whether the compiler supports complex types. The Nvidia
+# compiler is known not to support them for example.
+
+set(BML_COMPLEX TRUE
+  CACHE BOOL "Whether to build complex types")
+
+if(BML_COMPLEX)
+  try_compile(SUPPORTS_COMPLEX ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/test_complex.c
+    OUTPUT_VARIABLE COMPLEX_OUTPUT
+    )
+  message(STATUS "Compile output: ${COMPLEX_OUTPUT}")
+  if(SUPPORTS_COMPLEX)
+    message(STATUS "The compiler supports complex types")
+    add_definitions(-DBML_COMPLEX)
+  else()
+    message(STATUS "The compiler does not support complex types. Will skip them.")
+    set(BML_COMPLEX FALSE)
+  endif()
+else()
+  message(STATUS "Complex types disabled on user request")
+endif()
+
 find_program(ADDR2LINE addr2line)
 if(ADDR2LINE)
   message(STATUS "Found addr2line, backtrace will resolve line numbers")

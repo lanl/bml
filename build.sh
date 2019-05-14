@@ -47,6 +47,7 @@ EOF
     echo "FC                     Path to Fortran compiler    (default is ${FC})"
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
+    echo "BML_COMPLEX            {yes,no}                    (default is ${BML_COMPLEX})"
     echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
     echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
@@ -74,6 +75,7 @@ set_defaults() {
     : ${FC:=gfortran}
     : ${BML_OPENMP:=yes}
     : ${BML_MPI:=no}
+    : ${BML_COMPLEX:=yes}
     : ${BLAS_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
     : ${EXTRA_CFLAGS:=}
@@ -143,6 +145,7 @@ configure() {
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DBML_MPI="${BML_MPI}" \
+        -DBML_COMPLEX="${BML_COMPLEX}" \
         -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
