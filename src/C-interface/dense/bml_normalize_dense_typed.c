@@ -12,6 +12,10 @@
 #include "bml_getters_dense.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <complex.h>
 #include <float.h>
 #include <math.h>
@@ -58,7 +62,6 @@ void *TYPED_FUNC(
     REAL_T radius, dvalue, absham;
 
     int N = A->N;
-    REAL_T *A_matrix = A->matrix;
 
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
@@ -69,10 +72,19 @@ void *TYPED_FUNC(
     double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
+#ifdef BML_USE_MAGMA
+    //copy data from GPU to CPU to do the work on the CPU
+    REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+
+    MAGMA(getmatrix) (A->N, A->N,
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
 
 #pragma omp parallel for                        \
   default(none)                                 \
-  shared(N, A_matrix, A)                           \
+  shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   private(absham, radius, dvalue)               \
   reduction(max:emax)                           \
@@ -84,19 +96,11 @@ void *TYPED_FUNC(
 
         for (int j = 0; j < N; j++)
         {
-#ifdef BML_USE_MAGMA
-            absham = ABS(*((REAL_T *) (bml_get_dense(A, i, j))));
-#else
             absham = ABS(A_matrix[ROWMAJOR(i, j, N, N)]);
-#endif
             radius += (double) absham;
         }
 
-#ifdef BML_USE_MAGMA
-        dvalue = *((REAL_T *) (bml_get_dense(A, i, i)));
-#else
         dvalue = A_matrix[ROWMAJOR(i, i, N, N)];
-#endif
 
         radius -= ABS(dvalue);
 
@@ -113,6 +117,10 @@ void *TYPED_FUNC(
         if (REAL_PART(dvalue - radius) < emin)
             emin = REAL_PART(dvalue - radius);
     }
+
+#ifdef BML_USE_MAGMA
+    bml_free_memory(A_matrix);
+#endif
 
 #ifdef DO_MPI
     if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
