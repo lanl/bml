@@ -50,58 +50,58 @@ void bml_write_bml_matrix_ellblock_double_complex(
     const char *filename);
 
 double bml_sum_squares_single_real(
-    const float *v,
+    const void *v,
     const int,
     const int,
     const int);
 double bml_sum_squares_double_real(
-    const double *v,
+    const void *v,
     const int,
     const int,
     const int);
 double bml_sum_squares_single_complex(
-    const float complex * v,
+    const void *v,
     const int,
     const int,
     const int);
 double bml_sum_squares_double_complex(
-    const double complex * v,
+    const void *v,
     const int,
     const int,
     const int);
 
 double bml_norm_inf_single_real(
-    const float *v,
+    const void *v,
     const int,
     const int,
     const int);
 double bml_norm_inf_double_real(
-    const double *v,
+    const void *v,
     const int,
     const int,
     const int);
 double bml_norm_inf_single_complex(
-    const float complex * v,
+    const void *v,
     const int,
     const int,
     const int);
 double bml_norm_inf_double_complex(
-    const double complex * v,
+    const void *v,
     const int,
     const int,
     const int);
 
 double bml_norm_inf_fast_single_real(
-    const float *v,
+    const void *v,
     const int);
 double bml_norm_inf_fast_double_real(
-    const double *v,
+    const void *v,
     const int);
 double bml_norm_inf_fast_single_complex(
-    const float complex * v,
+    const void *v,
     const int);
 double bml_norm_inf_fast_double_complex(
-    const double complex * v,
+    const void *v,
     const int);
 
 #endif

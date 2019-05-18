@@ -76,25 +76,25 @@ void bml_set_row_ellblock(
 void bml_set_row_ellblock_single_real(
     bml_matrix_ellblock_t * A,
     const int i,
-    const float *row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellblock_double_real(
     bml_matrix_ellblock_t * A,
     const int i,
-    const double *row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellblock_single_complex(
     bml_matrix_ellblock_t * A,
     const int i,
-    const float complex * row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
     const int i,
-    const double complex * row,
+    const void *row,
     const double threshold);
 
 void bml_set_diagonal_ellblock(
@@ -104,48 +104,46 @@ void bml_set_diagonal_ellblock(
 
 void bml_set_diagonal_ellblock_single_real(
     bml_matrix_ellblock_t * A,
-    const float *diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellblock_double_real(
     bml_matrix_ellblock_t * A,
-    const double *diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellblock_single_complex(
     bml_matrix_ellblock_t * A,
-    const float complex * diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
-    const double complex * diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_block_ellblock_single_real(
     bml_matrix_ellblock_t * A,
     const int ib,
     const int jb,
-    const float *values);
+    const void *values);
 
 void bml_set_block_ellblock_double_real(
     bml_matrix_ellblock_t * A,
     const int ib,
     const int jb,
-    const double *values);
+    const void *values);
 
 void bml_set_block_ellblock_single_complex(
     bml_matrix_ellblock_t * A,
     const int ib,
     const int jb,
-    const float complex * values);
+    const void *values);
 
 void bml_set_block_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
     const int ib,
     const int jb,
-    const double complex * values);
-
-
+    const void *values);
 
 #endif

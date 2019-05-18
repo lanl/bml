@@ -32,8 +32,9 @@ void TYPED_FUNC(
     bml_matrix_ellblock_t * A,
     const int i,
     const int j,
-    const void *element)
+    const void *_element)
 {
+    const REAL_T *element = _element;
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     int *A_indexb = A->indexb;
     int *A_nnzb = A->nnzb;
@@ -115,9 +116,10 @@ void TYPED_FUNC(
     bml_set_row_ellblock) (
     bml_matrix_ellblock_t * A,
     const int i,
-    const REAL_T * row,
+    const void *_row,
     const double threshold)
 {
+    const REAL_T *row = _row;
     int A_N = A->N;
 
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
@@ -189,9 +191,10 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_ellblock) (
     bml_matrix_ellblock_t * A,
-    const REAL_T * diagonal,
+    const void *_diagonal,
     const double threshold)
 {
+    const REAL_T *diagonal = _diagonal;
     int A_NB = A->NB;
     int A_MB = A->MB;
 
@@ -267,10 +270,12 @@ void TYPED_FUNC(
     bml_matrix_ellblock_t * A,
     const int ib,
     const int jb,
-    const REAL_T * elements)
+    const void *_elements)
 {
     assert(ib < A->NB);
     assert(jb < A->NB);
+
+    const REAL_T *elements = _elements;
 
     int data_copied = 0;
     for (int jp = 0; jp < A->nnzb[ib]; jp++)
