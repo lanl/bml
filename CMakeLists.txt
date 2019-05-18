@@ -476,7 +476,7 @@ if(BML_COMPLEX)
     set(BML_COMPLEX FALSE)
   endif()
 else()
-  message(STATUS "Complex types disabled on user request")
+  message(STATUS "Complex types disabled by user request")
 endif()
 
 find_program(ADDR2LINE addr2line)
