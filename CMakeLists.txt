@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 
+message(STATUS "CMake version ${CMAKE_VERSION}")
+
 set(LANGUAGES C CXX)
 set(BML_BUILD_FORTRAN_INTERFACE TRUE CACHE BOOL
   "Build the Fortran API (requires a Fortran compiler)")
