@@ -413,7 +413,7 @@ void TYPED_FUNC(
         aflag = 0;
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
+#pragma omp parallel for                     \
   default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
