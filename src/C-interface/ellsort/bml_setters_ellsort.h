@@ -76,25 +76,25 @@ void bml_set_row_ellsort(
 void bml_set_row_ellsort_single_real(
     bml_matrix_ellsort_t * A,
     const int i,
-    const float *row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellsort_double_real(
     bml_matrix_ellsort_t * A,
     const int i,
-    const double *row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
     const int i,
-    const float complex * row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
     const int i,
-    const double complex * row,
+    const void *row,
     const double threshold);
 
 void bml_set_diagonal_ellsort(
@@ -104,22 +104,22 @@ void bml_set_diagonal_ellsort(
 
 void bml_set_diagonal_ellsort_single_real(
     bml_matrix_ellsort_t * A,
-    const float *diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellsort_double_real(
     bml_matrix_ellsort_t * A,
-    const double *diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
-    const float complex * diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
-    const double complex * diagonal,
+    const void *diagonal,
     const double threshold);
 
 #endif
