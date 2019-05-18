@@ -35,8 +35,9 @@ void TYPED_FUNC(
     bml_set_row_dense) (
     bml_matrix_dense_t * A,
     const int i,
-    const REAL_T * row)
+    const void *_row)
 {
+    const REAL_T *row = _row;
     int N = bml_get_N(A);
 
     if (N < 0)
@@ -59,8 +60,9 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_dense) (
     bml_matrix_dense_t * A,
-    const REAL_T * diagonal)
+    const void *_diagonal)
 {
+    const REAL_T *diagonal = _diagonal;
     int N = bml_get_N(A);
 
     if (N < 0)
