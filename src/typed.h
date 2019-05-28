@@ -36,7 +36,7 @@
 #define IMAGINARY_PART(x) (cimagf(x))
 #define COMPLEX_CONJUGATE(x) (conjf(x))
 #define ABS(x) (cabsf(x))
-#define is_above_threshold(x, t) (cabsf(x) > (float) (t))
+#define is_above_threshold(x, t) ((creal(x)*creal(x)+cimag(x)+cimag(x)) > (float)(t*t))
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double _Complex
 #define MAGMA_T magmaDoubleComplex
@@ -48,7 +48,7 @@
 #define IMAGINARY_PART(x) (cimag(x))
 #define COMPLEX_CONJUGATE(x) (conj(x))
 #define ABS(x) (cabs(x))
-#define is_above_threshold(x, t) (cabs(x) > (double) (t))
+#define is_above_threshold(x, t) ((creal(x)*creal(x)+cimag(x)+cimag(x)) > (double)(t*t))
 #else
 #error Unknown precision type
 #endif
