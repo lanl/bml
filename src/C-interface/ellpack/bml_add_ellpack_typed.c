@@ -9,6 +9,7 @@
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
+#include <cuComplex.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,7 +32,7 @@
  */
 void TYPED_FUNC(
     bml_add_ellpack) (
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
     const double alpha,
     const double beta,
@@ -53,6 +54,8 @@ void TYPED_FUNC(
     REAL_T *B_value = (REAL_T *) B->value;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
 #pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
 #pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
@@ -67,35 +70,39 @@ void TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for \
+#pragma omp target parallel for \
     default(none)                         \
-    shared(N, A_M, B_M, myRank)           \
+    shared(N, A_M, B_M)           \
+    shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
-    shared(A_localRowMin, A_localRowMax)  \
     shared(B_index, B_value, B_nnz)
 #else
 #pragma omp parallel for                  \
     default(none)                         \
-    shared(N, A_M, B_M, myRank)           \
+    shared(N, A_M, B_M)           \
+    shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
-    shared(A_localRowMin, A_localRowMax)  \
     shared(B_index, B_value, B_nnz)       \
     firstprivate(ix, jx, x)
 #endif
 
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-        int ix[N], jx[N];
-        REAL_T x[N];
+        //int ix[N], jx[N];
+        //REAL_T x[N];
+        //memset(ix, 0, N * sizeof(int));
 
-        memset(ix, 0, N * sizeof(int));
+        int *ix = (int*)omp_target_alloc(N*sizeof(int),0);
+        int *jx = (int*)omp_target_alloc(N*sizeof(int),0);
+        REAL_T *x = (REAL_T*)omp_target_alloc(N*sizeof(REAL_T),0);
+
 #endif
 
         int l = 0;
-        if (alpha > (double) 0.0 || alpha < (double) 0.0)
+        if ((alpha > (double) 0.0) || (alpha < (double) 0.0))
+        {
             for (int jp = 0; jp < A_nnz[i]; jp++)
             {
                 int k = A_index[ROWMAJOR(i, jp, N, A_M)];
@@ -106,10 +113,14 @@ void TYPED_FUNC(
                     jx[l] = k;
                     l++;
                 }
+//#if defined (SINGLE_REAL) || defined(DOUBLE_REAL)
                 x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
+//#endif
             }
+        }
 
         if (beta > (double) 0.0 || beta < (double) 0.0)
+        {
             for (int jp = 0; jp < B_nnz[i]; jp++)
             {
                 int k = B_index[ROWMAJOR(i, jp, N, B_M)];
@@ -120,9 +131,13 @@ void TYPED_FUNC(
                     jx[l] = k;
                     l++;
                 }
+//#if defined (SINGLE_REAL) || defined(DOUBLE_REAL)
                 x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
+//#endif
             }
+        }
         A_nnz[i] = l;
+
 
         int ll = 0;
         for (int jp = 0; jp < l; jp++)
@@ -141,7 +156,6 @@ void TYPED_FUNC(
         A_nnz[i] = ll;
     }
 #pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
-#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
 
 }
 
@@ -185,6 +199,8 @@ double TYPED_FUNC(
     double trnorm = 0.0;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
 #pragma omp target update from(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
 #pragma omp target update from(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
@@ -203,24 +219,23 @@ double TYPED_FUNC(
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                  \
     default(none)                         \
-    shared(N, A_M, B_M, myRank)           \
+    shared(N, A_M, B_M)           \
+    shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
-    shared(A_localRowMin, A_localRowMax)  \
     shared(B_index, B_value, B_nnz)       \
     reduction(+:trnorm)
 #else
 #pragma omp parallel for                  \
     default(none)                         \
-    shared(N, A_M, B_M, myRank)           \
+    shared(N, A_M, B_M)           \
+    shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
-    shared(A_localRowMin, A_localRowMax)  \
     shared(B_index, B_value, B_nnz)       \
     firstprivate(ix, jx, x, y)            \
     reduction(+:trnorm)
 #endif
 
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -286,7 +301,6 @@ double TYPED_FUNC(
     }
 
 #pragma omp target update to(A_nnz[:N], A_index[:N*A_M], A_value[:N*A_M])
-#pragma omp target update to(B_nnz[:N], B_index[:N*B_M], B_value[:N*B_M])
 
     return trnorm;
 }
@@ -303,7 +317,7 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_ellpack) (
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     const double beta,
     const double threshold)
 {
@@ -331,7 +345,7 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_add_identity_ellpack) (
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     const double alpha,
     const double beta,
     const double threshold)

@@ -28,16 +28,18 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     bml_transpose_new_ellpack) (
     const bml_matrix_ellpack_t * A)
 {
-    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
-
-    bml_matrix_ellpack_t *B =
-        //TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension,
-                                               //A->distribution_mode);
-        TYPED_FUNC(bml_zero_matrix_ellpack) (A->N, A->M, 
-                                               A->distribution_mode);
-
     int N = A->N;
     int M = A->M;
+
+    bml_matrix_dimension_t matrix_dimension = { N, N, M };
+    bml_distribution_mode_t dist_mode = A->distribution_mode;
+
+    //printf("got to here\n");
+    bml_matrix_ellpack_t *B =
+        TYPED_FUNC(bml_noinit_matrix_ellpack) (matrix_dimension, dist_mode);
+        //TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, dist_mode);
+        
+    //printf("got to here\n");
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
@@ -64,7 +66,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #endif
 
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
-#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
 
 #pragma omp parallel for default(none)                                  \
   shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
@@ -147,9 +148,9 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
 
     // bring all the data back to the CPU and transpose in place
-#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+//#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
-#pragma omp parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
+#pragma omp target parallel for default(none) shared(N, M, A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
         for (int j = A_nnz[i] - 1; j >= 0; j--)
@@ -194,6 +195,6 @@ void TYPED_FUNC(
         }
     }
     // push data back to GPU
-#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+//#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
 }

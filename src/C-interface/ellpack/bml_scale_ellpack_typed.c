@@ -40,9 +40,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     int N = A->N;
     int M = A->M;
+
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T *A_value = A->value;
+
     int *B_nnz = B->nnz;
     int *B_index = B->index;
     REAL_T scale = *scale_factor;

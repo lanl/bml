@@ -21,7 +21,7 @@
  */
 void
 bml_add_ellpack(
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     const bml_matrix_ellpack_t * B,
     const double alpha,
     const double beta,
@@ -110,7 +110,7 @@ bml_add_norm_ellpack(
  */
 void
 bml_add_identity_ellpack(
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     const double beta,
     const double threshold)
 {
@@ -146,7 +146,7 @@ bml_add_identity_ellpack(
  */
 void
 bml_scale_add_identity_ellpack(
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     const double alpha,
     const double beta,
     const double threshold)
