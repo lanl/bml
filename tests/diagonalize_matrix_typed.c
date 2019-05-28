@@ -75,7 +75,13 @@ int TYPED_FUNC(
     printf("%s\n", "eigenvectors");
     bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
 
-    aux = bml_transpose_new(eigenvectors);
+    //aux = bml_transpose_new(eigenvectors);
+    aux = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_copy(eigenvectors, aux);
+    bml_transpose(aux);
+
+    printf("%s\n", "aux");
+    bml_print_bml_matrix(aux, 0, N, 0, N);
 
     bml_set_diagonal(aux1, eigenvalues, 0.0);
 

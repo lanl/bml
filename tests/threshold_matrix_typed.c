@@ -12,8 +12,8 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t *A = NULL;
-    bml_matrix_t *B = NULL;
+    bml_matrix_t *A;
+    bml_matrix_t *B;
 
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
@@ -32,9 +32,13 @@ int TYPED_FUNC(
     B = bml_threshold_new(A, threshold);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
+
     B_dense = bml_export_to_dense(B, dense_row_major);
+
+    printf("A = \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
+    printf("B = threshold_new(A, %f)\n", threshold);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
                            N, 0, N);
     for (int i = 0; i < N * N; i++)
@@ -49,5 +53,8 @@ int TYPED_FUNC(
     bml_free_memory(B_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
+
+    LOG_INFO("threshold matrix test passed\n");
+
     return 0;
 }
