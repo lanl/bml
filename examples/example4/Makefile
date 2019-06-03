@@ -1,6 +1,7 @@
 
 BML_PATH = $(HOME)/bml/install/lib/
-CC = gcc
+BML_PATH = /home/toks/CoPa/bml/install/lib64
+CC = icc
 CFLAGS = -I${BML_PATH}/../include -fopenmp 
 LINK = -L${BML_PATH} -lbml -lbml_fortran  -llapack -lblas -lm
 

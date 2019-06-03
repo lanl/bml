@@ -42,16 +42,53 @@ int TYPED_FUNC(
     switch (matrix_precision)
     {
         case single_real:
-            eigenvalues = calloc(N, sizeof(float));
+            eigenvalues = bml_allocate_memory(N*sizeof(float));
+
+            #pragma omp parallel for simd
+            #pragma vector aligned
+            for(int i=0; i < N; i++)
+            {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(eigenvalues,64);
+#endif
+    		eigenvalues[i] = 0.0;
+	    }
             break;
         case double_real:
-            eigenvalues = calloc(N, sizeof(double));
+            eigenvalues = bml_allocate_memory(N*sizeof(double));
+            #pragma omp parallel for simd
+            #pragma vector aligned
+            for(int i=0; i < N; i++)
+            {   
+#ifdef __INTEL_COMPILER
+        __assume_aligned(eigenvalues,64);
+#endif
+                eigenvalues[i] = 0.0;
+            }
             break;
         case single_complex:
-            eigenvalues = calloc(N, sizeof(float complex));
+            eigenvalues = bml_allocate_memory(N*sizeof(float complex));
+            #pragma omp parallel for simd
+            #pragma vector aligned
+            for(int i=0; i < N; i++)
+            {   
+#ifdef __INTEL_COMPILER
+        __assume_aligned(eigenvalues,64);
+#endif
+                eigenvalues[i] = 0.0;
+            }
             break;
         case double_complex:
-            eigenvalues = calloc(N, sizeof(double complex));
+            eigenvalues = bml_allocate_memory(N*sizeof(double complex));
+            #pragma omp parallel for simd
+            #pragma vector aligned
+            for(int i=0; i < N; i++)
+            {   
+#ifdef __INTEL_COMPILER
+        __assume_aligned(eigenvalues,64);
+#endif
+                eigenvalues[i] = 0.0;
+            }
             break;
         default:
             LOG_DEBUG("matrix_precision is not set");
@@ -123,8 +160,12 @@ int TYPED_FUNC(
     bml_deallocate(&aux2);
     bml_deallocate(&A_t);
     bml_deallocate(&eigenvectors);
+<<<<<<< HEAD:tests/C-tests/diagonalize_matrix_typed.c
     bml_deallocate(&id);
     free(eigenvalues);
+=======
+    bml_free_memory(eigenvalues);
+>>>>>>> vectorization work on bml:tests/diagonalize_matrix_typed.c
 
     LOG_INFO("diagonalize matrix test passed\n");
 
