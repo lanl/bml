@@ -187,8 +187,13 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
+=======
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz) 
+>>>>>>> vectorization work on bml
 =======
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz) 
@@ -282,7 +287,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
+=======
+#pragma omp parallel for simd default(none) shared(A_value, A_index, A_nnz)
+>>>>>>> vectorization work on bml
 =======
 #pragma omp parallel for simd default(none) shared(A_value, A_index, A_nnz)
 >>>>>>> vectorization work on bml

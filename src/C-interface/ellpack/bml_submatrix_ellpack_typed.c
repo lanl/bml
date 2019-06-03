@@ -375,8 +375,11 @@ void *TYPED_FUNC(
     int *A_index = A->index;
     REAL_T *A_value = A->value;
 <<<<<<< HEAD
+<<<<<<< HEAD
     REAL_T *rvalue = bml_noinit_allocate_memory(colCnt * sizeof(REAL_T));
 =======
+=======
+>>>>>>> vectorization work on bml
     REAL_T *rvalue = bml_allocate_memory(colCnt * sizeof(REAL_T));
     #pragma omp parallel for simd
     #pragma vector aligned
@@ -387,6 +390,9 @@ void *TYPED_FUNC(
 #endif	
     	rvalue[i]   = 0;
     }
+<<<<<<< HEAD
+>>>>>>> vectorization work on bml
+=======
 >>>>>>> vectorization work on bml
 
     for (int i = 0; i < colCnt; i++)

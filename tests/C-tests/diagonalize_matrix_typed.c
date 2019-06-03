@@ -162,10 +162,14 @@ int TYPED_FUNC(
     bml_deallocate(&eigenvectors);
 <<<<<<< HEAD:tests/C-tests/diagonalize_matrix_typed.c
     bml_deallocate(&id);
+<<<<<<< HEAD
     free(eigenvalues);
 =======
     bml_free_memory(eigenvalues);
 >>>>>>> vectorization work on bml:tests/diagonalize_matrix_typed.c
+=======
+    bml_free_memory(eigenvalues);
+>>>>>>> vectorization work on bml
 
     LOG_INFO("diagonalize matrix test passed\n");
 

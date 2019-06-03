@@ -136,7 +136,12 @@ bml_matrix_dense_t *TYPED_FUNC(
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
     REAL_T *A_dense = A->matrix;
 <<<<<<< HEAD
+<<<<<<< HEAD
 #pragma omp parallel for shared(A_dense)
+=======
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+#pragma omp parallel for default(none) shared(A_dense)
+>>>>>>> vectorization work on bml
 =======
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for default(none) shared(A_dense)

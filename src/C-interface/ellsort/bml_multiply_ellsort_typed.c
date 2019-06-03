@@ -133,7 +133,12 @@ void *TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 <<<<<<< HEAD
+<<<<<<< HEAD
 #pragma omp parallel for                             \
+=======
+#pragma omp parallel for                                \
+  default(none)                                      \
+>>>>>>> vectorization work on bml
 =======
 #pragma omp parallel for                                \
   default(none)                                      \
@@ -144,7 +149,13 @@ void *TYPED_FUNC(
   reduction(+: traceX, traceX2)
 #else
 <<<<<<< HEAD
+<<<<<<< HEAD
 #pragma omp parallel for                             \
+=======
+
+#pragma omp parallel for                                 \
+  default(none)                                      \
+>>>>>>> vectorization work on bml
 =======
 
 #pragma omp parallel for                                 \
