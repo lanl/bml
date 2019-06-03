@@ -10,8 +10,8 @@ if (( $? != 0 )); then
     TOP_DIR=$(pwd -P $TOP_DIR)
 fi
 
-: ${BUILD_DIR:=${TOP_DIR}/build}
-: ${INSTALL_DIR:=${TOP_DIR}/install}
+: ${BUILD_DIR:=${TOP_DIR}/build.broadwell}
+: ${INSTALL_DIR:=${TOP_DIR}/install.broadwell}
 LOG_FILE="${TOP_DIR}/build.log"
 : ${VERBOSE_MAKEFILE:=no}
 : ${PARALLEL_TEST_JOBS:=1}

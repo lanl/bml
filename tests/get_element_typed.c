@@ -24,7 +24,7 @@ int TYPED_FUNC(
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
-    A_dense = calloc(N * N, sizeof(REAL_T));
+    A_dense = bml_allocate_memory(N * N*sizeof(REAL_T));
 
     for (int i = 0; i < N * N; i++)
     {

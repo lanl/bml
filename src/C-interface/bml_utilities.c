@@ -4,6 +4,7 @@
 #include "bml_logger.h"
 #include "bml_types.h"
 #include "bml_utilities.h"
+#include "bml_allocate.h"
 #include "dense/bml_utilities_dense.h"
 #include "ellpack/bml_utilities_ellpack.h"
 #include "ellsort/bml_utilities_ellsort.h"
@@ -56,7 +57,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), single_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case double_real:
@@ -65,7 +66,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case single_complex:
@@ -74,7 +75,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case double_complex:
@@ -83,7 +84,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 default:
@@ -100,7 +101,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), single_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case double_real:
@@ -109,7 +110,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case single_complex:
@@ -118,7 +119,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case double_complex:
@@ -127,7 +128,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 default:

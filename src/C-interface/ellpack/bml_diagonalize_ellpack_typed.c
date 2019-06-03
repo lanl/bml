@@ -55,7 +55,7 @@ void TYPED_FUNC(
     D = bml_import_from_dense_dense(A->matrix_precision, dense_row_major,
                                     A->N, A_dense, threshold,
                                     A->distribution_mode);
-    free(A_dense);
+    bml_free_memory(A_dense);
 
     // Allocate eigenvectors matrix in dense_bml
     eigenvectors_bml_dense =
@@ -80,7 +80,7 @@ void TYPED_FUNC(
                                                    eigenvectors_dense,
                                                    threshold, A->M,
                                                    A->distribution_mode);
-    free(eigenvectors_dense);
+    bml_free_memory(eigenvectors_dense);
 
     // This is done in order to pass the changes back to the upper level
     bml_copy_ellpack(myeigenvectors, eigenvectors);

@@ -37,6 +37,16 @@ void TYPED_FUNC(
                       A->queue);
 #else
     memset(A->matrix, 0.0, A->N * A->ld * sizeof(REAL_T));
+    REAL_T *A_matrix = A->matrix;
+    #pragma omp parallel for simd
+    #pragma vector aligned
+    for(int i=0; i < A->N*A->ld; i++)
+    {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A_matrix,64);
+#endif	
+   	A_matrix[i] = 0;
+   }
 #endif
 }
 
@@ -78,6 +88,18 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->matrix =
         bml_allocate_memory(sizeof(REAL_T) * matrix_dimension.N_rows *
                             matrix_dimension.N_rows);
+    REAL_T *A_matrix = A->matrix;
+
+    #pragma omp parallel for simd
+    #pragma vector aligned
+    for(int ii=0; ii < (matrix_dimension.N_rows*matrix_dimension.N_rows); ii++)
+    {
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A_matrix,64);
+#endif 
+  	A_matrix[ii]=0.0;
+    }
+
 #endif
     A->domain =
         bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
@@ -111,13 +133,14 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
     REAL_T *A_dense = A->matrix;
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for default(none) shared(A_dense)
     for (int i = 0; i < N; i++)
     {
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
              j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
-            A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
+            A_dense[ROWMAJOR(i, j, N, N)] = rand()*INV_RAND_MAX;
         }
     }
     return A;
@@ -151,6 +174,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 #else
     REAL_T *A_dense = A->matrix;
 #endif
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 
     for (int i = 0; i < N; i++)
     {
@@ -158,9 +182,9 @@ bml_matrix_dense_t *TYPED_FUNC(
         {
 #ifdef BML_USE_MAGMA
             A_dense[ROWMAJOR(i, j, N, N)] =
-                MAGMACOMPLEX(MAKE) (rand() / (double) RAND_MAX, 0.);
+                MAGMACOMPLEX(MAKE) (rand()*INV_RAND_MAX, 0.);
 #else
-            A_dense[ROWMAJOR(i, j, N, N)] = rand() / (double) RAND_MAX;
+            A_dense[ROWMAJOR(i, j, N, N)] = rand()*INV_RAND_MAX;
 #endif
         }
     }
