@@ -10,8 +10,7 @@
 int bml_allocated(
     bml_matrix_t * A);
 
-void *bml_allocate_memory(
-    size_t s);
+void *bml_allocate_memory(const size_t s);
 
 void *bml_noinit_allocate_memory(
     size_t s);

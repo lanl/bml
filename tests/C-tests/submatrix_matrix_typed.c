@@ -116,9 +116,9 @@ int TYPED_FUNC(
     }
 
     LOG_INFO("submatrix matrix test passed\n");
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
-    bml_free_memory(D_dense);
+    //bml_free_memory(A_dense);
+    //bml_free_memory(B_dense);
+    //bml_free_memory(D_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&D);
