@@ -38,7 +38,7 @@ void *TYPED_FUNC(
     switch (order)
     {
         case dense_row_major:
-#pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
+#pragma omp parallel for shared(N, M, A_nnz, A_index, A_value, A_dense)
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < A_nnz[i]; j++)
@@ -50,7 +50,7 @@ void *TYPED_FUNC(
             }
             break;
         case dense_column_major:
-#pragma omp parallel for default(none) shared(N, M, A_nnz, A_index, A_value, A_dense)
+#pragma omp parallel for shared(N, M, A_nnz, A_index, A_value, A_dense)
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < A_nnz[i]; j++)

@@ -78,7 +78,7 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, M, A_nnz, A_index, A_value)         \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   shared(rad, dval)                             \
@@ -173,7 +173,7 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, M, A_nnz, A_index, A_value)         \
   shared(rad, dval)                             \
   private(absham, radius, dvalue)               \
