@@ -519,13 +519,15 @@ endif()
 
 set(BML_TESTING FALSE
   CACHE BOOL "Whether to build the test suite.")
+set(BML_VALGRIND FALSE
+  CACHE BOOL "Whether to test for memory leaks with valgrind")
 
 if(BML_TESTING)
   message(STATUS "Setting up test suite")
   find_program(VALGRIND valgrind
     DOC "valgrind - a suite of tools for debugging and profiling programs")
-  if(VALGRIND)
-    message(STATUS "Found valgrind, will test memory")
+  if(VALGRIND AND BML_VALGRIND)
+    message(STATUS "Will test for memory leaks")
   endif()
   enable_testing()
   if(BML_OLD)
