@@ -16,7 +16,7 @@ env:
     - VERBOSE_MAKEFILE=yes
     - PARALLEL_TEST_JOBS=2
     - GCC_VERSION=9
-    - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev valgrind"
+    - DEVEL_PACKAGES="cmake cmake-data indent libblas-dev liblapack-dev valgrind"
     # COVERTY_SCAN_TOKEN
     - secure: tWwP7P4ytNISAZIP9IXGTLW+VJjtMzokJvBXWpvOM6y3ard0ZXQs4z5nna4vU4oeYkXZ1hJ8LIL2K5weDflnLP4QWoPBPOduWNPWnZq/PGV0wwtVsE9PqHIGIpQ/+v3pKwRkWIjAyhELBH2cxqYGKA5wDrk3moHXqn8SnZObLkbdRJrixtvODfKI9FOpNt2USFn7y7G9C+iNJ+OUbD5wn6JGg1EACwO9Fef6IULDpZHTgAMZjjXL8buhAshCSTkF9o13qiHr/A7aVZOB/zI357ydfqFTyYdRGPEcpX/WOalGg047dQCNR95Qm9QgLNPN6RoTo/9nK1Nba5xVrUJiFTWSH9YUv4iklzZHbDSrAb1vWwVtWVKNGF47m/3NvI3QsXAb0na79g4vKfgTJB2hCQpezlZua2wtOvvcPJ76j5aEKAmdLqaTl1jQyCX2mLOv3iywUmXtIsHwdxZkWGixpdJie6EnNpo72tIj8PlqMHi+viEtnNrItG/h92leDKLBvLZGwmwhl08fMMLz+O7sHkjGbTCBUeMffHOnTvWoRvTMB3qCk6SibcgEYw3TrV1ubctSxkJkKBVHWoOum8a+VoPQOfmoQ1b55M4Xh6W2dGzncqy0OsQKBXVHtz+dHFr6AZsXiLEzMhqtuP6WquLHuZPJ3PsJjlxi/RHwOgeR57g=
 
