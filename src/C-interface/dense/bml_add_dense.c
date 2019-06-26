@@ -20,10 +20,10 @@
  */
 void
 bml_add_dense(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const *const B,
+    double const alpha,
+    double const beta)
 {
     switch (A->matrix_precision)
     {

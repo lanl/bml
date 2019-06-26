@@ -21,7 +21,7 @@ module bml_c_interface_m
 
   interface
 
-     subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
+    subroutine bml_add_C(a, b, alpha, beta, threshold) bind(C, name="bml_add")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
@@ -31,7 +31,7 @@ module bml_c_interface_m
     end subroutine bml_add_C
 
     function bml_add_norm_C(a, b, alpha, beta, threshold) &
-        & bind(C, name="bml_add_norm")
+         & bind(C, name="bml_add_norm")
       import :: C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       type(C_PTR), value, intent(in) :: b
