@@ -360,7 +360,7 @@ bml_adjacency_ellpack(
             xadj[i] = xadj[i - 1] + A_nnz[i - 1];
     }
 
-#pragma omp parallel for default(none)                  \
+#pragma omp parallel for                                \
   private(j)                                            \
   shared(A_N, A_M, A_index, A_nnz, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
@@ -377,7 +377,7 @@ bml_adjacency_ellpack(
         //assert(j == xadj[i+1]);
     }
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(A_N, xadj, adjncy)
     for (int i = 0; i < A_N; i++)
     {
@@ -387,7 +387,7 @@ bml_adjacency_ellpack(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N, adjncy)
         for (int i = 0; i < A_N; i++)
         {
@@ -396,7 +396,7 @@ bml_adjacency_ellpack(
                 adjncy[j] += 1;
             }
         }
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N)
         for (int i = 0; i < A_N + 1; i++)
         {
@@ -458,7 +458,7 @@ bml_adjacency_group_ellpack(
     }
 
     // Fill in adjacent atoms
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(A_N, A_M, A_index, A_nnz)              \
   shared(xadj, adjncy, hnode)
     for (int i = 0; i < nnodes; i++)
@@ -483,13 +483,13 @@ bml_adjacency_group_ellpack(
     // Add 1 for 1-based
     if (base_flag == 1)
     {
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N, adjncy)
         for (int i = 0; i <= xadj[nnodes]; i++)
         {
             adjncy[i] += 1;
         }
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(xadj, A_N)
         for (int i = 0; i < nnodes + 1; i++)
         {

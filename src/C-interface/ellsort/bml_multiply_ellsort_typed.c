@@ -133,14 +133,12 @@ void *TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                             \
-  default(none)                                      \
   shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
   shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
   shared(X_localRowMin, X_localRowMax)               \
   reduction(+: traceX, traceX2)
 #else
 #pragma omp parallel for                             \
-  default(none)                                      \
   shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
   shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
   shared(X_localRowMin, X_localRowMax)               \
@@ -273,7 +271,6 @@ void TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -281,7 +278,6 @@ void TYPED_FUNC(
   shared(myRank)
 #else
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -414,7 +410,6 @@ void TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -423,7 +418,6 @@ void TYPED_FUNC(
   reduction(+:aflag)
 #else
 #pragma omp parallel for                     \
-  default(none)                              \
   shared(A_N, A_M, A_nnz, A_index, A_value)  \
   shared(A_localRowMin, A_localRowMax)       \
   shared(B_N, B_M, B_nnz, B_index, B_value)  \

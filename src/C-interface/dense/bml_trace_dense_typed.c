@@ -64,7 +64,7 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:trace)
@@ -108,7 +108,7 @@ double TYPED_FUNC(
             ("bml_traceMult_dense: Matrices A and B are different sizes.");
     }
 
-#pragma omp parallel for default(none)          \
+#pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \
   reduction(+:trace)

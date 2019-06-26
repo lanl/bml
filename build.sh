@@ -49,6 +49,8 @@ EOF
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
     echo "BML_COMPLEX            {yes,no}                    (default is ${BML_COMPLEX})"
     echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
+    echo "BML_VALGRIND           {yes,no}                    (default is ${BML_VALGRIND})"
+    echo "BML_COVERAGE           {yes,no}                    (default is ${BML_COVERAGE})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
     echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
@@ -84,6 +86,8 @@ set_defaults() {
     : ${CMAKE_CXX_FLAGS:=}
     : ${CMAKE_Fortran_FLAGS:=}
     : ${BML_TESTING:=yes}
+    : ${BML_VALGRIND:=no}
+    : ${BML_COVERAGE:=no}
     : ${FORTRAN_FLAGS:=}
     : ${EXTRA_LINK_FLAGS:=}
     : ${BML_GPU:=no}
@@ -148,6 +152,8 @@ configure() {
         -DBML_COMPLEX="${BML_COMPLEX}" \
         -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
         -DBML_TESTING="${BML_TESTING:=yes}" \
+        -DBML_VALGRIND="${BML_VALGRIND:=no}" \
+        -DBML_COVERAGE="${BML_COVERAGE:=no}" \
         -DBLAS_VENDOR="${BLAS_VENDOR}" \
         -DBML_INTERNAL_BLAS="${BML_INTERNAL_BLAS}" \
         ${EXTRA_CFLAGS:+-DEXTRA_CFLAGS="${EXTRA_CFLAGS}"} \

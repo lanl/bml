@@ -41,7 +41,7 @@ else()
 endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wunused-variable -Wno-unknown-pragmas --coverage -save-temps -std=c99)
+  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
@@ -153,6 +153,11 @@ if(BML_OPENMP)
   endif()
 else()
   message(STATUS "Will not build with OpenMP")
+endif()
+
+set(BML_COVERAGE FALSE CACHE BOOL "Whether to generate coverage code")
+if(BML_COVERAGE)
+  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} --coverage)
 endif()
 
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
@@ -519,13 +524,15 @@ endif()
 
 set(BML_TESTING FALSE
   CACHE BOOL "Whether to build the test suite.")
+set(BML_VALGRIND FALSE
+  CACHE BOOL "Whether to test for memory leaks with valgrind")
 
 if(BML_TESTING)
   message(STATUS "Setting up test suite")
   find_program(VALGRIND valgrind
     DOC "valgrind - a suite of tools for debugging and profiling programs")
-  if(VALGRIND)
-    message(STATUS "Found valgrind, will test memory")
+  if(VALGRIND AND BML_VALGRIND)
+    message(STATUS "Will test for memory leaks")
   endif()
   enable_testing()
   if(BML_OLD)

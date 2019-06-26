@@ -48,7 +48,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
-#pragma omp parallel for default(none) \
+#pragma omp parallel for               \
     shared(N, M, A_value, A_index, A_nnz) \
     shared(A_localRowMin, A_localRowMax, myRank) \
     shared(B_value, B_index, B_nnz)
@@ -96,7 +96,7 @@ void TYPED_FUNC(
     int myRank = bml_getMyRank();
 
     int rlen;
-#pragma omp parallel for default(none) \
+#pragma omp parallel for               \
     private(rlen) \
     shared(N,M,A_value,A_index,A_nnz) \
     shared(A_localRowMin, A_localRowMax, myRank)
