@@ -198,10 +198,9 @@ indent() {
 }
 
 check_indent() {
-    cd "${BUILD_DIR}"
+    cd "${TOP_DIR}"
     "${TOP_DIR}/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
-    cd "${TOP_DIR}"
     git diff 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     LINES=$(git diff | wc -l)
