@@ -108,10 +108,10 @@ contains
   !! \param threshold \f$ threshold \f$
   function bml_add_norm(a, b, alpha, beta, threshold) result(trnorm)
 
-    real(C_DOUBLE), intent(in) :: alpha
-    class(bml_matrix_t), intent(in) :: a
-    real(C_DOUBLE), intent(in) :: beta
+    class(bml_matrix_t), intent(inout) :: a
     class(bml_matrix_t), intent(in) :: b
+    real(C_DOUBLE), intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: beta
     real(C_DOUBLE), optional, intent(in) :: threshold
     real(C_DOUBLE) :: trnorm
 

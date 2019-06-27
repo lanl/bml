@@ -58,10 +58,10 @@ bml_add_dense(
  */
 double
 bml_add_norm_dense(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const *const B,
+    double const alpha,
+    double const beta)
 {
     double trnorm = 0.0;
 

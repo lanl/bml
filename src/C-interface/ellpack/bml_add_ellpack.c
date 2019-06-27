@@ -61,11 +61,11 @@ bml_add_ellpack(
  */
 double
 bml_add_norm_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * const A,
+    bml_matrix_ellpack_t const *const B,
+    double const alpha,
+    double const beta,
+    double const threshold)
 {
     double trnorm = 0.0;
 
