@@ -146,10 +146,10 @@ bml_add_identity_ellsort(
  */
 void
 bml_scale_add_identity_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * const A,
+    double const alpha,
+    double const beta,
+    double const threshold)
 {
     switch (A->matrix_precision)
     {
