@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x -u
+set -x
 
 INDENT_ARGS="-gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda"
 
@@ -40,4 +40,12 @@ done
 
 for f in "${C_FILES[@]}"; do
   indent ${INDENT_ARGS} "${f}"
+done
+
+for f in "${FORTRAN_FILES[@]}"; do
+  emacs26 --batch \
+    "${f}" \
+    --eval "(describe-variable major-mode)" \
+    --eval "(indent-region (minibuffer-prompt-end) (point-max) nil)" \
+    -f save-buffer
 done
