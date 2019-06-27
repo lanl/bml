@@ -33,11 +33,11 @@
  */
 void TYPED_FUNC(
     bml_add_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellblock_t * const A,
+    bml_matrix_ellblock_t const *const B,
+    double const alpha,
+    double const beta,
+    double const threshold)
 {
     assert(A->NB == B->NB);
     assert(A->bsize[0] == B->bsize[0]);
