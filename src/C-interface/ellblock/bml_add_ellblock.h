@@ -40,35 +40,35 @@ void bml_add_ellblock_double_complex(
 
 double bml_add_norm_ellblock(
     bml_matrix_ellblock_t * const A,
-    bml_matrix_ellblock_t const * const B,
+    bml_matrix_ellblock_t const *const B,
     double const alpha,
     double const beta,
     double const threshold);
 
 double bml_add_norm_ellblock_single_real(
     bml_matrix_ellblock_t * const A,
-    bml_matrix_ellblock_t const * const B,
+    bml_matrix_ellblock_t const *const B,
     double const alpha,
     double const beta,
     double const threshold);
 
 double bml_add_norm_ellblock_double_real(
     bml_matrix_ellblock_t * const A,
-    bml_matrix_ellblock_t const * const B,
+    bml_matrix_ellblock_t const *const B,
     double const alpha,
     double const beta,
     double const threshold);
 
 double bml_add_norm_ellblock_single_complex(
     bml_matrix_ellblock_t * const A,
-    bml_matrix_ellblock_t const * const B,
+    bml_matrix_ellblock_t const *const B,
     double const alpha,
     double const beta,
     double const threshold);
 
 double bml_add_norm_ellblock_double_complex(
     bml_matrix_ellblock_t * const A,
-    bml_matrix_ellblock_t const * const B,
+    bml_matrix_ellblock_t const *const B,
     double const alpha,
     double const beta,
     double const threshold);
