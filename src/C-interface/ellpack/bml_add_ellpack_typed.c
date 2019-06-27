@@ -153,11 +153,11 @@ void TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_add_norm_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * const A,
+    bml_matrix_ellpack_t const *const B,
+    double const alpha,
+    double const beta,
+    double const threshold)
 {
     int N = A->N;
     int A_M = A->M;

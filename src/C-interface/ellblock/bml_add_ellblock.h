@@ -39,39 +39,39 @@ void bml_add_ellblock_double_complex(
     const double threshold);
 
 double bml_add_norm_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellblock_t * const A,
+    bml_matrix_ellblock_t const * const B,
+    double const alpha,
+    double const beta,
+    double const threshold);
 
 double bml_add_norm_ellblock_single_real(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellblock_t * const A,
+    bml_matrix_ellblock_t const * const B,
+    double const alpha,
+    double const beta,
+    double const threshold);
 
 double bml_add_norm_ellblock_double_real(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellblock_t * const A,
+    bml_matrix_ellblock_t const * const B,
+    double const alpha,
+    double const beta,
+    double const threshold);
 
 double bml_add_norm_ellblock_single_complex(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellblock_t * const A,
+    bml_matrix_ellblock_t const * const B,
+    double const alpha,
+    double const beta,
+    double const threshold);
 
 double bml_add_norm_ellblock_double_complex(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellblock_t * const A,
+    bml_matrix_ellblock_t const * const B,
+    double const alpha,
+    double const beta,
+    double const threshold);
 
 void bml_add_identity_ellblock(
     const bml_matrix_ellblock_t * A,

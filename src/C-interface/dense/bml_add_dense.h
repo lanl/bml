@@ -34,34 +34,34 @@ void bml_add_dense_double_complex(
     const double beta);
 
 double bml_add_norm_dense(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta);
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const * const B,
+    double const alpha,
+    double const beta);
 
 double bml_add_norm_dense_single_real(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta);
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const * const B,
+    double const alpha,
+    double const beta);
 
 double bml_add_norm_dense_double_real(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta);
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const * const B,
+    double const alpha,
+    double const beta);
 
 double bml_add_norm_dense_single_complex(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta);
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const * const B,
+    double const alpha,
+    double const beta);
 
 double bml_add_norm_dense_double_complex(
-    bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta);
+    bml_matrix_dense_t * const A,
+    bml_matrix_dense_t const * const B,
+    double const alpha,
+    double const beta);
 
 void bml_add_identity_dense(
     bml_matrix_dense_t * A,
