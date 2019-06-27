@@ -30,7 +30,7 @@ if (( $# > 0 )); then
     esac
   done
 else
-  readarray -t C_FILES < <(git ls-files -- *.c)
+  readarray -t C_FILES < <(git ls-files -- *.c *.h)
   readarray -t FORTRAN_FILES < <(git ls-files -- *.F90)
 fi
 
