@@ -97,8 +97,8 @@ bml_add_norm_dense(
  */
 void
 bml_add_identity_dense(
-    bml_matrix_dense_t * A,
-    const double beta)
+    bml_matrix_dense_t * const A,
+    double const beta)
 {
     switch (A->matrix_precision)
     {

@@ -103,9 +103,9 @@ bml_add_norm(
  */
 void
 bml_add_identity(
-    bml_matrix_t * A,
-    const double beta,
-    const double threshold)
+    bml_matrix_t * const A,
+    double const beta,
+    double const threshold)
 {
     switch (bml_get_type(A))
     {

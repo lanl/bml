@@ -125,8 +125,8 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_dense) (
-    bml_matrix_dense_t * A,
-    const double beta)
+    bml_matrix_dense_t * const A,
+    double const beta)
 {
     int N = A->N;
 #if BML_USE_MAGMA

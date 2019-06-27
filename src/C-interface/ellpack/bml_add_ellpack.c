@@ -110,9 +110,9 @@ bml_add_norm_ellpack(
  */
 void
 bml_add_identity_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * const A,
+    double const beta,
+    double const threshold)
 {
     switch (A->matrix_precision)
     {

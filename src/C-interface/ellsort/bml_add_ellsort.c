@@ -110,9 +110,9 @@ bml_add_norm_ellsort(
  */
 void
 bml_add_identity_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * const A,
+    double const beta,
+    double const threshold)
 {
     switch (A->matrix_precision)
     {
