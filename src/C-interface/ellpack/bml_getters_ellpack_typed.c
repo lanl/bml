@@ -15,7 +15,7 @@
  * \param j The column index
  * \return The matrix element
  */
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     bml_get_ellpack) (
     const bml_matrix_ellpack_t * A,
     const int i,

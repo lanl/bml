@@ -15,7 +15,7 @@
  * \param j The column index
  * \return The matrix element
  */
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     bml_get_ellsort) (
     const bml_matrix_ellsort_t * A,
     const int i,

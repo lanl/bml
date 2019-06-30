@@ -76,25 +76,25 @@ void bml_set_row_ellpack(
 void bml_set_row_ellpack_single_real(
     bml_matrix_ellpack_t * A,
     const int i,
-    const float *row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellpack_double_real(
     bml_matrix_ellpack_t * A,
     const int i,
-    const double *row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
     const int i,
-    const float complex * row,
+    const void *row,
     const double threshold);
 
 void bml_set_row_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
     const int i,
-    const double complex * row,
+    const void *row,
     const double threshold);
 
 void bml_set_diagonal_ellpack(
@@ -104,22 +104,22 @@ void bml_set_diagonal_ellpack(
 
 void bml_set_diagonal_ellpack_single_real(
     bml_matrix_ellpack_t * A,
-    const float *diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellpack_double_real(
     bml_matrix_ellpack_t * A,
-    const double *diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
-    const float complex * diagonal,
+    const void *diagonal,
     const double threshold);
 
 void bml_set_diagonal_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
-    const double complex * diagonal,
+    const void *diagonal,
     const double threshold);
 
 #endif

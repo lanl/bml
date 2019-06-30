@@ -240,11 +240,12 @@ void TYPED_FUNC(
 
 double TYPED_FUNC(
     bml_norm_inf) (
-    const REAL_T * v,
+    const void *_v,
     const int nrows,
     const int ncols,
     const int ld)
 {
+    const REAL_T *v = _v;
     double norm = 0.;
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++)
@@ -258,9 +259,10 @@ double TYPED_FUNC(
 
 double TYPED_FUNC(
     bml_norm_inf_fast) (
-    const REAL_T * v,
+    const void *_v,
     const int n)
 {
+    const REAL_T *v = _v;
     double norm = 0.;
     for (int i = 0; i < n; i++)
     {
@@ -273,11 +275,12 @@ double TYPED_FUNC(
 
 double TYPED_FUNC(
     bml_sum_squares) (
-    const REAL_T * v,
+    const void *_v,
     const int nrows,
     const int ncols,
     const int ld)
 {
+    const REAL_T *v = _v;
     double n2 = 0.;
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++)

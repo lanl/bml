@@ -45,22 +45,22 @@ void bml_set_row_dense(
 void bml_set_row_dense_single_real(
     bml_matrix_dense_t * A,
     const int i,
-    const float *row);
+    const void *row);
 
 void bml_set_row_dense_double_real(
     bml_matrix_dense_t * A,
     const int i,
-    const double *row);
+    const void *row);
 
 void bml_set_row_dense_single_complex(
     bml_matrix_dense_t * A,
     const int i,
-    const float complex * row);
+    const void *row);
 
 void bml_set_row_dense_double_complex(
     bml_matrix_dense_t * A,
     const int i,
-    const double complex * row);
+    const void *row);
 
 void bml_set_diagonal_dense(
     bml_matrix_dense_t * A,
@@ -68,18 +68,18 @@ void bml_set_diagonal_dense(
 
 void bml_set_diagonal_dense_single_real(
     bml_matrix_dense_t * A,
-    const float *diagonal);
+    const void *diagonal);
 
 void bml_set_diagonal_dense_double_real(
     bml_matrix_dense_t * A,
-    const double *diagonal);
+    const void *diagonal);
 
 void bml_set_diagonal_dense_single_complex(
     bml_matrix_dense_t * A,
-    const float complex * diagonal);
+    const void *diagonal);
 
 void bml_set_diagonal_dense_double_complex(
     bml_matrix_dense_t * A,
-    const double complex * diagonal);
+    const void *diagonal);
 
 #endif

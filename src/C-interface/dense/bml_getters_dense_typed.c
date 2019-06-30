@@ -14,7 +14,7 @@
 #include <complex.h>
 #include <stdlib.h>
 
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     bml_get_dense) (
     const bml_matrix_dense_t * A,
     const int i,

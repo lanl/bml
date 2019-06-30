@@ -12,22 +12,22 @@ void *bml_get_ellsort(
     const int i,
     const int j);
 
-float *bml_get_ellsort_single_real(
+void *bml_get_ellsort_single_real(
     const bml_matrix_ellsort_t * A,
     const int i,
     const int j);
 
-double *bml_get_ellsort_double_real(
+void *bml_get_ellsort_double_real(
     const bml_matrix_ellsort_t * A,
     const int i,
     const int j);
 
-float complex *bml_get_ellsort_single_complex(
+void *bml_get_ellsort_single_complex(
     const bml_matrix_ellsort_t * A,
     const int i,
     const int j);
 
-double complex *bml_get_ellsort_double_complex(
+void *bml_get_ellsort_double_complex(
     const bml_matrix_ellsort_t * A,
     const int i,
     const int j);
