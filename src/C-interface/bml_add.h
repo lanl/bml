@@ -21,8 +21,8 @@ double bml_add_norm(
 
 void bml_add_identity(
     bml_matrix_t * const A,
-    double const beta,
-    double const threshold);
+    const double beta,
+    const double threshold);
 
 void bml_scale_add_identity(
     bml_matrix_t * A,
