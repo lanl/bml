@@ -341,9 +341,9 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_scale_add_identity_ellblock) (
     bml_matrix_ellblock_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold)
+    const double alpha,
+    const double beta,
+    const double threshold)
 {
     bml_matrix_ellblock_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellblock) (A->N, A->M,

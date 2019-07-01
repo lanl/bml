@@ -26,8 +26,8 @@ void bml_add_identity(
 
 void bml_scale_add_identity(
     bml_matrix_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    const double alpha,
+    const double beta,
+    const double threshold);
 
 #endif

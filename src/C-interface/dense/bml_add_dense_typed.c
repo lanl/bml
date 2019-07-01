@@ -168,8 +168,8 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_scale_add_identity_dense) (
     bml_matrix_dense_t * const A,
-    double const alpha,
-    double const beta)
+    const double alpha,
+    const double beta)
 {
     REAL_T _alpha = (REAL_T) alpha;
 

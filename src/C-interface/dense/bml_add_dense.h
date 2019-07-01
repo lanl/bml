@@ -85,27 +85,27 @@ void bml_add_identity_dense_double_complex(
 
 void bml_scale_add_identity_dense(
     bml_matrix_dense_t * const A,
-    double const alpha,
-    double const beta);
+    const double alpha,
+    const double beta);
 
 void bml_scale_add_identity_dense_single_real(
     bml_matrix_dense_t * const A,
-    double const alpha,
-    double const beta);
+    const double alpha,
+    const double beta);
 
 void bml_scale_add_identity_dense_double_real(
     bml_matrix_dense_t * const A,
-    double const alpha,
-    double const beta);
+    const double alpha,
+    const double beta);
 
 void bml_scale_add_identity_dense_single_complex(
     bml_matrix_dense_t * const A,
-    double const alpha,
-    double const beta);
+    const double alpha,
+    const double beta);
 
 void bml_scale_add_identity_dense_double_complex(
     bml_matrix_dense_t * const A,
-    double const alpha,
-    double const beta);
+    const double alpha,
+    const double beta);
 
 #endif

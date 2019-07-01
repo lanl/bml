@@ -100,32 +100,32 @@ void bml_add_identity_ellsort_double_complex(
 
 void bml_scale_add_identity_ellsort(
     bml_matrix_ellsort_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    const double alpha,
+    const double beta,
+    const double threshold);
 
 void bml_scale_add_identity_ellsort_single_real(
     bml_matrix_ellsort_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    const double alpha,
+    const double beta,
+    const double threshold);
 
 void bml_scale_add_identity_ellsort_double_real(
     bml_matrix_ellsort_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    const double alpha,
+    const double beta,
+    const double threshold);
 
 void bml_scale_add_identity_ellsort_single_complex(
     bml_matrix_ellsort_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    const double alpha,
+    const double beta,
+    const double threshold);
 
 void bml_scale_add_identity_ellsort_double_complex(
     bml_matrix_ellsort_t * const A,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    const double alpha,
+    const double beta,
+    const double threshold);
 
 #endif
