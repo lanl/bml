@@ -140,7 +140,7 @@ bml_add_identity(
  */
 void
 bml_scale_add_identity(
-    bml_matrix_t * A,
+    bml_matrix_t * const A,
     const double alpha,
     const double beta,
     const double threshold)

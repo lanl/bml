@@ -132,7 +132,7 @@ bml_add_identity_dense(
  */
 void
 bml_scale_add_identity_dense(
-    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * const A,
     const double alpha,
     const double beta)
 {
