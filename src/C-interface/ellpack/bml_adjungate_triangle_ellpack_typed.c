@@ -2,8 +2,8 @@
 #include "../../typed.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_adjungate_triangle_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdio.h>

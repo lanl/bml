@@ -1,9 +1,9 @@
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_logger.h"
+#include "../bml_multiply.h"
+#include "../bml_types.h"
 #include "bml_add_ellpack.h"
-#include "bml_logger.h"
-#include "bml_multiply.h"
 #include "bml_multiply_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdio.h>

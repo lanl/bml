@@ -1,7 +1,7 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_export_ellsort.h"
-#include "bml_logger.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>

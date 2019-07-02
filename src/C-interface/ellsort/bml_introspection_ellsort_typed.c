@@ -1,9 +1,9 @@
 #include "../../macros.h"
 #include "../../typed.h"
 #include "../bml_introspection.h"
+#include "../bml_types.h"
 #include "bml_introspection_ellsort.h"
 #include "bml_types_ellsort.h"
-#include "bml_types.h"
 
 #include <stdio.h>
 #include <stdlib.h>

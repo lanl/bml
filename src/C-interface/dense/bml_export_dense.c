@@ -1,8 +1,8 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_export_dense.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #ifdef BML_USE_MAGMA

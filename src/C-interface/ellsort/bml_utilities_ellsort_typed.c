@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "../bml_types.h"
 #include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "../bml_utilities.h"
 #include "bml_types_ellsort.h"
 #include "bml_utilities_ellsort.h"
-#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>

@@ -1,5 +1,5 @@
+#include "../bml_logger.h"
 #include "bml_convert_dense.h"
-#include "bml_logger.h"
 
 #include <stdlib.h>
 

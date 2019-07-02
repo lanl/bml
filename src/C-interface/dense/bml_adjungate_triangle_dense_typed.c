@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_allocate_dense.h"
-#include "bml_adjungate_triangle.h"
+#include "../bml_adjungate_triangle.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_adjungate_triangle_dense.h"
-#include "bml_types.h"
-#include "bml_logger.h"
+#include "bml_allocate_dense.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>

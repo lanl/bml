@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_norm.h"
+#include "../bml_norm.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_norm_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
-#include "bml_parallel.h"
 #include "bml_utilities_ellblock.h"
 
 #include <complex.h>

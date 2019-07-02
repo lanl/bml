@@ -4,13 +4,13 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_submatrix.h"
+#include "../bml_types.h"
 #include "../dense/bml_allocate_dense.h"
-#include "bml_allocate.h"
 #include "bml_allocate_ellpack.h"
-#include "bml_logger.h"
-#include "bml_submatrix.h"
 #include "bml_submatrix_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>

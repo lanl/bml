@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_threshold.h"
+#include "../bml_logger.h"
+#include "../bml_threshold.h"
+#include "../bml_types.h"
 #include "bml_threshold_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>

@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_trace.h"
+#include "../bml_logger.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_trace_ellblock.h"
-#include "bml_types.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>

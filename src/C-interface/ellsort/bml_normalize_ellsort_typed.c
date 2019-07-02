@@ -1,13 +1,13 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_normalize.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_allocate.h"
+#include "../bml_normalize.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
+#include "bml_add_ellsort.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_normalize_ellsort.h"
 #include "bml_scale_ellsort.h"
-#include "bml_add_ellsort.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>

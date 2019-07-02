@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "../bml_introspection.h"
 #include "../bml_allocate.h"
+#include "../bml_introspection.h"
+#include "../bml_types.h"
 #include "bml_setters_ellblock.h"
 #include "bml_types_ellblock.h"
 #include "bml_utilities_ellblock.h"
-#include "bml_types.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,11 +1,11 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_add.h"
-#include "bml_types.h"
-#include "bml_parallel.h"
-#include "bml_allocate_ellpack.h"
+#include "../bml_add.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_add_ellpack.h"
+#include "bml_allocate_ellpack.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>

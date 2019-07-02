@@ -4,12 +4,12 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_export.h"
 #include "../bml_introspection.h"
-#include "bml_getters_dense.h"
-#include "bml_logger.h"
-#include "bml_types_dense.h"
+#include "../bml_logger.h"
 #include "bml_export_dense.h"
-#include "bml_export.h"
+#include "bml_getters_dense.h"
+#include "bml_types_dense.h"
 
 #include <complex.h>
 #include <stdlib.h>

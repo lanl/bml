@@ -1,8 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_introspection_dense.h"
+#include "../bml_export.h"
 #include "bml_export_dense.h"
-#include "bml_export.h"
+#include "bml_introspection_dense.h"
 
 #include <assert.h>
 #include <complex.h>

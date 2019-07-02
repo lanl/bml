@@ -4,10 +4,10 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_getters.h"
+#include "../bml_introspection.h"
+#include "../bml_logger.h"
 #include "bml_allocate_dense.h"
-#include "bml_getters.h"
-#include "bml_introspection.h"
-#include "bml_logger.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>

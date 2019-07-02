@@ -1,13 +1,13 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_trace.h"
-#include "bml_trace_ellsort.h"
-#include "bml_submatrix.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_submatrix.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_submatrix_ellsort.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "bml_trace_ellsort.h"
 #include "bml_types_ellsort.h"
-#include "bml_logger.h"
 
 #include <complex.h>
 #include <stdlib.h>

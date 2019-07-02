@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_transpose_triangle.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_transpose_triangle.h"
 #include "bml_transpose_triangle_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>

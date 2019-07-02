@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_getters.h"
+#include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_setters.h"
 #include "bml_allocate_ellpack.h"
-#include "bml_getters.h"
-#include "bml_introspection.h"
-#include "bml_setters.h"
 #include "bml_types_ellpack.h"
 
 #include <complex.h>
