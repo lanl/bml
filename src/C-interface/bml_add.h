@@ -20,7 +20,7 @@ double bml_add_norm(
     double const threshold);
 
 void bml_add_identity(
-    bml_matrix_t * A,
+    bml_matrix_t * const A,
     const double beta,
     const double threshold);
 

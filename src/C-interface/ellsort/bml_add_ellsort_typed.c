@@ -289,7 +289,7 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_ellsort) (
-    const bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * const A,
     const double beta,
     const double threshold)
 {

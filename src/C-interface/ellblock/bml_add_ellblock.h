@@ -74,27 +74,27 @@ double bml_add_norm_ellblock_double_complex(
     double const threshold);
 
 void bml_add_identity_ellblock(
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * const A,
     const double beta,
     const double threshold);
 
 void bml_add_identity_ellblock_single_real(
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * const A,
     const double beta,
     const double threshold);
 
 void bml_add_identity_ellblock_double_real(
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * const A,
     const double beta,
     const double threshold);
 
 void bml_add_identity_ellblock_single_complex(
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * const A,
     const double beta,
     const double threshold);
 
 void bml_add_identity_ellblock_double_complex(
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * const A,
     const double beta,
     const double threshold);
 

@@ -110,7 +110,7 @@ bml_add_norm_ellblock(
  */
 void
 bml_add_identity_ellblock(
-    const bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * const A,
     const double beta,
     const double threshold)
 {

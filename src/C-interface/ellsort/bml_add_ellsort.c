@@ -110,7 +110,7 @@ bml_add_norm_ellsort(
  */
 void
 bml_add_identity_ellsort(
-    const bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * const A,
     const double beta,
     const double threshold)
 {
