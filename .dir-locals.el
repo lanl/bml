@@ -2,4 +2,5 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((c-mode
-  ((c-basic-offset . 4))))
+  ((c-basic-offset . 4)
+   (c-offsets-alist . ((arglist-intro . 4))))))
