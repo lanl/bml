@@ -121,10 +121,10 @@ bml_zero_matrix_dense(
  */
 bml_matrix_dense_t *
 bml_banded_matrix_dense(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -163,9 +163,9 @@ bml_banded_matrix_dense(
  */
 bml_matrix_dense_t *
 bml_random_matrix_dense(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -204,9 +204,9 @@ bml_random_matrix_dense(
  */
 bml_matrix_dense_t *
 bml_identity_matrix_dense(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {

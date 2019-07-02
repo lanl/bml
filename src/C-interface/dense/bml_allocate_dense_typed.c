@@ -55,7 +55,7 @@ void TYPED_FUNC(
 bml_matrix_dense_t *TYPED_FUNC(
     bml_zero_matrix_dense) (
     const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dense_t *A = NULL;
 
@@ -105,9 +105,9 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_banded_matrix_dense) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, M };
     bml_matrix_dense_t *A =
@@ -142,8 +142,8 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_random_matrix_dense) (
-    const int N,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =
@@ -188,8 +188,8 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_identity_matrix_dense) (
-    const int N,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A =

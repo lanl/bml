@@ -71,9 +71,9 @@ bml_clear_ellpack(
  */
 bml_matrix_ellpack_t *
 bml_noinit_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A = NULL;
 
@@ -119,10 +119,10 @@ bml_noinit_matrix_ellpack(
  */
 bml_matrix_ellpack_t *
 bml_zero_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A = NULL;
 
@@ -164,10 +164,10 @@ bml_zero_matrix_ellpack(
  */
 bml_matrix_ellpack_t *
 bml_banded_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -209,10 +209,10 @@ bml_banded_matrix_ellpack(
  */
 bml_matrix_ellpack_t *
 bml_random_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -254,10 +254,10 @@ bml_random_matrix_ellpack(
  */
 bml_matrix_ellpack_t *
 bml_identity_matrix_ellpack(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
