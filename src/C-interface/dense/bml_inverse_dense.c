@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_inverse.h"
+#include "../bml_inverse.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_inverse_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>

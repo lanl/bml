@@ -1,16 +1,16 @@
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
 #endif
 
 #include "../../macros.h"
-#include "../blas.h"
 #include "../../typed.h"
-#include "bml_norm.h"
+#include "../blas.h"
+#include "../bml_norm.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_norm_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
-#include "bml_parallel.h"
 
 #include <complex.h>
 #include <math.h>

@@ -1,10 +1,10 @@
-#include "bml_introspection_ellsort.h"
-#include "bml_types_ellsort.h"
-#include "bml_logger.h"
 #include "../../macros.h"
-#include "../bml_types.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
+#include "bml_introspection_ellsort.h"
+#include "bml_types_ellsort.h"
 
 #include <complex.h>
 #include <math.h>

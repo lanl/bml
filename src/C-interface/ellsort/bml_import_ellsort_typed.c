@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
 #include "bml_import_ellsort.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>

@@ -1,7 +1,7 @@
-#include "bml_add.h"
+#include "../bml_add.h"
+#include "../bml_logger.h"
+#include "../bml_types.h"
 #include "bml_add_ellsort.h"
-#include "bml_logger.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <stdlib.h>

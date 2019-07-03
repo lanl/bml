@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_transpose.h"
+#include "../bml_logger.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_transpose_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>

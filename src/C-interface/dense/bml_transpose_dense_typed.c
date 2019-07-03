@@ -4,12 +4,12 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_parallel.h"
+#include "../bml_transpose.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
-#include "bml_transpose.h"
-#include "bml_parallel.h"
 #include "bml_transpose_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <complex.h>

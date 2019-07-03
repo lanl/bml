@@ -1,10 +1,10 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_scale.h"
+#include "../bml_types.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
-#include "bml_logger.h"
-#include "bml_scale.h"
 #include "bml_scale_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <assert.h>

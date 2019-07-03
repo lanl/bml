@@ -1,8 +1,8 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellsort.h"
-#include "bml_types.h"
 #include "bml_types_ellsort.h"
 
 #include <complex.h>

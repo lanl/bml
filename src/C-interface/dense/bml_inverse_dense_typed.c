@@ -5,14 +5,14 @@
 #include "../lapack.h"
 #endif
 #include "../../typed.h"
+#include "../bml_allocate.h"
+#include "../bml_copy.h"
+#include "../bml_inverse.h"
 #include "../bml_logger.h"
-#include "bml_copy.h"
-#include "bml_inverse.h"
-#include "bml_allocate.h"
-#include "bml_parallel.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_copy_dense.h"
 #include "bml_inverse_dense.h"
-#include "bml_types.h"
 #include "bml_types_dense.h"
 
 #include <stdlib.h>

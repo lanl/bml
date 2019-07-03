@@ -1,10 +1,10 @@
-#include "bml_allocate.h"
-#include "bml_allocate_ellblock.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
-#include "bml_types_ellblock.h"
 #include "../../macros.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
+#include "bml_allocate_ellblock.h"
+#include "bml_types_ellblock.h"
 
 #include <assert.h>
 #include <stdio.h>

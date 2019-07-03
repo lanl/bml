@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_normalize.h"
+#include "../bml_logger.h"
+#include "../bml_normalize.h"
+#include "../bml_types.h"
 #include "bml_normalize_ellpack.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdlib.h>

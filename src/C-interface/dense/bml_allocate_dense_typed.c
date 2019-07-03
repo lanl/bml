@@ -1,10 +1,10 @@
 #include "../../macros.h"
 #include "../../typed.h"
-#include "bml_allocate.h"
-#include "bml_allocate_dense.h"
-#include "bml_types.h"
-#include "bml_types_dense.h"
+#include "../bml_allocate.h"
 #include "../bml_logger.h"
+#include "../bml_types.h"
+#include "bml_allocate_dense.h"
+#include "bml_types_dense.h"
 #include "bml_utilities_dense.h"
 
 #ifdef BML_USE_MAGMA

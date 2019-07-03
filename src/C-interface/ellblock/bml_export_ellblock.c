@@ -1,7 +1,7 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_export_ellblock.h"
-#include "bml_logger.h"
 #include "bml_types_ellblock.h"
 
 #include <stdlib.h>

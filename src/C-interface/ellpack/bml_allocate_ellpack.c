@@ -1,8 +1,8 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_allocate_ellpack.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
 #include "bml_types_ellpack.h"
 
 #include <stdio.h>

@@ -1,12 +1,12 @@
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_logger.h"
 #include "bml_allocate_ellblock.h"
 #include "bml_import_ellblock.h"
-#include "bml_logger.h"
 #include "bml_types_ellblock.h"
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 /** Convert a dense matrix into a bml matrix.
  *
