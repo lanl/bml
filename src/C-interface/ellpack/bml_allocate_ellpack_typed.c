@@ -47,8 +47,8 @@ void TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_noinit_matrix_ellpack) (
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         bml_noinit_allocate_memory(sizeof(bml_matrix_ellpack_t));
@@ -83,9 +83,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_zero_matrix_ellpack) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
@@ -120,9 +120,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_banded_matrix_ellpack) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
@@ -167,9 +167,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_random_matrix_ellpack) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
@@ -209,9 +209,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_identity_matrix_ellpack) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellpack_t *A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
