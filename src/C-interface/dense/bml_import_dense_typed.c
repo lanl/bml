@@ -27,10 +27,10 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_import_from_dense_dense) (
-    const bml_dense_order_t order,
-    const int N,
-    const void *A,
-    const bml_distribution_mode_t distrib_mode)
+    bml_dense_order_t order,
+    int N,
+    void *A,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dimension_t matrix_dimension = { N, N, N };
     bml_matrix_dense_t *A_bml =
