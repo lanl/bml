@@ -17,8 +17,8 @@
  */
 void *
 bml_export_to_dense_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_ellblock_t * A,
+    bml_dense_order_t order)
 {
     switch (A->matrix_precision)
     {
