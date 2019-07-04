@@ -75,9 +75,9 @@ bml_clear_dense(
  */
 bml_matrix_dense_t *
 bml_zero_matrix_dense(
-    const bml_matrix_precision_t matrix_precision,
-    const bml_matrix_dimension_t matrix_dimension,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
