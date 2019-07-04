@@ -33,7 +33,7 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_inverse_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = TYPED_FUNC(bml_copy_dense_new) (A);
 

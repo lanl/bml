@@ -16,7 +16,7 @@
  */
 bml_matrix_dense_t *
 bml_inverse_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
 
     bml_matrix_dense_t *B = NULL;
