@@ -39,10 +39,10 @@
  */
 void TYPED_FUNC(
     bml_add_dense) (
-    bml_matrix_dense_t * const A,
-    bml_matrix_dense_t const *const B,
-    double const alpha,
-    double const beta)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     int myRank = bml_getMyRank();
 
@@ -85,10 +85,10 @@ void TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_add_norm_dense) (
-    bml_matrix_dense_t * const A,
-    bml_matrix_dense_t const *const B,
-    double const alpha,
-    double const beta)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     double trnorm = 0.0;
     REAL_T *B_matrix = (REAL_T *) B->matrix;
@@ -125,8 +125,8 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_dense) (
-    bml_matrix_dense_t * const A,
-    const double beta)
+    bml_matrix_dense_t * A,
+    double beta)
 {
     int N = A->N;
 #if BML_USE_MAGMA
@@ -167,9 +167,9 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_add_identity_dense) (
-    bml_matrix_dense_t * const A,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * A,
+    double alpha,
+    double beta)
 {
     REAL_T _alpha = (REAL_T) alpha;
 

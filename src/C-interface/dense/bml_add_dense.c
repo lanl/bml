@@ -20,10 +20,10 @@
  */
 void
 bml_add_dense(
-    bml_matrix_dense_t * const A,
-    bml_matrix_dense_t const *const B,
-    double const alpha,
-    double const beta)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     switch (A->matrix_precision)
     {
@@ -58,10 +58,10 @@ bml_add_dense(
  */
 double
 bml_add_norm_dense(
-    bml_matrix_dense_t * const A,
-    bml_matrix_dense_t const *const B,
-    double const alpha,
-    double const beta)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta)
 {
     double trnorm = 0.0;
 
@@ -97,8 +97,8 @@ bml_add_norm_dense(
  */
 void
 bml_add_identity_dense(
-    bml_matrix_dense_t * const A,
-    const double beta)
+    bml_matrix_dense_t * A,
+    double beta)
 {
     switch (A->matrix_precision)
     {
@@ -132,9 +132,9 @@ bml_add_identity_dense(
  */
 void
 bml_scale_add_identity_dense(
-    bml_matrix_dense_t * const A,
-    const double alpha,
-    const double beta)
+    bml_matrix_dense_t * A,
+    double alpha,
+    double beta)
 {
     switch (A->matrix_precision)
     {

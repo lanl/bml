@@ -31,11 +31,11 @@
  */
 void TYPED_FUNC(
     bml_add_ellpack) (
-    bml_matrix_ellpack_t * const A,
-    bml_matrix_ellpack_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold)
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int N = A->N;
     int A_M = A->M;
@@ -151,11 +151,11 @@ void TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_add_norm_ellpack) (
-    bml_matrix_ellpack_t * const A,
-    bml_matrix_ellpack_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold)
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int N = A->N;
     int A_M = A->M;
@@ -287,9 +287,9 @@ double TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_add_identity_ellpack) (
-    bml_matrix_ellpack_t * const A,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double beta,
+    double threshold)
 {
     REAL_T alpha = (REAL_T) 1.0;
 
@@ -315,10 +315,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_add_identity_ellpack) (
-    bml_matrix_ellpack_t * const A,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double alpha,
+    double beta,
+    double threshold)
 {
     bml_matrix_ellpack_t *Id =
         TYPED_FUNC(bml_identity_matrix_ellpack) (A->N, A->M,
