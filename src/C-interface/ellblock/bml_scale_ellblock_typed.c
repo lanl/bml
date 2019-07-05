@@ -28,10 +28,10 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_scale_ellblock_new) (
-    const void *_scale_factor,
-    const bml_matrix_ellblock_t * A)
+    void *_scale_factor,
+    bml_matrix_ellblock_t * A)
 {
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     bml_matrix_ellblock_t *B = TYPED_FUNC(bml_copy_ellblock_new) (A);
 
     TYPED_FUNC(bml_scale_ellblock) (scale_factor, A, B);
@@ -48,9 +48,9 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_ellblock) (
-    const void *_scale_factor,
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    void *_scale_factor,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -60,7 +60,7 @@ void TYPED_FUNC(
         TYPED_FUNC(bml_copy_ellblock) (A, B);
     }
 
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
     int inc = 1;
 
@@ -83,7 +83,7 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_scale_inplace_ellblock) (
-    const void *scale_factor,
+    void *scale_factor,
     bml_matrix_ellblock_t * A)
 {
     TYPED_FUNC(bml_scale_ellblock) (scale_factor, A, A);

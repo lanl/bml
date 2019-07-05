@@ -26,10 +26,10 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_scale_ellpack_new) (
-    const void *_scale_factor,
-    const bml_matrix_ellpack_t * A)
+    void *_scale_factor,
+    bml_matrix_ellpack_t * A)
 {
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     bml_matrix_ellpack_t *B = TYPED_FUNC(bml_copy_ellpack_new) (A);
 
     REAL_T *B_value = B->value;
@@ -56,16 +56,16 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_ellpack) (
-    const void *_scale_factor,
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B)
+    void *_scale_factor,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B)
 {
     if (A != B)
     {
         TYPED_FUNC(bml_copy_ellpack) (A, B);
     }
 
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     REAL_T *B_value = B->value;
     int myRank = bml_getMyRank();
     int nElems = B->domain->localRowExtent[myRank] * B->M;
@@ -82,10 +82,10 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_scale_inplace_ellpack) (
-    const void *_scale_factor,
+    void *_scale_factor,
     bml_matrix_ellpack_t * A)
 {
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     REAL_T *A_value = A->value;
 
     int myRank = bml_getMyRank();

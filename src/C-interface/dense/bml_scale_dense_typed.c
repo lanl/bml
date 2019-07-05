@@ -31,11 +31,11 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_scale_dense_new) (
-    const void *_scale_factor,
-    const bml_matrix_dense_t * A)
+    void *_scale_factor,
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = TYPED_FUNC(bml_copy_dense_new) (A);
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     REAL_T *B_matrix = B->matrix;
     int myRank = bml_getMyRank();
     int nElems = B->domain->localRowExtent[myRank] * B->ld;
@@ -65,8 +65,8 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_scale_dense) (
-    const void *_scale_factor,
-    const bml_matrix_dense_t * A,
+    void *_scale_factor,
+    bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
     if (A != B)
@@ -74,7 +74,7 @@ void TYPED_FUNC(
         TYPED_FUNC(bml_copy_dense) (A, B);
     }
 
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     REAL_T *B_matrix = B->matrix;
     int myRank = bml_getMyRank();
     int nElems = B->domain->localRowExtent[myRank] * B->ld;
@@ -96,11 +96,11 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_scale_inplace_dense) (
-    const void *_scale_factor,
+    void *_scale_factor,
     bml_matrix_dense_t * A)
 {
     REAL_T *A_matrix = A->matrix;
-    const REAL_T *scale_factor = _scale_factor;
+    REAL_T *scale_factor = _scale_factor;
     int myRank = bml_getMyRank();
     int number_elements = A->domain->localRowExtent[myRank] * A->ld;
     int startIndex = A->domain->localDispl[myRank];
