@@ -29,12 +29,12 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_import_from_dense_ellblock) (
-    const bml_dense_order_t order,
-    const int N,
-    const void *A,
-    const double threshold,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_dense_order_t order,
+    int N,
+    void *A,
+    double threshold,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_ellblock_t *A_bml =
         TYPED_FUNC(bml_zero_matrix_ellblock) (N, M, distrib_mode);
