@@ -37,8 +37,8 @@
 void TYPED_FUNC(
     bml_normalize_dense) (
     bml_matrix_dense_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     double maxminusmin = maxeval - mineval;
     double beta = maxeval / maxminusmin;
@@ -57,7 +57,7 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     REAL_T radius, dvalue, absham;
 
@@ -146,8 +146,8 @@ void *TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_partial_dense) (
-    const bml_matrix_dense_t * A,
-    const int nrows)
+    bml_matrix_dense_t * A,
+    int nrows)
 {
     REAL_T radius, dvalue, absham;
 
