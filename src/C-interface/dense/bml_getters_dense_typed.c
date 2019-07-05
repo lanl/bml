@@ -16,9 +16,9 @@
 
 void *TYPED_FUNC(
     bml_get_dense) (
-    const bml_matrix_dense_t * A,
-    const int i,
-    const int j)
+    bml_matrix_dense_t * A,
+    int i,
+    int j)
 {
     int N = bml_get_N(A);
 
@@ -44,7 +44,7 @@ void *TYPED_FUNC(
 void *TYPED_FUNC(
     bml_get_row_dense) (
     bml_matrix_dense_t * A,
-    const int i)
+    int i)
 {
     int N = bml_get_N(A);
 
