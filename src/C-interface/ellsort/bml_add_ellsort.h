@@ -4,128 +4,128 @@
 #include "bml_types_ellsort.h"
 
 void bml_add_ellsort(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_add_ellsort_single_real(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_add_ellsort_double_real(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_add_ellsort_single_complex(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_add_ellsort_double_complex(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 double bml_add_norm_ellsort(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 double bml_add_norm_ellsort_single_real(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 double bml_add_norm_ellsort_double_real(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 double bml_add_norm_ellsort_single_complex(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 double bml_add_norm_ellsort_double_complex(
-    bml_matrix_ellsort_t * const A,
-    bml_matrix_ellsort_t const *const B,
-    double const alpha,
-    double const beta,
-    double const threshold);
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_add_identity_ellsort(
-    bml_matrix_ellsort_t * const A,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double beta,
+    double threshold);
 
 void bml_add_identity_ellsort_single_real(
-    bml_matrix_ellsort_t * const A,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double beta,
+    double threshold);
 
 void bml_add_identity_ellsort_double_real(
-    bml_matrix_ellsort_t * const A,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double beta,
+    double threshold);
 
 void bml_add_identity_ellsort_single_complex(
-    bml_matrix_ellsort_t * const A,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double beta,
+    double threshold);
 
 void bml_add_identity_ellsort_double_complex(
-    bml_matrix_ellsort_t * const A,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double beta,
+    double threshold);
 
 void bml_scale_add_identity_ellsort(
-    bml_matrix_ellsort_t * const A,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_scale_add_identity_ellsort_single_real(
-    bml_matrix_ellsort_t * const A,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_scale_add_identity_ellsort_double_real(
-    bml_matrix_ellsort_t * const A,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_scale_add_identity_ellsort_single_complex(
-    bml_matrix_ellsort_t * const A,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double alpha,
+    double beta,
+    double threshold);
 
 void bml_scale_add_identity_ellsort_double_complex(
-    bml_matrix_ellsort_t * const A,
-    const double alpha,
-    const double beta,
-    const double threshold);
+    bml_matrix_ellsort_t * A,
+    double alpha,
+    double beta,
+    double threshold);
 
 #endif
