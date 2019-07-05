@@ -36,15 +36,15 @@
  */
 void TYPED_FUNC(
     bml_multiply_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
     bml_matrix_ellpack_t * C,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
-    const double ONE = 1.0;
-    const double ZERO = 0.0;
+    double ONE = 1.0;
+    double ZERO = 0.0;
 
     if (A == NULL || B == NULL)
     {
@@ -96,9 +96,9 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_multiply_x2_ellpack) (
-    const bml_matrix_ellpack_t * X,
+    bml_matrix_ellpack_t * X,
     bml_matrix_ellpack_t * X2,
-    const double threshold)
+    double threshold)
 {
     int *X_localRowMin = X->domain->localRowMin;
     int *X_localRowMax = X->domain->localRowMax;
@@ -232,10 +232,10 @@ void *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_AB_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
     bml_matrix_ellpack_t * C,
-    const double threshold)
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -362,10 +362,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_adjust_AB_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
     bml_matrix_ellpack_t * C,
-    const double threshold)
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
