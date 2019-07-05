@@ -26,9 +26,9 @@
 void TYPED_FUNC(
     bml_set_element_new_ellsort) (
     bml_matrix_ellsort_t * A,
-    const int i,
-    const int j,
-    const void *element)
+    int i,
+    int j,
+    void *element)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -62,9 +62,9 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_element_ellsort) (
     bml_matrix_ellsort_t * A,
-    const int i,
-    const int j,
-    const void *element)
+    int i,
+    int j,
+    void *element)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -115,11 +115,11 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_row_ellsort) (
     bml_matrix_ellsort_t * A,
-    const int i,
-    const void *_row,
-    const double threshold)
+    int i,
+    void *_row,
+    double threshold)
 {
-    const REAL_T *row = _row;
+    REAL_T *row = _row;
 
     int A_N = A->N;
     int A_M = A->M;
@@ -158,10 +158,10 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_ellsort) (
     bml_matrix_ellsort_t * A,
-    const void *_diagonal,
-    const double threshold)
+    void *_diagonal,
+    double threshold)
 {
-    const REAL_T *diagonal = _diagonal;
+    REAL_T *diagonal = _diagonal;
 
     int A_N = A->N;
     int A_M = A->M;
