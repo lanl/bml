@@ -16,8 +16,7 @@
  *  \return the thresholded A
  */
 bml_matrix_ellsort_t
-    * bml_threshold_new_ellsort(const bml_matrix_ellsort_t * A,
-                                const double threshold)
+    * bml_threshold_new_ellsort(bml_matrix_ellsort_t * A, double threshold)
 {
     bml_matrix_ellsort_t *B = NULL;
 
@@ -52,8 +51,8 @@ bml_matrix_ellsort_t
  */
 void
 bml_threshold_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double threshold)
 {
 
     switch (A->matrix_precision)

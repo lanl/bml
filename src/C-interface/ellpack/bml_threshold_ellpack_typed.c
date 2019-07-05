@@ -27,8 +27,8 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_threshold_new_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;
@@ -81,8 +81,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;

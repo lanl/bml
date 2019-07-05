@@ -27,8 +27,8 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_threshold_new_dense) (
-    const bml_matrix_dense_t * A,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    double threshold)
 {
 #ifdef BML_USE_MAGMA
     LOG_ERROR
@@ -74,7 +74,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 void TYPED_FUNC(
     bml_threshold_dense) (
     bml_matrix_dense_t * A,
-    const double threshold)
+    double threshold)
 {
 #ifdef BML_USE_MAGMA
     LOG_ERROR("bml_threshold_dense() not implemented for MAGMA matrices\n");
