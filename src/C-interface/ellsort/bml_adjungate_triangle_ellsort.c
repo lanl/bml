@@ -17,8 +17,6 @@ bml_adjungate_triangle_ellsort(
     bml_matrix_ellsort_t * A,
     char *triangle)
 {
-//   LOG_ERROR("unkonwn precision for bml_adjungate_triangle\n");
-
     switch (bml_get_precision(A))
     {
         case single_real:
