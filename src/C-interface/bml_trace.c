@@ -17,7 +17,7 @@
  */
 double
 bml_trace(
-    const bml_matrix_t * A)
+    bml_matrix_t * A)
 {
     switch (bml_get_type(A))
     {
@@ -50,8 +50,8 @@ bml_trace(
  */
 double
 bml_traceMult(
-    const bml_matrix_t * A,
-    const bml_matrix_t * B)
+    bml_matrix_t * A,
+    bml_matrix_t * B)
 {
     switch (bml_get_type(A))
     {

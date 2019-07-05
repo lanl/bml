@@ -16,7 +16,7 @@
  */
 double
 bml_trace_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     double trace = 0.0;
 
@@ -52,8 +52,8 @@ bml_trace_ellblock(
  */
 double
 bml_traceMult_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
     double trace = 0.0;
 

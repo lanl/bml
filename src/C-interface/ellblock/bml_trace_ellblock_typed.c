@@ -26,7 +26,7 @@
  */
 double TYPED_FUNC(
     bml_trace_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -68,8 +68,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_traceMult_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B)
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B)
 {
     int NB = A->NB;
     int MB = A->MB;

@@ -20,7 +20,7 @@
  */
 double
 bml_trace_dense(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     switch (A->matrix_precision)
     {
@@ -54,8 +54,8 @@ bml_trace_dense(
  */
 double
 bml_traceMult_dense(
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B)
 {
     switch (A->matrix_precision)
     {
