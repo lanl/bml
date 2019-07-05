@@ -29,13 +29,13 @@
  */
 void
 bml_matrix2submatrix_index_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     switch (A->matrix_precision)
     {
@@ -86,12 +86,12 @@ bml_matrix2submatrix_index_ellpack(
  */
 void
 bml_matrix2submatrix_index_graph_ellpack(
-    const bml_matrix_ellpack_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellpack_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     switch (B->matrix_precision)
     {
@@ -142,10 +142,10 @@ bml_matrix2submatrix_index_graph_ellpack(
  */
 void
 bml_matrix2submatrix_ellpack(
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     bml_matrix_dense_t * B,
-    const int *core_halo_index,
-    const int lsize)
+    int *core_halo_index,
+    int lsize)
 {
     switch (A->matrix_precision)
     {
@@ -184,12 +184,12 @@ bml_matrix2submatrix_ellpack(
  */
 void
 bml_submatrix2matrix_ellpack(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_ellpack_t * B,
-    const int *core_halo_index,
-    const int lsize,
-    const int llsize,
-    const double threshold)
+    int *core_halo_index,
+    int lsize,
+    int llsize,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -231,10 +231,10 @@ bml_submatrix2matrix_ellpack(
  */
 void *
 bml_getVector_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const int *jj,
-    const int irow,
-    const int colCnt)
+    bml_matrix_ellpack_t * A,
+    int *jj,
+    int irow,
+    int colCnt)
 {
     switch (A->matrix_precision)
     {
@@ -268,10 +268,10 @@ bml_getVector_ellpack(
  */
 bml_matrix_ellpack_t *
 bml_group_matrix_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const int *hindex,
-    const int ngroups,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    int *hindex,
+    int ngroups,
+    double threshold)
 {
     switch (A->matrix_precision)
     {
@@ -300,8 +300,8 @@ bml_group_matrix_ellpack(
 
 int
 sortById(
-    const void *a,
-    const void *b)
+    void *a,
+    void *b)
 {
     int aId = *((int *) a);
     int bId = *((int *) b);
@@ -325,10 +325,10 @@ sortById(
  */
 void
 bml_adjacency_ellpack(
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     int *xadj,
     int *adjncy,
-    const int base_flag)
+    int base_flag)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -418,12 +418,12 @@ bml_adjacency_ellpack(
  */
 void
 bml_adjacency_group_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const int *hindex,
-    const int nnodes,
+    bml_matrix_ellpack_t * A,
+    int *hindex,
+    int nnodes,
     int *xadj,
     int *adjncy,
-    const int base_flag)
+    int base_flag)
 {
     int A_N = A->N;
     int A_M = A->M;
