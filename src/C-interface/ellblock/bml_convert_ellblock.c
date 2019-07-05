@@ -5,10 +5,10 @@
 
 bml_matrix_ellblock_t *
 bml_convert_ellblock(
-    const bml_matrix_t * A,
-    const bml_matrix_precision_t matrix_precision,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_t * A,
+    bml_matrix_precision_t matrix_precision,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
