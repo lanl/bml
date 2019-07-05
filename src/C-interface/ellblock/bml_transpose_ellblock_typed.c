@@ -27,7 +27,7 @@
  */
 bml_matrix_ellblock_t *TYPED_FUNC(
     bml_transpose_new_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;
@@ -82,7 +82,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_transpose_ellblock) (
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
     int NB = A->NB;
     int MB = A->MB;

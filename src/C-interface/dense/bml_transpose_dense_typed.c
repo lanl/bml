@@ -30,7 +30,7 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_transpose_new_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     int N = A->N;
 
