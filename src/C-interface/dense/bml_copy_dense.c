@@ -19,7 +19,7 @@
  */
 bml_matrix_dense_t *
 bml_copy_dense_new(
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dense_t *B = NULL;
     assert(A != NULL);
@@ -53,7 +53,7 @@ bml_copy_dense_new(
  */
 void
 bml_copy_dense(
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
     assert(A != NULL);

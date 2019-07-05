@@ -25,7 +25,7 @@
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_copy_dense_new) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
     bml_matrix_dense_t *B =
@@ -51,7 +51,7 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_copy_dense) (
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_dense_t * B)
 {
 #ifdef BML_USE_MAGMA

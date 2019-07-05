@@ -18,7 +18,7 @@
  */
 bml_matrix_ellsort_t *
 bml_copy_ellsort_new(
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     bml_matrix_ellsort_t *B = NULL;
 
@@ -52,8 +52,8 @@ bml_copy_ellsort_new(
  */
 void
 bml_copy_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
 
     switch (A->matrix_precision)

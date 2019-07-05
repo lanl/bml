@@ -20,7 +20,7 @@
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_copy_ellsort_new) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
     bml_matrix_ellsort_t *B =
@@ -61,8 +61,8 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_copy_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
     int N = A->N;
     int M = A->M;

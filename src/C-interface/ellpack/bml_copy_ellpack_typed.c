@@ -20,7 +20,7 @@
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_copy_ellpack_new) (
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
     bml_matrix_ellpack_t *B =
@@ -64,8 +64,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_copy_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B)
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B)
 {
     int N = A->N;
     int M = A->M;

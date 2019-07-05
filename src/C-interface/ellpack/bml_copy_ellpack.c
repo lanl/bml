@@ -18,7 +18,7 @@
  */
 bml_matrix_ellpack_t *
 bml_copy_ellpack_new(
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     bml_matrix_ellpack_t *B = NULL;
 
@@ -52,8 +52,8 @@ bml_copy_ellpack_new(
  */
 void
 bml_copy_ellpack(
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B)
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B)
 {
 
     switch (A->matrix_precision)
