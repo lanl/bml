@@ -54,7 +54,7 @@ void TYPED_FUNC(
  */
 bml_matrix_dense_t *TYPED_FUNC(
     bml_zero_matrix_dense) (
-    const bml_matrix_dimension_t matrix_dimension,
+    bml_matrix_dimension_t matrix_dimension,
     bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_dense_t *A = NULL;
