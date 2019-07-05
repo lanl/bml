@@ -24,8 +24,8 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_dense_order_t order)
+    bml_matrix_dense_t * A,
+    bml_dense_order_t order)
 {
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
 
