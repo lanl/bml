@@ -29,7 +29,7 @@
  */
 double TYPED_FUNC(
     bml_trace_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     int N = A->N;
 
@@ -88,8 +88,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_traceMult_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B)
 {
     int N = A->N;
 

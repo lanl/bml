@@ -27,7 +27,7 @@
  */
 double TYPED_FUNC(
     bml_trace_ellsort) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     int N = A->N;
     int M = A->M;
@@ -73,8 +73,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_traceMult_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
     int A_N = A->N;
     int A_M = A->M;

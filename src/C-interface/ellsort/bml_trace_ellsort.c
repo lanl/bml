@@ -16,7 +16,7 @@
  */
 double
 bml_trace_ellsort(
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     double trace = 0.0;
 
@@ -52,8 +52,8 @@ bml_trace_ellsort(
  */
 double
 bml_traceMult_ellsort(
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
     double trace = 0.0;
 
