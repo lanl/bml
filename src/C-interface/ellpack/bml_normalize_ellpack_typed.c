@@ -32,8 +32,8 @@
 void TYPED_FUNC(
     bml_normalize_ellpack) (
     bml_matrix_ellpack_t * A,
-    const double mineval,
-    const double maxeval)
+    double mineval,
+    double maxeval)
 {
     double maxminusmin = maxeval - mineval;
     double gershfact = maxeval / maxminusmin;
@@ -55,7 +55,7 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_ellpack) (
-    const bml_matrix_ellpack_t * A)
+    bml_matrix_ellpack_t * A)
 {
     REAL_T radius, absham, dvalue;
 
@@ -155,8 +155,8 @@ void *TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_gershgorin_partial_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const int nrows)
+    bml_matrix_ellpack_t * A,
+    int nrows)
 {
     REAL_T radius, absham, dvalue;
 
