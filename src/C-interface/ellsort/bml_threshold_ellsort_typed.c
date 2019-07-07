@@ -27,8 +27,8 @@
  */
 bml_matrix_ellsort_t *TYPED_FUNC(
     bml_threshold_new_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;
@@ -81,8 +81,8 @@ bml_matrix_ellsort_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    double threshold)
 {
     int N = A->N;
     int M = A->M;

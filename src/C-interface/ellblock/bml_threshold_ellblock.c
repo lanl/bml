@@ -16,8 +16,7 @@
  *  \return the thresholded A
  */
 bml_matrix_ellblock_t
-    * bml_threshold_new_ellblock(const bml_matrix_ellblock_t * A,
-                                 const double threshold)
+    * bml_threshold_new_ellblock(bml_matrix_ellblock_t * A, double threshold)
 {
     bml_matrix_ellblock_t *B = NULL;
 
@@ -52,8 +51,8 @@ bml_matrix_ellblock_t
  */
 void
 bml_threshold_ellblock(
-    const bml_matrix_ellblock_t * A,
-    const double threshold)
+    bml_matrix_ellblock_t * A,
+    double threshold)
 {
 
     switch (A->matrix_precision)
