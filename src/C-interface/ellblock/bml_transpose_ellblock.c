@@ -14,8 +14,9 @@
  *  \param A The matrix to be transposeed
  *  \return the transposeed A
  */
-bml_matrix_ellblock_t
-    * bml_transpose_new_ellblock(const bml_matrix_ellblock_t * A)
+bml_matrix_ellblock_t *
+bml_transpose_new_ellblock(
+    bml_matrix_ellblock_t * A)
 {
     bml_matrix_ellblock_t *B = NULL;
 
@@ -49,7 +50,7 @@ bml_matrix_ellblock_t
  */
 void
 bml_transpose_ellblock(
-    const bml_matrix_ellblock_t * A)
+    bml_matrix_ellblock_t * A)
 {
 
     switch (A->matrix_precision)
