@@ -40,15 +40,15 @@
  */
 void TYPED_FUNC(
     bml_multiply_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
     bml_matrix_ellblock_t * C,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    double alpha,
+    double beta,
+    double threshold)
 {
-    const double ONE = 1.0;
-    const double ZERO = 0.0;
+    double ONE = 1.0;
+    double ZERO = 0.0;
 
     if (A == NULL || B == NULL)
     {
@@ -99,9 +99,9 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_multiply_x2_ellblock) (
-    const bml_matrix_ellblock_t * X,
+    bml_matrix_ellblock_t * X,
     bml_matrix_ellblock_t * X2,
-    const double threshold)
+    double threshold)
 {
     int NB = X->NB;
     int MB = X->MB;
@@ -240,10 +240,10 @@ void *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_AB_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
     bml_matrix_ellblock_t * C,
-    const double threshold)
+    double threshold)
 {
     assert(A->NB == B->NB);
     assert(A->NB == C->NB);
@@ -371,10 +371,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_adjust_AB_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const bml_matrix_ellblock_t * B,
+    bml_matrix_ellblock_t * A,
+    bml_matrix_ellblock_t * B,
     bml_matrix_ellblock_t * C,
-    const double threshold)
+    double threshold)
 {
     int NB = A->NB;
     int MB = A->MB;

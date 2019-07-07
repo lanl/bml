@@ -49,11 +49,11 @@
  */
 void TYPED_FUNC(
     bml_multiply_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
     bml_matrix_dense_t * C,
-    const double alpha,
-    const double beta)
+    double alpha,
+    double beta)
 {
 #ifdef BML_USE_MAGMA
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
@@ -83,7 +83,7 @@ void TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_multiply_x2_dense) (
-    const bml_matrix_dense_t * X,
+    bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)
 {
     double *trace = bml_allocate_memory(sizeof(double) * 2);
@@ -107,8 +107,8 @@ void *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_AB_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
     bml_matrix_dense_t * C)
 {
     TYPED_FUNC(bml_multiply_dense) (A, B, C, 1.0, 0.0);
@@ -128,8 +128,8 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_multiply_adjust_AB_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
     bml_matrix_dense_t * C)
 {
     REAL_T alpha = (REAL_T) 1.0;
