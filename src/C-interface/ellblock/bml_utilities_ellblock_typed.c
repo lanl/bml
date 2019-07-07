@@ -22,8 +22,8 @@
  */
 void TYPED_FUNC(
     bml_read_bml_matrix_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const char *filename)
+    bml_matrix_ellblock_t * A,
+    char *filename)
 {
     //for(int i=0;i<A->NB;i++)printf("bsize=%d\n",A->bsize[i]);
     assert(A->bsize[0] < 1e6);
@@ -169,8 +169,8 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_write_bml_matrix_ellblock) (
-    const bml_matrix_ellblock_t * A,
-    const char *filename)
+    bml_matrix_ellblock_t * A,
+    char *filename)
 {
     FILE *mFile;
     int msum;
@@ -240,12 +240,12 @@ void TYPED_FUNC(
 
 double TYPED_FUNC(
     bml_norm_inf) (
-    const void *_v,
-    const int nrows,
-    const int ncols,
-    const int ld)
+    void *_v,
+    int nrows,
+    int ncols,
+    int ld)
 {
-    const REAL_T *v = _v;
+    REAL_T *v = _v;
     double norm = 0.;
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++)
@@ -259,10 +259,10 @@ double TYPED_FUNC(
 
 double TYPED_FUNC(
     bml_norm_inf_fast) (
-    const void *_v,
-    const int n)
+    void *_v,
+    int n)
 {
-    const REAL_T *v = _v;
+    REAL_T *v = _v;
     double norm = 0.;
     for (int i = 0; i < n; i++)
     {
@@ -275,12 +275,12 @@ double TYPED_FUNC(
 
 double TYPED_FUNC(
     bml_sum_squares) (
-    const void *_v,
-    const int nrows,
-    const int ncols,
-    const int ld)
+    void *_v,
+    int nrows,
+    int ncols,
+    int ld)
 {
-    const REAL_T *v = _v;
+    REAL_T *v = _v;
     double n2 = 0.;
     for (int i = 0; i < nrows; i++)
         for (int j = 0; j < ncols; j++)

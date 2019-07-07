@@ -21,8 +21,8 @@
  */
 void TYPED_FUNC(
     bml_read_bml_matrix_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const char *filename)
+    bml_matrix_ellpack_t * A,
+    char *filename)
 {
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
@@ -108,8 +108,8 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_write_bml_matrix_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const char *filename)
+    bml_matrix_ellpack_t * A,
+    char *filename)
 {
     FILE *mFile;
     int msum;

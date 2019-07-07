@@ -24,8 +24,8 @@
  */
 void TYPED_FUNC(
     bml_read_bml_matrix_dense) (
-    const bml_matrix_dense_t * A,
-    const char *filename)
+    bml_matrix_dense_t * A,
+    char *filename)
 {
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
@@ -95,8 +95,8 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_write_bml_matrix_dense) (
-    const bml_matrix_dense_t * A,
-    const char *filename)
+    bml_matrix_dense_t * A,
+    char *filename)
 {
     FILE *mFile;
 
@@ -128,11 +128,11 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_print_bml_matrix_dense) (
-    const bml_matrix_dense_t * A,
-    const int i_l,
-    const int i_u,
-    const int j_l,
-    const int j_u)
+    bml_matrix_dense_t * A,
+    int i_l,
+    int i_u,
+    int j_l,
+    int j_u)
 {
 #ifdef BML_USE_MAGMA
     MAGMAGPU(print) (A->N, A->N, A->matrix, A->ld, A->queue);
