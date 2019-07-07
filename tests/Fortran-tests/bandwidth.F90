@@ -8,8 +8,8 @@ module bandwidth_m
   private
 
   type, public, extends(test_t) :: bandwidth_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type bandwidth_t
 
 contains
@@ -31,29 +31,29 @@ contains
 
     a_dense = 0
     do i = 1, n
-       do j = i, min(i + 4, n)
-          a_dense(i, j) = 1
-       end do
+      do j = i, min(i + 4, n)
+        a_dense(i, j) = 1
+      end do
     end do
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     call bml_import_from_dense(matrix_type, a_dense, a, 0d0, n)
     call bml_print_matrix("A", a, 1, n, 1, n)
 
     do i = 1, n
-       bandwidth = bml_get_row_bandwidth(a, i)
-       if(bandwidth /= min(i + 4, n) - i + 1) then
-          print *, "row ", i, " incorrect bandwidth, ", bandwidth, &
-               ", expected ", min(i + 4, n) - i + 1
-          test_result = .false.
-       else
-          print *, "row ", i, " correct bandwidth, ", bandwidth
-       end if
+      bandwidth = bml_get_row_bandwidth(a, i)
+      if(bandwidth /= min(i + 4, n) - i + 1) then
+        print *, "row ", i, " incorrect bandwidth, ", bandwidth, &
+             ", expected ", min(i + 4, n) - i + 1
+        test_result = .false.
+      else
+        print *, "row ", i, " correct bandwidth, ", bandwidth
+      end if
     end do
     bandwidth = bml_get_bandwidth(a)
     print *, "matrix banddwidth = ", bandwidth
     if(bandwidth /= 5) then
-       print *, "total bandwidth incorrect"
-       test_result = .false.
+      print *, "total bandwidth incorrect"
+      test_result = .false.
     end if
 
     call bml_deallocate(a)

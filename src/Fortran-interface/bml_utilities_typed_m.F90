@@ -10,7 +10,7 @@ module bml_utilities_MATRIX_TYPE_m
 
   !> Print a dense matrix.
   interface bml_print_matrix
-     module procedure bml_print_dense_matrix_MATRIX_TYPE
+    module procedure bml_print_dense_matrix_MATRIX_TYPE
   end interface bml_print_matrix
 
   public :: bml_print_matrix

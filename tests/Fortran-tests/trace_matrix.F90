@@ -8,8 +8,8 @@ module trace_matrix_m
   private
 
   type, public, extends(test_t) :: trace_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type trace_matrix_t
 
 contains
@@ -44,14 +44,14 @@ contains
     tr_reference = 0
     call bml_export_to_dense(a, a_dense)
     do i = 1, n
-       tr_reference = tr_reference+a_dense(i, i)
+      tr_reference = tr_reference+a_dense(i, i)
     end do
 
     if(abs((tr_a - tr_reference)/tr_reference) > rel_tol) then
-       test_result = .false.
-       print *, "trace incorrect"
+      test_result = .false.
+      print *, "trace incorrect"
     else
-       test_result = .true.
+      test_result = .true.
     end if
 
     call bml_deallocate(a)

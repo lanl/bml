@@ -8,8 +8,8 @@ module diagonalize_matrix_m
   private
 
   type, public, extends(test_t) :: diagonalize_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type diagonalize_matrix_t
 
 contains
