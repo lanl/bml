@@ -9,77 +9,77 @@
 
 void bml_set_element_dense(
     bml_matrix_dense_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_element_dense_single_real(
     bml_matrix_dense_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_element_dense_double_real(
     bml_matrix_dense_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_element_dense_single_complex(
     bml_matrix_dense_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_element_dense_double_complex(
     bml_matrix_dense_t * A,
-    const int i,
-    const int j,
-    const void *value);
+    int i,
+    int j,
+    void *value);
 
 void bml_set_row_dense(
     bml_matrix_dense_t * A,
-    const int i,
-    const void *row);
+    int i,
+    void *row);
 
 void bml_set_row_dense_single_real(
     bml_matrix_dense_t * A,
-    const int i,
-    const void *row);
+    int i,
+    void *row);
 
 void bml_set_row_dense_double_real(
     bml_matrix_dense_t * A,
-    const int i,
-    const void *row);
+    int i,
+    void *row);
 
 void bml_set_row_dense_single_complex(
     bml_matrix_dense_t * A,
-    const int i,
-    const void *row);
+    int i,
+    void *row);
 
 void bml_set_row_dense_double_complex(
     bml_matrix_dense_t * A,
-    const int i,
-    const void *row);
+    int i,
+    void *row);
 
 void bml_set_diagonal_dense(
     bml_matrix_dense_t * A,
-    const void *diagonal);
+    void *diagonal);
 
 void bml_set_diagonal_dense_single_real(
     bml_matrix_dense_t * A,
-    const void *diagonal);
+    void *diagonal);
 
 void bml_set_diagonal_dense_double_real(
     bml_matrix_dense_t * A,
-    const void *diagonal);
+    void *diagonal);
 
 void bml_set_diagonal_dense_single_complex(
     bml_matrix_dense_t * A,
-    const void *diagonal);
+    void *diagonal);
 
 void bml_set_diagonal_dense_double_complex(
     bml_matrix_dense_t * A,
-    const void *diagonal);
+    void *diagonal);
 
 #endif
