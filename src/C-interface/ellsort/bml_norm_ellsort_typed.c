@@ -24,7 +24,7 @@
  */
 double TYPED_FUNC(
     bml_sum_squares_ellsort) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     int N = A->N;
     int M = A->M;
@@ -67,8 +67,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_sum_squares_submatrix_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const int core_size)
+    bml_matrix_ellsort_t * A,
+    int core_size)
 {
     int N = A->N;
     int M = A->M;
@@ -110,11 +110,11 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_sum_squares2_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
@@ -225,7 +225,7 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_fnorm_ellsort) (
-    const bml_matrix_ellsort_t * A)
+    bml_matrix_ellsort_t * A)
 {
     double fnorm = TYPED_FUNC(bml_sum_squares_ellsort) (A);
 #ifdef DO_MPI
@@ -249,8 +249,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_fnorm2_ellsort) (
-    const bml_matrix_ellsort_t * A,
-    const bml_matrix_ellsort_t * B)
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B)
 {
     int N = A->N;
     int M = A->M;

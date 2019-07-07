@@ -30,7 +30,7 @@
  */
 double TYPED_FUNC(
     bml_sum_squares_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     int N = A->N;
     REAL_T sum = 0.0;
@@ -90,8 +90,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_sum_squares_submatrix_dense) (
-    const bml_matrix_dense_t * A,
-    const int core_size)
+    bml_matrix_dense_t * A,
+    int core_size)
 {
     int N = A->N;
 
@@ -160,11 +160,11 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_sum_squares2_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B,
-    const double alpha,
-    const double beta,
-    const double threshold)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double beta,
+    double threshold)
 {
     int N = A->N;
 
@@ -230,7 +230,7 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_fnorm_dense) (
-    const bml_matrix_dense_t * A)
+    bml_matrix_dense_t * A)
 {
     double sum = 0.0;
 //#ifdef BML_USE_MAGMA
@@ -263,8 +263,8 @@ double TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_fnorm2_dense) (
-    const bml_matrix_dense_t * A,
-    const bml_matrix_dense_t * B)
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B)
 {
     int N = A->N;
 
