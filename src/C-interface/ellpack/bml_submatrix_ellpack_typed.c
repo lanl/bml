@@ -37,13 +37,13 @@
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_index_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const bml_matrix_ellpack_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     int l, ll, ii, ls, k;
     int A_N = A->N;
@@ -149,12 +149,12 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_index_graph_ellpack) (
-    const bml_matrix_ellpack_t * B,
-    const int *nodelist,
-    const int nsize,
+    bml_matrix_ellpack_t * B,
+    int *nodelist,
+    int nsize,
     int *core_halo_index,
     int *vsize,
-    const int double_jump_flag)
+    int double_jump_flag)
 {
     int l, ll, ii, ls, k;
     int B_N = B->N;
@@ -234,10 +234,10 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_ellpack) (
-    const bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * A,
     bml_matrix_dense_t * B,
-    const int *core_halo_index,
-    const int lsize)
+    int *core_halo_index,
+    int lsize)
 {
     REAL_T *rvalue;
 
@@ -283,12 +283,12 @@ void TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_submatrix2matrix_ellpack) (
-    const bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A,
     bml_matrix_ellpack_t * B,
-    const int *core_halo_index,
-    const int lsize,
-    const int llsize,
-    const double threshold)
+    int *core_halo_index,
+    int lsize,
+    int llsize,
+    double threshold)
 {
     int A_N = A->N;
 #ifdef BML_USE_MAGMA
@@ -342,12 +342,12 @@ void TYPED_FUNC(
 // Get matching vector of values
 void *TYPED_FUNC(
     bml_getVector_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const int *jj,
-    const int irow,
-    const int colCnt)
+    bml_matrix_ellpack_t * A,
+    int *jj,
+    int irow,
+    int colCnt)
 {
-    const REAL_T ZERO = 0.0;
+    REAL_T ZERO = 0.0;
 
     int A_N = A->N;
     int A_M = A->M;
@@ -382,10 +382,10 @@ void *TYPED_FUNC(
  */
 bml_matrix_ellpack_t *TYPED_FUNC(
     bml_group_matrix_ellpack) (
-    const bml_matrix_ellpack_t * A,
-    const int *hindex,
-    const int ngroups,
-    const double threshold)
+    bml_matrix_ellpack_t * A,
+    int *hindex,
+    int ngroups,
+    double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;
