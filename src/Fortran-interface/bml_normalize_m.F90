@@ -6,11 +6,11 @@ module bml_normalize_m
   private
 
   interface bml_normalize
-     module procedure bml_normalize
+    module procedure bml_normalize
   end interface bml_normalize
 
   interface bml_gershgorin
-     module procedure bml_gershgorin
+    module procedure bml_gershgorin
   end interface bml_gershgorin
 
   public :: bml_normalize

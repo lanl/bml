@@ -8,8 +8,8 @@ module normalize_matrix_m
   private
 
   type, public, extends(test_t) :: normalize_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type normalize_matrix_t
 
 contains
@@ -71,23 +71,23 @@ contains
          lbound(b_dense, 2), ubound(b_dense, 2))
 
     if ((abs(a_gbnd(1) - scale_factor) > rel_tol) .or. (a_gbnd(2) > rel_tol)) then
-       print *, "Incorrect maxeval or maxminusmin"
-       test_result = .false.
+      print *, "Incorrect maxeval or maxminusmin"
+      test_result = .false.
     end if
 
     if ((abs(b_gbnd(1) - scale_factor*scale_factor) > rel_tol) .or. &
          (abs(b_gbnd(2) - (scale_factor*scale_factor - scale_factor)) > rel_tol)) then
-       print *, "Incorrect maxeval or maxminusmin"
-       test_result = .false.
+      print *, "Incorrect maxeval or maxminusmin"
+      test_result = .false.
     end if
 
     if (abs(b_dense(1,1)) > rel_tol) then
-       print *, "Incorrect maxeval or maxminusmin, failed normalize"
-       test_result = .false.
+      print *, "Incorrect maxeval or maxminusmin, failed normalize"
+      test_result = .false.
     end if
 
     if(test_result) then
-       print *, "Test passed"
+      print *, "Test passed"
     end if
 
     call bml_deallocate(a)

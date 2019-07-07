@@ -8,8 +8,8 @@ module inverse_matrix_m
   private
 
   type, public, extends(test_t) :: inverse_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type inverse_matrix_t
 
 contains

@@ -8,8 +8,8 @@ module get_bandwidth_m
   private
 
   type, public, extends(test_t) :: get_bandwidth_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type get_bandwidth_t
 
 contains
@@ -32,13 +32,13 @@ contains
     test_result = .true.
 
     do i = 1, n
-       if(bml_get_row_bandwidth(a, i) /= 1) then
-          print *, "Wrong bandwidth on row ", i
-          print *, "Should be 1, but is ", bml_get_row_bandwidth(a, i)
-          call bml_print_matrix("A", a, 1, n, 1, n)
-          test_result = .false.
-          return
-       end if
+      if(bml_get_row_bandwidth(a, i) /= 1) then
+        print *, "Wrong bandwidth on row ", i
+        print *, "Should be 1, but is ", bml_get_row_bandwidth(a, i)
+        call bml_print_matrix("A", a, 1, n, 1, n)
+        test_result = .false.
+        return
+      end if
     end do
     print *, "Test passed"
 

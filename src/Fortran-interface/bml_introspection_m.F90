@@ -88,13 +88,13 @@ contains
 
     select case(bml_get_type_num)
     case(0)
-       bml_get_type = "Unformatted"
+      bml_get_type = "Unformatted"
     case(1)
-       bml_get_type = "dense"
+      bml_get_type = "dense"
     case(2)
-       bml_get_type = "ellpack"
+      bml_get_type = "ellpack"
     case default
-       stop 'Unknown matrix type in bml_get_type'
+      stop 'Unknown matrix type in bml_get_type'
     end select
 
   end function bml_get_type
@@ -131,13 +131,13 @@ contains
 
     select case(bml_precision_id)
     case(0)
-       stop 'Type/precision elements not initialized'
+      stop 'Type/precision elements not initialized'
     case(1)
-       bml_get_element_precision = kind(1.0)
+      bml_get_element_precision = kind(1.0)
     case(2)
-       bml_get_element_precision = kind(1.0d0)
+      bml_get_element_precision = kind(1.0d0)
     case default
-       stop 'Unknown elements type/precision'
+      stop 'Unknown elements type/precision'
     end select
 
   end function bml_get_element_precision
@@ -157,17 +157,17 @@ contains
 
     select case(bml_precision_id)
     case(0)
-       stop 'Type/precision elements not initialized'
+      stop 'Type/precision elements not initialized'
     case(1)
-       bml_get_element_type = "real"
+      bml_get_element_type = "real"
     case(2)
-       bml_get_element_type = "real"
+      bml_get_element_type = "real"
     case(3)
-       bml_get_element_type = "complex"
+      bml_get_element_type = "complex"
     case(4)
-       bml_get_element_type = "complex"
+      bml_get_element_type = "complex"
     case default
-       stop 'Unknown elements type/precision'
+      stop 'Unknown elements type/precision'
     end select
 
   end function bml_get_element_type
@@ -186,13 +186,13 @@ contains
 
     select case(dmode)
     case(0)
-       bml_get_distribution_mode = "sequential"
+      bml_get_distribution_mode = "sequential"
     case(1)
-       bml_get_distribution_mode = "distributed"
+      bml_get_distribution_mode = "distributed"
     case(3)
-       bml_get_distribution_mode = "graph_distributed"
+      bml_get_distribution_mode = "graph_distributed"
     case default
-       stop 'Unknown distribution type in bml_get_distribution_mode'
+      stop 'Unknown distribution type in bml_get_distribution_mode'
     end select
 
   end function bml_get_distribution_mode

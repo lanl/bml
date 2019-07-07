@@ -60,9 +60,9 @@ contains
     aflag = bml_allocated_C(a%ptr)
 
     if (aflag .gt. 0) then
-       bml_allocated = .true.
+      bml_allocated = .true.
     else
-       bml_allocated = .false.
+      bml_allocated = .false.
     end if
 
   end function bml_allocated
@@ -90,9 +90,9 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
@@ -115,9 +115,9 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
@@ -151,9 +151,9 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
@@ -186,9 +186,9 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
@@ -221,9 +221,9 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)
@@ -256,9 +256,9 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     call bml_deallocate(a)

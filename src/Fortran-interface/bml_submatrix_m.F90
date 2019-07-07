@@ -41,19 +41,19 @@ contains
     integer(C_INT) :: cflag
 
     if (double_jump_flag .eqv. .true.) then
-       cflag = 1
+      cflag = 1
     else
-       cflag = 0;
+      cflag = 0;
     endif
 
     if (present(a)) then
-       call bml_matrix2submatrix_index_C(a%ptr, b%ptr, &
-            c_loc(nodelist), nsize, c_loc(core_halo_index), &
-            c_loc(vsize), cflag)
+      call bml_matrix2submatrix_index_C(a%ptr, b%ptr, &
+           c_loc(nodelist), nsize, c_loc(core_halo_index), &
+           c_loc(vsize), cflag)
     else
-       call bml_matrix2submatrix_index_graph_C(b%ptr, &
-            c_loc(nodelist), nsize, c_loc(core_halo_index), &
-            c_loc(vsize), cflag)
+      call bml_matrix2submatrix_index_graph_C(b%ptr, &
+           c_loc(nodelist), nsize, c_loc(core_halo_index), &
+           c_loc(vsize), cflag)
     endif
 
   end subroutine bml_matrix2submatrix_index
@@ -98,9 +98,9 @@ contains
     real(C_DOUBLE) :: threshold_
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     call bml_submatrix2matrix_C(a%ptr, b%ptr, c_loc(core_halo_index), lsize, &

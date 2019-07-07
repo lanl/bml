@@ -9,10 +9,10 @@ module bml_import_m
   private
 
   interface bml_import_from_dense
-     module procedure bml_import_from_dense_single
-     module procedure bml_import_from_dense_double
-     module procedure bml_import_from_dense_single_complex
-     module procedure bml_import_from_dense_double_complex
+    module procedure bml_import_from_dense_single
+    module procedure bml_import_from_dense_double
+    module procedure bml_import_from_dense_single_complex
+    module procedure bml_import_from_dense_double_complex
   end interface bml_import_from_dense
 
   public :: bml_import_from_dense
@@ -43,30 +43,30 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
 
     if (matrix_type /= BML_MATRIX_DENSE) then
-       if (.not. present(m)) then
-          write(*, *) "missing parameter m; number of non-zeros per row"
-          error stop
-       end if
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
     end if
 
     if (present(m)) then
-       m_ = m
+      m_ = m
     else
-       m_ = n_
+      m_ = n_
     end if
 
     call bml_deallocate(a)
@@ -103,30 +103,30 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
 
     if (matrix_type /= BML_MATRIX_DENSE) then
-       if (.not. present(m)) then
-          write(*, *) "missing parameter m; number of non-zeros per row"
-          error stop
-       end if
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
     end if
 
     if (present(m)) then
-       m_ = m
+      m_ = m
     else
-       m_ = n_
+      m_ = n_
     end if
 
     call bml_deallocate(a)
@@ -163,30 +163,30 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
 
     if (matrix_type /= BML_MATRIX_DENSE) then
-       if (.not. present(m)) then
-          write(*, *) "missing parameter m; number of non-zeros per row"
-          error stop
-       end if
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
     end if
 
     if (present(m)) then
-       m_ = m
+      m_ = m
     else
-       m_ = n_
+      m_ = n_
     end if
 
     call bml_deallocate(a)
@@ -223,30 +223,30 @@ contains
     character(len=20) :: distrib_mode_
 
     if (present(distrib_mode)) then
-       distrib_mode_ = distrib_mode
+      distrib_mode_ = distrib_mode
     else
-       distrib_mode_ = bml_dmode_sequential
+      distrib_mode_ = bml_dmode_sequential
     endif
 
     if (present(threshold)) then
-       threshold_ = threshold
+      threshold_ = threshold
     else
-       threshold_ = 0
+      threshold_ = 0
     end if
 
     n_ = size(a_dense, 1, C_INT)
 
     if (matrix_type /= BML_MATRIX_DENSE) then
-       if (.not. present(m)) then
-          write(*, *) "missing parameter m; number of non-zeros per row"
-          error stop
-       end if
+      if (.not. present(m)) then
+        write(*, *) "missing parameter m; number of non-zeros per row"
+        error stop
+      end if
     end if
 
     if (present(m)) then
-       m_ = m
+      m_ = m
     else
-       m_ = n_
+      m_ = n_
     end if
 
     call bml_deallocate(a)

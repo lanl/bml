@@ -8,8 +8,8 @@ module transpose_matrix_m
   private
 
   type, public, extends(test_t) :: transpose_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type transpose_matrix_t
 
 contains
@@ -38,10 +38,10 @@ contains
     call bml_export_to_dense(b, b_dense)
 
     if(maxval(abs(a_dense-transpose(b_dense))) > 1e-12) then
-       test_result = .false.
-       print *, "matrices are not transposes"
+      test_result = .false.
+      print *, "matrices are not transposes"
     else
-       test_result = .true.
+      test_result = .true.
     end if
 
     call bml_deallocate(a)

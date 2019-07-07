@@ -8,8 +8,8 @@ module copy_matrix_m
   private
 
   type, public, extends(test_t) :: copy_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type copy_matrix_t
 
 contains
@@ -43,10 +43,10 @@ contains
     call bml_print_matrix("C", c_dense, 1, n, 1, n)
     if(maxval(abs(a_dense - b_dense)) > 1e-12 .or. &
          maxval(abs(a_dense - c_dense)) > 1e-12) then
-       test_result = .false.
-       print *, "matrices are not identical"
+      test_result = .false.
+      print *, "matrices are not identical"
     else
-       test_result = .true.
+      test_result = .true.
     end if
 
     call bml_deallocate(a)

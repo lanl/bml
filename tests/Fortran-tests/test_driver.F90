@@ -13,8 +13,8 @@ program test
 
   write(*, "(A)") "Testing "//MATRIX_TYPE//":"//MATRIX_PRECISION
   if(.not. tester%test_function(MATRIX_TYPE, REAL_NAME, REAL_KIND, N, M)) then
-     write(*, "(A)") "Test failed"
-     error stop
+    write(*, "(A)") "Test failed"
+    error stop
   end if
 
 end program test

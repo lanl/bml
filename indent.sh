@@ -46,7 +46,9 @@ done
 for f in "${FORTRAN_FILES[@]}"; do
   ${EMACS} --batch \
     "${f}" \
-    --eval "(describe-variable major-mode)" \
+    --eval "(setq f90-do-indent 2)" \
+    --eval "(setq f90-if-indent 2)" \
+    --eval "(setq f90-type-indent 2)" \
     --eval "(indent-region (minibuffer-prompt-end) (point-max) nil)" \
     -f save-buffer
 done

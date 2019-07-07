@@ -8,8 +8,8 @@ module io_matrix_m
   private
 
   type, public, extends(test_t) :: io_matrix_t
-   contains
-     procedure, nopass :: test_function
+  contains
+    procedure, nopass :: test_function
   end type io_matrix_t
 
 contains
@@ -44,10 +44,10 @@ contains
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     call bml_print_matrix("B", b_dense, 1, n, 1, n)
     if(maxval(abs(a_dense - b_dense)) > 1e-12) then
-       test_result = .false.
-       print *, "matrices are not identical"
+      test_result = .false.
+      print *, "matrices are not identical"
     else
-       test_result = .true.
+      test_result = .true.
     end if
 
   end function test_function
