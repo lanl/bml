@@ -26,6 +26,7 @@ typedef int (
 #include "multiply_matrix_x2.h"
 #include "normalize_matrix.h"
 #include "norm_matrix.h"
+#include "print_matrix.h"
 #include "scale_matrix.h"
 #include "set_row.h"
 #include "submatrix_matrix.h"
