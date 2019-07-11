@@ -370,7 +370,6 @@ bml_random_matrix(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    LOG_DEBUG("random matrix of size %d\n", N);
     switch (matrix_type)
     {
         case dense:
