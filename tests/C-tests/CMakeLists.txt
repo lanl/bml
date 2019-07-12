@@ -17,6 +17,7 @@ set(SOURCES_TYPED
   multiply_matrix_x2_typed.c
   normalize_matrix_typed.c
   norm_matrix_typed.c
+  print_matrix_typed.c
   scale_matrix_typed.c
   set_row_typed.c
   submatrix_matrix_typed.c
@@ -58,6 +59,7 @@ add_executable(bml-test
   multiply_matrix_x2.c
   normalize_matrix.c
   norm_matrix.c
+  print_matrix.c
   scale_matrix.c
   set_row.c
   submatrix_matrix.c
@@ -102,6 +104,7 @@ foreach(N
     multiply_x2
     norm
     normalize
+    print
     scale
     set_row
     submatrix

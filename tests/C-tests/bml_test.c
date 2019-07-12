@@ -8,7 +8,7 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 23;
+const int NUM_TESTS = 24;
 
 typedef struct
 {
@@ -35,6 +35,7 @@ const char *test_name[] = {
     "multiply_x2",
     "norm",
     "normalize",
+    "print",
     "scale",
     "set_row",
     "submatrix",
@@ -61,6 +62,7 @@ const char *test_description[] = {
     "Multiply two identical matrices",
     "Norm of bml matrix",
     "Normalize bml matrices",
+    "Print bml matrix to stdout",
     "Scale bml matrices",
     "Set the elements of a row in a bml matrix",
     "Submatrix bml matrices",
@@ -87,6 +89,7 @@ const test_function_t testers[] = {
     test_multiply_x2,
     test_norm,
     test_normalize,
+    test_print,
     test_scale,
     test_set_row,
     test_submatrix,
