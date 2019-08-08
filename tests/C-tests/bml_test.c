@@ -8,7 +8,7 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 24;
+const int NUM_TESTS = 25;
 
 typedef struct
 {
@@ -41,6 +41,7 @@ const char *test_name[] = {
     "submatrix",
     "threshold",
     "trace",
+    "trace_mult",
     "transpose"
 };
 
@@ -68,7 +69,8 @@ const char *test_description[] = {
     "Submatrix bml matrices",
     "Threshold bml matrices",
     "Trace of bml matrices",
-    "Transpose of bml matrices"
+    "Trace from multiplication of two bml matrices"
+        "Transpose of bml matrices"
 };
 
 const test_function_t testers[] = {
@@ -95,6 +97,7 @@ const test_function_t testers[] = {
     test_submatrix,
     test_threshold,
     test_trace,
+    test_trace_mult,
     test_transpose
 };
 
