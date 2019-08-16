@@ -1,5 +1,6 @@
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_allocate.h"
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
 #include "../bml_submatrix.h"
@@ -109,11 +110,11 @@ double TYPED_FUNC(
                                                &A_index[ROWMAJOR
                                                         (i, 0, A_N, A_M)], i,
                                                A_nnz[i]);
-
         for (int j = 0; j < A_nnz[i]; j++)
         {
             trace += A_value[ROWMAJOR(i, j, A_N, A_M)] * rvalue[j];
         }
+        bml_free_memory(rvalue);
     }
 
     return (double) REAL_PART(trace);
