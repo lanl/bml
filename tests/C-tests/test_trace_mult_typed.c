@@ -27,6 +27,12 @@ int TYPED_FUNC(
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
+    bml_matrix_t *A_t = bml_transpose_new(A);
+    bml_matrix_t *B_t = bml_transpose_new(B);
+
+    bml_add(A, A_t, 1, 1, 0);
+    bml_add(B, B_t, 1, 1, 0);
+
     printf("A\n");
     bml_print_bml_matrix(A, 0, N, 0, N);
 
@@ -57,7 +63,9 @@ int TYPED_FUNC(
     LOG_INFO("test_trace_mult passed\n");
 
     bml_deallocate(&A);
+    bml_deallocate(&A_t);
     bml_deallocate(&B);
+    bml_deallocate(&B_t);
 
     return 0;
 }
