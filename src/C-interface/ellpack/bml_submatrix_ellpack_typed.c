@@ -354,7 +354,7 @@ void *TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T *A_value = A->value;
-    REAL_T *rvalue = malloc(colCnt * sizeof(REAL_T));
+    REAL_T *rvalue = bml_noinit_allocate_memory(colCnt * sizeof(REAL_T));
 
     for (int i = 0; i < colCnt; i++)
     {

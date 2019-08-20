@@ -22,6 +22,7 @@ set(SOURCES_TYPED
   set_row_typed.c
   submatrix_matrix_typed.c
   test_bml_gemm_typed.c
+  test_trace_mult_typed.c
   threshold_matrix_typed.c
   trace_matrix_typed.c
   transpose_matrix_typed.c)
@@ -64,6 +65,7 @@ add_executable(bml-test
   set_row.c
   submatrix_matrix.c
   test_bml_gemm.c
+  test_trace_mult.c
   threshold_matrix.c
   trace_matrix.c
   transpose_matrix.c)
@@ -110,6 +112,7 @@ foreach(N
     submatrix
     threshold
     trace
+    trace_mult
     transpose
   )
   foreach(T dense ellpack ellsort ellblock)
