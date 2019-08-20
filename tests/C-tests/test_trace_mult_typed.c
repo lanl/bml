@@ -23,14 +23,28 @@ int TYPED_FUNC(
 
     double trace, trace_mult, diff, threshold;
     threshold = 0.0;
-    REAL_T scalar = 0.5;
 
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
-    B = bml_scale_new(&scalar, A);
-    bml_scale_inplace(&scalar, A);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+
+    printf("A\n");
+    bml_print_bml_matrix(A, 0, N, 0, N);
+
+    printf("B\n");
+    bml_print_bml_matrix(B, 0, N, 0, N);
+
+    trace = 0;
+    for (int i = 0; i < N; i++)
+    {
+        for (int k = 0; k < N; k++)
+        {
+            trace +=
+                (*(REAL_T *) bml_get(A, i, k)) *
+                (*(REAL_T *) bml_get(B, k, i));
+        }
+    }
 
     trace_mult = bml_trace_mult(A, B);
-    trace = scalar * scalar * N;
 
     if ((diff = fabs(trace - trace_mult) / (double) N) > REL_TOL)
     {
