@@ -52,15 +52,15 @@ int TYPED_FUNC(
 
     trace_mult = bml_trace_mult(A, B);
 
-    if ((diff = fabs(trace - trace_mult) / (double) N) > REL_TOL)
+    diff = fabs(trace - trace_mult) / (double) (N * N);
+    if (diff > REL_TOL)
     {
         LOG_ERROR
-            ("trace_mult is not correct; trace = %e and not %e, diff = %e\n",
+            ("trace_mult is not correct; trace = %e and not %e, diff / N^2 = %e\n",
              trace_mult, trace, diff);
         return -1;
     }
-
-    LOG_INFO("test_trace_mult passed\n");
+    LOG_INFO("test_trace_mult passed (diff / N^2 = %e)\n", diff);
 
     bml_deallocate(&A);
     bml_deallocate(&A_t);
