@@ -86,7 +86,7 @@ int TYPED_FUNC(
     printf("%s\n", "check eigenvectors norms");
     for (int i = 0; i < N; i++)
     {
-        REAL_T *val = bml_get_dense(aux2, i, i);
+        REAL_T *val = bml_get(aux2, i, i);
         if (fabsf(*val - 1.) > REL_TOL)
         {
             printf("i = %d, val = %e\n", i, *val);
