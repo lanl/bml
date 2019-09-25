@@ -154,7 +154,7 @@ void *TYPED_FUNC(
 
 #pragma omp parallel for                        \
   default(none)                                 \
-  shared(N, A_matrix)                           \
+  shared(N, A_matrix, nrows)                    \
   private(absham, radius, dvalue)               \
   reduction(max:emax)                           \
   reduction(min:emin)

@@ -218,7 +218,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
 
 #pragma omp target enter data map(alloc:A_value[0:N*M], A_index[0:N*M], A_nnz[0:N])
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
+#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz, N, M)
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
@@ -318,7 +318,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
 
 #pragma omp \
-    parallel for default(none) shared(A_value, A_index, A_nnz)
+    parallel for default(none) shared(A_value, A_index, A_nnz, N, M)
     for (int i = 0; i < N; i++)
     {
         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;

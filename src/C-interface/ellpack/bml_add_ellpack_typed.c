@@ -77,9 +77,10 @@ void TYPED_FUNC(
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)
 #else
-#pragma omp target parallel for                  \
+#pragma omp target parallel for           \
     default(none)                         \
-    shared(N, A_M, B_M)           \
+    shared(N, A_M, B_M)                   \
+    shared(alpha, beta, threshold)        \
     shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
@@ -225,9 +226,10 @@ double TYPED_FUNC(
     shared(B_index, B_value, B_nnz)       \
     reduction(+:trnorm)
 #else
-#pragma omp target parallel for                  \
+#pragma omp target parallel for           \
     default(none)                         \
-    shared(N, A_M, B_M)           \
+    shared(N, A_M, B_M)                   \
+    shared(alpha, beta, threshold)        \
     shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
