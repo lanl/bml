@@ -93,6 +93,10 @@ contains
       bml_get_type = "dense"
     case(2)
       bml_get_type = "ellpack"
+    case(3)
+      bml_get_type = "ellblock"
+    case(4)
+      bml_get_type = "ellsort"
     case default
       stop 'Unknown matrix type in bml_get_type'
     end select
