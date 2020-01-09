@@ -34,6 +34,12 @@ module bml_interface_m
   !> The enum values of the C API. Keep this synchronized with the
   !! enum in bml_types.h.
   !!
+  !! Matrix type is ellblock.
+  integer, parameter :: bml_matrix_type_ellsort_enum_id = 4
+
+  !> The enum values of the C API. Keep this synchronized with the
+  !! enum in bml_types.h.
+  !!
   !! Matrix precision is unitialized.
   integer, parameter :: bml_matrix_precision_uninitialized_id = 0
 
@@ -106,6 +112,8 @@ contains
       id = bml_matrix_type_ellpack_enum_id
     case(BML_MATRIX_ELLBLOCK)
       id = bml_matrix_type_ellblock_enum_id
+    case(BML_MATRIX_ELLSORT)
+      id = bml_matrix_type_ellsort_enum_id
     case default
       print *, "unknown matrix type"//trim(type_string)
       error stop
