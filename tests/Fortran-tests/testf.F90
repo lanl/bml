@@ -19,6 +19,7 @@ program testf
   use io_matrix
   use multiply_matrix
   use normalize_matrix
+  use scale_matrix
   use threshold_matrix
   use trace_matrix
   use transpose_matrix
@@ -64,6 +65,8 @@ program testf
     test_result = test_trace_matrix(matrix_type, element_type, N, M)
   case("transpose")
     test_result = test_transpose_matrix(matrix_type, element_type, N, M)
+  case("scale")
+    test_result = test_scale_matrix(matrix_type, element_type, N, M)
   case default
     call error_usage("Invalid test name "//test_name)
   end select
@@ -116,22 +119,22 @@ subroutine get_arguments(test_name, matrix_type, element_type)
     end if
     if (trim(adjustl(args(i))) == "-n") then
       if (trim(adjustl(args(i+1))) .NE. "") then
-       test_name = args(i+1)
-       narg = narg + 1
+        test_name = args(i+1)
+        narg = narg + 1
       end if
     end if
 
     if (trim(adjustl(args(i))) == "-t") then
       if (trim(adjustl(args(i+1))) .NE. "") then
-       matrix_type = args(i+1)
-       narg = narg + 1
+        matrix_type = args(i+1)
+        narg = narg + 1
       end if
     end if
 
     if (trim(adjustl(args(i))) == "-p") then
       if (trim(adjustl(args(i+1))) .NE. "") then
-       element_type = args(i+1)
-       narg = narg + 1
+        element_type = args(i+1)
+        narg = narg + 1
       end if
     end if
   end do

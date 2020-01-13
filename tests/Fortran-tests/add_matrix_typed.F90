@@ -52,7 +52,7 @@ contains
     call bml_copy_new(a, b)
     call bml_copy_new(a, d)
     call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
-          & c)
+         & c)
 
     call bml_add(b, c, alpha, beta, threshold)
 

@@ -24,26 +24,26 @@ contains
 
     write(*,*)"Im in test_copy_matrix"
     select case(element_type)
-      case("single_real")
-        element_kind = bml_real
-        element_precision = sp
-        test_result = test_copy_matrix_single_real(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("double_real")
-        element_kind = bml_real
-        element_precision = dp
-        test_result = test_copy_matrix_double_real(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("single_complex")
-        element_kind = bml_complex
-        element_precision = sp
-        test_result = test_copy_matrix_single_complex(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("double_complex")
-        element_kind = bml_complex
-        element_precision = dp
-        test_result = test_copy_matrix_double_complex(matrix_type, element_kind,&
-        &element_precision, n, m)
+    case("single_real")
+      element_kind = bml_real
+      element_precision = sp
+      test_result = test_copy_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_real")
+      element_kind = bml_real
+      element_precision = dp
+      test_result = test_copy_matrix_double_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("single_complex")
+      element_kind = bml_complex
+      element_precision = sp
+      test_result = test_copy_matrix_single_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_complex")
+      element_kind = bml_complex
+      element_precision = dp
+      test_result = test_copy_matrix_double_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
     end select
 
   end function test_copy_matrix

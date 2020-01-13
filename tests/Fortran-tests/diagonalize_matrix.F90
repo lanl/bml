@@ -25,30 +25,30 @@ contains
     write(*,*)"Im in test_diagonalize_matrix"
     write(*,*)matrix_type, element_type
     select case(element_type)
-      case("single_real")
-        element_kind = bml_real
-        element_precision = sp
-        test_result = test_diagonalize_matrix_single_real(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("double_real")
-        element_kind = bml_real
-        write(*,*)"test"
-        element_precision = dp
-        test_result = test_diagonalize_matrix_single_real(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("single_complex")
-        element_kind = bml_complex
-        element_precision = sp
-        test_result = test_diagonalize_matrix_single_complex(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("double_complex")
-        element_kind = bml_complex
-        element_precision = dp
-        test_result = test_diagonalize_matrix_double_complex(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case default
-        write(*,*)"No valid element_type"
-        test_result = .false.
+    case("single_real")
+      element_kind = bml_real
+      element_precision = sp
+      test_result = test_diagonalize_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_real")
+      element_kind = bml_real
+      write(*,*)"test"
+      element_precision = dp
+      test_result = test_diagonalize_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("single_complex")
+      element_kind = bml_complex
+      element_precision = sp
+      test_result = test_diagonalize_matrix_single_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_complex")
+      element_kind = bml_complex
+      element_precision = dp
+      test_result = test_diagonalize_matrix_double_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case default
+      write(*,*)"No valid element_type"
+      test_result = .false.
     end select
 
   end function test_diagonalize_matrix

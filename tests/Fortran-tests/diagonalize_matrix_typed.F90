@@ -25,10 +25,10 @@ contains
     type(bml_matrix_t) :: c
     type(bml_matrix_t) :: eigenvectors
     type(bml_matrix_t) :: eigenvectors_t
-  !  DUMMY_KIND(DUMMY_PREC), allocatable :: eigenvalues(:)
+    !  DUMMY_KIND(DUMMY_PREC), allocatable :: eigenvalues(:)
     real(8), allocatable :: eigenvalues(:)
 
-write(*,*)"element ",element_kind,element_precision
+    write(*,*)"element ",element_kind,element_precision
     threshold = 0.0_MP
     test_result = .false.
 

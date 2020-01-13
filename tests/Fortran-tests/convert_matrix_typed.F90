@@ -11,7 +11,7 @@ module convert_matrix_typed
 contains
 
   function test_convert_matrix_typed(matrix_type, element_kind, &
-    &element_precision, n, m) result(test_result)
+       &element_precision, n, m) result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_kind
     integer, intent(in) :: element_precision

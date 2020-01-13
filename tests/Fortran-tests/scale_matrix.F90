@@ -1,19 +1,19 @@
-module multiply_matrix
+module scale_matrix
 
   use bml
   use prec
-  use multiply_matrix_single_real
-  use multiply_matrix_double_real
-  use multiply_matrix_single_complex
-  use multiply_matrix_double_complex
+  use scale_matrix_single_real
+  use scale_matrix_double_real
+  use scale_matrix_single_complex
+  use scale_matrix_double_complex
 
   implicit none
 
-  public :: test_multiply_matrix
+  public :: test_scale_matrix
 
 contains
 
-  function test_multiply_matrix(matrix_type, element_type, n, m) &
+  function test_scale_matrix(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
@@ -22,30 +22,30 @@ contains
     logical :: test_result
     integer :: element_precision
 
-    write(*,*)"Im in test_multiply_matrix"
+    write(*,*)"Im in test_scale_matrix"
     select case(element_type)
     case("single_real")
       element_kind = bml_real
       element_precision = sp
-      test_result = test_multiply_matrix_single_real(matrix_type, element_kind,&
+      test_result = test_scale_matrix_single_real(matrix_type, element_kind,&
            &element_precision, n, m)
     case("double_real")
       element_kind = bml_real
       element_precision = dp
-      test_result = test_multiply_matrix_double_real(matrix_type, element_kind,&
+      test_result = test_scale_matrix_double_real(matrix_type, element_kind,&
            &element_precision, n, m)
     case("single_complex")
       element_kind = bml_complex
       element_precision = sp
-      test_result = test_multiply_matrix_single_complex(matrix_type, element_kind,&
+      test_result = test_scale_matrix_single_complex(matrix_type, element_kind,&
            &element_precision, n, m)
     case("double_complex")
       element_kind = bml_complex
       element_precision = dp
-      test_result = test_multiply_matrix_double_complex(matrix_type, element_kind,&
+      test_result = test_scale_matrix_double_complex(matrix_type, element_kind,&
            &element_precision, n, m)
     end select
 
-  end function test_multiply_matrix
+  end function test_scale_matrix
 
-end module multiply_matrix
+end module scale_matrix

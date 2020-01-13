@@ -24,26 +24,26 @@ contains
 
     write(*,*)"Im in test_convert_matrix"
     select case(element_type)
-      case("single_real")
-        element_kind = bml_real
-        element_precision = kind(1.0)
-        test_result = test_convert_matrix_single_real(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("double_real")
-        element_kind = bml_real
-        element_precision = kind(1.0d0)
-        test_result = test_convert_matrix_double_real(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("single_complex")
-        element_kind = bml_complex
-        element_precision = kind(1.0)
-        test_result = test_convert_matrix_single_complex(matrix_type, element_kind,&
-        &element_precision, n, m)
-      case("double_complex")
-        element_kind = bml_complex
-        element_precision = kind(1.0d0)
-        test_result = test_convert_matrix_double_complex(matrix_type, element_kind,&
-        &element_precision, n, m)
+    case("single_real")
+      element_kind = bml_real
+      element_precision = kind(1.0)
+      test_result = test_convert_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_real")
+      element_kind = bml_real
+      element_precision = kind(1.0d0)
+      test_result = test_convert_matrix_double_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("single_complex")
+      element_kind = bml_complex
+      element_precision = kind(1.0)
+      test_result = test_convert_matrix_single_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_complex")
+      element_kind = bml_complex
+      element_precision = kind(1.0d0)
+      test_result = test_convert_matrix_double_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
     end select
 
   end function test_convert_matrix
