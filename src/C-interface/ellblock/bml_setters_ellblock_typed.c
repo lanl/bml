@@ -71,6 +71,12 @@ void TYPED_FUNC(
     if (block_found == 0)
     {
         int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
+        if( A_ptr_value[ind]==NULL)
+        {
+            //printf("allocat new block ib=%d, ind=%d\n", ib, ind);
+            A_ptr_value[ind] = calloc(A_bsize[ib]*A_bsize[jb], sizeof(REAL_T));
+            A_indexb[ind] = A_nnzb[ib];
+        }
         REAL_T *A_value = A_ptr_value[ind];
         A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])]
             = *((REAL_T *) element);

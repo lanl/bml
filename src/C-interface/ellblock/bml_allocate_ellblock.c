@@ -94,7 +94,7 @@ count_nelements(
 {
     int nelements = 0;
     for (int ib = 0; ib < A->NB; ib++)
-        for (int jp = 0; jp < A->MB; jp++)
+        for (int jp = 0; jp < A->nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
             int jb = A->indexb[ind];
@@ -115,7 +115,7 @@ bml_deallocate_ellblock(
     bml_matrix_ellblock_t * A)
 {
     for (int ib = 0; ib < A->NB; ib++)
-        for (int jp = 0; jp < A->MB; jp++)
+        for (int jp = 0; jp < A->nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
             bml_free_memory(A->ptr_value[ind]);
