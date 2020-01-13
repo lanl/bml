@@ -1,23 +1,19 @@
-module get_matrix_m
+module get_element_typed
 
   use bml
-  use test_m
+  use bml_elemental_m
+  use prec
 
   implicit none
 
-  private
-
-  type, public, extends(test_t) :: get_matrix_t
-  contains
-    procedure, nopass :: test_function
-  end type get_matrix_t
+  public :: test_get_element_typed
 
 contains
 
-  function test_function(matrix_type, element_type, element_precision, n, m) &
+  function test_get_element_typed(matrix_type, element_kind, element_precision, n, m) &
        & result(test_result)
 
-    character(len=*), intent(in) :: matrix_type, element_type
+    character(len=*), intent(in) :: matrix_type, element_kind
     integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
     logical :: test_result
@@ -26,10 +22,10 @@ contains
 
     integer :: i, j
 
-    REAL_TYPE, allocatable :: a_dense(:, :)
-    REAL_TYPE :: a_ij
+    DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
+    DUMMY_KIND(DUMMY_PREC) :: a_ij
 
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
+    call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)
 
     test_result = .true.
@@ -38,7 +34,7 @@ contains
     call bml_print_matrix("A", a_dense, 1, n, 1, n)
     do i = 1, n
       do j = 1, n
-        call bml_get(a_ij, a, i, j)
+        call bml_get_element(a_ij, a, i, j)
         if(abs(a_ij-a_dense(i, j)) > 1e-12) then
           test_result = .false.
           print *, "matrix element mismatch"
@@ -50,6 +46,6 @@ contains
     end do
     call bml_deallocate(a)
 
-  end function test_function
+  end function test_get_element_typed
 
-end module get_matrix_m
+end module get_element_typed

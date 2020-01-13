@@ -1,19 +1,19 @@
-module inverse_matrix
+module example_template
 
   use bml
   use prec
-  use inverse_matrix_single_real
-  use inverse_matrix_double_real
-  use inverse_matrix_single_complex
-  use inverse_matrix_double_complex
+  use example_template_single_real
+  use example_template_double_real
+  use example_template_single_complex
+  use example_template_double_complex
 
   implicit none
 
-  public :: test_inverse_matrix
+  public :: test_example_template
 
 contains
 
-  function test_inverse_matrix(matrix_type, element_type, n, m) &
+  function test_example_template(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
@@ -22,30 +22,30 @@ contains
     logical :: test_result
     integer :: element_precision
 
-    write(*,*)"Im in test_inverse_matrix"
+    write(*,*)"Im in test_example_template"
     select case(element_type)
       case("single_real")
         element_kind = bml_real
         element_precision = sp
-        test_result = test_inverse_matrix_single_real(matrix_type, element_kind,&
+        test_result = test_example_template_single_real(matrix_type, element_kind,&
         &element_precision, n, m)
       case("double_real")
         element_kind = bml_real
         element_precision = dp
-        test_result = test_inverse_matrix_double_real(matrix_type, element_kind,&
+        test_result = test_example_template_double_real(matrix_type, element_kind,&
         &element_precision, n, m)
       case("single_complex")
         element_kind = bml_complex
         element_precision = sp
-        test_result = test_inverse_matrix_single_complex(matrix_type, element_kind,&
+        test_result = test_example_template_single_complex(matrix_type, element_kind,&
         &element_precision, n, m)
       case("double_complex")
         element_kind = bml_complex
         element_precision = dp
-        test_result = test_inverse_matrix_double_complex(matrix_type, element_kind,&
+        test_result = test_example_template_double_complex(matrix_type, element_kind,&
         &element_precision, n, m)
     end select
 
-  end function test_inverse_matrix
+  end function test_example_template
 
-end module inverse_matrix
+end module example_template

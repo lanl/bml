@@ -1,52 +1,51 @@
-module threshold_matrix_m
+module threshold_matrix
 
   use bml
-  use test_m
+  use prec
+  use threshold_matrix_single_real
+  use threshold_matrix_double_real
+  use threshold_matrix_single_complex
+  use threshold_matrix_double_complex
 
   implicit none
 
-  private
-
-  type, public, extends(test_t) :: threshold_matrix_t
-  contains
-    procedure, nopass :: test_function
-  end type threshold_matrix_t
+  public :: test_threshold_matrix
 
 contains
 
-  function test_function(matrix_type, element_type, element_precision, n, m) &
+  function test_threshold_matrix(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
-    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
+    character(20) :: element_kind
     logical :: test_result
+    integer :: element_precision
 
-    type(bml_matrix_t) :: a
-    REAL_TYPE, allocatable :: a_dense(:, :)
-    integer :: i, j
+    write(*,*)"Im in test_threshold_matrix"
+    select case(element_type)
+      case("single_real")
+        element_kind = bml_real
+        element_precision = sp
+        test_result = test_threshold_matrix_single_real(matrix_type, element_kind,&
+        &element_precision, n, m)
+      case("double_real")
+        element_kind = bml_real
+        element_precision = dp
+        test_result = test_threshold_matrix_double_real(matrix_type, element_kind,&
+        &element_precision, n, m)
+      case("single_complex")
+        element_kind = bml_complex
+        element_precision = sp
+        test_result = test_threshold_matrix_single_complex(matrix_type, element_kind,&
+        &element_precision, n, m)
+      case("double_complex")
+        element_kind = bml_complex
+        element_precision = dp
+        test_result = test_threshold_matrix_double_complex(matrix_type, element_kind,&
+        &element_precision, n, m)
+    end select
 
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-         & a)
-    call bml_print_matrix("A", a, 1, n, 1, n)
-    call bml_threshold(a, 0.5d0)
-    call bml_print_matrix("A", a, 1, n, 1, n)
-    call bml_export_to_dense(a, a_dense)
+  end function test_threshold_matrix
 
-    test_result = .true.
-    do i = 1, n
-      do j = 1, n
-        if(abs(a_dense(i, j)) > 0.0 .and. abs(a_dense(i, j)) < 0.5) then
-          test_result = .false.
-          call bml_print_matrix("A", a_dense, 1, n, 1, n)
-          print *, "matrix not thresholded"
-          return
-        end if
-      end do
-    end do
-
-    call bml_deallocate(a)
-
-  end function test_function
-
-end module threshold_matrix_m
+end module threshold_matrix

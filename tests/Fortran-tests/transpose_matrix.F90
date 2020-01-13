@@ -1,56 +1,51 @@
-module transpose_matrix_m
+module transpose_matrix
 
   use bml
-  use test_m
+  use prec
+  use transpose_matrix_single_real
+  use transpose_matrix_double_real
+  use transpose_matrix_single_complex
+  use transpose_matrix_double_complex
 
   implicit none
 
-  private
-
-  type, public, extends(test_t) :: transpose_matrix_t
-  contains
-    procedure, nopass :: test_function
-  end type transpose_matrix_t
+  public :: test_transpose_matrix
 
 contains
 
-  function test_function(matrix_type, element_type, element_precision, n, m) &
+  function test_transpose_matrix(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
-    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
+    character(20) :: element_kind
     logical :: test_result
+    integer :: element_precision
 
-    type(bml_matrix_t) :: a
-    type(bml_matrix_t) :: b
-    type(bml_matrix_t) :: c
+    write(*,*)"Im in test_transpose_matrix"
+    select case(element_type)
+      case("single_real")
+        element_kind = bml_real
+        element_precision = sp
+        test_result = test_transpose_matrix_single_real(matrix_type, element_kind,&
+        &element_precision, n, m)
+      case("double_real")
+        element_kind = bml_real
+        element_precision = dp
+        test_result = test_transpose_matrix_double_real(matrix_type, element_kind,&
+        &element_precision, n, m)
+      case("single_complex")
+        element_kind = bml_complex
+        element_precision = sp
+        test_result = test_transpose_matrix_single_complex(matrix_type, element_kind,&
+        &element_precision, n, m)
+      case("double_complex")
+        element_kind = bml_complex
+        element_precision = dp
+        test_result = test_transpose_matrix_double_complex(matrix_type, element_kind,&
+        &element_precision, n, m)
+    end select
 
-    REAL_TYPE, allocatable :: a_dense(:, :)
-    REAL_TYPE, allocatable :: b_dense(:, :)
+  end function test_transpose_matrix
 
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-         & a)
-    call bml_transpose(a, b)
-    call bml_copy_new(a, c)
-
-    call bml_export_to_dense(a, a_dense)
-    call bml_export_to_dense(b, b_dense)
-
-    if(maxval(abs(a_dense-transpose(b_dense))) > 1e-12) then
-      test_result = .false.
-      print *, "matrices are not transposes"
-    else
-      test_result = .true.
-    end if
-
-    call bml_deallocate(a)
-    call bml_deallocate(b)
-    call bml_deallocate(c)
-
-    deallocate(a_dense)
-    deallocate(b_dense)
-
-  end function test_function
-
-end module transpose_matrix_m
+end module transpose_matrix
