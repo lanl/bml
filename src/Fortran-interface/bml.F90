@@ -7,6 +7,7 @@ module bml
   use bml_allocate_m
   use bml_copy_m
   use bml_diagonalize_m
+  use bml_elemental_m
   use bml_error_m
   use bml_export_m
   use bml_getters_m

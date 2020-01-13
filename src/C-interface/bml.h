@@ -203,6 +203,7 @@
 #include "bml_convert.h"
 #include "bml_copy.h"
 #include "bml_diagonalize.h"
+#include "bml_elemental.h"
 #include "bml_export.h"
 #include "bml_getters.h"
 #include "bml_import.h"

@@ -1,62 +1,55 @@
-module trace_matrix_m
+module trace_matrix
 
   use bml
-  use test_m
+  use prec
+  use trace_matrix_single_real
+  use trace_matrix_double_real
+#ifdef BML_COMPLEX
+  use trace_matrix_single_complex
+  use trace_matrix_double_complex
+#endif
 
   implicit none
 
-  private
-
-  type, public, extends(test_t) :: trace_matrix_t
-  contains
-    procedure, nopass :: test_function
-  end type trace_matrix_t
+  public :: test_trace_matrix
 
 contains
 
-  function test_function(matrix_type, element_type, element_precision, n, m) &
+  function test_trace_matrix(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
-    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
+    character(20) :: element_kind
     logical :: test_result
+    integer :: element_precision
 
-#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-    double precision :: rel_tol = 1e-6
-#else
-    double precision :: rel_tol = 1d-12
+    write(*,*)"Im in test_trace_matrix"
+    select case(element_type)
+    case("single_real")
+      element_kind = bml_real
+      element_precision = sp
+      test_result = test_trace_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_real")
+      element_kind = bml_real
+      element_precision = dp
+      test_result = test_trace_matrix_double_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+#ifdef BML_COMPLEX
+    case("single_complex")
+      element_kind = bml_complex
+      element_precision = sp
+      test_result = test_trace_matrix_single_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_complex")
+      element_kind = bml_complex
+      element_precision = dp
+      test_result = test_trace_matrix_double_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
 #endif
+    end select
 
-    type(bml_matrix_t) :: a
+  end function test_trace_matrix
 
-    REAL_TYPE, allocatable :: a_dense(:, :)
-
-    double precision :: tr_a
-    double precision :: tr_reference
-
-    integer :: i
-
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-         & a)
-    tr_a = bml_trace(a)
-
-    tr_reference = 0
-    call bml_export_to_dense(a, a_dense)
-    do i = 1, n
-      tr_reference = tr_reference+a_dense(i, i)
-    end do
-
-    if(abs((tr_a - tr_reference)/tr_reference) > rel_tol) then
-      test_result = .false.
-      print *, "trace incorrect"
-    else
-      test_result = .true.
-    end if
-
-    call bml_deallocate(a)
-    deallocate(a_dense)
-
-  end function test_function
-
-end module trace_matrix_m
+end module trace_matrix

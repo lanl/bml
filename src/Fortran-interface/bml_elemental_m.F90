@@ -6,14 +6,14 @@ module bml_elemental_m
   implicit none
   private
 
-  interface bml_get
-    module procedure bml_get_single_real
-    module procedure bml_get_double_real
-    module procedure bml_get_single_complex
-    module procedure bml_get_double_complex
-  end interface bml_get
+  interface bml_get_element
+    module procedure bml_get_element_single_real
+    module procedure bml_get_element_double_real
+    module procedure bml_get_element_single_complex
+    module procedure bml_get_element_double_complex
+  end interface bml_get_element
 
-  public :: bml_get
+  public :: bml_get_element
 
 contains
 
@@ -23,7 +23,7 @@ contains
   !! \param a The matrix
   !! \param i The row index
   !! \param j The column index
-  subroutine bml_get_single_real(a_ij, a, i, j)
+  subroutine bml_get_element_single_real(a_ij, a, i, j)
 
     real(C_FLOAT), intent(out) :: a_ij
     type(bml_matrix_t), intent(in) :: a
@@ -32,7 +32,7 @@ contains
 
     a_ij = bml_get_single_real_C(a%ptr, i-1, j-1)
 
-  end subroutine bml_get_single_real
+  end subroutine bml_get_element_single_real
 
   !> Get a single matrix element.
   !!
@@ -40,7 +40,7 @@ contains
   !! \param a The matrix
   !! \param i The row index
   !! \param j The column index
-  subroutine bml_get_double_real(a_ij, a, i, j)
+  subroutine bml_get_element_double_real(a_ij, a, i, j)
 
     real(C_DOUBLE), intent(out) :: a_ij
     type(bml_matrix_t), intent(in) :: a
@@ -49,7 +49,7 @@ contains
 
     a_ij = bml_get_double_real_C(a%ptr, i-1, j-1)
 
-  end subroutine bml_get_double_real
+  end subroutine bml_get_element_double_real
 
   !> Get a single matrix element.
   !!
@@ -57,7 +57,7 @@ contains
   !! \param a The matrix
   !! \param i The row index
   !! \param j The column index
-  subroutine bml_get_single_complex(a_ij, a, i, j)
+  subroutine bml_get_element_single_complex(a_ij, a, i, j)
 
     complex(C_FLOAT_COMPLEX), intent(out) :: a_ij
     type(bml_matrix_t), intent(in) :: a
@@ -66,7 +66,7 @@ contains
 
     a_ij = bml_get_single_complex_C(a%ptr, i-1, j-1)
 
-  end subroutine bml_get_single_complex
+  end subroutine bml_get_element_single_complex
 
   !> Get a single matrix element.
   !!
@@ -74,7 +74,7 @@ contains
   !! \param a The matrix
   !! \param i The row index
   !! \param j The column index
-  subroutine bml_get_double_complex(a_ij, a, i, j)
+  subroutine bml_get_element_double_complex(a_ij, a, i, j)
 
     complex(C_DOUBLE_COMPLEX), intent(out) :: a_ij
     type(bml_matrix_t), intent(in) :: a
@@ -83,6 +83,6 @@ contains
 
     a_ij = bml_get_double_complex_C(a%ptr, i-1, j-1)
 
-  end subroutine bml_get_double_complex
+  end subroutine bml_get_element_double_complex
 
 end module bml_elemental_m

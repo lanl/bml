@@ -1,49 +1,55 @@
-module get_bandwidth_m
+module get_bandwidth
 
   use bml
-  use test_m
+  use prec
+  use get_bandwidth_single_real
+  use get_bandwidth_double_real
+#ifdef BML_COMPLEX
+  use get_bandwidth_single_complex
+  use get_bandwidth_double_complex
+#endif
 
   implicit none
 
-  private
-
-  type, public, extends(test_t) :: get_bandwidth_t
-  contains
-    procedure, nopass :: test_function
-  end type get_bandwidth_t
+  public :: test_get_bandwidth
 
 contains
 
-  function test_function(matrix_type, element_type, element_precision, n, m) &
+  function test_get_bandwidth(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
-    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
+    character(20) :: element_kind
     logical :: test_result
+    integer :: element_precision
 
-    type(bml_matrix_t) :: a
+    write(*,*)"Im in test_get_bandwidth"
+    select case(element_type)
+    case("single_real")
+      element_kind = bml_real
+      element_precision = sp
+      test_result = test_get_bandwidth_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_real")
+      element_kind = bml_real
+      element_precision = dp
+      test_result = test_get_bandwidth_double_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+#ifdef BML_COMPLEX
+    case("single_complex")
+      element_kind = bml_complex
+      element_precision = sp
+      test_result = test_get_bandwidth_single_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_complex")
+      element_kind = bml_complex
+      element_precision = dp
+      test_result = test_get_bandwidth_double_complex(matrix_type, element_kind,&
+           &element_precision, n, m)
+#endif
+    end select
 
-    integer :: i
+  end function test_get_bandwidth
 
-    call bml_identity_matrix(matrix_type, element_type, element_precision, n, &
-         & m, a)
-
-    test_result = .true.
-
-    do i = 1, n
-      if(bml_get_row_bandwidth(a, i) /= 1) then
-        print *, "Wrong bandwidth on row ", i
-        print *, "Should be 1, but is ", bml_get_row_bandwidth(a, i)
-        call bml_print_matrix("A", a, 1, n, 1, n)
-        test_result = .false.
-        return
-      end if
-    end do
-    print *, "Test passed"
-
-    call bml_deallocate(a)
-
-  end function test_function
-
-end module get_bandwidth_m
+end module get_bandwidth

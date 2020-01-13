@@ -1,81 +1,55 @@
-module allocate_matrix_m
+module allocate_matrix
 
   use bml
-  use test_m
+  use prec
+  use allocate_matrix_single_real
+  use allocate_matrix_double_real
+#ifdef BML_COMPLEX
+  use allocate_matrix_single_complex
+  use allocate_matrix_double_complex
+#endif
 
   implicit none
 
-  private
-
-  type, public, extends(test_t) :: allocate_matrix_t
-  contains
-    procedure, nopass :: test_function
-  end type allocate_matrix_t
+  public :: test_allocate_matrix
 
 contains
 
-  function test_function(matrix_type, element_type, element_precision, n, m) &
+  function test_allocate_matrix(matrix_type, element_type, n, m) &
        & result(test_result)
 
     character(len=*), intent(in) :: matrix_type, element_type
-    integer, intent(in) :: element_precision
     integer, intent(in) :: n, m
+    character(20) :: element_kind
     logical :: test_result
+    integer :: element_precision
 
-    type(bml_matrix_t) :: a
+    write(*,*)"Im in test_allocate_matrix"
+    select case(element_type)
+    case("single_real")
+      element_kind = bml_real
+      element_precision = sp
+      test_result = test_allocate_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_real")
+      element_kind = bml_real
+      element_precision = dp
+      test_result = test_allocate_matrix_double_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+#ifdef BML_COMPLEX
+    case("single_complex")
+      element_kind = bml_complex
+      element_precision = sp
+      test_result = test_allocate_matrix_single_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+    case("double_complex")
+      element_kind = bml_complex
+      element_precision = dp
+      test_result = test_allocate_matrix_double_real(matrix_type, element_kind,&
+           &element_precision, n, m)
+#endif
+    end select
 
-    REAL_TYPE, allocatable :: a_dense(:, :)
-    integer :: i, j
+  end function test_allocate_matrix
 
-    test_result = .true.
-
-    call bml_random_matrix(matrix_type, element_type, element_precision, n, m, &
-         & a)
-    call bml_export_to_dense(a, a_dense)
-    if(lbound(a_dense, 1) /= 1 .or. lbound(a_dense, 2) /= 1) then
-      print *, "incorrect lbound"
-      print *, "lbound(a_dense, 1) = ", lbound(a_dense, 1)
-      print *, "lbound(a_dense, 2) = ", lbound(a_dense, 2)
-      test_result = .false.
-      return
-    end if
-    if(ubound(a_dense, 1) /= n .or. ubound(a_dense, 2) /= n) then
-      print *, "incorrect ubound"
-      print *, "ubound(a_dense, 1) = ", ubound(a_dense, 1)
-      print *, "ubound(a_dense, 2) = ", ubound(a_dense, 2)
-      test_result = .false.
-      return
-    end if
-    call bml_print_matrix("A", a_dense, 1, n, 1, n)
-    deallocate(a_dense)
-    call bml_deallocate(a)
-    call bml_identity_matrix(matrix_type, element_type, element_precision, &
-         & n, m, a)
-    call bml_export_to_dense(a, a_dense)
-    call bml_print_matrix("A", a_dense, lbound(a_dense, 1), ubound(a_dense, 1), &
-         lbound(a_dense, 2), ubound(a_dense, 2))
-    do i = 1, n
-      do j = 1, n
-        if(i == j) then
-          if(abs(a_dense(i, j)-1) > 1e-12) then
-            print *, "Incorrect value on diagonal", a_dense(i, j)
-            test_result = .false.
-            return
-          end if
-        else
-          if(abs(a_dense(i, j)) > 1e-12) then
-            print *, "Incorrect value off diagonal", a_dense(i, j)
-            test_result = .false.
-            return
-          end if
-        end if
-      end do
-    end do
-    print *, "Identity matrix test passed"
-
-    call bml_zero_matrix(matrix_type, element_type, element_precision, n, m, a)
-    call bml_deallocate(a)
-
-  end function test_function
-
-end module allocate_matrix_m
+end module allocate_matrix
