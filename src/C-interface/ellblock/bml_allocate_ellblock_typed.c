@@ -32,9 +32,7 @@ void TYPED_FUNC(
         for (int jp = 0; jp < A->nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
-            int jb = A->indexb[ind];
-            memset(A->ptr_value[ind], 0.,
-                   A->bsize[ib] * A->bsize[jb] * sizeof(REAL_T));
+            bml_free_memory(A->ptr_value[ind]);
         }
     memset(A->indexb, 0, A->NB * A->MB * sizeof(int));
     memset(A->nnzb, 0, A->NB * sizeof(int));

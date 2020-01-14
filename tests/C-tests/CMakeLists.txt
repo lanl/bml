@@ -139,7 +139,7 @@ foreach(N
 
   # Setting specific formats for a particular bml function
   if(${N} MATCHES set_element)
-    set(formats dense ellpack ellsort)
+    set(formats dense ellpack ellsort ellblock)
   endif()
 
   test_formats(${formats})
