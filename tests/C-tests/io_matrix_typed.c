@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE 500
+
 #include "bml.h"
 #include "bml_test.h"
 
@@ -6,6 +8,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int TYPED_FUNC(
     test_io_matrix) (
@@ -23,10 +26,15 @@ int TYPED_FUNC(
     double diff;
     double tol;
 
+    char *matrix_filename = strdup("ctest_matrix_XXXXXX");
+    mktemp(matrix_filename);
+
+    LOG_INFO("Using %s as matrix file\n", matrix_filename);
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_write_bml_matrix(A, "ctest_matrix.mtx");
+    bml_write_bml_matrix(A, matrix_filename);
     B = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
-    bml_read_bml_matrix(B, "ctest_matrix.mtx");
+    bml_read_bml_matrix(B, matrix_filename);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
@@ -58,6 +66,7 @@ int TYPED_FUNC(
             return -1;
         }
     }
+    free(matrix_filename);
     bml_free_memory(A_dense);
     bml_free_memory(B_dense);
     bml_deallocate(&A);
