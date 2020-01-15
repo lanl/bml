@@ -212,12 +212,11 @@ void TYPED_FUNC(
     int *A_indexb = A->indexb;
     int *A_nnzb = A->nnzb;
     int *A_bsize = A->bsize;
-    int ll = 0;
 
     int offset = 0;
     for (int ib = 0; ib < A_NB; ib++)
     {
-        ll = 0;
+        int block_found = 0;
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, A_NB, A_MB);
@@ -244,21 +243,24 @@ void TYPED_FUNC(
                             0.0;
                     }
                 }
-                ll = 1;
+                block_found = 1;
             }
         }
 
         /* If there is no diagonal block then
          */
-        if (ll == 0)
+        if (block_found == 0)
         {
             double normdiag = TYPED_FUNC(bml_norm_inf)
                 (&diagonal[offset], A_bsize[ib], 1, 1);
             if (normdiag > threshold)
             {
-                A_indexb[ROWMAJOR(ib, A_nnzb[ib], A_NB, A_MB)] = ib;
-                REAL_T *A_value
-                    = A_ptr_value[ROWMAJOR(ib, A_nnzb[ib], A_NB, A_MB)];
+                int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
+                A_ptr_value[ind] =
+                    calloc(A_bsize[ib] * A_bsize[ib], sizeof(REAL_T));
+                A_indexb[ind] = ib;
+
+                REAL_T *A_value = A_ptr_value[ind];
                 for (int ii = 0; ii < A_bsize[ib]; ii++)
                 {
                     A_value[ROWMAJOR(ii, ii, A_bsize[ib], A_bsize[ib])]

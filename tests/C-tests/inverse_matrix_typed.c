@@ -25,13 +25,6 @@ int TYPED_FUNC(
     bml_matrix_t *aux = NULL;
     float ssum;
 
-    if (matrix_type != dense && matrix_type != ellpack
-        && matrix_type != ellblock)
-    {
-        LOG_INFO("inverse for this matrix type is not implemented\n");
-        return 0;
-    }
-
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);

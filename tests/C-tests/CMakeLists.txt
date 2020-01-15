@@ -141,6 +141,12 @@ foreach(N
   set(formats dense ellpack ellsort ellblock)
 
   # Setting specific formats for a particular bml function
+  if(${N} MATCHES diagonalize)
+    set(formats dense ellpack ellblock)
+  endif()
+  if(${N} MATCHES inverse)
+    set(formats dense ellpack ellblock)
+  endif()
   if(${N} MATCHES set_element)
     set(formats dense ellpack ellsort ellblock)
   endif()
