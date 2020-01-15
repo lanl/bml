@@ -3,6 +3,7 @@
 #include "../bml_allocate.h"
 #include "../bml_types.h"
 #include "bml_allocate_ellblock.h"
+#include "bml_setters_ellblock.h"
 #include "bml_types_ellblock.h"
 
 #include <complex.h>
@@ -34,7 +35,6 @@ void TYPED_FUNC(
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
             bml_free_memory(A->ptr_value[ind]);
         }
-    memset(A->indexb, 0, A->NB * A->MB * sizeof(int));
     memset(A->nnzb, 0, A->NB * sizeof(int));
 }
 
@@ -116,6 +116,40 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     bml_matrix_ellblock_t *A =
         TYPED_FUNC(bml_block_matrix_ellblock) (nb, mb, bsize, distrib_mode);
 
+    return A;
+}
+
+/** Allocate a banded random matrix.
+ *
+ *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
+ *  already allocated then the matrix will be deallocated in the
+ *  process.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_ellblock_t *TYPED_FUNC(
+    bml_banded_matrix_ellblock) (
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
+{
+    bml_matrix_ellblock_t *A =
+        TYPED_FUNC(bml_zero_matrix_ellblock) (N, M, distrib_mode);
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
+             j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
+        {
+            REAL_T value = rand() / (REAL_T) RAND_MAX;
+            bml_set_element_new_ellblock(A, i, j, &value);
+        }
+    }
     return A;
 }
 

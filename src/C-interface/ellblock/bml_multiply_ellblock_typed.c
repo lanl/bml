@@ -62,8 +62,8 @@ void TYPED_FUNC(
     else
     {
         bml_matrix_ellblock_t *A2 =
-            TYPED_FUNC(bml_block_matrix_ellblock) (A->NB, A->MB, A->bsize,
-                                                   A->distribution_mode);
+            TYPED_FUNC(bml_block_matrix_ellblock) (C->NB, C->MB, C->bsize,
+                                                   C->distribution_mode);
 
         if (A != NULL && A == B)
         {
@@ -249,7 +249,6 @@ void TYPED_FUNC(
     assert(A->NB == C->NB);
 
     int NB = A->NB;
-    int MB = A->MB;
 
     int *A_nnzb = A->nnzb;
     int *A_indexb = A->indexb;
@@ -285,13 +284,13 @@ void TYPED_FUNC(
         //loop over blocks in this block row "ib"
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
-            int ind = ROWMAJOR(ib, jp, NB, MB);
+            int ind = ROWMAJOR(ib, jp, NB, A->MB);
             REAL_T *A_value = A_ptr_value[ind];
             int jb = A_indexb[ind];
 
             for (int kp = 0; kp < B_nnzb[jb]; kp++)
             {
-                int kb = B_indexb[ROWMAJOR(jb, kp, NB, MB)];
+                int kb = B_indexb[ROWMAJOR(jb, kp, NB, B->MB)];
                 //compute column block "kb" of result
                 if (ix[kb] == 0)
                 {
@@ -301,7 +300,7 @@ void TYPED_FUNC(
                     lb++;
                 }
                 REAL_T *x = x_ptr[kb];
-                REAL_T *B_value = B_ptr_value[ROWMAJOR(jb, kp, NB, MB)];
+                REAL_T *B_value = B_ptr_value[ROWMAJOR(jb, kp, NB, B->MB)];
                 for (int ii = 0; ii < bsize[ib]; ii++)
                     for (int jj = 0; jj < bsize[kb]; jj++)
                     {
@@ -324,7 +323,7 @@ void TYPED_FUNC(
         }
 
         // Check for number of non-zeroes per row exceeded
-        if (lb > MB)
+        if (lb > C->MB)
         {
             LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
         }
@@ -340,7 +339,7 @@ void TYPED_FUNC(
             if (jp == ib || is_above_threshold(normx, threshold))
             {
                 int nelements = bsize[ib] * bsize[jp];
-                int ind = ROWMAJOR(ib, ll, NB, MB);
+                int ind = ROWMAJOR(ib, ll, NB, C->MB);
                 C_ptr_value[ind]
                     = bml_noinit_allocate_memory(nelements * sizeof(REAL_T));
                 memcpy(C_ptr_value[ind], xtmp, nelements * sizeof(REAL_T));
