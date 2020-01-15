@@ -31,12 +31,6 @@ int TYPED_FUNC(
     bml_matrix_t *id = NULL;
     float fnorm;
 
-    if (matrix_type != dense && matrix_type != ellpack)
-    {
-        LOG_INFO("diagonalization for this matrix type is not implemented\n");
-        return 0;
-    }
-
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
