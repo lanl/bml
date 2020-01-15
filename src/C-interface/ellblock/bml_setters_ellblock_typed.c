@@ -2,6 +2,7 @@
 #include "../../typed.h"
 #include "../bml_allocate.h"
 #include "../bml_introspection.h"
+#include "../bml_logger.h"
 #include "../bml_types.h"
 #include "bml_setters_ellblock.h"
 #include "bml_types_ellblock.h"
@@ -55,7 +56,6 @@ void TYPED_FUNC(
         jj -= A_bsize[jb];
         jb++;
     }
-
     int block_found = 0;
     for (int jp = 0; jp < A_nnzb[ib]; jp++)
     {
@@ -70,14 +70,17 @@ void TYPED_FUNC(
     }
     if (block_found == 0)
     {
-        int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
-        if (A_ptr_value[ind] == NULL)
+        if (A_nnzb[ib] == A->MB)
         {
-            //printf("allocat new block ib=%d, ind=%d\n", ib, ind);
-            A_ptr_value[ind] =
-                calloc(A_bsize[ib] * A_bsize[jb], sizeof(REAL_T));
-            A_indexb[ind] = A_nnzb[ib];
+            LOG_ERROR("Number of non-zeroes per row > MB, Increase MB\n");
         }
+        int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
+        assert(A_ptr_value[ind] == NULL);
+
+        //printf("allocate new block ib=%d, ind=%d\n", ib, ind);
+        A_ptr_value[ind] = calloc(A_bsize[ib] * A_bsize[jb], sizeof(REAL_T));
+        A_indexb[ind] = jb;
+
         REAL_T *A_value = A_ptr_value[ind];
         A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])]
             = *((REAL_T *) element);
