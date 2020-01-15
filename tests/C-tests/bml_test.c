@@ -8,7 +8,7 @@
 
 #include "bml_test.h"
 
-const int NUM_TESTS = 26;
+const int NUM_TESTS = 27;
 
 typedef struct
 {
