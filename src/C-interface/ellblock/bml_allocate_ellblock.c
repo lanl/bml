@@ -62,8 +62,8 @@ bml_get_block_sizes(
         s_mb = M / s_default_block_dim;
         if (s_mb * s_default_block_dim < M)
             s_mb++;
-        if (s_mb == 1)
-            s_mb++;
+        if (s_mb < 4)
+            s_mb = 4;
         printf("s_mb = %d\n", s_mb);
 
         s_default_bsize = malloc(s_nb * sizeof(int));
