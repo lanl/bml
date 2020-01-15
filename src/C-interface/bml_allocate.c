@@ -431,6 +431,10 @@ bml_banded_matrix(
             return bml_banded_matrix_ellsort(matrix_precision, N, M,
                                              distrib_mode);
             break;
+        case ellblock:
+            return bml_banded_matrix_ellblock(matrix_precision, N, M,
+                                              distrib_mode);
+            break;
         default:
             LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
             break;

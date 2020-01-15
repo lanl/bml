@@ -68,6 +68,32 @@ bml_matrix_ellblock_t *bml_zero_matrix_ellblock_double_complex(
     int M,
     bml_distribution_mode_t distrib_mode);
 
+bml_matrix_ellblock_t *bml_banded_matrix_ellblock(
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
+
+bml_matrix_ellblock_t *bml_banded_matrix_ellblock_single_real(
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
+
+bml_matrix_ellblock_t *bml_banded_matrix_ellblock_double_real(
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
+
+bml_matrix_ellblock_t *bml_banded_matrix_ellblock_single_complex(
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
+
+bml_matrix_ellblock_t *bml_banded_matrix_ellblock_double_complex(
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
+
 bml_matrix_ellblock_t *bml_random_matrix_ellblock(
     bml_matrix_precision_t matrix_precision,
     int N,

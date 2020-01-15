@@ -270,6 +270,51 @@ bml_block_matrix_ellblock(
     return A;
 }
 
+/** Allocate a banded random matrix.
+ *
+ *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
+ *  already allocated then the matrix will be deallocated in the
+ *  process.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_ellblock_t *
+bml_banded_matrix_ellblock(
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
+{
+    switch (matrix_precision)
+    {
+        case single_real:
+            return bml_banded_matrix_ellblock_single_real(N, M, distrib_mode);
+            break;
+        case double_real:
+            return bml_banded_matrix_ellblock_double_real(N, M, distrib_mode);
+            break;
+        case single_complex:
+            return bml_banded_matrix_ellblock_single_complex(N, M,
+                                                             distrib_mode);
+            break;
+        case double_complex:
+            return bml_banded_matrix_ellblock_double_complex(N, M,
+                                                             distrib_mode);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return NULL;
+}
+
 /** Allocate a random matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
