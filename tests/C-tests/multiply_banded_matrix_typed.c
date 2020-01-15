@@ -1,12 +1,13 @@
 #include "bml.h"
-#include "bml_test.h"
+#include "../macros.h"
+#include "../typed.h"
 
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
 
-void
-multiply(
+static void TYPED_FUNC(
+    ref_multiply) (
     const int N,
     const REAL_T * A,
     const REAL_T * B,
@@ -19,23 +20,24 @@ multiply(
     {
         for (int j = 0; j < N; j++)
         {
-            C[i * N + j] *= beta;
+            C[ROWMAJOR(i, j, N, N)] *= beta;
             for (int k = 0; k < N; k++)
             {
-                C[i * N + j] += alpha * A[i * N + k] * B[k * N + j];
+                C[ROWMAJOR(i, j, N, N)] +=
+                    alpha * A[ROWMAJOR(i, k, N, N)] * B[ROWMAJOR(k, j, N, N)];
             }
         }
     }
 }
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define ABS_TOL 1e-6
+#define ABS_TOL 2e-6
 #else
 #define ABS_TOL 1e-12
 #endif
 
-int
-compare_matrix(
+static int TYPED_FUNC(
+    compare_matrix) (
     const int N,
     const bml_matrix_precision_t matrix_precision,
     const REAL_T * A,
@@ -55,8 +57,8 @@ compare_matrix(
     return 0;
 }
 
-int
-test_function(
+int TYPED_FUNC(
+    test_multiply_banded) (
     const int N,
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
@@ -76,9 +78,9 @@ test_function(
     const double beta = 0.8;
     const double threshold = 0.0;
 
-    A = bml_banded_matrix(matrix_type, matrix_precision, N, 3);
-    B = bml_banded_matrix(matrix_type, matrix_precision, N, 3);
-    C = bml_banded_matrix(matrix_type, matrix_precision, N, M);
+    A = bml_banded_matrix(matrix_type, matrix_precision, N, 3, sequential);
+    B = bml_banded_matrix(matrix_type, matrix_precision, N, 3, sequential);
+    C = bml_banded_matrix(matrix_type, matrix_precision, N, 5, sequential);
 
     bml_print_bml_matrix(A, 0, N, 0, N);
     bml_print_bml_matrix(B, 0, N, 0, N);
@@ -90,16 +92,21 @@ test_function(
     D_dense = bml_export_to_dense(C, dense_row_major);
 
     bml_multiply(A, B, C, alpha, beta, threshold);
+
+    bml_print_bml_matrix(C, 0, N, 0, N);
+
     E_dense = bml_export_to_dense(C, dense_row_major);
 
-    multiply(N, A_dense, B_dense, D_dense, alpha, beta, threshold);
+    TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
+                              threshold);
 
-    if (compare_matrix(N, matrix_precision, D_dense, E_dense) != 0)
+    if (TYPED_FUNC(compare_matrix) (N, matrix_precision, D_dense, E_dense) !=
+        0)
     {
         LOG_ERROR("matrix product incorrect\n");
         return -1;
     }
-    LOG_INFO("multiply matrix test passed\n");
+    LOG_INFO("multiply banded matrix test passed\n");
 
     bml_deallocate(&A);
     bml_deallocate(&B);
