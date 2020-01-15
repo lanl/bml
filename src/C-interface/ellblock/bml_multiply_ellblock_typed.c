@@ -62,8 +62,8 @@ void TYPED_FUNC(
     else
     {
         bml_matrix_ellblock_t *A2 =
-            TYPED_FUNC(bml_block_matrix_ellblock) (A->NB, A->MB, A->bsize,
-                                                   A->distribution_mode);
+            TYPED_FUNC(bml_block_matrix_ellblock) (C->NB, C->MB, C->bsize,
+                                                   C->distribution_mode);
 
         if (A != NULL && A == B)
         {
