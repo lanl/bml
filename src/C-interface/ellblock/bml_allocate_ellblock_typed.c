@@ -34,7 +34,6 @@ void TYPED_FUNC(
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
             bml_free_memory(A->ptr_value[ind]);
         }
-    memset(A->indexb, 0, A->NB * A->MB * sizeof(int));
     memset(A->nnzb, 0, A->NB * sizeof(int));
 }
 
@@ -147,7 +146,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
              j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
             REAL_T value = rand() / (REAL_T) RAND_MAX;
-            bml_set_element_new_ellblock(A, i, j, value);
+            bml_set_element_new_ellblock(A, i, j, &value);
         }
     }
     return A;
