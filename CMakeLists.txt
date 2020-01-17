@@ -353,6 +353,15 @@ if(NOT HAVE_FABS)
 endif()
 list(APPEND LINK_LIBRARIES -lm)
 
+find_package(XSMM)
+
+if(XSMM_FOUND)
+  message(STATUS "Use XSMM")
+  add_definitions(-DBML_USE_XSMM)
+  include_directories(${XSMM_INCLUDE_DIRS})
+  list(APPEND LINK_LIBRARIES ${XSMM_LIBRARY_DIRS}/libxsmm.so)
+endif()
+
 if(NOT (BLAS_FOUND OR NOBLAS))
   message(FATAL_ERROR "Could not find BLAS library.")
 endif()
