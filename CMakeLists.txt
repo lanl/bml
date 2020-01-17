@@ -353,7 +353,10 @@ if(NOT HAVE_FABS)
 endif()
 list(APPEND LINK_LIBRARIES -lm)
 
-find_package(XSMM)
+set(BML_XSMM FALSE CACHE BOOL "Whether to use XSMM library")
+if(BML_XSMM)
+  find_package(XSMM)
+endif()
 
 if(XSMM_FOUND)
   message(STATUS "Use XSMM")
