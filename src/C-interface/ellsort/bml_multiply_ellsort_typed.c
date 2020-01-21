@@ -57,7 +57,7 @@ void TYPED_FUNC(
     }
     else
     {
-        bml_matrix_dimension_t matrix_dimension = { C->N, C->N, C->M };
+        bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->M };
         bml_matrix_ellsort_t *A2 =
             TYPED_FUNC(bml_noinit_matrix_ellsort) (matrix_dimension,
                                                    A->distribution_mode);
@@ -132,22 +132,20 @@ void *TYPED_FUNC(
 #endif
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-#pragma omp parallel for                                \
-  default(none)                                      \
+#pragma omp parallel for                             \
   shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
   shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
   shared(X_localRowMin, X_localRowMax)               \
   reduction(+: traceX, traceX2)
 #else
-
-#pragma omp parallel for                                 \
-  default(none)                                      \
+#pragma omp parallel for                             \
   shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
   shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
   shared(X_localRowMin, X_localRowMax)               \
   firstprivate(ix, jx, x)                            \
   reduction(+: traceX, traceX2)
 #endif
+
     //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
     for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
     {
@@ -155,6 +153,7 @@ void *TYPED_FUNC(
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[X_N], jx[X_N];
         REAL_T x[X_N];
+
         memset(ix, 0, X_N * sizeof(int));
 #endif
 
@@ -290,9 +289,11 @@ void TYPED_FUNC(
     //for (int i = 0; i < A_N; i++)
     for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
     {
+
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
         REAL_T x[C_N];
+
         memset(ix, 0, C_N * sizeof(int));
 #endif
 

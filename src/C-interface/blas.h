@@ -15,13 +15,13 @@ void C_DSCAL(
     const int *incx);
 void C_CSCAL(
     const int *n,
-    const float complex * a,
-    float complex * x,
+    const float complex *a,
+    float complex *x,
     const int *incx);
 void C_ZSCAL(
     const int *n,
-    const double complex * a,
-    double complex * x,
+    const double complex *a,
+    double complex *x,
     const int *incx);
 void C_SGEMM(
     const char *transa,
@@ -57,13 +57,13 @@ void C_CGEMM(
     const int *m,
     const int *n,
     const int *k,
-    const float complex * alpha,
-    const float complex * a,
+    const float complex *alpha,
+    const float complex *a,
     const int *lda,
-    const float complex * b,
+    const float complex *b,
     const int *ldb,
-    const float complex * beta,
-    float complex * c,
+    const float complex *beta,
+    float complex *c,
     const int *ldc);
 void C_ZGEMM(
     const char *transa,
@@ -71,13 +71,13 @@ void C_ZGEMM(
     const int *m,
     const int *n,
     const int *k,
-    const double complex * alpha,
-    const double complex * a,
+    const double complex *alpha,
+    const double complex *a,
     const int *lda,
-    const double complex * b,
+    const double complex *b,
     const int *ldb,
-    const double complex * beta,
-    double complex * c,
+    const double complex *beta,
+    double complex *c,
     const int *ldc);
 void C_SAXPY(
     const int *n,
@@ -95,17 +95,17 @@ void C_DAXPY(
     const int *incy);
 void C_CAXPY(
     const int *n,
-    const float complex * alpha,
-    const float complex * x,
+    const float complex *alpha,
+    const float complex *x,
     const int *incx,
-    float complex * y,
+    float complex *y,
     const int *incy);
 void C_ZAXPY(
     const int *n,
-    const double complex * alpha,
-    const double complex * x,
+    const double complex *alpha,
+    const double complex *x,
     const int *incx,
-    double complex * y,
+    double complex *y,
     const int *incy);
 
 #endif

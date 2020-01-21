@@ -158,10 +158,10 @@ void *TYPED_FUNC(
         memset(ix, 0, X_N * sizeof(int));
 #endif
 #ifdef __INTEL_COMPILER
-        __assume_aligned(X_nnz,64);
-        __assume_aligned(X_index,64);
-        __assume_aligned(X_value,64);
-#endif 
+        __assume_aligned(X_nnz, 64);
+        __assume_aligned(X_index, 64);
+        __assume_aligned(X_value, 64);
+#endif
         int l = 0;
 
         for (int jp = 0; jp < X_nnz[i]; jp++)
@@ -194,10 +194,10 @@ void *TYPED_FUNC(
             LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
         }
 
- #ifdef __INTEL_COMPILER
-        __assume_aligned(X2_nnz,64);
-        __assume_aligned(X2_index,64);
-        __assume_aligned(X2_value,64);
+#ifdef __INTEL_COMPILER
+        __assume_aligned(X2_nnz, 64);
+        __assume_aligned(X2_index, 64);
+        __assume_aligned(X2_value, 64);
 #endif
         int ll = 0;
         for (int j = 0; j < l; j++)

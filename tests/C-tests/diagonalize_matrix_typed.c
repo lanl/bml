@@ -21,7 +21,7 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
-    bml_matrix_t *A = NULL;
+    bml_matrix_t * A = NULL;
     bml_matrix_t *A_t = NULL;
     REAL_T *eigenvalues = NULL;
     bml_matrix_t *eigenvectors = NULL;
@@ -42,50 +42,50 @@ int TYPED_FUNC(
     switch (matrix_precision)
     {
         case single_real:
-            eigenvalues = bml_allocate_memory(N*sizeof(float));
+            eigenvalues = bml_allocate_memory(N * sizeof(float));
 
-            #pragma omp parallel for simd
-            #pragma vector aligned
-            for(int i=0; i < N; i++)
+#pragma omp parallel for simd
+#pragma vector aligned
+            for (int i = 0; i < N; i++)
             {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(eigenvalues,64);
+                __assume_aligned(eigenvalues, 64);
 #endif
-    		eigenvalues[i] = 0.0;
-./tests/C-tests/diagonalize_matrix_typed.c	    }
+                eigenvalues[i] = 0.0;
+            }
             break;
         case double_real:
-            eigenvalues = bml_allocate_memory(N*sizeof(double));
-            #pragma omp parallel for simd
-            #pragma vector aligned
-            for(int i=0; i < N; i++)
-            {   
+            eigenvalues = bml_allocate_memory(N * sizeof(double));
+#pragma omp parallel for simd
+#pragma vector aligned
+            for (int i = 0; i < N; i++)
+            {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(eigenvalues,64);
+                __assume_aligned(eigenvalues, 64);
 #endif
                 eigenvalues[i] = 0.0;
             }
             break;
         case single_complex:
-            eigenvalues = bml_allocate_memory(N*sizeof(float complex));
-            #pragma omp parallel for simd
-            #pragma vector aligned
-            for(int i=0; i < N; i++)
-            {   
+            eigenvalues = bml_allocate_memory(N * sizeof(float complex));
+#pragma omp parallel for simd
+#pragma vector aligned
+            for (int i = 0; i < N; i++)
+            {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(eigenvalues,64);
+                __assume_aligned(eigenvalues, 64);
 #endif
                 eigenvalues[i] = 0.0;
             }
             break;
         case double_complex:
-            eigenvalues = bml_allocate_memory(N*sizeof(double complex));
-            #pragma omp parallel for simd
-            #pragma vector aligned
-            for(int i=0; i < N; i++)
-            {   
+            eigenvalues = bml_allocate_memory(N * sizeof(double complex));
+#pragma omp parallel for simd
+#pragma vector aligned
+            for (int i = 0; i < N; i++)
+            {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(eigenvalues,64);
+                __assume_aligned(eigenvalues, 64);
 #endif
                 eigenvalues[i] = 0.0;
             }
