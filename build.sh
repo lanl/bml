@@ -10,15 +10,17 @@ if (( $? != 0 )); then
     TOP_DIR=$(pwd -P $TOP_DIR)
 fi
 
-<<<<<<< HEAD
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
+<<<<<<< HEAD
 =======
 : ${BUILD_DIR:=${TOP_DIR}/build.broadwell}
 : ${INSTALL_DIR:=${TOP_DIR}/install.broadwell}
 LOG_FILE="${TOP_DIR}/build.log"
 : ${VERBOSE_MAKEFILE:=no}
 >>>>>>> vectorization work on bml
+=======
+>>>>>>> Rebase from master
 : ${PARALLEL_TEST_JOBS:=1}
 : ${TESTING_EXTRA_ARGS:=}
 : ${VERBOSE_MAKEFILE:=no}

@@ -154,6 +154,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 #pragma omp parallel for               shared(A_value, A_index, A_nnz)
@@ -162,6 +163,8 @@ bml_matrix_ellsort_t *TYPED_FUNC(
 #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
 >>>>>>> vectorization work on bml
 =======
+=======
+>>>>>>> Rebase from master
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
 >>>>>>> vectorization work on bml

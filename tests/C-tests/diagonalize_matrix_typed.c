@@ -52,7 +52,7 @@ int TYPED_FUNC(
         __assume_aligned(eigenvalues,64);
 #endif
     		eigenvalues[i] = 0.0;
-	    }
+./tests/C-tests/diagonalize_matrix_typed.c	    }
             break;
         case double_real:
             eigenvalues = bml_allocate_memory(N*sizeof(double));
@@ -160,11 +160,13 @@ int TYPED_FUNC(
     bml_deallocate(&aux2);
     bml_deallocate(&A_t);
     bml_deallocate(&eigenvectors);
-<<<<<<< HEAD:tests/C-tests/diagonalize_matrix_typed.c
     bml_deallocate(&id);
+<<<<<<< HEAD
 <<<<<<< HEAD
     free(eigenvalues);
 =======
+=======
+>>>>>>> Rebase from master
     bml_free_memory(eigenvalues);
 >>>>>>> vectorization work on bml:tests/diagonalize_matrix_typed.c
 =======
