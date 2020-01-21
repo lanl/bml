@@ -239,17 +239,17 @@ void TYPED_FUNC(
     int *core_halo_index,
     int lsize)
 {
-    REAL_T *rvalue;
+    REAL_T * rvalue;
 
     int B_N = B->N;
 #ifdef BML_USE_MAGMA
     REAL_T *B_matrix = bml_allocate_memory(sizeof(REAL_T) * B->N * B->N);
-    #pragma omp parallel for simd
-    #pragma vector aligned
-    for(ii = 0; ii < (B->N*B->N); ii++)
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (ii = 0; ii < (B->N * B->N); ii++)
     {
- #ifdef __INTEL_COMPILER
-        __assume_aligned(B_matrix,64);
+#ifdef __INTEL_COMPILER
+        __assume_aligned(B_matrix, 64);
 #endif
         B_matrix[ii] = 0;
     }
@@ -302,15 +302,15 @@ void TYPED_FUNC(
     int A_N = A->N;
 #ifdef BML_USE_MAGMA
     REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
-    
-    #pragma omp parallel for simd
-    #pragma vector aligned
-    for(ii = 0; ii < (A->N*A->N); ii++)
+
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (ii = 0; ii < (A->N * A->N); ii++)
     {
- #ifdef __INTEL_COMPILER
-        __assume_aligned(A_matrix,64);
+#ifdef __INTEL_COMPILER
+        __assume_aligned(A_matrix, 64);
 #endif
-    	A_matrix[ii] = 0;
+        A_matrix[ii] = 0;
     }
 
     MAGMA(getmatrix) (A->N, A->N,
@@ -381,14 +381,14 @@ void *TYPED_FUNC(
 =======
 >>>>>>> vectorization work on bml
     REAL_T *rvalue = bml_allocate_memory(colCnt * sizeof(REAL_T));
-    #pragma omp parallel for simd
-    #pragma vector aligned
-    for(int i=0; i < colCnt; i++)
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (int i = 0; i < colCnt; i++)
     {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(rvalue,64);
-#endif	
-    	rvalue[i]   = 0;
+        __assume_aligned(rvalue, 64);
+#endif
+        rvalue[i] = 0;
     }
 <<<<<<< HEAD
 >>>>>>> vectorization work on bml

@@ -43,7 +43,7 @@ bml_allocate_memory(
     size_t size)
 {
 #ifdef __INTEL_COMPILER
-    void *ptr = _mm_malloc(size,64);
+    void *ptr = _mm_malloc(size, 64);
 #else
     void *ptr = malloc(size);
 #endif
@@ -69,7 +69,7 @@ bml_noinit_allocate_memory(
 {
 //    void *ptr = malloc(size);
 #ifdef __INTEL_COMPILER
-    void *ptr = _mm_malloc(size,64);
+    void *ptr = _mm_malloc(size, 64);
 #else
     void *ptr = malloc(size);
 #endif
@@ -92,7 +92,7 @@ bml_free_memory(
 {
 //    free(ptr);
 #ifdef __INTEL_COMPILER
-     _mm_free(ptr);
+    _mm_free(ptr);
 #else
     free(ptr);
 #endif

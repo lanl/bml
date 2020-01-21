@@ -38,15 +38,15 @@ void TYPED_FUNC(
 #else
     memset(A->matrix, 0.0, A->N * A->ld * sizeof(REAL_T));
     REAL_T *A_matrix = A->matrix;
-    #pragma omp parallel for simd
-    #pragma vector aligned
-    for(int i=0; i < A->N*A->ld; i++)
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (int i = 0; i < A->N * A->ld; i++)
     {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(A_matrix,64);
-#endif	
-   	A_matrix[i] = 0;
-   }
+        __assume_aligned(A_matrix, 64);
+#endif
+        A_matrix[i] = 0;
+    }
 #endif
 }
 
@@ -92,14 +92,15 @@ bml_matrix_dense_t *TYPED_FUNC(
                             matrix_dimension.N_rows);
     REAL_T *A_matrix = A->matrix;
 
-    #pragma omp parallel for simd
-    #pragma vector aligned
-    for(int ii=0; ii < (matrix_dimension.N_rows*matrix_dimension.N_rows); ii++)
+#pragma omp parallel for simd
+#pragma vector aligned
+    for (int ii = 0; ii < (matrix_dimension.N_rows * matrix_dimension.N_rows);
+         ii++)
     {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(A_matrix,64);
-#endif 
-  	A_matrix[ii]=0.0;
+        __assume_aligned(A_matrix, 64);
+#endif
+        A_matrix[ii] = 0.0;
     }
 
 #endif
@@ -131,7 +132,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = { N, N, M };
+    bml_matrix_dimension_t matrix_dimension = {N, N, M};
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
     REAL_T *A_dense = A->matrix;
@@ -144,14 +145,18 @@ bml_matrix_dense_t *TYPED_FUNC(
 >>>>>>> vectorization work on bml
 =======
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+<<<<<<< HEAD
 #pragma omp parallel for default(none) shared(A_dense)
 >>>>>>> vectorization work on bml
+=======
+#pragma omp parallel for shared(A_dense)
+>>>>>>> Cleanup
     for (int i = 0; i < N; i++)
     {
         for (int j = (i - M / 2 >= 0 ? i - M / 2 : 0);
              j < (i - M / 2 + M <= N ? i - M / 2 + M : N); j++)
         {
-            A_dense[ROWMAJOR(i, j, N, N)] = rand()*INV_RAND_MAX;
+            A_dense[ROWMAJOR(i, j, N, N)] = rand() * INV_RAND_MAX;
         }
     }
     return A;
@@ -177,7 +182,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     int N,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = { N, N, N };
+    bml_matrix_dimension_t matrix_dimension = {N, N, N};
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
 #ifdef BML_USE_MAGMA
@@ -193,9 +198,9 @@ bml_matrix_dense_t *TYPED_FUNC(
         {
 #ifdef BML_USE_MAGMA
             A_dense[ROWMAJOR(i, j, N, N)] =
-                MAGMACOMPLEX(MAKE) (rand()*INV_RAND_MAX, 0.);
+                MAGMACOMPLEX(MAKE) (rand() * INV_RAND_MAX, 0.);
 #else
-            A_dense[ROWMAJOR(i, j, N, N)] = rand()*INV_RAND_MAX;
+            A_dense[ROWMAJOR(i, j, N, N)] = rand() * INV_RAND_MAX;
 #endif
         }
     }
@@ -224,7 +229,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     int N,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_dimension_t matrix_dimension = { N, N, N };
+    bml_matrix_dimension_t matrix_dimension = {N, N, N};
     bml_matrix_dense_t *A =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
 #ifdef BML_USE_MAGMA
