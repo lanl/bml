@@ -6,6 +6,7 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_allocate_m.F90
   bml_copy_m.F90
   bml_diagonalize_m.F90
+  bml_elemental_m.F90
   bml_error_m.F90
   bml_export_m.F90
   bml.F90

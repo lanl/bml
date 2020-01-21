@@ -1,4 +1,4 @@
-ADDING A TEST
+ADDING A C TEST
 =============
 
 It is essential to add a proper test for each function we create. We would even
@@ -141,3 +141,9 @@ After all the tests passed, we should indent the new files using the indent.sh
 Running indent.sh (located in the main folder) will indent all files.
 
 	$ ./indent.sh
+
+
+ADDING A FORTRAN TEST
+=====================
+
+
