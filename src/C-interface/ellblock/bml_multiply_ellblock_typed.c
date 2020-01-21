@@ -161,15 +161,9 @@ void *TYPED_FUNC(
                 }
                 REAL_T *x = x_ptr[kb];
                 REAL_T *X_value_right = X_ptr_value[indk];
+
                 // multiply block ib,jb by block jb,kb
-#if 1
-                REAL_T alpha = (REAL_T) 1.;
-                REAL_T beta = (REAL_T) 1.;
-                TYPED_FUNC(bml_xsmm_gemm) ("N", "N", &bsize[kb], &bsize[ib],
-                                           &bsize[jb], &alpha, X_value_right,
-                                           &bsize[kb], X_value_left,
-                                           &bsize[jb], &beta, x, &bsize[kb]);
-#else
+#ifdef NOBLAS
                 for (int ii = 0; ii < bsize[ib]; ii++)
                     for (int jj = 0; jj < bsize[kb]; jj++)
                     {
@@ -185,6 +179,13 @@ void *TYPED_FUNC(
                                               (kk, jj, bsize[jb], bsize[kb])];
                         }
                     }
+#else
+                REAL_T alpha = (REAL_T) 1.;
+                REAL_T beta = (REAL_T) 1.;
+                TYPED_FUNC(bml_xsmm_gemm) ("N", "N", &bsize[kb], &bsize[ib],
+                                           &bsize[jb], &alpha, X_value_right,
+                                           &bsize[kb], X_value_left,
+                                           &bsize[jb], &beta, x, &bsize[kb]);
 #endif
             }
         }
