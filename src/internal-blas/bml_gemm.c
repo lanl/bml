@@ -304,11 +304,14 @@ void TYPED_FUNC(
                                    lda, b, ldb, beta, c, ldc);
 #else
 
-#ifndef BML_USE_XSMM
-    LOG_ERROR("No XSMM library");
-#else
+#ifdef BML_USE_XSMM
     XSMM(C_BLAS(GEMM)) (transa, transb, m, n, k, alpha, a,
                         lda, b, ldb, beta, c, ldc);
+#else
+    // fall back to regular blas
+    C_BLAS(GEMM) (transa, transb, m, n, k, alpha, a,
+                  lda, b, ldb, beta, c, ldc);
 #endif
+
 #endif
 }
