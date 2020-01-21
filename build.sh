@@ -69,6 +69,7 @@ EOF
     echo "GPU_ARCH               GPU architecture            (default is ${GPU_ARCH})"
     echo "BML_CUDA               Build with CUDA             (default is ${BML_CUDA})"
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
+    echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
 }
 
@@ -99,6 +100,7 @@ set_defaults() {
     : ${GPU_ARCH:=}
     : ${BML_CUDA:=no}
     : ${BML_MAGMA:=no}
+    : ${BML_XSMM:=no}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
 }
 
@@ -171,6 +173,7 @@ configure() {
         -DGPU_ARCH="${GPU_ARCH}" \
         -DBML_CUDA="${BML_CUDA}" \
         -DBML_MAGMA="${BML_MAGMA}" \
+        -DBML_XSMM="${BML_XSMM}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         | tee -a "${LOG_FILE}"
     check_pipe_error

@@ -282,3 +282,36 @@ void TYPED_FUNC(
 #endif
 #endif
 }
+
+void TYPED_FUNC(
+    bml_xsmm_gemm) (
+    const char *transa,
+    const char *transb,
+    const int *m,
+    const int *n,
+    const int *k,
+    const REAL_T * alpha,
+    const REAL_T * a,
+    const int *lda,
+    const REAL_T * b,
+    const int *ldb,
+    const REAL_T * beta,
+    REAL_T * c,
+    const int *ldc)
+{
+#ifdef BML_INTERNAL_GEMM
+    TYPED_FUNC(bml_gemm_internal) (transa, transb, m, n, k, alpha, a,
+                                   lda, b, ldb, beta, c, ldc);
+#else
+
+#ifdef BML_USE_XSMM
+    XSMM(C_BLAS(GEMM)) (transa, transb, m, n, k, alpha, a,
+                        lda, b, ldb, beta, c, ldc);
+#else
+    // fall back to regular blas
+    C_BLAS(GEMM) (transa, transb, m, n, k, alpha, a,
+                  lda, b, ldb, beta, c, ldc);
+#endif
+
+#endif
+}
