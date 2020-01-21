@@ -153,10 +153,6 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     REAL_T *A_value = A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-<<<<<<< HEAD
-
-=======
->>>>>>> 08bd061d2550482d0f1e2d1400954844b0c6a9cc
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
 #pragma omp parallel for default(none) shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
