@@ -103,6 +103,7 @@ bml_print_bml_matrix(
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
                     bml_free_memory(A_dense);
+<<<<<<< HEAD
                     break;
                 }
                 case double_real:
@@ -147,6 +148,8 @@ bml_print_bml_matrix(
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
                     free(A_dense);
+=======
+>>>>>>> 08bd061d2550482d0f1e2d1400954844b0c6a9cc
                     break;
                 }
                 case double_real:
@@ -155,7 +158,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case single_complex:
@@ -164,7 +167,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
                 case double_complex:
@@ -173,7 +176,7 @@ bml_print_bml_matrix(
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    bml_free_memory(A_dense);
                     break;
                 }
             }

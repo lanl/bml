@@ -160,7 +160,10 @@ int TYPED_FUNC(
     bml_deallocate(&aux2);
     bml_deallocate(&A_t);
     bml_deallocate(&eigenvectors);
+<<<<<<< HEAD:tests/C-tests/diagonalize_matrix_typed.c
     bml_deallocate(&id);
+=======
+>>>>>>> 08bd061d2550482d0f1e2d1400954844b0c6a9cc:tests/diagonalize_matrix_typed.c
     bml_free_memory(eigenvalues);
 
     LOG_INFO("diagonalize matrix test passed\n");
