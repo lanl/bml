@@ -203,9 +203,9 @@ void *TYPED_FUNC(
             assert(ll < MB);
             int jp = jx[jb];
             REAL_T *xtmp = x_ptr[jp];
-            REAL_T normx = TYPED_FUNC(bml_norm_inf_fast)
+            double normx = TYPED_FUNC(bml_norm_inf_fast)
                 (xtmp, bsize[ib] * bsize[jp]);
-            if (jp == ib || is_above_threshold(normx, threshold))
+            if (jp == ib || is_norm_above_threshold(normx, threshold))
             {
                 if (jp == ib)
                 {
@@ -347,7 +347,7 @@ void TYPED_FUNC(
             double normx = TYPED_FUNC(bml_norm_inf)
                 (xtmp, bsize[ib], bsize[jp], bsize[jp]);
 
-            if (jp == ib || is_above_threshold(normx, threshold))
+            if (jp == ib || is_norm_above_threshold(normx, threshold))
             {
                 int nelements = bsize[ib] * bsize[jp];
                 int ind = ROWMAJOR(ib, ll, NB, C->MB);
@@ -467,7 +467,7 @@ void TYPED_FUNC(
             {
                 int jp = jx[jb];
                 REAL_T *xtmp = x_ptr[jp];
-                REAL_T normx = TYPED_FUNC(bml_norm_inf)
+                double normx = TYPED_FUNC(bml_norm_inf)
                     (xtmp, bsize[ib], bsize[jp], bsize[jp]);
                 // Diagonal elements are saved in first column
                 if (jp == ib)
@@ -477,7 +477,7 @@ void TYPED_FUNC(
                     C_indexb[ROWMAJOR(ib, ll, NB, MB)] = jp;
                     ll++;
                 }
-                else if (is_above_threshold(normx, adjust_threshold))
+                else if (is_norm_above_threshold(normx, adjust_threshold))
                 {
                     memcpy(C_ptr_value[ROWMAJOR(ib, ll, NB, MB)], xtmp,
                            bsize[ib] * bsize[ll] * sizeof(REAL_T));

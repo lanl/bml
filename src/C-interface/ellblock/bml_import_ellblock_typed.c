@@ -84,7 +84,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
             }
             double norminf = TYPED_FUNC(bml_norm_inf)
                 (A_ij, A_bsize[ib], A_bsize[jb], A_bsize[jb]);
-            if (is_above_threshold(norminf, threshold))
+            if (is_norm_above_threshold(norminf, threshold))
             {
                 int ind = ROWMAJOR(ib, A_nnzb[ib], NB, MB);
                 A_bml->ptr_value[ind] = malloc(nelements * sizeof(REAL_T));

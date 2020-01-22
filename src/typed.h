@@ -23,7 +23,7 @@
 #define MAGMA_PREFIX s
 #define XSMM_PREFIX libxsmm_
 #define REAL_PART(x) (x)
-#define IMAGINARY_PART(x) (0)
+#define IMAGINARY_PART(x) (0.)
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabsf(x))
 #define is_above_threshold(x, t) (fabsf(x) > (float) (t))
@@ -35,7 +35,7 @@
 #define MAGMA_PREFIX d
 #define XSMM_PREFIX libxsmm_
 #define REAL_PART(x) (x)
-#define IMAGINARY_PART(x) (0)
+#define IMAGINARY_PART(x) (0.)
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabs(x))
 #define is_above_threshold(x, t) (fabs(x) > (double) (t))
@@ -67,6 +67,7 @@
 #error Unknown precision type
 #endif
 
+#define is_norm_above_threshold(x, t) ((double) (x) > (double) (t))
 #define CONCAT2_(a, b) a ## _ ## b
 #define CONCAT_(a, b) CONCAT2_(a, b)
 
