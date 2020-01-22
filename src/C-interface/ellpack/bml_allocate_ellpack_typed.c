@@ -186,22 +186,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     REAL_T *A_value = A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-#pragma omp parallel for shared(A_value, A_index, A_nnz)
-=======
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz) 
->>>>>>> vectorization work on bml
-=======
-    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
-<<<<<<< HEAD
-#pragma omp parallel for default(none) shared(A_value, A_index, A_nnz) 
->>>>>>> vectorization work on bml
-=======
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
->>>>>>> Cleanup
     for (int i = 0; i < N; i++)
     {
         int jind = 0;
@@ -290,23 +276,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#pragma omp parallel for shared(A_value, A_index, A_nnz)
-=======
-#pragma omp parallel for simd default(none) shared(A_value, A_index, A_nnz)
->>>>>>> vectorization work on bml
-=======
-#pragma omp parallel for simd default(none) shared(A_value, A_index, A_nnz)
->>>>>>> vectorization work on bml
-=======
 #ifdef __INTEL_COMPILER
 #pragma omp parallel for simd shared(A_value, A_index, A_nnz)
 #else
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
 #endif
->>>>>>> Cleanup
     for (int i = 0; i < N; i++)
     {
 #ifdef __INTEL_COMPILER

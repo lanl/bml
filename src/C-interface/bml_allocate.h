@@ -10,22 +10,8 @@
 int bml_allocated(
     bml_matrix_t * A);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-void *bml_allocate_memory(
-    size_t s);
-=======
-void *bml_allocate_memory(const size_t s);
->>>>>>> vectorization work on bml
-=======
-void *bml_allocate_memory(const size_t s);
->>>>>>> vectorization work on bml
-=======
 void *bml_allocate_memory(
     const size_t s);
->>>>>>> Cleanup
-
 void *bml_noinit_allocate_memory(
     size_t s);
 

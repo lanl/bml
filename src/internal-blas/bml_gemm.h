@@ -39,6 +39,7 @@ void bml_gemm_single_complex(
     const int *k,
     const float complex *alpha,
     const float complex *a,
+<<<<<<< HEAD
     const int *lda,
     const float complex *b,
     const int *ldb,
@@ -97,10 +98,10 @@ void bml_xsmm_gemm_single_complex(
     const float complex * alpha,
     const float complex * a,
     const int *lda,
-    const float complex * b,
+    const float complex *b,
     const int *ldb,
-    const float complex * beta,
-    float complex * c,
+    const float complex *beta,
+    float complex *c,
     const int *ldc);
 void bml_xsmm_gemm_double_complex(
     const char *transa,
@@ -108,13 +109,13 @@ void bml_xsmm_gemm_double_complex(
     const int *m,
     const int *n,
     const int *k,
-    const double complex * alpha,
-    const double complex * a,
+    const double complex *alpha,
+    const double complex *a,
     const int *lda,
-    const double complex * b,
+    const double complex *b,
     const int *ldb,
-    const double complex * beta,
-    double complex * c,
+    const double complex *beta,
+    double complex *c,
     const int *ldc);
 
 #endif
