@@ -9,7 +9,7 @@ void bml_print_dense_matrix(
     int N,
     bml_matrix_precision_t matrix_precision,
     bml_dense_order_t order,
-    void *A,
+    const void *A,
     int i_l,
     int i_u,
     int j_l,
@@ -18,17 +18,17 @@ void bml_print_dense_matrix(
 void bml_print_dense_vector(
     int N,
     bml_matrix_precision_t matrix_precision,
-    void *v,
+    const void *v,
     int i_l,
     int i_u);
 
 void bml_print_bml_vector(
-    bml_vector_t * v,
+    const bml_vector_t * v,
     int i_l,
     int i_u);
 
 void bml_print_bml_matrix(
-    bml_matrix_t * A,
+    const bml_matrix_t * A,
     int i_l,
     int i_u,
     int j_l,

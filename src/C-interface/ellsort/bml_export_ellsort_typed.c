@@ -25,7 +25,7 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_ellsort) (
-    bml_matrix_ellsort_t * A,
+    const bml_matrix_ellsort_t * A,
     bml_dense_order_t order)
 {
     int N = A->N;

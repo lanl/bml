@@ -20,7 +20,7 @@
  */
 void
 bml_print_bml_vector(
-    bml_vector_t * v,
+    const bml_vector_t * v,
     int i_l,
     int i_u)
 {
@@ -37,7 +37,7 @@ bml_print_bml_vector(
  */
 void
 bml_print_bml_matrix(
-    bml_matrix_t * A,
+    const bml_matrix_t * A,
     int i_l,
     int i_u,
     int j_l,
@@ -53,38 +53,38 @@ bml_print_bml_matrix(
             {
                 case single_real:
                 {
-                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((float*)A_dense);
                     break;
                 }
                 case double_real:
                 {
-                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((double*)A_dense);
                     break;
                 }
                 case single_complex:
                 {
-                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((float*)A_dense);
                     break;
                 }
                 case double_complex:
                 {
-                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((double*)A_dense);
                     break;
                 }
                 default:
@@ -97,38 +97,38 @@ bml_print_bml_matrix(
             {
                 case single_real:
                 {
-                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((float*)A_dense);
                     break;
                 }
                 case double_real:
                 {
-                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((double*)A_dense);
                     break;
                 }
                 case single_complex:
                 {
-                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((float*)A_dense);
                     break;
                 }
                 case double_complex:
                 {
-                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((double*)A_dense);
                     break;
                 }
                 default:
@@ -141,40 +141,43 @@ bml_print_bml_matrix(
             {
                 case single_real:
                 {
-                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((float*)A_dense);
                     break;
                 }
                 case double_real:
                 {
-                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_real,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((double*)A_dense);
                     break;
                 }
                 case single_complex:
                 {
-                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const float *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), single_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((float*)A_dense);
                     break;
                 }
                 case double_complex:
                 {
-                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    const double *A_dense = bml_export_to_dense(A, dense_row_major);
                     bml_print_dense_matrix(bml_get_N(A), double_complex,
                                            dense_row_major, A_dense, i_l, i_u,
                                            j_l, j_u);
-                    free(A_dense);
+                    free((double*)A_dense);
                     break;
                 }
+                default:
+                    LOG_ERROR("unknown precision\n");
+                    break;            
             }
             break;
         default:
@@ -199,7 +202,7 @@ bml_print_dense_matrix(
     int N,
     bml_matrix_precision_t matrix_precision,
     bml_dense_order_t order,
-    void *A,
+    const void *A,
     int i_l,
     int i_u,
     int j_l,
@@ -213,7 +216,7 @@ bml_print_dense_matrix(
     {
         case single_real:
         {
-            float *A_typed = A;
+            const float *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -244,7 +247,7 @@ bml_print_dense_matrix(
         }
         case double_real:
         {
-            double *A_typed = A;
+            const double *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -275,7 +278,7 @@ bml_print_dense_matrix(
         }
         case single_complex:
         {
-            float complex *A_typed = A;
+            const float complex *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -310,7 +313,7 @@ bml_print_dense_matrix(
         }
         case double_complex:
         {
-            double complex *A_typed = A;
+            const double complex *A_typed = A;
             switch (order)
             {
                 case dense_row_major:
@@ -361,7 +364,7 @@ void
 bml_print_dense_vector(
     int N,
     bml_matrix_precision_t matrix_precision,
-    void *v,
+    const void *v,
     int i_l,
     int i_u)
 {
@@ -369,7 +372,7 @@ bml_print_dense_vector(
     {
         case single_real:
         {
-            float *v_typed = v;
+            const float *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f", v_typed[i]);
@@ -379,7 +382,7 @@ bml_print_dense_vector(
         }
         case double_real:
         {
-            double *v_typed = v;
+            const double *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f", v_typed[i]);
@@ -389,7 +392,7 @@ bml_print_dense_vector(
         }
         case single_complex:
         {
-            float complex *v_typed = v;
+            const float complex *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f%+1.3fi", creal(v_typed[i]),
@@ -400,7 +403,7 @@ bml_print_dense_vector(
         }
         case double_complex:
         {
-            double complex *v_typed = v;
+            const double complex *v_typed = v;
             for (int i = i_l; i < i_u; i++)
             {
                 printf(" % 1.3f%+1.3fi", creal(v_typed[i]),

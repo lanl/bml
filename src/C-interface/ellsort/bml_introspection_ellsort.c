@@ -17,7 +17,7 @@
  */
 bml_matrix_precision_t
 bml_get_precision_ellsort(
-    bml_matrix_ellsort_t * A)
+    const bml_matrix_ellsort_t * A)
 {
     if (A != NULL)
     {
@@ -36,7 +36,7 @@ bml_get_precision_ellsort(
  */
 bml_distribution_mode_t
 bml_get_distribution_mode_ellsort(
-    bml_matrix_ellsort_t * A)
+    const bml_matrix_ellsort_t * A)
 {
     if (A != NULL)
     {
@@ -55,7 +55,7 @@ bml_get_distribution_mode_ellsort(
  */
 int
 bml_get_N_ellsort(
-    bml_matrix_ellsort_t * A)
+    const bml_matrix_ellsort_t * A)
 {
     if (A != NULL)
     {
@@ -74,7 +74,7 @@ bml_get_N_ellsort(
  */
 int
 bml_get_M_ellsort(
-    bml_matrix_ellsort_t * A)
+    const bml_matrix_ellsort_t * A)
 {
     if (A != NULL)
     {
@@ -94,7 +94,7 @@ bml_get_M_ellsort(
  */
 int
 bml_get_row_bandwidth_ellsort(
-    bml_matrix_ellsort_t * A,
+    const bml_matrix_ellsort_t * A,
     int i)
 {
     return A->nnz[i];
@@ -107,7 +107,7 @@ bml_get_row_bandwidth_ellsort(
  */
 int
 bml_get_bandwidth_ellsort(
-    bml_matrix_ellsort_t * A)
+    const bml_matrix_ellsort_t * A)
 {
     int max_bandwidth = 0;
     for (int i = 0; i < A->N; i++)
@@ -132,7 +132,7 @@ bml_get_bandwidth_ellsort(
  */
 double
 bml_get_sparsity_ellsort(
-    bml_matrix_ellsort_t * A,
+    const bml_matrix_ellsort_t * A,
     double threshold)
 {
     double sparsity;

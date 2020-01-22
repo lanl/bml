@@ -21,7 +21,7 @@
  */
 void *
 bml_export_to_dense_dense(
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     bml_dense_order_t order)
 {
     switch (A->matrix_precision)

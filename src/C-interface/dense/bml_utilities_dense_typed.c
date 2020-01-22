@@ -129,7 +129,7 @@ void TYPED_FUNC(
 
 void TYPED_FUNC(
     bml_print_bml_matrix_dense) (
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     int i_l,
     int i_u,
     int j_l,

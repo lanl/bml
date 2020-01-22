@@ -25,7 +25,7 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_ellpack) (
-    bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * A,
     bml_dense_order_t order)
 {
     int N = A->N;

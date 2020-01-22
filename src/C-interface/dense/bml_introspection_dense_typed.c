@@ -17,7 +17,7 @@
  */
 int TYPED_FUNC(
     bml_get_row_bandwidth_dense) (
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     int i)
 {
     assert(A != NULL);
@@ -42,7 +42,7 @@ int TYPED_FUNC(
  */
 int TYPED_FUNC(
     bml_get_bandwidth_dense) (
-    bml_matrix_dense_t * A)
+    const bml_matrix_dense_t * A)
 {
     assert(A != NULL);
 
@@ -76,7 +76,7 @@ int TYPED_FUNC(
  */
 double TYPED_FUNC(
     bml_get_sparsity_dense) (
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     double threshold)
 {
 

@@ -24,7 +24,7 @@
  */
 double TYPED_FUNC(
     bml_get_sparsity_ellsort) (
-    bml_matrix_ellsort_t * A,
+    const bml_matrix_ellsort_t * A,
     double threshold)
 {
     int nnzs = 0;

@@ -27,7 +27,7 @@
  */
 void *TYPED_FUNC(
     bml_export_to_dense_ellblock) (
-    bml_matrix_ellblock_t * A,
+    const bml_matrix_ellblock_t * A,
     bml_dense_order_t order)
 {
     assert(A->N > 0);

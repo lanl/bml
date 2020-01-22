@@ -18,7 +18,7 @@
  */
 bml_matrix_precision_t
 bml_get_precision_ellpack(
-    bml_matrix_ellpack_t * A)
+    const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -37,7 +37,7 @@ bml_get_precision_ellpack(
  */
 bml_distribution_mode_t
 bml_get_distribution_mode_ellpack(
-    bml_matrix_ellpack_t * A)
+    const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -56,7 +56,7 @@ bml_get_distribution_mode_ellpack(
  */
 int
 bml_get_N_ellpack(
-    bml_matrix_ellpack_t * A)
+   const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -75,7 +75,7 @@ bml_get_N_ellpack(
  */
 int
 bml_get_M_ellpack(
-    bml_matrix_ellpack_t * A)
+    const bml_matrix_ellpack_t * A)
 {
     if (A != NULL)
     {
@@ -95,7 +95,7 @@ bml_get_M_ellpack(
  */
 int
 bml_get_row_bandwidth_ellpack(
-    bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * A,
     int i)
 {
     return A->nnz[i];
@@ -108,7 +108,7 @@ bml_get_row_bandwidth_ellpack(
  */
 int
 bml_get_bandwidth_ellpack(
-    bml_matrix_ellpack_t * A)
+    const bml_matrix_ellpack_t * A)
 {
     int max_bandwidth = 0;
     for (int i = 0; i < A->N; i++)
@@ -134,7 +134,7 @@ bml_get_bandwidth_ellpack(
  */
 double
 bml_get_sparsity_ellpack(
-    bml_matrix_ellpack_t * A,
+    const bml_matrix_ellpack_t * A,
     double threshold)
 {
     switch (bml_get_precision_ellpack(A))

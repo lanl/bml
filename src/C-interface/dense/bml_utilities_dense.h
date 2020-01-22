@@ -9,35 +9,35 @@
 #include <stdlib.h>
 
 void bml_print_bml_matrix_dense(
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     int i_l,
     int i_u,
     int j_l,
     int j_u);
 
 void bml_print_bml_matrix_dense_single_real(
-    bml_matrix_dense_t * A,
+    const  bml_matrix_dense_t * A,
     int i_l,
     int i_u,
     int j_l,
     int j_u);
 
 void bml_print_bml_matrix_dense_double_real(
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     int i_l,
     int i_u,
     int j_l,
     int j_u);
 
 void bml_print_bml_matrix_dense_single_complex(
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     int i_l,
     int i_u,
     int j_l,
     int j_u);
 
 void bml_print_bml_matrix_dense_double_complex(
-    bml_matrix_dense_t * A,
+    const bml_matrix_dense_t * A,
     int i_l,
     int i_u,
     int j_l,
