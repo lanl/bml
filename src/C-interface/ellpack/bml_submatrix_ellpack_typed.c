@@ -380,7 +380,7 @@ void *TYPED_FUNC(
 #pragma omp parallel for simd
 #pragma vector aligned
 #else
-#pragma omp parallel for 
+#pragma omp parallel for
 #endif
     for (int i = 0; i < colCnt; i++)
     {
