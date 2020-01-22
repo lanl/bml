@@ -12,15 +12,6 @@ fi
 
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
-<<<<<<< HEAD
-=======
-: ${BUILD_DIR:=${TOP_DIR}/build.broadwell}
-: ${INSTALL_DIR:=${TOP_DIR}/install.broadwell}
-LOG_FILE="${TOP_DIR}/build.log"
-: ${VERBOSE_MAKEFILE:=no}
->>>>>>> vectorization work on bml
-=======
->>>>>>> Rebase from master
 : ${PARALLEL_TEST_JOBS:=1}
 : ${TESTING_EXTRA_ARGS:=}
 : ${VERBOSE_MAKEFILE:=no}
@@ -57,8 +48,8 @@ EOF
     echo "FC                     Path to Fortran compiler    (default is ${FC})"
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
-    echo "BML_COMPLEX            {yes,no}                    (default is ${BML_COMPLEX})"
-    echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
+    echo "BML_COMPLEX            {yes,no,C,Fortran}                    (default is ${BML_COMPLEX})"
+    echo "BML_TESTING            {yes,no}           (default is ${BML_TESTING})"
     echo "BML_VALGRIND           {yes,no}                    (default is ${BML_VALGRIND})"
     echo "BML_COVERAGE           {yes,no}                    (default is ${BML_COVERAGE})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
@@ -78,7 +69,6 @@ EOF
     echo "GPU_ARCH               GPU architecture            (default is ${GPU_ARCH})"
     echo "BML_CUDA               Build with CUDA             (default is ${BML_CUDA})"
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
-    echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
 }
 
@@ -109,7 +99,6 @@ set_defaults() {
     : ${GPU_ARCH:=}
     : ${BML_CUDA:=no}
     : ${BML_MAGMA:=no}
-    : ${BML_XSMM:=no}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
 }
 
@@ -182,7 +171,6 @@ configure() {
         -DGPU_ARCH="${GPU_ARCH}" \
         -DBML_CUDA="${BML_CUDA}" \
         -DBML_MAGMA="${BML_MAGMA}" \
-        -DBML_XSMM="${BML_XSMM}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         | tee -a "${LOG_FILE}"
     check_pipe_error
