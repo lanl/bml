@@ -147,7 +147,7 @@ endfunction(test_formats)
 foreach(N
     add
     #adjungate
-    #allocate
+    allocate
     multiply
     convert
     copy
