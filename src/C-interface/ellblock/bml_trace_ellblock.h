@@ -1,5 +1,5 @@
 #ifndef __BML_TRACE_ELLBLOCK_H
-#define __BML_TRACE_ELLNLOCK_H
+#define __BML_TRACE_ELLBLOCK_H
 
 #include "bml_types_ellblock.h"
 
