@@ -40,12 +40,12 @@ contains
     case("single_complex")
       element_kind = bml_complex
       element_precision = sp
-      test_result = test_allocate_matrix_single_real(matrix_type, element_kind,&
+      test_result = test_allocate_matrix_single_complex(matrix_type, element_kind,&
            &element_precision, n, m)
     case("double_complex")
       element_kind = bml_complex
       element_precision = dp
-      test_result = test_allocate_matrix_double_real(matrix_type, element_kind,&
+      test_result = test_allocate_matrix_double_complex(matrix_type, element_kind,&
            &element_precision, n, m)
 #endif
     end select

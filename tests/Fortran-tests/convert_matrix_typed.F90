@@ -21,7 +21,8 @@ contains
     type(bml_matrix_t) :: a
     type(bml_matrix_t) :: b
 
-    real(DUMMY_PREC), allocatable :: a_random(:, :)
+    real(DUMMY_PREC), allocatable :: a_random_re(:, :)
+    real(DUMMY_PREC), allocatable :: a_random_im(:, :)
 
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: b_dense(:, :)
@@ -30,12 +31,18 @@ contains
 
     test_result = .true.
 
-    allocate(a_random(n, n))
-    call random_number(a_random)
+    allocate(a_random_re(n, n))
+    allocate(a_random_im(n, n))
+    call random_number(a_random_re)
+    call random_number(a_random_im)
     allocate(a_dense(n, n))
     do i = 1, n
       do j = 1, n
-        a_dense(i, j) = a_random(i, j)
+        if(element_kind == "real")then
+	  a_dense(i, j) = a_random_re(i, j)
+	else
+	  a_dense(i, j) = cmplx(a_random_re(i, j),a_random_im(i,j))
+	endif
       end do
     end do
     call bml_import_from_dense(matrix_type, a_dense, a, 0.0d0, m)
@@ -55,7 +62,8 @@ contains
 
     deallocate(a_dense)
     deallocate(b_dense)
-    deallocate(a_random)
+    deallocate(a_random_re)
+    deallocate(a_random_im)
 
   end function test_convert_matrix_typed
 
