@@ -40,8 +40,8 @@ static int TYPED_FUNC(
     compare_matrix) (
     const int N,
     const bml_matrix_precision_t matrix_precision,
-    const REAL_T * A,
-    const REAL_T * B)
+    REAL_T * A,
+    REAL_T * B)
 {
     for (int i = 0; i < N * N; i++)
     {
