@@ -6,12 +6,12 @@
 #include "bml_types_csr.h"
 
 #include <complex.h>
-
+/*
 void csr_set_row_element_new(
     csr_sparse_row_t * arow,
     const int j,
     const void *element);
-/*
+*/
 void csr_set_row_element_new_single_real(
     csr_sparse_row_t * arow,
     const int j,
@@ -31,12 +31,13 @@ void csr_set_row_element_new_double_complex(
     csr_sparse_row_t * arow,
     const int j,
     const void *element);
-*/
+/*
 void csr_set_row_element(
     csr_sparse_row_t * arow,
     const int j,
     const void *element);
-/*
+*/
+
 void csr_set_row_element_single_real(
     csr_sparse_row_t * arow,
     const int j,
@@ -56,14 +57,15 @@ void csr_set_row_element_double_complex(
     csr_sparse_row_t * arow,
     const int j,
     const void *element);
-*/
+/*
 void csr_set_row(
     csr_sparse_row_t * arow,
     const int count,
     const int * cols,
     const void * vals, 
     const double threshold);
-/*
+*/
+
 void csr_set_row_single_real(
     csr_sparse_row_t * arow,
     const int count,
@@ -91,7 +93,7 @@ void csr_set_row_double_complex(
     const int * cols,
     const double complex * vals, 
     const double threshold);
-*/
+
 void bml_set_element_new_csr(
     bml_matrix_csr_t * A,
     const int i,

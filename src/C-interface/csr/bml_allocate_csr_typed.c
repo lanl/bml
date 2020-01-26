@@ -23,7 +23,7 @@
  * \param A The matrix.
  */
 void TYPED_FUNC(
-    clear_csr_row) (
+    csr_clear_row) (
     csr_sparse_row_t * row)
 {
     memset(row->cols_, 0, row->NNZ_ * sizeof(int));
@@ -47,7 +47,7 @@ void TYPED_FUNC(
 #pragma omp parallel for
     for(int i=0; i<n; i++)
     {
-       TYPED_FUNC(clear_csr_row)((A->data_)[i]);
+       TYPED_FUNC(csr_clear_row)((A->data_)[i]);
     }
     A->TOTNNZ_ = 0;
 }
@@ -118,17 +118,19 @@ bml_matrix_csr_t *TYPED_FUNC(
        A->data_[i] = TYPED_FUNC(csr_noinit_row)(M);
     }
     /** allocate hash table **/
-    /** end allocate hash table **/
     if(distrib_mode == sequential)
     {
        A->table_ = NULL;
     }
     else
     {
-       A->table_ = csr_noinit_table(N);
+      A->table_ = NULL;
+//       A->table_ = csr_noinit_table(N);
     }
-//    A->domain = bml_default_domain(N, M, distrib_mode);
-//    A->domain2 = bml_default_domain(N, M, distrib_mode);
+    /** end allocate hash table **/
+
+    A->domain = bml_default_domain(N, M, distrib_mode);
+    A->domain2 = bml_default_domain(N, M, distrib_mode);
 
     return A;
 }
@@ -206,11 +208,12 @@ bml_matrix_csr_t *TYPED_FUNC(
     }
     else
     {
-       A->table_ = csr_noinit_table(N);
+      A->table_ = NULL;
+//       A->table_ = csr_noinit_table(N);
     }
 
-//    A->domain = bml_default_domain(N, M, distrib_mode);
-//    A->domain2 = bml_default_domain(N, M, distrib_mode);
+    A->domain = bml_default_domain(N, M, distrib_mode);
+    A->domain2 = bml_default_domain(N, M, distrib_mode);
 
     return A;
 }
@@ -262,7 +265,8 @@ bml_matrix_csr_t *TYPED_FUNC(
     }
     else
     {
-       /** Insert table values here */
+       /** Insert table values here -- not used*/
+       A->table_ = NULL;
     }
         
     return A;
@@ -314,7 +318,8 @@ bml_matrix_csr_t *TYPED_FUNC(
     }
     else
     {
-       /** Insert table values here */
+       /** Insert table values here --not used*/
+       A->table_ = NULL;
     }
 
     return A;
@@ -361,7 +366,8 @@ bml_matrix_csr_t *TYPED_FUNC(
     }
     else
     {
-       /** Insert table values here */
+       /** Insert table values here --not used*/
+       A->table_ = NULL;
     }
     return A;
 }

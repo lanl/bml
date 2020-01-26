@@ -3,28 +3,29 @@
 
 #include "bml_types_csr.h"
 
-void deallocate_csr_table(
+void csr_deallocate_table(
     csr_row_index_hash_t * table);
 
-void deallocate_csr_row(
+void csr_deallocate_row(
     csr_sparse_row_t * row);
 
 void bml_deallocate_csr(
     bml_matrix_csr_t * A);
-
+/*
 void clear_csr_row(
     csr_sparse_row_t * A);
+*/
 
-void clear_csr_row_single_real(
+void csr_clear_row_single_real(
     csr_sparse_row_t * A);
 
-void clear_csr_row_double_real(
+void csr_clear_row_double_real(
     csr_sparse_row_t * A);
 
-void clear_csr_row_single_complex(
+void csr_clear_row_single_complex(
     csr_sparse_row_t * A);
 
-void clear_csr_row_double_complex(
+void csr_clear_row_double_complex(
     csr_sparse_row_t * A);
 
 void bml_clear_csr(
@@ -85,7 +86,22 @@ bml_matrix_csr_t *bml_noinit_matrix_csr_double_complex(
     const int N,
     const int M,
     const bml_distribution_mode_t distrib_mode);
-
+/*
+csr_sparse_row_t *csr_zero_row (
+    const int alloc_size);
+*/
+csr_sparse_row_t *csr_zero_row_single_real (
+    const int alloc_size);
+    
+csr_sparse_row_t *csr_zero_row_double_real (
+    const int alloc_size);
+    
+csr_sparse_row_t *csr_zero_row_single_complex (
+    const int alloc_size);
+    
+csr_sparse_row_t *csr_zero_row_double_complex (
+    const int alloc_size);
+                
 bml_matrix_csr_t *bml_zero_matrix_csr(
     const bml_matrix_precision_t matrix_precision,
     const int N,

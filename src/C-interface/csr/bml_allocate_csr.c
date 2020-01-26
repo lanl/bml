@@ -64,7 +64,7 @@ csr_row_index_hash_t *csr_noinit_table(
  * \param table - the hash table.
  */
 void
-deallocate_csr_table(
+csr_deallocate_table(
     csr_row_index_hash_t * table)
 {
     int tsize = table -> size_;
@@ -85,7 +85,7 @@ deallocate_csr_table(
  * \param row - the csr row.
  */
 void
-deallocate_csr_row(
+csr_deallocate_row(
     csr_sparse_row_t * row)
 {
     bml_free_memory(row -> vals_);
@@ -103,8 +103,6 @@ void
 bml_deallocate_csr(
     bml_matrix_csr_t * A)
 {
-    bml_deallocate_domain(A->domain);
-    bml_deallocate_domain(A->domain2);
     deallocate_csr_table(A->table_);    
     /** deallocate row data */
     const int n = A->N_;
@@ -117,38 +115,6 @@ bml_deallocate_csr(
     bml_free_memory(A);    
 }
 
-/** Clear a csr matrix row.
- *
- * \ingroup allocate_group
- *
- * \param A The matrix.
- */
- /*
-void
-clear_csr_row(
-    csr_sparse_row_t * row)
-{
-    const bml_matrix_precision_t row_precision = MATRIX_PRECISION
-    switch (row_precision)
-    {
-        case single_real:
-            clear_csr_single_real(row);
-            break;
-        case double_real:
-            clear_csr_double_real(row);
-            break;
-        case single_complex:
-            clear_csr_single_complex(row);
-            break;
-        case double_complex:
-            clear_csr_double_complex(row);
-            break;
-        default:
-            LOG_ERROR("unknown precision\n");
-            break;
-    }
-}
-*/
 /** Clear a matrix.
  *
  * \ingroup allocate_group
@@ -422,44 +388,5 @@ bml_update_domain_csr(
     int *localPartMax,
     int *nnodesInPart)
 {
-    bml_domain_t *A_domain = A->domain;
-
-    int myRank = bml_getMyRank();
-    int nprocs = bml_getNRanks();
-
-    for (int i = 0; i < nprocs; i++)
-    {
-        int rtotal = 0;
-        for (int j = localPartMin[i] - 1; j <= localPartMax[i] - 1; j++)
-        {
-            rtotal += nnodesInPart[j];
-        }
-
-        if (i == 0)
-            A_domain->localRowMin[0] = A_domain->globalRowMin;
-        else
-            A_domain->localRowMin[i] = A_domain->localRowMax[i - 1];
-
-        A_domain->localRowMax[i] = A_domain->localRowMin[i] + rtotal;
-        A_domain->localRowExtent[i] =
-            A_domain->localRowMax[i] - A_domain->localRowMin[i];
-        A_domain->localElements[i] =
-            A_domain->localRowExtent[i] * A_domain->totalCols;
-
-        if (i == 0)
-            A_domain->localDispl[0] = 0;
-        else
-            A_domain->localDispl[i] =
-                A_domain->localDispl[i - 1] + A_domain->localElements[i - 1];
-    }
-
-    A_domain->minLocalExtent = A_domain->localRowExtent[0];
-    A_domain->maxLocalExtent = A_domain->localRowExtent[0];
-    for (int i = 1; i < nprocs; i++)
-    {
-        if (A_domain->localRowExtent[i] < A_domain->minLocalExtent)
-            A_domain->minLocalExtent = A_domain->localRowExtent[i];
-        if (A_domain->localRowExtent[i] > A_domain->maxLocalExtent)
-            A_domain->maxLocalExtent = A_domain->localRowExtent[i];
-    }
+    LOG_ERROR("bml_update_domain_csr not implemented\n");
 }

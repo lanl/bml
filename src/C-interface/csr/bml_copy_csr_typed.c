@@ -1,5 +1,6 @@
 #include "../../macros.h"
 #include "../typed.h"
+#include "../bml_logger.h"
 #include "bml_allocate.h"
 #include "bml_allocate_csr.h"
 #include "bml_copy.h"
@@ -20,7 +21,7 @@
  *  \return A copy of arow.
  */
 csr_sparse_row_t *TYPED_FUNC(
-    copy_csr_row_new) (
+    csr_copy_row_new) (
     const csr_sparse_row_t * arow)
 {
    const int alloc_size = arow->alloc_size_;
@@ -63,7 +64,7 @@ bml_matrix_csr_t *TYPED_FUNC(
 #pragma omp parallel for
     for(int i=0; i<N; i++)
     {
-       csr_sparse_row_t *new_row = TYPED_FUNC(copy_csr_row_new)((A->data_)[i]);
+       csr_sparse_row_t *new_row = TYPED_FUNC(csr_copy_row_new)((A->data_)[i]);
        (B->data_)[i] = new_row;
     }
 
@@ -128,17 +129,14 @@ bml_matrix_csr_t *TYPED_FUNC(
  *              and has the same size and number of entries as A.
  */
 void TYPED_FUNC(
-    copy_csr_row) (
+    csr_copy_row) (
     const csr_sparse_row_t * arow,
     const csr_sparse_row_t * brow)
 {
    const int NNZ = arow->NNZ_;
    // Check size for data
-//   assert(brow->alloc_size_ >= NNZ);
    assert(brow->NNZ_ == NNZ);
-/*   
-   brow->NNZ_ = NNZ;
-*/
+   
    memcpy(brow->cols_, arow->cols_, NNZ*sizeof(int));
    memcpy(brow->vals_, arow->vals_, NNZ*sizeof(REAL_T));
    
@@ -169,7 +167,7 @@ void TYPED_FUNC(
 #pragma omp parallel for
     for(int i=0; i<N; i++)
     {
-       TYPED_FUNC(copy_csr_row)((A->data_)[i], (B->data_)[i]);
+       TYPED_FUNC(csr_copy_row)((A->data_)[i], (B->data_)[i]);
     }
 
     if (A->distribution_mode == B->distribution_mode)
@@ -193,7 +191,7 @@ void TYPED_FUNC(
     bml_matrix_csr_t * A,
     int *perm)
 {
-
+    LOG_ERROR("bml_reorder_csr not implemented\n");
 /*
     int N = A->N;
     int M = A->M;

@@ -6,11 +6,12 @@
 #include "bml_types_csr.h"
 
 #include <complex.h>
-
+/*
 void *csr_get_row_element (
     csr_sparse_row_t * arow,
     const int j);
-/*
+*/
+
 float *csr_get_row_element_single_real (
     csr_sparse_row_t * arow,
     const int j);
@@ -26,16 +27,52 @@ float complex *csr_get_row_element_single_complex (
 double complex *csr_get_row_element_double_complex (
     csr_sparse_row_t * arow,
     const int j);             
-*/
+/*
 int *csr_get_column_indexes(
     csr_sparse_row_t * arow);
-
+*/
+int *csr_get_column_indexes_single_real(
+    csr_sparse_row_t * arow);
+    
+int *csr_get_column_indexes_double_real(
+    csr_sparse_row_t * arow);
+    
+int *csr_get_column_indexes_single_complex(
+    csr_sparse_row_t * arow);
+    
+int *csr_get_column_indexes_double_complex(
+    csr_sparse_row_t * arow);            
+/*
 void *csr_get_column_entries(
     csr_sparse_row_t * arow);
-
-int csr_get_nnz(
+*/
+void *csr_get_column_entries_single_real(
     csr_sparse_row_t * arow);
 
+void *csr_get_column_entries_double_real(
+    csr_sparse_row_t * arow);
+    
+void *csr_get_column_entries_single_complex(
+    csr_sparse_row_t * arow);
+    
+void *csr_get_column_entries_double_complex(
+    csr_sparse_row_t * arow);            
+/*
+int csr_get_nnz(
+    csr_sparse_row_t * arow);
+*/
+int csr_get_nnz_single_real(
+    csr_sparse_row_t * arow);
+
+int csr_get_nnz_double_real(
+    csr_sparse_row_t * arow);
+    
+int csr_get_nnz_single_complex(
+    csr_sparse_row_t * arow);
+    
+int csr_get_nnz_double_complex(
+    csr_sparse_row_t * arow);
+                
 void *bml_get_csr(
     const bml_matrix_csr_t * A,
     const int i,
