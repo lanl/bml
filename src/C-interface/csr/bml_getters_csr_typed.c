@@ -16,13 +16,13 @@
  * \param j The column index
  * \return The row element
  */
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     csr_get_row_element) (
     csr_sparse_row_t * arow,
     const int j)
 {
     static REAL_T MINUS_ONE = -1;
-    static REAL_T value = 0;
+    static REAL_T ZERO = 0.;
 
     int *cols = arow->cols_;
     REAL_T *vals = (REAL_T *)arow->vals_;
@@ -36,11 +36,10 @@ REAL_T *TYPED_FUNC(
     {
        if(cols[pos] == j)
        {
-          value = vals[pos];
-          break;
+          return &vals[pos];
        }
     }
-    return &value;
+    return &ZERO;
 }
 
 /** Return a single matrix element.
@@ -50,7 +49,7 @@ REAL_T *TYPED_FUNC(
  * \param j The column index
  * \return The matrix element
  */
-REAL_T *TYPED_FUNC(
+void *TYPED_FUNC(
     bml_get_csr) (
     const bml_matrix_csr_t * A,
     const int i,
@@ -155,7 +154,7 @@ void *TYPED_FUNC(
     const int nnz = TYPED_FUNC(csr_get_nnz)(A->data_[i]);
     const int A_N = A->N_;
     const int *cols = TYPED_FUNC(csr_get_column_indexes)(A->data_[i]);
-    const REAL_T *vals = (REAL_T*)TYPED_FUNC(csr_get_column_entries)(A->data_[i]);
+    const REAL_T *vals = TYPED_FUNC(csr_get_column_entries)(A->data_[i]);
 
     REAL_T *row = calloc(A_N, sizeof(REAL_T));
     
