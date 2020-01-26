@@ -11,7 +11,7 @@ csr_sparse_row_t * csr_copy_row_new_single_real (
 
 csr_sparse_row_t * csr_copy_row_new_double_real (
     const csr_sparse_row_t * arow);
-
+    
 csr_sparse_row_t * csr_copy_row_new_single_complex (
     const csr_sparse_row_t * arow);
 
@@ -80,15 +80,15 @@ void bml_reorder_csr(
 void bml_reorder_csr_single_real(
     bml_matrix_csr_t * A,
     int *perm);
-
+    
 void bml_reorder_csr_double_real(
     bml_matrix_csr_t * A,
     int *perm);
-
+    
 void bml_reorder_csr_single_complex(
     bml_matrix_csr_t * A,
     int *perm);
-
+    
 void bml_reorder_csr_double_complex(
     bml_matrix_csr_t * A,
     int *perm);

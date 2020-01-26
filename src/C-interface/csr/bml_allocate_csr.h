@@ -104,7 +104,7 @@ csr_sparse_row_t *csr_zero_row_single_complex (
     
 csr_sparse_row_t *csr_zero_row_double_complex (
     const int alloc_size);
-                
+
 bml_matrix_csr_t *bml_zero_matrix_csr(
     bml_matrix_precision_t matrix_precision,
     int N,
