@@ -33,7 +33,7 @@ int *csr_get_column_indexes(
 */
 int *csr_get_column_indexes_single_real(
     csr_sparse_row_t * arow);
-
+    
 int *csr_get_column_indexes_double_real(
     csr_sparse_row_t * arow);
     
@@ -72,7 +72,7 @@ int csr_get_nnz_single_complex(
     
 int csr_get_nnz_double_complex(
     csr_sparse_row_t * arow);
-
+                
 void *bml_get_csr(
     bml_matrix_csr_t * A,
     int i,
