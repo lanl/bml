@@ -6,6 +6,8 @@ set(HEADERS-CSR
   bml_setters_csr.h
   bml_getters_csr.h
   bml_copy_csr.h
+  bml_trace_csr.h
+  bml_scale_csr.h
 )
 
 
@@ -14,6 +16,8 @@ set(SOURCES-CSR
   bml_setters_csr.c
   bml_getters_csr.c
   bml_copy_csr.c
+  bml_trace_csr.c
+  bml_scale_csr.c
 )
 
 add_library(bml-csr OBJECT ${SOURCES-CSR})
@@ -31,6 +35,8 @@ set(SOURCES-CSR-TYPED
   bml_setters_csr_typed.c
   bml_getters_csr_typed.c
   bml_copy_csr_typed.c
+  bml_trace_csr_typed.c
+  bml_scale_csr_typed.c
   )
   
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)

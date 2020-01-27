@@ -2,12 +2,11 @@
 #include "../../typed.h"
 #include "bml_trace.h"
 #include "bml_trace_csr.h"
-#include "bml_submatrix.h"
-#include "bml_submatrix_csr.h"
 #include "bml_parallel.h"
 #include "bml_types.h"
 #include "bml_types_csr.h"
 #include "bml_logger.h"
+#include "bml_getters_csr.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -45,7 +44,7 @@ double TYPED_FUNC(
   reduction(+:trace)
     for (int i = 0; i < N; i++)
     {
-        trace += TYPED_FUNC(csr_get_row_element)(A->data_[i], i);
+        trace += *((REAL_T*)TYPED_FUNC(csr_get_row_element)(A->data_[i], i));
     }
 
     return (double) REAL_PART(trace);
@@ -66,5 +65,5 @@ double TYPED_FUNC(
     const bml_matrix_csr_t * B)
 {
     LOG_ERROR("bml_traceMult_csr:  Not implemented");
-    return 0.
+    return 0.;
 }
