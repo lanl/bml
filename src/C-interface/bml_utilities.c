@@ -175,6 +175,9 @@ bml_print_bml_matrix(
                     free(A_dense);
                     break;
                 }
+                default:
+                    LOG_ERROR("unknown precision\n");
+                    break;
             }
             break;
         default:
