@@ -300,8 +300,8 @@ bml_group_matrix_ellpack(
 
 int
 sortById(
-    void *a,
-    void *b)
+    const void *a,
+    const void *b)
 {
     int aId = *((int *) a);
     int bId = *((int *) b);
