@@ -45,7 +45,7 @@ static int TYPED_FUNC(
 {
     for (int i = 0; i < N * N; i++)
     {
-        if (fabs(A[i] - B[i]) > ABS_TOL)
+        if (ABS(A[i] - B[i]) > ABS_TOL)
         {
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, A, 0,
                                    N, 0, N);

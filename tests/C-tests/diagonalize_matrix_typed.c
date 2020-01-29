@@ -73,7 +73,7 @@ int TYPED_FUNC(
 
     printf("%s\n", "eigenvalues");
     for (int i = 0; i < N; i++)
-        printf("val = %e\n", eigenvalues[i]);
+        printf("val = %e  i%e\n", REAL_PART(eigenvalues[i]), IMAGINARY_PART(eigenvalues[i]));
 
     aux = bml_transpose_new(eigenvectors);
     bml_multiply(aux, eigenvectors, aux2, 1.0, 0.0, 0.0);       // C^t*C
@@ -81,9 +81,9 @@ int TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
         REAL_T *val = bml_get(aux2, i, i);
-        if (fabsf(*val - 1.) > REL_TOL)
+        if (ABS(*val - (REAL_T)1.) > REL_TOL)
         {
-            printf("i = %d, val = %e\n", i, *val);
+            printf("i = %d, val = %e  i%e\n", i, REAL_PART(*val), IMAGINARY_PART(*val));
             LOG_ERROR
                 ("Error in matrix diagonalization; eigenvector not normalized\n");
         }
