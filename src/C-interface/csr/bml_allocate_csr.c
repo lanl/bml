@@ -103,12 +103,12 @@ void
 bml_deallocate_csr(
     bml_matrix_csr_t * A)
 {
-    deallocate_csr_table(A->table_);    
+    csr_deallocate_table(A->table_);    
     /** deallocate row data */
     const int n = A->N_;
     for(int i=0; i<n; i++)
     {
-       deallocate_csr_row((A->data_)[i]);
+       csr_deallocate_row((A->data_)[i]);
     }
     bml_free_memory(A->data_);
     bml_free_memory(A->lvarsgid_);

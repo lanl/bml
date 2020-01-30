@@ -5,9 +5,9 @@
 
 void *
 bml_get_csr(
-    const bml_matrix_csr_t * A,
-    const int i,
-    const int j)
+    bml_matrix_csr_t * A,
+    int i,
+    int j)
 {
     switch (bml_get_precision(A))
     {
@@ -33,7 +33,7 @@ bml_get_csr(
 void *
 bml_get_row_csr(
     bml_matrix_csr_t * A,
-    const int i)
+    int i)
 {
     switch (bml_get_precision(A))
     {

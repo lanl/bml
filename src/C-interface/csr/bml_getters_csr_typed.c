@@ -19,7 +19,7 @@
 void *TYPED_FUNC(
     csr_get_row_element) (
     csr_sparse_row_t * arow,
-    const int j)
+    int j)
 {
     static REAL_T MINUS_ONE = -1;
     static REAL_T ZERO = 0.;
@@ -51,9 +51,9 @@ void *TYPED_FUNC(
  */
 void *TYPED_FUNC(
     bml_get_csr) (
-    const bml_matrix_csr_t * A,
-    const int i,
-    const int j)
+    bml_matrix_csr_t * A,
+    int i,
+    int j)
 {
     static REAL_T MINUS_ONE = -1;
 
@@ -121,12 +121,12 @@ int TYPED_FUNC(
 void TYPED_FUNC(
     bml_get_sparse_row_csr) (
     bml_matrix_csr_t * A,
-    const int i,
+    int i,
     int **cols, 
     REAL_T **vals,
     int *nnz)
 {
-    const int nz = TYPED_FUNC(csr_get_nnz)(A->data_[i]);
+    int nz = TYPED_FUNC(csr_get_nnz)(A->data_[i]);
     int *colids = malloc(nz * sizeof(int));
     REAL_T *colvals = malloc(nz * sizeof(REAL_T));
     memcpy(colids, (int *)TYPED_FUNC(csr_get_column_indexes)(A->data_[i]), nz*sizeof(int));
@@ -149,12 +149,12 @@ void TYPED_FUNC(
 void *TYPED_FUNC(
     bml_get_row_csr) (
     bml_matrix_csr_t * A,
-    const int i)
+    int i)
 {
-    const int nnz = TYPED_FUNC(csr_get_nnz)(A->data_[i]);
-    const int A_N = A->N_;
-    const int *cols = TYPED_FUNC(csr_get_column_indexes)(A->data_[i]);
-    const REAL_T *vals = TYPED_FUNC(csr_get_column_entries)(A->data_[i]);
+    int nnz = TYPED_FUNC(csr_get_nnz)(A->data_[i]);
+    int A_N = A->N_;
+    int *cols = TYPED_FUNC(csr_get_column_indexes)(A->data_[i]);
+    REAL_T *vals = TYPED_FUNC(csr_get_column_entries)(A->data_[i]);
 
     REAL_T *row = calloc(A_N, sizeof(REAL_T));
     
