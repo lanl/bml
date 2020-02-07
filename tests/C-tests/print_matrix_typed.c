@@ -57,15 +57,12 @@ int TYPED_FUNC(
     //generate random matrix
     bml_matrix_t *A = NULL;
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-
     REAL_T *A_dense = bml_export_to_dense(A, dense_row_major);
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
                            N, 0, N);
-
     /* Create unique filename (in case we run tests in parallel). */
     char *filename = strdup(tmpnam(NULL));
     fprintf(stdout, "Filename used for this test: %s\n", filename);
-
     int fd = open(filename, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
     if (fd < 0)
     {
@@ -85,11 +82,9 @@ int TYPED_FUNC(
     /* Assumes matrix is at least 2x2 */
     const int up = 2;
     bml_print_bml_matrix(A, 0, up, 0, up);
-
     /* Flush stdout before switching back. */
     fflush(stdout);
     close(fd);
-
     /* Close file and re-instate stdout. */
     if (dup2(original_stdout, fileno(stdout)) < 0)
     {
@@ -99,7 +94,6 @@ int TYPED_FUNC(
 
     printf("FILE content:\n");
     TYPED_FUNC(filecontent) (filename);
-
     //now read file just written
     REAL_T *data = calloc(up * up, sizeof(REAL_T));
     if (data == NULL)
@@ -120,7 +114,6 @@ int TYPED_FUNC(
     float realp;
     float imagp;
     char sign;
-
     for (int i = 0; i < up; i++)
     {
         for (int j = 0; j < up; j++)
@@ -192,7 +185,6 @@ int TYPED_FUNC(
 
     bml_deallocate(&A);
     free(data);
-
     if (remove(filename) != 0)
     {
         fprintf(stderr, "Failed removing file %s\n", filename);
@@ -200,6 +192,5 @@ int TYPED_FUNC(
     }
     free(filename);
     bml_free_memory(A_dense);
-
     return 0;
 }

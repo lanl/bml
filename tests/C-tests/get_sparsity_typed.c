@@ -52,7 +52,7 @@ int TYPED_FUNC(
     printf("Sparsity = %f\n", sparsity);
 
     bml_deallocate(&A);
-    free(A_dense);
+    bml_free_memory(A_dense);
 
     LOG_INFO("bml_get_sparsity passed\n");
 

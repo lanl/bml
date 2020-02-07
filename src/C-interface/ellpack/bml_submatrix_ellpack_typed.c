@@ -262,12 +262,12 @@ void TYPED_FUNC(
             B_matrix[ROWMAJOR(jb, j, B_N, B_N)] = rvalue[j];
         }
 
-        free(rvalue);
+        bml_free_memory(rvalue);
     }
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (B_N, B_N, (MAGMA_T *) B_matrix, B_N,
                       B->matrix, B->ld, B->queue);
-    free(B_matrix);
+    bml_free_memory(B_matrix);
 #endif
 }
 
@@ -335,7 +335,7 @@ void TYPED_FUNC(
         B_nnz[ii] = icol;
     }
 #ifdef BML_USE_MAGMA
-    free(A_matrix);
+    bml_free_memory(A_matrix);
 #endif
 }
 
@@ -380,12 +380,10 @@ void *TYPED_FUNC(
  * \param ngroups Number of groups
  * \param threshold Threshold for graph
  */
-bml_matrix_ellpack_t *TYPED_FUNC(
-    bml_group_matrix_ellpack) (
-    bml_matrix_ellpack_t * A,
-    int *hindex,
-    int ngroups,
-    double threshold)
+bml_matrix_ellpack_t
+    * TYPED_FUNC(bml_group_matrix_ellpack) (bml_matrix_ellpack_t * A,
+                                            int *hindex, int ngroups,
+                                            double threshold)
 {
     int A_N = A->N;
     int A_M = A->M;

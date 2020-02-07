@@ -42,13 +42,30 @@ void *
 bml_allocate_memory(
     size_t size)
 {
+#ifdef INTEL_OPT
+    char *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
+
+#ifdef OMP_FOR_SIMD
+#pragma omp parallel for simd
+#pragma vector aligned
+#else
+#pragma omp parallel for
+#endif
+    for (size_t i = 0; i < size; i++)
+    {
+        __assume_aligned(ptr, INTEL_MALLOC_ALIGNMENT);
+        ptr[i] = 0;
+    }
+#else
     void *ptr = calloc(1, size);
+#endif
+
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory of size %d: %s\n", size,
                   strerror(errno));
     }
-    return ptr;
+    return (void *) ptr;
 }
 
 /** Allocate a chunk of memory without initialization.
@@ -62,7 +79,11 @@ void *
 bml_noinit_allocate_memory(
     size_t size)
 {
+#ifdef INTEL_OPT
+    void *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
+#else
     void *ptr = malloc(size);
+#endif
     if (ptr == NULL)
     {
         LOG_ERROR("error allocating memory: %s\n", strerror(errno));
@@ -80,7 +101,11 @@ void
 bml_free_memory(
     void *ptr)
 {
+#ifdef INTEL_OPT
+    _mm_free(ptr);
+#else
     free(ptr);
+#endif
 }
 
 /** De-allocate a chunk of memory that was allocated inside a C

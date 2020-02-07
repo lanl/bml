@@ -71,13 +71,11 @@ void TYPED_FUNC(
     int nElems = B->domain->localRowExtent[myRank] * B->M;
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
-
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
 #endif
-
 }
 
 void TYPED_FUNC(
@@ -87,17 +85,14 @@ void TYPED_FUNC(
 {
     REAL_T *scale_factor = _scale_factor;
     REAL_T *A_value = A->value;
-
     int myRank = bml_getMyRank();
     int number_elements = A->domain->localRowExtent[myRank] * A->M;
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
-
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_value[startIndex]),
                   &inc);
 #endif
-
 }

@@ -63,7 +63,6 @@ void TYPED_FUNC(
     REAL_T *scale_factor = _scale_factor;
     REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
     int inc = 1;
-
     for (int ib = 0; ib < A->NB; ib++)
     {
         for (int jp = 0; jp < A->nnzb[ib]; jp++)
@@ -71,10 +70,8 @@ void TYPED_FUNC(
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
             int jb = A->indexb[ind];
             int nElems = A->bsize[ib] * A->bsize[jb];
-
             REAL_T *B_value = B_ptr_value[ind];
             assert(B_value != NULL);
-
             C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[0]), &inc);
         }
     }

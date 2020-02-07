@@ -70,6 +70,9 @@ set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
+set(Intel_malloc_alignment 64)
+add_definitions(-DINTEL_MALLOC_ALIGNMENT=${Intel_malloc_alignment})
+
 if(CMAKE_BUILD_TYPE_UPPER)
   if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG"
       OR CMAKE_BUILD_TYPE_UPPER STREQUAL "RELEASE"
@@ -143,6 +146,10 @@ if(BML_OPENMP)
         "the C compiler also work for the Fortran compiler. If this is "
         "not the case, please send email to <nbock@lanl.gov>.")
       set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
+    endif()
+    if(OpenMP_VERSION VERSION_GREATER 4.0)
+      # The OpenMP Loop SIMD construct was introduced in OpenMP 4.0.
+      add_definitions(-DOMP_FOR_SIMD)
     endif()
   else()
     message(WARNING "Could not get the compilers to use OpenMP. "
@@ -496,6 +503,17 @@ if(BML_COMPLEX)
   endif()
 else()
   message(STATUS "Complex types disabled by user request")
+endif()
+
+set(INTEL_OPT FALSE
+  CACHE BOOL "Whether to use Intel compiler specific optimizations")
+
+if(INTEL_OPT)
+  if(CMAKE_C_COMPILER_ID STREQUAL "Intel")
+    add_definitions(-DINTEL_OPT)
+  else()
+    message(FATAL_ERROR "Compiler ID must be Intel when INTEL_OPT=yes")
+  endif()
 endif()
 
 find_program(ADDR2LINE addr2line)

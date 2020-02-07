@@ -80,7 +80,6 @@ void TYPED_FUNC(
     int nElems = B->domain->localRowExtent[myRank] * B->ld;
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
-
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
     MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, B->queue);
@@ -91,7 +90,6 @@ void TYPED_FUNC(
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_matrix[startIndex]), &inc);
 #endif
 #endif
-
 }
 
 void TYPED_FUNC(
@@ -105,7 +103,6 @@ void TYPED_FUNC(
     int number_elements = A->domain->localRowExtent[myRank] * A->ld;
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
-
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
     MAGMA(scal) (number_elements, scale_factor_, A->matrix, inc, A->queue);
@@ -117,5 +114,4 @@ void TYPED_FUNC(
                   &inc);
 #endif
 #endif
-
 }
