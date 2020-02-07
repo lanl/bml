@@ -28,8 +28,12 @@ void TYPED_FUNC(
 {
     REAL_T *A_value = A->value;
 
+#ifdef OMP_FOR_SIMD
 #pragma omp parallel for simd
 #pragma vector aligned
+#else
+#pragma omp parallel for
+#endif
     for (int i = 0; i < (A->N * A->M); i++)
     {
 #ifdef __INTEL_COMPILER
@@ -40,8 +44,12 @@ void TYPED_FUNC(
         A_value[i] = 0.0;
     }
 
+#ifdef OMP_FOR_SIMD
 #pragma omp parallel for simd
 #pragma vector aligned
+#else
+#pragma omp parallel for
+#endif
     for (int i = 0; i < A->N; i++)
     {
 #ifdef __INTEL_COMPILER

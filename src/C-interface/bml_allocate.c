@@ -45,8 +45,12 @@ bml_allocate_memory(
 #ifdef __INTEL_COMPILER
     char *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
 
+#ifdef OMP_FOR_SIMD
 #pragma omp parallel for simd
 #pragma vector aligned
+#else
+#pragma omp parallel for
+#endif
     for (size_t i = 0; i < size; i++)
     {
         __assume_aligned(ptr, INTEL_MALLOC_ALIGNMENT);
