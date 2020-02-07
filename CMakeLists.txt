@@ -505,6 +505,17 @@ else()
   message(STATUS "Complex types disabled by user request")
 endif()
 
+set(INTEL_OPT FALSE
+  CACHE BOOL "Whether to use Intel compiler specific optimizations")
+
+if(INTEL_OPT)
+  if(CMAKE_C_COMPILER_ID STREQUAL "Intel")
+    add_definitions(-DINTEL_OPT)
+  else()
+    message(FATAL_ERROR "Compiler ID must be Intel when INTEL_OPT=yes")
+  endif()
+endif()
+
 find_program(ADDR2LINE addr2line)
 if(ADDR2LINE)
   message(STATUS "Found addr2line, backtrace will resolve line numbers")
