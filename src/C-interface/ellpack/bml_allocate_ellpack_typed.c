@@ -28,6 +28,7 @@ void TYPED_FUNC(
 {
     REAL_T *A_value = A->value;
 
+#ifdef INTEL_OPT
 #ifdef OMP_FOR_SIMD
 #pragma omp parallel for simd
 #pragma vector aligned
@@ -36,10 +37,8 @@ void TYPED_FUNC(
 #endif
     for (int i = 0; i < (A->N * A->M); i++)
     {
-#ifdef INTEL_OPT
         __assume_aligned(A->index, INTEL_MALLOC_ALIGNMENT);
         __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
-#endif
         A->index[i] = 0;
         A_value[i] = 0.0;
     }
@@ -52,11 +51,14 @@ void TYPED_FUNC(
 #endif
     for (int i = 0; i < A->N; i++)
     {
-#ifdef INTEL_OPT
         __assume_aligned(A->nnz, INTEL_MALLOC_ALIGNMENT);
-#endif
         A->nnz[i] = 0;
     }
+#else
+    memset(A->nnz, 0, A->N * sizeof(int));
+    memset(A->index, 0, A->N * A->M * sizeof(int));
+    memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
+#endif
 }
 
 /** Allocate a matrix with uninitialized values.
