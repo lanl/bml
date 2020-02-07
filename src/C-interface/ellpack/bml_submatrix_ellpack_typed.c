@@ -293,15 +293,6 @@ void TYPED_FUNC(
     int A_N = A->N;
 #ifdef BML_USE_MAGMA
     REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
-#ifdef __INTEL_COMPILER
-#pragma omp parallel for simd
-#pragma vector aligned
-    for (ii = 0; ii < (A->N * A->N); ii++)
-    {
-        __assume_aligned(A_matrix, 64);
-        A_matrix[ii] = 0;
-    }
-#endif
     MAGMA(getmatrix) (A->N, A->N,
                       A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
 #else
@@ -363,19 +354,8 @@ void *TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T *A_value = A->value;
-
-#ifdef __INTEL_COMPILER
-    REAL_T *rvalue = bml_allocate_memory(colCnt * sizeof(REAL_T));
-#pragma omp parallel for simd
-#pragma vector aligned
-    for (int i = 0; i < colCnt; i++)
-    {
-        __assume_aligned(rvalue, 64);
-        rvalue[i] = 0;
-    }
-#else
     REAL_T *rvalue = bml_noinit_allocate_memory(colCnt * sizeof(REAL_T));
-#endif
+
     for (int i = 0; i < colCnt; i++)
     {
         for (int j = 0; j < A_nnz[irow]; j++)

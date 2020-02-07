@@ -30,24 +30,24 @@ void TYPED_FUNC(
 
 #pragma omp parallel for simd
 #pragma vector aligned
-    for (int ii = 0; ii < (A->N * A->M); ii++)
+    for (int i = 0; i < (A->N * A->M); i++)
     {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(A->index, 64);
-        __assume_aligned(A_value, 64);
+        __assume_aligned(A->index, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
 #endif
-        A->index[ii] = 0;
-        A_value[ii] = 0.0;
+        A->index[i] = 0;
+        A_value[i] = 0.0;
     }
 
 #pragma omp parallel for simd
 #pragma vector aligned
-    for (int ii = 0; ii < A->N; ii++)
+    for (int i = 0; i < A->N; i++)
     {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(A->nnz, 64);
+        __assume_aligned(A->nnz, INTEL_MALLOC_ALIGNMENT);
 #endif
-        A->nnz[ii] = 0;
+        A->nnz[i] = 0;
     }
 }
 
@@ -80,16 +80,6 @@ bml_matrix_ellpack_t
     A->distribution_mode = distrib_mode;
     A->index = bml_noinit_allocate_memory(sizeof(int) * A->N * A->M);
     A->nnz = bml_allocate_memory(sizeof(int) * A->N);
-#ifdef __INTEL_COMPILER
-#pragma omp parallel for simd
-#pragma vector aligned
-    for (int ii = 0; ii < A->N; ii++)
-    {
-        __assume_aligned(A->nnz, 64);
-        A->nnz[ii] = 0;
-    }
-#endif
-
     A->value = bml_noinit_allocate_memory(sizeof(REAL_T) * A->N * A->M);
     A->domain = bml_default_domain(A->N, A->M, distrib_mode);
     A->domain2 = bml_default_domain(A->N, A->M, distrib_mode);
@@ -131,25 +121,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 
     REAL_T *A_value = A->value;
 
-#ifdef __INTEL_COMPILER
-#pragma omp parallel for schedule(guided)
-#pragma vector aligned
-    for (int ii = 0; ii < (N * M); ii++)
-    {
-        __assume_aligned(A->index, 64);
-        __assume_aligned(A_value, 64);
-        A->index[ii] = 0;
-        A_value[ii] = 0.0;
-    }
-
-#pragma omp parallel for schedule(guided)
-#pragma vector aligned
-    for (int ii = 0; ii < N; ii++)
-    {
-        __assume_aligned(A->nnz, 64);
-        A->nnz[ii] = 0;
-    }
-#endif
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
 
@@ -277,9 +248,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
 #ifdef __INTEL_COMPILER
-        __assume_aligned(A_value, 64);
-        __assume_aligned(A_index, 64);
-        __assume_aligned(A_nnz, 64);
+        __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(A_index, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(A_nnz, INTEL_MALLOC_ALIGNMENT);
 #endif
         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;
         A_index[ROWMAJOR(i, 0, N, M)] = i;

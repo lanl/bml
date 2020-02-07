@@ -99,25 +99,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
     REAL_T *A_value = A->value;
-#ifdef __INTEL_COMPILER
-#pragma omp parallel for simd
-#pragma vector aligned
-    for (int ii = 0; ii < (N * M); ii++)
-    {
-        __assume_aligned(A->index, 64);
-        __assume_aligned(A_value, 64);
-        A->index[ii] = 0;
-        A_value[ii] = 0.0;
-    }
 
-#pragma omp parallel for simd
-#pragma vector aligned
-    for (int ii = 0; ii < N; ii++)
-    {
-        __assume_aligned(A->nnz, 64);
-        A->nnz[ii] = 0;
-    }
-#endif
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
 
