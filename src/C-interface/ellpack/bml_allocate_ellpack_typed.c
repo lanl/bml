@@ -37,8 +37,8 @@ void TYPED_FUNC(
 #endif
     for (int i = 0; i < (A->N * A->M); i++)
     {
-        __assume_aligned(A->index, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(A->index, MALLOC_ALIGNMENT);
+        __assume_aligned(A_value, MALLOC_ALIGNMENT);
         A->index[i] = 0;
         A_value[i] = 0.0;
     }
@@ -51,7 +51,7 @@ void TYPED_FUNC(
 #endif
     for (int i = 0; i < A->N; i++)
     {
-        __assume_aligned(A->nnz, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(A->nnz, MALLOC_ALIGNMENT);
         A->nnz[i] = 0;
     }
 #else
@@ -258,9 +258,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
 #ifdef INTEL_OPT
-        __assume_aligned(A_value, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(A_index, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(A_nnz, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(A_value, MALLOC_ALIGNMENT);
+        __assume_aligned(A_index, MALLOC_ALIGNMENT);
+        __assume_aligned(A_nnz, MALLOC_ALIGNMENT);
 #endif
         A_value[ROWMAJOR(i, 0, N, M)] = (REAL_T) 1.0;
         A_index[ROWMAJOR(i, 0, N, M)] = i;

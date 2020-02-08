@@ -70,8 +70,8 @@ set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
-set(Intel_malloc_alignment 64)
-add_definitions(-DINTEL_MALLOC_ALIGNMENT=${Intel_malloc_alignment})
+set(MALLOC_ALIGNMENT 64 CACHE INT "Alignment boundary for memory allocations")
+add_definitions(-DMALLOC_ALIGNMENT=${MALLOC_ALIGNMENT})
 
 if(CMAKE_BUILD_TYPE_UPPER)
   if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG"
