@@ -29,12 +29,8 @@ void TYPED_FUNC(
     REAL_T *A_value = A->value;
 
 #ifdef INTEL_OPT
-#ifdef OMP_FOR_SIMD
 #pragma omp parallel for simd
 #pragma vector aligned
-#else
-#pragma omp parallel for
-#endif
     for (int i = 0; i < (A->N * A->M); i++)
     {
         __assume_aligned(A->index, MALLOC_ALIGNMENT);
@@ -43,12 +39,8 @@ void TYPED_FUNC(
         A_value[i] = 0.0;
     }
 
-#ifdef OMP_FOR_SIMD
 #pragma omp parallel for simd
 #pragma vector aligned
-#else
-#pragma omp parallel for
-#endif
     for (int i = 0; i < A->N; i++)
     {
         __assume_aligned(A->nnz, MALLOC_ALIGNMENT);

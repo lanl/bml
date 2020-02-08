@@ -147,10 +147,6 @@ if(BML_OPENMP)
         "not the case, please send email to <nbock@lanl.gov>.")
       set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
     endif()
-    if(OpenMP_VERSION VERSION_GREATER 4.0)
-      # The OpenMP Loop SIMD construct was introduced in OpenMP 4.0.
-      add_definitions(-DOMP_FOR_SIMD)
-    endif()
   else()
     message(WARNING "Could not get the compilers to use OpenMP. "
       "Will pretend that this never happened and compile the library "
