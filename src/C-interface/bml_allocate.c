@@ -51,6 +51,13 @@ bml_allocate_memory(
         __assume_aligned(ptr, MALLOC_ALIGNMENT);
         ptr[i] = 0;
     }
+#elif defined(HAVE_POSIX_MEMALIGN)
+    char *ptr;
+    posix_memalign((void **) &ptr, MALLOC_ALIGNMENT, size);
+    for (size_t i = 0; i < size; i++)
+    {
+        ptr[i] = 0;
+    }
 #else
     void *ptr = calloc(1, size);
 #endif
@@ -76,6 +83,9 @@ bml_noinit_allocate_memory(
 {
 #if defined(INTEL_OPT)
     void *ptr = _mm_malloc(size, MALLOC_ALIGNMENT);
+#elif defined(HAVE_POSIX_MEMALIGN)
+    void *ptr;
+    posix_memalign(&ptr, MALLOC_ALIGNMENT, size);
 #else
     void *ptr = malloc(size);
 #endif

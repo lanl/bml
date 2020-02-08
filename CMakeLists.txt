@@ -501,6 +501,13 @@ else()
   message(STATUS "Complex types disabled by user request")
 endif()
 
+add_definitions(-D_POSIX_C_SOURCE=200112L)
+
+check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
+if(HAVE_POSIX_MEMALIGN)
+  add_definitions(-DHAVE_POSIX_MEMALIGN)
+endif()
+
 set(INTEL_OPT FALSE
   CACHE BOOL "Whether to use Intel compiler specific optimizations")
 
