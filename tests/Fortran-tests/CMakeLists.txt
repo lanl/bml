@@ -29,17 +29,17 @@ set(FORTRAN-SOURCES-TYPED
 
 # Setting all the relevant element/numeric types
 if(BML_COMPLEX)
-set(TYPES
-  single_real
-  double_real
-  single_complex
-  double_complex
-  )
+  set(TYPES
+    single_real
+    double_real
+    single_complex
+    double_complex
+    )
 else()
-set(TYPES
-  single_real
-  double_real
-  )
+  set(TYPES
+    single_real
+    double_real
+    )
 endif()
 
 
@@ -122,24 +122,27 @@ target_link_libraries(bml-testf bml_fortran bml ${LINK_LIBRARIES})
 # More flags
 if(OPENMP_FOUND)
   set_target_properties(bml-testf
-  PROPERTIES
-  COMPILE_FLAGS ${OpenMP_Fortran_FLAGS}
-  LINK_FLAGS ${OpenMP_Fortran_FLAGS} )
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_Fortran_FLAGS}
+    LINK_FLAGS ${OpenMP_Fortran_FLAGS} )
 endif()
 
 # Function that adds the test
 function(test_formats ${formats})
   set(language fortran)
   foreach(T ${formats} )
-if(BML_COMPLEX)
-    foreach(P single_real double_real single_complex double_complex)
-      add_test(${language}-${N}-${T}-${P} bml-testf -n ${N} -t ${T} -p ${P})
+    set(precisions single_real double_real)
+    if(BML_COMPLEX)
+      list(APPEND precisions single_complex double_complex)
+    endif()
+    foreach(P ${precisions})
+      add_test(${language}-${N}-${T}-${P} ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
+      if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
+        add_test(${language}-${N}-${T}-${P}-valgrind ${VALGRIND} --error-exitcode=1
+          --leak-check=full --read-var-info=yes --track-origins=yes
+          ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
+      endif()
     endforeach()
-else()
-    foreach(P single_real double_real)
-      add_test(${language}-${N}-${T}-${P} bml-testf -n ${N} -t ${T} -p ${P})
-    endforeach()
-endif()
   endforeach()
 endfunction(test_formats)
 
@@ -166,7 +169,7 @@ foreach(N
     threshold
     trace
     transpose
-  )
+    )
   set(formats dense ellpack ellsort ellblock)
   # Setting specific formats for a particular bml function
   if(${N} MATCHES get_bandwidth)
