@@ -102,7 +102,7 @@ function(test_formats ${formats})
       #endif()
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
         add_test(C-${N}-${T}-${P}-valgrind ${VALGRIND} --error-exitcode=1
-          --leak-check=full --read-var-info=yes --track-origins=yes
+          --leak-check=full --show-leak-kinds=all --read-var-info=yes --track-origins=yes
           ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
       endif()
     endforeach()
