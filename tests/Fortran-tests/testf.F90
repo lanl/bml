@@ -121,17 +121,21 @@ end subroutine error_usage
 !! element_type: The element kind and precision (single_real, double_real, etc.)
 subroutine get_arguments(test_name, matrix_type, element_type)
   character(20) :: args(6)
+  character(len=2000) :: command_line
   integer :: i, narg
   logical :: missingarg = .false.
   character(20), intent(out) :: test_name, matrix_type, element_type
 
-  do i = 1,6
-    call getarg(i,args(i))
+  command_line = "Called with:"
+  do i = 1, 6
+    call getarg(i, args(i))
+    command_line = trim(adjustl(command_line)) // " " // trim(adjustl(args(i)))
   end do
 
-  write(*,*)args
+  write(*, *) trim(adjustl(command_line))
+
   narg = 0
-  do i = 1,6
+  do i = 1, 6
     if (trim(adjustl(args(i))) == "") then
       call error_usage("No arguments passed")
     end if
