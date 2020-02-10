@@ -1,6 +1,6 @@
 language: python
 rvm: 2.0
-sudo: required
+os: linux
 
 cache:
   directories:
@@ -72,7 +72,7 @@ script:
 stages:
   - name: linter
     if: branch != coverty_scan
-  - test
+  - name: test
   - name: coverage
     if: branch != coverty_scan
   - name: docs
