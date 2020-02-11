@@ -64,6 +64,10 @@ bml_get_block_sizes(
             s_mb++;
         if (s_mb < 4)
             s_mb = 4;
+        // the number of blocks/row cannot exceed the number
+        // of row blocks
+        if (s_mb > s_nb)
+            s_mb = s_nb;
         printf("s_mb = %d\n", s_mb);
 
         s_default_bsize = malloc(s_nb * sizeof(int));
