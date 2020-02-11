@@ -70,7 +70,7 @@ bml_get_block_sizes(
             s_mb = s_nb;
         printf("s_mb = %d\n", s_mb);
 
-        s_default_bsize = malloc(s_nb * sizeof(int));
+        s_default_bsize = bml_noinit_allocate_memory(s_nb * sizeof(int));
         for (int ib = 0; ib < s_nb - 1; ib++)
         {
             s_default_bsize[ib] = s_default_block_dim;
