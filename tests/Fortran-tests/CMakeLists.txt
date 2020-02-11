@@ -139,8 +139,7 @@ function(test_formats ${formats})
       set(testname ${language}-${N}-${T}-${P})
       add_test(${testname} ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
-        add_test(${testname}-valgrind ${VALGRIND} --error-exitcode=1
-          --leak-check=full --show-leak-kinds=all --read-var-info=yes --track-origins=yes
+        add_test(${testname}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}
           ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
         # [nicolasbock] Ignore errors in valgrind tests for now.
         # Please revert this change once all memory issues have been
