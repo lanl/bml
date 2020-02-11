@@ -178,18 +178,18 @@ configure() {
         -DBML_XSMM="${BML_XSMM}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         -DINTEL_OPT="${INTEL_OPT:=no}" \
-        | tee -a "${LOG_FILE}"
+        | tee --append "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
 
 compile() {
-    make -C "${BUILD_DIR}" | tee -a "${LOG_FILE}"
+    make -C "${BUILD_DIR}" | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 docs() {
-    make -C "${BUILD_DIR}" docs 2>&1 | tee -a "${LOG_FILE}"
+    make -C "${BUILD_DIR}" docs 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
     #check_pipe_error
@@ -199,7 +199,7 @@ docs() {
 }
 
 install() {
-    make -C "${BUILD_DIR}" install 2>&1 | tee -a "${LOG_FILE}"
+    make -C "${BUILD_DIR}" install 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
@@ -208,22 +208,37 @@ testing() {
     ctest --output-on-failure \
       --parallel ${PARALLEL_TEST_JOBS} \
       ${TESTING_EXTRA_ARGS} \
-      2>&1 | tee -a "${LOG_FILE}"
+      2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
+
+    # Get skipped tests and re-run them with verbose output.
+    local SKIPPED_TESTS
+    readarray -t SKIPPED_TESTS < <(sed -E '0,/The following tests did not run:.*$/d; s/^\s*[0-9]+\s-\s([^ ]+) .*/\1/' "${LOG_FILE}")
+    if (( ${#SKIPPED_TESTS[@]} > 0 )); then
+        echo "Found skipped tests: ${SKIPPED_TESTS[*]}"
+        local skipped
+        for skipped in "${SKIPPED_TESTS[@]}"; do
+          echo "Re-running skipped test ${skipped}"
+          ctest --verbose \
+            ${TESTING_EXTRA_ARGS} \
+            --tests-regex "${skipped}" \
+            2>&1 | tee --append "${LOG_FILE}"
+        done
+    fi
     cd "${TOP_DIR}"
 }
 
 indent() {
     cd "${BUILD_DIR}"
-    "${TOP_DIR}/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
+    "${TOP_DIR}/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 check_indent() {
     cd "${TOP_DIR}"
-    "${TOP_DIR}/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
+    "${TOP_DIR}/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
-    git diff 2>&1 | tee -a "${LOG_FILE}"
+    git diff 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     LINES=$(git diff | wc -l)
     if test ${LINES} -gt 0; then
@@ -233,12 +248,12 @@ check_indent() {
 }
 
 tags() {
-    "${TOP_DIR}/update_tags.sh" 2>&1 | tee -a "${LOG_FILE}"
+    "${TOP_DIR}/update_tags.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 dist() {
-    make -C "${BUILD_DIR}" dist 2>&1 | tee -a "${LOG_FILE}"
+    make -C "${BUILD_DIR}" dist 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
