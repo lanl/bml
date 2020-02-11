@@ -563,9 +563,9 @@ set(BML_TESTING FALSE
   CACHE BOOL "Whether to build the test suite.")
 set(BML_VALGRIND FALSE
   CACHE BOOL "Whether to test for memory leaks with valgrind")
-set(VALGRIND_COMMON_ARGS --fullpath-after="src/"  --error-exitcode=1
-  --leak-check=full --show-leak-kinds=all --read-var-info=yes
-  --track-origins=yes)
+set(VALGRIND_COMMON_ARGS --fullpath-after=src/ --fullpath-after=tests/
+  --error-exitcode=1 --leak-check=full --show-leak-kinds=all
+  --read-var-info=yes --track-origins=yes)
 
 if(BML_TESTING)
   message(STATUS "Setting up test suite")
