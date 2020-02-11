@@ -46,6 +46,8 @@ void TYPED_FUNC(
     double ONE = 1.0;
     double ZERO = 0.0;
 
+    void *trace = NULL;
+
     if (A == NULL || B == NULL)
     {
         LOG_ERROR("Either matrix A or B are NULL\n");
@@ -53,7 +55,7 @@ void TYPED_FUNC(
 
     if (A == B && alpha == ONE && beta == ZERO)
     {
-        TYPED_FUNC(bml_multiply_x2_ellsort) (A, C, threshold);
+        trace = TYPED_FUNC(bml_multiply_x2_ellsort) (A, C, threshold);
     }
     else
     {
@@ -64,7 +66,7 @@ void TYPED_FUNC(
 
         if (A != NULL && A == B)
         {
-            TYPED_FUNC(bml_multiply_x2_ellsort) (A, A2, threshold);
+            trace = TYPED_FUNC(bml_multiply_x2_ellsort) (A, A2, threshold);
         }
         else
         {
@@ -82,6 +84,8 @@ void TYPED_FUNC(
 
         bml_deallocate_ellsort(A2);
     }
+
+    bml_free_memory(trace);
 }
 
 /** Matrix multiply.
