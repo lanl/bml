@@ -25,13 +25,13 @@ void TYPED_FUNC(
     bml_matrix_ellblock_t * A,
     char *filename)
 {
-    //for(int i=0;i<A->NB;i++)printf("bsize=%d\n",A->bsize[i]);
     assert(A->bsize[0] < 1e6);
 
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
-    REAL_T val;
+    double real_part, imaginary_part;
+    REAL_T value;
 
     int NB = A->NB;
     int MB = A->MB;
@@ -57,33 +57,31 @@ void TYPED_FUNC(
         LOG_ERROR("read error\n");
     }
 
-    char *FMT = "";
-    switch (A->matrix_precision)
-    {
-        case single_real:
-            FMT = "%d %d %g\n";
-            break;
-        case double_real:
-            FMT = "%d %d %lg\n";
-            break;
-        case single_complex:
-            FMT = "%d %d %g\n";
-            break;
-        case double_complex:
-            FMT = "%d %d %lg\n";
-            break;
-        default:
-            LOG_ERROR("unknown precision\n");
-            break;
-    }
-
     // Read in values
     for (int i = 0; i < nnz; i++)
     {
-        if (fscanf(hFile, FMT, &irow, &icol, &val) != 3)
+#if defined(SINGLE_REAL)
+        if (fscanf(hFile, "%d %d %e\n", &irow, &icol, &value) != 3)
         {
             LOG_ERROR("read error\n");
         }
+#elif defined(DOUBLE_REAL)
+        if (fscanf(hFile, "%d %d %le\n", &irow, &icol, &value) != 3)
+        {
+            LOG_ERROR("read error\n");
+        }
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+        if (fscanf
+            (hFile, "%d %d %le %le\n", &irow, &icol, &real_part,
+             &imaginary_part) != 4)
+        {
+            LOG_ERROR("read error\n");
+        }
+        value = real_part + I * imaginary_part;
+#else
+        LOG_ERROR("unknown matrix precision\n");
+#endif
+
         irow--;
         icol--;
 
@@ -111,7 +109,8 @@ void TYPED_FUNC(
             {
                 found_block = 1;
                 REAL_T *A_value = A_ptr_value[ind];
-                A_value[ROWMAJOR(irow, icol, A_bsize[ib], A_bsize[jb])] = val;
+                A_value[ROWMAJOR(irow, icol, A_bsize[ib], A_bsize[jb])] =
+                    value;
             }
         }
         //add block if needed
@@ -126,7 +125,7 @@ void TYPED_FUNC(
             A_ptr_value[ind] = calloc(nelements, sizeof(REAL_T));
             REAL_T *A_value = A_ptr_value[ind];
             assert(A_value != NULL);
-            A_value[ROWMAJOR(irow, icol, A_bsize[ib], A_bsize[jb])] = val;
+            A_value[ROWMAJOR(irow, icol, A_bsize[ib], A_bsize[jb])] = value;
         }
 
         // Set symmetric value if necessary
@@ -142,7 +141,7 @@ void TYPED_FUNC(
                     found_block = 1;
                     REAL_T *A_value = A_ptr_value[ind];
                     A_value[ROWMAJOR(icol, irow, A_bsize[jb], A_bsize[ib])] =
-                        val;
+                        value;
                 }
             }
             //add block if needed
@@ -152,7 +151,8 @@ void TYPED_FUNC(
                 int ind = ROWMAJOR(jb, A_nnzb[jb], NB, MB);
                 A_nnzb[jb]++;
                 REAL_T *A_value = A_ptr_value[ind];
-                A_value[ROWMAJOR(icol, irow, A_bsize[jb], A_bsize[ib])] = val;
+                A_value[ROWMAJOR(icol, irow, A_bsize[jb], A_bsize[ib])] =
+                    value;
             }
         }
     }
@@ -190,7 +190,13 @@ void TYPED_FUNC(
     mFile = fopen(filename, "w");
 
     // Write header
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
     fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate real general\n");
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate complex general\n");
+#else
+    LOG_ERROR("unknown matrix precision\n");
+#endif
 
     // Collect number of non-zero elements
     // Write out matrix size as dense and number of non-zero elements
@@ -224,12 +230,22 @@ void TYPED_FUNC(
             for (int ii = 0; ii < bsize[ib]; ii++)
                 for (int jj = 0; jj < bsize[jb]; jj++)
                 {
-                    fprintf(mFile, "%d %d %20.15e\n",
-                            offset[ib] + 1 + ii,
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+                    fprintf(mFile, "%d %d %20.15e\n", offset[ib] + 1 + ii,
                             offset[jb] + 1 + jj,
+                            A_value[ROWMAJOR(ii, jj, bsize[ib], bsize[jb])]);
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+                    fprintf(mFile, "%d %d %20.15e %20.15e\n",
+                            offset[ib] + 1 + ii, offset[jb] + 1 + jj,
                             REAL_PART(A_value
                                       [ROWMAJOR
-                                       (ii, jj, bsize[ib], bsize[jb])]));
+                                       (ii, jj, bsize[ib], bsize[jb])]),
+                            IMAGINARY_PART(A_value
+                                           [ROWMAJOR
+                                            (ii, jj, bsize[ib], bsize[jb])]));
+#else
+                    LOG_ERROR("unknown matrix precision\n");
+#endif
                 }
         }
     }
