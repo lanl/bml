@@ -73,6 +73,7 @@ stages:
   - name: linter
     if: branch != coverty_scan
   - name: test
+    if: branch != coverty_scan
   - name: coverage
     if: branch != coverty_scan
   - name: docs
