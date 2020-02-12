@@ -34,7 +34,7 @@ program testf
 
   implicit none
   character(20) :: args(6)
-  integer, parameter :: N = 7, M = 7
+  integer, parameter :: N = 13, M = 13
   integer :: i, narg
   logical :: missingarg = .false.
   logical :: test_result = .false.
