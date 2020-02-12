@@ -27,7 +27,8 @@ void TYPED_FUNC(
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol, ind;
-    REAL_T val;
+    double real_part, imaginary_part;
+    REAL_T value;
 
     int N = A->N;
     int M = A->M;
@@ -75,15 +76,33 @@ void TYPED_FUNC(
     // Read in values
     for (int i = 0; i < nnz; i++)
     {
-        if (fscanf(hFile, FMT, &irow, &icol, &val) != 3)
+#if defined(SINGLE_REAL)
+        if (fscanf(hFile, "%d %d %f\n", &irow, &icol, &value) != 3)
         {
             LOG_ERROR("read error\n");
         }
+#elif defined(DOUBLE_REAL)
+        if (fscanf(hFile, "%d %d %lf\n", &irow, &icol, &value) != 3)
+        {
+            LOG_ERROR("read error\n");
+        }
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+        if (fscanf
+            (hFile, "%d %d %lf %lf\n", &irow, &icol, &real_part,
+             &imaginary_part) != 4)
+        {
+            LOG_ERROR("read error\n");
+        }
+        value = real_part + I * imaginary_part;
+#else
+        LOG_ERROR("unknown matrix precision\n");
+#endif
+
         irow--;
         icol--;
         ind = A_nnz[irow];
         A_index[ROWMAJOR(irow, ind, N, M)] = icol;
-        A_value[ROWMAJOR(irow, ind, N, M)] = val;
+        A_value[ROWMAJOR(irow, ind, N, M)] = value;
         A_nnz[irow]++;
 
         // Set symmetric value if necessary
@@ -91,7 +110,7 @@ void TYPED_FUNC(
         {
             ind = A_nnz[icol];
             A_index[ROWMAJOR(icol, ind, N, M)] = irow;
-            A_value[ROWMAJOR(icol, ind, N, M)] = val;
+            A_value[ROWMAJOR(icol, ind, N, M)] = value;
             A_nnz[icol]++;
         }
     }
@@ -128,7 +147,11 @@ void TYPED_FUNC(
     mFile = fopen(filename, "w");
 
     // Write header
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
     fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate real general\n");
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    fprintf(mFile, "%%%%%%MatrixMarket matrix coordinate complex general\n");
+#endif
 
     // Collect number of non-zero elements
     // Write out matrix size as dense and number of non-zero elements
@@ -144,9 +167,16 @@ void TYPED_FUNC(
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            fprintf(mFile, "%d %d %20.15e\n", i + 1,
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+            fprintf(mFile, "%d %d %20.15le\n", i + 1,
                     A_index[ROWMAJOR(i, j, N, M)] + 1,
                     REAL_PART(A_value[ROWMAJOR(i, j, N, M)]));
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+            fprintf(mFile, "%d %d %20.15le %20.15le\n", i + 1,
+                    A_index[ROWMAJOR(i, j, N, M)] + 1,
+                    REAL_PART(A_value[ROWMAJOR(i, j, N, M)]),
+                    IMAGINARY_PART(A_value[ROWMAJOR(i, j, N, M)]));
+#endif
         }
     }
 
