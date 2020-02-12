@@ -1,4 +1,5 @@
 #include "bml_getters_ellsort.h"
+#include "../bml_allocate.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
 #include "bml_types_ellsort.h"
@@ -65,7 +66,7 @@ void *TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    REAL_T *row = calloc(A_N, sizeof(REAL_T));
+    REAL_T *row = bml_allocate_memory(A_N * sizeof(REAL_T));
 
     for (int i = 0; i < A_N; i++)
     {
