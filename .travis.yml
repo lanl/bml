@@ -114,4 +114,16 @@ jobs:
     - stage: coverty
       name: "Run coverty"
       before_install:
-        - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+        - >-
+          echo -n | \
+          openssl s_client -connect https://scan.coverity.com:443 | \
+          sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | \
+          sudo tee -a /etc/ssl/certs/ca-
+      script:
+        - >-
+          curl --form token=l4VYqnY1oPeYJkTdBXudGQ \
+          --form email=nicolasbock@gmail.com \
+          --form file=@tarball/file/location \
+          --form version="Version" \
+          --form description="Description" \
+          https://scan.coverity.com/builds?project=lanl%2Fbml
