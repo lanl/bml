@@ -162,7 +162,7 @@ main(
 {
     bml_init(&argc, &argv);
 
-    int N = 15;
+    int N = 13;
     int M = -1;
     char *test = NULL;
     int test_index = -1;
