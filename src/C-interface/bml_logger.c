@@ -1,5 +1,3 @@
-#define _POSIX_C_SOURCE 200809L
-
 #include "bml_logger.h"
 
 #include <execinfo.h>

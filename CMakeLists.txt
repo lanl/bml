@@ -70,8 +70,8 @@ set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
 set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
 
-set(Intel_malloc_alignment 64)
-add_definitions(-DINTEL_MALLOC_ALIGNMENT=${Intel_malloc_alignment})
+set(MALLOC_ALIGNMENT 64 CACHE INT "Alignment boundary for memory allocations")
+add_definitions(-DMALLOC_ALIGNMENT=${MALLOC_ALIGNMENT})
 
 if(CMAKE_BUILD_TYPE_UPPER)
   if(CMAKE_BUILD_TYPE_UPPER STREQUAL "DEBUG"
@@ -146,10 +146,6 @@ if(BML_OPENMP)
         "the C compiler also work for the Fortran compiler. If this is "
         "not the case, please send email to <nbock@lanl.gov>.")
       set(OpenMP_Fortran_FLAGS ${OpenMP_C_FLAGS})
-    endif()
-    if(OpenMP_VERSION VERSION_GREATER 4.0)
-      # The OpenMP Loop SIMD construct was introduced in OpenMP 4.0.
-      add_definitions(-DOMP_FOR_SIMD)
     endif()
   else()
     message(WARNING "Could not get the compilers to use OpenMP. "
@@ -503,6 +499,13 @@ if(BML_COMPLEX)
   endif()
 else()
   message(STATUS "Complex types disabled by user request")
+endif()
+
+add_definitions(-D_POSIX_C_SOURCE=200112L)
+
+check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
+if(HAVE_POSIX_MEMALIGN)
+  add_definitions(-DHAVE_POSIX_MEMALIGN)
 endif()
 
 set(INTEL_OPT FALSE

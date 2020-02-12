@@ -42,18 +42,20 @@ void *
 bml_allocate_memory(
     size_t size)
 {
-#ifdef INTEL_OPT
-    char *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
-
-#ifdef OMP_FOR_SIMD
+#if defined(INTEL_OPT)
+    char *ptr = _mm_malloc(size, MALLOC_ALIGNMENT);
 #pragma omp parallel for simd
 #pragma vector aligned
-#else
-#pragma omp parallel for
-#endif
     for (size_t i = 0; i < size; i++)
     {
-        __assume_aligned(ptr, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(ptr, MALLOC_ALIGNMENT);
+        ptr[i] = 0;
+    }
+#elif defined(HAVE_POSIX_MEMALIGN)
+    char *ptr;
+    posix_memalign((void **) &ptr, MALLOC_ALIGNMENT, size);
+    for (size_t i = 0; i < size; i++)
+    {
         ptr[i] = 0;
     }
 #else
@@ -79,8 +81,11 @@ void *
 bml_noinit_allocate_memory(
     size_t size)
 {
-#ifdef INTEL_OPT
-    void *ptr = _mm_malloc(size, INTEL_MALLOC_ALIGNMENT);
+#if defined(INTEL_OPT)
+    void *ptr = _mm_malloc(size, MALLOC_ALIGNMENT);
+#elif defined(HAVE_POSIX_MEMALIGN)
+    void *ptr;
+    posix_memalign(&ptr, MALLOC_ALIGNMENT, size);
 #else
     void *ptr = malloc(size);
 #endif

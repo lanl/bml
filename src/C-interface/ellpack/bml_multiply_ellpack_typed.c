@@ -161,9 +161,9 @@ void *TYPED_FUNC(
         memset(ix, 0, X_N * sizeof(int));
 #endif
 #ifdef INTEL_OPT
-        __assume_aligned(X_nnz, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(X_index, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(X_value, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(X_nnz, MALLOC_ALIGNMENT);
+        __assume_aligned(X_index, MALLOC_ALIGNMENT);
+        __assume_aligned(X_value, MALLOC_ALIGNMENT);
 #endif
         int l = 0;
         for (int jp = 0; jp < X_nnz[i]; jp++)
@@ -197,9 +197,9 @@ void *TYPED_FUNC(
         }
 
 #ifdef INTEL_OPT
-        __assume_aligned(X2_nnz, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(X2_index, INTEL_MALLOC_ALIGNMENT);
-        __assume_aligned(X2_value, INTEL_MALLOC_ALIGNMENT);
+        __assume_aligned(X2_nnz, MALLOC_ALIGNMENT);
+        __assume_aligned(X2_index, MALLOC_ALIGNMENT);
+        __assume_aligned(X2_value, MALLOC_ALIGNMENT);
 #endif
         int ll = 0;
         for (int j = 0; j < l; j++)
