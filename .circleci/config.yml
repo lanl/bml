@@ -89,12 +89,18 @@ jobs:
 
 workflows:
   version: 2
-  lint:
-    jobs:
-      - lint
   build:
     jobs:
-      - build-gcc-4.7-shared-serial-external
-      - build-gcc-4.7-shared-serial-internal
-      - build-gcc-4.7-shared-OpenMP-external
-      - build-gcc-4.7-shared-OpenMP-internal
+      - lint
+      - build-gcc-4.7-shared-serial-external:
+          requires:
+            - lint
+      - build-gcc-4.7-shared-serial-internal:
+          requires:
+            - lint
+      - build-gcc-4.7-shared-OpenMP-external:
+          requires:
+            - lint
+      - build-gcc-4.7-shared-OpenMP-internal:
+          requires:
+            - lint
