@@ -38,6 +38,7 @@ env:
     - OMP_NUM_THREADS=4
     - CMAKE_BUILD_TYPE=Debug
     - VERBOSE_MAKEFILE=yes
+    - BML_VALGRIND=no
     - PARALLEL_TEST_JOBS=2
     - DEVEL_PACKAGES="cmake cmake-data libblas-dev liblapack-dev"
     # COVERTY_SCAN_TOKEN
