@@ -138,7 +138,7 @@ function(test_formats ${formats})
     foreach(P ${precisions})
       set(testname ${language}-${N}-${T}-${P})
       add_test(${testname} ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
-      if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND)
+      if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND AND BML_VALGRIND)
         add_test(${testname}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}
           ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
         # [nicolasbock] Ignore errors in valgrind tests for now.
