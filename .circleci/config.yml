@@ -1,24 +1,100 @@
 version: 2.0
 
 jobs:
-  basejob: &base-template
+  build-gcc-4.7-shared-serial-external: &build-template
     docker:
-      - image: ubuntu:xenial
+      - image: nicolasbock/bml-ci-build:1.0
     steps:
-      - run: apt-get update
-      - run: apt-get install --assume-yes git-core
       - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+          command: ./build.sh testing
 
-  build:
-    <<: *base-template
+  build-gcc-4.7-shared-serial-internal:
+    <<: *build-template
     steps:
-      - run: apt-get update
-      - run: apt-get install --assume-yes git-core
       - checkout
-      - run: ls -lh
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: yes
+          command: ./build.sh testing
+
+  build-gcc-4.7-shared-OpenMP-external:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: no
+          command: ./build.sh testing
+
+  build-gcc-4.7-shared-OpenMP-internal:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: yes
+          command: ./build.sh testing
+
+  lint:
+    docker:
+      - image: nicolasbock/bml-ci-lint:1.0
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec danger || true
+      - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
 
 workflows:
   version: 2
+  lint:
+    jobs:
+      - lint
   build:
     jobs:
-      - build
+      - build-gcc-4.7-shared-serial-external
+      - build-gcc-4.7-shared-serial-internal
+      - build-gcc-4.7-shared-OpenMP-external
+      - build-gcc-4.7-shared-OpenMP-internal
