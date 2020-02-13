@@ -1,0 +1,24 @@
+version: 2.0
+
+jobs:
+  basejob: &base-template
+    docker:
+      - image: ubuntu:xenial
+    steps:
+      - run: apt-get update
+      - run: apt-get install --assume-yes git-core
+      - checkout
+
+  build:
+    <<: *base-template
+    steps:
+      - run: apt-get update
+      - run: apt-get install --assume-yes git-core
+      - checkout
+      - run: ls -lh
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
