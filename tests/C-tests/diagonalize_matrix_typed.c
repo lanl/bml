@@ -36,6 +36,7 @@ int TYPED_FUNC(
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
     A_t = bml_transpose_new(A);
+    bml_complex_conjugate(A_t);
     bml_add(A, A_t, 0.5, 0.5, 0.0);
     bml_print_bml_matrix(A, 0, N, 0, N);
 
