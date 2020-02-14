@@ -215,6 +215,20 @@ workflows:
   build:
     jobs:
       - lint
+      - docs:
+          requires:
+            - build-gcc-4_7-shared-serial-external
+            - build-gcc-4_7-shared-serial-internal
+            - build-gcc-4_7-shared-OpenMP-external
+            - build-gcc-4_7-shared-OpenMP-internal
+            - build-gcc-9-static-serial-external-valgrind-C-single_real
+            - build-gcc-9-static-serial-external-valgrind-C-double_real
+            - build-gcc-9-static-serial-external-valgrind-C-single_complex
+            - build-gcc-9-static-serial-external-valgrind-C-double_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
       - build-gcc-4_7-shared-serial-external:
           requires:
             - lint
@@ -225,9 +239,6 @@ workflows:
           requires:
             - lint
       - build-gcc-4_7-shared-OpenMP-internal:
-          requires:
-            - lint
-      - docs:
           requires:
             - lint
       - build-gcc-9-static-serial-external-valgrind-C-single_real:
