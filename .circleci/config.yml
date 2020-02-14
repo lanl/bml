@@ -67,6 +67,86 @@ jobs:
             BML_INTERNAL_BLAS: yes
           command: ./build.sh testing
 
+  build-gcc-9-static-serial-external-valgrind-C-single_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-single_real
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-double_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-double_real
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-single_complex:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-single_complex
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-double_complex:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            OMP_NUM_THREADS: 4
+            CMAKE_BUILD_TYPE: Debug
+            VERBOSE_MAKEFILE: yes
+            PARALLEL_TEST_JOBS: 2
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-double_complex
+          command: ./build.sh testing
+
   lint:
     docker:
       - image: nicolasbock/bml-ci-lint:1.0
@@ -100,5 +180,17 @@ workflows:
           requires:
             - lint
       - docs:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-single_real:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-double_real:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-single_complex:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-double_complex:
           requires:
             - lint
