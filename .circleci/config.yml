@@ -73,10 +73,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -93,10 +89,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -113,10 +105,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -133,10 +121,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -153,10 +137,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -173,10 +153,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -193,10 +169,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
@@ -213,10 +185,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-9
             CXX: g++-9
             FC: gfortran-9
