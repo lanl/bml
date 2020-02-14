@@ -87,6 +87,13 @@ jobs:
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
 
+  docs:
+    docker:
+      - image: nicolasbock/bml-ci-docs:1.0
+    steps:
+      - checkout
+      - run: ./build.sh docs
+
 workflows:
   version: 2
   build:
@@ -102,5 +109,8 @@ workflows:
           requires:
             - lint
       - build-gcc-4.7-shared-OpenMP-internal:
+          requires:
+            - lint
+      - docs:
           requires:
             - lint
