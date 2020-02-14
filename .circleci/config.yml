@@ -4,14 +4,15 @@ jobs:
   build-gcc-4.7-shared-serial-external: &build-template
     docker:
       - image: nicolasbock/bml-ci-build:1.0
+    environment:
+      OMP_NUM_THREADS: 4
+      CMAKE_BUILD_TYPE: Debug
+      VERBOSE_MAKEFILE: yes
+      PARALLEL_TEST_JOBS: 2
     steps:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-4.7
             CXX: g++-4.7
             FC: gfortran-4.7
@@ -27,10 +28,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-4.7
             CXX: g++-4.7
             FC: gfortran-4.7
@@ -46,10 +43,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-4.7
             CXX: g++-4.7
             FC: gfortran-4.7
@@ -65,10 +58,6 @@ jobs:
       - checkout
       - run:
           environment:
-            OMP_NUM_THREADS: 4
-            CMAKE_BUILD_TYPE: Debug
-            VERBOSE_MAKEFILE: yes
-            PARALLEL_TEST_JOBS: 2
             CC: gcc-4.7
             CXX: g++-4.7
             FC: gfortran-4.7
