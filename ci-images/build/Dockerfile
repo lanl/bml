@@ -6,7 +6,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends apt-utils
 RUN apt-get install --assume-yes --no-install-recommends build-essential
-RUN apt-get install --assume-yes --no-install-recommends git-core openssh-client
+RUN apt-get install --assume-yes --no-install-recommends git-core openssh-client ca-certificates
 RUN apt-get install --assume-yes --no-install-recommends cmake cmake-data libblas-dev liblapack-dev
 RUN apt-get install --assume-yes --no-install-recommends gcc-4.7 g++-4.7 gfortran-4.7
 RUN apt-get install --assume-yes --no-install-recommends gcc-9 g++-9 gfortran-9
