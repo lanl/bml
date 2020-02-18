@@ -1,4 +1,5 @@
 FROM ubuntu:xenial
+WORKDIR /root
 RUN apt-get update
 RUN apt-get install --assume-yes --no-install-recommends ca-certificates wget
 COPY clang.list /etc/apt/sources.list.d
