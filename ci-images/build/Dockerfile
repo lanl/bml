@@ -14,6 +14,6 @@ RUN apt-get install --assume-yes --no-install-recommends git-core openssh-client
 RUN apt-get install --assume-yes --no-install-recommends cmake cmake-data libblas-dev liblapack-dev
 RUN apt-get install --assume-yes --no-install-recommends gcc-4.7 g++-4.7 gfortran-4.7
 RUN apt-get install --assume-yes --no-install-recommends gcc-9 g++-9 gfortran-9
-RUN apt-get install --assume-yes --no-install-recommends clang
+RUN apt-get install --assume-yes --no-install-recommends clang libomp-dev
 RUN apt-get install --assume-yes --no-install-recommends python
 RUN apt-get install --assume-yes --no-install-recommends valgrind
