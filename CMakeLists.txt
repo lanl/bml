@@ -151,8 +151,9 @@ if(BML_OPENMP)
     message(WARNING "Could not get the compilers to use OpenMP. "
       "Will pretend that this never happened and compile the library "
       "without OpenMP.")
-    unset(OpenMP_C_FLAGS)
-    unset(OpenMP_Fortran_FLAGS)
+    set(OpenMP_C_FLAGS "")
+    set(OpenMP_CXX_FLAGS "")
+    set(OpenMP_Fortran_FLAGS "")
   endif()
 else()
   message(STATUS "Will not build with OpenMP")

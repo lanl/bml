@@ -195,6 +195,39 @@ jobs:
             TESTING_EXTRA_ARGS: -R fortran-.*-double_complex
           command: ./build.sh testing
 
+  build-clang-shared-serial-external:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: clang-9
+            CXX: clang++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: no
+          command: ./build.sh testing
+
+  build-clang-shared-OpenMP-external:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: clang-9
+            CXX: clang++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: no
+          # This test is disabled for now until we figure out a
+          # solution to https://github.com/lanl/bml/issues/159
+          command: >-
+            ./build.sh testing || true
+
   lint:
     docker:
       - image: nicolasbock/bml-ci-lint:1.0
@@ -229,6 +262,8 @@ workflows:
             - build-gcc-9-static-serial-external-valgrind-Fortran-double_real
             - build-gcc-9-static-serial-external-valgrind-Fortran-single_complex
             - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
+            - build-clang-shared-serial-external
+            - build-clang-shared-OpenMP-external
       - build-gcc-4_7-shared-serial-external:
           requires:
             - lint
@@ -263,5 +298,11 @@ workflows:
           requires:
             - lint
       - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex:
+          requires:
+            - lint
+      - build-clang-shared-serial-external:
+          requires:
+            - lint
+      - build-clang-shared-OpenMP-external:
           requires:
             - lint
