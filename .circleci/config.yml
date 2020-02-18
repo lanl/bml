@@ -201,8 +201,8 @@ jobs:
       - checkout
       - run:
           environment:
-            CC: clang
-            CXX: clang
+            CC: clang-9
+            CXX: clang++-9
             FC: gfortran-9
             BUILD_SHARED_LIBS: yes
             BML_OPENMP: no
@@ -216,8 +216,8 @@ jobs:
       - checkout
       - run:
           environment:
-            CC: clang
-            CXX: clang
+            CC: clang-9
+            CXX: clang++-9
             FC: gfortran-9
             BUILD_SHARED_LIBS: yes
             BML_OPENMP: yes
