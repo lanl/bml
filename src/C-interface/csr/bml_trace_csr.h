@@ -1,5 +1,5 @@
-#ifndef __BML_TRACE_csr_H
-#define __BML_TRACE_csr_H
+#ifndef __BML_TRACE_CSR_H
+#define __BML_TRACE_CSR_H
 
 #include "bml_types_csr.h"
 
