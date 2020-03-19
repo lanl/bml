@@ -43,6 +43,10 @@ double TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target map(tofrom:trace)
+#endif
+
 #pragma omp parallel for                        \
   shared(N, M, A_value, A_index, A_nnz)         \
   shared(A_localRowMin, A_localRowMax, myRank)  \
@@ -96,6 +100,11 @@ double TYPED_FUNC(
         LOG_ERROR
             ("bml_trace_mult_ellpack: Matrices A and B have different sizes.");
     }
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+#endif
 
 #pragma omp parallel for                        \
   private(rvalue)                               \

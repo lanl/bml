@@ -47,6 +47,10 @@ bml_matrix_ellpack_t
 
     int myRank = bml_getMyRank();
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target
+#endif
+
 #pragma omp parallel for               \
     shared(N, M, A_value, A_index, A_nnz) \
     shared(A_localRowMin, A_localRowMax, myRank) \
@@ -66,7 +70,6 @@ bml_matrix_ellpack_t
             }
         }
     }
-
     return B;
 }
 
@@ -95,6 +98,11 @@ void TYPED_FUNC(
     int myRank = bml_getMyRank();
 
     int rlen;
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target
+#endif
+
 #pragma omp parallel for               \
     private(rlen) \
     shared(N,M,A_value,A_index,A_nnz) \

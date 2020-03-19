@@ -7,27 +7,27 @@
 
 #include <complex.h>
 
-void *bml_get_ellblock(
+void *bml_get_element_ellblock(
     bml_matrix_ellblock_t * A,
     int i,
     int j);
 
-void *bml_get_ellblock_single_real(
+void *bml_get_element_ellblock_single_real(
     bml_matrix_ellblock_t * A,
     int i,
     int j);
 
-void *bml_get_ellblock_double_real(
+void *bml_get_element_ellblock_double_real(
     bml_matrix_ellblock_t * A,
     int i,
     int j);
 
-void *bml_get_ellblock_single_complex(
+void *bml_get_element_ellblock_single_complex(
     bml_matrix_ellblock_t * A,
     int i,
     int j);
 
-void *bml_get_ellblock_double_complex(
+void *bml_get_element_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
     int i,
     int j);

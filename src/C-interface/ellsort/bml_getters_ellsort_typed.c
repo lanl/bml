@@ -17,7 +17,7 @@
  * \return The matrix element
  */
 void *TYPED_FUNC(
-    bml_get_ellsort) (
+    bml_get_element_ellsort) (
     bml_matrix_ellsort_t * A,
     int i,
     int j)

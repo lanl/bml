@@ -38,12 +38,35 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef USE_OMP_OFFLOAD
+    int N = A->N;
+    int M = A->M;
+
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    REAL_T *A_value = A->value;
+
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+    REAL_T scale = *scale_factor;
+#pragma omp target teams distribute parallel for collapse(2)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_value[ROWMAJOR(i, j, M, N)] =
+                scale * A_value[ROWMAJOR(i, j, M, N)];
+        }
+    }
+#else // offload conditional
+
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
 #endif
 
+#endif // offload conditional
     return B;
 }
 
@@ -71,11 +94,36 @@ void TYPED_FUNC(
     int nElems = B->domain->localRowExtent[myRank] * B->M;
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
+
+#ifdef USE_OMP_OFFLOAD
+    int N = A->N;
+    int M = A->M;
+
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    REAL_T *A_value = A->value;
+
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+    REAL_T scale = *scale_factor;
+#pragma omp target teams distribute parallel for collapse(2)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_value[ROWMAJOR(i, j, M, N)] =
+                scale * A_value[ROWMAJOR(i, j, M, N)];
+        }
+    }
+#else // offload conditional
+
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&nElems, scale_factor, &(B_value[startIndex]), &inc);
 #endif
+
+#endif // offload conditional
 }
 
 void TYPED_FUNC(
@@ -89,10 +137,32 @@ void TYPED_FUNC(
     int number_elements = A->domain->localRowExtent[myRank] * A->M;
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
+
+#ifdef USE_OMP_OFFLOAD
+    int N = A->N;
+    int M = A->M;
+
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    REAL_T *A_value = A->value;
+#pragma omp target teams distribute parallel for collapse(2)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            A_value[ROWMAJOR(i, j, M, N)] =
+                scale * A_value[ROWMAJOR(i, j, M, N)];
+        }
+    }
+#else // offload conditional
+
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
     C_BLAS(SCAL) (&number_elements, scale_factor, &(A_value[startIndex]),
                   &inc);
 #endif
+
+#endif // offload conditional
+
 }

@@ -78,6 +78,10 @@ void *TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
+
 #pragma omp parallel for                        \
   shared(N, M, A_nnz, A_index, A_value)         \
   shared(A_localRowMin, A_localRowMax, myRank)  \
@@ -174,6 +178,10 @@ void *TYPED_FUNC(
     REAL_T dval[N];
 
     REAL_T *A_value = (REAL_T *) A->value;
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
 
 #pragma omp parallel for                        \
   shared(N, M, A_nnz, A_index, A_value)         \

@@ -47,37 +47,32 @@ bml_matrix_ellpack_t
 
     // Transpose all elements
 #ifdef _OPENMP
-    omp_lock_t *row_lock =
-        (omp_lock_t *) malloc(sizeof(omp_lock_t) * matrix_dimension.N_rows);
+    omp_lock_t *row_lock = (omp_lock_t *) malloc(sizeof(omp_lock_t) * N);
 
 #pragma omp parallel for
-    for (int i = 0; i < matrix_dimension.N_rows; i++)
+    for (int i = 0; i < N; i++)
     {
         omp_init_lock(&row_lock[i]);
     }
 #endif
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target map(to:row_lock[:N])
+#endif
 #pragma omp parallel for                                                \
   shared(matrix_dimension, B_index, B_value, B_nnz, A_index, A_value, A_nnz,row_lock)
-    for (int i = 0; i < matrix_dimension.N_rows; i++)
+    for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
-            int trow = A_index[ROWMAJOR(i, j, matrix_dimension.N_rows,
-                                        matrix_dimension.N_nz_max)];
+            int trow = A_index[ROWMAJOR(i, j, N, M)];
 #ifdef _OPENMP
             omp_set_lock(&row_lock[trow]);
 #endif
             int colcnt = B_nnz[trow];
-            B_index[ROWMAJOR
-                    (trow, colcnt, matrix_dimension.N_rows,
-                     matrix_dimension.N_nz_max)] = i;
-            B_value[ROWMAJOR
-                    (trow, colcnt, matrix_dimension.N_rows,
-                     matrix_dimension.N_nz_max)] =
-                A_value[ROWMAJOR
-                        (i, j, matrix_dimension.N_rows,
-                         matrix_dimension.N_nz_max)];
+            B_index[ROWMAJOR(trow, colcnt, N, M)] = i;
+            B_value[ROWMAJOR(trow, colcnt, N, M)] =
+                A_value[ROWMAJOR(i, j, N, M)];
             B_nnz[trow]++;
 #ifdef _OPENMP
             omp_unset_lock(&row_lock[trow]);
@@ -136,6 +131,9 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target
+#endif
 #pragma omp parallel for shared(N, M, A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {

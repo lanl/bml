@@ -50,6 +50,10 @@ void TYPED_FUNC(
                 omp_init_lock(&(lock[i]));
 #endif
 
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update from(A_value[:A_N*A_M], A_index[:A_N*A_M], A_nnz[:A_N])
+#endif
+
 #pragma omp parallel for                          \
   shared(A_N, A_M, A_index, A_nnz, A_value, lock) \
   private(l, ll)
@@ -132,4 +136,8 @@ void TYPED_FUNC(
             LOG_ERROR("unknown triangle %c\n", triangle);
             break;
     }
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update to(A_value[:A_N*A_M], A_index[:A_N*A_M], A_nnz[:A_N])
+#endif
+
 }

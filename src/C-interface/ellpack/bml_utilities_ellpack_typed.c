@@ -110,6 +110,9 @@ void TYPED_FUNC(
         }
     }
 
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update to(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
     fclose(hFile);
 }
 
@@ -134,6 +137,10 @@ void TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
+
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
 
     // Only write from rank 0
     if (bml_printRank() != 1)
