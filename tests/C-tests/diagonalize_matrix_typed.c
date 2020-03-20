@@ -37,6 +37,7 @@ int TYPED_FUNC(
 
     A_t = bml_transpose_new(A);
     bml_add(A, A_t, 0.5, 0.5, 0.0);
+    LOG_INFO("A + A_t = \n");
     bml_print_bml_matrix(A, 0, N, 0, N);
 
     switch (matrix_precision)
@@ -109,7 +110,7 @@ int TYPED_FUNC(
     aux1 = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
     aux2 = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
 
-    bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
+    //bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
 
     bml_diagonalize(A, eigenvalues, eigenvectors);
 
@@ -126,7 +127,7 @@ int TYPED_FUNC(
     printf("%s\n", "check eigenvectors norms");
     for (int i = 0; i < N; i++)
     {
-        REAL_T *val = bml_get(aux2, i, i);
+        REAL_T *val = bml_get_element(aux2, i, i);
         if (ABS(*val - (REAL_T) 1.0) > REL_TOL)
         {
             printf("i = %d, val = %e  i%e\n", i, REAL_PART(*val),

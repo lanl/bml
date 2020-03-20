@@ -13,7 +13,7 @@
  * \return The matrix element
  */
 float
-bml_get_ellpack_single_real(
+bml_get_element_ellpack_single_real(
     bml_matrix_ellpack_t * A,
     int i,
     int j)
@@ -47,7 +47,7 @@ bml_get_ellpack_single_real(
  * \return The matrix element
  */
 double
-bml_get_ellpack_double_real(
+bml_get_element_ellpack_double_real(
     bml_matrix_ellpack_t * A,
     int i,
     int j)
@@ -80,7 +80,7 @@ bml_get_ellpack_double_real(
  * \return The matrix element
  */
 float complex
-bml_get_ellpack_single_complex(
+bml_get_element_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
     int i,
     int j)
@@ -114,7 +114,7 @@ bml_get_ellpack_single_complex(
  * \return The matrix element
  */
 double complex
-bml_get_ellpack_double_complex(
+bml_get_element_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
     int i,
     int j)

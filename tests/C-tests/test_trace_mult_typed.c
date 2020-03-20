@@ -45,8 +45,8 @@ int TYPED_FUNC(
         for (int k = 0; k < N; k++)
         {
             trace +=
-                (*(REAL_T *) bml_get(A, i, k)) *
-                (*(REAL_T *) bml_get(B, k, i));
+                (*(REAL_T *) bml_get_element(A, i, k)) *
+                (*(REAL_T *) bml_get_element(B, k, i));
         }
     }
 

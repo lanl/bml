@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 void *TYPED_FUNC(
-    bml_get_dense) (
+    bml_get_element_dense) (
     bml_matrix_dense_t * A,
     int i,
     int j)

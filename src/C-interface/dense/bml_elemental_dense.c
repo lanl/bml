@@ -13,7 +13,7 @@
  * \return The matrix element
  */
 float
-bml_get_dense_single_real(
+bml_get_element_dense_single_real(
     bml_matrix_dense_t * A,
     int i,
     int j)
@@ -39,7 +39,7 @@ bml_get_dense_single_real(
  * \return The matrix element
  */
 double
-bml_get_dense_double_real(
+bml_get_element_dense_double_real(
     bml_matrix_dense_t * A,
     int i,
     int j)
@@ -65,7 +65,7 @@ bml_get_dense_double_real(
  * \return The matrix element
  */
 float complex
-bml_get_dense_single_complex(
+bml_get_element_dense_single_complex(
     bml_matrix_dense_t * A,
     int i,
     int j)
@@ -91,7 +91,7 @@ bml_get_dense_single_complex(
  * \return The matrix element
  */
 double complex
-bml_get_dense_double_complex(
+bml_get_element_dense_double_complex(
     bml_matrix_dense_t * A,
     int i,
     int j)

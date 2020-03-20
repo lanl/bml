@@ -15,7 +15,7 @@
  * \return The matrix element
  */
 float
-bml_get_single_real(
+bml_get_element_single_real(
     bml_matrix_t * A,
     int i,
     int j)
@@ -23,13 +23,13 @@ bml_get_single_real(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_get_dense_single_real(A, i, j);
+            return bml_get_element_dense_single_real(A, i, j);
             break;
         case ellpack:
-            return bml_get_ellpack_single_real(A, i, j);
+            return bml_get_element_ellpack_single_real(A, i, j);
             break;
         case ellsort:
-            return bml_get_ellsort_single_real(A, i, j);
+            return bml_get_element_ellsort_single_real(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -46,7 +46,7 @@ bml_get_single_real(
  * \return The matrix element
  */
 double
-bml_get_double_real(
+bml_get_element_double_real(
     bml_matrix_t * A,
     int i,
     int j)
@@ -54,13 +54,13 @@ bml_get_double_real(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_get_dense_double_real(A, i, j);
+            return bml_get_element_dense_double_real(A, i, j);
             break;
         case ellpack:
-            return bml_get_ellpack_double_real(A, i, j);
+            return bml_get_element_ellpack_double_real(A, i, j);
             break;
         case ellsort:
-            return bml_get_ellsort_double_real(A, i, j);
+            return bml_get_element_ellsort_double_real(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -77,7 +77,7 @@ bml_get_double_real(
  * \return The matrix element
  */
 float complex
-bml_get_single_complex(
+bml_get_element_single_complex(
     bml_matrix_t * A,
     int i,
     int j)
@@ -85,13 +85,13 @@ bml_get_single_complex(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_get_dense_single_complex(A, i, j);
+            return bml_get_element_dense_single_complex(A, i, j);
             break;
         case ellpack:
-            return bml_get_ellpack_single_complex(A, i, j);
+            return bml_get_element_ellpack_single_complex(A, i, j);
             break;
         case ellsort:
-            return bml_get_ellsort_single_complex(A, i, j);
+            return bml_get_element_ellsort_single_complex(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -108,7 +108,7 @@ bml_get_single_complex(
  * \return The matrix element
  */
 double complex
-bml_get_double_complex(
+bml_get_element_double_complex(
     bml_matrix_t * A,
     int i,
     int j)
@@ -116,13 +116,13 @@ bml_get_double_complex(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_get_dense_double_complex(A, i, j);
+            return bml_get_element_dense_double_complex(A, i, j);
             break;
         case ellpack:
-            return bml_get_ellpack_double_complex(A, i, j);
+            return bml_get_element_ellpack_double_complex(A, i, j);
             break;
         case ellsort:
-            return bml_get_ellsort_double_complex(A, i, j);
+            return bml_get_element_ellsort_double_complex(A, i, j);
             break;
 
         default:

@@ -38,7 +38,7 @@ int TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            REAL_T *Aij = bml_get(A, i, j);
+            REAL_T *Aij = bml_get_element(A, i, j);
             REAL_T expected = A_dense[ROWMAJOR(i, j, N, N)];
             double rel_diff = ABS((expected - *Aij) / expected);
             if (rel_diff > REL_TOL)

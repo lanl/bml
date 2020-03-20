@@ -30,7 +30,7 @@ contains
     integer(C_INT), intent(in) :: i
     integer(C_INT), intent(in) :: j
 
-    a_ij = bml_get_single_real_C(a%ptr, i-1, j-1)
+    a_ij = bml_get_element_single_real_C(a%ptr, i-1, j-1)
 
   end subroutine bml_get_element_single_real
 
@@ -47,7 +47,7 @@ contains
     integer(C_INT), intent(in) :: i
     integer(C_INT), intent(in) :: j
 
-    a_ij = bml_get_double_real_C(a%ptr, i-1, j-1)
+    a_ij = bml_get_element_double_real_C(a%ptr, i-1, j-1)
 
   end subroutine bml_get_element_double_real
 
@@ -64,7 +64,7 @@ contains
     integer(C_INT), intent(in) :: i
     integer(C_INT), intent(in) :: j
 
-    a_ij = bml_get_single_complex_C(a%ptr, i-1, j-1)
+    a_ij = bml_get_element_single_complex_C(a%ptr, i-1, j-1)
 
   end subroutine bml_get_element_single_complex
 
@@ -81,7 +81,7 @@ contains
     integer(C_INT), intent(in) :: i
     integer(C_INT), intent(in) :: j
 
-    a_ij = bml_get_double_complex_C(a%ptr, i-1, j-1)
+    a_ij = bml_get_element_double_complex_C(a%ptr, i-1, j-1)
 
   end subroutine bml_get_element_double_complex
 
