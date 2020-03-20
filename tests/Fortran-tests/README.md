@@ -7,18 +7,19 @@ compiled with the `testf.F90` source.
 
 Every low level source code of the type name_typed.F90 is
 pre-processed using the `/scripts/convert-template.in` to change to
-the particular element kind and presicion. Two dummy varibles are
+the particular element kind and precision. Two dummy varibles are
 used:
 
   - `DUMMY_KIND`: That gets replaced with either `real` or `complex`
-  - `DUMMY_PREC` or `_MP`: That gets replaced with `SP/_SP` of `DP/_DP` (defined in prec.F90)
+  - `DUMMY_PREC` or `_MP`: That gets replaced with `SP/_SP` of
+    `DP/_DP` (defined in prec.F90)
 
-There is are `exmple_template*` files that can be used as starting
-point to add a particular test.
+There are `example_template*` files that can be used as starting point
+to add a particular test.
 
 # Conventions and rules
 
-The general driver take four variables (this can be extended as
+The general driver takes four variables (this can be extended as
 needed). These variables are:
 
   - `test_name`: The name of the test
