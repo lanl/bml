@@ -1,4 +1,5 @@
 #include "../../typed.h"
+#include "../../macros.h"
 #include "../blas.h"
 #include "../bml_allocate.h"
 #include "../bml_logger.h"
@@ -144,7 +145,7 @@ void TYPED_FUNC(
 
     int *A_nnz = A->nnz;
     int *A_index = A->index;
-    REAL_T *A_value = A->value;
+    REAL_T scale = *scale_factor;
 #pragma omp target teams distribute parallel for collapse(2)
     for (int i = 0; i < N; i++)
     {

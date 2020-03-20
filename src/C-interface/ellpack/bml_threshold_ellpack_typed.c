@@ -46,6 +46,8 @@ bml_matrix_ellpack_t
     int *B_nnz = B->nnz;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
 #ifdef USE_OMP_OFFLOAD
 #pragma omp target
@@ -53,10 +55,10 @@ bml_matrix_ellpack_t
 
 #pragma omp parallel for               \
     shared(N, M, A_value, A_index, A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
+    shared(rowMin, rowMax, myRank) \
     shared(B_value, B_index, B_nnz)
     //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -96,6 +98,8 @@ void TYPED_FUNC(
     int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
     int rlen;
 
@@ -106,9 +110,9 @@ void TYPED_FUNC(
 #pragma omp parallel for               \
     private(rlen) \
     shared(N,M,A_value,A_index,A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank)
+    shared(rowMin, rowMax, myRank)
     //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
         rlen = 0;
         for (int j = 0; j < A_nnz[i]; j++)

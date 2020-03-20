@@ -43,6 +43,9 @@ bml_matrix_ellpack_t
     int *B_index = B->index;
     int *B_nnz = B->nnz;
 
+    int N = A->N;
+    int M = A->M;
+
     int myRank = bml_getMyRank();
 
     // Transpose all elements

@@ -27,9 +27,12 @@ void TYPED_FUNC(
     bml_matrix_ellpack_t * A)
 {
     REAL_T *A_value = A->value;
-
 #if defined (USE_OMP_OFFLOAD)
-    // All data stays on deveice
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    int N = A->N;
+    int M = A->M;
+
 #pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
     {
@@ -108,6 +111,12 @@ bml_matrix_ellpack_t
     A->domain2 = bml_default_domain(A->N, A->M, distrib_mode);
 
 #if defined(USE_OMP_OFFLOAD)
+    int N = A->N;
+    int M = A->M;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    REAL_T *A_value = A->value;
+
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #endif
@@ -158,9 +167,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int NM = N * M;
 
-#pragma omp target enter data map(alloc:A_nnz[0:N])
-#pragma omp target enter data map(alloc:A_index[0:NM])
-#pragma omp target enter data map(alloc:A_value[0:NM])
+#pragma omp target enter data map(alloc:A_nnz[:N])
+#pragma omp target enter data map(alloc:A_index[:NM])
+#pragma omp target enter data map(alloc:A_value[:NM])
 
 #pragma omp target teams distribute parallel for schedule (static, 1)
     for (int i = 0; i < N; i++)

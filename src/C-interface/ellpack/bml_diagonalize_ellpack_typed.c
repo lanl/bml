@@ -85,7 +85,7 @@ void TYPED_FUNC(
     // This is done in order to pass the changes back to the upper level
     bml_copy_ellpack(myeigenvectors, eigenvectors);
 
-    bml_deallocate_ellpack(myeigenvectors);
+    //bml_deallocate_ellpack(myeigenvectors);
 
     return;
 }
