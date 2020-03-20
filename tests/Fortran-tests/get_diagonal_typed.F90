@@ -44,8 +44,9 @@ contains
     do i=1,n
       diff = abs(a_dense(i,i) - diag(i))
       if(diff > tol) then
-        print *, "diff = ", diff,a_dense(i,i)
-        call bml_error(__FILE__, __LINE__, "get_diagonal failing")
+        print *, "diff = ", diff, a_dense(i,i)
+        call bml_error(__FILE__, __LINE__, &
+             & "get_diagonal failing")
         test_result = .false.
       end if
     end do

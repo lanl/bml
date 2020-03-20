@@ -51,7 +51,8 @@ contains
         diff = abs(a_dense(i,j) - real(i,DUMMY_PREC)*real(j,DUMMY_PREC))
         if(diff > tol) then
           print *, "diff = ", diff
-          call bml_error(__FILE__, __LINE__, "set_row failing")
+          call bml_error(__FILE__, __LINE__, &
+               & "set_row failing")
           test_result = .false.
         end if
       end do
