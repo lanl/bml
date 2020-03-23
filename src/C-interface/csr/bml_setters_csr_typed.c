@@ -125,7 +125,7 @@ void TYPED_FUNC(
     }
 }
 
-/** Set element i,j asuming there's no resetting of any element of A.
+/** Set (new) element i,j asuming there's no resetting of any element of A.
  *
  *  \ingroup setters
  *
@@ -134,7 +134,6 @@ void TYPED_FUNC(
  *  \param j The row index
  *  \param value The element to be added
  *  \WARNING sets an element from scratch
- *  \todo set element new.
  *
  *
  */
@@ -161,7 +160,6 @@ void TYPED_FUNC(
  *  \param j The row index
  *  \param value The element to be set
  *  \WARNING sets an element from scratch
- *  \todo set element new.
  *
  *
  */
