@@ -89,7 +89,7 @@ typedef struct bml_matrix_csr_t bml_matrix_csr_t;
 /** csr matrix **/
 #define csr_matrix_N(csr_matrix) ((csr_matrix)->N_)
 #define csr_matrix_NZMAX(csr_matrix) ((csr_matrix)->NZMAX_)
-#define csr_matrix_TOTNNZ(csr_matrix) ((csr_matrix)->NZMAX_)
+#define csr_matrix_TOTNNZ(csr_matrix) ((csr_matrix)->TOTNNZ_)
 #define csr_matrix_type(csr_matrix) ((csr_matrix)->matrix_type)
 #define csr_matrix_precision(csr_matrix) ((csr_matrix)->matrix_precision)
 #define csr_matrix_distribution_mode(csr_matrix) ((csr_matrix)->distribution_mode)
