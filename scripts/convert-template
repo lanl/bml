@@ -2,6 +2,7 @@
 
 re_D = {}
 
+
 def init_conversion(defs):
     """Initialize the regular expressions given a list of definitions.
     """
@@ -13,6 +14,7 @@ def init_conversion(defs):
         if len(tokens) != 2:
             continue
         re_D[re.compile(tokens[0].strip())] = tokens[1].strip()
+
 
 def convert_line(line, defs):
     """Convert a line given a list of definitions.
@@ -26,24 +28,23 @@ def convert_line(line, defs):
         new_line = D.sub(re_D[D], new_line)
     return new_line
 
+
 def main():
 
     import argparse
 
-    parser = argparse.ArgumentParser(description="This script acts in a very "
-                                     + "similar way as the C preprocessor would. "
-                                     + "It's just a lot simpler. :)")
+    parser = argparse.ArgumentParser(
+        description="This script acts in a very " +
+        "similar way as the C preprocessor would. " +
+        "It's just a lot simpler. :)")
 
-    parser.add_argument("SOURCE",
-                        help="The Fortran source file")
+    parser.add_argument("SOURCE", help="The Fortran source file")
 
     parser.add_argument("-o",
                         metavar="OUTPUT",
                         help="Write output to file OUTPUT")
 
-    parser.add_argument("-D",
-                        help="Preprocessor macro",
-                        action="append")
+    parser.add_argument("-D", help="Preprocessor macro", action="append")
 
     options = parser.parse_args()
 
@@ -60,6 +61,7 @@ def main():
         fd_out.write(convert_line(line, options.D) + "\n")
     fd_out.close()
     fd_in.close()
+
 
 if __name__ == "__main__":
     main()
