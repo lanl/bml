@@ -61,7 +61,3 @@ def main():
         fd_out.write(convert_line(line, options.D) + "\n")
     fd_out.close()
     fd_in.close()
-
-
-if __name__ == "__main__":
-    main()
