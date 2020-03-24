@@ -6,6 +6,6 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         "console_scripts": [
-            "convert-template = scripts.convert-template:main"
+            "convert-template = scripts.convert_template:main"
         ]}
 )
