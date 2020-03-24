@@ -35,11 +35,14 @@ bml_matrix_csr_t *TYPED_FUNC(
 
     for (int i = 0; i < N; i++)
     {
+        bml_set_row(B, i, bml_get_row(A, i), 0.0);
+/*
         for (int j = 0; j < N; j++)
         {
-            /** Should there be a check to drop zero entries here?? **/
+            // Should there be a check to drop zero entries here?? 
             bml_set_element(B, i, j, bml_get(A, i, j));
         }
+*/
     }
 
     return B;
