@@ -11,6 +11,18 @@ set(HEADERS-CSR
   bml_utilities_csr.h
   bml_norm_csr.h
   bml_convert_csr.h
+  bml_export_csr.h
+  bml_import_csr.h
+  bml_introspection_csr.h
+  bml_transpose_csr.h
+  bml_threshold_csr.h
+  
+#  bml_add_ellblock.h
+#  bml_diagonalize_ellblock.h
+#  bml_inverse_ellblock.h
+#  bml_multiply_ellblock.h
+#  bml_normalize_ellblock.h
+
 )
 
 
@@ -24,6 +36,11 @@ set(SOURCES-CSR
   bml_utilities_csr.c
   bml_norm_csr.c
   bml_convert_csr.c
+  bml_export_csr.c
+  bml_import_csr.c
+  bml_introspection_csr.c
+  bml_transpose_csr.c  
+  bml_threshold_csr.c
 )
 
 add_library(bml-csr OBJECT ${SOURCES-CSR})
@@ -46,6 +63,11 @@ set(SOURCES-CSR-TYPED
   bml_utilities_csr_typed.c
   bml_norm_csr_typed.c
   bml_convert_csr_typed.c
+  bml_export_csr_typed.c
+  bml_import_csr_typed.c
+  bml_introspection_csr_typed.c
+  bml_transpose_csr_typed.c  
+  bml_threshold_csr_typed.c
   )
   
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
