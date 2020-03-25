@@ -162,26 +162,25 @@ bml_clear_csr(
  */
 bml_matrix_csr_t *
 bml_noinit_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A = NULL;
 
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_noinit_matrix_csr_single_real(N,M, distrib_mode);
+            A = bml_noinit_matrix_csr_single_real(matrix_dimension, distrib_mode);
             break;
         case double_real:
-            A = bml_noinit_matrix_csr_double_real(N,M, distrib_mode);
+            A = bml_noinit_matrix_csr_double_real(matrix_dimension, distrib_mode);
             break;
         case single_complex:
-            A = bml_noinit_matrix_csr_single_complex(N,M, distrib_mode);
+            A = bml_noinit_matrix_csr_single_complex(matrix_dimension, distrib_mode);
             break;
         case double_complex:
-            A = bml_noinit_matrix_csr_double_complex(N,M, distrib_mode);
+            A = bml_noinit_matrix_csr_double_complex(matrix_dimension, distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");
@@ -206,10 +205,10 @@ bml_noinit_matrix_csr(
  */
 bml_matrix_csr_t *
 bml_zero_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,    
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,    
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A = NULL;
 
@@ -252,10 +251,10 @@ bml_zero_matrix_csr(
  
 bml_matrix_csr_t *
 bml_banded_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -298,10 +297,10 @@ bml_banded_matrix_csr(
 
 bml_matrix_csr_t *
 bml_random_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {
@@ -342,10 +341,10 @@ bml_random_matrix_csr(
  */
 bml_matrix_csr_t *
 bml_identity_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     switch (matrix_precision)
     {

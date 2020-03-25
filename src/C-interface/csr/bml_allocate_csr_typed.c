@@ -97,25 +97,26 @@ csr_sparse_row_t *TYPED_FUNC(
  *  \return The matrix.
  */
 bml_matrix_csr_t *TYPED_FUNC(
-    bml_noinit_matrix_csr) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    bml_noinit_matrix_csr) (bml_matrix_dimension_t
+                                             matrix_dimension,
+                                             bml_distribution_mode_t 
+                                             distrib_mode)
 {
     bml_matrix_csr_t *A =
         bml_noinit_allocate_memory(sizeof(bml_matrix_csr_t));
     A->matrix_type = csr;
     A->matrix_precision = MATRIX_PRECISION;
-    A->N_ = N;
-    A->NZMAX_ = 0;
+    A->N_ = matrix_dimension.N_rows;
+    A->NZMAX_ = matrix_dimension.N_nz_max;
     A->TOTNNZ_ = 0;
     A->distribution_mode = distrib_mode;
     /** allocate csr row data */
+    const int N = A->N_;
     A->data_ = bml_noinit_allocate_memory(sizeof(csr_sparse_row_t *) * N );
 #pragma omp parallel for
     for(int i=0; i<N; i++)
     {
-       A->data_[i] = TYPED_FUNC(csr_noinit_row)(M);
+       A->data_[i] = TYPED_FUNC(csr_noinit_row)(A->NZMAX_);
     }
     /** allocate hash table **/
     if(distrib_mode == sequential)
@@ -129,8 +130,8 @@ bml_matrix_csr_t *TYPED_FUNC(
     }
     /** end allocate hash table **/
 
-    A->domain = bml_default_domain(N, M, distrib_mode);
-    A->domain2 = bml_default_domain(N, M, distrib_mode);
+    A->domain = bml_default_domain(A->N_, A->NZMAX_, distrib_mode);
+    A->domain2 = bml_default_domain(A->N_, A->NZMAX_, distrib_mode);
 
     return A;
 }
@@ -181,16 +182,16 @@ csr_sparse_row_t *TYPED_FUNC(
  */
 bml_matrix_csr_t *TYPED_FUNC(
     bml_zero_matrix_csr) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A =
         bml_allocate_memory(sizeof(bml_matrix_csr_t));
     A->matrix_type = csr;
     A->matrix_precision = MATRIX_PRECISION;
     A->N_ = N;
-    A->NZMAX_ = 0;
+    A->NZMAX_ = M;
     A->TOTNNZ_ = 0;
     A->distribution_mode = distrib_mode;
     /** allocate csr row data */
@@ -198,7 +199,7 @@ bml_matrix_csr_t *TYPED_FUNC(
 #pragma omp parallel for
     for(int i=0; i<N; i++)
     {
-       A->data_[i] = TYPED_FUNC(csr_zero_row)(M);
+       A->data_[i] = TYPED_FUNC(csr_zero_row)(A->NZMAX_);
     }
     /** allocate hash table. 
     No need to insert table values since matrix is zero */
@@ -235,9 +236,9 @@ bml_matrix_csr_t *TYPED_FUNC(
  */
 bml_matrix_csr_t *TYPED_FUNC(
     bml_banded_matrix_csr) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A =
         TYPED_FUNC(bml_zero_matrix_csr) (N, M, distrib_mode);
@@ -289,9 +290,9 @@ bml_matrix_csr_t *TYPED_FUNC(
  */
 bml_matrix_csr_t *TYPED_FUNC(
     bml_random_matrix_csr) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A =
         TYPED_FUNC(bml_zero_matrix_csr) (N, M, distrib_mode);
@@ -342,9 +343,9 @@ bml_matrix_csr_t *TYPED_FUNC(
  */
 bml_matrix_csr_t *TYPED_FUNC(
     bml_identity_matrix_csr) (
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode)
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A =
         TYPED_FUNC(bml_zero_matrix_csr) (N, M, distrib_mode);

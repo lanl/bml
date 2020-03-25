@@ -62,30 +62,25 @@ csr_sparse_row_t *csr_noinit_row_double_complex(
     const int alloc_size);               
 
 bml_matrix_csr_t *bml_noinit_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_noinit_matrix_csr_single_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_noinit_matrix_csr_double_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_noinit_matrix_csr_single_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_dimension_t matrix_dimension,
+     bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_noinit_matrix_csr_double_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode);
 /*
 csr_sparse_row_t *csr_zero_row (
     const int alloc_size);
@@ -103,108 +98,108 @@ csr_sparse_row_t *csr_zero_row_double_complex (
     const int alloc_size);
                 
 bml_matrix_csr_t *bml_zero_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_zero_matrix_csr_single_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_zero_matrix_csr_double_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_zero_matrix_csr_single_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_zero_matrix_csr_double_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_banded_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_banded_matrix_csr_single_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_banded_matrix_csr_double_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_banded_matrix_csr_single_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_banded_matrix_csr_double_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_random_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_random_matrix_csr_single_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_random_matrix_csr_double_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_random_matrix_csr_single_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_random_matrix_csr_double_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_identity_matrix_csr(
-    const bml_matrix_precision_t matrix_precision,
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_identity_matrix_csr_single_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_identity_matrix_csr_double_real(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_identity_matrix_csr_single_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_identity_matrix_csr_double_complex(
-    const int N,
-    const int M,
-    const bml_distribution_mode_t distrib_mode);
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
 
 void bml_update_domain_csr(
     bml_matrix_csr_t * A,
