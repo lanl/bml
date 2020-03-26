@@ -25,12 +25,12 @@ void *TYPED_FUNC(
     static REAL_T ZERO = 0;
     REAL_T *A_value = (REAL_T *) A->value;
 
-#ifdef USE_OMP_OFFLOAD
     int A_N = A->N;
     int A_M = A->M;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#ifdef USE_OMP_OFFLOAD
 #pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 #endif
 

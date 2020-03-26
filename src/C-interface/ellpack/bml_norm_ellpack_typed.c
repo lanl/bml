@@ -41,7 +41,8 @@ double TYPED_FUNC(
     int rowMax = A_localRowMax[myRank];
 
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target map(tofrom:sum)
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:N], A_value[:N*M])
 #endif
 
 #pragma omp parallel for                        \
@@ -84,10 +85,10 @@ double TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
 
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target map(tofrom:sum)
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 #endif
 #pragma omp parallel for                        \
-  shared(N, M, A_index, A_nnz, A_value)         \
   reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {
@@ -157,7 +158,9 @@ double TYPED_FUNC(
 #endif
 
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target map(tofrom:sum)
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 #endif
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                          \
@@ -284,7 +287,8 @@ double TYPED_FUNC(
     int rowMax = A_localRowMax[myRank];
 
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target map(tofrom:fnorm)
+//#pragma omp target map(tofrom:fnorm)
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 #endif
 #pragma omp parallel for                        \
   private(rvalue, temp)                         \

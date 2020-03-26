@@ -50,9 +50,7 @@ void TYPED_FUNC(
 
     if (A == NULL || B == NULL)
     {
-#ifndef USE_OMP_OFFLOAD
         LOG_ERROR("Either matrix A or B are NULL\n");
-#endif
     }
 
     if (A == B && alpha == ONE && beta == ZERO)
@@ -144,14 +142,14 @@ void *TYPED_FUNC(
 
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
-    shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
+    shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
     shared(rowMin, rowMax)                             \
     reduction(+: traceX, traceX2)
 #else
 #pragma vector aligned
 #pragma omp parallel for                               \
-    shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
+    shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
     shared(rowMin, rowMax)                             \
     firstprivate(ix,jx, x)                             \
@@ -302,15 +300,13 @@ void TYPED_FUNC(
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
-    shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(myRank)
+    shared(C_N, C_M, C_nnz, C_index, C_value)
 #else
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(myRank)                             \
     firstprivate(ix, jx, x)
 #endif
 
@@ -447,18 +443,16 @@ void TYPED_FUNC(
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(adjust_threshold, myRank)           \
+    shared(adjust_threshold)           \
     reduction(+:aflag)
 #else
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(adjust_threshold, myRank)           \
+    shared(adjust_threshold)           \
     firstprivate(ix, jx, x)                    \
     reduction(+:aflag)
 #endif

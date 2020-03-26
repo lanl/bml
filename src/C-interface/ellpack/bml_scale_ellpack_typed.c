@@ -39,7 +39,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-#ifdef USE_OMP_OFFLOAD
     int N = A->N;
     int M = A->M;
 
@@ -50,6 +49,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
     REAL_T scale = *scale_factor;
+#ifdef USE_OMP_OFFLOAD
 #pragma omp target teams distribute parallel for collapse(2)
     for (int i = 0; i < N; i++)
     {
@@ -96,7 +96,6 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
-#ifdef USE_OMP_OFFLOAD
     int N = A->N;
     int M = A->M;
 
@@ -107,6 +106,7 @@ void TYPED_FUNC(
     int *B_nnz = B->nnz;
     int *B_index = B->index;
     REAL_T scale = *scale_factor;
+#ifdef USE_OMP_OFFLOAD
 #pragma omp target teams distribute parallel for collapse(2)
     for (int i = 0; i < N; i++)
     {

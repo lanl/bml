@@ -36,7 +36,6 @@ void *TYPED_FUNC(
     REAL_T *A_value = A->value;
 
 #ifdef USE_OMP_OFFLOAD
-// copy data from device
 #pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
 #endif
 

@@ -167,9 +167,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int NM = N * M;
 
-#pragma omp target enter data map(alloc:A_nnz[:N])
-#pragma omp target enter data map(alloc:A_index[:NM])
-#pragma omp target enter data map(alloc:A_value[:NM])
+#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
 #pragma omp target teams distribute parallel for schedule (static, 1)
     for (int i = 0; i < N; i++)

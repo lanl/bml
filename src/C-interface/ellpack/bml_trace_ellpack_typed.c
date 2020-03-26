@@ -50,8 +50,7 @@ double TYPED_FUNC(
 #endif
 
 #pragma omp parallel for                        \
-  shared(N, M, A_value, A_index, A_nnz)         \
-  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(A_value, A_index, A_nnz)         \
   reduction(+:trace)
     //for (int i = 0; i < N; i++)
     for (int i = rowMin; i < rowMax; i++)
@@ -105,13 +104,13 @@ double TYPED_FUNC(
             ("bml_trace_mult_ellpack: Matrices A and B have different sizes.");
     }
 
-#ifdef USE_OMP_OFFLOAD
     int B_N = B->N;
     int B_M = B->M;
 
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = (int *) B->index;
     int *B_nnz = (int *) B->nnz;
+#ifdef USE_OMP_OFFLOAD
 #pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 #pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 #endif
