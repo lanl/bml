@@ -27,6 +27,28 @@ void TYPED_FUNC(
     bml_matrix_ellpack_t * A)
 {
     REAL_T *A_value = A->value;
+#if defined (USE_OMP_OFFLOAD)
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    int N = A->N;
+    int M = A->M;
+
+#pragma omp target teams distribute parallel for
+    for (int i = 0; i < N; i++)
+    {
+        A_nnz[i] = 0;
+    }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            A_index[ROWMAJOR(i, j, N, M)] = 0;
+            A_value[ROWMAJOR(i, j, N, M)] = 0.0;
+        }
+    }
+#else // conditional for offload
 
 #ifdef INTEL_OPT
 #pragma omp parallel for simd
@@ -51,6 +73,8 @@ void TYPED_FUNC(
     memset(A->index, 0, A->N * A->M * sizeof(int));
     memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
 #endif
+
+#endif // conditional for offload
 }
 
 /** Allocate a matrix with uninitialized values.
@@ -86,6 +110,17 @@ bml_matrix_ellpack_t
     A->domain = bml_default_domain(A->N, A->M, distrib_mode);
     A->domain2 = bml_default_domain(A->N, A->M, distrib_mode);
 
+#if defined(USE_OMP_OFFLOAD)
+    int N = A->N;
+    int M = A->M;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    REAL_T *A_value = A->value;
+
+#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
+
     return A;
 }
 
@@ -117,6 +152,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->N = N;
     A->M = M;
     A->distribution_mode = distrib_mode;
+    // need to keep these allocates for host copy
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
@@ -126,6 +162,29 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
 
+#if defined(USE_OMP_OFFLOAD)
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    int NM = N * M;
+
+#pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
+
+#pragma omp target teams distribute parallel for schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        A_nnz[i] = 0;
+    }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            A_index[ROWMAJOR(i, j, N, M)] = 0;
+            A_value[ROWMAJOR(i, j, N, M)] = 0.0;
+        }
+    }
+#endif
     return A;
 }
 
@@ -157,6 +216,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+
 #pragma omp parallel for shared(A_value, A_index, A_nnz)
     for (int i = 0; i < N; i++)
     {
@@ -170,6 +230,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
     return A;
 }
 
@@ -215,6 +278,9 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
         A_nnz[i] = jind;
     }
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
     return A;
 }
 
@@ -258,5 +324,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         A_index[ROWMAJOR(i, 0, N, M)] = i;
         A_nnz[i] = 1;
     }
+#if defined(USE_OMP_OFFLOAD)
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
     return A;
 }

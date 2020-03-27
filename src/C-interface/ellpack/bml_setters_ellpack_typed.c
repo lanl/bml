@@ -39,9 +39,16 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#ifdef USE_OMP_OFFLOAD
+//#pragma omp target
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#endif
     A_value[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = *((REAL_T *) element);
     A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
     A_nnz[i]++;
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#endif
 
 }
 
@@ -75,6 +82,9 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#endif
     ll = 0;
     if (A_nnz[i] > 2)
     {
@@ -100,6 +110,9 @@ void TYPED_FUNC(
         A_index[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = j;
         A_nnz[i]++;
     }
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update to(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#endif
 }
 
 /** Set row i of matrix A.
@@ -129,19 +142,24 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
-    for (int j = 0; j < A_N; j++)
-    {
-
-        if (ABS(row[j]) > threshold)
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target map(to:row[0:A_N])
+#endif
+    {                           // begin offload region
+        for (int j = 0; j < A_N; j++)
         {
-            ll++;
 
-            A_value[ROWMAJOR(i, ll, A_N, A_M)] = row[j];
-            A_index[ROWMAJOR(i, ll, A_N, A_M)] = j;
+            if (ABS(row[j]) > threshold)
+            {
+                ll++;
 
+                A_value[ROWMAJOR(i, ll, A_N, A_M)] = row[j];
+                A_index[ROWMAJOR(i, ll, A_N, A_M)] = j;
+
+            }
         }
-    }
-    A_nnz[i] = ll + 1;
+        A_nnz[i] = ll + 1;
+    }                           // end offload region
 
 }
 
@@ -168,6 +186,9 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
     int ll = 0;
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target parallel for map(to:diagonal[:A_N])
+#endif
     for (int i = 0; i < A_N; i++)
     {
         ll = 0;

@@ -46,27 +46,34 @@ bml_matrix_ellpack_t
     int *B_nnz = B->nnz;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target
+#endif
+    {
 #pragma omp parallel for               \
     shared(N, M, A_value, A_index, A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank) \
+    shared(rowMin, rowMax) \
     shared(B_value, B_index, B_nnz)
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
-    {
-        for (int j = 0; j < A_nnz[i]; j++)
+        //for (int i = 0; i < N; i++)
+        for (int i = rowMin; i < rowMax; i++)
         {
-            if (is_above_threshold(A_value[ROWMAJOR(i, j, N, M)], threshold))
+            for (int j = 0; j < A_nnz[i]; j++)
             {
-                B_value[ROWMAJOR(i, B_nnz[i], N, M)] =
-                    A_value[ROWMAJOR(i, j, N, M)];
-                B_index[ROWMAJOR(i, B_nnz[i], N, M)] =
-                    A_index[ROWMAJOR(i, j, N, M)];
-                B_nnz[i]++;
+                if (is_above_threshold
+                    (A_value[ROWMAJOR(i, j, N, M)], threshold))
+                {
+                    B_value[ROWMAJOR(i, B_nnz[i], N, M)] =
+                        A_value[ROWMAJOR(i, j, N, M)];
+                    B_index[ROWMAJOR(i, B_nnz[i], N, M)] =
+                        A_index[ROWMAJOR(i, j, N, M)];
+                    B_nnz[i]++;
+                }
             }
         }
-    }
-
+    }                           // end target region
     return B;
 }
 
@@ -93,30 +100,39 @@ void TYPED_FUNC(
     int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
     int rlen;
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target
+#endif
+    {
 #pragma omp parallel for               \
     private(rlen) \
-    shared(N,M,A_value,A_index,A_nnz) \
-    shared(A_localRowMin, A_localRowMax, myRank)
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
-    {
-        rlen = 0;
-        for (int j = 0; j < A_nnz[i]; j++)
+    shared(A_value,A_index,A_nnz) \
+    shared(rowMin, rowMax)
+        //for (int i = 0; i < N; i++)
+        for (int i = rowMin; i < rowMax; i++)
         {
-            if (is_above_threshold(A_value[ROWMAJOR(i, j, N, M)], threshold))
+            rlen = 0;
+            for (int j = 0; j < A_nnz[i]; j++)
             {
-                if (rlen < j)
+                if (is_above_threshold
+                    (A_value[ROWMAJOR(i, j, N, M)], threshold))
                 {
-                    A_value[ROWMAJOR(i, rlen, N, M)] =
-                        A_value[ROWMAJOR(i, j, N, M)];
-                    A_index[ROWMAJOR(i, rlen, N, M)] =
-                        A_index[ROWMAJOR(i, j, N, M)];
+                    if (rlen < j)
+                    {
+                        A_value[ROWMAJOR(i, rlen, N, M)] =
+                            A_value[ROWMAJOR(i, j, N, M)];
+                        A_index[ROWMAJOR(i, rlen, N, M)] =
+                            A_index[ROWMAJOR(i, j, N, M)];
+                    }
+                    rlen++;
                 }
-                rlen++;
             }
+            A_nnz[i] = rlen;
         }
-        A_nnz[i] = rlen;
-    }
+    }                           // end target region
 }

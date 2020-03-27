@@ -36,6 +36,10 @@ double TYPED_FUNC(
     int A_M = A->M;
     int *A_nnz = A->nnz;
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_value[:A_N*A_M], A_nnz[:A_N])
+#endif
+
     for (int i = 0; i < A->N; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)

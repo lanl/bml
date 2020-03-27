@@ -49,7 +49,8 @@ contains
       diff = abs(a_dense(i,i) - real(i,DUMMY_PREC))
       if(diff > tol) then
         print *, "diff = ", diff,a_dense(i,i)
-        call bml_error(__FILE__, __LINE__, "set_diagonal failing")
+        call bml_error(__FILE__, __LINE__, &
+             & "set_diagonal failing")
         test_result = .false.
       end if
     end do

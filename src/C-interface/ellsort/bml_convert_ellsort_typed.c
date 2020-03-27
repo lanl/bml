@@ -30,7 +30,7 @@ bml_matrix_ellsort_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            bml_set_element(B, i, j, bml_get(A, i, j));
+            bml_set_element(B, i, j, bml_get_element(A, i, j));
         }
     }
 

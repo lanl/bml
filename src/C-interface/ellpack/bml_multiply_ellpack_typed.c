@@ -124,6 +124,8 @@ void *TYPED_FUNC(
     double *trace = bml_allocate_memory(sizeof(double) * 2);
 
     int myRank = bml_getMyRank();
+    int rowMin = X_localRowMin[myRank];
+    int rowMax = X_localRowMax[myRank];
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[X_N], jx[X_N];
@@ -134,24 +136,27 @@ void *TYPED_FUNC(
     memset(x, 0.0, X_N * sizeof(REAL_T));
 #endif
 
+#if defined (USE_OMP_OFFLOAD)
+#pragma omp target
+#endif
+
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
-    shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
+    shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
-    shared(X_localRowMin, X_localRowMax)               \
+    shared(rowMin, rowMax)                             \
     reduction(+: traceX, traceX2)
 #else
 #pragma vector aligned
 #pragma omp parallel for                               \
-    shared(X_N, X_M, X_index, X_nnz, X_value, myRank)  \
+    shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
-    shared(X_localRowMin, X_localRowMax)               \
+    shared(rowMin, rowMax)                             \
     firstprivate(ix,jx, x)                             \
     reduction(+: traceX, traceX2)
 #endif
 
-    //for (int i = 0; i < X_N; i++)       // CALCULATES THRESHOLDED X^2
-    for (int i = X_localRowMin[myRank]; i < X_localRowMax[myRank]; i++) // CALCULATES THRESHOLDED X^2
+    for (int i = rowMin; i < rowMax; i++)
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -193,7 +198,9 @@ void *TYPED_FUNC(
         // Check for number of non-zeroes per row exceeded
         if (l > X2_M)
         {
+#ifndef USE_OMP_OFFLOAD
             LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+#endif
         }
 
 #ifdef INTEL_OPT
@@ -272,6 +279,8 @@ void TYPED_FUNC(
     REAL_T *C_value = (REAL_T *) C->value;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[C->N], jx[C->N];
@@ -282,25 +291,27 @@ void TYPED_FUNC(
     memset(x, 0.0, C->N * sizeof(REAL_T));
 #endif
 
+#if defined (USE_OMP_OFFLOAD)
+#pragma omp target
+#endif
+
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
-    shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(myRank)
+    shared(C_N, C_M, C_nnz, C_index, C_value)
 #else
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(myRank)                             \
     firstprivate(ix, jx, x)
 #endif
 
     //for (int i = 0; i < A_N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
@@ -334,7 +345,9 @@ void TYPED_FUNC(
         // Check for number of non-zeroes per row exceeded
         if (l > C_M)
         {
+#ifndef USE_OMP_OFFLOAD
             LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+#endif
         }
 
         int ll = 0;
@@ -406,6 +419,13 @@ void TYPED_FUNC(
     REAL_T adjust_threshold = (REAL_T) threshold;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+#endif
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     int ix[C->N], jx[C->N];
@@ -423,24 +443,22 @@ void TYPED_FUNC(
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(adjust_threshold, myRank)           \
+    shared(adjust_threshold)           \
     reduction(+:aflag)
 #else
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
-    shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
-    shared(adjust_threshold, myRank)           \
+    shared(adjust_threshold)           \
     firstprivate(ix, jx, x)                    \
     reduction(+:aflag)
 #endif
 
         //for (int i = 0; i < A_N; i++)
-        for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+        for (int i = rowMin; i < rowMax; i++)
         {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -505,4 +523,7 @@ void TYPED_FUNC(
 
         adjust_threshold *= (REAL_T) 2.0;
     }
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
+#endif
 }

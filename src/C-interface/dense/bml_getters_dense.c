@@ -4,7 +4,7 @@
 #include "bml_types_dense.h"
 
 void *
-bml_get_dense(
+bml_get_element_dense(
     bml_matrix_dense_t * A,
     int i,
     int j)
@@ -12,16 +12,16 @@ bml_get_dense(
     switch (bml_get_precision(A))
     {
         case single_real:
-            return bml_get_dense_single_real(A, i, j);
+            return bml_get_element_dense_single_real(A, i, j);
             break;
         case double_real:
-            return bml_get_dense_double_real(A, i, j);
+            return bml_get_element_dense_double_real(A, i, j);
             break;
         case single_complex:
-            return bml_get_dense_single_complex(A, i, j);
+            return bml_get_element_dense_single_complex(A, i, j);
             break;
         case double_complex:
-            return bml_get_dense_double_complex(A, i, j);
+            return bml_get_element_dense_double_complex(A, i, j);
             break;
         default:
             LOG_ERROR("unkonwn precision\n");

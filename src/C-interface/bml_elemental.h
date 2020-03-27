@@ -5,22 +5,22 @@
 
 #include <complex.h>
 
-float bml_get_single_real(
+float bml_get_element_single_real(
     bml_matrix_t * A,
     int i,
     int j);
 
-double bml_get_double_real(
+double bml_get_element_double_real(
     bml_matrix_t * A,
     int i,
     int j);
 
-float complex bml_get_single_complex(
+float complex bml_get_element_single_complex(
     bml_matrix_t * A,
     int i,
     int j);
 
-double complex bml_get_double_complex(
+double complex bml_get_element_double_complex(
     bml_matrix_t * A,
     int i,
     int j);

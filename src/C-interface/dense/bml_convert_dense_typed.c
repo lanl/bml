@@ -39,7 +39,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            Bij[ROWMAJOR(i, j, N, N)] = *(REAL_T *) bml_get(A, i, j);
+            Bij[ROWMAJOR(i, j, N, N)] = *(REAL_T *) bml_get_element(A, i, j);
         }
     }
 #ifdef BML_USE_MAGMA

@@ -4,7 +4,7 @@
 #include "bml_types_ellblock.h"
 
 void *
-bml_get_ellblock(
+bml_get_element_ellblock(
     bml_matrix_ellblock_t * A,
     int i,
     int j)
@@ -12,19 +12,19 @@ bml_get_ellblock(
     switch (bml_get_precision(A))
     {
         case single_real:
-            return bml_get_ellblock_single_real(A, i, j);
+            return bml_get_element_ellblock_single_real(A, i, j);
             break;
         case double_real:
-            return bml_get_ellblock_double_real(A, i, j);
+            return bml_get_element_ellblock_double_real(A, i, j);
             break;
         case single_complex:
-            return bml_get_ellblock_single_complex(A, i, j);
+            return bml_get_element_ellblock_single_complex(A, i, j);
             break;
         case double_complex:
-            return bml_get_ellblock_double_complex(A, i, j);
+            return bml_get_element_ellblock_double_complex(A, i, j);
             break;
         default:
-            LOG_ERROR("unkonwn precision in bml_get_ellblock\n");
+            LOG_ERROR("unkonwn precision in bml_get_element_ellblock\n");
             break;
     }
     return NULL;

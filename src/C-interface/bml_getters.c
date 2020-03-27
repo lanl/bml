@@ -16,7 +16,7 @@
  * \return The matrix element
  */
 void *
-bml_get(
+bml_get_element(
     bml_matrix_t * A,
     int i,
     int j)
@@ -24,16 +24,16 @@ bml_get(
     switch (bml_get_type(A))
     {
         case dense:
-            return bml_get_dense(A, i, j);
+            return bml_get_element_dense(A, i, j);
             break;
         case ellpack:
-            return bml_get_ellpack(A, i, j);
+            return bml_get_element_ellpack(A, i, j);
             break;
         case ellsort:
-            return bml_get_ellsort(A, i, j);
+            return bml_get_element_ellsort(A, i, j);
             break;
         case ellblock:
-            return bml_get_ellblock(A, i, j);
+            return bml_get_element_ellblock(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");

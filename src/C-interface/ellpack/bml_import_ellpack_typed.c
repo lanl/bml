@@ -68,6 +68,9 @@ bml_matrix_ellpack_t
             }
         }
     }
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#endif
 
     return A_bml;
 }

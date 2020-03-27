@@ -59,7 +59,7 @@ bml_matrix_ellblock_t *TYPED_FUNC(
                 {
                     int i = offset[ib] + ii;
                     int j = offset[jb] + jj;
-                    REAL_T alpha = *(REAL_T *) bml_get(A, i, j);
+                    REAL_T alpha = *(REAL_T *) bml_get_element(A, i, j);
                     block[ROWMAJOR(ii, jj, bsize[ib], bsize[jb])] = alpha;
                 }
             TYPED_FUNC(bml_set_block_ellblock) (B, ib, jb, block);

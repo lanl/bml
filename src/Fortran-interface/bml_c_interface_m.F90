@@ -118,37 +118,37 @@ module bml_c_interface_m
       type(C_PTR) :: bml_export_to_dense_C
     end function bml_export_to_dense_C
 
-    function bml_get_single_real_C(a, i, j) &
-         & bind(C, name="bml_get_single_real")
+    function bml_get_element_single_real_C(a, i, j) &
+         & bind(C, name="bml_get_element_single_real")
       import :: C_INT, C_PTR, C_FLOAT
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i,j
-      real(C_FLOAT) :: bml_get_single_real_C
-    end function bml_get_single_real_C
+      real(C_FLOAT) :: bml_get_element_single_real_C
+    end function bml_get_element_single_real_C
 
-    function bml_get_double_real_C(a, i, j) &
-         & bind(C, name="bml_get_double_real")
+    function bml_get_element_double_real_C(a, i, j) &
+         & bind(C, name="bml_get_element_double_real")
       import :: C_INT, C_PTR, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i,j
-      real(C_DOUBLE) :: bml_get_double_real_C
-    end function bml_get_double_real_C
+      real(C_DOUBLE) :: bml_get_element_double_real_C
+    end function bml_get_element_double_real_C
 
-    function bml_get_single_complex_C(a, i, j) &
-         & bind(C, name="bml_get_single_complex")
+    function bml_get_element_single_complex_C(a, i, j) &
+         & bind(C, name="bml_get_element_single_complex")
       import :: C_INT, C_PTR, C_FLOAT_COMPLEX
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i,j
-      complex(C_FLOAT_COMPLEX) :: bml_get_single_complex_C
-    end function bml_get_single_complex_C
+      complex(C_FLOAT_COMPLEX) :: bml_get_element_single_complex_C
+    end function bml_get_element_single_complex_C
 
-    function bml_get_double_complex_C(a, i, j) &
-         & bind(C, name="bml_get_double_complex")
+    function bml_get_element_double_complex_C(a, i, j) &
+         & bind(C, name="bml_get_element_double_complex")
       import :: C_INT, C_PTR, C_DOUBLE_COMPLEX
       type(C_PTR), value, intent(in) :: a
       integer(C_INT), value, intent(in) :: i,j
-      complex(C_DOUBLE_COMPLEX) :: bml_get_double_complex_C
-    end function bml_get_double_complex_C
+      complex(C_DOUBLE_COMPLEX) :: bml_get_element_double_complex_C
+    end function bml_get_element_double_complex_C
 
     subroutine bml_copy_C(a, b) bind(C, name="bml_copy")
       import :: C_PTR

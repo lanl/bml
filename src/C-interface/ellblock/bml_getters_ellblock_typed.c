@@ -17,7 +17,7 @@
  * \return The matrix element
  */
 void *TYPED_FUNC(
-    bml_get_ellblock) (
+    bml_get_element_ellblock) (
     bml_matrix_ellblock_t * A,
     int i,
     int j)

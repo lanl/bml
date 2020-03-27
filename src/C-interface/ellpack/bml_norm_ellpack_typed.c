@@ -37,13 +37,19 @@ double TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
+
+#ifdef USE_OMP_OFFLOAD
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:N], A_value[:N*M])
+#endif
 
 #pragma omp parallel for                        \
   shared(N, M, A_value, A_nnz)                  \
-  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(rowMin, rowMax)                        \
   reduction(+:sum)
-    //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {
@@ -78,8 +84,11 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
     REAL_T *A_value = (REAL_T *) A->value;
 
+#ifdef USE_OMP_OFFLOAD
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
 #pragma omp parallel for                        \
-  shared(N, M, A_index, A_nnz, A_value)         \
   reduction(+:sum)
     for (int i = 0; i < core_size; i++)
     {
@@ -136,6 +145,8 @@ double TYPED_FUNC(
     REAL_T beta_ = (REAL_T) beta;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     REAL_T y[A_N];
@@ -146,6 +157,11 @@ double TYPED_FUNC(
     memset(jjb, 0, A_N * sizeof(int));
 #endif
 
+#ifdef USE_OMP_OFFLOAD
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+#endif
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                          \
     shared(alpha_, beta_)                         \
@@ -164,7 +180,7 @@ double TYPED_FUNC(
 #endif
 
     //for (int i = 0; i < A_N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         REAL_T y[A_N];
@@ -267,7 +283,13 @@ double TYPED_FUNC(
     REAL_T temp;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
+#ifdef USE_OMP_OFFLOAD
+//#pragma omp target map(tofrom:fnorm)
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
 #pragma omp parallel for                        \
   private(rvalue, temp)                         \
   shared(N, M, A_nnz, A_index, A_value)         \
@@ -275,7 +297,7 @@ double TYPED_FUNC(
   shared(B_nnz, B_index, B_value)               \
   reduction(+:fnorm)
     //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
         for (int j = 0; j < A_nnz[i]; j++)
         {

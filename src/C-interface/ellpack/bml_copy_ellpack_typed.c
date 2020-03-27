@@ -38,6 +38,25 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
+#ifdef USE_OMP_OFFLOAD
+    {
+#pragma omp target teams distribute parallel for
+        for (int i = 0; i < N; i++)
+        {
+            B_nnz[i] = A_nnz[i];
+        }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < M; j++)
+            {
+                B_index[ROWMAJOR(i, j, N, M)] = A_index[ROWMAJOR(i, j, N, M)];
+                B_value[ROWMAJOR(i, j, N, M)] = A_value[ROWMAJOR(i, j, N, M)];
+            }
+        }
+    }
+#else
     //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
     //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
@@ -50,6 +69,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
                M * sizeof(REAL_T));
         //      A_nnz[perm[i]] = B_nnz[i];
     }
+#endif
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
     return B;
@@ -77,6 +97,24 @@ void TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target teams distribute parallel for
+    for (int i = 0; i < N; i++)
+    {
+        B_nnz[i] = A_nnz[i];
+    }
+
+#pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            B_index[ROWMAJOR(i, j, N, M)] = A_index[ROWMAJOR(i, j, N, M)];
+            B_value[ROWMAJOR(i, j, N, M)] = A_value[ROWMAJOR(i, j, N, M)];
+        }
+    }
+#else
     // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnz, A->nnz, sizeof(int) * A->N);
     //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
@@ -89,6 +127,8 @@ void TYPED_FUNC(
                M * sizeof(REAL_T));
         //      A_nnz[perm[i]] = B_nnz[i];
     }
+#endif
+
     if (A->distribution_mode == B->distribution_mode)
     {
         bml_copy_domain(A->domain, B->domain);
@@ -101,7 +141,7 @@ void TYPED_FUNC(
  *  \ingroup copy_group
  *
  *  \param A The matrix to be reordered
- *  \param B The permutation vector
+ *  \param perm The permutation vector
  */
 void TYPED_FUNC(
     bml_reorder_ellpack) (
@@ -119,6 +159,11 @@ void TYPED_FUNC(
     int *B_index = B->index;
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
+
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#pragma omp target update from(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+#endif
 
     // Reorder rows - need to copy
 #pragma omp parallel for
@@ -143,4 +188,7 @@ void TYPED_FUNC(
                 perm[A_index[ROWMAJOR(i, j, N, M)]];
         }
     }
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update to(B_nnz[:N], B_index[:N*M], B_value[:N*M])
+#endif
 }

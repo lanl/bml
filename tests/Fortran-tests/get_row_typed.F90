@@ -44,7 +44,8 @@ contains
       do j=1,n
         diff = abs(a_dense(i,j) - row(j))
         if(diff > tol) then
-          call bml_error(__FILE__, __LINE__, "get_row failing")
+          call bml_error(__FILE__, __LINE__, &
+               & "get_row failing")
           test_result = .false.
         end if
       end do

@@ -5,7 +5,7 @@
 
 #include "bml_types.h"
 
-void *bml_get(
+void *bml_get_element(
     bml_matrix_t * A,
     int i,
     int j);

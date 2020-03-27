@@ -65,7 +65,7 @@ EOF
     echo "EXTRA_CFLAGS           Extra C flags               (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FFLAGS           Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "EXTRA_LINK_FLAGS       Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
-    echo "BML_GPU                {yes,no}                    (default is ${BML_GPU})"
+    echo "BML_OMP_OFFLOAD        {yes,no}                    (default is ${BML_OMP_OFFLOAD})"
     echo "GPU_ARCH               GPU architecture            (default is ${GPU_ARCH})"
     echo "BML_CUDA               Build with CUDA             (default is ${BML_CUDA})"
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
@@ -97,7 +97,7 @@ set_defaults() {
     : ${BML_COVERAGE:=no}
     : ${FORTRAN_FLAGS:=}
     : ${EXTRA_LINK_FLAGS:=}
-    : ${BML_GPU:=no}
+    : ${BML_OMP_OFFLOAD:=no}
     : ${GPU_ARCH:=}
     : ${BML_CUDA:=no}
     : ${BML_MAGMA:=no}
@@ -171,7 +171,7 @@ configure() {
         ${EXTRA_FFLAGS:+-DEXTRA_FFLAGS="${EXTRA_FFLAGS}"} \
         ${EXTRA_LINK_FLAGS:+-DBML_LINK_FLAGS="${EXTRA_LINK_FLAGS}"} \
         -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
-        -DBML_GPU="${BML_GPU}" \
+        -DBML_OMP_OFFLOAD="${BML_OMP_OFFLOAD}" \
         -DGPU_ARCH="${GPU_ARCH}" \
         -DBML_CUDA="${BML_CUDA}" \
         -DBML_MAGMA="${BML_MAGMA}" \

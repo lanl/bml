@@ -72,7 +72,8 @@ contains
         rel_diff = abs((expected - b_dense(i, j)) / expected)
         if(rel_diff > tol) then
           print *, "rel. diff = ", rel_diff
-          call bml_error(__FILE__, __LINE__, "add() matrices are not identical")
+          call bml_error(__FILE__, __LINE__, &
+               &  "add() matrices are not identical")
         end if
 
         if(i == j) then
@@ -83,7 +84,8 @@ contains
         rel_diff = abs((expected - d_dense(i, j)) / expected)
         if(rel_diff > tol) then
           print *, "rel. diff = ", rel_diff
-          call bml_error(__FILE__, __LINE__, "add_identity() matrices are not identical")
+          call bml_error(__FILE__, __LINE__, &
+               &  "add_identity() matrices are not identical")
         end if
       end do
     end do

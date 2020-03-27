@@ -170,10 +170,10 @@ if(BML_MPI)
   add_definitions(-DDO_MPI)
 endif()
 
-option(BML_GPU "Compile with OpenMP GPU Offload support" FALSE)
-if(BML_GPU)
+option(BML_OMP_OFFLOAD "Compile with OpenMP GPU Offload support" FALSE)
+if(BML_OMP_OFFLOAD)
   message(STATUS "Will build with OpenMP GPU Offload support")
-  add_definitions(-DDO_GPU)
+  add_definitions(-DUSE_OMP_OFFLOAD)
 
   find_package(OpenMP 4.5 REQUIRED)
 
@@ -235,6 +235,10 @@ if (MAGMA_FOUND)
     "  MAGMA_LIBRARIES: ${MAGMA_LIBRARIES}"
   )
   include_directories(${MAGMA_INCLUDE_DIRS})
+else()
+  message(STATUS
+    "MAGMA not found:\n"
+  )
 endif()
 
 set(BML_INTERNAL_BLAS FALSE

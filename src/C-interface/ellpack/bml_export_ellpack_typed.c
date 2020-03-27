@@ -35,6 +35,10 @@ void *TYPED_FUNC(
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
     REAL_T *A_value = A->value;
 
+#ifdef USE_OMP_OFFLOAD
+#pragma omp target update from(A_nnz[:N], A_index[:N*M], A_value[:N*M])
+#endif
+
     switch (order)
     {
         case dense_row_major:

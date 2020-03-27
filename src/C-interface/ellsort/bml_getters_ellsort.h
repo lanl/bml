@@ -7,27 +7,27 @@
 
 #include <complex.h>
 
-void *bml_get_ellsort(
+void *bml_get_element_ellsort(
     bml_matrix_ellsort_t * A,
     int i,
     int j);
 
-void *bml_get_ellsort_single_real(
+void *bml_get_element_ellsort_single_real(
     bml_matrix_ellsort_t * A,
     int i,
     int j);
 
-void *bml_get_ellsort_double_real(
+void *bml_get_element_ellsort_double_real(
     bml_matrix_ellsort_t * A,
     int i,
     int j);
 
-void *bml_get_ellsort_single_complex(
+void *bml_get_element_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
     int i,
     int j);
 
-void *bml_get_ellsort_double_complex(
+void *bml_get_element_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
     int i,
     int j);
