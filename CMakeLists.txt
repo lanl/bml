@@ -40,14 +40,24 @@ else()
   add_definitions(-DGLOBAL_DEBUG=BML_LOG_INFO)
 endif()
 
+include(CheckCCompilerFlag)
+check_c_compiler_flag(-fmacro-prefix-map=/a=/b MACRO_PREFIX_MAP_FLAG_WORKS)
+if (MACRO_PREFIX_MAP_FLAG_WORKS)
+  set(MACRO_PREFIX_MAP_FLAG -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
+endif()
+
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
-set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
+  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99
+  ${MACRO_PREFIX_MAP_FLAG})
+set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG
+  ${MACRO_PREFIX_MAP_FLAG})
+set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG
+  ${MACRO_PREFIX_MAP_FLAG})
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g -fcheck=all
   -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
-set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
+set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none
+  -DNDEBUG)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
   -traceback -qopt-report=5 -DINTEL_SDK)
