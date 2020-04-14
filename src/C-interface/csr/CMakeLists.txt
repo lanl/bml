@@ -1,5 +1,3 @@
-include_directories(..)
-
 set(HEADERS-CSR
   bml_types_csr.h
   bml_allocate_csr.h
@@ -16,13 +14,11 @@ set(HEADERS-CSR
   bml_introspection_csr.h
   bml_transpose_csr.h
   bml_threshold_csr.h
-  
-#  bml_add_ellblock.h
-#  bml_diagonalize_ellblock.h
-#  bml_inverse_ellblock.h
-#  bml_multiply_ellblock.h
-#  bml_normalize_ellblock.h
-
+  bml_diagonalize_csr.h
+  bml_inverse_csr.h
+  bml_add_csr.h
+  bml_normalize_csr.h
+  bml_multiply_csr.h
 )
 
 
@@ -41,6 +37,11 @@ set(SOURCES-CSR
   bml_introspection_csr.c
   bml_transpose_csr.c  
   bml_threshold_csr.c
+  bml_diagonalize_csr.c
+  bml_inverse_csr.c
+  bml_add_csr.c
+  bml_normalize_csr.c
+  bml_multiply_csr.c  
 )
 
 add_library(bml-csr OBJECT ${SOURCES-CSR})
@@ -68,6 +69,11 @@ set(SOURCES-CSR-TYPED
   bml_introspection_csr_typed.c
   bml_transpose_csr_typed.c  
   bml_threshold_csr_typed.c
+  bml_diagonalize_csr_typed.c
+  bml_inverse_csr_typed.c
+  bml_add_csr_typed.c
+  bml_normalize_csr_typed.c
+  bml_multiply_csr_typed.c
   )
   
 include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
