@@ -28,6 +28,10 @@ add_library(bml
   $<TARGET_OBJECTS:bml-ellsort-single_complex>
   $<TARGET_OBJECTS:bml-ellsort-single_real>
   $<TARGET_OBJECTS:bml-ellsort>
+  $<TARGET_OBJECTS:bml-csr-double_complex>
+  $<TARGET_OBJECTS:bml-csr-double_real>
+  $<TARGET_OBJECTS:bml-csr-single_complex>
+  $<TARGET_OBJECTS:bml-csr-single_real>
   $<TARGET_OBJECTS:bml-csr>)  
 set_target_properties(bml
   PROPERTIES
