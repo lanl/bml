@@ -39,6 +39,9 @@ bml_get_element(
         case csr:
             return bml_get_csr(A, i, j);
             break;
+        case csr:
+            return bml_get_csr(A, i, j);
+            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
