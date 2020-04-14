@@ -38,7 +38,7 @@ void TYPED_FUNC(
     C_BLAS(SCAL) (&NNZ, scale_factor, arow->vals_, &inc);   
 #endif
 }
-/** Scale an csr matrix - result is a new matrix.
+/** Scale a csr matrix - result is a new matrix.
  *
  *  \ingroup scale_group
  *
@@ -52,12 +52,12 @@ bml_matrix_csr_t *TYPED_FUNC(
 {
     bml_matrix_csr_t *B = TYPED_FUNC(bml_copy_csr_new) (A);
 
-    TYPED_FUNC(bml_scale_csr) (_scale_factor, A, B);
+    TYPED_FUNC(bml_scale_inplace_csr) (_scale_factor, B);
 
     return B;
 }
 
-/** Scale an csr matrix.
+/** Scale a csr matrix.
  *
  *  \ingroup scale_group
  *
@@ -77,15 +77,8 @@ void TYPED_FUNC(
     {
         TYPED_FUNC(bml_copy_csr) (A, B);
     }
-
-    const int N = A->N_;
-        
-#pragma omp parallel for
-    for(int i=0; i<N; i++)
-    {
-       TYPED_FUNC(csr_scale_row)(_scale_factor, B->data_[i]);
-    } 
-#endif
+    
+    TYPED_FUNC(bml_scale_inplace_csr) (_scale_factor, B);
 }
 
 void TYPED_FUNC(
@@ -93,5 +86,12 @@ void TYPED_FUNC(
     void *_scale_factor,
     bml_matrix_csr_t * A)
 {
-    TYPED_FUNC(bml_scale_csr) (_scale_factor, A, A);
+    const int N = A->N_;
+        
+#pragma omp parallel for
+    for(int i=0; i<N; i++)
+    {
+       TYPED_FUNC(csr_scale_row)(_scale_factor, A->data_[i]);
+    } 
+#endif
 }

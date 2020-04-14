@@ -76,7 +76,6 @@ void TYPED_FUNC(
     double threshold)
 {
     int N = A->N_;
-    int M = A->NZMAX_;
 
     int rlen;
 #pragma omp parallel for               \

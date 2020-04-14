@@ -1,7 +1,7 @@
 #ifndef __BML_TYPES_CSR_H
 #define __BML_TYPES_CSR_H
 
-#include "bml_types.h"
+#include "../bml_types.h"
 
 
 #define INIT_ROW_SPACE 10
@@ -27,14 +27,14 @@ typedef struct csr_row_index_hash_t
     csr_hash_slot_t     **Slots_;
     /** size of array Slots. */
     int      space_;      
-    int      space_power_minus1_;
+    int      space_minus1_;
     /** number of pairs in the table. */
     int      size_;       
     
     /** pointer to slot in memory */
     csr_hash_slot_t *slot_ptr_;		
     /** storage for slots */
-    csr_hash_slot_t  **slot_storage_;	
+    csr_hash_slot_t  *slot_storage_;	
     int slot_storage_space_;
     /** size of slot_storage */
     int capacity_;		
@@ -83,6 +83,9 @@ struct bml_matrix_csr_t
 typedef struct bml_matrix_csr_t bml_matrix_csr_t;
 
 /****** some accessor functions ****/
+/** hash table **/
+#define hash_key_index(key, space) ( (key) & (space))
+#define hash_table_size(table) ((table)->size_)
 /** csr row **/
 #define csr_row_NNZ(csr_row) ((csr_row)->NNZ_)
 #define csr_row_alloc_size(csr_row) ((csr_row)->alloc_size_)

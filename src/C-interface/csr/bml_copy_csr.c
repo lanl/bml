@@ -1,9 +1,9 @@
-#include "bml_copy.h"
-#include "bml_copy_csr.h"
-#include "bml_logger.h"
-#include "bml_parallel.h"
-#include "bml_types.h"
+#include "../bml_copy.h"
+#include "../bml_logger.h"
+#include "../bml_parallel.h"
+#include "../bml_types.h"
 #include "bml_types_csr.h"
+#include "bml_copy_csr.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,7 +18,7 @@
  */
 bml_matrix_csr_t *
 bml_copy_csr_new(
-    const bml_matrix_csr_t * A)
+    bml_matrix_csr_t * A)
 {
     bml_matrix_csr_t *B = NULL;
 
@@ -52,8 +52,8 @@ bml_copy_csr_new(
  */
 void
 bml_copy_csr(
-    const bml_matrix_csr_t * A,
-    const bml_matrix_csr_t * B)
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B)
 {
 
     switch (A->matrix_precision)
@@ -69,6 +69,39 @@ bml_copy_csr(
             break;
         case double_complex:
             bml_copy_csr_double_complex(A, B);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
+/** Reorder an csr matrix.
+ *
+ *  \ingroup copy_group
+ *
+ *  \param A The matrix to be reordered
+ *  \param B The permutation matrix
+ */
+void
+bml_reorder_csr(
+    bml_matrix_csr_t * A,
+    int *perm)
+{
+
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_reorder_csr_single_real(A, perm);
+            break;
+        case double_real:
+            bml_reorder_csr_double_real(A, perm);
+            break;
+        case single_complex:
+            bml_reorder_csr_single_complex(A, perm);
+            break;
+        case double_complex:
+            bml_reorder_csr_double_complex(A, perm);
             break;
         default:
             LOG_ERROR("unknown precision\n");

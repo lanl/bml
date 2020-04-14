@@ -1,7 +1,7 @@
-#include "bml_logger.h"
-#include "bml_trace.h"
+#include "../bml_logger.h"
+#include "../bml_trace.h"
+#include "../bml_types.h"
 #include "bml_trace_csr.h"
-#include "bml_types.h"
 #include "bml_types_csr.h"
 
 #include <stdlib.h>
@@ -51,7 +51,7 @@ bml_trace_csr(
  *  \return the trace of A*B
  */
 double
-bml_traceMult_csr(
+bml_trace_mult_csr(
     const bml_matrix_csr_t * A,
     const bml_matrix_csr_t * B)
 {
@@ -60,16 +60,16 @@ bml_traceMult_csr(
     switch (A->matrix_precision)
     {
         case single_real:
-            trace = bml_traceMult_csr_single_real(A, B);
+            trace = bml_trace_mult_csr_single_real(A, B);
             break;
         case double_real:
-            trace = bml_traceMult_csr_double_real(A, B);
+            trace = bml_trace_mult_csr_double_real(A, B);
             break;
         case single_complex:
-            trace = bml_traceMult_csr_single_complex(A, B);
+            trace = bml_trace_mult_csr_single_complex(A, B);
             break;
         case double_complex:
-            trace = bml_traceMult_csr_double_complex(A, B);
+            trace = bml_trace_mult_csr_double_complex(A, B);
             break;
         default:
             LOG_ERROR("unknown precision\n");

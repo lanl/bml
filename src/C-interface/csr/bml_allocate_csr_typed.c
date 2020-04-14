@@ -1,8 +1,8 @@
 #include "../../macros.h"
-#include "../typed.h"
-#include "bml_allocate.h"
+#include "../../typed.h"
+#include "../bml_allocate.h"
+#include "../bml_types.h"
 #include "bml_allocate_csr.h"
-#include "bml_types.h"
 #include "bml_types_csr.h"
 
 #include <complex.h>
@@ -357,7 +357,7 @@ bml_matrix_csr_t *TYPED_FUNC(
         int *col_indexes = row->cols_;
         REAL_T *row_vals = row->vals_;
         col_indexes[0] = i;
-        row_vals[0] = rand() / (REAL_T) 1.0;
+        row_vals[0] = (REAL_T) 1.0;
         row->NNZ_= 1;
     }
     /** initialize hash table */

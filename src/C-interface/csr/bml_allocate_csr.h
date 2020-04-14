@@ -3,9 +3,19 @@
 
 #include "bml_types_csr.h"
 
+/** hash table **/
+csr_row_index_hash_t *csr_noinit_table(
+    const int alloc_size);
+
 void csr_deallocate_table(
     csr_row_index_hash_t * table);
 
+void csr_table_insert(csr_row_index_hash_t * table, 
+    const int key);
+
+void *csr_table_lookup(csr_row_index_hash_t * table, 
+    const int key);
+    
 void csr_deallocate_row(
     csr_sparse_row_t * row);
 
@@ -43,8 +53,6 @@ void bml_clear_csr_single_complex(
 void bml_clear_csr_double_complex(
     bml_matrix_csr_t * A);
 
-csr_row_index_hash_t *csr_noinit_table(
-    const int alloc_size);
 /*
 csr_sparse_row_t *csr_noinit_row(
     const int alloc_size); 

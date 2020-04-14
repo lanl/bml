@@ -1,10 +1,11 @@
 #include "../../macros.h"
-#include "../typed.h"
+#include "../../typed.h"
 #include "../bml_introspection.h"
-#include "bml_allocate.h"
+#include "../bml_allocate.h"
+#include "../bml_types.h"
 #include "bml_setters_csr.h"
 #include "bml_types_csr.h"
-#include "bml_types.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <complex.h>
@@ -228,10 +229,8 @@ void TYPED_FUNC(
     // loop over rows
     for(int i = 0; i < A_N; i++)
     {
-       if(ABS(diagonal[i]) > threshold)
-       {
-          TYPED_FUNC(csr_set_row_element)(A->data_[i],i,&diagonal[i]);
-       }    
+       REAL_T diag = ABS(diagonal[i]) > threshold ? diagonal[i] : 0.0;
+       TYPED_FUNC(csr_set_row_element)(A->data_[i],i,&diag);   
     }
 }
 
