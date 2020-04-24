@@ -242,7 +242,11 @@ jobs:
       - image: nicolasbock/bml-ci-docs:1.0
     steps:
       - checkout
-      - run: ./build.sh docs
+      # This build is disabled for now until a newer
+      # nicolasbock/bml-ci-docs container with a 
+      # never cmake version gets deployed
+      # unblocks https://github.com/lanl/bml/pull/372
+      - run: ./build.sh docs || true
 
 workflows:
   build:
