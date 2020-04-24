@@ -129,3 +129,7 @@ jobs:
           --form version="Version" \
           --form description="Description" \
           https://scan.coverity.com/builds?project=lanl%2Fbml
+
+branches:
+  only:
+  - master
