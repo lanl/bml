@@ -53,7 +53,7 @@ module bml_types_m
 
   !> The bml-ellsort matrix type identifier.
   character(len=*), parameter :: BML_MATRIX_ELLSORT = "ellsort"
-  
+
   !> The bml-csr matrix type identifier.
   character(len=*), parameter :: BML_MATRIX_CSR = "csr"
 
