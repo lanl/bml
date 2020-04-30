@@ -241,7 +241,6 @@ void TYPED_FUNC(
     shared(A_N, B_N, C_N) 
 #else
 #pragma omp parallel for                       \
-    shared(A_N, B_N, C_N)                       \
     firstprivate(ix, jx, x)
 #endif
 

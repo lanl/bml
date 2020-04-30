@@ -41,6 +41,7 @@ double TYPED_FUNC(
     REAL_T trace = 0.0;
 
 #pragma omp parallel for default(none)          \
+  shared(A)     \
   reduction(+:trace)
     for (int i = 0; i < N; i++)
     {
@@ -75,7 +76,6 @@ double TYPED_FUNC(
     }        
 
 #pragma omp parallel for                       \
-    shared(A_N)  \
   reduction(+:trace)    
 
     for (int i = 0; i < A_N; i++)
