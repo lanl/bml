@@ -96,6 +96,26 @@ bml_noinit_allocate_memory(
     return ptr;
 }
 
+/** Reallocate a chunk of memory.
+ *
+ * \ingroup allocate_group_C
+ *
+ * \param size The size of the memory.
+ * \return A pointer to the reallocated chunk.
+ */
+void *
+bml_reallocate_memory(
+    void *ptr,
+    const size_t size)
+{
+    void *ptr_new = realloc(ptr, size);
+    if (ptr_new == NULL)
+    {
+        LOG_ERROR("error reallocating memory: %s\n", strerror(errno));
+    }
+    return ptr_new;
+}
+
 /** Deallocate a chunk of memory.
  *
  * \ingroup allocate_group_C
