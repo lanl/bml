@@ -204,7 +204,7 @@ void TYPED_FUNC(
     csr_sparse_row_t *arow = A->data_[i];
     // reset nnz row count to zero (in case row is not empty)
     arow->NNZ_ = 0;
-    for (int j = 0; j < A->N_; j++)
+    for (int j = 0; j < A_N; j++)
     {
         if (ABS(row[j]) > threshold)
         {
