@@ -31,16 +31,18 @@ void TYPED_FUNC(
 {
     const int pos = arow->NNZ_;
     int *cols = arow->cols_;
-    REAL_T *vals = (REAL_T *)arow->vals_;
-    // increment nnz counter and reallocate memory if needed 
+    REAL_T *vals = (REAL_T *) arow->vals_;
+    // increment nnz counter and reallocate memory if needed
     arow->NNZ_++;
-    if(arow->NNZ_ > arow->alloc_size_)
+    if (arow->NNZ_ > arow->alloc_size_)
     {
-       arow->alloc_size_ *= EXPAND_FACT;
-       arow->cols_ = bml_reallocate_memory(cols, sizeof(int) * arow->alloc_size_);
-       arow->vals_ = bml_reallocate_memory(vals, sizeof(REAL_T) * arow->alloc_size_);
-       cols = arow->cols_;
-       vals = (REAL_T *)arow->vals_;
+        arow->alloc_size_ *= EXPAND_FACT;
+        arow->cols_ =
+            bml_reallocate_memory(cols, sizeof(int) * arow->alloc_size_);
+        arow->vals_ =
+            bml_reallocate_memory(vals, sizeof(REAL_T) * arow->alloc_size_);
+        cols = arow->cols_;
+        vals = (REAL_T *) arow->vals_;
     }
     cols[pos] = j;
     vals[pos] = *((REAL_T *) element);
@@ -65,21 +67,21 @@ void TYPED_FUNC(
 {
     const int annz = arow->NNZ_;
     int *cols = arow->cols_;
-    REAL_T *vals = (REAL_T *)arow->vals_;
+    REAL_T *vals = (REAL_T *) arow->vals_;
     int found = 0;
     // check to see if column entry exists
-    for(int l = 0; l < annz; l++)
+    for (int l = 0; l < annz; l++)
     {
-       if(cols[l] == j)
-       {
-          vals[l] = *((REAL_T *) element);
-          found = 1;
-          break;
-       }    
+        if (cols[l] == j)
+        {
+            vals[l] = *((REAL_T *) element);
+            found = 1;
+            break;
+        }
     }
-    if(!found)
+    if (!found)
     {
-       TYPED_FUNC(csr_set_row_element_new)(arow,j,element);
+        TYPED_FUNC(csr_set_row_element_new) (arow, j, element);
     }
 }
 
@@ -99,30 +101,32 @@ void TYPED_FUNC(
     csr_set_row) (
     csr_sparse_row_t * arow,
     const int count,
-    const int * cols,
-    const REAL_T * vals, 
+    const int *cols,
+    const REAL_T * vals,
     const double threshold)
 {
     int *index = arow->cols_;
-    REAL_T *data = (REAL_T *)arow->vals_;
-    // reallocate memory if needed 
-    if(count > arow->alloc_size_)
+    REAL_T *data = (REAL_T *) arow->vals_;
+    // reallocate memory if needed
+    if (count > arow->alloc_size_)
     {
-       arow->alloc_size_ = count;
-       arow->cols_ = bml_reallocate_memory(index, sizeof(int) * arow->alloc_size_);
-       arow->vals_ = bml_reallocate_memory(data, sizeof(REAL_T) * arow->alloc_size_);
-       index = arow->cols_;
-       data = (REAL_T *)arow->vals_;
+        arow->alloc_size_ = count;
+        arow->cols_ =
+            bml_reallocate_memory(index, sizeof(int) * arow->alloc_size_);
+        arow->vals_ =
+            bml_reallocate_memory(data, sizeof(REAL_T) * arow->alloc_size_);
+        index = arow->cols_;
+        data = (REAL_T *) arow->vals_;
     }
     // set entries
     arow->NNZ_ = 0;
-    for(int j = 0; j < count; j++)
+    for (int j = 0; j < count; j++)
     {
-       if(ABS(vals[j]) > threshold)
-       {
-          index[arow->NNZ_] = cols[j];
-          data[arow->NNZ_++] = vals[j];
-       } 
+        if (ABS(vals[j]) > threshold)
+        {
+            index[arow->NNZ_] = cols[j];
+            data[arow->NNZ_++] = vals[j];
+        }
     }
 }
 
@@ -146,9 +150,9 @@ void TYPED_FUNC(
     const void *element)
 {
     // Insert new entry into row i.
-    // Use the pointer to row i directly, since there 
+    // Use the pointer to row i directly, since there
     // may be reallocation of memory
-    TYPED_FUNC(csr_set_row_element_new)(A->data_[i],j,element);
+    TYPED_FUNC(csr_set_row_element_new) (A->data_[i], j, element);
 }
 
 
@@ -173,9 +177,9 @@ void TYPED_FUNC(
 {
 
     // Insert new entry into row i.
-    // Use the pointer to row i directly, since there 
+    // Use the pointer to row i directly, since there
     // may be reallocation of memory
-    TYPED_FUNC(csr_set_row_element)(A->data_[i],j,element);
+    TYPED_FUNC(csr_set_row_element) (A->data_[i], j, element);
 
 }
 
@@ -193,20 +197,20 @@ void TYPED_FUNC(
     bml_set_row_csr) (
     bml_matrix_csr_t * A,
     const int i,
-    const REAL_T *row,
+    const REAL_T * row,
     const double threshold)
 {
     const int A_N = A->N_;
-    csr_sparse_row_t * arow = A->data_[i];
+    csr_sparse_row_t *arow = A->data_[i];
     // reset nnz row count to zero (in case row is not empty)
     arow->NNZ_ = 0;
-    for(int j=0; j<A->N_; j++)
+    for (int j = 0; j < A->N_; j++)
     {
-       if (ABS(row[j]) > threshold)
-       {
-          // set row entries
-          TYPED_FUNC(csr_set_row_element_new)(A->data_[i],j,&row[j]);
-       }
+        if (ABS(row[j]) > threshold)
+        {
+            // set row entries
+            TYPED_FUNC(csr_set_row_element_new) (A->data_[i], j, &row[j]);
+        }
     }
 }
 
@@ -227,10 +231,10 @@ void TYPED_FUNC(
     int A_N = A->N_;
 
     // loop over rows
-    for(int i = 0; i < A_N; i++)
+    for (int i = 0; i < A_N; i++)
     {
-       REAL_T diag = ABS(diagonal[i]) > threshold ? diagonal[i] : 0.0;
-       TYPED_FUNC(csr_set_row_element)(A->data_[i],i,&diag);   
+        REAL_T diag = ABS(diagonal[i]) > threshold ? diagonal[i] : 0.0;
+        TYPED_FUNC(csr_set_row_element) (A->data_[i], i, &diag);
     }
 }
 
@@ -251,12 +255,12 @@ void TYPED_FUNC(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const REAL_T * vals,
     const double threshold)
 {
-    
+
     // set row entries
-    TYPED_FUNC(csr_set_row)(A->data_[i],count, cols, vals, threshold);
+    TYPED_FUNC(csr_set_row) (A->data_[i], count, cols, vals, threshold);
 
 }

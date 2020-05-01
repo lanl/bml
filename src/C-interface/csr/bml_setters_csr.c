@@ -117,23 +117,27 @@ bml_set_sparse_row_csr(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const void *row,
     const double threshold)
 {
     switch (A->matrix_precision)
     {
         case single_real:
-            bml_set_sparse_row_csr_single_real(A, i, count, cols, row, threshold);
+            bml_set_sparse_row_csr_single_real(A, i, count, cols, row,
+                                               threshold);
             break;
         case double_real:
-            bml_set_sparse_row_csr_double_real(A, i, count, cols, row, threshold);
+            bml_set_sparse_row_csr_double_real(A, i, count, cols, row,
+                                               threshold);
             break;
         case single_complex:
-            bml_set_sparse_row_csr_single_complex(A, i, count, cols, row, threshold);
+            bml_set_sparse_row_csr_single_complex(A, i, count, cols, row,
+                                                  threshold);
             break;
         case double_complex:
-            bml_set_sparse_row_csr_double_complex(A, i, count, cols, row, threshold);
+            bml_set_sparse_row_csr_double_complex(A, i, count, cols, row,
+                                                  threshold);
             break;
         default:
             LOG_ERROR("unkonwn precision\n");

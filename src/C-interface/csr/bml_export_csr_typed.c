@@ -38,13 +38,12 @@ void *TYPED_FUNC(
             for (int i = 0; i < N; i++)
             {
                 int *cols = A->data_[i]->cols_;
-                REAL_T *vals = (REAL_T *)A->data_[i]->vals_;
-                const int annz = A->data_[i]->NNZ_;              
-                for (int pos= 0; pos < annz; pos++)
+                REAL_T *vals = (REAL_T *) A->data_[i]->vals_;
+                const int annz = A->data_[i]->NNZ_;
+                for (int pos = 0; pos < annz; pos++)
                 {
                     const int j = cols[pos];
-                    A_dense[ROWMAJOR
-                            (i, j, N, N)] = vals[pos];
+                    A_dense[ROWMAJOR(i, j, N, N)] = vals[pos];
                 }
             }
             break;
@@ -53,13 +52,12 @@ void *TYPED_FUNC(
             for (int i = 0; i < N; i++)
             {
                 int *cols = A->data_[i]->cols_;
-                REAL_T *vals = (REAL_T *)A->data_[i]->vals_;
-                const int annz = A->data_[i]->NNZ_;    
-                for (int pos= 0; pos < annz; pos++)
+                REAL_T *vals = (REAL_T *) A->data_[i]->vals_;
+                const int annz = A->data_[i]->NNZ_;
+                for (int pos = 0; pos < annz; pos++)
                 {
                     const int j = cols[pos];
-                    A_dense[COLMAJOR
-                            (i, j, N, N)] = vals[pos];
+                    A_dense[COLMAJOR(i, j, N, N)] = vals[pos];
                 }
             }
             break;

@@ -14,19 +14,19 @@ bml_convert_csr(
     {
         case single_real:
             return bml_convert_csr_single_real(A, matrix_precision, M,
-                                                   distrib_mode);
+                                               distrib_mode);
             break;
         case double_real:
             return bml_convert_csr_double_real(A, matrix_precision, M,
-                                                   distrib_mode);
+                                               distrib_mode);
             break;
         case single_complex:
             return bml_convert_csr_single_complex(A, matrix_precision, M,
-                                                      distrib_mode);
+                                                  distrib_mode);
             break;
         case double_complex:
             return bml_convert_csr_double_complex(A, matrix_precision, M,
-                                                      distrib_mode);
+                                                  distrib_mode);
             break;
         default:
             LOG_ERROR("unknown precision\n");

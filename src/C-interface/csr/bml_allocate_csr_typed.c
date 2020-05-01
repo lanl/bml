@@ -27,7 +27,7 @@ void TYPED_FUNC(
     csr_sparse_row_t * row)
 {
     memset(row->cols_, 0, row->NNZ_ * sizeof(int));
-    memset(row->vals_, 0.0, row->NNZ_  * sizeof(REAL_T));
+    memset(row->vals_, 0.0, row->NNZ_ * sizeof(REAL_T));
     row->NNZ_ = 0;
 }
 
@@ -45,9 +45,9 @@ void TYPED_FUNC(
 {
     const int n = A->N_;
 #pragma omp parallel for
-    for(int i=0; i<n; i++)
+    for (int i = 0; i < n; i++)
     {
-       TYPED_FUNC(csr_clear_row)((A->data_)[i]);
+        TYPED_FUNC(csr_clear_row) ((A->data_)[i]);
     }
     A->TOTNNZ_ = 0;
 }
@@ -69,12 +69,11 @@ csr_sparse_row_t *TYPED_FUNC(
 {
     csr_sparse_row_t *arow =
         bml_noinit_allocate_memory(sizeof(csr_sparse_row_t));
-    const int size = INIT_ROW_SPACE >= alloc_size ? INIT_ROW_SPACE : alloc_size;
-    arow->cols_ =
-        bml_noinit_allocate_memory(sizeof(int) * size);
-    arow->vals_ =
-        bml_noinit_allocate_memory(sizeof(REAL_T) * size);            
-    
+    const int size =
+        INIT_ROW_SPACE >= alloc_size ? INIT_ROW_SPACE : alloc_size;
+    arow->cols_ = bml_noinit_allocate_memory(sizeof(int) * size);
+    arow->vals_ = bml_noinit_allocate_memory(sizeof(REAL_T) * size);
+
     arow->alloc_size_ = size;
     arow->NNZ_ = 0;
 
@@ -97,10 +96,9 @@ csr_sparse_row_t *TYPED_FUNC(
  *  \return The matrix.
  */
 bml_matrix_csr_t *TYPED_FUNC(
-    bml_noinit_matrix_csr) (bml_matrix_dimension_t
-                                             matrix_dimension,
-                                             bml_distribution_mode_t 
-                                             distrib_mode)
+    bml_noinit_matrix_csr) (
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
 {
     bml_matrix_csr_t *A =
         bml_noinit_allocate_memory(sizeof(bml_matrix_csr_t));
@@ -112,20 +110,20 @@ bml_matrix_csr_t *TYPED_FUNC(
     A->distribution_mode = distrib_mode;
     /** allocate csr row data */
     const int N = A->N_;
-    A->data_ = bml_noinit_allocate_memory(sizeof(csr_sparse_row_t *) * N );
+    A->data_ = bml_noinit_allocate_memory(sizeof(csr_sparse_row_t *) * N);
 #pragma omp parallel for
-    for(int i=0; i<N; i++)
+    for (int i = 0; i < N; i++)
     {
-       A->data_[i] = TYPED_FUNC(csr_noinit_row)(A->NZMAX_);
+        A->data_[i] = TYPED_FUNC(csr_noinit_row) (A->NZMAX_);
     }
     /** allocate hash table **/
-    if(distrib_mode == sequential)
+    if (distrib_mode == sequential)
     {
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
     else
     {
-      A->table_ = NULL;
+        A->table_ = NULL;
 //       A->table_ = csr_noinit_table(N);
     }
     /** end allocate hash table **/
@@ -153,12 +151,11 @@ csr_sparse_row_t *TYPED_FUNC(
 {
     csr_sparse_row_t *arow =
         bml_noinit_allocate_memory(sizeof(csr_sparse_row_t));
-    const int size = INIT_ROW_SPACE >= alloc_size ? INIT_ROW_SPACE : alloc_size;
-    arow->cols_ =
-        bml_allocate_memory(sizeof(int) * size);
-    arow->vals_ =
-        bml_allocate_memory(sizeof(REAL_T) * size);            
-    
+    const int size =
+        INIT_ROW_SPACE >= alloc_size ? INIT_ROW_SPACE : alloc_size;
+    arow->cols_ = bml_allocate_memory(sizeof(int) * size);
+    arow->vals_ = bml_allocate_memory(sizeof(REAL_T) * size);
+
     arow->alloc_size_ = size;
     arow->NNZ_ = 0;
 
@@ -186,8 +183,7 @@ bml_matrix_csr_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    bml_matrix_csr_t *A =
-        bml_allocate_memory(sizeof(bml_matrix_csr_t));
+    bml_matrix_csr_t *A = bml_allocate_memory(sizeof(bml_matrix_csr_t));
     A->matrix_type = csr;
     A->matrix_precision = MATRIX_PRECISION;
     A->N_ = N;
@@ -195,21 +191,21 @@ bml_matrix_csr_t *TYPED_FUNC(
     A->TOTNNZ_ = 0;
     A->distribution_mode = distrib_mode;
     /** allocate csr row data */
-    A->data_ = bml_allocate_memory(sizeof(csr_sparse_row_t *) * N );
+    A->data_ = bml_allocate_memory(sizeof(csr_sparse_row_t *) * N);
 #pragma omp parallel for
-    for(int i=0; i<N; i++)
+    for (int i = 0; i < N; i++)
     {
-       A->data_[i] = TYPED_FUNC(csr_zero_row)(A->NZMAX_);
+        A->data_[i] = TYPED_FUNC(csr_zero_row) (A->NZMAX_);
     }
-    /** allocate hash table. 
+    /** allocate hash table.
     No need to insert table values since matrix is zero */
-    if(distrib_mode == sequential)
+    if (distrib_mode == sequential)
     {
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
     else
     {
-      A->table_ = NULL;
+        A->table_ = NULL;
 //       A->table_ = csr_noinit_table(N);
     }
 
@@ -260,16 +256,16 @@ bml_matrix_csr_t *TYPED_FUNC(
         row->NNZ_ = jind;
     }
     /** initialize hash table */
-    if(distrib_mode == sequential)
+    if (distrib_mode == sequential)
     {
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
     else
     {
        /** Insert table values here -- not used*/
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
-        
+
     return A;
 }
 
@@ -313,14 +309,14 @@ bml_matrix_csr_t *TYPED_FUNC(
         row->NNZ_ = jind;
     }
     /** initialize hash table */
-    if(distrib_mode == sequential)
+    if (distrib_mode == sequential)
     {
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
     else
     {
        /** Insert table values here --not used*/
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
 
     return A;
@@ -358,17 +354,17 @@ bml_matrix_csr_t *TYPED_FUNC(
         REAL_T *row_vals = row->vals_;
         col_indexes[0] = i;
         row_vals[0] = (REAL_T) 1.0;
-        row->NNZ_= 1;
+        row->NNZ_ = 1;
     }
     /** initialize hash table */
-    if(distrib_mode == sequential)
+    if (distrib_mode == sequential)
     {
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
     else
     {
        /** Insert table values here --not used*/
-       A->table_ = NULL;
+        A->table_ = NULL;
     }
     return A;
 }

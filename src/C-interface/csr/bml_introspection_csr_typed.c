@@ -33,12 +33,12 @@ double TYPED_FUNC(
 
     for (int i = 0; i < N; i++)
     {
-         int *cols = A->data_[i]->cols_;
-        REAL_T *vals = (REAL_T *)A->data_[i]->vals_;
-        const int annz = A->data_[i]->NNZ_;  
-        for (int pos = 0; pos < annz; pos++) 
+        int *cols = A->data_[i]->cols_;
+        REAL_T *vals = (REAL_T *) A->data_[i]->vals_;
+        const int annz = A->data_[i]->NNZ_;
+        for (int pos = 0; pos < annz; pos++)
         {
-            if (ABS(vals[pos])> threshold)
+            if (ABS(vals[pos]) > threshold)
             {
                 nnzs++;
             }

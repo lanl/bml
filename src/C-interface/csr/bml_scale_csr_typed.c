@@ -34,10 +34,11 @@ void TYPED_FUNC(
     REAL_T *scale_factor = _scale_factor;
     const int NNZ = arow->NNZ_;
     const int inc = 1;
-   
-    C_BLAS(SCAL) (&NNZ, scale_factor, arow->vals_, &inc);   
+
+    C_BLAS(SCAL) (&NNZ, scale_factor, arow->vals_, &inc);
 #endif
 }
+
 /** Scale a csr matrix - result is a new matrix.
  *
  *  \ingroup scale_group
@@ -77,7 +78,7 @@ void TYPED_FUNC(
     {
         TYPED_FUNC(bml_copy_csr) (A, B);
     }
-    
+
     TYPED_FUNC(bml_scale_inplace_csr) (_scale_factor, B);
 }
 
@@ -87,11 +88,11 @@ void TYPED_FUNC(
     bml_matrix_csr_t * A)
 {
     const int N = A->N_;
-        
+
 #pragma omp parallel for
-    for(int i=0; i<N; i++)
+    for (int i = 0; i < N; i++)
     {
-       TYPED_FUNC(csr_scale_row)(_scale_factor, A->data_[i]);
-    } 
+        TYPED_FUNC(csr_scale_row) (_scale_factor, A->data_[i]);
+    }
 #endif
 }

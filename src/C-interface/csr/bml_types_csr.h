@@ -8,36 +8,37 @@
 #define EXPAND_FACT 1.3
 #define INIT_SLOT_STORAGE_SIZE 5
 
-typedef enum INSERTMODE  {INSERT, ADD} INSERTMODE;
+typedef enum INSERTMODE
+{ INSERT, ADD } INSERTMODE;
 /** csr matrix type. */
 /** slot type for hash table */
 typedef struct csr_hash_slot_t
 {
     /** pointer to a next entry in this slot. */
-    struct csr_hash_slot_t *link;	
+    struct csr_hash_slot_t *link;
     /** key in a pair (key,value) */
-    int key;			
+    int key;
     /** value in a pair (key, value) */
-    int value;			
+    int value;
 } csr_hash_slot_t;
 /** hash table for global-to-local mapping of csr matrix row indexes */
 typedef struct csr_row_index_hash_t
 {
     /** array of a pointer array to struct Slot  */
-    csr_hash_slot_t     **Slots_;
+    csr_hash_slot_t **Slots_;
     /** size of array Slots. */
-    int      space_;      
-    int      space_minus1_;
+    int space_;
+    int space_minus1_;
     /** number of pairs in the table. */
-    int      size_;       
-    
+    int size_;
+
     /** pointer to slot in memory */
-    csr_hash_slot_t *slot_ptr_;		
+    csr_hash_slot_t *slot_ptr_;
     /** storage for slots */
-    csr_hash_slot_t  *slot_storage_;	
+    csr_hash_slot_t *slot_storage_;
     int slot_storage_space_;
     /** size of slot_storage */
-    int capacity_;		
+    int capacity_;
 } csr_row_index_hash_t;
 /** sparse row of csr matrix */
 typedef struct csr_sparse_row_t
@@ -74,7 +75,7 @@ struct bml_matrix_csr_t
     csr_row_index_hash_t *table_;
     /** The matrix data */
     csr_sparse_row_t **data_;
-    
+
     /** The domain decomposition when running in parallel. */
     bml_domain_t *domain;
     /** A copy of the domain decomposition. */

@@ -5,19 +5,19 @@
 
 #include <complex.h>
 
-void csr_scale_row_single_real (
+void csr_scale_row_single_real(
     void *_scale_factor,
     csr_sparse_row_t * arow);
 
-void csr_scale_row_double_real (
+void csr_scale_row_double_real(
     void *_scale_factor,
     csr_sparse_row_t * arow);
 
-void csr_scale_row_single_complex (
+void csr_scale_row_single_complex(
     void *_scale_factor,
     csr_sparse_row_t * arow);
 
-void csr_scale_row_double_complex (
+void csr_scale_row_double_complex(
     void *_scale_factor,
     csr_sparse_row_t * arow);
 

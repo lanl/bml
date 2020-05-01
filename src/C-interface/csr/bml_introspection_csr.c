@@ -84,8 +84,9 @@ bml_get_M_csr(
         for (int i = 0; i < N; i++)
         {
             max_alloc =
-            (csr_row_alloc_size(A->data_[i]) > max_alloc ? csr_row_alloc_size(A->data_[i]) : max_alloc);
-    }
+                (csr_row_alloc_size(A->data_[i]) >
+                 max_alloc ? csr_row_alloc_size(A->data_[i]) : max_alloc);
+        }
 
         return max_alloc;
     }
@@ -123,7 +124,8 @@ bml_get_bandwidth_csr(
     for (int i = 0; i < N; i++)
     {
         max_bandwidth =
-            (csr_row_NNZ(A->data_[i]) > max_bandwidth ? csr_row_NNZ(A->data_[i]) : max_bandwidth);
+            (csr_row_NNZ(A->data_[i]) >
+             max_bandwidth ? csr_row_NNZ(A->data_[i]) : max_bandwidth);
     }
     return max_bandwidth;
 }

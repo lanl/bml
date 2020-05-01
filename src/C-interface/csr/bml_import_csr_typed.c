@@ -28,10 +28,10 @@
  */
 bml_matrix_csr_t
     * TYPED_FUNC(bml_import_from_dense_csr) (bml_dense_order_t order,
-                                                 int N, void *A,
-                                                 double threshold, int M,
-                                                 bml_distribution_mode_t
-                                                 distrib_mode)
+                                             int N, void *A,
+                                             double threshold, int M,
+                                             bml_distribution_mode_t
+                                             distrib_mode)
 {
     bml_matrix_csr_t *csr_A =
         TYPED_FUNC(bml_zero_matrix_csr) (N, M, distrib_mode);
@@ -58,7 +58,8 @@ bml_matrix_csr_t
             }
             if (is_above_threshold(A_ij, threshold))
             {
-                TYPED_FUNC(csr_set_row_element_new)(csr_A->data_[i], j, &A_ij);
+                TYPED_FUNC(csr_set_row_element_new) (csr_A->data_[i], j,
+                                                     &A_ij);
             }
         }
     }

@@ -62,36 +62,36 @@ void csr_set_row(
     csr_sparse_row_t * arow,
     const int count,
     const int * cols,
-    const void * vals, 
+    const void * vals,
     const double threshold);
 */
 
 void csr_set_row_single_real(
     csr_sparse_row_t * arow,
     const int count,
-    const int * cols,
-    const float * vals, 
+    const int *cols,
+    const float *vals,
     const double threshold);
 
 void csr_set_row_double_real(
     csr_sparse_row_t * arow,
     const int count,
-    const int * cols,
-    const double * vals, 
-    const double threshold);    
+    const int *cols,
+    const double *vals,
+    const double threshold);
 
 void csr_set_row_single_complex(
     csr_sparse_row_t * arow,
     const int count,
-    const int * cols,
-    const float complex * vals, 
+    const int *cols,
+    const float complex * vals,
     const double threshold);
 
 void csr_set_row_double_complex(
     csr_sparse_row_t * arow,
     const int count,
-    const int * cols,
-    const double complex * vals, 
+    const int *cols,
+    const double complex * vals,
     const double threshold);
 
 void bml_set_element_new_csr(
@@ -214,7 +214,7 @@ void bml_set_sparse_row_csr(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const void *row,
     const double threshold);
 
@@ -222,7 +222,7 @@ void bml_set_sparse_row_csr_single_real(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const float *row,
     const double threshold);
 
@@ -230,7 +230,7 @@ void bml_set_sparse_row_csr_double_real(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const double *row,
     const double threshold);
 
@@ -238,7 +238,7 @@ void bml_set_sparse_row_csr_single_complex(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const float complex * row,
     const double threshold);
 
@@ -246,7 +246,7 @@ void bml_set_sparse_row_csr_double_complex(
     bml_matrix_csr_t * A,
     const int i,
     const int count,
-    const int * cols,
+    const int *cols,
     const double complex * vals,
     const double threshold);
 

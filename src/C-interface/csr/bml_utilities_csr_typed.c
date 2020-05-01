@@ -77,11 +77,11 @@ void TYPED_FUNC(
         irow--;
         icol--;
         // set new element
-        TYPED_FUNC(csr_set_row_element_new)(A->data_[irow],icol,&val);
+        TYPED_FUNC(csr_set_row_element_new) (A->data_[irow], icol, &val);
         // Set symmetric value if necessary
         if (symflag == 0 && icol != irow)
         {
-           TYPED_FUNC(csr_set_row_element_new)(A->data_[icol],irow,&val);
+            TYPED_FUNC(csr_set_row_element_new) (A->data_[icol], irow, &val);
         }
     }
 
@@ -106,7 +106,7 @@ void TYPED_FUNC(
     int N = A->N_;
 
     REAL_T *vals = NULL;
-    int * cols = NULL;
+    int *cols = NULL;
 
     // Only write from rank 0
     if (bml_printRank() != 1)
@@ -130,13 +130,12 @@ void TYPED_FUNC(
     for (int i = 0; i < N; i++)
     {
         cols = A->data_[i]->cols_;
-        vals = (REAL_T *)A->data_[i]->vals_;
+        vals = (REAL_T *) A->data_[i]->vals_;
         const int annz = A->data_[i]->NNZ_;
         for (int pos = 0; pos < annz; pos++)
         {
             fprintf(mFile, "%d %d %20.15e\n", i + 1,
-                    cols[pos] + 1,
-                    REAL_PART(vals[pos]));
+                    cols[pos] + 1, REAL_PART(vals[pos]));
         }
     }
 

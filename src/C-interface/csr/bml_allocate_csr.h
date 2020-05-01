@@ -10,12 +10,14 @@ csr_row_index_hash_t *csr_noinit_table(
 void csr_deallocate_table(
     csr_row_index_hash_t * table);
 
-void csr_table_insert(csr_row_index_hash_t * table, 
+void csr_table_insert(
+    csr_row_index_hash_t * table,
     const int key);
 
-void *csr_table_lookup(csr_row_index_hash_t * table, 
+void *csr_table_lookup(
+    csr_row_index_hash_t * table,
     const int key);
-    
+
 void csr_deallocate_row(
     csr_sparse_row_t * row);
 
@@ -55,8 +57,8 @@ void bml_clear_csr_double_complex(
 
 /*
 csr_sparse_row_t *csr_noinit_row(
-    const int alloc_size); 
-*/    
+    const int alloc_size);
+*/
 csr_sparse_row_t *csr_noinit_row_single_real(
     const int alloc_size);
 
@@ -67,7 +69,7 @@ csr_sparse_row_t *csr_noinit_row_single_complex(
     const int alloc_size);
 
 csr_sparse_row_t *csr_noinit_row_double_complex(
-    const int alloc_size);               
+    const int alloc_size);
 
 bml_matrix_csr_t *bml_noinit_matrix_csr(
     bml_matrix_precision_t matrix_precision,
@@ -84,7 +86,7 @@ bml_matrix_csr_t *bml_noinit_matrix_csr_double_real(
 
 bml_matrix_csr_t *bml_noinit_matrix_csr_single_complex(
     bml_matrix_dimension_t matrix_dimension,
-     bml_distribution_mode_t distrib_mode);
+    bml_distribution_mode_t distrib_mode);
 
 bml_matrix_csr_t *bml_noinit_matrix_csr_double_complex(
     bml_matrix_dimension_t matrix_dimension,
@@ -93,16 +95,16 @@ bml_matrix_csr_t *bml_noinit_matrix_csr_double_complex(
 csr_sparse_row_t *csr_zero_row (
     const int alloc_size);
 */
-csr_sparse_row_t *csr_zero_row_single_real (
+csr_sparse_row_t *csr_zero_row_single_real(
     const int alloc_size);
-    
-csr_sparse_row_t *csr_zero_row_double_real (
+
+csr_sparse_row_t *csr_zero_row_double_real(
     const int alloc_size);
-    
-csr_sparse_row_t *csr_zero_row_single_complex (
+
+csr_sparse_row_t *csr_zero_row_single_complex(
     const int alloc_size);
-    
-csr_sparse_row_t *csr_zero_row_double_complex (
+
+csr_sparse_row_t *csr_zero_row_double_complex(
     const int alloc_size);
 
 bml_matrix_csr_t *bml_zero_matrix_csr(
