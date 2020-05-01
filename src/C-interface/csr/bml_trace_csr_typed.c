@@ -28,7 +28,7 @@ double TYPED_FUNC(
     bml_trace_csr) (
     const bml_matrix_csr_t * A)
 {
-    const int N = A->N_;
+    int N = A->N_;
 
 /* We currently assume sequential mode */
 /*
