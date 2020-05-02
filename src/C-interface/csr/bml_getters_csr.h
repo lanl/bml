@@ -144,27 +144,27 @@ void bml_get_sparse_row_csr_single_real(
     bml_matrix_csr_t * A,
     int i,
     int **cols,
-    float **vals,
+    void **vals,
     int *nnz);
 
 void bml_get_sparse_row_csr_double_real(
     bml_matrix_csr_t * A,
     int i,
     int **cols,
-    double **vals,
+    void **vals,
     int *nnz);
 
 void bml_get_sparse_row_csr_single_complex(
     bml_matrix_csr_t * A,
     int i,
     int **cols,
-    float complex ** vals,
+    void **vals,
     int *nnz);
 
 void bml_get_sparse_row_csr_double_complex(
     bml_matrix_csr_t * A,
     int i,
     int **cols,
-    double complex ** vals,
+    void **vals,
     int *nnz);
 #endif

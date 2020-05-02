@@ -123,7 +123,7 @@ void TYPED_FUNC(
     bml_matrix_csr_t * A,
     int i,
     int **cols,
-    REAL_T ** vals,
+    void **vals,
     int *nnz)
 {
     int nz = TYPED_FUNC(csr_get_nnz) (A->data_[i]);
