@@ -9,7 +9,7 @@ bml_set_element_new_csr(
     bml_matrix_csr_t * A,
     const int i,
     const int j,
-    const void *value)
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -37,7 +37,7 @@ bml_set_element_csr(
     bml_matrix_csr_t * A,
     const int i,
     const int j,
-    const void *value)
+    void *value)
 {
     switch (bml_get_precision(A))
     {
@@ -63,7 +63,7 @@ void
 bml_set_row_csr(
     bml_matrix_csr_t * A,
     const int i,
-    const void *row,
+    void *row,
     const double threshold)
 {
     switch (A->matrix_precision)
@@ -89,7 +89,7 @@ bml_set_row_csr(
 void
 bml_set_diagonal_csr(
     bml_matrix_csr_t * A,
-    const void *diagonal,
+    void *diagonal,
     const double threshold)
 {
     switch (A->matrix_precision)
@@ -118,7 +118,7 @@ bml_set_sparse_row_csr(
     const int i,
     const int count,
     const int *cols,
-    const void *row,
+    void *row,
     const double threshold)
 {
     switch (A->matrix_precision)

@@ -27,13 +27,11 @@ double TYPED_FUNC(
     double threshold)
 {
     int nnzs = 0;
-    int i;
     double sparsity;
     int N = A->N_;
 
     for (int i = 0; i < N; i++)
     {
-        int *cols = A->data_[i]->cols_;
         REAL_T *vals = (REAL_T *) A->data_[i]->vals_;
         const int annz = A->data_[i]->NNZ_;
         for (int pos = 0; pos < annz; pos++)

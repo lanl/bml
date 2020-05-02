@@ -102,10 +102,11 @@ void TYPED_FUNC(
     csr_sparse_row_t * arow,
     const int count,
     const int *cols,
-    const REAL_T * vals,
+    void * rowvals,
     const double threshold)
 {
     int *index = arow->cols_;
+    REAL_T *vals = rowvals;
     REAL_T *data = (REAL_T *) arow->vals_;
     // reallocate memory if needed
     if (count > arow->alloc_size_)
@@ -147,7 +148,7 @@ void TYPED_FUNC(
     bml_matrix_csr_t * A,
     const int i,
     const int j,
-    const void *element)
+    void *element)
 {
     // Insert new entry into row i.
     // Use the pointer to row i directly, since there
@@ -173,7 +174,7 @@ void TYPED_FUNC(
     bml_matrix_csr_t * A,
     const int i,
     const int j,
-    const void *element)
+    void *element)
 {
 
     // Insert new entry into row i.
@@ -197,21 +198,20 @@ void TYPED_FUNC(
     bml_set_row_csr) (
     bml_matrix_csr_t * A,
     const int i,
-    const REAL_T * row,
+    void * rowvals,
     const double threshold)
 {
     const int A_N = A->N_;
+    int * cols = bml_noinit_allocate_memory(sizeof(int)*A_N);
     csr_sparse_row_t *arow = A->data_[i];
     // reset nnz row count to zero (in case row is not empty)
     arow->NNZ_ = 0;
     for (int j = 0; j < A_N; j++)
     {
-        if (ABS(row[j]) > threshold)
-        {
-            // set row entries
-            TYPED_FUNC(csr_set_row_element_new) (A->data_[i], j, &row[j]);
-        }
+        cols[j] = j;
     }
+    // set row values
+    TYPED_FUNC(csr_set_row) (arow, A_N, cols, rowvals, threshold);
 }
 
 /** Set diagonal of matrix A.
@@ -225,16 +225,17 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_csr) (
     bml_matrix_csr_t * A,
-    const REAL_T * diagonal,
+    void * diag,
     const double threshold)
 {
+    REAL_T * diagonal = diag;
     int A_N = A->N_;
 
     // loop over rows
     for (int i = 0; i < A_N; i++)
     {
-        REAL_T diag = ABS(diagonal[i]) > threshold ? diagonal[i] : 0.0;
-        TYPED_FUNC(csr_set_row_element) (A->data_[i], i, &diag);
+        REAL_T dval = ABS(diagonal[i]) > threshold ? diagonal[i] : 0.0;
+        TYPED_FUNC(csr_set_row_element) (A->data_[i], i, &dval);
     }
 }
 
@@ -256,7 +257,7 @@ void TYPED_FUNC(
     const int i,
     const int count,
     const int *cols,
-    const REAL_T * vals,
+    void * vals,
     const double threshold)
 {
 
