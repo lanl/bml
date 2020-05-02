@@ -102,7 +102,7 @@ void TYPED_FUNC(
     csr_sparse_row_t * arow,
     const int count,
     const int *cols,
-    void * rowvals,
+    void *rowvals,
     const double threshold)
 {
     int *index = arow->cols_;
@@ -198,11 +198,11 @@ void TYPED_FUNC(
     bml_set_row_csr) (
     bml_matrix_csr_t * A,
     const int i,
-    void * rowvals,
+    void *rowvals,
     const double threshold)
 {
     const int A_N = A->N_;
-    int * cols = bml_noinit_allocate_memory(sizeof(int)*A_N);
+    int *cols = bml_noinit_allocate_memory(sizeof(int) * A_N);
     csr_sparse_row_t *arow = A->data_[i];
     // reset nnz row count to zero (in case row is not empty)
     arow->NNZ_ = 0;
@@ -225,10 +225,10 @@ void TYPED_FUNC(
 void TYPED_FUNC(
     bml_set_diagonal_csr) (
     bml_matrix_csr_t * A,
-    void * diag,
+    void *diag,
     const double threshold)
 {
-    REAL_T * diagonal = diag;
+    REAL_T *diagonal = diag;
     int A_N = A->N_;
 
     // loop over rows
@@ -257,7 +257,7 @@ void TYPED_FUNC(
     const int i,
     const int count,
     const int *cols,
-    void * vals,
+    void *vals,
     const double threshold)
 {
 
