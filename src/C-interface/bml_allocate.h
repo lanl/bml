@@ -16,6 +16,10 @@ void *bml_allocate_memory(
 void *bml_noinit_allocate_memory(
     size_t s);
 
+void *bml_reallocate_memory(
+    void *ptr,
+    const size_t size);
+
 void bml_free_memory(
     void *ptr);
 
