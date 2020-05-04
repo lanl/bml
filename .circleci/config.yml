@@ -252,6 +252,9 @@ jobs:
       - setup_remote_docker
       - run: apt update
       - run: apt install --assume-yes --no-install-recommends docker.io
+      - run:
+          name: Print something
+          command: echo ${CIRCLE_BRANCH}
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
