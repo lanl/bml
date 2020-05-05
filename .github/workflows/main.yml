@@ -1,0 +1,11 @@
+---
+
+name: Lint sources
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Lint
+    runs-on: ubuntu-16.04
+    steps:
+      -run: ls -lh
