@@ -1,5 +1,9 @@
 module io_matrix_typed
 
+#ifdef INTEL_SDK
+  use ifport
+#endif
+
   use bml
   use prec
   use bml_utilities_m
@@ -19,11 +23,7 @@ contains
     logical :: test_result
     real(DUMMY_PREC) :: tol
     integer :: pid
-    character(23) :: tstamp_char
-    character(8)  :: date
-    character(10) :: time
-    character(5)  :: zone
-    integer,dimension(8) :: values
+    character(20) :: pid_char
     character(100) :: fname
 
 
@@ -33,9 +33,9 @@ contains
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: b_dense(:, :)
 
-    call date_and_time(date,time,zone,values)
-    write(tstamp_char,'(a,a,a)')date, time, zone
-    write(fname,*)"ftest_matrix",trim(adjustl(tstamp_char)),".mtx"
+    pid = getpid()
+    write(pid_char,*)pid
+    write(fname,*)"ftest_matrix",trim(adjustl(pid_char)),".mtx"
 
     allocate(a_dense(n,n))
     allocate(b_dense(n,n))

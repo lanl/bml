@@ -50,14 +50,14 @@ set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
-  -traceback -qopt-report=5)
-set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99 -qopt-report=5 -DNDEBUG)
-set(Intel_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -qopt-report=5 -DNDEBUG)
+  -traceback -qopt-report=5 -DINTEL_SDK)
+set(Intel_C_FLAGS_RELEASE -O2 -g -std=c99 -qopt-report=5 -DNDEBUG -DINTEL_SDK)
+set(Intel_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -qopt-report=5 -DNDEBUG -DINTEL_SDK)
 set(Intel_Fortran_FLAGS_DEBUG -O0 -g -check all -assume realloc_lhs
-  -traceback -qopt-report=5)
-set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs -qopt-report=5)
+  -traceback -qopt-report=5 -DINTEL_SDK)
+set(Intel_Fortran_FLAGS_RELEASE -O2 -g -assume realloc_lhs -qopt-report=5 -DINTEL_SDK)
 set(Intel_Fortran_FLAGS_RELWITHDEBINFO -O2 -g -assume realloc_lhs
-  -qopt-report=5 -DNDEBUG)
+  -qopt-report=5 -DNDEBUG -DINTEL_SDK)
 
 set(XL_C_FLAGS_DEBUG -O0 -g)
 set(XL_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
