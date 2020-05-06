@@ -1,5 +1,9 @@
 module io_matrix_typed
 
+#ifdef INTEL_SDK
+  use ifport
+#endif
+
   use bml
   use prec
   use bml_utilities_m
