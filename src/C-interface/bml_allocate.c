@@ -135,7 +135,8 @@ bml_free_memory(
 }
 
 /** De-allocate a chunk of memory that was allocated inside a C
- * function.
+ * function. This is used by the Fortran bml_free_C interface. Note
+ * the "pointer to pointer" in the API.
  *
  * \ingroup allocate_group_C
  *
@@ -145,7 +146,7 @@ void
 bml_free_ptr(
     void **ptr)
 {
-    free(*ptr);
+    bml_free_memory(*ptr);
 }
 
 /** Deallocate a matrix.
