@@ -25,9 +25,40 @@ jobs:
   docs:
     name: Build docs
     runs-on: ubuntu-latest
+    needs: lint
     container:
       image: nicolasbock/bml-ci-docs:2
     steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 2
+      - run: ./build.sh docs
+  docs-test:
+    name: Build docs (test)
+    runs-on: ubuntu-latest
+    needs: lint
+    container:
+      image: ubuntu:xenial
+    steps:
+      - run: apt-get update
+      - run: apt-get install --assume-yes software-properties-common
+      - run: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
+      - run: apt-add-repository ppa:janisozaur/cmake-update
+      - run: apt-get update
+      - run: ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+      - run: apt-get install --assume-yes tzdata
+      - run: DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tzdata
+      - run: |
+          apt-get install --assume-yes --no-install-recommends \
+          apt-utils \
+          build-essential \
+          cmake cmake-data \
+          doxygen \
+          gfortran \
+          git-core \
+          libblas-dev liblapack-dev \
+          openssh-client \
+          texlive
       - uses: actions/checkout@v1
         with:
           fetch-depth: 2
