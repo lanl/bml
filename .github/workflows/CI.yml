@@ -10,7 +10,7 @@ on:
       - master
 
 jobs:
-  build:
+  lint:
     name: Lint sources
     runs-on: ubuntu-latest
     container:
@@ -22,3 +22,13 @@ jobs:
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+  docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    container:
+      image: nicolasbock/bml-ci-docs:2
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 2
+      - run: ./build.sh docs
