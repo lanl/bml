@@ -244,11 +244,53 @@ jobs:
       - checkout
       - run: ./build.sh docs
 
+  docs-test:
+    docker:
+      - image: ubuntu:xenial
+    steps:
+      - run: apt-get update
+      - run: apt-get install --assume-yes software-properties-common
+      - run: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
+      - run: apt-add-repository ppa:janisozaur/cmake-update
+      - run: apt-get update
+      - run: ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+      - run: apt-get install --assume-yes tzdata
+      - run: DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tzdata
+      - run: |
+          apt-get install --assume-yes --no-install-recommends \
+          apt-utils \
+          build-essential \
+          cmake cmake-data \
+          doxygen \
+          gfortran \
+          git-core \
+          libblas-dev liblapack-dev \
+          openssh-client \
+          texlive
+      - checkout
+      - run: ./build.sh docs
+
 workflows:
   build:
     jobs:
       - lint
       - docs:
+          requires:
+            - build-gcc-4_7-shared-serial-external
+            - build-gcc-4_7-shared-serial-internal
+            - build-gcc-4_7-shared-OpenMP-external
+            - build-gcc-4_7-shared-OpenMP-internal
+            - build-gcc-9-static-serial-external-valgrind-C-single_real
+            - build-gcc-9-static-serial-external-valgrind-C-double_real
+            - build-gcc-9-static-serial-external-valgrind-C-single_complex
+            - build-gcc-9-static-serial-external-valgrind-C-double_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
+            - build-clang-shared-serial-external
+            - build-clang-shared-OpenMP-external
+      - docs-test:
           requires:
             - build-gcc-4_7-shared-serial-external
             - build-gcc-4_7-shared-serial-internal
