@@ -76,7 +76,7 @@ set(SOURCES-CSR-TYPED
   bml_multiply_csr_typed.c
   )
   
-include(${CMAKE_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-csr single_real "${SOURCES-CSR-TYPED}")
 bml_add_typed_library(bml-csr double_real "${SOURCES-CSR-TYPED}")
 bml_add_typed_library(bml-csr single_complex "${SOURCES-CSR-TYPED}")
