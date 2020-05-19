@@ -92,7 +92,7 @@ void TYPED_FUNC(
             const int j = cols[pos];
             if (is_above_threshold(vals[pos], threshold))
             {
-                if (rlen < j)
+                if (rlen < pos)
                 {
                     /* move row entry */
                     cols[rlen] = cols[pos];

@@ -75,7 +75,7 @@ bml_copy(
     {
         LOG_ERROR("matrix size mismatch\n");
     }
-    if (bml_get_M(A) != bml_get_M(B))
+    if (bml_get_M(A) > bml_get_M(B))
     {
         LOG_ERROR("matrix parameter mismatch\n");
     }

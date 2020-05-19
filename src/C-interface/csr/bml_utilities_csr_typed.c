@@ -28,7 +28,6 @@ void TYPED_FUNC(
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
-    double real_part, imaginary_part;
     REAL_T value;
 
     hFile = fopen(filename, "r");
@@ -67,6 +66,7 @@ void TYPED_FUNC(
             LOG_ERROR("read error\n");
         }
 #elif defined(SINGLE_COMPLEX)
+        double real_part, imaginary_part;
         if (fscanf
             (hFile, "%d %d %lf %lf\n", &irow, &icol, &real_part,
              &imaginary_part) != 4)
@@ -77,6 +77,7 @@ void TYPED_FUNC(
         LOG_DEBUG("read: %d %d %e %e %e\n", irow, icol, real_part,
                   imaginary_part, value);
 #elif defined(DOUBLE_COMPLEX)
+        double real_part, imaginary_part;
         if (fscanf
             (hFile, "%d %d %lf %lf\n", &irow, &icol, &real_part,
              &imaginary_part) != 4)
