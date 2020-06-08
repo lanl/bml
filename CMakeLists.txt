@@ -209,10 +209,11 @@ if(BML_OMP_OFFLOAD)
 endif()
 
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
-if(BML_CUDA)
+if(BML_CUDA OR BML_CUSOLVER)
   include(FindCUDA)
 endif()
 if (CUDA_FOUND)
+   message("CUDA CUBLAS libraries: ${CUDA_CUBLAS_LIBRARIES}")
    include_directories(${CUDA_INCLUDE_DIRS})
 endif()
 
@@ -240,6 +241,13 @@ else()
   message(STATUS
     "MAGMA not found:\n"
   )
+endif()
+
+if (MAGMA_FOUND)
+  if(BML_CUSOLVER)
+    message(STATUS "Will use cuSOLVER")
+    add_definitions(-DBML_USE_CUSOLVER)
+  endif()
 endif()
 
 set(BML_INTERNAL_BLAS FALSE
@@ -390,6 +398,10 @@ if(MAGMA_FOUND)
   set(CMAKE_REQUIRED_LIBRARIES
     ${MAGMA_LIBRARIES})
   list(APPEND LINK_LIBRARIES ${MAGMA_LIBRARIES})
+  if(BML_CUSOLVER)
+    message(STATUS "cuSOLVER: ${CUDA_cusolver_LIBRARY}")
+    list(APPEND LINK_LIBRARIES ${CUDA_cusolver_LIBRARY})
+  endif()
 endif()
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
