@@ -149,7 +149,7 @@ void TYPED_FUNC(
     //loop over elements to insert
     for (int k = 0; k < A_N; k++)
     {
-        printf("k=%d\n", k);
+        // printf("k=%d\n", k);
         if (ABS(row[k]) > threshold)
         {
             //determine column block index and index within block
