@@ -65,11 +65,26 @@ void TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         maxbsize = MAX(maxbsize, bsize[ib]);
     int maxbsize2 = maxbsize * maxbsize;
-    for (int ib = 0; ib < NB; ib++)
-        x_ptr[ib] = calloc(maxbsize2, sizeof(REAL_T));
 
+    REAL_T *x_ptr_storage =
+        calloc(maxbsize2 * NB * omp_get_max_threads(), sizeof(REAL_T));
+
+    char xptrset = 0;
+#pragma omp parallel for                  \
+    shared(A_indexb, A_ptr_value, A_nnzb)       \
+    shared(B_indexb, B_ptr_value, B_nnzb)       \
+    shared(x_ptr_storage) \
+    firstprivate(ix, jx, x_ptr, xptrset)
     for (int ib = 0; ib < NB; ib++)
     {
+        if (!xptrset)
+        {
+            int offset = omp_get_thread_num() * maxbsize2 * NB;
+            for (int i = 0; i < NB; i++)
+                x_ptr[i] = &x_ptr_storage[offset + i * maxbsize2];
+            xptrset = 1;
+        }
+
         int l = 0;
         if (alpha > (double) 0.0 || alpha < (double) 0.0)
             for (int jp = 0; jp < A_nnzb[ib]; jp++)
@@ -151,8 +166,7 @@ void TYPED_FUNC(
         A_nnzb[ib] = ll;
     }
 
-    for (int ib = 0; ib < NB; ib++)
-        free(x_ptr[ib]);
+    free(x_ptr_storage);
 }
 
 /** Matrix addition.
