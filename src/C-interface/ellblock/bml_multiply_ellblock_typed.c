@@ -129,14 +129,30 @@ void *TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         maxbsize = MAX(maxbsize, bsize[ib]);
     int maxbsize2 = maxbsize * maxbsize;
-    REAL_T *x_ptr_storage = calloc(maxbsize2 * NB, sizeof(REAL_T));
-    for (int ib = 0; ib < NB; ib++)
-        x_ptr[ib] = &x_ptr_storage[ib * maxbsize2];
+    REAL_T *x_ptr_storage =
+        calloc(maxbsize2 * NB * omp_get_max_threads(), sizeof(REAL_T));
+
+    char xptrset = 0;
+
+#pragma omp parallel for                           \
+    shared(NB, MB, X_indexb, X_nnzb, X_ptr_value)  \
+    shared(X2_indexb, X2_nnzb, X2_ptr_value)       \
+    shared(x_ptr_storage) \
+    firstprivate(ix,jx, x_ptr, xptrset)            \
+    reduction(+: traceX, traceX2)
 
     //loop over row blocks
     for (int ib = 0; ib < NB; ib++)
     {
         int lb = 0;
+        if (!xptrset)
+        {
+            int offset = omp_get_thread_num() * maxbsize2 * NB;
+            for (int i = 0; i < NB; i++)
+                x_ptr[i] = &x_ptr_storage[offset + i * maxbsize2];
+            xptrset = 1;
+        }
+
         // loop over non-zero blocks in row block ib
         for (int jp = 0; jp < X_nnzb[ib]; jp++)
         {
