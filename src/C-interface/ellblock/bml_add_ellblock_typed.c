@@ -65,9 +65,12 @@ void TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         maxbsize = MAX(maxbsize, bsize[ib]);
     int maxbsize2 = maxbsize * maxbsize;
-
-    REAL_T *x_ptr_storage =
-        calloc(maxbsize2 * NB * omp_get_max_threads(), sizeof(REAL_T));
+#ifdef _OPENMP
+    const int nthreads = omp_get_max_threads();
+#else
+    const int nthreads = 1;
+#endif
+    REAL_T *x_ptr_storage = calloc(maxbsize2 * NB * nthreads, sizeof(REAL_T));
 
     char xptrset = 0;
 #pragma omp parallel for                  \
@@ -79,7 +82,11 @@ void TYPED_FUNC(
     {
         if (!xptrset)
         {
+#ifdef _OPENMP
             int offset = omp_get_thread_num() * maxbsize2 * NB;
+#else
+            int offset = 0;
+#endif
             for (int i = 0; i < NB; i++)
                 x_ptr[i] = &x_ptr_storage[offset + i * maxbsize2];
             xptrset = 1;
