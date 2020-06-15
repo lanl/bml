@@ -139,9 +139,6 @@ void *TYPED_FUNC(
     char xptrset = 0;
 
 #pragma omp parallel for                           \
-    shared(NB, MB, X_indexb, X_nnzb, X_ptr_value)  \
-    shared(X2_indexb, X2_nnzb, X2_ptr_value)       \
-    shared(x_ptr_storage) \
     firstprivate(ix,jx, x_ptr, xptrset)            \
     reduction(+: traceX, traceX2)
 
