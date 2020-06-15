@@ -301,13 +301,26 @@ void TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         maxbsize = MAX(maxbsize, bsize[ib]);
     int maxbsize2 = maxbsize * maxbsize;
-    for (int ib = 0; ib < NB; ib++)
-        x_ptr[ib] = calloc(maxbsize2, sizeof(REAL_T));
+    REAL_T *x_ptr_storage =
+        calloc(maxbsize2 * NB * omp_get_max_threads(), sizeof(REAL_T));
+
+    char xptrset = 0;
 
     //loop over row blocks
+#pragma omp parallel for                       \
+    firstprivate(ix, jx, x_ptr, xptrset)
+
     for (int ib = 0; ib < NB; ib++)
     {
         int lb = 0;
+        if (!xptrset)
+        {
+            int offset = omp_get_thread_num() * maxbsize2 * NB;
+            for (int i = 0; i < NB; i++)
+                x_ptr[i] = &x_ptr_storage[offset + i * maxbsize2];
+            xptrset = 1;
+        }
+
         //loop over blocks in this block row "ib"
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
@@ -379,9 +392,7 @@ void TYPED_FUNC(
         C_nnzb[ib] = ll;
     }
 
-    for (int ib = 0; ib < NB; ib++)
-        free(x_ptr[ib]);
-
+    free(x_ptr_storage);
 }
 
 /** Matrix multiply with threshold adjustment.
