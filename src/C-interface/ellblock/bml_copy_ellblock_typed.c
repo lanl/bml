@@ -35,13 +35,12 @@ bml_matrix_ellblock_t
     int *B_indexb = B->indexb;
     REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
 
-    //    memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
     memcpy(B->nnzb, A->nnzb, sizeof(int) * A->NB);
-    //    memcpy(B->value, A->value, sizeof(REAL_T) * A->N * A->M);
     memcpy(B->bsize, A->bsize, sizeof(int) * A->NB);
 
     memcpy(B_indexb, A_indexb, NB * MB * sizeof(int));
 
+#pragma omp parallel for
     for (int ib = 0; ib < NB; ib++)
     {
         for (int jp = 0; jp < A->nnzb[ib]; jp++)
@@ -86,6 +85,7 @@ void TYPED_FUNC(
     int *B_indexb = B->indexb;
     memcpy(B_indexb, A_indexb, NB * MB * sizeof(int));
 
+#pragma omp parallel for
     for (int ib = 0; ib < NB; ib++)
     {
         for (int jp = 0; jp < A->nnzb[ib]; jp++)

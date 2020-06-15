@@ -129,14 +129,35 @@ void *TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         maxbsize = MAX(maxbsize, bsize[ib]);
     int maxbsize2 = maxbsize * maxbsize;
-    REAL_T *x_ptr_storage = calloc(maxbsize2 * NB, sizeof(REAL_T));
-    for (int ib = 0; ib < NB; ib++)
-        x_ptr[ib] = &x_ptr_storage[ib * maxbsize2];
+#ifdef _OPENMP
+    const int nthreads = omp_get_max_threads();
+#else
+    const int nthreads = 1;
+#endif
+    REAL_T *x_ptr_storage = calloc(maxbsize2 * NB * nthreads, sizeof(REAL_T));
+
+    char xptrset = 0;
+
+#pragma omp parallel for                           \
+    firstprivate(ix,jx, x_ptr, xptrset)            \
+    reduction(+: traceX, traceX2)
 
     //loop over row blocks
     for (int ib = 0; ib < NB; ib++)
     {
         int lb = 0;
+        if (!xptrset)
+        {
+#ifdef _OPENMP
+            int offset = omp_get_thread_num() * maxbsize2 * NB;
+#else
+            int offset = 0;
+#endif
+            for (int i = 0; i < NB; i++)
+                x_ptr[i] = &x_ptr_storage[offset + i * maxbsize2];
+            xptrset = 1;
+        }
+
         // loop over non-zero blocks in row block ib
         for (int jp = 0; jp < X_nnzb[ib]; jp++)
         {
@@ -285,13 +306,34 @@ void TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         maxbsize = MAX(maxbsize, bsize[ib]);
     int maxbsize2 = maxbsize * maxbsize;
-    for (int ib = 0; ib < NB; ib++)
-        x_ptr[ib] = calloc(maxbsize2, sizeof(REAL_T));
+#ifdef _OPENMP
+    int nthreads = omp_get_max_threads();
+#else
+    int nthreads = 1;
+#endif
+    REAL_T *x_ptr_storage = calloc(maxbsize2 * NB * nthreads, sizeof(REAL_T));
+
+    char xptrset = 0;
 
     //loop over row blocks
+#pragma omp parallel for                       \
+    firstprivate(ix, jx, x_ptr, xptrset)
+
     for (int ib = 0; ib < NB; ib++)
     {
         int lb = 0;
+        if (!xptrset)
+        {
+#ifdef _OPENMP
+            int offset = omp_get_thread_num() * maxbsize2 * NB;
+#else
+            int offset = 0;
+#endif
+            for (int i = 0; i < NB; i++)
+                x_ptr[i] = &x_ptr_storage[offset + i * maxbsize2];
+            xptrset = 1;
+        }
+
         //loop over blocks in this block row "ib"
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
@@ -363,9 +405,7 @@ void TYPED_FUNC(
         C_nnzb[ib] = ll;
     }
 
-    for (int ib = 0; ib < NB; ib++)
-        free(x_ptr[ib]);
-
+    free(x_ptr_storage);
 }
 
 /** Matrix multiply with threshold adjustment.
