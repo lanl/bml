@@ -120,24 +120,22 @@ void TYPED_FUNC(
             {
                 if (rlen < jp)
                 {
-                    int new_index = ROWMAJOR(ib, rlen, NB, MB);
-                    A_ptr_value[new_index] =
-                        A_ptr_value[ROWMAJOR(ib, jp, NB, MB)];
-                    A_indexb[new_index] = A_indexb[ROWMAJOR(ib, jp, NB, MB)];
-                    //apply thresholding within block
-                    REAL_T *B_value = A_ptr_value[new_index];
-                    for (int ii = 0; ii < bsize[ib]; ii++)
-                        for (int jj = 0; jj < bsize[jb]; jj++)
-                        {
-                            int index =
-                                ROWMAJOR(ii, jj, bsize[ib], bsize[jb]);
-                            if (!is_above_threshold
-                                (B_value[index], threshold))
-                            {
-                                B_value[index] = 0.;
-                            }
-                        }
+                    ind = ROWMAJOR(ib, rlen, NB, MB);
+                    A_ptr_value[ind] = A_ptr_value[ROWMAJOR(ib, jp, NB, MB)];
+                    A_indexb[ind] = A_indexb[ROWMAJOR(ib, jp, NB, MB)];
+                    jb = A_indexb[ind];
                 }
+                //apply thresholding within block
+                REAL_T *B_value = A_ptr_value[ind];
+                for (int ii = 0; ii < bsize[ib]; ii++)
+                    for (int jj = 0; jj < bsize[jb]; jj++)
+                    {
+                        int index = ROWMAJOR(ii, jj, bsize[ib], bsize[jb]);
+                        if (!is_above_threshold(B_value[index], threshold))
+                        {
+                            B_value[index] = 0.;
+                        }
+                    }
                 rlen++;
             }
             else

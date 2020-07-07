@@ -28,6 +28,7 @@ int TYPED_FUNC(
     }
 #endif
 
+    // test function bml_threshold_new()
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_threshold_new(A, threshold);
 
@@ -49,5 +50,50 @@ int TYPED_FUNC(
     bml_free_memory(B_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
+
+    // now test function bml_threshold()
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    REAL_T scale_factor = 1.e-2;
+    bml_scale_inplace(&scale_factor, A);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_free_memory(A_dense);
+
+    REAL_T *diagonal = bml_allocate_memory(N * sizeof(REAL_T));
+    for (int i = 0; i < N; i++)
+        diagonal[i] = 1.;
+    bml_set_diagonal(A, diagonal, 0.);
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    LOG_INFO("Scaled matrix\n");
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+    bml_free_memory(A_dense);
+    bml_free_memory(diagonal);
+    bml_threshold(A, 2. * scale_factor);
+
+    B = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+
+    A_dense = bml_export_to_dense(A, dense_row_major);
+    B_dense = bml_export_to_dense(B, dense_row_major);
+    LOG_INFO("Thresholded matrix\n");
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           N, 0, N);
+
+    double tol = 1.e-6;
+    for (int i = 0; i < N * N; i++)
+    {
+        if (ABS(B_dense[i] - A_dense[i]) > tol)
+        {
+            LOG_ERROR("matrices not identical A[%d] = %e, B[%d] = %e\n",
+                      i, A_dense[i], i, B_dense[i]);
+            return -1;
+        }
+    }
+    bml_free_memory(A_dense);
+    bml_free_memory(B_dense);
+    bml_deallocate(&A);
+    bml_deallocate(&B);
+
     return 0;
 }
