@@ -42,6 +42,7 @@ if(OPENMP_FOUND)
   target_link_libraries(bml PUBLIC OpenMP::OpenMP_C)
 endif()
 target_link_libraries(bml PRIVATE ${LINK_LIBRARIES})
+target_link_libraries(bml PRIVATE m)
 
 add_library(bml_fortran
   $<TARGET_OBJECTS:bml-fortran>)
