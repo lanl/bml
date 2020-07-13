@@ -5,6 +5,7 @@
 #include "../bml_logger.h"
 #include "../bml_types.h"
 #include "bml_setters_ellblock.h"
+#include "bml_allocate_ellblock.h"
 #include "bml_types_ellblock.h"
 #include "bml_utilities_ellblock.h"
 
@@ -63,6 +64,7 @@ void TYPED_FUNC(
         if (A_indexb[ind] == jb)
         {
             REAL_T *A_value = A_ptr_value[ind];
+            assert(A_value != NULL);
             A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])]
                 = *((REAL_T *) element);
             block_found = 1;
@@ -77,11 +79,15 @@ void TYPED_FUNC(
         int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
         assert(A_ptr_value[ind] == NULL);
 
-        //printf("allocate new block ib=%d, ind=%d\n", ib, ind);
-        A_ptr_value[ind] = calloc(A_bsize[ib] * A_bsize[jb], sizeof(REAL_T));
+        // printf("allocate new block ib=%d, ind=%d\n", ib, ind);
+        int nelements = A_bsize[ib] * A_bsize[jb];
+        A_ptr_value[ind] =
+            TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
         A_indexb[ind] = jb;
 
         REAL_T *A_value = A_ptr_value[ind];
+        assert(A_value != NULL);
+        memset(A_value, 0, nelements * sizeof(REAL_T));
         A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])]
             = *((REAL_T *) element);
         A_nnzb[ib]++;
@@ -160,7 +166,6 @@ void TYPED_FUNC(
                 jj -= A_bsize[jb];
                 jb++;
             }
-            printf("jb=%d\n", jb);
             int block_found = 0;
             for (int jp = 0; jp < A_nnzb[ib]; jp++)
             {
@@ -178,8 +183,11 @@ void TYPED_FUNC(
                 int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
                 int nelements = A_bsize[ib] * A_bsize[jb];
                 A_ptr_value[ind]
-                    = bml_allocate_memory(nelements * sizeof(REAL_T));
+                    =
+                    TYPED_FUNC(bml_allocate_block_ellblock) (A, ib,
+                                                             nelements);
                 REAL_T *A_value = A_ptr_value[ind];
+                memset(A_value, 0, nelements * sizeof(REAL_T));
                 assert(A_value != NULL);
                 A_value[ROWMAJOR(ii, jj, A_bsize[ib], A_bsize[jb])] = row[k];
                 A_nnzb[ib]++;
@@ -256,11 +264,13 @@ void TYPED_FUNC(
             if (normdiag > threshold)
             {
                 int ind = ROWMAJOR(ib, A_nnzb[ib], A->NB, A->MB);
+                int nelemnts = A_bsize[ib] * A_bsize[ib];
                 A_ptr_value[ind] =
-                    calloc(A_bsize[ib] * A_bsize[ib], sizeof(REAL_T));
+                    TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelemnts);
                 A_indexb[ind] = ib;
 
                 REAL_T *A_value = A_ptr_value[ind];
+                memset(A_value, 0, nelemnts * sizeof(REAL_T));
                 for (int ii = 0; ii < A_bsize[ib]; ii++)
                 {
                     A_value[ROWMAJOR(ii, ii, A_bsize[ib], A_bsize[ib])]
@@ -296,7 +306,6 @@ void TYPED_FUNC(
         if (A->indexb[ind] == jb)
         {
             int n2 = A->bsize[ib] * A->bsize[jb];
-            printf("n2=%d, ind=%d\n", n2, ind);
             REAL_T *A_value = A->ptr_value[ind];
             assert(A_value != NULL);
             memcpy(A_value, elements, n2 * sizeof(REAL_T));

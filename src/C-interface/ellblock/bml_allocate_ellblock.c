@@ -120,12 +120,18 @@ void
 bml_deallocate_ellblock(
     bml_matrix_ellblock_t * A)
 {
+#ifdef BML_ELLBLOCK_USE_MEMPOOL
+    bml_free_memory(A->memory_pool_offsets);
+    bml_free_memory(A->memory_pool_ptr);
+    bml_free_memory(A->memory_pool);
+#else
     for (int ib = 0; ib < A->NB; ib++)
         for (int jp = 0; jp < A->nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
             bml_free_memory(A->ptr_value[ind]);
         }
+#endif
     bml_free_memory(A->ptr_value);
     bml_free_memory(A->indexb);
     bml_free_memory(A->nnzb);
@@ -246,6 +252,7 @@ bml_block_matrix_ellblock(
     bml_matrix_precision_t matrix_precision,
     int NB,
     int MB,
+    int M,
     int *bsizes,
     bml_distribution_mode_t distrib_mode)
 {
@@ -254,19 +261,19 @@ bml_block_matrix_ellblock(
     switch (matrix_precision)
     {
         case single_real:
-            A = bml_block_matrix_ellblock_single_real(NB, MB, bsizes,
+            A = bml_block_matrix_ellblock_single_real(NB, MB, M, bsizes,
                                                       distrib_mode);
             break;
         case double_real:
-            A = bml_block_matrix_ellblock_double_real(NB, MB, bsizes,
+            A = bml_block_matrix_ellblock_double_real(NB, MB, M, bsizes,
                                                       distrib_mode);
             break;
         case single_complex:
-            A = bml_block_matrix_ellblock_single_complex(NB, MB, bsizes,
+            A = bml_block_matrix_ellblock_single_complex(NB, MB, M, bsizes,
                                                          distrib_mode);
             break;
         case double_complex:
-            A = bml_block_matrix_ellblock_double_complex(NB, MB, bsizes,
+            A = bml_block_matrix_ellblock_double_complex(NB, MB, M, bsizes,
                                                          distrib_mode);
             break;
         default:
