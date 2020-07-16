@@ -111,11 +111,13 @@ if(MPI_C_FOUND AND MPI_C_COMPILE_FLAGS)
     LINK_FLAGS ${MPI_C_LINK_FLAGS})
 endif()
 
+message(STATUS "BML_NONMPI_PRECOMMAND=${BML_NONMPI_PRECOMMAND}")
+message(STATUS "BML_NONMPI_PRECOMMAND_ARGS=${BML_NONMPI_PRECOMMAND_ARGS}")
 function(test_formats ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
-      add_test(C-${N}-${T}-${P}
-        ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
+      add_test(NAME C-${N}-${T}-${P}
+        COMMAND ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
         ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND AND BML_VALGRIND)
         add_test(C-${N}-${T}-${P}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}

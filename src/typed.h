@@ -1,5 +1,5 @@
-#ifndef __TYPED_H
-#define __TYPED_H
+#ifndef __BML_TYPED_H
+#define __BML_TYPED_H
 
 #include <float.h>
 

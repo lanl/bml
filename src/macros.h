@@ -1,7 +1,7 @@
 /** \file */
 
-#ifndef __MACROS_H
-#define __MACROS_H
+#ifndef __BML_MACROS_H
+#define __BML_MACROS_H
 
 /** Row major access.
  *
