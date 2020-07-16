@@ -1,0 +1,36 @@
+variables:
+  SCHEDULER_PARAMETERS: "-J bml_CI -W 1:00 -nnodes 1 -P CSC304"
+  EXTERNAL_WORKDIR: /gpfs/wolf/csc304/proj-shared/bml/ci/${CI_JOB_ID}
+
+stages:
+  - build
+
+build_gpu:
+  stage: build  
+  variables:
+    CMAKE_EXTRA_ARGS: -DBML_MAGMA="yes" 
+  script:
+    - nvidia-smi
+    - which jsrun
+    - module load gcc/10.2.0
+    - module load openblas
+    - module load cuda
+    - module load magma
+    - module load git
+    - module load cmake
+    - export MAGMA_ROOT=${OLCF_MAGMA_ROOT}
+    - JSRUN=jsrun
+    - export BML_NONMPI_PRECOMMAND=${BML_NONMPI_PRECOMMAND:=${JSRUN}}
+    - export BML_NONMPI_PRECOMMAND_ARGS=${BML_NONMPI_PRECOMMAND_ARGS:="-n1;-a1;-g1;-c7;--smpiargs=off"}
+    - echo ${BML_NONMPI_PRECOMMAND_ARGS}
+    - echo ${CI_PROJECT_DIR}
+    - mkdir ${EXTERNAL_WORKDIR}
+    - cd ${EXTERNAL_WORKDIR}
+    - git clone file://${CI_PROJECT_DIR} ${EXTERNAL_WORKDIR}
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DBML_TESTING=ON ${CMAKE_OPTS[@]} -DBML_NONMPI_PRECOMMAND="${BML_NONMPI_PRECOMMAND}" -DBML_NONMPI_PRECOMMAND_ARGS="${BML_NONMPI_PRECOMMAND_ARGS}" ${CMAKE_EXTRA_ARGS} .. &&
+    - make VERBOSE=1
+    - ctest --output-on-failure
+  tags:
+    - batch
