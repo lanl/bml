@@ -515,7 +515,8 @@ if(NOT (NOBLAS))
     message(STATUS "Use XSMM")
     add_definitions(-DBML_USE_XSMM)
     include_directories(${XSMM_INCLUDE_DIRS})
-    list(APPEND LINK_LIBRARIES ${XSMM_LIBRARY_DIRS}/libxsmm.so)
+    list(APPEND LINK_LIBRARIES ${XSMM_LIBRARY_DIRS}/libxsmm.so
+                               ${BLAS_LIBRARIES})
   endif()
 endif()
 
