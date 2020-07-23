@@ -4,6 +4,9 @@
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
 #endif
+#ifdef BML_USE_XSMM
+#include "libxsmm.h"
+#endif
 
 #include <stdlib.h>
 
@@ -21,6 +24,10 @@ bml_init(
 {
 #ifdef BML_USE_MAGMA
     magma_init();
+#endif
+#ifdef BML_USE_XSMM
+    // Initialize the library; pay for setup cost here
+    libxsmm_init();
 #endif
     bml_initParallel(argc, argv);
 }
