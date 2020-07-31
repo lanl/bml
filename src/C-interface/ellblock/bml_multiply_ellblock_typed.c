@@ -25,6 +25,148 @@
 #include <omp.h>
 #endif
 
+void TYPED_FUNC(
+    bml_multiply_block1) (
+    REAL_T * mat0,
+    REAL_T * mat1,
+    const int ld,
+    REAL_T * x,
+    const int bsizeib,
+    const int bsizekb)
+{
+    REAL_T *xk = x;
+    for (int ii = 0; ii < bsizeib; ii++)
+    {
+        REAL_T *a = mat0 + ld * ii;
+        REAL_T *b = mat1;
+        for (int jj = 0; jj < bsizekb; jj++)
+        {
+            (*xk) += a[0] * b[0];
+            xk++;
+            b += ld;
+        }
+    }
+}
+
+void TYPED_FUNC(
+    bml_multiply_block2) (
+    REAL_T * mat0,
+    REAL_T * mat1,
+    const int ld,
+    REAL_T * x,
+    const int bsizeib,
+    const int bsizekb)
+{
+    REAL_T *xk = x;
+    for (int ii = 0; ii < bsizeib; ii++)
+    {
+        REAL_T *a = mat0 + ld * ii;
+        REAL_T *b = mat1;
+        for (int jj = 0; jj < bsizekb; jj++)
+        {
+            (*xk) += a[0] * b[0] + a[1] * b[1];
+            xk++;
+            b += ld;
+        }
+    }
+}
+
+void TYPED_FUNC(
+    bml_multiply_block3) (
+    REAL_T * mat0,
+    REAL_T * mat1,
+    const int ld,
+    REAL_T * x,
+    const int bsizeib,
+    const int bsizekb)
+{
+    REAL_T *xk = x;
+    for (int ii = 0; ii < bsizeib; ii++)
+    {
+        REAL_T *a = mat0 + ld * ii;
+        REAL_T *b = mat1;
+        for (int jj = 0; jj < bsizekb; jj++)
+        {
+            (*xk) += a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+            xk++;
+            b += ld;
+        }
+    }
+}
+
+void TYPED_FUNC(
+    bml_multiply_block4) (
+    REAL_T * mat0,
+    REAL_T * mat1,
+    const int ld,
+    REAL_T * x,
+    const int bsizeib,
+    const int bsizekb)
+{
+    REAL_T *xk = x;
+    for (int ii = 0; ii < bsizeib; ii++)
+    {
+        REAL_T *a = mat0 + ld * ii;
+        REAL_T *b = mat1;
+        for (int jj = 0; jj < bsizekb; jj++)
+        {
+            (*xk) += a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+            xk++;
+            b += ld;
+        }
+    }
+}
+
+void TYPED_FUNC(
+    bml_multiply_block5) (
+    REAL_T * mat0,
+    REAL_T * mat1,
+    const int ld,
+    REAL_T * x,
+    const int bsizeib,
+    const int bsizekb)
+{
+    REAL_T *xk = x;
+    for (int ii = 0; ii < bsizeib; ii++)
+    {
+        REAL_T *a = mat0 + ld * ii;
+        REAL_T *b = mat1;
+        for (int jj = 0; jj < bsizekb; jj++)
+        {
+            (*xk) +=
+                a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3] +
+                a[4] * b[4];
+            xk++;
+            b += ld;
+        }
+    }
+}
+
+void TYPED_FUNC(
+    bml_multiply_block6) (
+    REAL_T * mat0,
+    REAL_T * mat1,
+    const int ld,
+    REAL_T * x,
+    const int bsizeib,
+    const int bsizekb)
+{
+    REAL_T *xk = x;
+    for (int ii = 0; ii < bsizeib; ii++)
+    {
+        REAL_T *a = mat0 + ld * ii;
+        REAL_T *b = mat1;
+        for (int jj = 0; jj < bsizekb; jj++)
+        {
+            (*xk) +=
+                a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3] +
+                a[4] * b[4] + a[5] * b[5];
+            xk++;
+            b += ld;
+        }
+    }
+}
+
 /** Matrix multiply.
  *
  * \f$ C \leftarrow \alpha A \, B + \beta C \f$
@@ -135,9 +277,26 @@ void *TYPED_FUNC(
 #else
     const int nthreads = 1;
 #endif
-    REAL_T *x_ptr_storage = calloc(maxbsize2 * NB * nthreads, sizeof(REAL_T));
+    REAL_T *x_ptr_storage =
+        bml_allocate_memory(maxbsize2 * NB * nthreads * sizeof(REAL_T));
 
     char xptrset = 0;
+
+    void (
+    *fun_ptr_arr[]) (
+    REAL_T *,
+    REAL_T *,
+    const int,
+    REAL_T *,
+    const int,
+    const int) =
+    {
+    TYPED_FUNC(bml_multiply_block1),
+            TYPED_FUNC(bml_multiply_block2),
+            TYPED_FUNC(bml_multiply_block3),
+            TYPED_FUNC(bml_multiply_block4),
+            TYPED_FUNC(bml_multiply_block5), TYPED_FUNC(bml_multiply_block6)};
+
 
 #pragma omp parallel for                           \
     firstprivate(ix,jx, x_ptr, xptrset)            \
@@ -159,12 +318,16 @@ void *TYPED_FUNC(
             xptrset = 1;
         }
 
+        REAL_T *T_value_right =
+            bml_noinit_allocate_memory(maxbsize2 * sizeof(REAL_T));
+
         // loop over non-zero blocks in row block ib
         for (int jp = 0; jp < X_nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, NB, MB);
             REAL_T *X_value_left = X_ptr_value[ind];
             int jb = X_indexb[ind];
+            const int bsizejb = bsize[jb];
             if (jb == ib)
             {
                 for (int kk = 0; kk < bsize[ib]; kk++)
@@ -185,22 +348,18 @@ void *TYPED_FUNC(
                 REAL_T *X_value_right = X_ptr_value[indk];
 
                 // multiply block ib,jb by block jb,kb
-#ifdef NOBLAS
-                for (int ii = 0; ii < bsize[ib]; ii++)
-                    for (int jj = 0; jj < bsize[kb]; jj++)
-                    {
-                        int k = ROWMAJOR(ii, jj, bsize[ib], bsize[kb]);
-                        for (int kk = 0; kk < bsize[jb]; kk++)
-                        {
-                            x[k] = x[k]
-                                +
-                                X_value_left[ROWMAJOR
-                                             (ii, kk, bsize[ib],
-                                              bsize[jb])] *
-                                X_value_right[ROWMAJOR
-                                              (kk, jj, bsize[jb], bsize[kb])];
-                        }
-                    }
+#ifndef BML_USE_XSMM
+                const int bsizekb = bsize[kb];
+                // transpose storage for matrix on the right
+                for (int ii = 0; ii < bsizejb; ii++)
+                {
+                    const int offset = ii * bsizekb;
+                    for (int jj = 0; jj < bsizekb; jj++)
+                        T_value_right[jj * bsizejb + ii]
+                            = X_value_right[offset + jj];
+                }
+                (*fun_ptr_arr[bsizejb - 1]) (X_value_left, T_value_right,
+                                             bsizejb, x, bsize[ib], bsizekb);
 #else
                 REAL_T alpha = (REAL_T) 1.;
                 REAL_T beta = (REAL_T) 1.;
@@ -252,12 +411,14 @@ void *TYPED_FUNC(
             memset(x_ptr[jp], 0, maxbsize2 * sizeof(REAL_T));
         }
         X2_nnzb[ib] = ll;
+
+        bml_free_memory(T_value_right);
     }
 
     trace[0] = traceX;
     trace[1] = traceX2;
 
-    free(x_ptr_storage);
+    bml_free_memory(x_ptr_storage);
 
     return trace;
 }
@@ -318,6 +479,21 @@ void TYPED_FUNC(
 
     char xptrset = 0;
 
+    void (
+    *fun_ptr_arr[]) (
+    REAL_T *,
+    REAL_T *,
+    const int,
+    REAL_T *,
+    const int,
+    const int) =
+    {
+    TYPED_FUNC(bml_multiply_block1),
+            TYPED_FUNC(bml_multiply_block2),
+            TYPED_FUNC(bml_multiply_block3),
+            TYPED_FUNC(bml_multiply_block4),
+            TYPED_FUNC(bml_multiply_block5), TYPED_FUNC(bml_multiply_block6)};
+
     //loop over row blocks
 #pragma omp parallel for                       \
     firstprivate(ix, jx, x_ptr, xptrset)
@@ -337,13 +513,16 @@ void TYPED_FUNC(
             xptrset = 1;
         }
 
+        REAL_T *T_value_right =
+            bml_noinit_allocate_memory(maxbsize2 * sizeof(REAL_T));
+
         //loop over blocks in this block row "ib"
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, NB, A->MB);
             REAL_T *A_value = A_ptr_value[ind];
             int jb = A_indexb[ind];
-
+            const int bsizejb = bsize[jb];
             for (int kp = 0; kp < B_nnzb[jb]; kp++)
             {
                 int kb = B_indexb[ROWMAJOR(jb, kp, NB, B->MB)];
@@ -357,24 +536,17 @@ void TYPED_FUNC(
                 }
                 REAL_T *x = x_ptr[kb];
                 REAL_T *B_value = B_ptr_value[ROWMAJOR(jb, kp, NB, B->MB)];
-                for (int ii = 0; ii < bsize[ib]; ii++)
-                    for (int jj = 0; jj < bsize[kb]; jj++)
-                    {
-                        int k = ROWMAJOR(ii, jj, bsize[ib], bsize[kb]);
-                        for (int kk = 0; kk < bsize[jb]; kk++)
-                        {
-                            x[k] = x[k]
-                                +
-                                A_value[ROWMAJOR
-                                        (ii, kk, bsize[ib],
-                                         bsize[jb])] * B_value[ROWMAJOR(kk,
-                                                                        jj,
-                                                                        bsize
-                                                                        [jb],
-                                                                        bsize
-                                                                        [kb])];
-                        }
-                    }
+                // transpose storage for matrix on the right
+                const int bsizekb = bsize[kb];
+                for (int ii = 0; ii < bsizejb; ii++)
+                {
+                    const int offset = ii * bsizekb;
+                    for (int jj = 0; jj < bsizekb; jj++)
+                        T_value_right[jj * bsizejb + ii]
+                            = B_value[offset + jj];
+                }
+                (*fun_ptr_arr[bsizejb - 1]) (A_value, T_value_right,
+                                             bsizejb, x, bsize[ib], bsizekb);
             }
         }
 
@@ -408,6 +580,8 @@ void TYPED_FUNC(
             memset(x_ptr[jp], 0, maxbsize2 * sizeof(REAL_T));
         }
         C_nnzb[ib] = ll;
+
+        bml_free_memory(T_value_right);
     }
 
     free(x_ptr_storage);
