@@ -181,6 +181,7 @@ The core developers of the bml in alphabetical order:
 # Contributors
 
 * Jamaludin Mohd-Yusof <jamal@lanl.gov>
+* Adedoyin Adetokunbo <adedoyin.adetokunbo@gmail.com>
 * Bálint Aradi <aradi@uni-bremen.de>
 * Mike Wall <mewall@lanl.gov>
 
