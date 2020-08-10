@@ -75,7 +75,7 @@ bml_get_block_sizes(
         {
             s_default_bsize[ib] = s_default_block_dim;
         }
-        s_default_bsize[s_nb - 1] = N % s_default_block_dim;
+        s_default_bsize[s_nb - 1] = N - s_default_block_dim * (s_nb - 1);
     }
     return s_default_bsize;
 }
@@ -224,6 +224,8 @@ bml_zero_matrix_ellblock(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
+    assert(N >= M);
+
     bml_matrix_ellblock_t *A = NULL;
 
     switch (matrix_precision)

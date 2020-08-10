@@ -105,7 +105,9 @@ void TYPED_FUNC(
                 A->indexb[ind - 1] = A->indexb[ind];
                 A->ptr_value[ind - 1] = A->ptr_value[ind];
             }
-            A->ptr_value[A->nnzb[ib] - 1] = NULL;
+            int ind = ROWMAJOR(ib, A->nnzb[ib] - 1, A->NB, A->MB);
+            A->ptr_value[ind] = NULL;
+            A->indexb[ind] = -1;
             break;
         }
     }
