@@ -1,6 +1,7 @@
 #include "bml.h"
 #include "../typed.h"
 #include "../macros.h"
+#include "ellblock/bml_allocate_ellblock.h"
 
 #include <complex.h>
 #include <math.h>
@@ -77,6 +78,35 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
+    // set block sizes for ellblock tests
+    // (unused by other tests)
+    if (matrix_type == ellblock)
+    {
+        int bsizes[N];
+        int count = 0;
+        int nb = 0;
+        for (int i = 0; i < N; i++)
+        {
+            int bsize = (5 + i) % 6 + 1;
+            count += bsize;
+            if (count > N)
+            {
+                bsize -= (count - N);
+                count = N;
+            }
+            bsizes[i] = bsize;
+            if (count == N)
+            {
+                nb = i + 1;
+                break;
+            }
+        }
+        bml_set_block_sizes(bsizes, nb, nb * M / N);
+        for (int i = 0; i < nb; i++)
+        {
+            printf("bsizes[%d] = %d\n", i, bsizes[i]);
+        }
+    }
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
     bml_matrix_t *C = NULL;
