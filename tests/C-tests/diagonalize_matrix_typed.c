@@ -1,12 +1,13 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 #include "../C-interface/dense/bml_getters_dense.h"
+#include "../C-interface/bml_logger.h"
 
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
 #define REL_TOL 1.2e-5
@@ -31,14 +32,25 @@ int TYPED_FUNC(
     bml_matrix_t *id = NULL;
     float fnorm;
 
-    LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
+    LOG_INFO("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
+    LOG_INFO("A = \n");
+    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
+
     A_t = bml_transpose_new(A);
+
+    LOG_INFO("A_t = \n");
+    bml_print_bml_matrix(A_t, 0, max_row, 0, max_col);
+
     bml_add(A, A_t, 0.5, 0.5, 0.0);
-    LOG_INFO("A + A_t = \n");
-    bml_print_bml_matrix(A, 0, N, 0, N);
+
+    LOG_INFO("(A + A_t)/2 = \n");
+    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
 
     switch (matrix_precision)
     {
@@ -110,27 +122,27 @@ int TYPED_FUNC(
     aux1 = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
     aux2 = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
 
-    //bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
+    //bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
 
     bml_diagonalize(A, eigenvalues, eigenvectors);
 
-    printf("%s\n", "eigenvectors");
-    bml_print_bml_matrix(eigenvectors, 0, N, 0, N);
+    LOG_INFO("%s\n", "eigenvectors");
+    bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
 
-    printf("%s\n", "eigenvalues");
+    LOG_INFO("%s\n", "eigenvalues");
     for (int i = 0; i < N; i++)
-        printf("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
+        LOG_INFO("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
                IMAGINARY_PART(eigenvalues[i]));
 
     aux = bml_transpose_new(eigenvectors);
     bml_multiply(aux, eigenvectors, aux2, 1.0, 0.0, 0.0);       // C^t*C
-    printf("%s\n", "check eigenvectors norms");
+    LOG_INFO("%s\n", "check eigenvectors norms");
     for (int i = 0; i < N; i++)
     {
         REAL_T *val = bml_get_element(aux2, i, i);
         if (ABS(*val - (REAL_T) 1.0) > REL_TOL)
         {
-            printf("i = %d, val = %e  i%e\n", i, REAL_PART(*val),
+            LOG_INFO("i = %d, val = %e  i%e\n", i, REAL_PART(*val),
                    IMAGINARY_PART(*val));
             LOG_ERROR
                 ("Error in matrix diagonalization; eigenvector not normalized\n");

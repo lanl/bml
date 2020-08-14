@@ -1,5 +1,6 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 
 #include <complex.h>
 #include <math.h>
@@ -30,6 +31,9 @@ int TYPED_FUNC(
     double beta = 0.8;
     double threshold = 0.0;
 
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
@@ -38,15 +42,20 @@ int TYPED_FUNC(
 
     bml_add(B, C, alpha, beta, threshold);
 
+    LOG_INFO("alpha = %f \n ", alpha);
+    LOG_INFO("beta = %f \n ", beta);
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
+    LOG_INFO("A\n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
+                           max_row, 0, max_col);
+    LOG_INFO("C\n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
-                           N, 0, N);
+                           max_row, 0, max_col);
+    LOG_INFO("B = alpha A + beta C \n");
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
+                           max_row, 0, max_col);
     for (int i = 0; i < N * N; i++)
     {
         double expected = alpha * A_dense[i] + beta * C_dense[i];

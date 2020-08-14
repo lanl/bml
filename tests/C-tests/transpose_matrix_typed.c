@@ -1,5 +1,6 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 
 #include <complex.h>
 #include <math.h>
@@ -20,6 +21,9 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
     REAL_T *C_dense = NULL;
 
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_transpose_new(A);
     C = bml_copy_new(A);
@@ -30,13 +34,13 @@ int TYPED_FUNC(
     C_dense = bml_export_to_dense(C, dense_row_major);
     LOG_INFO("A:\n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    LOG_INFO("B:\n");
+                           max_row, 0, max_col);
+    LOG_INFO("B = transpose_new(A) :\n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
-    LOG_INFO("C:\n");
+                           max_row, 0, max_col);
+    LOG_INFO("C = transpose(A):\n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
-                           N, 0, N);
+                           max_row, 0, max_col);
     for (int i = 0; i < N * N; i++)
     {
         if (ABS(B_dense[i] - C_dense[i]) > 1e-12)

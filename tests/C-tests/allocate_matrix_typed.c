@@ -1,9 +1,11 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int TYPED_FUNC(
     test_allocate) (
@@ -17,15 +19,21 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     A_dense = bml_export_to_dense(A, dense_row_major);
+    LOG_INFO("A\n");
+    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
+                           max_row, 0, max_col);
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
                               N, M, A_dense, 0, sequential);
     B_dense = bml_export_to_dense(B, dense_row_major);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
+
+    LOG_INFO("B = import(export(A))\n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
+                           max_row, 0, max_col);
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -59,8 +67,9 @@ int TYPED_FUNC(
     bml_deallocate(&B);
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
     A_dense = bml_export_to_dense(A, dense_row_major);
+    LOG_INFO("Id \n");
     bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
+                           max_row, 0, max_col);
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)

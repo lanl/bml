@@ -88,13 +88,19 @@ int TYPED_FUNC(
     const double beta = 0.8;
     const double threshold = 0.0;
 
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
-    bml_print_bml_matrix(A, 0, N, 0, N);
-    bml_print_bml_matrix(B, 0, N, 0, N);
-    bml_print_bml_matrix(C, 0, N, 0, N);
+    LOG_INFO("A = [0: %d][0: %d]\n", max_row, max_col);
+    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
+    LOG_INFO("B = [0: %d][0: %d]\n", max_row, max_col);
+    bml_print_bml_matrix(B, 0, max_row, 0, max_col);
+    LOG_INFO("C = [0: %d][0: %d]\n", max_row, max_col);
+    bml_print_bml_matrix(C, 0, max_row, 0, max_col);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
@@ -102,6 +108,8 @@ int TYPED_FUNC(
     D_dense = bml_export_to_dense(C, dense_row_major);
 
     bml_multiply(A, B, C, alpha, beta, threshold);
+    LOG_INFO("C = %f * A + %f * B [0: %d][0: %d]\n", alpha, beta, max_row, max_col);
+    bml_print_bml_matrix(C, 0, max_row, 0, max_col);
     E_dense = bml_export_to_dense(C, dense_row_major);
 
     TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
