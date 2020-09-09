@@ -18,7 +18,8 @@ The basic matrix library (bml) is a collection of various matrix data formats
 operations. Application programming interfaces (API) are available for both C
 and FORTRAN. The current status of this library allows us to use two different
 formats for representing matrix data. Currently these formats are: dense, ELLPACK-R,
-ELLBLOCK, ELLSORT, and CSR.
+ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML library can be find 
+in [BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
 # Mailing List
 
