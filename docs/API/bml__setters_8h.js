@@ -1,7 +1,7 @@
 var bml__setters_8h =
 [
-    [ "bml_set_diagonal", "bml__setters_8h.html#a441b115ba57a99d2d0756fb27a911077", null ],
-    [ "bml_set_element", "bml__setters_8h.html#aae5d089d8c00c08ff56105fe3b091f40", null ],
-    [ "bml_set_element_new", "bml__setters_8h.html#a19d9a7b8daa95a8b15a4145626b9f441", null ],
-    [ "bml_set_row", "bml__setters_8h.html#a253b42bf5a84236e14a513ffe8450872", null ]
+    [ "bml_set_diagonal", "bml__setters_8h.html#a32e2d795549f145709201a042825ec1c", null ],
+    [ "bml_set_element", "bml__setters_8h.html#aaa1decf96475d48d6a3ded6ac3613573", null ],
+    [ "bml_set_element_new", "bml__setters_8h.html#afd2d5339fb794592df556dcaf82fb137", null ],
+    [ "bml_set_row", "bml__setters_8h.html#a1f7c441f4b86299560e9b3d4d53be6ed", null ]
 ];

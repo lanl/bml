@@ -1,5 +1,6 @@
 var bml__types_8h =
 [
+    [ "bml_matrix_dimension_t", "structbml__matrix__dimension__t.html", "structbml__matrix__dimension__t" ],
     [ "bml_domain_t", "structbml__domain__t.html", "structbml__domain__t" ],
     [ "bml_domain_t", "bml__types_8h.html#aef23f70f92b1d5dcdcc2884e2248d843", null ],
     [ "bml_matrix_t", "bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9", null ],
@@ -24,6 +25,7 @@ var bml__types_8h =
       [ "type_uninitialized", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ae96fd391f81a83d544ac43e7d59c2ee1", null ],
       [ "dense", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26", null ],
       [ "ellpack", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48", null ],
+      [ "ellblock", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee", null ],
       [ "ellsort", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d", null ],
       [ "csr", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954", null ]
     ] ]

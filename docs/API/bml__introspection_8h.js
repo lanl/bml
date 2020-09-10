@@ -1,11 +1,12 @@
 var bml__introspection_8h =
 [
-    [ "bml_get_bandwidth", "bml__introspection_8h.html#a711a97428f2a9ef52c247cadf807ec5f", null ],
-    [ "bml_get_distribution_mode", "bml__introspection_8h.html#a2bb9a5b217027406880eea3dbca780fa", null ],
-    [ "bml_get_M", "bml__introspection_8h.html#a2c398b77d32e3912fffbdf2f3b502dff", null ],
-    [ "bml_get_N", "bml__introspection_8h.html#ae095fbdd4b5bb841dad245450d6f12d3", null ],
-    [ "bml_get_precision", "bml__introspection_8h.html#a0f55d029b5a2b6722111a15d4133c3db", null ],
-    [ "bml_get_row_bandwidth", "bml__introspection_8h.html#a9320c2aeb5b29bf992e87b47244907d9", null ],
-    [ "bml_get_sparsity", "bml__introspection_8h.html#a2e2f60eb41cb94e6aed447db5422b90d", null ],
-    [ "bml_get_type", "bml__introspection_8h.html#a12692a39ba67b2c2da3d06cbfeb217cd", null ]
+    [ "bml_get_bandwidth", "bml__introspection_8h.html#accec6eabd0ac7d0d5a3b0ef56c8a43aa", null ],
+    [ "bml_get_distribution_mode", "bml__introspection_8h.html#a62d4504402d9becd8f73dbeb5e950657", null ],
+    [ "bml_get_M", "bml__introspection_8h.html#ab67839d414b9b3044e6c424fc686c94d", null ],
+    [ "bml_get_N", "bml__introspection_8h.html#a020000b9660d63c9d904b253499abee7", null ],
+    [ "bml_get_NB", "bml__introspection_8h.html#a4e826aec246a054d967b239b128329c5", null ],
+    [ "bml_get_precision", "bml__introspection_8h.html#ad7617fd544436c7f9725078dc70be254", null ],
+    [ "bml_get_row_bandwidth", "bml__introspection_8h.html#a778c0913abd26cb870cea5de97fbde63", null ],
+    [ "bml_get_sparsity", "bml__introspection_8h.html#a1f6253dec8a279940feb72cc7925588b", null ],
+    [ "bml_get_type", "bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1", null ]
 ];

@@ -1,5 +1,5 @@
-ADDING A C TEST
-=============
+C TEST
+======
 
 It is essential to add a proper test for each function we create. We would even
 recommend to add a test before adding the functionality to have a piece of code

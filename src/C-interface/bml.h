@@ -7,6 +7,8 @@
  *   - dense
  *   - ellpack (sparse)
  *   - csr (sparse)
+ *   - ellblock (sparse)
+ *   - ellsort (sparse)
  *
  * \section usage_examples Usage Examples
  *
@@ -26,12 +28,6 @@
  * matrix operations on a variety of hardware platforms. For details,
  * please have a look at our \ref future_plans "future plans".
  *
- * \author Bálint Aradi <aradi@uni-bremen.de>
- * \author Christian Negre <cnegre@lanl.gov>
- * \author Jamaludin Mohd-Yusof <jamal@lanl.gov>
- * \author Nicolas Bock <nbock@lanl.gov>
- * \author Susan M. Mniszewski <smm@lanl.gov>
- *
  * \copyright Los Alamos National Laboratory 2015
  *
  * \defgroup allocate_group_C Allocation and Deallocation Functions (C interface)
@@ -50,7 +46,6 @@
  *     - bml_matrix_t
  *     - Colinear
  *     - Noncolinear
- *     - Blocked Bloch Matrix
  *
  * \section planned_precisions Precisions
  *

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['totalcols',['totalCols',['../structbml__domain__t.html#a9512ab8921c7a31087da060314b71fa7',1,'bml_domain_t']]],
-  ['totalprocs',['totalProcs',['../structbml__domain__t.html#af3ea182ec3b2edaeaffa18175b843004',1,'bml_domain_t']]],
-  ['totalrows',['totalRows',['../structbml__domain__t.html#a9f8e69933c32dde2313422311abb4769',1,'bml_domain_t']]]
+  ['maxlocalextent_302',['maxLocalExtent',['../structbml__domain__t.html#a4bf31953afaacc7443266e0692708974',1,'bml_domain_t']]],
+  ['minlocalextent_303',['minLocalExtent',['../structbml__domain__t.html#aebe028220c422c58dab4256105e514a9',1,'bml_domain_t']]]
 ];

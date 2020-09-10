@@ -18,10 +18,12 @@ This website is intended to provide some guidance on how to get and install
 the bml library. LA-UR number LA-UR-**17-27373**.
 
 The basic matrix library (bml) is a collection of various matrix data formats
-(in dense and sparse) and their associated algorithms for basic matrix
+(for dense and sparse) and their associated algorithms for basic matrix
 operations. Application programming interfaces (API) are available for both C
 and FORTRAN. The current status of this library allows us to use two different
-formats for representing matrix data: dense and ELLPACK.
+formats for representing matrix data. Currently these formats are: dense, ELLPACK-R,
+ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML library can be find 
+in [BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
 # Mailing List
 
@@ -76,8 +78,10 @@ We are running the following mailing list for discussions on usage and features 
 The bml library supports the following matrix formats:
 
 * dense
-* ELLPACK
+* ELLPACK-R
 * ELLSORT
+* ELLBLOCK
+* CSR
 
 # Binary Packages
 
@@ -90,11 +94,25 @@ format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
 The bml library is built with CMake. For convenience, we provide a shell
 script which goes through the necessary motions and builds the library, runs
-the tests, and installs it (in the `install` directory). Simply run:
+the tests, and installs it (in the `install` directory).
+
+## For a quick installation
+
+We suggest to take a look at the `example_build.sh` script that sets
+the most important
+environmental variables needed by `build.sh` script. Change the Variables
+according to the compilers and architecture. The script can be run just by
+doing:
+
+    $ ./example_build.sh
+
+## For a more involved installation
+
+By running:
 
     $ ./build.sh install
 
-and the library will be built in the `build` directory and installed in the
+the library will be built in the `build` directory and installed in the
 `install` directory. In case you change any sources and simply want to
 rebuild the library, you don't have to run `build.sh` again, but rather
 
@@ -145,7 +163,7 @@ files
 # Developer Suggested Workflow
 
 Our main development happens on the `master` branch and is continuously
-verified for correctness. If you would like to contribute your work to the bml
+verified for correctness. If you would like to contribute with your work to the bml
 project, please follow the instructions at the GitHub help page ["About pull
 requests"](https://help.github.com/articles/about-pull-requests/). To
 summarize:
@@ -188,14 +206,17 @@ with the following `bibtex` snipped:
                       Susan Mniszewski and
                       Bálint Aradi and
                       Michael Wall and
-                      Christian F. A. Negre and
-                      Jamal Mohd-Yusof},
+                      Christian F. A. Negre
+                      Jamal Mohd-Yusof and
+                      Anders N. M. Niklasson},
       title        = {qmmd/bml v1.2.3},
       month        = feb,
       year         = 2018,
       doi          = {10.5281/zenodo.841949},
       url          = {https://doi.org/10.5281/zenodo.841949}
     }
+
+Another citation source is the following journal article: [BMLPaper](https://link.springer.com/article/10.1007/s11227-018-2533-0)
 
 # Authors
 
@@ -208,7 +229,7 @@ The core developers of the bml in alphabetical order:
 # Contributors
 
 * Jamaludin Mohd-Yusof <jamal@lanl.gov>
-* Adedoyin Adetokunbo <adedoyin.adetokunbo@gmail.com>
+* Adedoyin Adetokunbo <aadedoyin@lanl.gov>
 * Bálint Aradi <aradi@uni-bremen.de>
 * Mike Wall <mewall@lanl.gov>
 
@@ -263,7 +284,7 @@ Matrix Library (bml), Version 0.x (C16006)*.
 ## ABSTRACT
 
 The basic matrix library (bml) is a collection of various matrix data
-formats (in dense and sparse) and their associated algorithms for basic
+formats (for dense and sparse) and their associated algorithms for basic
 matrix operations.
 
 This code is unclassified and has been assigned LA-CC-**15-093**. Los Alamos
