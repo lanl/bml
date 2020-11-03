@@ -97,11 +97,10 @@ endif()
 function(test_formats ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
-      #if(BML_MPI)
-      #add_test(${N}-${T}-${P} mpirun -np 1 bml-test -n ${N} -t ${T} -p ${P})
-      #else()
+      if(BML_MPI)
+        add_test(${N}-${T}-${P} mpirun -np 4 bml-test -n ${N} -t ${T} -p ${P})
+      endif()
       add_test(C-${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
-      #endif()
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND AND BML_VALGRIND)
         add_test(C-${N}-${T}-${P}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}
           ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
@@ -110,7 +109,11 @@ function(test_formats ${formats})
   endforeach()
 endfunction(test_formats)
 
-foreach(N
+if(BML_MPI)
+  set(testlist
+      allocate)
+else()
+  set(testlist
     add
     adjacency
     adjungate_triangle
@@ -140,6 +143,9 @@ foreach(N
     trace_mult
     transpose
   )
+endif()
+
+foreach(N ${testlist})
   set(formats dense ellpack ellsort ellblock csr)
   # Setting specific formats for a particular bml function
   if(${N} MATCHES diagonalize)
