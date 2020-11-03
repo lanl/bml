@@ -65,6 +65,7 @@ env:
     - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes
     - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes BML_COMPLEX=no
     - CC=clang   CXX=clang   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=no  BML_INTERNAL_BLAS=no
+    - CC=gcc-9   CXX=g++-9   FC=gfortran-9   BUILD_SHARED_LIBS=yes BML_OPENMP=yes BML_INTERNAL_BLAS=yes BML_MPI=yes
 
 script:
   - ./install_packages.sh

@@ -167,11 +167,13 @@ main(
 #ifdef DO_MPI
     MPI_Init(&argc, &argv);
     bml_init(MPI_COMM_WORLD);
+    printf("with MPI\n");
+    int N = 14;
 #else
     bml_init();
+    int N = 13;
 #endif
 
-    int N = 13;
     int M = -1;
     char *test = NULL;
     int test_index = -1;
