@@ -2,7 +2,7 @@ add_subdirectory(Fortran-interface)
 add_subdirectory(C-interface)
 add_subdirectory(internal-blas)
 
-add_library(bml
+set(LIBRARY_SOURCES
   $<TARGET_OBJECTS:bml-c>
   $<TARGET_OBJECTS:bml-internal-blas-double_complex>
   $<TARGET_OBJECTS:bml-internal-blas-double_real>
@@ -32,7 +32,21 @@ add_library(bml
   $<TARGET_OBJECTS:bml-csr-double_real>
   $<TARGET_OBJECTS:bml-csr-single_complex>
   $<TARGET_OBJECTS:bml-csr-single_real>
-  $<TARGET_OBJECTS:bml-csr>)  
+  $<TARGET_OBJECTS:bml-csr>)
+set(MPI_LIBRARY_SOURCES
+  $<TARGET_OBJECTS:bml-distributed2d-double_complex>
+  $<TARGET_OBJECTS:bml-distributed2d-double_real>
+  $<TARGET_OBJECTS:bml-distributed2d-single_complex>
+  $<TARGET_OBJECTS:bml-distributed2d-single_real>
+  $<TARGET_OBJECTS:bml-distributed2d>)  
+if(BML_MPI)
+  add_library(bml
+    ${LIBRARY_SOURCES}
+    ${MPI_LIBRARY_SOURCES})
+else()
+  add_library(bml
+    ${LIBRARY_SOURCES})
+endif()
 set_target_properties(bml
   PROPERTIES
   SOVERSION ${PROJECT_VERSION}

@@ -4,6 +4,9 @@
 #include "dense/bml_parallel_dense.h"
 #include "ellpack/bml_parallel_ellpack.h"
 #include "ellsort/bml_parallel_ellsort.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_allocate_distributed2d.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,6 +78,8 @@ bml_initParallel(
 
     if (bml_printRank())
         printf("MPI started in bml with %d ranks\n", nRanks);
+
+    bml_setcomm_distributed2d(comm);
 
     requestList = (MPI_Request *) malloc(nRanks * sizeof(MPI_Request));
     rUsed = (int *) malloc(nRanks * sizeof(int));

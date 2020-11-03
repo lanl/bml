@@ -468,6 +468,10 @@ if(LAPACK_FOUND)
   bml_check_C_Fortran_function_exists(dgetri C_DGETRI REQUIRED)
   bml_check_C_Fortran_function_exists(cgetri C_CGETRI REQUIRED)
   bml_check_C_Fortran_function_exists(zgetri C_ZGETRI REQUIRED)
+  bml_check_C_Fortran_function_exists(slacpy C_SLACPY REQUIRED)
+  bml_check_C_Fortran_function_exists(dlacpy C_DLACPY REQUIRED)
+  bml_check_C_Fortran_function_exists(clacpy C_CLACPY REQUIRED)
+  bml_check_C_Fortran_function_exists(zlacpy C_ZLACPY REQUIRED)
   add_definitions(
     -DC_SSYEV=${C_SSYEV}
     -DC_DSYEV=${C_DSYEV}
@@ -480,7 +484,11 @@ if(LAPACK_FOUND)
     -DC_SGETRI=${C_SGETRI}
     -DC_DGETRI=${C_DGETRI}
     -DC_CGETRI=${C_CGETRI}
-    -DC_ZGETRI=${C_ZGETRI})
+    -DC_ZGETRI=${C_ZGETRI}
+    -DC_SLACPY=${C_SLACPY}
+    -DC_DLACPY=${C_DLACPY}
+    -DC_CLACPY=${C_CLACPY}
+    -DC_ZLACPY=${C_ZLACPY})
 
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()

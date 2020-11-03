@@ -17,7 +17,9 @@ typedef enum
     /** ELLSORT matrix. */
     ellsort,
     /** CSR matrix. */
-    csr
+    csr,
+    /** distributed matrix. */
+    distributed2d
 } bml_matrix_type_t;
 
 /** The supported real precisions. */
