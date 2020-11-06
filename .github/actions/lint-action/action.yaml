@@ -1,0 +1,5 @@
+name: "Lint Sources"
+description: "Linters"
+runs:
+  using: 'docker'
+  image: '../../../Dockerfile'
