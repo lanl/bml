@@ -3,9 +3,9 @@
 set -u -e -x
 
 basedir=$(readlink --canonicalize $(dirname $0)/../..)
-dockerfile=${basedir}/Dockerfile.lint
+dockerfile=${basedir}/Dockerfile
 
-docker build --file ${dockerfile} ${basedir}
+docker build --no-cache --file ${dockerfile} ${basedir}
 ID=$(docker build --quiet --file ${dockerfile} ${basedir})
 docker run \
   --workdir /github/workspace \
