@@ -19,6 +19,8 @@ jobs:
           fetch-depth: 0
       - name: Lint sources
         uses: ./.github/actions/lint-action
+        env:
+          DANGER_GITHUB_API_TOKEN: ${DANGER_GITHUB_API_TOKEN}
 
   lint:
     name: Lint sources
