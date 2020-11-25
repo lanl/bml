@@ -18,7 +18,7 @@ double bml_sum_squares2(
     double beta,
     double threshold);
 
-// Calculate the sum of squares of all the elements of
+// Calculate the sum of all the elements of
 // alpha * A(i,j)* B(i,j)
 double bml_sum_AB(
     bml_matrix_t * A,

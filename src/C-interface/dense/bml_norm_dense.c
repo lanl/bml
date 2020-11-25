@@ -79,7 +79,7 @@ bml_sum_squares_submatrix_dense(
     return 0;
 }
 
-/** Calculate the sum of squares of elements in
+/** Calculate the sum of elements in
  * \alpha A(i,j) * B(i,j).
  *
  *  \ingroup norm_group

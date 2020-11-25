@@ -122,7 +122,7 @@ bml_sum_squares2(
     return 0;
 }
 
-/** Calculate sum of squares of all the elements of
+/** Calculate sum of all the elements of
  * \alpha A(i,j) * B(i,j)
  * \ingroup norm_group_C
  *

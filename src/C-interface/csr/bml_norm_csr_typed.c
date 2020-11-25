@@ -85,7 +85,7 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
-/** Calculate the sum of squares of the elements of \alpha A(i,j) * B(i,j).
+/** Calculate the sum of the elements of \alpha A(i,j) * B(i,j).
  *
  *  \ingroup norm_group
  *
