@@ -85,6 +85,77 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
+/** Calculate the sum of squares of the elements of \alpha A(i,j) * B(i,j).
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \param alpha Multiplier for A
+ *  \pram threshold Threshold
+ *  \return The sum of squares of \alpha A(i,j) * B(i,j)
+ */
+double TYPED_FUNC(
+    bml_sum_AB_csr) (
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B,
+    double alpha,
+    double threshold)
+{
+    const int N = A->N_;
+    REAL_T sum = 0.0;
+    REAL_T cvals[N];
+
+    memset(cvals, 0.0, N * sizeof(REAL_T));
+
+    for (int i = 0; i < N; i++)
+    {
+        int *acols = A->data_[i]->cols_;
+        REAL_T *avals = (REAL_T *) A->data_[i]->vals_;
+        const int annz = A->data_[i]->NNZ_;
+
+        /* create hash table */
+        csr_row_index_hash_t *table = csr_noinit_table(annz);
+        for (int pos = 0; pos < annz; pos++)
+        {
+            cvals[pos] = alpha * avals[pos];
+            csr_table_insert(table, acols[pos]);
+        }
+        int *bcols = B->data_[i]->cols_;
+        REAL_T *bvals = (REAL_T *) B->data_[i]->vals_;
+        const int bnnz = B->data_[i]->NNZ_;
+        int cnt = annz;
+        for (int pos = 0; pos < bnnz; pos++)
+        {
+            int *idx = (int *) csr_table_lookup(table, bcols[pos]);
+            REAL_T val = bvals[pos];
+            if (idx)
+            {
+                cvals[*idx] *= val;
+            }
+            //else
+            //{
+            //    cvals[cnt] = val;
+            //    cnt++;
+            //}
+        }
+        // clear table
+        csr_deallocate_table(table);
+        // apply threshold and compute norm
+        for (int k = 0; k < cnt; k++)
+        {
+            if (ABS(cvals[k]) > threshold)
+            {
+                sum += cvals[k]; //* cvals[k];
+            }
+            // reset cvals
+            cvals[k] = 0.;
+        }
+    }
+
+    return (double) REAL_PART(sum);
+}
+
 
 /** Calculate the sum of squares of the elements of \alpha A + \beta B.
  *

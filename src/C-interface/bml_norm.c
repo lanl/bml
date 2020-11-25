@@ -122,6 +122,47 @@ bml_sum_squares2(
     return 0;
 }
 
+/** Calculate sum of squares of all the elements of
+ * \alpha A(i,j) * B(i,j)
+ * \ingroup norm_group_C
+ *
+ * \param A Matrix
+ * \param B Matrix
+ * \param alpha Multiplier for matrix A
+ * \param threshold Threshold
+ * \return sum of squares of alpha * A + beta * B
+ */
+double
+bml_sum_AB(
+    bml_matrix_t * A,
+    bml_matrix_t * B,
+    double alpha,
+    double threshold)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_sum_AB_dense(A, B, alpha, threshold);
+            break;
+        case ellpack:
+            return bml_sum_AB_ellpack(A, B, alpha, threshold);
+            break;
+        case ellsort:
+            return bml_sum_AB_ellsort(A, B, alpha, threshold);
+            break;
+        case ellblock:
+            return bml_sum_AB_ellblock(A, B, alpha, threshold);
+            break;
+        case csr:
+            return bml_sum_AB_csr(A, B, alpha, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return 0;
+}
+
 /** Calculate the Frobenius norm of a matrix.
  *
  * \ingroup norm_group_C

@@ -18,6 +18,14 @@ double bml_sum_squares2(
     double beta,
     double threshold);
 
+// Calculate the sum of squares of all the elements of
+// alpha * A(i,j)* B(i,j)
+double bml_sum_AB(
+    bml_matrix_t * A,
+    bml_matrix_t * B,
+    double alpha,
+    double threshold);
+
 // Calculate the sum of squares for submatrix core elements
 double bml_sum_squares_submatrix(
     bml_matrix_t * A,

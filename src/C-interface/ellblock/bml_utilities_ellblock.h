@@ -49,6 +49,27 @@ void bml_write_bml_matrix_ellblock_double_complex(
     bml_matrix_ellblock_t * A,
     char *filename);
 
+double bml_sum_AB_single_real(
+    void *v,
+    int,
+    int,
+    int);
+double bml_sum_AB_double_real(
+    void *v,
+    int,
+    int,
+    int);
+double bml_sum_AB_single_complex(
+    void *v,
+    int,
+    int,
+    int);
+double bml_sum_AB_double_complex(
+    void *v,
+    int,
+    int,
+    int);
+
 double bml_sum_squares_single_real(
     void *v,
     int,
