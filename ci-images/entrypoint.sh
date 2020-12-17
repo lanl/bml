@@ -10,7 +10,7 @@ declare -a actions=(
 )
 
 debug=0
-action="lint"
+default_action="interactive"
 
 while (( $# > 0 )); do
   case $1 in
@@ -27,10 +27,7 @@ EOF
       debug=1
       ;;
     lint)
-      if [[ -v CI ]]; then
-        bundle exec danger
-      fi
-      BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+      actions=( ${actions[@]} $1)
       ;;
     interactive)
       bash -l -i
@@ -47,3 +44,9 @@ if (( debug == 1 )); then
   PS4=""
   set -x
 fi
+
+      if [[ -v CI ]]; then
+        bundle exec danger
+      fi
+      BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+case ${
