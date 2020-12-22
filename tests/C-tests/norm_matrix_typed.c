@@ -20,6 +20,7 @@ int TYPED_FUNC(
 {
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
+    bml_matrix_t *C = NULL;
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
@@ -29,6 +30,8 @@ int TYPED_FUNC(
 
     double sum = 0.0;
     double sum2 = 0.0;
+    double sum3 = 0.0;
+    double sum4 = 0.0;
     double fnorm = 0.0;
     double sqrt_sum = 0.0;
     double sqrt_sum2 = 0.0;
@@ -44,9 +47,31 @@ int TYPED_FUNC(
 
     sum2 = bml_sum_squares2(A, B, alpha, beta, threshold);
 
+    sum3 = bml_sum_AB(A, B, alpha, threshold);
+    //sum4 = bml_sum_AB_dense(A_dense, B_dense, alpha, threshold);
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            sum4 += alpha * A_dense[i*N+j] * B_dense[i*N+j];
+        }
+    }
+
+    // get reference sum4, to be done!!!
+
     bml_add(A, B, alpha, beta, threshold);
     sum = bml_sum_squares(A);
     fnorm = bml_fnorm(A);
+
+    //if (ABS(sum - sum2) > REL_TOL)
+    if (fabs(sum3 - sum4) > REL_TOL)
+    {
+        LOG_ERROR
+            ("incorrect product of matrix A and B; sum3 = %e sum4 = %e\n",
+             sum3, sum4);
+        return -1;
+    }
 
     //if (ABS(sum - sum2) > REL_TOL)
     if (fabs(sum - sum2) > REL_TOL)
