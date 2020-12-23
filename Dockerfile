@@ -44,3 +44,5 @@ RUN apt-get install --assume-yes --no-install-recommends \
         texlive \
         valgrind \
         vim
+
+WORkDIR /root
