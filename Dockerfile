@@ -42,3 +42,5 @@ RUN apt-get install --assume-yes --no-install-recommends \
         python python-pip python-wheel \
         texlive \
         valgrind
+
+WORkDIR /root
