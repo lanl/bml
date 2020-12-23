@@ -29,6 +29,8 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up buildx
         uses: docker/setup-buildx-action@v1
+      - name: Debug
+        run: echo ${{ secrets.DOCKERHUB_USERNAME }}
       - name: Log in to Docker hub
         uses: docker/login-action@v1
         with:
