@@ -51,7 +51,8 @@ jobs:
     container:
       image: nicolasbock/bml:master
     steps:
-      - uses: actions/checkout@v1
+      - name: Check out sources
+        uses: actions/checkout@v1
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
@@ -63,8 +64,10 @@ jobs:
     container:
       image: nicolasbock/bml:master
     steps:
-      - uses: actions/checkout@v1
-      - run: ./build.sh docs
+      - name: Check out sources
+        uses: actions/checkout@v2
+      - name: Build docs
+        run: ./build.sh docs
 
   build:
     name: Build and test the library
