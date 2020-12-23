@@ -17,7 +17,7 @@ The basic matrix library (bml) is a collection of various matrix data formats
 operations. Application programming interfaces (API) are available for both C
 and FORTRAN. The current status of this library allows us to use two different
 formats for representing matrix data. Currently these formats are: dense, ELLPACK-R,
-ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML library can be find 
+ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML library can be find
 in [BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
 # Mailing List
@@ -138,6 +138,27 @@ sure that your pull request contains only one logical change (see
 ["Structural split of
 change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
 for further details.
+
+# CI Testing
+
+We are switching our CI tests from Travis-CI to GitHub Actions because
+Travis-CI is [limiting the number of builds for open source
+projects](https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing).
+Our workflow uses a [custom Docker
+image](https://hub.docker.com/r/nicolasbock/bml) which comes with the
+necessary compiler tool chain to build and test the `bml` library.
+Using `docker` is a convenient and quick way to develop, build, and
+test the `bml` library.
+
+    $ docker pull nicolasbock/bml:master
+    $ docker run --interactive --tty --rm \
+        --volume ${PWD}:/bml --workdir /bml \
+        --user $(id --user):$(id --group) \
+        nicolasbock/bml:master
+
+Inside the container:
+
+    $ ./build.sh compile
 
 ## Coding Style
 
