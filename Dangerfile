@@ -11,7 +11,7 @@ if git.commits.any? { |c| c.message =~ /^Merge branch/ }
 end
 
 # Look for prose issues.
-prose.lint_files
+# prose.lint_files
 
 # Running plugin with reviewers count specified. Find maximum two
 # reviewers.
