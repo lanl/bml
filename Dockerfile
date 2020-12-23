@@ -41,4 +41,5 @@ RUN apt-get install --assume-yes --no-install-recommends \
         libblas-dev liblapack-dev \
         python python-pip python-wheel \
         texlive \
-        valgrind
+        valgrind \
+        vim
