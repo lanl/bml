@@ -45,6 +45,27 @@ format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3A
 thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
 format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
+# Testing in our CI container
+
+We are switching our CI tests from Travis-CI to GitHub Actions because
+Travis-CI is [limiting the number of builds for open source
+projects](https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing).
+Our workflow uses a [custom Docker
+image](https://hub.docker.com/r/nicolasbock/bml) which comes with the
+necessary compiler tool chain to build and test the `bml` library.
+Using `docker` is a convenient and quick way to develop, build, and
+test the `bml` library.
+
+    $ docker pull nicolasbock/bml:master
+    $ docker run --interactive --tty --rm \
+        --volume ${PWD}:/bml --workdir /bml \
+        --user $(id --user):$(id --group) \
+        nicolasbock/bml:master
+
+Inside the container:
+
+    $ ./build.sh compile
+
 # Build Instructions
 
 The bml library is built with CMake. For convenience, we provide a shell
@@ -138,27 +159,6 @@ sure that your pull request contains only one logical change (see
 ["Structural split of
 change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
 for further details.
-
-# CI Testing
-
-We are switching our CI tests from Travis-CI to GitHub Actions because
-Travis-CI is [limiting the number of builds for open source
-projects](https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing).
-Our workflow uses a [custom Docker
-image](https://hub.docker.com/r/nicolasbock/bml) which comes with the
-necessary compiler tool chain to build and test the `bml` library.
-Using `docker` is a convenient and quick way to develop, build, and
-test the `bml` library.
-
-    $ docker pull nicolasbock/bml:master
-    $ docker run --interactive --tty --rm \
-        --volume ${PWD}:/bml --workdir /bml \
-        --user $(id --user):$(id --group) \
-        nicolasbock/bml:master
-
-Inside the container:
-
-    $ ./build.sh compile
 
 # Coding Style
 
