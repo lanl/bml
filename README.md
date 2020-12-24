@@ -160,7 +160,7 @@ Inside the container:
 
     $ ./build.sh compile
 
-## Coding Style
+# Coding Style
 
 Please indent your C code using
 
