@@ -293,6 +293,24 @@ double TYPED_FUNC(
 }
 
 double TYPED_FUNC(
+    bml_sum_AB) (
+    void *_v,
+    int nrows,
+    int ncols,
+    int ld)
+{
+    REAL_T *v = _v;
+    double n2 = 0.;
+    for (int i = 0; i < nrows; i++)
+        for (int j = 0; j < ncols; j++)
+        {
+            double alpha = (double) ABS(v[ROWMAJOR(i, j, nrows, ld)]);
+            n2 = n2 + alpha;    //* alpha;
+        }
+    return n2;
+}
+
+double TYPED_FUNC(
     bml_sum_squares) (
     void *_v,
     int nrows,

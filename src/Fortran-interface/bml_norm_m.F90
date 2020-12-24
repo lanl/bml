@@ -10,6 +10,7 @@ module bml_norm_m
   public :: bml_sum_squares
   public :: bml_sum_squares_submatrix
   public :: bml_sum_squares2
+  public :: bml_sum_AB
   public :: bml_fnorm
   public :: bml_fnorm2
 
@@ -42,6 +43,24 @@ contains
     ssum = bml_sum_squares_submatrix_C(a%ptr, core_size)
 
   end function bml_sum_squares_submatrix
+
+  !> Return sum of squares of alpha * A(i,j) * B(i,j).
+  !!
+  !!\param a The matrix a
+  !!\param b The matrix b
+  !!\param alpha Multiplier for a
+  !!\return The sum of squares for alpha * A(i,j) * B(i,j)
+  function bml_sum_AB(a, b, alpha, threshold) result(ssum2)
+
+    type(bml_matrix_t), intent(in) :: a
+    type(bml_matrix_t), intent(in) :: b
+    real(C_DOUBLE), intent(in) :: alpha
+    real(C_DOUBLE), intent(in) :: threshold
+    real(C_DOUBLE) :: ssum2
+
+    ssum2 = bml_sum_AB_C(a%ptr, b%ptr, alpha, threshold)
+
+  end function bml_sum_AB
 
   !> Return sum of squares of alpha * A + beta * B.
   !!

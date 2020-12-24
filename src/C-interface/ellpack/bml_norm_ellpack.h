@@ -38,6 +38,37 @@ double bml_sum_squares_submatrix_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
     int core_size);
 
+double bml_sum_AB_ellpack(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellpack_single_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellpack_double_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellpack_single_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellpack_double_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double threshold);
+
+
 double bml_sum_squares2_ellpack(
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B,

@@ -38,6 +38,37 @@ double bml_sum_squares_submatrix_csr_double_complex(
     bml_matrix_csr_t * A,
     int core_size);
 
+double bml_sum_AB_csr(
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_csr_single_real(
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_csr_double_real(
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_csr_single_complex(
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_csr_double_complex(
+    bml_matrix_csr_t * A,
+    bml_matrix_csr_t * B,
+    double alpha,
+    double threshold);
+
+
 double bml_sum_squares2_csr(
     bml_matrix_csr_t * A,
     bml_matrix_csr_t * B,

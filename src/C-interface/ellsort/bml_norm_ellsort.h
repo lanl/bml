@@ -38,6 +38,36 @@ double bml_sum_squares_submatrix_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
     int core_size);
 
+double bml_sum_AB_ellsort(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellsort_single_real(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellsort_double_real(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellsort_single_complex(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_ellsort_double_complex(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    double alpha,
+    double threshold);
+
 double bml_sum_squares2_ellsort(
     bml_matrix_ellsort_t * A,
     bml_matrix_ellsort_t * B,

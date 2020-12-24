@@ -147,6 +147,76 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
+/** Calculate the sum of all elements of \alpha A(i,j) * B(i,j).
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \param alpha Multiplier for A
+ *  \param threshold Threshold
+ *  \return The sum of squares of all elements of \alpha A(i,j) * B(i,j)
+ */
+double TYPED_FUNC(
+    bml_sum_AB_dense) (
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold)
+{
+    int N = A->N;
+
+    REAL_T sum = 0.0;
+#ifdef BML_USE_MAGMA            //do work on CPU for now...
+    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N, A->queue);
+    MAGMA_T *B_matrix = bml_allocate_memory(sizeof(MAGMA_T) * B->N * B->N);
+    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N, B->queue);
+
+#else
+    REAL_T *A_matrix = A->matrix;
+    REAL_T *B_matrix = B->matrix;
+#endif
+
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
+
+#ifdef BML_USE_MAGMA
+    MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
+#else
+    REAL_T alpha_ = (REAL_T) alpha;
+#endif
+
+    int myRank = bml_getMyRank();
+
+#pragma omp parallel for                        \
+  shared(alpha_)                         \
+  shared(N, A_matrix, B_matrix)                 \
+  shared(A_localRowMin, A_localRowMax, myRank)  \
+  reduction(+:sum)
+    //for (int i = 0; i < N * N; i++)
+    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
+         i++)
+    {
+#ifdef BML_USE_MAGMA
+        MAGMA_T ttemp =
+            MAGMACOMPLEX(MUL) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
+                               B_matrix[i]);
+        REAL_T temp =
+            MAGMACOMPLEX(REAL) (ttemp) + I * MAGMACOMPLEX(IMAG) (ttemp);
+#else
+        REAL_T temp = alpha_ * A_matrix[i] * B_matrix[i];
+#endif
+        if (ABS(temp) > threshold)
+            sum += temp;        //* temp;
+    }
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+    free(B_matrix);
+#endif
+    return (double) REAL_PART(sum);
+}
+
 /** Calculate the sum of squares of all elements of \alpha A + \beta B.
  *
  *  \ingroup norm_group

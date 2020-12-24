@@ -105,6 +105,128 @@ double TYPED_FUNC(
     return (double) REAL_PART(sum);
 }
 
+/** Calculate the sum of the elements of \alpha A(i,j) * B(i,j).
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \param alpha Multiplier for A
+ *  \pram threshold Threshold
+ *  \return The sum of squares of \alpha A(i,j) * B(i,j)
+ */
+double TYPED_FUNC(
+    bml_sum_AB_ellpack) (
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double threshold)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int B_N = B->N;
+    int B_M = B->M;
+
+    int *A_index = (int *) A->index;
+    int *A_nnz = (int *) A->nnz;
+    int *B_index = (int *) B->index;
+    int *B_nnz = (int *) B->nnz;
+
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
+
+    REAL_T sum = 0.0;
+    REAL_T *A_value = (REAL_T *) A->value;
+    REAL_T *B_value = (REAL_T *) B->value;
+
+    REAL_T alpha_ = (REAL_T) alpha;
+
+    int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
+
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    REAL_T y[A_N];
+    int ix[A_N], jjb[A_N];
+
+    memset(y, 0.0, A_N * sizeof(REAL_T));
+    memset(ix, 0, A_N * sizeof(int));
+    memset(jjb, 0, A_N * sizeof(int));
+#endif
+
+#ifdef USE_OMP_OFFLOAD
+//#pragma omp target map(tofrom:sum)
+#pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
+#pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
+#endif
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for                          \
+    shared(alpha_)                         \
+    shared(A_N, A_M, A_index, A_nnz, A_value)     \
+    shared(A_localRowMin, A_localRowMax, myRank)  \
+    shared(B_N, B_M, B_index, B_nnz, B_value)     \
+    reduction(+:sum)
+#else
+#pragma omp parallel for                          \
+    shared(alpha_)                         \
+    shared(A_N, A_M, A_index, A_nnz, A_value)     \
+    shared(A_localRowMin, A_localRowMax, myRank)  \
+    shared(B_N, B_M, B_index, B_nnz, B_value)     \
+    firstprivate(ix, jjb, y)                      \
+    reduction(+:sum)
+#endif
+
+    //for (int i = 0; i < A_N; i++)
+    for (int i = rowMin; i < rowMax; i++)
+    {
+#if defined(__IBMC__) || defined(__ibmxl__)
+        REAL_T y[A_N];
+        int ix[A_N], jjb[A_N];
+
+        memset(ix, 0, A_N * sizeof(int));
+#endif
+
+        int l = 0;
+        for (int jp = 0; jp < A_nnz[i]; jp++)
+        {
+            int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
+            if (ix[k] == 0)
+            {
+                y[k] = 0.0;
+                ix[k] = i + 1;
+                jjb[l] = k;
+                l++;
+            }
+            y[k] += alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
+        }
+
+        for (int jp = 0; jp < B_nnz[i]; jp++)
+        {
+            int k = B_index[ROWMAJOR(i, jp, B_N, B_M)];
+            if (ix[k] == 0)
+            {
+                y[k] = 0.0;
+                ix[k] = i + 1;
+                jjb[l] = k;
+                l++;
+            }
+            y[k] *= B_value[ROWMAJOR(i, jp, B_N, B_M)];
+        }
+
+        for (int jp = 0; jp < l; jp++)
+        {
+            if (ABS(y[jjb[jp]]) > threshold)
+                sum += y[jjb[jp]];      //* y[jjb[jp]];
+
+            ix[jjb[jp]] = 0;
+            y[jjb[jp]] = 0.0;
+            jjb[jp] = 0;
+        }
+    }
+
+    return (double) REAL_PART(sum);
+}
+
 /** Calculate the sum of squares of the elements of \alpha A + \beta B.
  *
  *  \ingroup norm_group
