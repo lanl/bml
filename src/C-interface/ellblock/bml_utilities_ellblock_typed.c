@@ -305,7 +305,7 @@ double TYPED_FUNC(
         for (int j = 0; j < ncols; j++)
         {
             double alpha = (double) ABS(v[ROWMAJOR(i, j, nrows, ld)]);
-            n2 = n2 + alpha; //* alpha;
+            n2 = n2 + alpha;    //* alpha;
         }
     return n2;
 }

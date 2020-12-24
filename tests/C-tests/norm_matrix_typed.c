@@ -54,7 +54,7 @@ int TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-            sum4 += alpha * A_dense[i*N+j] * B_dense[i*N+j];
+            sum4 += alpha * A_dense[i * N + j] * B_dense[i * N + j];
         }
     }
 

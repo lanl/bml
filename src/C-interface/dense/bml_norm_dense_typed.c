@@ -201,14 +201,14 @@ double TYPED_FUNC(
 #ifdef BML_USE_MAGMA
         MAGMA_T ttemp =
             MAGMACOMPLEX(MUL) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
-                                                          B_matrix[i]);
+                               B_matrix[i]);
         REAL_T temp =
             MAGMACOMPLEX(REAL) (ttemp) + I * MAGMACOMPLEX(IMAG) (ttemp);
 #else
         REAL_T temp = alpha_ * A_matrix[i] * B_matrix[i];
 #endif
         if (ABS(temp) > threshold)
-            sum += temp; //* temp;
+            sum += temp;        //* temp;
     }
 #ifdef BML_USE_MAGMA
     free(A_matrix);

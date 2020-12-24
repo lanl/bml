@@ -146,7 +146,7 @@ double TYPED_FUNC(
         {
             if (ABS(cvals[k]) > threshold)
             {
-                sum += cvals[k]; //* cvals[k];
+                sum += cvals[k];        //* cvals[k];
             }
             // reset cvals
             cvals[k] = 0.;

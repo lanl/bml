@@ -202,7 +202,7 @@ double TYPED_FUNC(
         for (int jp = 0; jp < l; jp++)
         {
             if (ABS(y[jjb[jp]]) > threshold)
-                sum += y[jjb[jp]]; //* y[jjb[jp]];
+                sum += y[jjb[jp]];      //* y[jjb[jp]];
 
             ix[jjb[jp]] = 0;
             y[jjb[jp]] = 0.0;
