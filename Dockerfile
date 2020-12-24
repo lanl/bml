@@ -39,7 +39,7 @@ RUN apt-get install --assume-yes --no-install-recommends \
         indent \
         openssh-client \
         libblas-dev liblapack-dev \
-        libmpich-dev \
+        mpich libmpich-dev \
         python python-pip python-wheel \
         texlive \
         valgrind \
