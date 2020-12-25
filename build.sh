@@ -270,13 +270,14 @@ set_defaults
 if [[ $# -gt 0 ]]; then
     if [[ $1 = "-h" || $1 = "--help" ]]; then
         help
-        shift
+	shift
     fi
 
-    if [[ $1 = "--debug" ]]; then
+    if [[ $# -gt 0 && $1 = "--debug" ]]; then
         PS4='+(${BASH_SOURCE##*/}:${LINENO}) ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
-        shift
+	shift
+        continue
     fi
 
     while [[ $# -gt 0 ]]; do
