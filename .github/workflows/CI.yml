@@ -24,7 +24,7 @@ env:
 
 jobs:
   containers:
-    name: Update container images
+    name: Update container images (only approve if change involves the Dockerfile and if the change is trusted)
     runs-on: ubuntu-latest
     environment: CI
     steps:
