@@ -22,7 +22,11 @@ int TYPED_FUNC(
 {
     assert(A != NULL);
 
+#ifdef BML_USE_MAGMA
+    REAL_T *A_matrix = bml_export_to_dense(A, dense_row_major);
+#else
     REAL_T *A_matrix = A->matrix;
+#endif
     int bandwidth = 0;
 
     for (int j = 0; j < A->N; j++)
@@ -32,6 +36,9 @@ int TYPED_FUNC(
             bandwidth++;
         }
     }
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+#endif
     return bandwidth;
 }
 
@@ -46,7 +53,11 @@ int TYPED_FUNC(
 {
     assert(A != NULL);
 
+#ifdef BML_USE_MAGMA
+    REAL_T *A_matrix = bml_export_to_dense(A, dense_row_major);
+#else
     REAL_T *A_matrix = A->matrix;
+#endif
     int bandwidth = 0;
     int row_bandwidth = 0;
 
@@ -65,6 +76,9 @@ int TYPED_FUNC(
             bandwidth = row_bandwidth;
         }
     }
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+#endif
     return bandwidth;
 }
 

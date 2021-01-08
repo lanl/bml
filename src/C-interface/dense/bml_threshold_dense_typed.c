@@ -1,3 +1,9 @@
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#include "../bml_export.h"
+#include "bml_export_dense.h"
+#endif
+
 #include "../../typed.h"
 #include "../bml_allocate.h"
 #include "../bml_threshold.h"
@@ -73,18 +79,18 @@ bml_matrix_dense_t *TYPED_FUNC(
  */
 void TYPED_FUNC(
     bml_threshold_dense) (
-    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * A_bml,
     double threshold)
 {
+    int N = A_bml->N;
 #ifdef BML_USE_MAGMA
-    LOG_ERROR("bml_threshold_dense() not implemented for MAGMA matrices\n");
+    REAL_T *A_matrix = bml_export_to_dense(A_bml, dense_row_major);
+#else
+    REAL_T *A_matrix = A_bml->matrix;
 #endif
 
-    int N = A->N;
-    REAL_T *A_matrix = A->matrix;
-
-    int *A_localRowMin = A->domain->localRowMin;
-    int *A_localRowMax = A->domain->localRowMax;
+    int *A_localRowMin = A_bml->domain->localRowMin;
+    int *A_localRowMax = A_bml->domain->localRowMax;
 
     int myRank = bml_getMyRank();
 
@@ -100,4 +106,8 @@ void TYPED_FUNC(
             A_matrix[i] = (REAL_T) 0.0;
         }
     }
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (N, N, (MAGMA_T *) A_matrix, N, A_bml->matrix, A_bml->ld,
+                      A_bml->queue);
+#endif
 }
