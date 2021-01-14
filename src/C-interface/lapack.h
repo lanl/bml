@@ -189,4 +189,40 @@ void C_ZGETRI(
     const int *LWORK,
     int *INFO);
 
+void C_SLACPY(
+    const char *UPLO,
+    const int *M,
+    const int *N,
+    float *A,
+    const int *LDA,
+    float *B,
+    const int *LDB);
+
+void C_DLACPY(
+    const char *UPLO,
+    const int *M,
+    const int *N,
+    double *A,
+    const int *LDA,
+    double *B,
+    const int *LDB);
+
+void C_CLACPY(
+    const char *UPLO,
+    const int *M,
+    const int *N,
+    float complex * A,
+    const int *LDA,
+    float complex * B,
+    const int *LDB);
+
+void C_ZLACPY(
+    const char *UPLO,
+    const int *M,
+    const int *N,
+    double complex * A,
+    const int *LDA,
+    double complex * B,
+    const int *LDB);
+
 #endif

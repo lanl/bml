@@ -18,6 +18,7 @@
 #if defined(SINGLE_REAL) || (defined(SINGLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T float
 #define MAGMA_T float
+#define MPI_T MPI_FLOAT
 #define MATRIX_PRECISION single_real
 #define BLAS_PREFIX S
 #define MAGMA_PREFIX s
@@ -30,6 +31,7 @@
 #elif defined(DOUBLE_REAL) || (defined(DOUBLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T double
 #define MAGMA_T double
+#define MPI_T MPI_DOUBLE
 #define MATRIX_PRECISION double_real
 #define BLAS_PREFIX D
 #define MAGMA_PREFIX d
@@ -42,6 +44,7 @@
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float _Complex
 #define MAGMA_T magmaFloatComplex
+#define MPI_T MPI_C_FLOAT_COMPLEX
 #define MATRIX_PRECISION single_complex
 #define BLAS_PREFIX C
 #define MAGMA_PREFIX c
@@ -54,6 +57,7 @@
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double _Complex
 #define MAGMA_T magmaDoubleComplex
+#define MPI_T MPI_C_DOUBLE_COMPLEX
 #define MATRIX_PRECISION double_complex
 #define BLAS_PREFIX Z
 #define MAGMA_PREFIX z

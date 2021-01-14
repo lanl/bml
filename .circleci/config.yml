@@ -228,6 +228,24 @@ jobs:
           command: >-
             ./build.sh testing || true
 
+  build-gcc-9-static-serial-mpi-external-valgrind-C-double_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_MPI: yes
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-double_real
+          command: ./build.sh testing
+
+
   lint:
     docker:
       - image: nicolasbock/bml-ci-lint:2
@@ -290,6 +308,7 @@ workflows:
             - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
             - build-clang-shared-serial-external
             - build-clang-shared-OpenMP-external
+            - build-gcc-9-static-serial-mpi-external-valgrind-C-double_real
       - docs-test:
           requires:
             - build-gcc-4_7-shared-serial-external
@@ -306,6 +325,7 @@ workflows:
             - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
             - build-clang-shared-serial-external
             - build-clang-shared-OpenMP-external
+            - build-gcc-9-static-serial-mpi-external-valgrind-C-double_real
       - build-gcc-4_7-shared-serial-external:
           requires:
             - lint
@@ -346,5 +366,8 @@ workflows:
           requires:
             - lint
       - build-clang-shared-OpenMP-external:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-mpi-external-valgrind-C-double_real:
           requires:
             - lint

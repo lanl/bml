@@ -17,76 +17,100 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     A_dense = bml_export_to_dense(A, dense_row_major);
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, M, A_dense, 0, sequential);
+                              N, M, A_dense, 0, distrib_mode);
     B_dense = bml_export_to_dense(B, dense_row_major);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
+
+    if (bml_getMyRank() == 0)
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+    if (bml_getMyRank() == 0)
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
+                               0, N, 0, N);
+
+    if (bml_getMyRank() == 0)
+        for (int i = 0; i < N; i++)
         {
-            if (i == j)
+            for (int j = 0; j < N; j++)
             {
-                if (ABS(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
+                if (i == j)
                 {
-                    LOG_ERROR
-                        ("incorrect value on diagonal; A[%d,%d] = %e B[%d,%d] = %e\n",
-                         i, i, A_dense[i * N + j], i, i, B_dense[i * N + j]);
-                    return -1;
+                    if (ABS(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
+                    {
+                        LOG_ERROR
+                            ("incorrect value on diagonal; A[%d,%d] = %e B[%d,%d] = %e\n",
+                             i, i, A_dense[i * N + j], i, i,
+                             B_dense[i * N + j]);
+                        return -1;
+                    }
                 }
-            }
-            else
-            {
-                if (ABS(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
+                else
                 {
-                    LOG_ERROR
-                        ("incorrect value off-diagonal; A[%d,%d] = %e B[%d,%d] = %e\n",
-                         i, j, A_dense[i * N + j], i, i, B_dense[i * N + j]);
-                    return -1;
+                    if (ABS(A_dense[i * N + j] - B_dense[i * N + j]) > 1e-12)
+                    {
+                        LOG_ERROR
+                            ("incorrect value off-diagonal; A[%d,%d] = %e B[%d,%d] = %e\n",
+                             i, j, A_dense[i * N + j], i, i,
+                             B_dense[i * N + j]);
+                        return -1;
+                    }
                 }
             }
         }
-    }
     LOG_INFO("random matrix test passed\n");
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
+    if (bml_getMyRank() == 0)
+    {
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
+    }
     bml_deallocate(&A);
     bml_deallocate(&B);
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M,
+                            distrib_mode);
     A_dense = bml_export_to_dense(A, dense_row_major);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
+
+    if (bml_getMyRank() == 0)
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+    if (bml_getMyRank() == 0)
+        for (int i = 0; i < N; i++)
         {
-            if (i == j)
+            for (int j = 0; j < N; j++)
             {
-                if (ABS(A_dense[i * N + j] - 1) > 1e-12)
+                if (i == j)
                 {
-                    LOG_ERROR
-                        ("incorrect value on diagonal; A[%d,%d] = %e\n",
-                         i, i, A_dense[i * N + j]);
-                    return -1;
+                    if (ABS(A_dense[i * N + j] - 1) > 1e-12)
+                    {
+                        LOG_ERROR
+                            ("incorrect value on diagonal; A[%d,%d] = %e\n",
+                             i, i, A_dense[i * N + j]);
+                        return -1;
+                    }
                 }
-            }
-            else
-            {
-                if (ABS(A_dense[i * N + j]) > 1e-12)
+                else
                 {
-                    LOG_ERROR
-                        ("incorrect value off-diagonal; A[%d,%d] = %e\n",
-                         i, j, A_dense[i * N + j]);
-                    return -1;
+                    if (ABS(A_dense[i * N + j]) > 1e-12)
+                    {
+                        LOG_ERROR
+                            ("incorrect value off-diagonal; A[%d,%d] = %e\n",
+                             i, j, A_dense[i * N + j]);
+                        return -1;
+                    }
                 }
             }
         }
-    }
     bml_free_memory(A_dense);
     LOG_INFO("identity matrix test passed\n");
 

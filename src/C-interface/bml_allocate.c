@@ -7,10 +7,12 @@
 #include "ellblock/bml_allocate_ellblock.h"
 #include "ellsort/bml_allocate_ellsort.h"
 #include "csr/bml_allocate_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_allocate_distributed2d.h"
+#endif
 
 #include <errno.h>
 #include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -187,6 +189,11 @@ bml_deallocate(
             case csr:
                 bml_deallocate_csr(*A);
                 break;
+#ifdef DO_MPI
+            case distributed2d:
+                bml_deallocate_distributed2d(*A);
+                break;
+#endif
             default:
                 LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(*A));
                 break;
@@ -240,6 +247,11 @@ bml_clear(
         case csr:
             bml_clear_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_clear_distributed2d(A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type (%d)\n", bml_get_type(A));
             break;
@@ -268,32 +280,42 @@ bml_noinit_rectangular_matrix(
 {
     LOG_DEBUG("noinit matrix of size %d (or zero matrix for dense)\n",
               matrix_dimension.N_rows);
-    switch (matrix_type)
-    {
-        case dense:
-            return bml_zero_matrix_dense(matrix_precision,
-                                         matrix_dimension, distrib_mode);
-            break;
-        case ellpack:
-            return bml_noinit_matrix_ellpack(matrix_precision,
+#ifdef DO_MPI
+    if (distrib_mode == distributed)
+        return bml_zero_matrix_distributed2d(matrix_type, matrix_precision,
+                                             matrix_dimension.N_rows,
+                                             matrix_dimension.N_nz_max);
+    else
+#endif
+        switch (matrix_type)
+        {
+            case dense:
+                return bml_zero_matrix_dense(matrix_precision,
                                              matrix_dimension, distrib_mode);
-            break;
-        case ellsort:
-            return bml_noinit_matrix_ellsort(matrix_precision,
+                break;
+            case ellpack:
+                return bml_noinit_matrix_ellpack(matrix_precision,
+                                                 matrix_dimension,
+                                                 distrib_mode);
+                break;
+            case ellsort:
+                return bml_noinit_matrix_ellsort(matrix_precision,
+                                                 matrix_dimension,
+                                                 distrib_mode);
+                break;
+            case ellblock:
+                return bml_noinit_matrix_ellblock(matrix_precision,
+                                                  matrix_dimension,
+                                                  distrib_mode);
+                break;
+            case csr:
+                return bml_noinit_matrix_csr(matrix_precision,
                                              matrix_dimension, distrib_mode);
-            break;
-        case ellblock:
-            return bml_noinit_matrix_ellblock(matrix_precision,
-                                              matrix_dimension, distrib_mode);
-            break;
-        case csr:
-            return bml_noinit_matrix_csr(matrix_precision,
-                                         matrix_dimension, distrib_mode);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
-            break;
-    }
+                break;
+            default:
+                LOG_ERROR("unknown matrix type\n");
+                break;
+        }
     return NULL;
 }
 
@@ -385,31 +407,41 @@ bml_zero_matrix(
     bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("zero matrix of size %d\n", N);
-    bml_matrix_dimension_t matrix_dimension = { N, N, M };
-    switch (matrix_type)
+
+#ifdef DO_MPI
+    if (distrib_mode == distributed)
+        return bml_zero_matrix_distributed2d(matrix_type, matrix_precision, N,
+                                             M);
+    else
+#endif
     {
-        case dense:
-            return bml_zero_matrix_dense(matrix_precision, matrix_dimension,
-                                         distrib_mode);
-            break;
-        case ellpack:
-            return bml_zero_matrix_ellpack(matrix_precision, N, M,
+        bml_matrix_dimension_t matrix_dimension = { N, N, M };
+        switch (matrix_type)
+        {
+            case dense:
+                return bml_zero_matrix_dense(matrix_precision,
+                                             matrix_dimension, distrib_mode);
+                break;
+            case ellpack:
+                return bml_zero_matrix_ellpack(matrix_precision, N, M,
+                                               distrib_mode);
+                break;
+            case ellsort:
+                return bml_zero_matrix_ellsort(matrix_precision, N, M,
+                                               distrib_mode);
+                break;
+            case ellblock:
+                return bml_zero_matrix_ellblock(matrix_precision, N, M,
+                                                distrib_mode);
+                break;
+            case csr:
+                return bml_zero_matrix_csr(matrix_precision, N, M,
                                            distrib_mode);
-            break;
-        case ellsort:
-            return bml_zero_matrix_ellsort(matrix_precision, N, M,
-                                           distrib_mode);
-            break;
-        case ellblock:
-            return bml_zero_matrix_ellblock(matrix_precision, N, M,
-                                            distrib_mode);
-            break;
-        case csr:
-            return bml_zero_matrix_csr(matrix_precision, N, M, distrib_mode);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type\n");
-            break;
+                break;
+            default:
+                LOG_ERROR("unknown matrix type\n");
+                break;
+        }
     }
     return NULL;
 }
@@ -436,31 +468,38 @@ bml_random_matrix(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    switch (matrix_type)
-    {
-        case dense:
-            return bml_random_matrix_dense(matrix_precision, N, distrib_mode);
-            break;
-        case ellpack:
-            return bml_random_matrix_ellpack(matrix_precision, N, M,
+#ifdef DO_MPI
+    if (distrib_mode == distributed)
+        return bml_random_matrix_distributed2d(matrix_type, matrix_precision,
+                                               N, M);
+    else
+#endif
+        switch (matrix_type)
+        {
+            case dense:
+                return bml_random_matrix_dense(matrix_precision, N,
+                                               distrib_mode);
+                break;
+            case ellpack:
+                return bml_random_matrix_ellpack(matrix_precision, N, M,
+                                                 distrib_mode);
+                break;
+            case ellsort:
+                return bml_random_matrix_ellsort(matrix_precision, N, M,
+                                                 distrib_mode);
+                break;
+            case ellblock:
+                return bml_random_matrix_ellblock(matrix_precision, N, M,
+                                                  distrib_mode);
+                break;
+            case csr:
+                return bml_random_matrix_csr(matrix_precision, N, M,
                                              distrib_mode);
-            break;
-        case ellsort:
-            return bml_random_matrix_ellsort(matrix_precision, N, M,
-                                             distrib_mode);
-            break;
-        case ellblock:
-            return bml_random_matrix_ellblock(matrix_precision, N, M,
-                                              distrib_mode);
-            break;
-        case csr:
-            return bml_random_matrix_csr(matrix_precision, N, M,
-                                         distrib_mode);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
-            break;
-    }
+                break;
+            default:
+                LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+                break;
+        }
     return NULL;
 }
 
@@ -539,32 +578,38 @@ bml_identity_matrix(
     bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("identity matrix of size %d\n", N);
-    switch (matrix_type)
-    {
-        case dense:
-            return bml_identity_matrix_dense(matrix_precision, N,
-                                             distrib_mode);
-            break;
-        case ellpack:
-            return bml_identity_matrix_ellpack(matrix_precision, N, M,
+#ifdef DO_MPI
+    if (distrib_mode == distributed)
+        return bml_identity_matrix_distributed2d(matrix_type,
+                                                 matrix_precision, N, M);
+    else
+#endif
+        switch (matrix_type)
+        {
+            case dense:
+                return bml_identity_matrix_dense(matrix_precision, N,
+                                                 distrib_mode);
+                break;
+            case ellpack:
+                return bml_identity_matrix_ellpack(matrix_precision, N, M,
+                                                   distrib_mode);
+                break;
+            case ellsort:
+                return bml_identity_matrix_ellsort(matrix_precision, N, M,
+                                                   distrib_mode);
+                break;
+            case ellblock:
+                return bml_identity_matrix_ellblock(matrix_precision, N, M,
+                                                    distrib_mode);
+                break;
+            case csr:
+                return bml_identity_matrix_csr(matrix_precision, N, M,
                                                distrib_mode);
-            break;
-        case ellsort:
-            return bml_identity_matrix_ellsort(matrix_precision, N, M,
-                                               distrib_mode);
-            break;
-        case ellblock:
-            return bml_identity_matrix_ellblock(matrix_precision, N, M,
-                                                distrib_mode);
-            break;
-        case csr:
-            return bml_identity_matrix_csr(matrix_precision, N, M,
-                                           distrib_mode);
-            break;
-        default:
-            LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
-            break;
-    }
+                break;
+            default:
+                LOG_ERROR("unknown matrix type (type ID %d)\n", matrix_type);
+                break;
+        }
     return NULL;
 }
 
