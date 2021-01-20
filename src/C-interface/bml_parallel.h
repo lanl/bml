@@ -68,4 +68,22 @@ void bml_maxRealReduce(
 void bml_allGatherVParallel(
     bml_matrix_t * A);
 
+#ifdef DO_MPI
+void bml_mpi_send(
+    bml_matrix_t * A,
+    const int dst,
+    MPI_Comm comm);
+void bml_mpi_recv(
+    bml_matrix_t * A,
+    const int dst,
+    MPI_Comm comm);
+bml_matrix_t *bml_mpi_recv_matrix(
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    const int src,
+    MPI_Comm comm);
+#endif
+
 #endif

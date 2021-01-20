@@ -14,6 +14,7 @@ set(SOURCES_TYPED
   import_export_matrix_typed.c
   inverse_matrix_typed.c
   io_matrix_typed.c
+  mpi_sendrecv_typed.c
   multiply_banded_matrix_typed.c
   multiply_matrix_typed.c
   multiply_matrix_x2_typed.c
@@ -60,6 +61,7 @@ add_executable(bml-test
   import_export_matrix.c
   inverse_matrix.c
   io_matrix.c
+  mpi_sendrecv.c
   multiply_banded_matrix.c
   multiply_matrix.c
   multiply_matrix_x2.c
@@ -97,9 +99,6 @@ endif()
 function(test_formats ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
-      if(BML_MPI)
-        add_test(${N}-${T}-${P} mpirun -np 4 bml-test -n ${N} -t ${T} -p ${P})
-      endif()
       add_test(C-${N}-${T}-${P} bml-test -n ${N} -t ${T} -p ${P})
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND AND BML_VALGRIND)
         add_test(C-${N}-${T}-${P}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}
@@ -109,41 +108,49 @@ function(test_formats ${formats})
   endforeach()
 endfunction(test_formats)
 
-if(BML_MPI)
-  set(testlist
-      allocate)
-else()
-  set(testlist
-    add
-    adjacency
-    adjungate_triangle
+function(test_formats_mpi ${formats})
+  foreach(T ${formats} )
+    foreach(P single_real double_real single_complex double_complex)
+      add_test(MPI-${N}-${T}-${P} mpirun -np 4 bml-test -n ${N} -t ${T} -p ${P})
+    endforeach()
+  endforeach()
+endfunction(test_formats_mpi)
+
+
+set(testlist-mpi
     allocate
-    bml_gemm
-    convert
-    copy
-    diagonalize
-    get_element
-    get_set_diagonal
-    get_sparsity
-    import_export
-    inverse
-    io_matrix
-    multiply
-    multiply_banded
-    multiply_x2
-    norm
-    normalize
-    print
-    scale
-    set_element
-    set_row
-    submatrix
-    threshold
-    trace
-    trace_mult
-    transpose
-  )
-endif()
+    mpi_sendrecv)
+
+set(testlist
+  add
+  adjacency
+  adjungate_triangle
+  allocate
+  bml_gemm
+  convert
+  copy
+  diagonalize
+  get_element
+  get_set_diagonal
+  get_sparsity
+  import_export
+  inverse
+  io_matrix
+  multiply
+  multiply_banded
+  multiply_x2
+  norm
+  normalize
+  print
+  scale
+  set_element
+  set_row
+  submatrix
+  threshold
+  trace
+  trace_mult
+  transpose
+)
 
 foreach(N ${testlist})
   set(formats dense ellpack ellsort ellblock csr)
@@ -161,6 +168,12 @@ foreach(N ${testlist})
   test_formats(${formats})
 endforeach()
 
+if(BML_MPI)
+  foreach(N ${testlist-mpi})
+    set(formats dense ellpack ellsort ellblock csr)
+    test_formats_mpi(${formats})
+  endforeach()
+endif()
 
 add_executable(test-backtrace test_backtrace.c)
 target_link_libraries(test-backtrace bml ${LINK_LIBRARIES})

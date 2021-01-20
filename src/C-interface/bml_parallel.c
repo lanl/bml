@@ -4,6 +4,8 @@
 #include "dense/bml_parallel_dense.h"
 #include "ellpack/bml_parallel_ellpack.h"
 #include "ellsort/bml_parallel_ellsort.h"
+#include "ellblock/bml_parallel_ellblock.h"
+#include "csr/bml_parallel_csr.h"
 #ifdef DO_MPI
 #include "distributed2d/bml_allocate_distributed2d.h"
 #endif
@@ -192,3 +194,94 @@ bml_allGatherVParallel(
             break;
     }
 }
+
+#ifdef DO_MPI
+void
+bml_mpi_send(
+    bml_matrix_t * A,
+    const int dst,
+    MPI_Comm comm)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_mpi_send_dense(A, dst, comm);
+            break;
+        case ellpack:
+            bml_mpi_send_ellpack(A, dst, comm);
+            break;
+        case ellsort:
+            bml_mpi_send_ellsort(A, dst, comm);
+            break;
+        case ellblock:
+            bml_mpi_send_ellblock(A, dst, comm);
+            break;
+        case csr:
+            bml_mpi_send_csr(A, dst, comm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+void
+bml_mpi_recv(
+    bml_matrix_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_mpi_recv_dense(A, src, comm);
+            break;
+        case ellpack:
+            bml_mpi_recv_ellpack(A, src, comm);
+            break;
+        case ellsort:
+            bml_mpi_recv_ellsort(A, src, comm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+bml_matrix_t *
+bml_mpi_recv_matrix(
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    const int src,
+    MPI_Comm comm)
+{
+    switch (matrix_type)
+    {
+        case dense:
+            return bml_mpi_recv_matrix_dense(matrix_precision, N, M, src,
+                                             comm);
+            break;
+        case ellpack:
+            return bml_mpi_recv_matrix_ellpack(matrix_precision, N, M, src,
+                                               comm);
+            break;
+        case ellsort:
+            return bml_mpi_recv_matrix_ellsort(matrix_precision, N, M, src,
+                                               comm);
+            break;
+        case ellblock:
+            return bml_mpi_recv_matrix_ellblock(matrix_precision, N, M, src,
+                                                comm);
+            break;
+        case csr:
+            return bml_mpi_recv_matrix_csr(matrix_precision, N, M, src, comm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+#endif

@@ -4,6 +4,8 @@
 #include "../bml_types.h"
 #include "bml_parallel_ellsort.h"
 #include "bml_types_ellsort.h"
+#include "bml_allocate_ellsort.h"
+#include "../bml_logger.h"
 
 #include <complex.h>
 #include <math.h>
@@ -79,3 +81,87 @@ void TYPED_FUNC(
 #endif
 
 }
+
+#ifdef DO_MPI
+
+void TYPED_FUNC(
+    bml_mpi_type_create_struct_ellsort) (
+    bml_matrix_ellsort_t * A,
+    MPI_Datatype * newtype)
+{
+    MPI_Aint baseaddr;
+    MPI_Aint addr0, addr1, addr2;
+    MPI_Get_address(A, &baseaddr);
+    MPI_Get_address(A->value, &addr0);
+    MPI_Get_address(A->index, &addr1);
+    MPI_Get_address(A->nnz, &addr2);
+
+    MPI_Datatype dtype[3];
+    dtype[0] = MPI_T;
+    dtype[1] = MPI_INT;
+    dtype[2] = MPI_INT;
+
+    int blength[3];
+    blength[0] = A->N * A->M;
+    blength[1] = A->N * A->M;
+    blength[2] = A->N;
+
+    MPI_Aint displ[3];
+    displ[0] = addr0 - baseaddr;
+    displ[1] = addr1 - baseaddr;
+    displ[2] = addr2 - baseaddr;
+    int mpiret = MPI_Type_create_struct(3, blength, displ, dtype, newtype);
+    if (mpiret != MPI_SUCCESS)
+        LOG_ERROR("MPI_Type_create_struct failed!");
+    mpiret = MPI_Type_commit(newtype);
+    if (mpiret != MPI_SUCCESS)
+        LOG_ERROR("MPI_Type_commit failed!");
+}
+
+void TYPED_FUNC(
+    bml_mpi_send_ellsort) (
+    bml_matrix_ellsort_t * A,
+    const int dst,
+    MPI_Comm comm)
+{
+    // create MPI data type to avoid multiple messages
+    MPI_Datatype mpi_data_type;
+    bml_mpi_type_create_struct_ellsort(A, &mpi_data_type);
+
+    MPI_Send(A, 1, mpi_data_type, dst, 111, comm);
+
+    MPI_Type_free(&mpi_data_type);
+}
+
+void TYPED_FUNC(
+    bml_mpi_recv_ellsort) (
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+    // create MPI data type to avoid multiple messages
+    MPI_Datatype mpi_data_type;
+    bml_mpi_type_create_struct_ellsort(A, &mpi_data_type);
+
+    MPI_Status status;
+    MPI_Recv(A, 1, mpi_data_type, src, 111, comm, &status);
+
+    MPI_Type_free(&mpi_data_type);
+}
+
+/*
+ * Return BML matrix from data received from MPI task src
+ */
+bml_matrix_ellsort_t
+    * TYPED_FUNC(bml_mpi_recv_matrix_ellsort) (int N, int M,
+                                               const int src, MPI_Comm comm)
+{
+    bml_matrix_ellsort_t *A_bml =
+        TYPED_FUNC(bml_zero_matrix_ellsort) (N, M, sequential);
+
+    bml_mpi_recv_ellsort(A_bml, src, comm);
+
+    return A_bml;
+}
+
+#endif

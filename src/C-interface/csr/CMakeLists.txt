@@ -12,6 +12,7 @@ set(HEADERS-CSR
   bml_export_csr.h
   bml_import_csr.h
   bml_introspection_csr.h
+  bml_parallel_csr.h
   bml_transpose_csr.h
   bml_threshold_csr.h
   bml_diagonalize_csr.h
@@ -35,6 +36,7 @@ set(SOURCES-CSR
   bml_export_csr.c
   bml_import_csr.c
   bml_introspection_csr.c
+  bml_parallel_csr.c
   bml_transpose_csr.c  
   bml_threshold_csr.c
   bml_diagonalize_csr.c
@@ -67,6 +69,7 @@ set(SOURCES-CSR-TYPED
   bml_export_csr_typed.c
   bml_import_csr_typed.c
   bml_introspection_csr_typed.c
+  bml_parallel_csr_typed.c
   bml_transpose_csr_typed.c  
   bml_threshold_csr_typed.c
   bml_diagonalize_csr_typed.c
