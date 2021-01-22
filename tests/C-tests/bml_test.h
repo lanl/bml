@@ -23,6 +23,7 @@ typedef int (
 #include "import_export_matrix.h"
 #include "inverse_matrix.h"
 #include "io_matrix.h"
+#include "mpi_sendrecv.h"
 #include "multiply_banded_matrix.h"
 #include "multiply_matrix.h"
 #include "multiply_matrix_x2.h"
