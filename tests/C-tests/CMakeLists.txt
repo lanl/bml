@@ -111,15 +111,15 @@ endfunction(test_formats)
 function(test_formats_mpi ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
-      add_test(MPI-${N}-${T}-${P} mpirun -np 4 bml-test -n ${N} -t ${T} -p ${P})
+      add_test(MPI-C-${N}-${T}-${P} mpirun -np 4 ./bml-test -n ${N} -t ${T} -p ${P})
     endforeach()
   endforeach()
 endfunction(test_formats_mpi)
 
-
 set(testlist-mpi
     allocate
-    mpi_sendrecv)
+    mpi_sendrecv
+)
 
 set(testlist
   add
