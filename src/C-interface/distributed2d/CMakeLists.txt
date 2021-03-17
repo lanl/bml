@@ -4,6 +4,7 @@ set(HEADERS-DISTRIBUTED
   bml_import_distributed2d.h
   bml_copy_distributed2d.h
   bml_scale_distributed2d.h
+  bml_add_distributed2d.h
   bml_introspection_distributed2d.h )
 
 set(SOURCES-DISTRIBUTED
@@ -12,6 +13,7 @@ set(SOURCES-DISTRIBUTED
   bml_import_distributed2d.c
   bml_copy_distributed2d.c
   bml_scale_distributed2d.c
+  bml_add_distributed2d.c
   bml_introspection_distributed2d.c )
 
 add_library(bml-distributed2d OBJECT ${SOURCES-DISTRIBUTED})
