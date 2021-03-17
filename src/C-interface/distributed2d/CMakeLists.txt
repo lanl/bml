@@ -1,12 +1,18 @@
 set(HEADERS-DISTRIBUTED
   bml_allocate_distributed2d.h
   bml_export_distributed2d.h
-  bml_import_distributed2d.h )
+  bml_import_distributed2d.h
+  bml_copy_distributed2d.h
+  bml_scale_distributed2d.h
+  bml_introspection_distributed2d.h )
 
 set(SOURCES-DISTRIBUTED
   bml_allocate_distributed2d.c
   bml_export_distributed2d.c
-  bml_import_distributed2d.c )
+  bml_import_distributed2d.c
+  bml_copy_distributed2d.c
+  bml_scale_distributed2d.c
+  bml_introspection_distributed2d.c )
 
 add_library(bml-distributed2d OBJECT ${SOURCES-DISTRIBUTED})
 set_target_properties(bml-distributed2d

@@ -122,6 +122,8 @@ endfunction(test_formats_mpi)
 
 set(testlist-mpi
     allocate
+    copy
+    scale
     mpi_sendrecv
 )
 

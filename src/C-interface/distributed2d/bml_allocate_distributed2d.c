@@ -133,9 +133,8 @@ bml_zero_matrix_distributed2d(
 {
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
-    A->matrix_type = distributed2d;
-    A->matrix_precision = matrix_precision;
     bml_setup_distributed2d(N, A);
+    A->M = M;
     int m = M / sqrtint(A->ntasks);
     A->matrix =
         bml_zero_matrix(matrix_type, matrix_precision, A->n, m, sequential);
@@ -164,8 +163,8 @@ bml_random_matrix_distributed2d(
 {
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
-    A->matrix_precision = matrix_precision;
     bml_setup_distributed2d(N, A);
+    A->M = M;
     int m = M / sqrtint(A->ntasks);
     A->matrix =
         bml_random_matrix(matrix_type, matrix_precision, A->n, m, sequential);
@@ -194,8 +193,8 @@ bml_identity_matrix_distributed2d(
 {
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
-    A->matrix_precision = matrix_precision;
     bml_setup_distributed2d(N, A);
+    A->M = M;
     int m = M / sqrtint(A->ntasks);
     A->matrix = (A->myprow == A->mypcol) ?
         bml_identity_matrix(matrix_type, matrix_precision, A->n, m,

@@ -8,6 +8,9 @@
 #include "ellsort/bml_copy_ellsort.h"
 #include "ellblock/bml_copy_ellblock.h"
 #include "csr/bml_copy_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_copy_distributed2d.h"
+#endif
 
 #include <assert.h>
 #include <stdlib.h>
@@ -26,6 +29,7 @@ bml_copy_new(
 {
     bml_matrix_t *B = NULL;
 
+    LOG_DEBUG("creating and copying matrix\n");
     switch (bml_get_type(A))
     {
         case dense:
@@ -43,6 +47,11 @@ bml_copy_new(
         case csr:
             B = bml_copy_csr_new(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            B = bml_copy_distributed2d_new(A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -63,6 +72,7 @@ bml_copy(
     assert(A != NULL);
     assert(B != NULL);
     LOG_DEBUG("copying matrix\n");
+
     if (bml_get_type(A) != bml_get_type(B))
     {
         LOG_ERROR("type mismatch\n");
@@ -96,8 +106,13 @@ bml_copy(
         case csr:
             bml_copy_csr(A, B);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_copy_distributed2d(A, B);
+            break;
+#endif
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("bml_copy --- unknown matrix type\n");
             break;
     }
 }

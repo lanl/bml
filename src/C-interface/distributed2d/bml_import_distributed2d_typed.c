@@ -36,7 +36,6 @@ bml_matrix_distributed2d_t *TYPED_FUNC(
     bml_matrix_distributed2d_t *A_bml =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     // setup A_bml struct
-    A_bml->matrix_precision = MATRIX_PRECISION;
     bml_setup_distributed2d(N, A_bml);
     assert(A_bml->comm != MPI_COMM_NULL);
 
