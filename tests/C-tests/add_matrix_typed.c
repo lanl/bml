@@ -26,43 +26,57 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
     REAL_T *C_dense = NULL;
 
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
     double alpha = 1.2;
     double beta = 0.8;
     double threshold = 0.0;
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     B = bml_copy_new(A);
-    C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    C = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
+    LOG_DEBUG("bml_add...\n");
     bml_add(B, C, alpha, beta, threshold);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
-                           N, 0, N);
-    for (int i = 0; i < N * N; i++)
+
+    if (bml_getMyRank() == 0)
     {
-        double expected = alpha * A_dense[i] + beta * C_dense[i];
-        double rel_diff_val = (expected - B_dense[i]) / expected;
-        double rel_diff = fabs(rel_diff_val);
-        if (rel_diff > REL_TOL)
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense,
+                               0, N, 0, N);
+        for (int i = 0; i < N * N; i++)
         {
-            LOG_ERROR
-                ("matrices are not identical; expected[%d] = %e, B[%d] = %e\n",
-                 i, expected, i, B_dense[i]);
-            return -1;
+            double expected = alpha * A_dense[i] + beta * C_dense[i];
+            double rel_diff_val = (expected - B_dense[i]) / expected;
+            double rel_diff = fabs(rel_diff_val);
+            if (rel_diff > REL_TOL)
+            {
+                LOG_ERROR
+                    ("matrices are not identical; expected[%d] = %e, B[%d] = %e\n",
+                     i, expected, i, B_dense[i]);
+                return -1;
+            }
         }
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
+        bml_free_memory(C_dense);
     }
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
-    bml_free_memory(C_dense);
 
     bml_deallocate(&A);
     bml_deallocate(&B);

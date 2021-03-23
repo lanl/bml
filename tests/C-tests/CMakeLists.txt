@@ -121,7 +121,10 @@ function(test_formats_mpi ${formats})
 endfunction(test_formats_mpi)
 
 set(testlist-mpi
+    add
     allocate
+    copy
+    scale
     mpi_sendrecv
 )
 

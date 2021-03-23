@@ -1,5 +1,6 @@
 #include "../bml_allocate.h"
 #include "../bml_logger.h"
+#include "../bml_introspection.h"
 #include "bml_allocate_distributed2d.h"
 #include "bml_export_distributed2d.h"
 #include "bml_types_distributed2d.h"
@@ -20,7 +21,7 @@ bml_export_to_dense_distributed2d(
     bml_matrix_distributed2d_t * A,
     bml_dense_order_t order)
 {
-    switch (A->matrix_precision)
+    switch (bml_get_precision(A->matrix))
     {
         case single_real:
             return bml_export_to_dense_distributed2d_single_real(A, order);

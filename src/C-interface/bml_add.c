@@ -6,6 +6,9 @@
 #include "ellsort/bml_add_ellsort.h"
 #include "ellblock/bml_add_ellblock.h"
 #include "csr/bml_add_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_add_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -46,6 +49,11 @@ bml_add(
         case csr:
             bml_add_csr(A, B, alpha, beta, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_add_distributed2d(A, B, alpha, beta, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -91,8 +99,13 @@ bml_add_norm(
         case csr:
             return bml_add_norm_csr(A, B, alpha, beta, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_add_norm_distributed2d(A, B, alpha, beta, threshold);
+            break;
+#endif
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("bml_add_norm: unknown matrix type\n");
             break;
     }
     return 0;
@@ -131,6 +144,11 @@ bml_add_identity(
         case csr:
             bml_add_identity_csr(A, beta, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_add_identity_distributed2d(A, beta, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -172,6 +190,11 @@ bml_scale_add_identity(
         case csr:
             bml_scale_add_identity_csr(A, alpha, beta, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_scale_add_identity_distributed2d(A, alpha, beta, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
