@@ -2,7 +2,6 @@
 #include "../bml_multiply.h"
 #include "../bml_types.h"
 #include "bml_multiply_distributed2d.h"
-#include "bml_types_distributed2d.h"
 
 #include <stdio.h>
 #include <stdlib.h>
