@@ -530,7 +530,7 @@ bml_write_bml_matrix(
     }
 }
 
-// compute largest int "i" such that i*i <= x
+// compute smallest int "i" such that i*i >= x
 int
 bml_sqrtint(
     const int x)
