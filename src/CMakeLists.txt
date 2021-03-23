@@ -38,7 +38,7 @@ set(MPI_LIBRARY_SOURCES
   $<TARGET_OBJECTS:bml-distributed2d-double_real>
   $<TARGET_OBJECTS:bml-distributed2d-single_complex>
   $<TARGET_OBJECTS:bml-distributed2d-single_real>
-  $<TARGET_OBJECTS:bml-distributed2d>)  
+  $<TARGET_OBJECTS:bml-distributed2d>)
 if(BML_MPI)
   add_library(bml
     ${LIBRARY_SOURCES}
