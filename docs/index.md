@@ -9,21 +9,21 @@ title: BML
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
-[![CircleCI](https://circleci.com/gh/lanl/bml/tree/master.svg?style=svg)](https://circleci.com/gh/lanl/bml/tree/master)
-![](https://github.com/lanl/bml/workflows/CI/badge.svg)
+[![GitHub Actions](https://github.com/lanl/bml/workflows/CI/badge.svg)](https://github.com/lanl/bml/actions)
 
 # Introduction
 
 This website is intended to provide some guidance on how to get and install
 the bml library. LA-UR number LA-UR-**17-27373**.
 
-The basic matrix library (bml) is a collection of various matrix data formats
-(for dense and sparse) and their associated algorithms for basic matrix
-operations. Application programming interfaces (API) are available for both C
-and FORTRAN. The current status of this library allows us to use two different
-formats for representing matrix data. Currently these formats are: dense, ELLPACK-R,
-ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML library can be find 
-in [BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
+The basic matrix library (bml) is a collection of various matrix data
+formats (for dense and sparse) and their associated algorithms for
+basic matrix operations. Application programming interfaces (API) are
+available for both C and FORTRAN. The current status of this library
+allows us to use two different formats for representing matrix data.
+Currently these formats are: dense, ELLPACK-R, ELLBLOCK, ELLSORT, and
+CSR. For information on how to use the BML library can be find in
+[BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
 # Mailing List
 
@@ -89,6 +89,27 @@ We offer binary packages of the bml library in [RPM
 format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml)
 thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
 format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
+
+# Testing in our CI container
+
+We are switching our CI tests from Travis-CI to GitHub Actions because
+Travis-CI is [limiting the number of builds for open source
+projects](https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing).
+Our workflow uses a [custom Docker
+image](https://hub.docker.com/r/nicolasbock/bml) which comes with the
+necessary compiler tool chain to build and test the `bml` library.
+Using `docker` is a convenient and quick way to develop, build, and
+test the `bml` library.
+
+    $ docker pull nicolasbock/bml:master
+    $ docker run --interactive --tty --rm \
+        --volume ${PWD}:/bml --workdir /bml \
+        --user $(id --user):$(id --group) \
+        nicolasbock/bml:master
+
+Inside the container:
+
+    $ ./build.sh compile
 
 # Build Instructions
 
@@ -184,7 +205,7 @@ sure that your pull request contains only one logical change (see
 change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
 for further details.
 
-## Coding Style
+# Coding Style
 
 Please indent your C code using
 

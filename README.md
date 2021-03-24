@@ -4,7 +4,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
-[![CircleCI](https://circleci.com/gh/lanl/bml/tree/master.svg?style=svg)](https://circleci.com/gh/lanl/bml/tree/master)
 [![GitHub Actions](https://github.com/lanl/bml/workflows/CI/badge.svg)](https://github.com/lanl/bml/actions)
 
 # Introduction
@@ -12,13 +11,14 @@
 This website is intended to provide some guidance on how to get and install
 the bml library. LA-UR number LA-UR-**17-27373**.
 
-The basic matrix library (bml) is a collection of various matrix data formats
-(for dense and sparse) and their associated algorithms for basic matrix
-operations. Application programming interfaces (API) are available for both C
-and FORTRAN. The current status of this library allows us to use two different
-formats for representing matrix data. Currently these formats are: dense, ELLPACK-R,
-ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML library can be find
-in [BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
+The basic matrix library (bml) is a collection of various matrix data
+formats (for dense and sparse) and their associated algorithms for
+basic matrix operations. Application programming interfaces (API) are
+available for both C and FORTRAN. The current status of this library
+allows us to use two different formats for representing matrix data.
+Currently these formats are: dense, ELLPACK-R, ELLBLOCK, ELLSORT, and
+CSR. For information on how to use the BML library can be find in
+[BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
 # Mailing List
 
