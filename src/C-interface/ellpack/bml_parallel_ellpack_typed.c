@@ -17,9 +17,9 @@
 #include <omp.h>
 #endif
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 #include <mpi.h>
-#endif
+//#endif
 
 /** Gather a bml matrix across MPI ranks.
  *
@@ -43,7 +43,7 @@ void TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 /*
     for (int i = 0; i < nRanks; i++)
     {
@@ -78,7 +78,7 @@ void TYPED_FUNC(
         A_nnz[3071], A_nnz[3072], A_nnz[6143]);
     }
 */
-#endif
+//#endif
 
 }
 

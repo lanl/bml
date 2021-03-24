@@ -16,17 +16,17 @@
 #include <string.h>
 #include <assert.h>
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 #include <mpi.h>
-#endif
+//#endif
 
 static int myRank = 0;
 static int nRanks = 1;
-#ifdef DO_MPI
+//#ifdef DO_MPI
 static MPI_Request *requestList;
 MPI_Comm ccomm;
 static int *rUsed;
-#endif
+//#endif
 
 /** Initialize.
  *
@@ -69,7 +69,7 @@ bml_printRank(
     return 0;
 }
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 void
 bml_initParallel(
     MPI_Comm comm)
@@ -81,7 +81,7 @@ bml_initParallel(
     if (bml_printRank())
         printf("MPI started in bml with %d ranks\n", nRanks);
 
-    bml_setcomm_distributed2d(comm);
+  //  bml_setcomm_distributed2d(comm);
 
     requestList = (MPI_Request *) malloc(nRanks * sizeof(MPI_Request));
     rUsed = (int *) malloc(nRanks * sizeof(int));
@@ -90,16 +90,16 @@ bml_initParallel(
         rUsed[i] = 0;
     }
 }
-#endif
+//#endif
 
 void
 bml_initParallelF(
     int fcomm)
 {
-#ifdef DO_MPI
+//#ifdef DO_MPI
     MPI_Comm comm = MPI_Comm_f2c(fcomm);
     bml_initParallel(comm);
-#endif
+//#endif
 }
 
 void
@@ -113,58 +113,58 @@ void
 bml_shutdownParallel(
     void)
 {
-#ifdef DO_MPI
+//#ifdef DO_MPI
     free(requestList);
     free(rUsed);
-#endif
+//#endif
 }
 
 void
 bml_barrierParallel(
     void)
 {
-#ifdef DO_MPI
+//#ifdef DO_MPI
     MPI_Barrier(ccomm);
-#endif
+//#endif
 }
 
 void
 bml_sumRealReduce(
     double *value)
 {
-#ifdef DO_MPI
+//#ifdef DO_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
     MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_SUM, ccomm);
     *value = sGlobal[0];
-#endif
+//#endif
 }
 
 void
 bml_minRealReduce(
     double *value)
 {
-#ifdef DO_MPI
+//#ifdef DO_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
     MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_MIN, ccomm);
     *value = sGlobal[0];
-#endif
+//#endif
 }
 
 void
 bml_maxRealReduce(
     double *value)
 {
-#ifdef DO_MPI
+//#ifdef DO_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
     MPI_Allreduce(sLocal, sGlobal, 1, MPI_DOUBLE, MPI_MAX, ccomm);
     *value = sGlobal[0];
-#endif
+//#endif
 }
 
 /** Exchange pieces of matrix across MPI ranks.

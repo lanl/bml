@@ -5,18 +5,18 @@
 
 #include "bml_types.h"
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 #ifdef SINGLE
 #define REAL_MPI_TYPE MPI_FLOAT
 #else
 #define REAL_MPI_TYPE MPI_DOUBLE
 #endif
-#endif
+//#endif
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 #include <mpi.h>
 extern MPI_Comm ccomm;
-#endif
+//#endif
 
 // Return total number of processors.
 int bml_getNRanks(
@@ -38,11 +38,11 @@ void bml_shutdownParallelF(
 int bml_printRank(
     void);
 
-#ifdef DO_MPI
+//#ifdef DO_MPI
 // Initialize some MPI stuff
 void bml_initParallel(
     MPI_Comm comm);
-#endif
+//#endif
 
 // Deallocate some MPI stuff
 void bml_shutdownParallel(

@@ -66,7 +66,6 @@ void TYPED_FUNC(
 #pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M])
 #pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M])
 #endif
-
     // Cores are first followed by halos
     for (int j = 0; j < nsize; j++)
     {

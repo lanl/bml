@@ -47,6 +47,7 @@ bml_matrix2submatrix_index_ellpack(
                                                            double_jump_flag);
             break;
         case double_real:
+            printf("algo");
             bml_matrix2submatrix_index_ellpack_double_real(A, B, nodelist,
                                                            nsize,
                                                            core_halo_index,

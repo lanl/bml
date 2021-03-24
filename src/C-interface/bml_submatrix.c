@@ -29,6 +29,7 @@ bml_matrix2submatrix_index(
     int *vsize,
     int double_jump_flag)
 {
+
     switch (bml_get_type(A))
     {
         case dense:
@@ -37,6 +38,7 @@ bml_matrix2submatrix_index(
             LOG_ERROR("bml_matrix2submatrix_index_dense NOT available\n");
             break;
         case ellpack:
+            printf("core_halo_index\n",core_halo_index);
             bml_matrix2submatrix_index_ellpack(A, B, nodelist, nsize,
                                                core_halo_index,
                                                vsize, double_jump_flag);
@@ -78,6 +80,7 @@ bml_matrix2submatrix_index_graph(
     int *vsize,
     int double_jump_flag)
 {
+
     switch (bml_get_type(B))
     {
         case dense:
@@ -164,6 +167,7 @@ bml_matrix2submatrix(
     int *core_halo_index,
     int lsize)
 {
+
     switch (bml_get_type(A))
     {
         case dense:

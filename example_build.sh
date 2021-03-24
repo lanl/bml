@@ -7,10 +7,11 @@ rm -r install
 
 MY_PATH=$(pwd)
 
-export CC=${CC:=gcc}
-export FC=${FC:=gfortran}
-export CXX=${CXX:=g++}
+export CC=${CC:=mpicc}
+export FC=${FC:=mpif90}
+export CXX=${CXX:=mpic++}
 export BLAS_VENDOR=${BLAS_VENDOR:=GNU}
+#export BML_MPI=${BML_MPI:=yes}
 export BML_OPENMP=${BML_OPENMP:=yes}
 export INSTALL_DIR=${INSTALL_DIR:="${MY_PATH}/install"}
 export BML_TESTING=${BML_TESTING:=yes}
