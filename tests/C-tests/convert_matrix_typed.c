@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int TYPED_FUNC(
-    test_import_export) (
+    test_convert) (
     const int N,
     const bml_matrix_type_t matrix_type,
     const bml_matrix_precision_t matrix_precision,
