@@ -153,6 +153,7 @@ bml_get_M(
     return -1;
 }
 
+
 int
 bml_get_NB(
     bml_matrix_t * A)
@@ -313,4 +314,22 @@ bml_get_sparsity(
             break;
     }
     return -1;
+}
+
+bml_matrix_t *
+bml_get_local_matrix(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_local_matrix_distributed2d(A);
+            break;
+#endif
+        default:
+            LOG_ERROR("unknown matrix type in bml_get_local_matrix\n");
+            break;
+    }
+    return NULL;
 }

@@ -54,6 +54,7 @@ int
 bml_get_N_distributed2d(
     bml_matrix_distributed2d_t * A)
 {
+    LOG_DEBUG("bml_get_N_distributed2d\n");
     if (A != NULL)
     {
         return A->N;
@@ -80,5 +81,19 @@ bml_get_M_distributed2d(
     else
     {
         return -1;
+    }
+}
+
+bml_matrix_t *
+bml_get_local_matrix_distributed2d(
+    bml_matrix_distributed2d_t * A)
+{
+    if (A != NULL)
+    {
+        return A->matrix;
+    }
+    else
+    {
+        return NULL;
     }
 }

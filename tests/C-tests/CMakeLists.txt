@@ -124,6 +124,8 @@ set(testlist-mpi
     add
     allocate
     copy
+    convert
+    import_export
     scale
     mpi_sendrecv
     multiply
