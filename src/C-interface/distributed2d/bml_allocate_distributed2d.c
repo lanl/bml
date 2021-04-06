@@ -82,6 +82,7 @@ bml_deallocate_distributed2d(
     assert(A != NULL);
     assert(A->matrix != NULL);
     bml_deallocate(&(A->matrix));
+    bml_free_memory(A);
 }
 
 /** Clear a matrix.
@@ -117,6 +118,9 @@ bml_zero_matrix_distributed2d(
     int N,
     int M)
 {
+    assert(N > 0);
+    assert(M > 0);
+
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     bml_setup_distributed2d(N, A);
@@ -147,6 +151,8 @@ bml_random_matrix_distributed2d(
     int N,
     int M)
 {
+    assert(M > 0);
+
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     bml_setup_distributed2d(N, A);
@@ -178,6 +184,8 @@ bml_identity_matrix_distributed2d(
     int N,
     int M)
 {
+    assert(M > 0);
+
     bml_matrix_distributed2d_t *A =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     bml_setup_distributed2d(N, A);

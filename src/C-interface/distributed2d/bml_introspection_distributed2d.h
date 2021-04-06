@@ -15,4 +15,6 @@ int bml_get_N_distributed2d(
 int bml_get_M_distributed2d(
     bml_matrix_distributed2d_t * A);
 
+bml_matrix_t *bml_get_local_matrix_distributed2d(
+    bml_matrix_distributed2d_t * A);
 #endif

@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -145,6 +146,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
+    assert(M > 0);
+
     bml_matrix_ellpack_t *A =
         bml_allocate_memory(sizeof(bml_matrix_ellpack_t));
     A->matrix_type = ellpack;

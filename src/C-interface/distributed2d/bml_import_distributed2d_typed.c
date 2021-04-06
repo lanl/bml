@@ -4,6 +4,7 @@
 #include "../bml_allocate.h"
 #include "../bml_logger.h"
 #include "../bml_import.h"
+#include "../bml_utilities.h"
 #include "bml_allocate_distributed2d.h"
 #include "bml_import_distributed2d.h"
 #include "bml_types_distributed2d.h"
@@ -33,18 +34,22 @@ bml_matrix_distributed2d_t *TYPED_FUNC(
     double threshold,
     int M)
 {
+    assert(M > 0);
+
     bml_matrix_distributed2d_t *A_bml =
         bml_allocate_memory(sizeof(bml_matrix_distributed2d_t));
     // setup A_bml struct
     bml_setup_distributed2d(N, A_bml);
     assert(A_bml->comm != MPI_COMM_NULL);
+    A_bml->M = M;
 
     // local submatrix dimensions
     int n = A_bml->n;
     int myrank = A_bml->mpitask;
     int ntasks = A_bml->ntasks;
-    int m = M / (int) sqrt(ntasks);
+    int m = M / bml_sqrtint(ntasks);
     assert(m <= n);
+    assert(m > 0);
 
     REAL_T *recvbuf = bml_allocate_memory(n * n * sizeof(REAL_T));
     int tag = 0;
