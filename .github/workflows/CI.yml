@@ -85,14 +85,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint
     container:
-      image: nicolasbock/bml:master
+      image: nicolasbock/bml:pr-454
     strategy:
       matrix:
         include:
-          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: no}
-          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: yes}
-          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: no}
-          - {CC: gcc-4.7, CXX: g++-4.7, FC: gfortran-4.7, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: yes}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: no}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: yes}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: no}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}

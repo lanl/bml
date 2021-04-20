@@ -2,13 +2,11 @@
 
 set -x -e
 
-: ${IMAGE_TAG:=bml-ci}
-: ${IMAGE_VERSION:=2}
+: ${IMAGE_TAG:=bml}
+: ${IMAGE_VERSION:=test}
 : ${PUSH_IMAGE:=no}
 
-for workflow in build lint docs; do
-  docker build --tag nicolasbock/${IMAGE_TAG}-${workflow}:${IMAGE_VERSION} ci-images/${workflow}
-  if [[ ${PUSH_IMAGE} = yes ]]; then
-    docker push nicolasbock/${IMAGE_TAG}-${workflow}:${IMAGE_VERSION}
-  fi
-done
+docker build --pull --tag nicolasbock/${IMAGE_TAG}:${IMAGE_VERSION} .
+if [[ ${PUSH_IMAGE} = yes ]]; then
+  docker push nicolasbock/${IMAGE_TAG}:${IMAGE_VERSION}
+fi
