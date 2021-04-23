@@ -129,6 +129,8 @@ set(testlist-mpi
     scale
     mpi_sendrecv
     multiply
+    trace
+    transpose
 )
 
 set(testlist

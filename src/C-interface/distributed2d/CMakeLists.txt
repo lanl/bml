@@ -7,7 +7,9 @@ set(HEADERS-DISTRIBUTED
   bml_scale_distributed2d.h
   bml_add_distributed2d.h
   bml_introspection_distributed2d.h
-  bml_multiply_distributed2d.h )
+  bml_multiply_distributed2d.h
+  bml_transpose_distributed2d.h
+  bml_trace_distributed2d.h )
 
 set(SOURCES-DISTRIBUTED
   bml_allocate_distributed2d.c
@@ -19,7 +21,9 @@ set(SOURCES-DISTRIBUTED
   bml_add_distributed2d.c
   bml_introspection_distributed2d.c
   bml_import_distributed2d.c
-  bml_multiply_distributed2d.c )
+  bml_multiply_distributed2d.c
+  bml_transpose_distributed2d.c
+  bml_trace_distributed2d.c )
 
 add_library(bml-distributed2d OBJECT ${SOURCES-DISTRIBUTED})
 set_target_properties(bml-distributed2d

@@ -6,6 +6,9 @@
 #include "ellsort/bml_trace_ellsort.h"
 #include "ellblock/bml_trace_ellblock.h"
 #include "csr/bml_trace_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_trace_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 /** Calculate trace of a matrix.
@@ -19,6 +22,7 @@ double
 bml_trace(
     bml_matrix_t * A)
 {
+    LOG_DEBUG("bml_trace\n");
     switch (bml_get_type(A))
     {
         case dense:
@@ -36,6 +40,11 @@ bml_trace(
         case csr:
             return bml_trace_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_trace_distributed2d(A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -73,6 +82,11 @@ bml_trace_mult(
         case csr:
             return bml_trace_mult_csr(A, B);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_trace_mult_distributed2d(A, B);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

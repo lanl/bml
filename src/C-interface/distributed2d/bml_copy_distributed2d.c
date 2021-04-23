@@ -7,6 +7,8 @@
 #include "bml_types_distributed2d.h"
 #include "bml_allocate_distributed2d.h"
 
+#include <assert.h>
+
 /** Copy an distributed2d matrix - result is a new matrix.
  *
  *  \ingroup copy_group
@@ -18,6 +20,8 @@ bml_matrix_distributed2d_t *
 bml_copy_distributed2d_new(
     bml_matrix_distributed2d_t * A)
 {
+    assert(A->M > 0);
+
     bml_matrix_distributed2d_t *B =
         bml_zero_matrix_distributed2d(bml_get_type(A->matrix),
                                       bml_get_precision(A->matrix), A->N,
@@ -26,6 +30,7 @@ bml_copy_distributed2d_new(
     // copy local block
     bml_copy(A->matrix, B->matrix);
 
+    assert(B != NULL);
     return B;
 }
 
