@@ -10,6 +10,7 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 /** Copy an ellpack matrix - result is a new matrix.
  *
@@ -87,6 +88,8 @@ void TYPED_FUNC(
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B)
 {
+    assert(A->M > 0);
+
     int N = A->N;
     int M = A->M;
 
