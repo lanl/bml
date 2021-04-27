@@ -44,7 +44,7 @@ set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
   -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
-set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
+set(GNU_Fortran_FLAGS_DEBUG -O0 -g -fcheck=all
   -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
