@@ -1,9 +1,0 @@
-# i386 not available
-deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
-# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic main
-# 11
-deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main
-# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main
-# 12
-deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
-# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
