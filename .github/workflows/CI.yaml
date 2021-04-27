@@ -29,6 +29,7 @@ env:
   BML_SCALAPACK: no
   BUILD_SHARED_LIBS: no
   VERBOSE_MAKEFILE: yes
+  CMAKE_BUILD_TYPE: Debug
 
 jobs:
   lint:
@@ -134,6 +135,24 @@ jobs:
             BML_OPENMP: no
             BML_INTERNAL_BLAS: no
             TESTING_EXTRA_ARGS: "-R fortran-.*-single_real"
+            # [nicolasbock] Valgrind cannot handle a Debug build with
+            # valgrind and fails with:
+            #
+            # parse DIE(readdwarf3.c:3619): confused by:
+            #  <2><60e>: Abbrev Number: 25 (DW_TAG_subrange_type)
+            #      DW_AT_type        : <42>
+            #      DW_AT_upper_bound : 4 byte block: 91 c0 7b 6
+            # parse_type_DIE:
+            # --18653-- WARNING: Serious error when reading debug info
+            # --18653-- When reading debug info from /home/runner/work/bml/bml/build/tests/Fortran-tests/bml-testf:
+            # --18653-- confused by the above DIE
+            #
+            # Bionic ships with valgrind-3.13.0. This issue might be
+            # fixed with later versions.
+            #
+            # Re-review once we have a backport of valgrind for
+            # Bionic.
+            CMAKE_BUILD_TYPE: Release
             BML_VALGRIND: yes
           - JOBNAME: gcc-11 Fortran double real
             CC: gcc-11
@@ -143,6 +162,7 @@ jobs:
             BML_OPENMP: no
             BML_INTERNAL_BLAS: no
             TESTING_EXTRA_ARGS: "-R fortran-.*-double_real"
+            CMAKE_BUILD_TYPE: Release
             BML_VALGRIND: yes
           - JOBNAME: gcc-11 Fortran single complex
             CC: gcc-11
@@ -152,6 +172,7 @@ jobs:
             BML_OPENMP: no
             BML_INTERNAL_BLAS: no
             TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex"
+            CMAKE_BUILD_TYPE: Release
             BML_VALGRIND: yes
           - JOBNAME: gcc-11 Fortran double complex
             CC: gcc-11
@@ -161,6 +182,7 @@ jobs:
             BML_OPENMP: no
             BML_INTERNAL_BLAS: no
             TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex"
+            CMAKE_BUILD_TYPE: Release
             BML_VALGRIND: yes
           - JOBNAME: MPI single real
             CC: mpicc
@@ -226,4 +248,5 @@ jobs:
           TESTING_EXTRA_ARGS: ${{ matrix.TESTING_EXTRA_ARGS || env.TESTING_EXTRA_ARGS }}
           BML_VALGRIND: ${{ matrix.BML_VALGRIND || env.BML_VALGRIND }}
           EXTRA_LINK_FLAGS: ${{ matrix.EXTRA_LINK_FLAGS }}
+          CMAKE_BUILD_TYPE: ${{ matrix.CMAKE_BUILD_TYPE || env.CMAKE_BUILD_TYPE }}
         run: ./build.sh testing
