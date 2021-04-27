@@ -19,6 +19,7 @@ env:
   BML_MPI: no
   BML_INTERNAL_BLAS: no
   BML_VALGRIND: no
+  VERBOSE_MAKEFILE: yes
 
 jobs:
   containers:
@@ -61,34 +62,32 @@ jobs:
 
   lint:
     name: Lint sources
-    runs-on: ubuntu-latest
-    container:
-      image: nicolasbock/bml:master
+    runs-on: ubuntu-18.04
     steps:
       - name: Check out sources
         uses: actions/checkout@v1
+      - name: Prepare container
+        run: ./prepare-container.sh
       - run: bundle install
       - run: bundle exec danger || true
-      - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs27 ./build.sh check_indent
+      - run: BML_OPENMP=no EMACS=emacs27 ./build.sh check_indent
 
   docs:
     name: Build docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: lint
-    container:
-      image: nicolasbock/bml:master
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
+      - name: Prepare container
+        run: ./prepare-container.sh
       - name: Build docs
         run: ./build.sh docs
 
   build:
     name: Build and test the library
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: lint
-    container:
-      image: nicolasbock/bml:master
     strategy:
       matrix:
         include:
@@ -111,6 +110,8 @@ jobs:
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
+      - name: Prepare container
+        run: ./prepare-container.sh
       - name: Build and test library
         env:
           CC: ${{ matrix.CC }}
