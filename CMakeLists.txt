@@ -579,28 +579,14 @@ add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 set(DIST_FILES CMakeLists.txt)
 
-set(BML_OLD FALSE
-  CACHE BOOL "Whether to build the old version of the library")
-
-if(BML_OLD)
-  message(STATUS "Building old version of library (unmaintained)")
-  add_subdirectory(src-old)
-else()
-  add_subdirectory(src)
-endif()
+add_subdirectory(src)
 
 include(FindDoxygen)
 
 if(DOXYGEN_FOUND)
-  if(BML_OLD)
-    set(DOXYGEN_INPUT
-      ${PROJECT_SOURCE_DIR}/src-old
-      ${CMAKE_BINARY_DIR}/src-old)
-  else()
-    set(DOXYGEN_INPUT
-      ${PROJECT_SOURCE_DIR}/src/C-interface
-      ${PROJECT_SOURCE_DIR}/src/Fortran-interface)
-  endif()
+  set(DOXYGEN_INPUT
+    ${PROJECT_SOURCE_DIR}/src/C-interface
+    ${PROJECT_SOURCE_DIR}/src/Fortran-interface)
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(documentation/Doxyfile.in Doxyfile)
   add_custom_target(docs
@@ -628,11 +614,7 @@ if(BML_TESTING)
     message(STATUS "Will _not_ test for memory leaks")
   endif()
   enable_testing()
-  if(BML_OLD)
-    add_subdirectory(tests-old)
-  else()
-    add_subdirectory(tests)
-  endif()
+  add_subdirectory(tests)
 endif()
 
 find_program(TAR tar)
