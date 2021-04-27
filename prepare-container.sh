@@ -4,7 +4,10 @@ set -e -u -x
 
 SUDO=$(which sudo || true)
 
-${SUDO} apt-get update
+for i in $(seq 5); do
+  ${SUDO} apt-get update && break
+done
+
 ${SUDO} apt-get install --assume-yes --no-install-recommends \
   apt-transport-https \
   ca-certificates \
@@ -45,7 +48,10 @@ EOF
 ${SUDO} apt-key adv --keyserver keyserver.ubuntu.com \
   --recv-keys 873503A090750CDAEB0754D93FF0E01EEAAFC9CD
 
-${SUDO} apt-get update
+for i in $(seq 5); do
+  ${SUDO} apt-get update && break
+done
+
 ${SUDO} ln -fs /usr/share/zoneinfo/UTC /etc/localtime
 ${SUDO} apt-get install --assume-yes tzdata
 DEBIAN_FRONTEND=noninteractive ${SUDO} dpkg-reconfigure \
