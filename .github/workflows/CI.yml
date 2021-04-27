@@ -14,11 +14,12 @@ env:
   CC: gcc
   CXX: g++
   FC: gfortran
-  BUILD_SHARED_LIBS: no
-  BML_OPENMP: no
-  BML_MPI: no
   BML_INTERNAL_BLAS: no
+  BML_MPI: no
+  BML_MPIEXEC_NUMPROCS_FLAG: "-np"
+  BML_OPENMP: no
   BML_VALGRIND: no
+  BUILD_SHARED_LIBS: no
   VERBOSE_MAKEFILE: yes
 
 jobs:
@@ -103,10 +104,10 @@ jobs:
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, BML_MPIEXEC_NUMPROCS_FLAG: "-np", TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real", BML_VALGRIND: no}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, BML_MPIEXEC_NUMPROCS_FLAG: "-np", TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real", BML_VALGRIND: no}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, BML_MPIEXEC_NUMPROCS_FLAG: "-np", TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex", BML_VALGRIND: no}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, BML_MPIEXEC_NUMPROCS_FLAG: "-np", TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex", BML_VALGRIND: no}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real"}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real"}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex"}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex"}
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
@@ -114,14 +115,14 @@ jobs:
         run: ./prepare-container.sh
       - name: Build and test library
         env:
-          CC: ${{ matrix.CC }}
-          CXX: ${{ matrix.CXX }}
-          FC: ${{ matrix.FC }}
-          BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS }}
-          BML_OPENMP: ${{ matrix.BML_OPENMP }}
-          BML_MPI: ${{ matrix.BML_MPI }}
-          BML_MPIEXEC_NUMPROCS_FLAG: ${{matrix.BML_MPIEXEC_NUMPROCS_FLAG}}
-          BML_INTERNAL_BLAS: ${{ matrix.BML_INTERNAL_BLAS }}
-          TESTING_EXTRA_ARGS: ${{ matrix.TESTING_EXTRA_ARGS }}
-          BML_VALGRIND: ${{ matrix.BML_VALGRIND }}
+          CC: ${{ matrix.CC || env.CC }}
+          CXX: ${{ matrix.CXX || env.CXX }}
+          FC: ${{ matrix.FC || env.FC }}
+          BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || env.BUILD_SHARED_LIBS }}
+          BML_OPENMP: ${{ matrix.BML_OPENMP || env.BML_OPENMP }}
+          BML_MPI: ${{ matrix.BML_MPI || env.BML_MPI }}
+          BML_MPIEXEC_NUMPROCS_FLAG: ${{ matrix.BML_MPIEXEC_NUMPROCS_FLAG || env.BML_MPIEXEC_NUMPROCS_FLAG }}
+          BML_INTERNAL_BLAS: ${{ matrix.BML_INTERNAL_BLAS || env.BML_INTERNAL_BLAS }}
+          TESTING_EXTRA_ARGS: ${{ matrix.TESTING_EXTRA_ARGS || env.TESTING_EXTRA_ARGS }}
+          BML_VALGRIND: ${{ matrix.BML_VALGRIND || env.BML_VALGRIND }}
         run: ./build.sh testing
