@@ -27,7 +27,7 @@ env:
 
 jobs:
   containers:
-    name: Update container images (only approve if change involves the Dockerfile and if the change is trusted)
+    name: Update container images
     runs-on: ubuntu-latest
     # GitHub restricts access to environment secrets from forks for
     # security reasons and building of the CI image will fail from a
@@ -107,6 +107,14 @@ jobs:
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
           - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_complex",       BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_real",    BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
           - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real"}
           - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real"}
           - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex"}
