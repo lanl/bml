@@ -67,6 +67,7 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
   gcc-4.8 g++-4.8 gfortran-4.8 \
   gcc-9 g++-9 gfortran-9 \
   gcc-10 g++-10 gfortran-10 \
+  gcc-11 g++-11 gfortran-11 \
   git-core \
   indent \
   openssh-client \
