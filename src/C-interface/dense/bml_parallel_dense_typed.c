@@ -2,10 +2,15 @@
 #include "../../typed.h"
 #include "../bml_parallel.h"
 #include "../bml_types.h"
+#include "../bml_allocate.h"
 #include "bml_parallel_dense.h"
 #include "bml_types_dense.h"
 #include "bml_allocate_dense.h"
 #include "../bml_logger.h"
+
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
 
 #include <complex.h>
 #include <math.h>
@@ -75,7 +80,18 @@ void TYPED_FUNC(
     const int dst,
     MPI_Comm comm)
 {
-    MPI_Send(A->matrix, A->N * A->N, MPI_T, dst, 222, comm);
+#ifdef BML_USE_MAGMA
+    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N, A->queue);
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
+
+    MPI_Send(A_matrix, A->N * A->N, MPI_T, dst, 222, comm);
+
+#ifdef BML_USE_MAGMA
+    free(A_matrix);
+#endif
 }
 
 void TYPED_FUNC(
@@ -84,8 +100,19 @@ void TYPED_FUNC(
     const int src,
     MPI_Comm comm)
 {
+#ifdef BML_USE_MAGMA
+    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
+
     MPI_Status status;
-    MPI_Recv(A->matrix, A->N * A->N, MPI_T, src, 222, comm, &status);
+    MPI_Recv(A_matrix, A->N * A->N, MPI_T, src, 222, comm, &status);
+
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (A->N, A->N, A_matrix, A->N, A->matrix, A->ld, A->queue);
+    free(A_matrix);
+#endif
 }
 
 bml_matrix_dense_t
