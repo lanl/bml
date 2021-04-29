@@ -160,11 +160,6 @@ else()
   message(STATUS "Will not build with OpenMP")
 endif()
 
-set(BML_COVERAGE FALSE CACHE BOOL "Whether to generate coverage code")
-if(BML_COVERAGE)
-  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} --coverage)
-endif()
-
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
   message(STATUS "Will build with MPI")
