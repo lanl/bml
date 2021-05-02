@@ -1,0 +1,373 @@
+version: 2.1
+
+jobs:
+  build-gcc-4_7-shared-serial-external: &build-template
+    docker:
+      - image: nicolasbock/bml-ci-build:2
+    environment:
+      OMP_NUM_THREADS: 4
+      CMAKE_BUILD_TYPE: Debug
+      VERBOSE_MAKEFILE: yes
+      PARALLEL_TEST_JOBS: 2
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+          command: ./build.sh testing
+
+  build-gcc-4_7-shared-serial-internal:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: yes
+          command: ./build.sh testing
+
+  build-gcc-4_7-shared-OpenMP-external:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: no
+          command: ./build.sh testing
+
+  build-gcc-4_7-shared-OpenMP-internal:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-4.7
+            CXX: g++-4.7
+            FC: gfortran-4.7
+            BUILD_SHARED_LIBS: yes
+            BML_VALGRIND: no
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: yes
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-single_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-single_real
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-double_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-double_real
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-single_complex:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-single_complex
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-C-double_complex:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-double_complex
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-Fortran-single_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R fortran-.*-single_real
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-Fortran-double_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R fortran-.*-double_real
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-Fortran-single_complex:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R fortran-.*-single_complex
+          command: ./build.sh testing
+
+  build-gcc-9-static-serial-external-valgrind-Fortran-double_complex:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R fortran-.*-double_complex
+          command: ./build.sh testing
+
+  build-clang-shared-serial-external:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: clang-9
+            CXX: clang++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: no
+          command: ./build.sh testing
+
+  build-clang-shared-OpenMP-external:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: clang-9
+            CXX: clang++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: no
+          # This test is disabled for now until we figure out a
+          # solution to https://github.com/lanl/bml/issues/159
+          command: >-
+            ./build.sh testing || true
+
+  build-gcc-9-static-serial-mpi-external-valgrind-C-double_real:
+    <<: *build-template
+    steps:
+      - checkout
+      - run:
+          environment:
+            CC: gcc-9
+            CXX: g++-9
+            FC: gfortran-9
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_MPI: yes
+            BML_INTERNAL_BLAS: no
+            BML_VALGRIND: yes
+            TESTING_EXTRA_ARGS: -R C-.*-double_real
+          command: ./build.sh testing
+
+
+  lint:
+    docker:
+      - image: nicolasbock/bml-ci-lint:2
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec danger || true
+      - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+
+  docs:
+    docker:
+      - image: nicolasbock/bml-ci-docs:2
+    steps:
+      - checkout
+      - run: ./build.sh docs
+
+  docs-test:
+    docker:
+      - image: ubuntu:xenial
+    steps:
+      - run: apt-get update
+      - run: apt-get install --assume-yes software-properties-common
+      - run: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
+      - run: apt-add-repository ppa:janisozaur/cmake-update
+      - run: apt-get update
+      - run: ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+      - run: apt-get install --assume-yes tzdata
+      - run: DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tzdata
+      - run: |
+          apt-get install --assume-yes --no-install-recommends \
+          apt-utils \
+          build-essential \
+          cmake cmake-data \
+          doxygen \
+          gfortran \
+          git-core \
+          libblas-dev liblapack-dev \
+          openssh-client \
+          texlive
+      - checkout
+      - run: ./build.sh docs
+
+workflows:
+  build:
+    jobs:
+      - lint
+      - docs:
+          requires:
+            - build-gcc-4_7-shared-serial-external
+            - build-gcc-4_7-shared-serial-internal
+            - build-gcc-4_7-shared-OpenMP-external
+            - build-gcc-4_7-shared-OpenMP-internal
+            - build-gcc-9-static-serial-external-valgrind-C-single_real
+            - build-gcc-9-static-serial-external-valgrind-C-double_real
+            - build-gcc-9-static-serial-external-valgrind-C-single_complex
+            - build-gcc-9-static-serial-external-valgrind-C-double_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
+            - build-clang-shared-serial-external
+            - build-clang-shared-OpenMP-external
+            - build-gcc-9-static-serial-mpi-external-valgrind-C-double_real
+      - docs-test:
+          requires:
+            - build-gcc-4_7-shared-serial-external
+            - build-gcc-4_7-shared-serial-internal
+            - build-gcc-4_7-shared-OpenMP-external
+            - build-gcc-4_7-shared-OpenMP-internal
+            - build-gcc-9-static-serial-external-valgrind-C-single_real
+            - build-gcc-9-static-serial-external-valgrind-C-double_real
+            - build-gcc-9-static-serial-external-valgrind-C-single_complex
+            - build-gcc-9-static-serial-external-valgrind-C-double_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_real
+            - build-gcc-9-static-serial-external-valgrind-Fortran-single_complex
+            - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex
+            - build-clang-shared-serial-external
+            - build-clang-shared-OpenMP-external
+            - build-gcc-9-static-serial-mpi-external-valgrind-C-double_real
+      - build-gcc-4_7-shared-serial-external:
+          requires:
+            - lint
+      - build-gcc-4_7-shared-serial-internal:
+          requires:
+            - lint
+      - build-gcc-4_7-shared-OpenMP-external:
+          requires:
+            - lint
+      - build-gcc-4_7-shared-OpenMP-internal:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-single_real:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-double_real:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-single_complex:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-C-double_complex:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-Fortran-single_real:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-Fortran-double_real:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-Fortran-single_complex:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-external-valgrind-Fortran-double_complex:
+          requires:
+            - lint
+      - build-clang-shared-serial-external:
+          requires:
+            - lint
+      - build-clang-shared-OpenMP-external:
+          requires:
+            - lint
+      - build-gcc-9-static-serial-mpi-external-valgrind-C-double_real:
+          requires:
+            - lint

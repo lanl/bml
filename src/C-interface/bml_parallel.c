@@ -4,6 +4,11 @@
 #include "dense/bml_parallel_dense.h"
 #include "ellpack/bml_parallel_ellpack.h"
 #include "ellsort/bml_parallel_ellsort.h"
+#include "ellblock/bml_parallel_ellblock.h"
+#include "csr/bml_parallel_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_allocate_distributed2d.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,44 +69,36 @@ bml_printRank(
     return 0;
 }
 
+#ifdef DO_MPI
 void
 bml_initParallel(
-    int *argc,
-    char ***argv)
+    MPI_Comm comm)
 {
-#ifdef DO_MPI
-    MPI_Init(argc, argv);
-    ccomm = MPI_COMM_WORLD;
-    MPI_Comm_rank(ccomm, &myRank);
-    MPI_Comm_size(ccomm, &nRanks);
-
-    requestList = (MPI_Request *) malloc(nRanks * sizeof(MPI_Request));
-    rUsed = (int *) malloc(nRanks * sizeof(int));
-    for (int i = 0; i < nRanks; i++)
-    {
-        rUsed[i] = 0;
-    }
-#endif
-}
-
-void
-bml_initParallelF(
-    int fcomm)
-{
-#ifdef DO_MPI
-    ccomm = MPI_Comm_f2c(fcomm);
+    ccomm = comm;
     MPI_Comm_rank(ccomm, &myRank);
     MPI_Comm_size(ccomm, &nRanks);
 
     if (bml_printRank())
         printf("MPI started in bml with %d ranks\n", nRanks);
 
+    bml_setcomm_distributed2d(comm);
+
     requestList = (MPI_Request *) malloc(nRanks * sizeof(MPI_Request));
     rUsed = (int *) malloc(nRanks * sizeof(int));
     for (int i = 0; i < nRanks; i++)
     {
         rUsed[i] = 0;
     }
+}
+#endif
+
+void
+bml_initParallelF(
+    int fcomm)
+{
+#ifdef DO_MPI
+    MPI_Comm comm = MPI_Comm_f2c(fcomm);
+    bml_initParallel(comm);
 #endif
 }
 
@@ -109,10 +106,7 @@ void
 bml_shutdownParallelF(
     void)
 {
-#ifdef DO_MPI
-    free(requestList);
-    free(rUsed);
-#endif
+    bml_shutdownParallel();
 }
 
 void
@@ -122,8 +116,6 @@ bml_shutdownParallel(
 #ifdef DO_MPI
     free(requestList);
     free(rUsed);
-
-    MPI_Finalize();
 #endif
 }
 
@@ -202,3 +194,100 @@ bml_allGatherVParallel(
             break;
     }
 }
+
+#ifdef DO_MPI
+void
+bml_mpi_send(
+    bml_matrix_t * A,
+    const int dst,
+    MPI_Comm comm)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_mpi_send_dense(A, dst, comm);
+            break;
+        case ellpack:
+            bml_mpi_send_ellpack(A, dst, comm);
+            break;
+        case ellsort:
+            bml_mpi_send_ellsort(A, dst, comm);
+            break;
+        case ellblock:
+            bml_mpi_send_ellblock(A, dst, comm);
+            break;
+        case csr:
+            bml_mpi_send_csr(A, dst, comm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+void
+bml_mpi_recv(
+    bml_matrix_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_mpi_recv_dense(A, src, comm);
+            break;
+        case ellpack:
+            bml_mpi_recv_ellpack(A, src, comm);
+            break;
+        case ellsort:
+            bml_mpi_recv_ellsort(A, src, comm);
+            break;
+        case ellblock:
+            bml_mpi_recv_ellblock(A, src, comm);
+            break;
+        case csr:
+            bml_mpi_recv_csr(A, src, comm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+bml_matrix_t *
+bml_mpi_recv_matrix(
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M,
+    const int src,
+    MPI_Comm comm)
+{
+    switch (matrix_type)
+    {
+        case dense:
+            return bml_mpi_recv_matrix_dense(matrix_precision, N, M, src,
+                                             comm);
+            break;
+        case ellpack:
+            return bml_mpi_recv_matrix_ellpack(matrix_precision, N, M, src,
+                                               comm);
+            break;
+        case ellsort:
+            return bml_mpi_recv_matrix_ellsort(matrix_precision, N, M, src,
+                                               comm);
+            break;
+        case ellblock:
+            return bml_mpi_recv_matrix_ellblock(matrix_precision, N, M, src,
+                                                comm);
+            break;
+        case csr:
+            return bml_mpi_recv_matrix_csr(matrix_precision, N, M, src, comm);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+#endif

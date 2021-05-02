@@ -6,6 +6,9 @@
 #include "ellsort/bml_import_ellsort.h"
 #include "ellblock/bml_import_ellblock.h"
 #include "csr/bml_import_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_import_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -34,28 +37,37 @@ bml_import_from_dense(
     bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("importing dense matrix\n");
-    switch (matrix_type)
-    {
-        case dense:
-            return bml_import_from_dense_dense(matrix_precision, order, N, A,
-                                               threshold, distrib_mode);
-        case ellpack:
-            return bml_import_from_dense_ellpack(matrix_precision, order, N,
+#ifdef DO_MPI
+    if (distrib_mode == distributed)
+        return bml_import_from_dense_distributed2d(matrix_type,
+                                                   matrix_precision,
+                                                   order, N, A, threshold, M);
+    else
+#endif
+        switch (matrix_type)
+        {
+            case dense:
+                return bml_import_from_dense_dense(matrix_precision, order, N,
+                                                   A, threshold,
+                                                   distrib_mode);
+            case ellpack:
+                return bml_import_from_dense_ellpack(matrix_precision, order,
+                                                     N, A, threshold, M,
+                                                     distrib_mode);
+            case ellsort:
+                return bml_import_from_dense_ellsort(matrix_precision, order,
+                                                     N, A, threshold, M,
+                                                     distrib_mode);
+            case ellblock:
+                return bml_import_from_dense_ellblock(matrix_precision, order,
+                                                      N, A, threshold, M,
+                                                      distrib_mode);
+            case csr:
+                return bml_import_from_dense_csr(matrix_precision, order, N,
                                                  A, threshold, M,
                                                  distrib_mode);
-        case ellsort:
-            return bml_import_from_dense_ellsort(matrix_precision, order, N,
-                                                 A, threshold, M,
-                                                 distrib_mode);
-        case ellblock:
-            return bml_import_from_dense_ellblock(matrix_precision, order, N,
-                                                  A, threshold, M,
-                                                  distrib_mode);
-        case csr:
-            return bml_import_from_dense_csr(matrix_precision, order, N,
-                                             A, threshold, M, distrib_mode);
-        default:
-            LOG_ERROR("unknown matrix type\n");
-    }
+            default:
+                LOG_ERROR("unknown matrix type\n");
+        }
     return NULL;
 }

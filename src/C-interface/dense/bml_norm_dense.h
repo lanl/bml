@@ -38,6 +38,36 @@ double bml_sum_squares_submatrix_dense_double_complex(
     bml_matrix_dense_t * A,
     int core_size);
 
+double bml_sum_AB_dense(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_dense_single_real(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_dense_double_real(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_dense_single_complex(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold);
+
+double bml_sum_AB_dense_double_complex(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold);
+
 double bml_sum_squares2_dense(
     bml_matrix_dense_t * A,
     bml_matrix_dense_t * B,

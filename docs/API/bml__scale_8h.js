@@ -1,6 +1,6 @@
 var bml__scale_8h =
 [
-    [ "bml_scale", "bml__scale_8h.html#a827e7b5782a1fe81c49e580f6975daf5", null ],
-    [ "bml_scale_inplace", "bml__scale_8h.html#ab78a98dabde4b0002ba75ffc882b804c", null ],
-    [ "bml_scale_new", "bml__scale_8h.html#a78864867a85a0c16bfcc4e956188661e", null ]
+    [ "bml_scale", "bml__scale_8h.html#a40f2db1b47209d5e3d03a174377a9378", null ],
+    [ "bml_scale_inplace", "bml__scale_8h.html#a9ec5eb05663f318269db8f7991a78a49", null ],
+    [ "bml_scale_new", "bml__scale_8h.html#a214988e2c702bfa0ac57f522121e1707", null ]
 ];

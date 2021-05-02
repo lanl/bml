@@ -34,7 +34,17 @@ int TYPED_FUNC(
 
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
-    A = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
+    A = bml_identity_matrix(matrix_type, matrix_precision, N, M,
+                            distrib_mode);
     B = bml_scale_new(&scalar, A);
     C = bml_scale_new(&scalar, B);
 
@@ -46,78 +56,91 @@ int TYPED_FUNC(
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
 
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
-                           N, 0, N);
+    if (bml_getMyRank() == 0)
+    {
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense,
+                               0, N, 0, N);
 
 #if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
-    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
-           traceA - (double) N);
-    printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
-           traceB - scalar * N);
-    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
-           scalar * scalar * N, traceC - scalar * scalar * N);
+        printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+               traceA - (double) N);
+        printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
+               traceB - scalar * N);
+        printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+               scalar * scalar * N, traceC - scalar * scalar * N);
 #else
-    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
-           traceA - (double) N);
-    printf("traceB = %e (%e + %e i), diff. traceB = %e\n", traceB,
-           REAL_PART(scalar * N), IMAGINARY_PART(scalar * N),
-           traceB - REAL_PART(scalar * N));
-    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
-           REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N),
-           traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
+        printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+               traceA - (double) N);
+        printf("traceB = %e (%e + %e i), diff. traceB = %e\n", traceB,
+               REAL_PART(scalar * N), IMAGINARY_PART(scalar * N),
+               traceB - REAL_PART(scalar * N));
+        printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+               REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N),
+               traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
 #endif
 
-    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
-    {
-        LOG_ERROR
-            ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
-             traceA, N, rel_diff);
-        return -1;
+        if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
+        {
+            LOG_ERROR
+                ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
+                 traceA, N, rel_diff);
+            return -1;
+        }
+        if ((rel_diff =
+             fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
+            REL_TOL)
+        {
+            LOG_ERROR
+                ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
+                 traceB, (double) (scalar * N), rel_diff);
+            return -1;
+        }
+        if ((rel_diff =
+             fabs(traceC -
+                  (double) (scalar * scalar * N)) / (double) (scalar * N *
+                                                              N)) > REL_TOL)
+        {
+            LOG_ERROR
+                ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
+                 traceC, (double) (scalar * scalar * N), rel_diff);
+            return -1;
+        }
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
+        bml_free_memory(C_dense);
     }
-    if ((rel_diff =
-         fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
-        REL_TOL)
-    {
-        LOG_ERROR
-            ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
-             traceB, (double) (scalar * N), rel_diff);
-        return -1;
-    }
-    if ((rel_diff =
-         fabs(traceC -
-              (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
-        REL_TOL)
-    {
-        LOG_ERROR
-            ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
-             traceC, (double) (scalar * scalar * N), rel_diff);
-        return -1;
-    }
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
-    bml_free_memory(C_dense);
+
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&C);
 
     // Test when more values that just diagonal
-    A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
-    for (int i = 0; i < N * N; i++)
+    if (bml_getMyRank() == 0)
     {
-        A_dense[i] = rand() / (double) RAND_MAX;
+        A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
+        for (int i = 0; i < N * N; i++)
+        {
+            A_dense[i] = rand() / (double) RAND_MAX;
+        }
+        for (int i = 0; i < N; i++)
+        {
+            A_dense[i * N + i] = (REAL_T) 1.0;
+        }
     }
-    for (int i = 0; i < N; i++)
-    {
-        A_dense[i * N + i] = (REAL_T) 1.0;
-    }
+
     A = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
-                              N, M, A_dense, 0, sequential);
-    bml_free_memory(A_dense);
+                              N, M, A_dense, 0, distrib_mode);
+
+    if (bml_getMyRank() == 0)
+        bml_free_memory(A_dense);
+
+    LOG_DEBUG("bml_scale_new A\n");
     B = bml_scale_new(&scalar, A);
+    LOG_DEBUG("bml_scale_new B\n");
     C = bml_scale_new(&scalar, B);
 
     traceA = bml_trace(A);
@@ -127,61 +150,63 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     C_dense = bml_export_to_dense(C, dense_row_major);
-
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense, 0,
-                           N, 0, N);
+    if (bml_getMyRank() == 0)
+    {
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
+                               0, N, 0, N);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense,
+                               0, N, 0, N);
 
 #if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
-    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
-           traceA - (double) N);
-    printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
-           traceB - scalar * N);
-    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
-           scalar * scalar * N, traceC - scalar * scalar * N);
+        printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+               traceA - (double) N);
+        printf("traceB = %e (%e), diff. traceB = %e\n", traceB, scalar * N,
+               traceB - scalar * N);
+        printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+               scalar * scalar * N, traceC - scalar * scalar * N);
 #else
-    printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
-           traceA - (double) N);
-    printf("traceB = %e (%e + %e i), diff. traceB = %e\n", traceB,
-           REAL_PART(scalar * N), IMAGINARY_PART(scalar * N),
-           traceB - REAL_PART(scalar * N));
-    printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
-           REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N),
-           traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
+        printf("traceA = %e (%e), diff. traceA = %e\n", traceA, (double) N,
+               traceA - (double) N);
+        printf("traceB = %e (%e + %e i), diff. traceB = %e\n", traceB,
+               REAL_PART(scalar * N), IMAGINARY_PART(scalar * N),
+               traceB - REAL_PART(scalar * N));
+        printf("traceC = %e (%e), diff. traceC = %e\n", traceC,
+               REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N),
+               traceC - REAL_PART(scalar * COMPLEX_CONJUGATE(scalar) * N));
 #endif
 
-    if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
-    {
-        LOG_ERROR
-            ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
-             traceA, rel_diff);
-        return -1;
+        if ((rel_diff = fabs(traceA - (double) N) / (double) N) > REL_TOL)
+        {
+            LOG_ERROR
+                ("traces are not correct; traceA = %e and not %e, rel.diff = %e\n",
+                 traceA, rel_diff);
+            return -1;
+        }
+        if ((rel_diff =
+             fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
+            REL_TOL)
+        {
+            LOG_ERROR
+                ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
+                 traceB, (double) (scalar * N), rel_diff);
+            return -1;
+        }
+        if ((rel_diff =
+             fabs(traceC -
+                  (double) (scalar * scalar * N)) / (double) (scalar * N *
+                                                              N)) > REL_TOL)
+        {
+            LOG_ERROR
+                ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
+                 traceC, (double) (scalar * scalar * N), rel_diff);
+            return -1;
+        }
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
+        bml_free_memory(C_dense);
     }
-    if ((rel_diff =
-         fabs(traceB - (double) (scalar * N)) / (double) (scalar * N)) >
-        REL_TOL)
-    {
-        LOG_ERROR
-            ("traces are not correct; traceB = %e and not %e, rel.diff = %e\n",
-             traceB, (double) (scalar * N), rel_diff);
-        return -1;
-    }
-    if ((rel_diff =
-         fabs(traceC -
-              (double) (scalar * scalar * N)) / (double) (scalar * N * N)) >
-        REL_TOL)
-    {
-        LOG_ERROR
-            ("traces are not correct; traceC = %e and not %e, rel.diff = %e\n",
-             traceC, (double) (scalar * scalar * N), rel_diff);
-        return -1;
-    }
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
-    bml_free_memory(C_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
     bml_deallocate(&C);

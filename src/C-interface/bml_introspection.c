@@ -6,6 +6,9 @@
 #include "ellsort/bml_introspection_ellsort.h"
 #include "ellblock/bml_introspection_ellblock.h"
 #include "csr/bml_introspection_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_introspection_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -97,8 +100,13 @@ bml_get_N(
         case csr:
             return bml_get_N_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_N_distributed2d(A);
+            break;
+#endif
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("bml_get_N: unknown matrix type\n");
             break;
     }
     return -1;
@@ -133,12 +141,18 @@ bml_get_M(
         case csr:
             return bml_get_M_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_M_distributed2d(A);
+            break;
+#endif
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("bml_get_M: unknown matrix type\n");
             break;
     }
     return -1;
 }
+
 
 int
 bml_get_NB(
@@ -165,7 +179,7 @@ bml_get_NB(
             return 1;
             break;
         default:
-            LOG_ERROR("unknown matrix type\n");
+            LOG_ERROR("bml_get_NB: unknown matrix type\n");
             break;
     }
     return -1;
@@ -300,4 +314,22 @@ bml_get_sparsity(
             break;
     }
     return -1;
+}
+
+bml_matrix_t *
+bml_get_local_matrix(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_local_matrix_distributed2d(A);
+            break;
+#endif
+        default:
+            LOG_ERROR("unknown matrix type in bml_get_local_matrix\n");
+            break;
+    }
+    return NULL;
 }

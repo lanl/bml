@@ -6,6 +6,9 @@
 #include "ellsort/bml_scale_ellsort.h"
 #include "ellblock/bml_scale_ellblock.h"
 #include "csr/bml_scale_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_scale_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -41,6 +44,11 @@ bml_scale_new(
         case csr:
             B = bml_scale_csr_new(scale_factor, A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            B = bml_scale_distributed2d_new(scale_factor, A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -79,6 +87,11 @@ bml_scale(
         case csr:
             bml_scale_csr(scale_factor, A, B);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_scale_distributed2d(scale_factor, A, B);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -114,6 +127,11 @@ bml_scale_inplace(
         case csr:
             bml_scale_inplace_csr(scale_factor, A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_scale_inplace_distributed2d(scale_factor, A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

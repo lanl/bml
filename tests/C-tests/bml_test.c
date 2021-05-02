@@ -8,7 +8,11 @@
 
 #include "bml_test.h"
 
+#ifdef DO_MPI
+const int NUM_TESTS = 29;
+#else
 const int NUM_TESTS = 28;
+#endif
 
 typedef struct
 {
@@ -32,6 +36,9 @@ const char *test_name[] = {
     "get_sparsity",
     "inverse",
     "io_matrix",
+#ifdef DO_MPI
+    "mpi_sendrecv",
+#endif
     "multiply",
     "multiply_banded",
     "multiply_x2",
@@ -63,6 +70,9 @@ const char *test_description[] = {
     "Get the sparsity",
     "Matrix inverse",
     "Read and write an mtx matrix",
+#ifdef DO_MPI
+    "Send/Recv matrix with MPI",
+#endif
     "Multiply two bml matrices",
     "Multiply two banded bml matrices",
     "Multiply two identical matrices",
@@ -94,6 +104,9 @@ const test_function_t testers[] = {
     test_get_sparsity,
     test_inverse,
     test_io_matrix,
+#ifdef DO_MPI
+    test_mpi_sendrecv,
+#endif
     test_multiply,
     test_multiply_banded,
     test_multiply_x2,
@@ -164,9 +177,16 @@ main(
     int argc,
     char **argv)
 {
-    bml_init(&argc, &argv);
-
+#ifdef DO_MPI
+    MPI_Init(&argc, &argv);
+    bml_init(MPI_COMM_WORLD);
+    printf("with MPI\n");
+    int N = 14;
+#else
+    bml_init();
     int N = 13;
+#endif
+
     int M = -1;
     char *test = NULL;
     int test_index = -1;
@@ -307,6 +327,8 @@ main(
     test_result = testers[test_index] (N, matrix_type, precision, M);
 
     bml_shutdown();
-
+#ifdef DO_MPI
+    MPI_Finalize();
+#endif
     return test_result;
 }

@@ -1,2 +1,4 @@
 add_subdirectory(C-tests)
-add_subdirectory(Fortran-tests)
+if(NOT BML_MPI)
+  add_subdirectory(Fortran-tests)
+endif()

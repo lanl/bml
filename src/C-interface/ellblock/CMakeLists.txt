@@ -12,6 +12,7 @@ set(HEADERS-ELLBLOCK
   bml_multiply_ellblock.h
   bml_normalize_ellblock.h
   bml_norm_ellblock.h
+  bml_parallel_ellblock.h
   bml_scale_ellblock.h
   bml_setters_ellblock.h
   bml_threshold_ellblock.h
@@ -34,6 +35,7 @@ set(SOURCES-ELLBLOCK
   bml_multiply_ellblock.c
   bml_normalize_ellblock.c
   bml_norm_ellblock.c
+  bml_parallel_ellblock.c
   bml_scale_ellblock.c
   bml_setters_ellblock.c
   bml_threshold_ellblock.c
@@ -66,6 +68,7 @@ set(SOURCES-ELLBLOCK-TYPED
   bml_multiply_ellblock_typed.c
   bml_normalize_ellblock_typed.c
   bml_norm_ellblock_typed.c
+  bml_parallel_ellblock_typed.c
   bml_scale_ellblock_typed.c
   bml_setters_ellblock_typed.c
   bml_threshold_ellblock_typed.c

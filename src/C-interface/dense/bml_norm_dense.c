@@ -79,6 +79,45 @@ bml_sum_squares_submatrix_dense(
     return 0;
 }
 
+/** Calculate the sum of elements in
+ * \alpha A(i,j) * B(i,j).
+ *
+ *  \ingroup norm_group
+ *
+ *  \param A The matrix A
+ *  \param B The matrix B
+ *  \param alpha Multiplier for matrix A
+ *  \param threshold Threshold
+ *  \return The sum of squares of all elements of \alpha A(i,j) * B(i,j)
+ */
+double
+bml_sum_AB_dense(
+    bml_matrix_dense_t * A,
+    bml_matrix_dense_t * B,
+    double alpha,
+    double threshold)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_sum_AB_dense_single_real(A, B, alpha, threshold);
+            break;
+        case double_real:
+            return bml_sum_AB_dense_double_real(A, B, alpha, threshold);
+            break;
+        case single_complex:
+            return bml_sum_AB_dense_single_complex(A, B, alpha, threshold);
+            break;
+        case double_complex:
+            return bml_sum_AB_dense_double_complex(A, B, alpha, threshold);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+    return 0;
+}
+
 /** Calculate the sum of squares of elements in
  * \alpha A + \beta B.
  *

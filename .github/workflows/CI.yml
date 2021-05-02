@@ -8,58 +8,132 @@ on:
   pull_request:
     branches:
       - master
+  schedule:
+    # Weekly on Sundays:
+    - cron: '00 04 * * 0'
+
+# Defaults
+env:
+  CC: gcc
+  CXX: g++
+  FC: gfortran
+  BML_INTERNAL_BLAS: no
+  BML_MPI: no
+  BML_MPIEXEC_NUMPROCS_FLAG: "-np"
+  BML_OPENMP: no
+  BML_VALGRIND: no
+  BUILD_SHARED_LIBS: no
+  VERBOSE_MAKEFILE: yes
 
 jobs:
+  containers:
+    name: Update container images
+    runs-on: ubuntu-latest
+    # GitHub restricts access to environment secrets from forks for
+    # security reasons and building of the CI image will fail from a
+    # fork.
+    if: ${{ github.event.pull_request.head.repo.full_name == 'lanl/bml' }}
+    environment: CI
+    steps:
+      - run: echo ${{ github.event.pull_request.head.repo.full_name }}
+      - name: Check out sources
+        uses: actions/checkout@v2
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: nicolasbock/bml
+          tag-sha: true
+      - name: Set up qemu
+        uses: docker/setup-qemu-action@v1
+      - name: Set up buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Log in to Docker hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+
   lint:
     name: Lint sources
-    runs-on: ubuntu-latest
-    container:
-      image: nicolasbock/bml-ci-lint:2
+    runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 2
+      - name: Check out sources
+        uses: actions/checkout@v1
+      - name: Prepare container
+        run: ./prepare-container.sh
       - run: bundle install
       - run: bundle exec danger || true
-      - run: BML_OPENMP=no VERBOSE_MAKEFILE=yes EMACS=emacs26 ./build.sh check_indent
+      - run: BML_OPENMP=no EMACS=emacs27 ./build.sh check_indent
+
   docs:
     name: Build docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: lint
-    container:
-      image: nicolasbock/bml-ci-docs:2
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 2
-      - run: ./build.sh docs
-  docs-test:
-    name: Build docs (test)
-    runs-on: ubuntu-latest
+      - name: Check out sources
+        uses: actions/checkout@v2
+      - name: Prepare container
+        run: ./prepare-container.sh
+      - name: Build docs
+        run: ./build.sh docs
+
+  build:
+    name: Build and test the library
+    runs-on: ubuntu-18.04
     needs: lint
-    container:
-      image: ubuntu:xenial
+    strategy:
+      matrix:
+        include:
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: no}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: yes}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: no}
+          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_complex",       BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_real",    BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
+          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_complex",       BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_real",    BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
+          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real"}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real"}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex"}
+          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex"}
     steps:
-      - run: apt-get update
-      - run: apt-get install --assume-yes software-properties-common
-      - run: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
-      - run: apt-add-repository ppa:janisozaur/cmake-update
-      - run: apt-get update
-      - run: ln -fs /usr/share/zoneinfo/UTC /etc/localtime
-      - run: apt-get install --assume-yes tzdata
-      - run: DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tzdata
-      - run: |
-          apt-get install --assume-yes --no-install-recommends \
-          apt-utils \
-          build-essential \
-          cmake cmake-data \
-          doxygen \
-          gfortran \
-          git-core \
-          libblas-dev liblapack-dev \
-          openssh-client \
-          texlive
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 2
-      - run: ./build.sh docs
+      - name: Check out sources
+        uses: actions/checkout@v2
+      - name: Prepare container
+        run: ./prepare-container.sh
+      - name: Build and test library
+        env:
+          CC: ${{ matrix.CC || env.CC }}
+          CXX: ${{ matrix.CXX || env.CXX }}
+          FC: ${{ matrix.FC || env.FC }}
+          BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || env.BUILD_SHARED_LIBS }}
+          BML_OPENMP: ${{ matrix.BML_OPENMP || env.BML_OPENMP }}
+          BML_MPI: ${{ matrix.BML_MPI || env.BML_MPI }}
+          BML_MPIEXEC_NUMPROCS_FLAG: ${{ matrix.BML_MPIEXEC_NUMPROCS_FLAG || env.BML_MPIEXEC_NUMPROCS_FLAG }}
+          BML_INTERNAL_BLAS: ${{ matrix.BML_INTERNAL_BLAS || env.BML_INTERNAL_BLAS }}
+          TESTING_EXTRA_ARGS: ${{ matrix.TESTING_EXTRA_ARGS || env.TESTING_EXTRA_ARGS }}
+          BML_VALGRIND: ${{ matrix.BML_VALGRIND || env.BML_VALGRIND }}
+        run: ./build.sh testing

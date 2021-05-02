@@ -1,23 +1,20 @@
-[![Build Status](https://travis-ci.org/lanl/bml.svg?branch=master)](https://travis-ci.org/lanl/bml)
-[![codecov.io](https://codecov.io/github/lanl/bml/coverage.svg?branch=master)](https://codecov.io/github/lanl/bml?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/lanl/bml/badge.svg?branch=master)](https://coveralls.io/github/lanl/bml?branch=master)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
 [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
-[![CircleCI](https://circleci.com/gh/lanl/bml/tree/master.svg?style=svg)](https://circleci.com/gh/lanl/bml/tree/master)
-![](https://github.com/lanl/bml/workflows/CI/badge.svg)
+[![GitHub Actions](https://github.com/lanl/bml/workflows/CI/badge.svg)](https://github.com/lanl/bml/actions)
 
 # Introduction
 
 This website is intended to provide some guidance on how to get and install
 the bml library. LA-UR number LA-UR-**17-27373**.
 
-The basic matrix library (bml) is a collection of various matrix data formats
-(in dense and sparse) and their associated algorithms for basic matrix
-operations. Application programming interfaces (API) are available for both C
-and FORTRAN. The current status of this library allows us to use two different
-formats for representing matrix data: dense and ELLPACK.
+The basic matrix library (bml) is a collection of various matrix data
+formats (for dense and sparse) and their associated algorithms for
+basic matrix operations. Application programming interfaces (API) are
+available for both C and FORTRAN. The current status of this library
+allows us to use two different formats for representing matrix data.
+Currently these formats are: dense, ELLPACK-R, ELLBLOCK, ELLSORT, and
+CSR. For information on how to use the BML library can be find in
+[BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
 # Mailing List
 
@@ -32,8 +29,10 @@ We are running the following mailing list for discussions on usage and features 
 The bml library supports the following matrix formats:
 
 * dense
-* ELLPACK
+* ELLPACK-R
 * ELLSORT
+* ELLBLOCK
+* CSR
 
 # Binary Packages
 
@@ -41,6 +40,27 @@ We offer binary packages of the bml library in [RPM
 format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml)
 thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
 format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
+
+# Testing in our CI container
+
+We are switching our CI tests from Travis-CI to GitHub Actions because
+Travis-CI is [limiting the number of builds for open source
+projects](https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing).
+Our workflow uses a [custom Docker
+image](https://hub.docker.com/r/nicolasbock/bml) which comes with the
+necessary compiler tool chain to build and test the `bml` library.
+Using `docker` is a convenient and quick way to develop, build, and
+test the `bml` library.
+
+    $ docker pull nicolasbock/bml:master
+    $ docker run --interactive --tty --rm \
+        --volume ${PWD}:/bml --workdir /bml \
+        --user $(id --user):$(id --group) \
+        nicolasbock/bml:master
+
+Inside the container:
+
+    $ ./build.sh compile
 
 # Build Instructions
 
@@ -115,7 +135,7 @@ files
 # Developer Suggested Workflow
 
 Our main development happens on the `master` branch and is continuously
-verified for correctness. If you would like to contribute your work to the bml
+verified for correctness. If you would like to contribute with your work to the bml
 project, please follow the instructions at the GitHub help page ["About pull
 requests"](https://help.github.com/articles/about-pull-requests/). To
 summarize:
@@ -136,7 +156,7 @@ sure that your pull request contains only one logical change (see
 change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
 for further details.
 
-## Coding Style
+# Coding Style
 
 Please indent your C code using
 
@@ -180,9 +200,11 @@ The core developers of the bml in alphabetical order:
 
 # Contributors
 
-* Jamaludin Mohd-Yusof <jamal@lanl.gov>
-* Adedoyin Adetokunbo <adedoyin.adetokunbo@gmail.com>
+* Adedoyin Adetokunbo <aadedoyin@lanl.gov>
 * Bálint Aradi <aradi@uni-bremen.de>
+* Daniel Osei-Kuffuor <oseikuffuor1@llnl.gov>
+* Jamaludin Mohd-Yusof <jamal@lanl.gov>
+* Jean-Luc Fattebert <fattebertj@ornl.gov>
 * Mike Wall <mewall@lanl.gov>
 
 # License
@@ -236,7 +258,7 @@ Matrix Library (bml), Version 0.x (C16006)*.
 ## ABSTRACT
 
 The basic matrix library (bml) is a collection of various matrix data
-formats (in dense and sparse) and their associated algorithms for basic
+formats (for dense and sparse) and their associated algorithms for basic
 matrix operations.
 
 This code is unclassified and has been assigned LA-CC-**15-093**. Los Alamos

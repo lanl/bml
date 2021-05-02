@@ -44,7 +44,7 @@ set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
   -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
 set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
-set(GNU_Fortran_FLAGS_DEBUG -O0 -g --coverage -fcheck=all
+set(GNU_Fortran_FLAGS_DEBUG -O0 -g -fcheck=all
   -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
@@ -160,14 +160,25 @@ else()
   message(STATUS "Will not build with OpenMP")
 endif()
 
-set(BML_COVERAGE FALSE CACHE BOOL "Whether to generate coverage code")
-if(BML_COVERAGE)
-  set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} --coverage)
-endif()
-
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
   message(STATUS "Will build with MPI")
+  find_package(MPI REQUIRED)
+  #possibly override MPIEXEC_EXECUTABLE,...
+  if(NOT ${BML_MPIEXEC_EXECUTABLE} STREQUAL "")
+    set(MPIEXEC_EXECUTABLE ${BML_MPIEXEC_EXECUTABLE})
+  endif()
+  if(BML_MPIEXEC_NUMPROCS_FLAG)
+    message(STATUS "override MPIEXEC_NUMPROCS_FLAG with ${BML_MPIEXEC_NUMPROCS_FLAG}")
+    set(MPIEXEC_NUMPROCS_FLAG ${BML_MPIEXEC_NUMPROCS_FLAG})
+  endif()
+  if(BML_MPIEXEC_PREFLAGS)
+    message(STATUS "override MPIEXEC_PREFLAGS with ${BML_MPIEXEC_PREFLAGS}")
+    set(MPIEXEC_PREFLAGS ${BML_MPIEXEC_PREFLAGS})
+  endif()
+  message(STATUS "MPIEXEC_EXECUTABLE: ${MPIEXEC_EXECUTABLE}")
+  message(STATUS "MPIEXEC_NUMPROCS_FLAG: ${MPIEXEC_NUMPROCS_FLAG}")
+  message(STATUS "MPIEXEC_PREFLAGS: ${MPIEXEC_PREFLAGS}")
   add_definitions(-DDO_MPI)
 endif()
 
@@ -467,6 +478,10 @@ if(LAPACK_FOUND)
   bml_check_C_Fortran_function_exists(dgetri C_DGETRI REQUIRED)
   bml_check_C_Fortran_function_exists(cgetri C_CGETRI REQUIRED)
   bml_check_C_Fortran_function_exists(zgetri C_ZGETRI REQUIRED)
+  bml_check_C_Fortran_function_exists(slacpy C_SLACPY REQUIRED)
+  bml_check_C_Fortran_function_exists(dlacpy C_DLACPY REQUIRED)
+  bml_check_C_Fortran_function_exists(clacpy C_CLACPY REQUIRED)
+  bml_check_C_Fortran_function_exists(zlacpy C_ZLACPY REQUIRED)
   add_definitions(
     -DC_SSYEV=${C_SSYEV}
     -DC_DSYEV=${C_DSYEV}
@@ -479,7 +494,11 @@ if(LAPACK_FOUND)
     -DC_SGETRI=${C_SGETRI}
     -DC_DGETRI=${C_DGETRI}
     -DC_CGETRI=${C_CGETRI}
-    -DC_ZGETRI=${C_ZGETRI})
+    -DC_ZGETRI=${C_ZGETRI}
+    -DC_SLACPY=${C_SLACPY}
+    -DC_DLACPY=${C_DLACPY}
+    -DC_CLACPY=${C_CLACPY}
+    -DC_ZLACPY=${C_ZLACPY})
 
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
@@ -555,28 +574,14 @@ add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 
 set(DIST_FILES CMakeLists.txt)
 
-set(BML_OLD FALSE
-  CACHE BOOL "Whether to build the old version of the library")
-
-if(BML_OLD)
-  message(STATUS "Building old version of library (unmaintained)")
-  add_subdirectory(src-old)
-else()
-  add_subdirectory(src)
-endif()
+add_subdirectory(src)
 
 include(FindDoxygen)
 
 if(DOXYGEN_FOUND)
-  if(BML_OLD)
-    set(DOXYGEN_INPUT
-      ${PROJECT_SOURCE_DIR}/src-old
-      ${CMAKE_BINARY_DIR}/src-old)
-  else()
-    set(DOXYGEN_INPUT
-      ${PROJECT_SOURCE_DIR}/src/C-interface
-      ${PROJECT_SOURCE_DIR}/src/Fortran-interface)
-  endif()
+  set(DOXYGEN_INPUT
+    ${PROJECT_SOURCE_DIR}/src/C-interface
+    ${PROJECT_SOURCE_DIR}/src/Fortran-interface)
   string(REPLACE ";" " " DOXYGEN_INPUT "${DOXYGEN_INPUT}")
   configure_file(documentation/Doxyfile.in Doxyfile)
   add_custom_target(docs
@@ -604,11 +609,7 @@ if(BML_TESTING)
     message(STATUS "Will _not_ test for memory leaks")
   endif()
   enable_testing()
-  if(BML_OLD)
-    add_subdirectory(tests-old)
-  else()
-    add_subdirectory(tests)
-  endif()
+  add_subdirectory(tests)
 endif()
 
 find_program(TAR tar)
