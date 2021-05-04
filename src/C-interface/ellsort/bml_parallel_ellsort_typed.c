@@ -43,7 +43,7 @@ void TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#ifdef DO_MPI
+#ifdef BML_MPI_NONDIST
 /*
     for (int i = 0; i < nRanks; i++)
     {
