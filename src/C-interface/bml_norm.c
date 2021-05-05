@@ -6,6 +6,9 @@
 #include "ellsort/bml_norm_ellsort.h"
 #include "ellblock/bml_norm_ellblock.h"
 #include "csr/bml_norm_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_norm_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -191,6 +194,11 @@ bml_fnorm(
         case csr:
             return bml_fnorm_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_fnorm_distributed2d(A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

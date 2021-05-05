@@ -125,6 +125,7 @@ set(testlist-mpi
     allocate
     copy
     convert
+    diagonalize
     import_export
     scale
     mpi_sendrecv
@@ -181,10 +182,19 @@ foreach(N ${testlist})
 endforeach()
 
 if(BML_MPI)
-  foreach(N ${testlist-mpi})
-    set(formats dense ellpack ellsort ellblock csr)
-    test_formats_mpi(${formats})
-  endforeach()
+  if(BML_SCALAPACK)
+    foreach(N ${testlist-mpi})
+      set(formats dense ellpack ellsort ellblock csr)
+      test_formats_mpi(${formats})
+    endforeach()
+  else()
+    foreach(N ${testlist-mpi})
+      if(NOT ${N} MATCHES diagonalize)
+        set(formats dense ellpack ellsort ellblock csr)
+        test_formats_mpi(${formats})
+      endif()
+    endforeach()
+  endif()
 endif()
 
 add_executable(test-backtrace test_backtrace.c)

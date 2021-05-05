@@ -37,20 +37,29 @@ int TYPED_FUNC(
 
     LOG_INFO("rel. tolerance = %e\n", REL_TOL);
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
 
-    LOG_INFO("A = \n");
-    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+
+    //LOG_INFO("A = \n");
+    //bml_print_bml_matrix(A, 0, max_row, 0, max_col);
 
     A_t = bml_transpose_new(A);
 
-    LOG_INFO("A_t = \n");
-    bml_print_bml_matrix(A_t, 0, max_row, 0, max_col);
+    //LOG_INFO("A_t = \n");
+    //bml_print_bml_matrix(A_t, 0, max_row, 0, max_col);
 
     bml_add(A, A_t, 0.5, 0.5, 0.0);
 
-    LOG_INFO("(A + A_t)/2 = \n");
-    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
+    //LOG_INFO("(A + A_t)/2 = \n");
+    //bml_print_bml_matrix(A, 0, N, 0, N);
 
     switch (matrix_precision)
     {
@@ -117,39 +126,47 @@ int TYPED_FUNC(
     }
 
     eigenvectors = bml_zero_matrix(matrix_type, matrix_precision,
-                                   N, M, sequential);
+                                   N, M, distrib_mode);
 
-    aux1 = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
-    aux2 = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+    aux1 = bml_zero_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    aux2 = bml_zero_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
     //bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
 
     bml_diagonalize(A, eigenvalues, eigenvectors);
 
-    LOG_INFO("%s\n", "eigenvectors");
-    bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
+    if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("%s\n", "eigenvectors");
+        //bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
 
-    LOG_INFO("%s\n", "eigenvalues");
-    for (int i = 0; i < N; i++)
-        LOG_INFO("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
-                 IMAGINARY_PART(eigenvalues[i]));
-
+        LOG_INFO("%s\n", "eigenvalues");
+        for (int i = 0; i < N; i++)
+            LOG_INFO("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
+                     IMAGINARY_PART(eigenvalues[i]));
+    }
     aux = bml_transpose_new(eigenvectors);
     bml_multiply(aux, eigenvectors, aux2, 1.0, 0.0, 0.0);       // C^t*C
-    LOG_INFO("%s\n", "check eigenvectors norms");
-    for (int i = 0; i < N; i++)
+    REAL_T *aux2_dense = bml_export_to_dense(aux2, dense_row_major);
+    if (bml_getMyRank() == 0)
     {
-        REAL_T *val = bml_get_element(aux2, i, i);
-        if (ABS(*val - (REAL_T) 1.0) > REL_TOL)
+        LOG_INFO("%s\n", "check eigenvectors norms");
+        for (int i = 0; i < N; i++)
         {
-            LOG_INFO("i = %d, val = %e  i%e\n", i, REAL_PART(*val),
-                     IMAGINARY_PART(*val));
-            LOG_ERROR
-                ("Error in matrix diagonalization; eigenvector not normalized\n");
+            REAL_T val = aux2_dense[i + N * i];
+            if (ABS(val - (REAL_T) 1.0) > REL_TOL)
+            {
+                LOG_INFO("i = %d, val = %e  i%e\n", i, REAL_PART(val),
+                         IMAGINARY_PART(val));
+                LOG_ERROR
+                    ("Error in matrix diagonalization; eigenvector not normalized\n");
+            }
         }
+        bml_free_memory(aux2_dense);
     }
 
-    id = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+    id = bml_identity_matrix(matrix_type, matrix_precision, N, M,
+                             distrib_mode);
     bml_add(aux2, id, 1.0, -1.0, 0.0);
     fnorm = bml_fnorm(aux2);
     if (fabsf(fnorm) > N * REL_TOL)

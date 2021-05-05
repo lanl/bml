@@ -36,4 +36,7 @@ bml_distribution_mode_t bml_get_distribution_mode(
 
 bml_matrix_t *bml_get_local_matrix(
     bml_matrix_t * A);
+
+void *bml_get_data_ptr(
+    bml_matrix_t * A);
 #endif

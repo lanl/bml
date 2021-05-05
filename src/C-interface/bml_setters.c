@@ -6,6 +6,9 @@
 #include "ellsort/bml_setters_ellsort.h"
 #include "ellblock/bml_setters_ellblock.h"
 #include "csr/bml_setters_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_setters_distributed2d.h"
+#endif
 
 void
 bml_set_element_new(
@@ -121,6 +124,11 @@ bml_set_diagonal(
         case csr:
             bml_set_diagonal_csr(A, diagonal, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_set_diagonal_distributed2d(A, diagonal, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type in bml_set_diagonal\n");
             break;

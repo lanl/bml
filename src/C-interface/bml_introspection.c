@@ -64,6 +64,11 @@ bml_get_precision(
         case csr:
             return bml_get_precision_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_get_precision(bml_get_local_matrix(A));
+            break;
+#endif
         default:
             LOG_ERROR("unknown precision");
             break;
@@ -329,6 +334,22 @@ bml_get_local_matrix(
 #endif
         default:
             LOG_ERROR("unknown matrix type in bml_get_local_matrix\n");
+            break;
+    }
+    return NULL;
+}
+
+void *
+bml_get_data_ptr(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_get_data_ptr_dense(A);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type in bml_get_data_ptr\n");
             break;
     }
     return NULL;
