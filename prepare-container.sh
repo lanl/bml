@@ -59,10 +59,10 @@ DEBIAN_FRONTEND=noninteractive ${SUDO} dpkg-reconfigure \
 
 ${SUDO} apt-get install --assume-yes --no-install-recommends \
   apt-utils \
-  bundler \
-  emacs27 \
   build-essential \
+  bundler \
   cmake cmake-data \
+  emacs27 \
   clang-9 llvm-9-dev libomp-9-dev \
   gcc-4.8 g++-4.8 gfortran-4.8 \
   gcc-9 g++-9 gfortran-9 \
@@ -70,10 +70,13 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
   gcc-11 g++-11 gfortran-11 \
   git-core \
   indent \
-  openssh-client \
   libblas-dev liblapack-dev \
-  mpich libmpich-dev \
+  libscalapack-openmpi-dev \
+  mpi-default-dev \
+  openmpi-bin \
+  openssh-client \
   python python-pip python-wheel \
+  sudo \
   texlive \
   valgrind \
   vim

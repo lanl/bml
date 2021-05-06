@@ -114,7 +114,7 @@ function(test_formats_mpi ${formats})
   foreach(T ${formats} )
     foreach(P single_real double_real single_complex double_complex)
       add_test(MPI-C-${N}-${T}-${P}
-        ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROCS_FLAG} 4 ${MPIEXEC_PREFLAGS}
+        ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROCS_FLAG} ${MPIEXEC_NUMPROCS} ${MPIEXEC_PREFLAGS}
         ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
     endforeach()
   endforeach()

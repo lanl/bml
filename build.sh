@@ -49,7 +49,8 @@ EOF
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
     echo "BML_MPIEXEC_EXECUTABLE Command to prepend MPI tests (default is ${BML_MPIEXEC_EXECUTABLE})"
-    echo "BML_MPIEXEC_NUMPROCS_FLAG Flags to specify number of MPI tasks (default is ${BML_MPIEXEC_NUMPROCS_FLAG})"
+    echo "BML_MPIEXEC_NUMPROCS_FLAG Flags to specify number of MPI tasks for MPI tests (default is ${BML_MPIEXEC_NUMPROCS_FLAG})"
+    echo "BML_MPIEXEC_NUMPROCS   Number of MPI tasks for MPI tests (default is ${BML_MPIEXEC_NUMPROCS})"
     echo "BML_MPIEXEC_PREFLAGS  Extra flags for MPI tests    (default is ${BML_MPIEXEC_PREFLAGS})"
     echo "BML_COMPLEX            {yes,no}                    (default is ${BML_COMPLEX})"
     echo "BML_TESTING            {yes,no}                    (default is ${BML_TESTING})"
@@ -91,7 +92,8 @@ set_defaults() {
     : ${BML_OPENMP:=yes}
     : ${BML_MPI:=no}
     : ${BML_MPIEXEC_EXECUTABLE:=}
-    : ${BML_MPIEXEC_NUMPROCS_FLAG:=}
+    : ${BML_MPIEXEC_NUMPROCS_FLAG:=-n}
+    : ${BML_MPIEXEC_NUMPROCS:=4}
     : ${BML_MPIEXEC_PREFLAGS:=}
     : ${BML_COMPLEX:=yes}
     : ${BLAS_VENDOR:=}
@@ -178,6 +180,7 @@ configure() {
         -DBML_MPI="${BML_MPI}" \
         -DBML_MPIEXEC_EXECUTABLE="${BML_MPIEXEC_EXECUTABLE}" \
         -DBML_MPIEXEC_NUMPROCS_FLAG="${BML_MPIEXEC_NUMPROCS_FLAG}" \
+        -DBML_MPIEXEC_NUMPROCS="${BML_MPIEXEC_NUMPROCS}" \
         -DBML_MPIEXEC_PREFLAGS="${BML_MPIEXEC_PREFLAGS}" \
         -DBML_COMPLEX="${BML_COMPLEX}" \
         -DBUILD_SHARED_LIBS="${BUILD_SHARED_LIBS}" \
