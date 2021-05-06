@@ -143,7 +143,7 @@ int TYPED_FUNC(
         if (ABS(*val - (REAL_T) 1.0) > REL_TOL)
         {
             LOG_INFO("i = %d, val = %e  i%e\n", i, REAL_PART(*val),
-                   IMAGINARY_PART(*val));
+                     IMAGINARY_PART(*val));
             LOG_ERROR
                 ("Error in matrix diagonalization; eigenvector not normalized\n");
         }
