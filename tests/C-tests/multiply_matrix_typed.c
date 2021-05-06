@@ -46,6 +46,9 @@ static int TYPED_FUNC(
     REAL_T * A,
     REAL_T * B)
 {
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     LOG_INFO("Compare matrices\n");
     for (int i = 0; i < N * N; i++)
     {
@@ -53,10 +56,10 @@ static int TYPED_FUNC(
         {
             LOG_INFO("First matrix\n");
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, A, 0,
-                                   N, 0, N);
+                                   max_row, 0, max_col);
             LOG_INFO("Second matrix\n");
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, B, 0,
-                                   N, 0, N);
+                                   max_row, 0, max_col);
             LOG_INFO("element %d outside %1.2e\n", i, ABS_TOL);
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
             LOG_INFO("A[%d] = %e+%ei\n", i, creal(A[i]), cimag(A[i]));
@@ -142,6 +145,9 @@ int TYPED_FUNC(
     const double beta = 0.8;
     const double threshold = 0.0;
 
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     bml_matrix_t *A =
         bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     bml_matrix_t *B =
@@ -154,10 +160,18 @@ int TYPED_FUNC(
     REAL_T *C_dense = bml_export_to_dense(C, dense_row_major);
     REAL_T *D_dense = bml_export_to_dense(C, dense_row_major);
 
-    LOG_INFO("bml_multiply\n");
+    if (bml_getMyRank() == 0)
+        LOG_INFO("bml_multiply\n");
     bml_multiply(A, B, C, alpha, beta, threshold);
+    if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("C = %f * A + %f * B [0: %d][0: %d]\n", alpha, beta, N, N);
+        //bml_print_bml_matrix(C, 0, max_row, 0, max_col);
+    }
+    //D_dense = bml_export_to_dense(C, dense_row_major);
 
-    LOG_INFO("bml_export_to_dense\n");
+    if (bml_getMyRank() == 0)
+        LOG_INFO("bml_export_to_dense\n");
     REAL_T *E_dense = bml_export_to_dense(C, dense_row_major);
 
     if (bml_getMyRank() == 0)
@@ -165,9 +179,9 @@ int TYPED_FUNC(
         TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
                                   threshold);
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, E_dense,
-                               0, N, 0, N);
+                               0, max_row, 0, max_col);
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense,
-                               0, N, 0, N);
+                               0, max_row, 0, max_col);
 
         if (TYPED_FUNC(compare_matrix) (N, matrix_precision, D_dense, E_dense)
             != 0)

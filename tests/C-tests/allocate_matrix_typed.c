@@ -1,9 +1,11 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int TYPED_FUNC(
     test_allocate) (
@@ -16,6 +18,9 @@ int TYPED_FUNC(
     bml_matrix_t *B = NULL;
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
+
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
 
     bml_distribution_mode_t distrib_mode = sequential;
 #ifdef DO_MPI
@@ -33,13 +38,17 @@ int TYPED_FUNC(
     B_dense = bml_export_to_dense(B, dense_row_major);
 
     if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("A\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
-                               0, N, 0, N);
-    if (bml_getMyRank() == 0)
+                               0, max_row, 0, max_col);
+        LOG_INFO("B = import(export(A))\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
-                               0, N, 0, N);
+                               0, max_row, 0, max_col);
+    }
 
     if (bml_getMyRank() == 0)
+    {
         for (int i = 0; i < N; i++)
         {
             for (int j = 0; j < N; j++)
@@ -68,6 +77,8 @@ int TYPED_FUNC(
                 }
             }
         }
+    }
+
     LOG_INFO("random matrix test passed\n");
     if (bml_getMyRank() == 0)
     {
@@ -82,8 +93,11 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
 
     if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("Id \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
-                               0, N, 0, N);
+                               0, max_row, 0, max_col);
+    }
     if (bml_getMyRank() == 0)
         for (int i = 0; i < N; i++)
         {

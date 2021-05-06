@@ -1,5 +1,6 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 #include "ellblock/bml_allocate_ellblock.h"
 
 #include <complex.h>
@@ -43,14 +44,17 @@ static int TYPED_FUNC(
     REAL_T * A,
     REAL_T * B)
 {
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     for (int i = 0; i < N * N; i++)
     {
         if (ABS(A[i] - B[i]) > ABS_TOL)
         {
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, A, 0,
-                                   N, 0, N);
+                                   max_row, 0, max_col);
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, B, 0,
-                                   N, 0, N);
+                                   max_row, 0, max_col);
             LOG_INFO("element %d outside %1.2e\n", i, ABS_TOL);
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
             LOG_INFO("A[%d] = %e+%ei\n", i, creal(A[i]), cimag(A[i]));
@@ -123,9 +127,15 @@ int TYPED_FUNC(
     B = bml_copy_new(A);
     C = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
 
-    bml_print_bml_matrix(A, 0, N, 0, N);
-    bml_print_bml_matrix(B, 0, N, 0, N);
-    bml_print_bml_matrix(C, 0, N, 0, N);
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
+    LOG_INFO("A\n");
+    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
+    LOG_INFO("B = A\n");
+    bml_print_bml_matrix(B, 0, max_row, 0, max_col);
+    LOG_INFO("C\n");
+    bml_print_bml_matrix(C, 0, max_row, 0, max_col);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
@@ -134,6 +144,10 @@ int TYPED_FUNC(
 
     //bml_multiply(A, B, C, alpha, beta, threshold);
     trace = bml_multiply_x2(A, C, threshold);
+
+    LOG_INFO("A^2\n");
+    bml_print_bml_matrix(C, 0, max_row, 0, max_col);
+
     E_dense = bml_export_to_dense(C, dense_row_major);
 
     TYPED_FUNC(ref_multiply) (N, A_dense, B_dense, D_dense, alpha, beta,
