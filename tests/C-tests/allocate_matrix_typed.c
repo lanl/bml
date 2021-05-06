@@ -31,9 +31,6 @@ int TYPED_FUNC(
     }
 #endif
 
-    int max_row = MIN(N, PRINT_THRESHOLD);
-    int max_col = MIN(N, PRINT_THRESHOLD);
-
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     A_dense = bml_export_to_dense(A, dense_row_major);
     B = bml_import_from_dense(matrix_type, matrix_precision, dense_row_major,
@@ -41,13 +38,14 @@ int TYPED_FUNC(
     B_dense = bml_export_to_dense(B, dense_row_major);
 
     if (bml_getMyRank() == 0)
+    {
         LOG_INFO("A\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
                                0, max_row, 0, max_col);
-    if (bml_getMyRank() == 0)
         LOG_INFO("B = import(export(A))\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
                                0, max_row, 0, max_col);
+    }
 
     if (bml_getMyRank() == 0)
         for (int i = 0; i < N; i++)
