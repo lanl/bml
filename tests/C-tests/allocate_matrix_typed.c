@@ -19,6 +19,9 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     bml_distribution_mode_t distrib_mode = sequential;
 #ifdef DO_MPI
     if (bml_getNRanks() > 1)
@@ -91,7 +94,7 @@ int TYPED_FUNC(
     if (bml_getMyRank() == 0)
         LOG_INFO("Id \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
-                               0, N, 0, N);
+                               0, max_row, 0, max_col);
     if (bml_getMyRank() == 0)
         for (int i = 0; i < N; i++)
         {

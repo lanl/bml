@@ -69,6 +69,7 @@ int TYPED_FUNC(
         LOG_INFO("B = alpha A + beta C \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
                                0, max_row, 0, max_col);
+
         for (int i = 0; i < N * N; i++)
         {
             double expected = alpha * A_dense[i] + beta * C_dense[i];
