@@ -6,8 +6,6 @@
 #include "bml_types.h"
 #define PRINT_THRESHOLD 16
 
-#define PRINT_THRESHOLD 16
-
 void bml_print_dense_matrix(
     int N,
     bml_matrix_precision_t matrix_precision,

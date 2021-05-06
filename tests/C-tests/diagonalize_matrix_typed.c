@@ -132,7 +132,7 @@ int TYPED_FUNC(
     LOG_INFO("%s\n", "eigenvalues");
     for (int i = 0; i < N; i++)
         LOG_INFO("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
-               IMAGINARY_PART(eigenvalues[i]));
+                 IMAGINARY_PART(eigenvalues[i]));
 
     aux = bml_transpose_new(eigenvectors);
     bml_multiply(aux, eigenvectors, aux2, 1.0, 0.0, 0.0);       // C^t*C

@@ -48,6 +48,7 @@ int TYPED_FUNC(
     }
 
     if (bml_getMyRank() == 0)
+    {
         for (int i = 0; i < N; i++)
         {
             for (int j = 0; j < N; j++)
@@ -76,6 +77,8 @@ int TYPED_FUNC(
                 }
             }
         }
+    }
+
     LOG_INFO("random matrix test passed\n");
     if (bml_getMyRank() == 0)
     {
@@ -90,9 +93,11 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
 
     if (bml_getMyRank() == 0)
+    {
         LOG_INFO("Id \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
                                0, max_row, 0, max_col);
+    }
     if (bml_getMyRank() == 0)
         for (int i = 0; i < N; i++)
         {
