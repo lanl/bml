@@ -160,13 +160,18 @@ int TYPED_FUNC(
     REAL_T *C_dense = bml_export_to_dense(C, dense_row_major);
     REAL_T *D_dense = bml_export_to_dense(C, dense_row_major);
 
-    LOG_INFO("bml_multiply\n");
+    if (bml_getMyRank() == 0)
+        LOG_INFO("bml_multiply\n");
     bml_multiply(A, B, C, alpha, beta, threshold);
-    LOG_INFO("C = %f * A + %f * B [0: %d][0: %d]\n", alpha, beta, N, N);
-    bml_print_bml_matrix(C, 0, max_row, 0, max_col);
-    C_dense = bml_export_to_dense(C, dense_row_major);
+    if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("C = %f * A + %f * B [0: %d][0: %d]\n", alpha, beta, N, N);
+        bml_print_bml_matrix(C, 0, max_row, 0, max_col);
+    }
+    //D_dense = bml_export_to_dense(C, dense_row_major);
 
-    LOG_INFO("bml_export_to_dense\n");
+    if (bml_getMyRank() == 0)
+        LOG_INFO("bml_export_to_dense\n");
     REAL_T *E_dense = bml_export_to_dense(C, dense_row_major);
 
     if (bml_getMyRank() == 0)
