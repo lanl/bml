@@ -261,6 +261,11 @@ if (MAGMA_FOUND)
   endif()
 endif()
 
+set(BML_SCALAPACK FALSE CACHE BOOL "Whether to use ScaLAPACK library")
+if(BML_SCALAPACK)
+  add_definitions(-DBML_USE_SCALAPACK)
+endif()
+
 set(BML_INTERNAL_BLAS FALSE
   CACHE BOOL "Use internal BLAS functions")
 
@@ -501,6 +506,20 @@ if(LAPACK_FOUND)
     -DC_ZLACPY=${C_ZLACPY})
 
   list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
+endif()
+
+if(BML_SCALAPACK)
+  bml_check_C_Fortran_function_exists(pssyevd PSSYEVD REQUIRED)
+  bml_check_C_Fortran_function_exists(pdsyevd PDSYEVD REQUIRED)
+  bml_check_C_Fortran_function_exists(pcheevd PCHEEVD REQUIRED)
+  bml_check_C_Fortran_function_exists(pzheevd PZHEEVD REQUIRED)
+  bml_check_C_Fortran_function_exists(numroc NUMROC REQUIRED)
+  add_definitions(
+    -DPSSYEVD=${PSSYEVD}
+    -DPDSYEVD=${PDSYEVD}
+    -DPCHEEVD=${PCHEEVD}
+    -DPZHEEVD=${PZHEEVD}
+    -DNUMROC=${NUMROC})
 endif()
 
 # Check whether the compiler supports complex types. The Nvidia

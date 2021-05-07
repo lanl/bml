@@ -76,6 +76,7 @@ EOF
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
     echo "BML_CUSOLVER           Build with cuSOLVER         (default is ${BML_CUSOLVER})"
     echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
+    echo "BML_SCALAPACK          Build with SCALAPACK        (default is ${BML_SCALAPACK})"
     echo "BML_ELLBLOCK_MEMPOOL   Use ellblock memory pool    (default is ${BML_ELLBLOCK_MEMPOOL}"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
     echo "INTEL_OPT              {yes, no}                   (default is ${INTEL_OPT})"
@@ -115,6 +116,7 @@ set_defaults() {
     : ${BML_MAGMA:=no}
     : ${BML_CUSOLVER:=no}
     : ${BML_XSMM:=no}
+    : ${BML_SCALAPACK:=no}
     : ${BML_ELLBLOCK_MEMPOOL:=no}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
     : ${INTEL_OPT:=no}
@@ -196,6 +198,7 @@ configure() {
         -DBML_MAGMA="${BML_MAGMA}" \
         -DBML_CUSOLVER="${BML_CUSOLVER}" \
         -DBML_XSMM="${BML_XSMM}" \
+        -DBML_SCALAPACK="${BML_SCALAPACK}" \
         -DBML_ELLBLOCK_MEMPOOL="${BML_ELLBLOCK_MEMPOOL}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         -DINTEL_OPT="${INTEL_OPT:=no}" \

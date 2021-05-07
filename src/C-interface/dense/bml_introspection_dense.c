@@ -187,3 +187,10 @@ bml_get_sparsity_dense(
     }
     return -1;
 }
+
+void *
+bml_get_data_ptr_dense(
+    bml_matrix_dense_t * A)
+{
+    return A->matrix;
+}

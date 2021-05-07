@@ -71,4 +71,6 @@ double bml_get_sparsity_dense_double_complex(
     bml_matrix_dense_t * A,
     double threshold);
 
+void *bml_get_data_ptr_dense(
+    bml_matrix_dense_t * A);
 #endif
