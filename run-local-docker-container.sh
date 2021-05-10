@@ -1,6 +1,6 @@
 #!/bin/bash
 
-: ${IMAGE:=nicolasbock/bml:master}
+: ${IMAGE:=nicolasbock/bml:latest}
 
 docker pull ${IMAGE}
 docker run --interactive --tty --rm \
