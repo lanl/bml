@@ -138,9 +138,13 @@ void *TYPED_FUNC(
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
-#endif
-
+#pragma omp target teams distribute parallel for \
+    shared(X_N, X_M, X_index, X_nnz, X_value)  \
+    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
+    shared(rowMin, rowMax)                             \
+    firstprivate(ix,jx, x)                             \
+    reduction(+: traceX, traceX2)
+#else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value)  \
@@ -158,7 +162,7 @@ void *TYPED_FUNC(
     firstprivate(ix,jx, x)                             \
     reduction(+: traceX, traceX2)
 #endif
-
+#endif
     for (int i = rowMin; i < rowMax; i++)
     {
 
@@ -295,9 +299,13 @@ void TYPED_FUNC(
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
-#endif
-
+#pragma omp target teams distribute parallel for \
+    shared(A_N, A_M, A_nnz, A_index, A_value)  \
+    shared(A_localRowMin, A_localRowMax)       \
+    shared(B_N, B_M, B_nnz, B_index, B_value)  \
+    shared(C_N, C_M, C_nnz, C_index, C_value)  \
+    firstprivate(ix, jx, x)
+#else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
@@ -312,7 +320,7 @@ void TYPED_FUNC(
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
     firstprivate(ix, jx, x)
 #endif
-
+#endif
     //for (int i = 0; i < A_N; i++)
     for (int i = rowMin; i < rowMax; i++)
     {

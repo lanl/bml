@@ -67,9 +67,12 @@ void TYPED_FUNC(
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
-#endif
-    {                           // begin target region
+#pragma omp target teams distribute parallel for \
+    shared(rowMin, rowMax)                \
+    shared(A_index, A_value, A_nnz)       \
+    shared(B_index, B_value, B_nnz)       \
+    firstprivate(ix, jx, x)
+#else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
     shared(rowMin, rowMax)                \
@@ -82,64 +85,63 @@ void TYPED_FUNC(
     shared(B_index, B_value, B_nnz)       \
     firstprivate(ix, jx, x)
 #endif
-
-        for (int i = rowMin; i < rowMax; i++)
-        {
+#endif
+    for (int i = rowMin; i < rowMax; i++)
+    {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-            int ix[N], jx[N];
-            REAL_T x[N];
+        int ix[N], jx[N];
+        REAL_T x[N];
 
-            memset(ix, 0, N * sizeof(int));
+        memset(ix, 0, N * sizeof(int));
 #endif
 
-            int l = 0;
-            if (alpha > (double) 0.0 || alpha < (double) 0.0)
-                for (int jp = 0; jp < A_nnz[i]; jp++)
-                {
-                    int k = A_index[ROWMAJOR(i, jp, N, A_M)];
-                    if (ix[k] == 0)
-                    {
-                        x[k] = 0.0;
-                        ix[k] = i + 1;
-                        jx[l] = k;
-                        l++;
-                    }
-                    x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
-                }
-
-            if (beta > (double) 0.0 || beta < (double) 0.0)
-                for (int jp = 0; jp < B_nnz[i]; jp++)
-                {
-                    int k = B_index[ROWMAJOR(i, jp, N, B_M)];
-                    if (ix[k] == 0)
-                    {
-                        x[k] = 0.0;
-                        ix[k] = i + 1;
-                        jx[l] = k;
-                        l++;
-                    }
-                    x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
-                }
-            A_nnz[i] = l;
-
-            int ll = 0;
-            for (int jp = 0; jp < l; jp++)
+        int l = 0;
+        if (alpha > (double) 0.0 || alpha < (double) 0.0)
+            for (int jp = 0; jp < A_nnz[i]; jp++)
             {
-                int jind = jx[jp];
-                REAL_T xTmp = x[jind];
-                if (is_above_threshold(xTmp, threshold))
+                int k = A_index[ROWMAJOR(i, jp, N, A_M)];
+                if (ix[k] == 0)
                 {
-                    A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
-                    A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
-                    ll++;
+                    x[k] = 0.0;
+                    ix[k] = i + 1;
+                    jx[l] = k;
+                    l++;
                 }
-                x[jind] = 0.0;
-                ix[jind] = 0;
+                x[k] = x[k] + alpha * A_value[ROWMAJOR(i, jp, N, A_M)];
             }
-            A_nnz[i] = ll;
+
+        if (beta > (double) 0.0 || beta < (double) 0.0)
+            for (int jp = 0; jp < B_nnz[i]; jp++)
+            {
+                int k = B_index[ROWMAJOR(i, jp, N, B_M)];
+                if (ix[k] == 0)
+                {
+                    x[k] = 0.0;
+                    ix[k] = i + 1;
+                    jx[l] = k;
+                    l++;
+                }
+                x[k] = x[k] + beta * B_value[ROWMAJOR(i, jp, N, B_M)];
+            }
+        A_nnz[i] = l;
+
+        int ll = 0;
+        for (int jp = 0; jp < l; jp++)
+        {
+            int jind = jx[jp];
+            REAL_T xTmp = x[jind];
+            if (is_above_threshold(xTmp, threshold))
+            {
+                A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
+                A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
+                ll++;
+            }
+            x[jind] = 0.0;
+            ix[jind] = 0;
         }
-    }                           // end target region
+        A_nnz[i] = ll;
+    }
 }
 
 /** Matrix addition.
@@ -197,8 +199,13 @@ double TYPED_FUNC(
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
-#endif
+#pragma omp target teams distribute parallel for \
+    shared(rowMin, rowMax)                \
+    shared(A_index, A_value, A_nnz)       \
+    shared(B_index, B_value, B_nnz)       \
+    firstprivate(ix, jx, x, y)            \
+    reduction(+:trnorm)
+#else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                  \
     shared(rowMin, rowMax)                \
@@ -213,7 +220,7 @@ double TYPED_FUNC(
     firstprivate(ix, jx, x, y)            \
     reduction(+:trnorm)
 #endif
-
+#endif
     for (int i = rowMin; i < rowMax; i++)
     {
 
@@ -314,9 +321,11 @@ void TYPED_FUNC(
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target
-#endif
-    {                           // begin target region
+#pragma omp target teams distribute parallel for \
+  shared(N, A_M)           \
+    shared(A_index, A_value, A_nnz)       \
+    firstprivate(jx, x)
+#else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
   shared(N, A_M)           \
@@ -327,58 +336,57 @@ void TYPED_FUNC(
     shared(A_index, A_value, A_nnz)       \
     firstprivate(jx, x)
 #endif
-
-        for (int i = 0; i < N; i++)
-        {
+#endif
+    for (int i = 0; i < N; i++)
+    {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
-            int jx[A_M];
-            REAL_T x[A_M];
+        int jx[A_M];
+        REAL_T x[A_M];
 #endif
 
-            int l = 0;
-            int diag = -1;
+        int l = 0;
+        int diag = -1;
 
-            for (int jp = 0; jp < A_nnz[i]; jp++)
+        for (int jp = 0; jp < A_nnz[i]; jp++)
+        {
+            int k = A_index[ROWMAJOR(i, jp, N, A_M)];
+            if (k == i)
+                diag = jp;
+            x[jp] = A_value[ROWMAJOR(i, jp, N, A_M)];
+            jx[jp] = k;
+            l++;
+        }
+
+        if (beta > (double) 0.0 || beta < (double) 0.0)
+        {
+            // if diagonal entry does not exist
+            if (diag == -1)
             {
-                int k = A_index[ROWMAJOR(i, jp, N, A_M)];
-                if (k == i)
-                    diag = jp;
-                x[jp] = A_value[ROWMAJOR(i, jp, N, A_M)];
-                jx[jp] = k;
+                x[l] = beta;
+                jx[l] = i;
                 l++;
             }
-
-            if (beta > (double) 0.0 || beta < (double) 0.0)
+            else
             {
-                // if diagonal entry does not exist
-                if (diag == -1)
-                {
-                    x[l] = beta;
-                    jx[l] = i;
-                    l++;
-                }
-                else
-                {
-                    x[diag] = x[diag] + beta;
-                }
+                x[diag] = x[diag] + beta;
             }
-
-            int ll = 0;
-            for (int jp = 0; jp < l; jp++)
-            {
-                int jind = jx[jp];
-                REAL_T xTmp = x[jp];
-                if (is_above_threshold(xTmp, threshold))
-                {
-                    A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
-                    A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
-                    ll++;
-                }
-            }
-            A_nnz[i] = ll;
         }
-    }                           // end target region
+
+        int ll = 0;
+        for (int jp = 0; jp < l; jp++)
+        {
+            int jind = jx[jp];
+            REAL_T xTmp = x[jp];
+            if (is_above_threshold(xTmp, threshold))
+            {
+                A_value[ROWMAJOR(i, ll, N, A_M)] = xTmp;
+                A_index[ROWMAJOR(i, ll, N, A_M)] = jind;
+                ll++;
+            }
+        }
+        A_nnz[i] = ll;
+    }
 }
 
 /** Matrix addition.
