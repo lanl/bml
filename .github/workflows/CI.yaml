@@ -56,36 +56,156 @@ jobs:
         run: ./build.sh docs
 
   build:
-    name: Build and test the library
+    name: Build and test the library (${{ matrix.JOBNAME }})
     runs-on: ubuntu-18.04
     needs: lint
     strategy:
       matrix:
         include:
-          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: no}
-          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: no,  BML_INTERNAL_BLAS: yes}
-          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: no}
-          - {CC: gcc-4.8, CXX: g++-4.8, FC: gfortran-4.8, BUILD_SHARED_LIBS: yes, BML_OPENMP: yes, BML_INTERNAL_BLAS: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_complex",       BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_real",    BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
-          - {CC: gcc-9,   CXX: g++-9,   FC: gfortran-9,   BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_real",          BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_real",          BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-single_complex",       BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R C-.*-double_complex",       BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_real",    BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_real",    BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex", BML_VALGRIND: yes}
-          - {CC: gcc-11,  CXX: g++-11,  FC: gfortran-11,  BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex", BML_VALGRIND: yes}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real", EXTRA_LINK_FLAGS: -lscalapack-openmpi, BML_SCALAPACK: yes}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real", EXTRA_LINK_FLAGS: -lscalapack-openmpi, BML_SCALAPACK: yes}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex", EXTRA_LINK_FLAGS: -lscalapack-openmpi, BML_SCALAPACK: yes}
-          - {CC: mpicc,   CXX: mpic++,  FC: mpifort,      BUILD_SHARED_LIBS: no,  BML_OPENMP: no,  BML_INTERNAL_BLAS: no, BML_MPI: yes, TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex", EXTRA_LINK_FLAGS: -lscalapack-openmpi, BML_SCALAPACK: yes}
+          - JOBNAME: gcc-4.8 test 1
+            CC: gcc-4.8
+            CXX: g++-4.8
+            FC: gfortran-4.8
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+          - JOBNAME: gcc-4.8 test 2
+            CC: gcc-4.8
+            CXX: g++-4.8
+            FC: gfortran-4.8
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: yes
+          - JOBNAME: gcc-4.8 test 3
+            CC: gcc-4.8
+            CXX: g++-4.8
+            FC: gfortran-4.8
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: no
+          - JOBNAME: gcc-4.8 test 4
+            CC: gcc-4.8
+            CXX: g++-4.8
+            FC: gfortran-4.8
+            BUILD_SHARED_LIBS: yes
+            BML_OPENMP: yes
+            BML_INTERNAL_BLAS: yes
+          - JOBNAME: gcc-11 C single real
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R C-.*-single_real"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 C double real
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R C-.*-double_real"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 C single complex
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R C-.*-single_complex"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 C double complex
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R C-.*-double_complex"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 Fortran single real
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R fortran-.*-single_real"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 Fortran double real
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R fortran-.*-double_real"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 Fortran single complex
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex"
+            BML_VALGRIND: yes
+          - JOBNAME: gcc-11 Fortran double complex
+            CC: gcc-11
+            CXX: g++-11
+            FC: gfortran-11
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex"
+            BML_VALGRIND: yes
+          - JOBNAME: MPI single real
+            CC: mpicc
+            CXX: mpic++
+            FC: mpifort
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_MPI: yes
+            TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real"
+            EXTRA_LINK_FLAGS: -lscalapack-openmpi
+            BML_SCALAPACK: yes
+          - JOBNAME: MPI double real
+            CC: mpicc
+            CXX: mpic++
+            FC: mpifort
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_MPI: yes
+            TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real"
+            EXTRA_LINK_FLAGS: -lscalapack-openmpi
+            BML_SCALAPACK: yes
+          - JOBNAME: MPI single complex
+            CC: mpicc
+            CXX: mpic++
+            FC: mpifort
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_MPI: yes
+            TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex"
+            EXTRA_LINK_FLAGS: -lscalapack-openmpi
+            BML_SCALAPACK: yes
+          - JOBNAME: MPI double complex
+            CC: mpicc
+            CXX: mpic++
+            FC: mpifort
+            BUILD_SHARED_LIBS: no
+            BML_OPENMP: no
+            BML_INTERNAL_BLAS: no
+            BML_MPI: yes
+            TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex"
+            EXTRA_LINK_FLAGS: -lscalapack-openmpi
+            BML_SCALAPACK: yes
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
