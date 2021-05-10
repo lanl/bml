@@ -3,7 +3,8 @@
 name: CI
 on:
   release:
-    type: [created]
+    type:
+      - created
   push:
   pull_request:
     branches:
@@ -11,6 +12,8 @@ on:
   schedule:
     # Weekly on Sundays:
     - cron: '00 04 * * 0'
+
+  workflow_dispatch:
 
 # Defaults
 env:
@@ -28,44 +31,6 @@ env:
   VERBOSE_MAKEFILE: yes
 
 jobs:
-  containers:
-    name: Update container images
-    runs-on: ubuntu-latest
-    # GitHub restricts access to environment secrets from forks for
-    # security reasons and building of the CI image will fail from a
-    # fork.
-    if: ${{ github.event.pull_request.head.repo.full_name == 'lanl/bml' }}
-    environment: CI
-    steps:
-      - run: echo ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Check out sources
-        uses: actions/checkout@v2
-      - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
-        with:
-          images: nicolasbock/bml
-          tag-sha: true
-      - name: Set up qemu
-        uses: docker/setup-qemu-action@v1
-      - name: Set up buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Log in to Docker hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build image and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64
-          push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-
   lint:
     name: Lint sources
     runs-on: ubuntu-18.04
