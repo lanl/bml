@@ -12,7 +12,6 @@ jobs:
   containers:
     name: Update container images
     runs-on: ubuntu-latest
-    environment: CI
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
