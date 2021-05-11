@@ -1,6 +1,6 @@
 ---
 
-name: Publish Container
+name: Container Image
 on:
   push:
     branches:
@@ -13,12 +13,15 @@ jobs:
     name: Update container images
     runs-on: ubuntu-latest
     steps:
-      - name: Check out sources
-        uses: actions/checkout@v2
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: lanl/bml
-          tag_with_ref: true
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2.4.0
+        with:
+          push: true
+          tags: nicolasbock/bml:latest
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
