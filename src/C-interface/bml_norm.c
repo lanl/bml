@@ -40,6 +40,11 @@ bml_sum_squares(
         case csr:
             return bml_sum_squares_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_sum_squares_distributed2d(A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -118,6 +123,12 @@ bml_sum_squares2(
         case csr:
             return bml_sum_squares2_csr(A, B, alpha, beta, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_sum_squares2_distributed2d(A, B, alpha, beta,
+                                                  threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -159,6 +170,11 @@ bml_sum_AB(
         case csr:
             return bml_sum_AB_csr(A, B, alpha, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_sum_AB_distributed2d(A, B, alpha, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -196,7 +212,7 @@ bml_fnorm(
             break;
 #ifdef DO_MPI
         case distributed2d:
-            bml_fnorm_distributed2d(A);
+            return bml_fnorm_distributed2d(A);
             break;
 #endif
         default:

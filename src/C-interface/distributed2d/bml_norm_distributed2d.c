@@ -76,11 +76,10 @@ bml_sum_squares2_distributed2d(
 {
     double norm =
         bml_sum_squares2(A->matrix, B->matrix, alpha, beta, threshold);
-    norm = norm * norm;
 
     bml_sumRealReduce(&norm);
 
-    return sqrt(norm);
+    return norm;
 }
 
 /** Calculate the Fobenius norm of matrix A.
@@ -95,10 +94,11 @@ bml_fnorm_distributed2d(
     bml_matrix_distributed2d_t * A)
 {
     double norm = bml_fnorm(A->matrix);
+    norm = norm * norm;
 
     bml_sumRealReduce(&norm);
 
-    return norm;
+    return sqrt(norm);
 }
 
 /** Calculate the Fobenius norm of the difference between 2 matrices.

@@ -11,6 +11,7 @@ set(HEADERS-DISTRIBUTED
   bml_multiply_distributed2d.h
   bml_norm_distributed2d.h
   bml_setters_distributed2d.h
+  bml_threshold_distributed2d.h
   bml_transpose_distributed2d.h
   bml_trace_distributed2d.h )
 
@@ -28,6 +29,7 @@ set(SOURCES-DISTRIBUTED
   bml_multiply_distributed2d.c
   bml_norm_distributed2d.c
   bml_setters_distributed2d.c
+  bml_threshold_distributed2d.c
   bml_transpose_distributed2d.c
   bml_trace_distributed2d.c )
 
@@ -46,6 +48,7 @@ set(SOURCES-DISTRIBUTED-TYPED
   bml_import_distributed2d_typed.c
   bml_multiply_distributed2d_typed.c
   bml_diagonalize_distributed2d_typed.c
+  bml_setters_distributed2d_typed.c
   )
 
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)

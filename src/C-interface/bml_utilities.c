@@ -10,6 +10,10 @@
 #include "ellsort/bml_utilities_ellsort.h"
 #include "ellblock/bml_utilities_ellblock.h"
 #include "csr/bml_utilities_csr.h"
+#ifdef DO_MPI
+#include "bml_parallel.h"
+#include "distributed2d/bml_introspection_distributed2d.h"
+#endif
 
 #include <complex.h>
 #include <stdio.h>
@@ -45,6 +49,11 @@ bml_print_bml_matrix(
     int j_l,
     int j_u)
 {
+#ifdef DO_MPI
+    bml_matrix_t *Amat = NULL;
+    if (bml_get_type(A) == distributed2d)
+        Amat = bml_get_local_matrix_distributed2d(A);
+#endif
     switch (bml_get_type(A))
     {
         case dense:
@@ -226,6 +235,64 @@ bml_print_bml_matrix(
                     break;
             }
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            switch (bml_get_precision(Amat))
+            {
+                case single_real:
+                {
+                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    if (bml_getMyRank() == 0)
+                    {
+                        bml_print_dense_matrix(bml_get_N(A), single_real,
+                                               dense_row_major, A_dense, i_l,
+                                               i_u, j_l, j_u);
+                        bml_free_memory(A_dense);
+                    }
+                    break;
+                }
+                case double_real:
+                {
+                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    if (bml_getMyRank() == 0)
+                    {
+                        bml_print_dense_matrix(bml_get_N(A), double_real,
+                                               dense_row_major, A_dense, i_l,
+                                               i_u, j_l, j_u);
+                        bml_free_memory(A_dense);
+                    }
+                    break;
+                }
+                case single_complex:
+                {
+                    float *A_dense = bml_export_to_dense(A, dense_row_major);
+                    if (bml_getMyRank() == 0)
+                    {
+                        bml_print_dense_matrix(bml_get_N(A), single_complex,
+                                               dense_row_major, A_dense, i_l,
+                                               i_u, j_l, j_u);
+                        bml_free_memory(A_dense);
+                    }
+                    break;
+                }
+                case double_complex:
+                {
+                    double *A_dense = bml_export_to_dense(A, dense_row_major);
+                    if (bml_getMyRank() == 0)
+                    {
+                        bml_print_dense_matrix(bml_get_N(A), double_complex,
+                                               dense_row_major, A_dense, i_l,
+                                               i_u, j_l, j_u);
+                        bml_free_memory(A_dense);
+                    }
+                    break;
+                }
+                default:
+                    LOG_ERROR("unknown precision\n");
+                    break;
+            }
+            break;
+#endif
         default:
             LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
             break;
