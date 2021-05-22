@@ -26,6 +26,7 @@ int TYPED_FUNC(
     bml_matrix_t *A_t = NULL;
     REAL_T *eigenvalues = NULL;
     bml_matrix_t *eigenvectors = NULL;
+    bml_matrix_t *ct = NULL;
     bml_matrix_t *aux = NULL;
     bml_matrix_t *aux1 = NULL;
     bml_matrix_t *aux2 = NULL;
@@ -58,15 +59,14 @@ int TYPED_FUNC(
 
     bml_add(A, A_t, 0.5, 0.5, 0.0);
 
-    //LOG_INFO("(A + A_t)/2 = \n");
-    //bml_print_bml_matrix(A, 0, N, 0, N);
+    LOG_INFO("(A + A_t)/2 = \n");
+    bml_print_bml_matrix(A, 0, N, 0, N);
 
     switch (matrix_precision)
     {
         case single_real:
-#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(float));
-
+#ifdef INTEL_OPT
 #pragma omp parallel for simd
 #pragma vector aligned
             for (int i = 0; i < N; i++)
@@ -74,13 +74,11 @@ int TYPED_FUNC(
                 __assume_aligned(eigenvalues, 64);
                 eigenvalues[i] = 0.0;
             }
-#else
-            eigenvalues = calloc(N, sizeof(float));
 #endif
             break;
         case double_real:
-#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(double));
+#ifdef INTEL_OPT
 #pragma omp parallel for simd
 #pragma vector aligned
             for (int i = 0; i < N; i++)
@@ -88,13 +86,11 @@ int TYPED_FUNC(
                 __assume_aligned(eigenvalues, 64);
                 eigenvalues[i] = 0.0;
             }
-#else
-            eigenvalues = calloc(N, sizeof(double));
 #endif
             break;
         case single_complex:
-#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(float complex));
+#ifdef INTEL_OPT
 #pragma omp parallel for simd
 #pragma vector aligned
             for (int i = 0; i < N; i++)
@@ -102,13 +98,11 @@ int TYPED_FUNC(
                 __assume_aligned(eigenvalues, 64);
                 eigenvalues[i] = 0.0;
             }
-#else
-            eigenvalues = calloc(N, sizeof(float complex));
 #endif
             break;
         case double_complex:
-#ifdef INTEL_OPT
             eigenvalues = bml_allocate_memory(N * sizeof(double complex));
+#ifdef INTEL_OPT
 #pragma omp parallel for simd
 #pragma vector aligned
             for (int i = 0; i < N; i++)
@@ -116,8 +110,6 @@ int TYPED_FUNC(
                 __assume_aligned(eigenvalues, 64);
                 eigenvalues[i] = 0.0;
             }
-#else
-            eigenvalues = calloc(N, sizeof(double complex));
 #endif
             break;
         default:
@@ -128,25 +120,37 @@ int TYPED_FUNC(
     eigenvectors = bml_zero_matrix(matrix_type, matrix_precision,
                                    N, M, distrib_mode);
 
+    aux = bml_zero_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     aux1 = bml_zero_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     aux2 = bml_zero_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
-
-    //bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
 
     bml_diagonalize(A, eigenvalues, eigenvectors);
 
     if (bml_getMyRank() == 0)
     {
         LOG_INFO("%s\n", "eigenvectors");
-        //bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
-
+    }
+    bml_print_bml_matrix(eigenvectors, 0, max_row, 0, max_col);
+    if (bml_getMyRank() == 0)
+    {
         LOG_INFO("%s\n", "eigenvalues");
         for (int i = 0; i < N; i++)
             LOG_INFO("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
                      IMAGINARY_PART(eigenvalues[i]));
     }
-    aux = bml_transpose_new(eigenvectors);
-    bml_multiply(aux, eigenvectors, aux2, 1.0, 0.0, 0.0);       // C^t*C
+
+    ct = bml_transpose_new(eigenvectors);
+    if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("%s\n", "transpose eigenvectors");
+    }
+    bml_print_bml_matrix(ct, 0, max_row, 0, max_col);
+
+    bml_multiply(ct, eigenvectors, aux2, 1.0, 0.0, 0.0);        // C^t*C
+
+    if (bml_getMyRank() == 0)
+        LOG_INFO("C^t*C matrix:\n");
+    bml_print_bml_matrix(aux2, 0, max_row, 0, max_col);
     REAL_T *aux2_dense = bml_export_to_dense(aux2, dense_row_major);
     if (bml_getMyRank() == 0)
     {
@@ -167,7 +171,14 @@ int TYPED_FUNC(
 
     id = bml_identity_matrix(matrix_type, matrix_precision, N, M,
                              distrib_mode);
+    if (bml_getMyRank() == 0)
+        LOG_INFO("Identity matrix:\n");
+    bml_print_bml_matrix(id, 0, max_row, 0, max_col);
+
     bml_add(aux2, id, 1.0, -1.0, 0.0);
+    if (bml_getMyRank() == 0)
+        LOG_INFO("C^txC^t-Id matrix:\n");
+    bml_print_bml_matrix(aux2, 0, max_row, 0, max_col);
     fnorm = bml_fnorm(aux2);
     if (fabsf(fnorm) > N * REL_TOL)
     {
@@ -176,18 +187,26 @@ int TYPED_FUNC(
              fnorm);
         return -1;
     }
-
     bml_set_diagonal(aux1, eigenvalues, 0.0);
+    if (bml_getMyRank() == 0)
+        LOG_INFO("Matrix after setting diagonal:\n");
+    bml_print_bml_matrix(aux1, 0, max_row, 0, max_col);
 
-    bml_multiply(aux1, aux, aux2, 1.0, 0.0, 0.0);       // D*C^t
-
+    bml_multiply(aux1, ct, aux2, 1.0, 0.0, 0.0);        // D*C^t
     bml_multiply(eigenvectors, aux2, aux, 1.0, 0.0, 0.0);       // C*(D*C^t)
 
+    if (bml_getMyRank() == 0)
+        LOG_INFO("C*(D*C^t) matrix:\n");
+    bml_print_bml_matrix(aux, 0, max_row, 0, max_col);
+
     bml_add(aux, A, 1.0, -1.0, 0.0);
+    if (bml_getMyRank() == 0)
+        LOG_INFO("C*(D*C^t)-A matrix:\n");
+    bml_print_bml_matrix(aux, 0, max_row, 0, max_col);
 
     fnorm = bml_fnorm(aux);
 
-    if (fabsf(fnorm) > N * REL_TOL)
+    if (fabsf(fnorm) > N * REL_TOL || (fnorm != fnorm))
     {
         LOG_ERROR
             ("Error in matrix diagonalization; fnorm(CDC^t-A) = %e\n", fnorm);
@@ -198,6 +217,7 @@ int TYPED_FUNC(
     bml_deallocate(&aux);
     bml_deallocate(&aux1);
     bml_deallocate(&aux2);
+    bml_deallocate(&ct);
     bml_deallocate(&A_t);
     bml_deallocate(&eigenvectors);
     bml_deallocate(&id);

@@ -1,5 +1,6 @@
 #include "bml.h"
 #include "../typed.h"
+#include "../macros.h"
 
 #include <complex.h>
 #include <math.h>
@@ -12,6 +13,9 @@ int TYPED_FUNC(
     const bml_matrix_precision_t matrix_precision,
     const int M)
 {
+    int max_row = MIN(N, PRINT_THRESHOLD);
+    int max_col = MIN(N, PRINT_THRESHOLD);
+
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
 
@@ -28,70 +32,84 @@ int TYPED_FUNC(
     }
 #endif
 
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
     // test function bml_threshold_new()
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    LOG_INFO("bml_threshold_new...\n");
     B = bml_threshold_new(A, threshold);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense, 0,
-                           N, 0, N);
-    for (int i = 0; i < N * N; i++)
+    if (bml_getMyRank() == 0)
     {
-        if (ABS(B_dense[i]) > 0 && ABS(B_dense[i]) < threshold)
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+        if (bml_getMyRank() == 0)
+            bml_print_dense_matrix(N, matrix_precision, dense_row_major,
+                                   B_dense, 0, N, 0, N);
+        for (int i = 0; i < N * N; i++)
         {
-            LOG_ERROR("matrices not thresholded B[%d] = %e\n", i, B_dense[i]);
-            return -1;
+            if (ABS(B_dense[i]) > 0 && ABS(B_dense[i]) < threshold)
+            {
+                LOG_ERROR("matrices not thresholded B[%d] = %e\n", i,
+                          B_dense[i]);
+                return -1;
+            }
         }
+
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
     }
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
 
     // now test function bml_threshold()
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     REAL_T scale_factor = 1.e-2;
     bml_scale_inplace(&scale_factor, A);
-    A_dense = bml_export_to_dense(A, dense_row_major);
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_free_memory(A_dense);
+    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
 
     REAL_T *diagonal = bml_allocate_memory(N * sizeof(REAL_T));
     for (int i = 0; i < N; i++)
         diagonal[i] = 1.;
     bml_set_diagonal(A, diagonal, 0.);
-    A_dense = bml_export_to_dense(A, dense_row_major);
     LOG_INFO("Scaled matrix\n");
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-    bml_free_memory(A_dense);
+    bml_print_bml_matrix(A, 0, N, 0, N);
     bml_free_memory(diagonal);
     bml_threshold(A, 2. * scale_factor);
 
-    B = bml_identity_matrix(matrix_type, matrix_precision, N, M, sequential);
+    B = bml_identity_matrix(matrix_type, matrix_precision, N, M,
+                            distrib_mode);
 
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     LOG_INFO("Thresholded matrix\n");
-    bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense, 0,
-                           N, 0, N);
-
-    double tol = 1.e-6;
-    for (int i = 0; i < N * N; i++)
+    if (bml_getMyRank() == 0)
     {
-        if (ABS(B_dense[i] - A_dense[i]) > tol)
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
+                               0, N, 0, N);
+
+        double tol = 1.e-6;
+        for (int i = 0; i < N * N; i++)
         {
-            LOG_ERROR("matrices not identical A[%d] = %e, B[%d] = %e\n",
-                      i, A_dense[i], i, B_dense[i]);
-            return -1;
+            if (ABS(B_dense[i] - A_dense[i]) > tol)
+            {
+                LOG_ERROR("matrices not identical A[%d] = %e, B[%d] = %e\n",
+                          i, A_dense[i], i, B_dense[i]);
+                return -1;
+            }
         }
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
     }
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
     bml_deallocate(&A);
     bml_deallocate(&B);
 

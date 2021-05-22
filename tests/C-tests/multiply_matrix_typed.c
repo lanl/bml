@@ -166,9 +166,8 @@ int TYPED_FUNC(
     if (bml_getMyRank() == 0)
     {
         LOG_INFO("C = %f * A + %f * B [0: %d][0: %d]\n", alpha, beta, N, N);
-        //bml_print_bml_matrix(C, 0, max_row, 0, max_col);
     }
-    //D_dense = bml_export_to_dense(C, dense_row_major);
+    bml_print_bml_matrix(C, 0, max_row, 0, max_col);
 
     if (bml_getMyRank() == 0)
         LOG_INFO("bml_export_to_dense\n");

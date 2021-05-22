@@ -1,5 +1,4 @@
 #include "bml_allocate_distributed2d.h"
-#include "bml_introspection_distributed2d.h"
 #include "../bml_introspection.h"
 #include "../bml_allocate.h"
 #include "../bml_convert.h"
@@ -10,11 +9,10 @@
 #include "bml_types_distributed2d.h"
 #include "../bml_types.h"
 #include "../bml_utilities.h"
-#include "../dense/bml_allocate_dense.h"
-#include "../dense/bml_diagonalize_dense.h"
-#include "../dense/bml_types_dense.h"
 #include "../../macros.h"
 #include "../../typed.h"
+#include "../bml_transpose.h"
+#include "../bml_copy.h"
 
 #include <mpi.h>
 
@@ -148,7 +146,9 @@ void TYPED_FUNC(
     bml_matrix_distributed2d_t * eigenvectors)
 {
 #ifdef BML_USE_SCALAPACK
-    char order = 'C';
+    REAL_T *typed_eigenvalues = (REAL_T *) eigenvalues;
+    // distributed2d format uses a row block distribution
+    char order = 'R';
     int np_rows = A->nprows;
     int np_cols = A->npcols;
     int my_prow = A->myprow;
@@ -173,11 +173,12 @@ void TYPED_FUNC(
 
     bml_matrix_t *Alocal = A->matrix;
 
+    // copy matrix into tmp array since scalapack will destroy its content
     bml_matrix_t *zmat = NULL;
     bml_matrix_t *amat = NULL;
     if (bml_get_type(Alocal) == dense)
     {
-        amat = Alocal;
+        amat = bml_copy_new(Alocal);
         zmat = eigenvectors->matrix;
     }
     else
@@ -190,12 +191,15 @@ void TYPED_FUNC(
                            -1, sequential);
     }
 
+    // transpose to satisfy column major ScaLapack convention
+    // (global matrix assumed symmetric, so no need for communications)
+    if (A->myprow != A->mypcol)
+        bml_transpose(amat);
+
     REAL_T *pzmat = bml_get_data_ptr(zmat);
     assert(pzmat != NULL);
-    MPI_Barrier(MPI_COMM_WORLD);
-    // copy matrix into tmp array since scalapack will destroy its content
-    REAL_T *atmp = bml_allocate_memory(m * m * sizeof(REAL_T));
-    memcpy(atmp, bml_get_data_ptr(amat), m * m * sizeof(REAL_T));
+    REAL_T *atmp = bml_get_data_ptr(amat);
+    assert(atmp != NULL);
 
     int ione = 1;
 #if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
@@ -208,10 +212,10 @@ void TYPED_FUNC(
 #endif
     REAL_T *work = bml_allocate_memory(lwork * sizeof(REAL_T));
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-    float *ev = eigenvalues;
+    float *ev = malloc(A->N * sizeof(float));
 #endif
 #if defined(DOUBLE_REAL) || defined(DOUBLE_COMPLEX)
-    double *ev = eigenvalues;
+    double *ev = malloc(A->N * sizeof(double));
 #endif
 
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
@@ -243,23 +247,28 @@ void TYPED_FUNC(
     if (info > 0)
         LOG_ERROR("Eigenvalue %d did not converge\n", info);
 
+    for (int i = 0; i < A->N; i++)
+        typed_eigenvalues[i] = (REAL_T) ev[i];
+
     // clean up
+    free(ev);
     bml_free_memory(work);
-    bml_free_memory(atmp);
     bml_free_memory(iwork);
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
     bml_free_memory(rwork);
 #endif
 
+    bml_deallocate(&amat);
     if (bml_get_type(Alocal) != dense)
     {
         bml_deallocate(&(eigenvectors->matrix));
         eigenvectors->matrix =
             bml_convert(zmat, bml_get_type(Alocal), A->matrix_precision,
                         A->M / A->npcols, sequential);
-        bml_deallocate(&amat);
         bml_deallocate(&zmat);
     }
+    // transpose eigenvectors to have them stored row-major
+    bml_transpose(eigenvectors->matrix);
 #else
     LOG_ERROR
         ("Build with ScaLAPACK required for distributed2d diagonalization\n");

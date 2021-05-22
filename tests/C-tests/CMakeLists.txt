@@ -123,13 +123,16 @@ endfunction(test_formats_mpi)
 set(testlist-mpi
     add
     allocate
-    copy
     convert
+    copy
     diagonalize
     import_export
     scale
     mpi_sendrecv
     multiply
+    norm
+    print
+    threshold
     trace
     transpose
 )

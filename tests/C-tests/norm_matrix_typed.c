@@ -24,6 +24,15 @@ int TYPED_FUNC(
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
     const double alpha = 1.2;
     const double beta = 0.8;
     const double threshold = 0.0;
@@ -36,12 +45,16 @@ int TYPED_FUNC(
     double sqrt_sum = 0.0;
     double sqrt_sum2 = 0.0;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
-    B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
+    B = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
+    if (bml_getMyRank() == 0)
+        LOG_INFO("Matrices:\n");
     bml_print_bml_matrix(A, 0, N, 0, N);
     bml_print_bml_matrix(B, 0, N, 0, N);
 
+    if (bml_getMyRank() == 0)
+        LOG_INFO("Export to dense...\n");
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
 
@@ -50,11 +63,14 @@ int TYPED_FUNC(
     sum3 = bml_sum_AB(A, B, alpha, threshold);
     //sum4 = bml_sum_AB_dense(A_dense, B_dense, alpha, threshold);
 
-    for (int i = 0; i < N; i++)
+    if (bml_getMyRank() == 0)
     {
-        for (int j = 0; j < N; j++)
+        for (int i = 0; i < N; i++)
         {
-            sum4 += alpha * A_dense[i * N + j] * B_dense[i * N + j];
+            for (int j = 0; j < N; j++)
+            {
+                sum4 += alpha * A_dense[i * N + j] * B_dense[i * N + j];
+            }
         }
     }
 
@@ -65,13 +81,14 @@ int TYPED_FUNC(
     fnorm = bml_fnorm(A);
 
     //if (ABS(sum - sum2) > REL_TOL)
-    if (fabs(sum3 - sum4) > REL_TOL)
-    {
-        LOG_ERROR
-            ("incorrect product of matrix A and B; sum3 = %e sum4 = %e\n",
-             sum3, sum4);
-        return -1;
-    }
+    if (bml_getMyRank() == 0)
+        if (fabs(sum3 - sum4) > REL_TOL)
+        {
+            LOG_ERROR
+                ("incorrect product of matrix A and B; sum3 = %e sum4 = %e\n",
+                 sum3, sum4);
+            return -1;
+        }
 
     //if (ABS(sum - sum2) > REL_TOL)
     if (fabs(sum - sum2) > REL_TOL)
@@ -97,8 +114,11 @@ int TYPED_FUNC(
     }
 
     LOG_INFO("norm matrix test passed\n");
-    bml_free_memory(A_dense);
-    bml_free_memory(B_dense);
+    if (bml_getMyRank() == 0)
+    {
+        bml_free_memory(A_dense);
+        bml_free_memory(B_dense);
+    }
     bml_deallocate(&A);
     bml_deallocate(&B);
 
