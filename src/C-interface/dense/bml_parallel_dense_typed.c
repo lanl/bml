@@ -26,7 +26,7 @@ void TYPED_FUNC(
     bml_allGatherVParallel_dense) (
     bml_matrix_dense_t * A)
 {
-#ifdef BML_MPI_NONDIST
+#if defined(DO_MPI) && defined(BML_MPI_NONDIST) 
     int myRank = bml_getMyRank();
 
     int N = A->N;
