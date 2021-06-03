@@ -5,6 +5,30 @@
 #include "bml_allocate_dense.h"
 #include "bml_types_dense.h"
 
+
+#ifdef BML_USE_MAGMA
+static magma_queue_t queue;
+magma_queue_t
+bml_queue(
+    )
+{
+    return queue;
+}
+
+void
+bml_queue_create(
+    int device)
+{
+    static int queueset = 0;
+    if (queueset == 0)
+    {
+        LOG_INFO("magma_queue_create\n");
+        magma_queue_create(device, &queue);
+        queueset = 1;
+    }
+}
+#endif
+
 /** Deallocate a matrix.
  *
  * \ingroup allocate_group
@@ -15,9 +39,6 @@ void
 bml_deallocate_dense(
     bml_matrix_dense_t * A)
 {
-#ifdef BML_USE_MAGMA
-    magma_queue_destroy(A->queue);
-#endif
     bml_deallocate_domain(A->domain);
     bml_deallocate_domain(A->domain2);
 #ifdef BML_USE_MAGMA

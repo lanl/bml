@@ -83,7 +83,8 @@ void TYPED_FUNC(
 {
 #ifdef BML_USE_MAGMA
     MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
-    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N, A->queue);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N,
+                      bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
 #endif
@@ -111,7 +112,8 @@ void TYPED_FUNC(
     MPI_Recv(A_matrix, A->N * A->N, MPI_T, src, 222, comm, &status);
 
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (A->N, A->N, A_matrix, A->N, A->matrix, A->ld, A->queue);
+    MAGMA(setmatrix) (A->N, A->N, A_matrix, A->N, A->matrix, A->ld,
+                      bml_queue());
     free(A_matrix);
 #endif
 }

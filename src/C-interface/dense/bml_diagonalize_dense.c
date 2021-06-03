@@ -63,7 +63,7 @@ bml_diagonalize_dense_single_real(
 
     //copy matrix into evecs
     magmablas_slacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
-                     A->queue);
+                     bml_queue());
 
     magma_ssyevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
                      wa, ldwa, work, lwork, iwork, liwork, &info);
@@ -89,7 +89,7 @@ bml_diagonalize_dense_single_real(
     A_matrix = (float *) eigenvectors->matrix;
 #ifdef BML_USE_MAGMA
     magmablas_stranspose(A->N, A->N, evecs, A->ld,
-                         A_matrix, eigenvectors->ld, A->queue);
+                         A_matrix, eigenvectors->ld, bml_queue());
     for (int i = 0; i < A->N; i++)
         typed_eigenvalues[i] = (float) evals[i];
 #else
@@ -134,9 +134,9 @@ bml_diagonalize_dense_double_real(
     assert(ret == MAGMA_SUCCESS);
 
     magmablas_dlacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
-                     A->queue);
+                     bml_queue());
 
-    magma_queue_sync(A->queue);
+    magma_queue_sync(bml_queue());
 
 #ifdef BML_USE_CUSOLVER
     // create cusolver/cublas handle
@@ -218,22 +218,20 @@ bml_diagonalize_dense_double_real(
     //verify norm eigenvectors
     //for(int i=0;i<A->N;i++)
     //{
-    //    double norm = magma_dnrm2(A->N, evecs+A->ld*i, 1, A->queue);
+    //    double norm = magma_dnrm2(A->N, evecs+A->ld*i, 1, bml_queue());
     //    printf("norm = %le\n", norm);
     //}
-    magma_queue_sync(A->queue);
 #endif
 
     // transpose eigenvactors matrix on GPU
     A_matrix = (double *) eigenvectors->matrix;
     magmablas_dtranspose(A->N, A->N, evecs, A->ld,
-                         A_matrix, eigenvectors->ld, A->queue);
-    magma_queue_sync(eigenvectors->queue);
+                         A_matrix, eigenvectors->ld, bml_queue());
 
     //verify norm eigenvectors transposed
     //for(int i=0;i<A->N;i++)
     //{
-    //    double norm = magma_dnrm2(A->N, evecs+i, A->ld, A->queue);
+    //    double norm = magma_dnrm2(A->N, evecs+i, A->ld, bml_queue());
     //    printf("norm transposed vector = %le\n", norm);
     //}
     magma_free(evecs);
@@ -297,9 +295,9 @@ bml_diagonalize_dense_single_complex(
 
     //copy matrix into evecs
     magmablas_clacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
-                     A->queue);
+                     bml_queue());
 
-    magma_queue_sync(A->queue);
+    magma_queue_sync(bml_queue());
 
     magma_cheevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
                      wa, ldwa,
@@ -309,7 +307,7 @@ bml_diagonalize_dense_single_complex(
 
     magmaFloatComplex *A_matrix = (magmaFloatComplex *) eigenvectors->matrix;
     magmablas_ctranspose(A->N, A->N, evecs, A->ld,
-                         A_matrix, eigenvectors->ld, A->queue);
+                         A_matrix, eigenvectors->ld, bml_queue());
     for (int i = 0; i < A->N; i++)
         typed_eigenvalues[i] = (double) evals[i];
 
@@ -395,7 +393,7 @@ bml_diagonalize_dense_double_complex(
 
     //copy matrix into evecs
     magmablas_zlacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
-                     A->queue);
+                     bml_queue());
 
     magma_zheevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
                      wa, ldwa,
@@ -406,7 +404,7 @@ bml_diagonalize_dense_double_complex(
     magmaDoubleComplex *A_matrix =
         (magmaDoubleComplex *) eigenvectors->matrix;
     magmablas_ztranspose(A->N, A->N, evecs, A->ld, A_matrix, eigenvectors->ld,
-                         A->queue);
+                         bml_queue());
     for (int i = 0; i < A->N; i++)
         typed_eigenvalues[i] = (double) evals[i];
 

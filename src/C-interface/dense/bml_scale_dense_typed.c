@@ -44,7 +44,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
-    MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, B->queue);
+    MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, bml_queue());
 #else
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -82,7 +82,7 @@ void TYPED_FUNC(
     int inc = 1;
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
-    MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, B->queue);
+    MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, bml_queue());
 #else
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -105,7 +105,7 @@ void TYPED_FUNC(
     int inc = 1;
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
-    MAGMA(scal) (number_elements, scale_factor_, A->matrix, inc, A->queue);
+    MAGMA(scal) (number_elements, scale_factor_, A->matrix, inc, bml_queue());
 #else
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");

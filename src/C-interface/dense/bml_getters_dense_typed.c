@@ -10,6 +10,7 @@
 #include "bml_export_dense.h"
 #include "bml_getters_dense.h"
 #include "bml_types_dense.h"
+#include "bml_allocate_dense.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -31,7 +32,7 @@ void *TYPED_FUNC(
     static REAL_T value = 0.;
     MAGMA_T tmp;
     MAGMA(getvector) (1, (MAGMA_T *) A->matrix + i * A->ld + j, 1,
-                      &tmp, 1, A->queue);
+                      &tmp, 1, bml_queue());
     value = MAGMACOMPLEX(REAL) (tmp);
     return &value;
 #else
@@ -58,7 +59,7 @@ void *TYPED_FUNC(
     MAGMA_T *row = calloc(N, sizeof(MAGMA_T));
 
     MAGMA(getvector) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
-                      row, 1, A->queue);
+                      row, 1, bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
     REAL_T *row = calloc(N, sizeof(REAL_T));

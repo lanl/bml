@@ -77,7 +77,8 @@ void *TYPED_FUNC(
     REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
 
     MAGMA(getmatrix) (A->N, A->N,
-                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N,
+                      bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
 #endif

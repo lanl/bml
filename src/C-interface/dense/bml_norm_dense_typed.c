@@ -11,6 +11,7 @@
 #include "../bml_types.h"
 #include "bml_norm_dense.h"
 #include "bml_types_dense.h"
+#include "bml_allocate_dense.h"
 
 #include <complex.h>
 #include <math.h>
@@ -46,14 +47,14 @@ double TYPED_FUNC(
                                             (MAGMA_T *) A->matrix + i * A->ld,
                                             1,
                                             (MAGMA_T *) A->matrix + i * A->ld,
-                                            1, A->queue));
+                                            1, bml_queue()));
     }
     sum = MAGMACOMPLEX(REAL) (tsum) + I * MAGMACOMPLEX(IMAG) (tsum);
 #else
     for (int i = 0; i < N; i++)
     {
         sum += MAGMA(dot) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
-                           (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+                           (MAGMA_T *) A->matrix + i * A->ld, 1, bml_queue());
     }
 #endif
 
@@ -108,14 +109,14 @@ double TYPED_FUNC(
                                             (MAGMA_T *) A->matrix + i * A->ld,
                                             1,
                                             (MAGMA_T *) A->matrix + i * A->ld,
-                                            1, A->queue));
+                                            1, bml_queue()));
     }
     sum = MAGMACOMPLEX(REAL) (tsum) + I * MAGMACOMPLEX(IMAG) (tsum);
 #else
     for (int i = 0; i < core_size; i++)
     {
         sum += MAGMA(dot) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
-                           (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+                           (MAGMA_T *) A->matrix + i * A->ld, 1, bml_queue());
     }
 #endif
 
@@ -169,9 +170,11 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
 #ifdef BML_USE_MAGMA            //do work on CPU for now...
     MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
-    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N, A->queue);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N,
+                      bml_queue());
     MAGMA_T *B_matrix = bml_allocate_memory(sizeof(MAGMA_T) * B->N * B->N);
-    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N, B->queue);
+    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N,
+                      bml_queue());
 
 #else
     REAL_T *A_matrix = A->matrix;
@@ -241,9 +244,11 @@ double TYPED_FUNC(
     REAL_T sum = 0.0;
 #ifdef BML_USE_MAGMA            //do work on CPU for now...
     MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
-    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N, A->queue);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N,
+                      bml_queue());
     MAGMA_T *B_matrix = bml_allocate_memory(sizeof(MAGMA_T) * B->N * B->N);
-    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N, B->queue);
+    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N,
+                      bml_queue());
 
 #else
     REAL_T *A_matrix = A->matrix;
@@ -303,13 +308,6 @@ double TYPED_FUNC(
     bml_matrix_dense_t * A)
 {
     double sum = 0.0;
-//#ifdef BML_USE_MAGMA
-//    int lwork=A->N;
-//    MAGMA_T *dwork;
-//    MAGMA(malloc)(&dwork,lwork);
-//    sum = MAGMABLAS(lange)(MagmaFrobeniusNorm, A->N, A->N, A->matrix, A->ld,
-//                           dwork, lwork, A->queue);
-//#else
     sum = TYPED_FUNC(bml_sum_squares_dense) (A);
 
 #ifdef DO_MPI

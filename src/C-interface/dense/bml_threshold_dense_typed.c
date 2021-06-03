@@ -108,6 +108,6 @@ void TYPED_FUNC(
     }
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (N, N, (MAGMA_T *) A_matrix, N, A_bml->matrix, A_bml->ld,
-                      A_bml->queue);
+                      bml_queue());
 #endif
 }

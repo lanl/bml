@@ -19,6 +19,8 @@
 #include <omp.h>
 #endif
 
+
+
 /** Clear the matrix.
  *
  * All values are zeroed.
@@ -34,7 +36,7 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMA_T zero = MAGMACOMPLEX(MAKE) (0., 0.);
     MAGMABLAS(laset) (MagmaFull, A->N, A->N, zero, zero, A->matrix, A->ld,
-                      A->queue);
+                      bml_queue());
 #else
     memset(A->matrix, 0.0, A->N * A->ld * sizeof(REAL_T));
 #endif
@@ -68,8 +70,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->ld = magma_roundup(matrix_dimension.N_rows, 32);
     int device;
     magma_getdevice(&device);
-    magma_queue_create(device, &A->queue);
-
+    bml_queue_create(device);
     magma_int_t ret = MAGMA(malloc) ((MAGMA_T **) & A->matrix,
                                      A->ld * matrix_dimension.N_rows);
     assert(ret == MAGMA_SUCCESS);
@@ -133,7 +134,7 @@ bml_matrix_dense_t *TYPED_FUNC(
         }
     }
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
+    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, bml_queue());
     bml_free_memory(A_dense);
 #endif
     return A;
@@ -182,7 +183,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     }
 
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
+    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, bml_queue());
     bml_free_memory(A_dense);
 #endif
     return A;
@@ -225,7 +226,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     }
 
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, A->queue);
+    MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, bml_queue());
     bml_free_memory(A_dense);
 #endif
     return A;

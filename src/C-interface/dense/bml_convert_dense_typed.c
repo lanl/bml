@@ -43,7 +43,8 @@ bml_matrix_dense_t *TYPED_FUNC(
         }
     }
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (N, N, (MAGMA_T *) Bij, N, B->matrix, B->ld, B->queue);
+    MAGMA(setmatrix) (N, N, (MAGMA_T *) Bij, N, B->matrix, B->ld,
+                      bml_queue());
     free(Bij);
 #endif
     return B;
