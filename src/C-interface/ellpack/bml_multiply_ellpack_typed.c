@@ -128,7 +128,7 @@ void *TYPED_FUNC(
     int rowMin = X_localRowMin[myRank];
     int rowMax = X_localRowMax[myRank];
 
-#if !(defined(__IBMC__) || defined(__ibmxl__))
+#if !(defined(__IBMC__) || defined(__ibmxl__) || (defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)))
     int ix[X_N], jx[X_N];
     REAL_T x[X_N];
 
@@ -137,13 +137,44 @@ void *TYPED_FUNC(
     memset(x, 0.0, X_N * sizeof(REAL_T));
 #endif
 
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+    int num_chunks = MIN(OFFLOAD_NUM_CHUNKS, rowMax - rowMin + 1);
+
+    int all_ix[X_N * num_chunks], all_jx[X_N * num_chunks];
+    REAL_T all_x[X_N * num_chunks];
+
+    memset(all_ix, 0, X_N * num_chunks * sizeof(int));
+    memset(all_jx, 0, X_N * num_chunks * sizeof(int));
+    memset(all_x, 0.0, X_N * num_chunks * sizeof(REAL_T));
+
+#pragma omp target map(to:all_ix[0:X_N*num_chunks],all_jx[0:X_N*num_chunks],all_x[0:X_N*num_chunks])
+
+#endif
+
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target teams distribute parallel for \
+#if defined(INTEL_SDK)
+#pragma omp teams distribute parallel for	\
+    shared(X_N, X_M, X_index, X_nnz, X_value)  \
+    shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
+    shared(rowMin, rowMax)                             \
+    reduction(+: traceX, traceX2)
+    for (int chunk = 0; chunk < num_chunks; chunk++)
+    {
+        int *ix, *jx;
+        REAL_T *x;
+
+        ix = &all_ix[chunk * X_N];
+        jx = &all_jx[chunk * X_N];
+        x = &all_x[chunk * X_N];
+
+#else
+#pragma omp target teams distribute parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
     shared(rowMin, rowMax)                             \
     firstprivate(ix,jx, x)                             \
     reduction(+: traceX, traceX2)
+#endif
 #else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                               \
@@ -152,7 +183,7 @@ void *TYPED_FUNC(
     shared(rowMin, rowMax)                             \
     reduction(+: traceX, traceX2)
 #else
-#ifndef CRAY_SDK
+#if !(defined(CRAY_SDK) || defined(INTEL_SDK))
 #pragma vector aligned
 #endif
 #pragma omp parallel for                               \
@@ -163,7 +194,12 @@ void *TYPED_FUNC(
     reduction(+: traceX, traceX2)
 #endif
 #endif
+
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+    for (int i = rowMin + chunk; i < rowMax; i = i + num_chunks)
+#else
     for (int i = rowMin; i < rowMax; i++)
+#endif
     {
 
 #if defined(__IBMC__) || defined(__ibmxl__)
@@ -172,6 +208,7 @@ void *TYPED_FUNC(
 
         memset(ix, 0, X_N * sizeof(int));
 #endif
+
 #ifdef INTEL_OPT
         __assume_aligned(X_nnz, MALLOC_ALIGNMENT);
         __assume_aligned(X_index, MALLOC_ALIGNMENT);
@@ -240,10 +277,14 @@ void *TYPED_FUNC(
         X2_nnz[i] = ll;
     }
 
-    trace[0] = traceX;
-    trace[1] = traceX2;
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+}
+#endif
 
-    return trace;
+trace[0] = traceX;
+trace[1] = traceX2;
+
+return trace;
 }
 
 /** Matrix multiply.
@@ -289,7 +330,7 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#if !(defined(__IBMC__) || defined(__ibmxl__))
+#if !(defined(__IBMC__) || defined(__ibmxl__) || (defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)))
     int ix[C->N], jx[C->N];
     REAL_T x[C->N];
 
@@ -298,13 +339,44 @@ void TYPED_FUNC(
     memset(x, 0.0, C->N * sizeof(REAL_T));
 #endif
 
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+    int num_chunks = MIN(OFFLOAD_NUM_CHUNKS, rowMax - rowMin + 1);
+
+    int all_ix[C_N * num_chunks], all_jx[C_N * num_chunks];
+    REAL_T all_x[C_N * num_chunks];
+
+    memset(all_ix, 0, C_N * num_chunks * sizeof(int));
+    memset(all_jx, 0, C_N * num_chunks * sizeof(int));
+    memset(all_x, 0.0, C_N * num_chunks * sizeof(REAL_T));
+
+#pragma omp target map(to:all_ix[0:C_N*num_chunks],all_jx[0:C_N*num_chunks],all_x[0:C_N*num_chunks])
+
+#endif
+
 #if defined (USE_OMP_OFFLOAD)
+#if defined(INTEL_SDK)
+#pragma omp teams distribute parallel for \
+    shared(A_N, A_M, A_nnz, A_index, A_value)  \
+    shared(A_localRowMin, A_localRowMax)       \
+    shared(B_N, B_M, B_nnz, B_index, B_value)  \
+    shared(C_N, C_M, C_nnz, C_index, C_value)
+    for (int chunk = 0; chunk < num_chunks; chunk++)
+    {
+        int *ix, *jx;
+        REAL_T *x;
+
+        ix = &all_ix[chunk * C_N];
+        jx = &all_jx[chunk * C_N];
+        x = &all_x[chunk * C_N];
+
+#else
 #pragma omp target teams distribute parallel for \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
     shared(C_N, C_M, C_nnz, C_index, C_value)  \
     firstprivate(ix, jx, x)
+#endif
 #else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for                       \
@@ -322,7 +394,11 @@ void TYPED_FUNC(
 #endif
 #endif
     //for (int i = 0; i < A_N; i++)
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+    for (int i = rowMin + chunk; i < rowMax; i = i + num_chunks)
+#else
     for (int i = rowMin; i < rowMax; i++)
+#endif
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
@@ -384,6 +460,9 @@ void TYPED_FUNC(
         }
         C_nnz[i] = ll;
     }
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+}
+#endif
 }
 
 /** Matrix multiply with threshold adjustment.

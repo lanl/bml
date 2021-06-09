@@ -37,4 +37,11 @@
  */
 #define MAX(a, b) ((a) > (b) ? a : b)
 
+/** Number of outer loop iterations for offload code
+ */
+
+#ifndef OFFLOAD_NUM_CHUNKS
+#define OFFLOAD_NUM_CHUNKS 128
+#endif
+
 #endif

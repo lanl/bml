@@ -57,7 +57,7 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#if !(defined(__IBMC__) || defined(__ibmxl__))
+#if !(defined(__IBMC__) || defined(__ibmxl__) || (defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)))
     int ix[N], jx[N];
     REAL_T x[N];
 
@@ -66,12 +66,42 @@ void TYPED_FUNC(
     memset(x, 0.0, N * sizeof(REAL_T));
 #endif
 
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+    int num_chunks = MIN(OFFLOAD_NUM_CHUNKS, rowMax - rowMin + 1);
+
+    int all_ix[N * num_chunks], all_jx[N * num_chunks];
+    REAL_T all_x[N * num_chunks];
+
+    memset(all_ix, 0, N * num_chunks * sizeof(int));
+    memset(all_jx, 0, N * num_chunks * sizeof(int));
+    memset(all_x, 0.0, N * num_chunks * sizeof(REAL_T));
+
+#pragma omp target map(to:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
+
+#endif
+
 #if defined (USE_OMP_OFFLOAD)
+#if defined(INTEL_SDK)
+#pragma omp teams distribute parallel for \
+    shared(rowMin, rowMax)                \
+    shared(A_index, A_value, A_nnz)       \
+    shared(B_index, B_value, B_nnz)
+    for (int chunk = 0; chunk < num_chunks; chunk++)
+    {
+        int *ix, *jx;
+        REAL_T *x;
+
+        ix = &all_ix[chunk * N];
+        jx = &all_jx[chunk * N];
+        x = &all_x[chunk * N];
+
+#else
 #pragma omp target teams distribute parallel for \
     shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
     firstprivate(ix, jx, x)
+#endif
 #else
 #if defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp parallel for \
@@ -86,9 +116,12 @@ void TYPED_FUNC(
     firstprivate(ix, jx, x)
 #endif
 #endif
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+    for (int i = rowMin + chunk; i < rowMax; i = i + num_chunks)
+#else
     for (int i = rowMin; i < rowMax; i++)
+#endif
     {
-
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[N], jx[N];
         REAL_T x[N];
@@ -142,6 +175,9 @@ void TYPED_FUNC(
         }
         A_nnz[i] = ll;
     }
+#if defined(USE_OMP_OFFLOAD) && defined(INTEL_SDK)
+}
+#endif
 }
 
 /** Matrix addition.
