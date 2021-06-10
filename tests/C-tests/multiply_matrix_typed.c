@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef _OPENMP
+#include<omp.h>
+#else
+#include<time.h>
+#endif
+
 static void TYPED_FUNC(
     ref_multiply) (
     const int N,
