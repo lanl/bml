@@ -13,6 +13,7 @@
 #ifdef DO_MPI
 #include "bml_parallel.h"
 #include "distributed2d/bml_introspection_distributed2d.h"
+#include "distributed2d/bml_utilities_distributed2d.h"
 #endif
 
 #include <complex.h>
@@ -558,6 +559,11 @@ bml_read_bml_matrix(
         case csr:
             bml_read_bml_matrix_csr(A, filename);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_read_bml_matrix_distributed2d(A, filename);
+            break;
+#endif
         default:
             LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
             break;
@@ -591,6 +597,11 @@ bml_write_bml_matrix(
         case csr:
             bml_write_bml_matrix_csr(A, filename);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_write_bml_matrix_distributed2d(A, filename);
+            break;
+#endif
         default:
             LOG_ERROR("unknown type (%d)\n", bml_get_type(A));
             break;

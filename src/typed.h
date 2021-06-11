@@ -22,7 +22,6 @@
 #define MATRIX_PRECISION single_real
 #define BLAS_PREFIX S
 #define MAGMA_PREFIX s
-#define MPI_T MPI_FLOAT
 #define XSMM_PREFIX libxsmm_
 #define REAL_PART(x) (x)
 #define IMAGINARY_PART(x) (0.0)
@@ -36,7 +35,6 @@
 #define MATRIX_PRECISION double_real
 #define BLAS_PREFIX D
 #define MAGMA_PREFIX d
-#define MPI_T MPI_DOUBLE
 #define XSMM_PREFIX libxsmm_
 #define REAL_PART(x) (x)
 #define IMAGINARY_PART(x) (0.0)
@@ -50,7 +48,6 @@
 #define MATRIX_PRECISION single_complex
 #define BLAS_PREFIX C
 #define MAGMA_PREFIX c
-#define MPI_T MPI_C_FLOAT_COMPLEX
 #define XSMM_PREFIX
 #define REAL_PART(x) (crealf(x))
 #define IMAGINARY_PART(x) (cimagf(x))
@@ -64,7 +61,6 @@
 #define MATRIX_PRECISION double_complex
 #define BLAS_PREFIX Z
 #define MAGMA_PREFIX z
-#define MPI_T MPI_C_DOUBLE_COMPLEX
 #define XSMM_PREFIX
 #define REAL_PART(x) (creal(x))
 #define IMAGINARY_PART(x) (cimag(x))

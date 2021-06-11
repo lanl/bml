@@ -1,9 +1,11 @@
 #include "bml_submatrix.h"
 #include "bml_introspection.h"
 #include "bml_logger.h"
-//#include "dense/bml_submatrix_dense.h"
+#include "csr/bml_submatrix_csr.h"
+#include "dense/bml_submatrix_dense.h"
 #include "ellpack/bml_submatrix_ellpack.h"
 #include "ellsort/bml_submatrix_ellsort.h"
+#include "ellblock/bml_submatrix_ellblock.h"
 
 #include <stdlib.h>
 
@@ -320,6 +322,72 @@ bml_adjacency_group(
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+}
+
+bml_matrix_t *
+bml_extract_submatrix(
+    bml_matrix_t * A,
+    int irow,
+    int icol,
+    int B_N,
+    int B_M)
+{
+    bml_matrix_t *B = NULL;
+
+    switch (bml_get_type(A))
+    {
+        case ellpack:
+            B = bml_extract_submatrix_ellpack(A, irow, icol, B_N, B_M);
+            break;
+        case dense:
+            B = bml_extract_submatrix_dense(A, irow, icol, B_N, B_M);
+            break;
+        case csr:
+            B = bml_extract_submatrix_csr(A, irow, icol, B_N, B_M);
+            break;
+        case ellblock:
+            B = bml_extract_submatrix_ellblock(A, irow, icol, B_N, B_M);
+            break;
+        case ellsort:
+            B = bml_extract_submatrix_ellsort(A, irow, icol, B_N, B_M);
+            break;
+        default:
+            LOG_ERROR
+                ("bml_extract_submatrix not implemented for matrix format\n");
+            break;
+    }
+    return B;
+}
+
+void
+bml_assign_submatrix(
+    bml_matrix_t * A,
+    bml_matrix_t * B,
+    int irow,
+    int icol)
+{
+    switch (bml_get_type(A))
+    {
+        case ellpack:
+            bml_assign_submatrix_ellpack(A, B, irow, icol);
+            break;
+        case dense:
+            bml_assign_submatrix_dense(A, B, irow, icol);
+            break;
+        case csr:
+            bml_assign_submatrix_csr(A, B, irow, icol);
+            break;
+        case ellblock:
+            bml_assign_submatrix_ellblock(A, B, irow, icol);
+            break;
+        case ellsort:
+            bml_assign_submatrix_ellsort(A, B, irow, icol);
+            break;
+        default:
+            LOG_ERROR
+                ("bml_assign_submatrix not implemented for matrix format\n");
             break;
     }
 }

@@ -15,6 +15,7 @@ set(HEADERS-ELLBLOCK
   bml_parallel_ellblock.h
   bml_scale_ellblock.h
   bml_setters_ellblock.h
+  bml_submatrix_ellblock.h
   bml_threshold_ellblock.h
   bml_trace_ellblock.h
   bml_transpose_ellblock.h
@@ -38,6 +39,7 @@ set(SOURCES-ELLBLOCK
   bml_parallel_ellblock.c
   bml_scale_ellblock.c
   bml_setters_ellblock.c
+  bml_submatrix_ellblock.c
   bml_threshold_ellblock.c
   bml_trace_ellblock.c
   bml_transpose_ellblock.c
@@ -71,6 +73,7 @@ set(SOURCES-ELLBLOCK-TYPED
   bml_parallel_ellblock_typed.c
   bml_scale_ellblock_typed.c
   bml_setters_ellblock_typed.c
+  bml_submatrix_ellblock_typed.c
   bml_threshold_ellblock_typed.c
   bml_trace_ellblock_typed.c
   bml_transpose_ellblock_typed.c
