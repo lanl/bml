@@ -6,11 +6,14 @@
 #include "bml_parallel_csr.h"
 #include "bml_types_csr.h"
 #include "bml_allocate_csr.h"
+#include "bml_setters_csr.h"
 #include "../bml_logger.h"
+#include "../bml_utilities.h"
 
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #ifdef DO_MPI
 #include <mpi.h>
@@ -107,7 +110,6 @@ void TYPED_FUNC(
     bml_free_memory(cols);
 
     // recv matrix elements
-    LOG_DEBUG("Recv values...\n");
     REAL_T *values = bml_allocate_memory(sizeof(REAL_T) * totnnz);
     mpiret = MPI_Recv(values, totnnz, MPI_T, src, 113, comm, &status);
     if (mpiret != MPI_SUCCESS)
@@ -120,8 +122,6 @@ void TYPED_FUNC(
         pvalues += row->NNZ_;
     }
     bml_free_memory(values);
-
-    LOG_DEBUG("Done with Recv...\n");
 }
 
 /*
@@ -137,6 +137,73 @@ bml_matrix_csr_t
     bml_mpi_recv_csr(A_bml, src, comm);
 
     return A_bml;
+}
+
+void TYPED_FUNC(
+    bml_mpi_bcast_matrix_csr) (
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+    assert(A->N_ > 0);
+
+    int totnnz = 0;
+    if (bml_getMyRank() == root)
+        for (int i = 0; i < A->N_; i++)
+        {
+            totnnz += A->data_[i]->NNZ_;
+        }
+    MPI_Bcast(&totnnz, 1, MPI_INT, root, comm);
+    assert(totnnz > 0);
+
+    // bcast cols
+    int *cols = bml_allocate_memory(sizeof(int) * totnnz);
+    int *pcols = cols;
+    if (bml_getMyRank() == root)
+        for (int i = 0; i < A->N_; i++)
+        {
+            csr_sparse_row_t *row = A->data_[i];
+            memcpy(pcols, row->cols_, row->NNZ_ * sizeof(int));
+            pcols += row->NNZ_;
+        }
+    MPI_Bcast(cols, totnnz, MPI_INT, root, comm);
+
+    // bcast nnz
+    int *nnz = bml_allocate_memory(sizeof(int) * A->N_);
+    if (bml_getMyRank() == root)
+        for (int i = 0; i < A->N_; i++)
+        {
+            csr_sparse_row_t *row = A->data_[i];
+            nnz[i] = row->NNZ_;
+        }
+    MPI_Bcast(nnz, A->N_, MPI_INT, root, comm);
+
+    // bcast matrix elements
+    REAL_T *values = bml_allocate_memory(sizeof(REAL_T) * totnnz);
+    REAL_T *pvalues = values;
+    if (bml_getMyRank() == root)
+        for (int i = 0; i < A->N_; i++)
+        {
+            csr_sparse_row_t *row = A->data_[i];
+            memcpy(pvalues, row->vals_, row->NNZ_ * sizeof(REAL_T));
+            pvalues += row->NNZ_;
+        }
+    MPI_Bcast(values, totnnz, MPI_T, root, comm);
+
+    // assign received data
+    pvalues = values;
+    pcols = cols;
+    for (int i = 0; i < A->N_; i++)
+    {
+        TYPED_FUNC(csr_set_sparse_row) (A->data_[i], nnz[i], pcols, pvalues,
+                                        0.);
+        pvalues += nnz[i];
+        pcols += nnz[i];
+    }
+
+    bml_free_memory(values);
+    bml_free_memory(cols);
+    bml_free_memory(nnz);
 }
 
 #endif

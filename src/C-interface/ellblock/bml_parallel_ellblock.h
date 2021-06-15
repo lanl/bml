@@ -75,6 +75,31 @@ bml_matrix_ellblock_t *bml_mpi_recv_matrix_ellblock_double_complex(
     int M,
     const int src,
     MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_ellblock(
+    bml_matrix_ellblock_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_ellblock_single_real(
+    bml_matrix_ellblock_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_ellblock_double_real(
+    bml_matrix_ellblock_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_ellblock_single_complex(
+    bml_matrix_ellblock_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_ellblock_double_complex(
+    bml_matrix_ellblock_t * A,
+    const int root,
+    MPI_Comm comm);
 #endif
 
 #endif

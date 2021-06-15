@@ -16,6 +16,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -53,20 +54,20 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A,
     MPI_Datatype * newtype)
 {
+    assert(A->N > 0);
+
     MPI_Aint baseaddr;
-    MPI_Aint addr0, addr1, addr2;
+    MPI_Aint addr0;
     MPI_Get_address(A, &baseaddr);
     MPI_Get_address(A->matrix, &addr0);
 
     MPI_Datatype dtype[1];
     dtype[0] = MPI_T;
 
-    int blength[1];
-    blength[0] = A->N * A->N;
-
+    int blength = A->N * A->N;
     MPI_Aint displ[0];
     displ[0] = addr0 - baseaddr;
-    int mpiret = MPI_Type_create_struct(1, blength, displ, dtype, newtype);
+    int mpiret = MPI_Type_create_struct(1, &blength, displ, dtype, newtype);
     if (mpiret != MPI_SUCCESS)
         LOG_ERROR("MPI_Type_create_struct failed!");
     mpiret = MPI_Type_commit(newtype);

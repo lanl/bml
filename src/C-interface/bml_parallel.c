@@ -290,4 +290,33 @@ bml_mpi_recv_matrix(
     }
 }
 
+void
+bml_mpi_bcast_matrix(
+    bml_matrix_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+    switch (bml_get_type(A))
+    {
+        case ellpack:
+            return bml_mpi_bcast_matrix_ellpack(A, root, comm);
+            break;
+        case dense:
+            return bml_mpi_bcast_matrix_dense(A, root, comm);
+            break;
+        case csr:
+            return bml_mpi_bcast_matrix_csr(A, root, comm);
+            break;
+        case ellblock:
+            return bml_mpi_bcast_matrix_ellblock(A, root, comm);
+            break;
+        case ellsort:
+            return bml_mpi_bcast_matrix_ellsort(A, root, comm);
+            break;
+        default:
+            LOG_ERROR("bml_mpi_bcast: matrix format not implemented\n");
+            break;
+    }
+}
+
 #endif
