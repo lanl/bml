@@ -107,6 +107,11 @@ bml_matrix_dense_t *bml_mpi_recv_matrix_dense_double_complex(
     int M,
     const int src,
     MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_dense(
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm);
 #endif
 
 #endif

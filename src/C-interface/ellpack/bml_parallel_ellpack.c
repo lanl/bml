@@ -147,4 +147,19 @@ bml_mpi_recv_matrix_ellpack(
     }
 }
 
+void
+bml_mpi_bcast_matrix_ellpack(
+    bml_matrix_ellpack_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+    // create MPI data type to avoid multiple messages
+    MPI_Datatype mpi_data_type;
+    bml_mpi_type_create_struct_ellpack(A, &mpi_data_type);
+
+    MPI_Bcast(A, 1, mpi_data_type, root, comm);
+
+    MPI_Type_free(&mpi_data_type);
+}
+
 #endif

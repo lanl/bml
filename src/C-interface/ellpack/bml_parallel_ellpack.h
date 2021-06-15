@@ -108,6 +108,10 @@ bml_matrix_ellpack_t *bml_mpi_recv_matrix_ellpack_double_complex(
     const int src,
     MPI_Comm comm);
 
+void bml_mpi_bcast_matrix_ellpack(
+    bml_matrix_ellpack_t * A,
+    const int root,
+    MPI_Comm comm);
 #endif
 
 #endif

@@ -75,6 +75,32 @@ bml_matrix_csr_t *bml_mpi_recv_matrix_csr_double_complex(
     int M,
     const int src,
     MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_csr(
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_csr_single_real(
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_csr_double_real(
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_csr_single_complex(
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_csr_double_complex(
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm);
+
 #endif
 
 #endif

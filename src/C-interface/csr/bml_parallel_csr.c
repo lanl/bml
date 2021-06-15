@@ -88,4 +88,29 @@ bml_mpi_recv_matrix_csr(
     }
 }
 
+void
+bml_mpi_bcast_matrix_csr(
+    bml_matrix_csr_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_mpi_bcast_matrix_csr_single_real(A, root, comm);
+            break;
+        case double_real:
+            return bml_mpi_bcast_matrix_csr_double_real(A, root, comm);
+            break;
+        case single_complex:
+            return bml_mpi_bcast_matrix_csr_single_complex(A, root, comm);
+            break;
+        case double_complex:
+            return bml_mpi_bcast_matrix_csr_double_complex(A, root, comm);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
 #endif

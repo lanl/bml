@@ -148,4 +148,19 @@ bml_mpi_recv_matrix_dense(
     }
 }
 
+void
+bml_mpi_bcast_matrix_dense(
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+    // create MPI data type to avoid multiple messages
+    MPI_Datatype mpi_data_type;
+    bml_mpi_type_create_struct_dense(A, &mpi_data_type);
+
+    MPI_Bcast(A, 1, mpi_data_type, root, comm);
+
+    MPI_Type_free(&mpi_data_type);
+}
+
 #endif

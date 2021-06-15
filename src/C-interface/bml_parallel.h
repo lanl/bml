@@ -84,6 +84,11 @@ bml_matrix_t *bml_mpi_recv_matrix(
     int M,
     const int src,
     MPI_Comm comm);
+
+void bml_mpi_bcast_matrix(
+    bml_matrix_t * A,
+    const int root,
+    MPI_Comm comm);
 #endif
 
 #endif

@@ -107,6 +107,11 @@ bml_matrix_ellsort_t *bml_mpi_recv_matrix_ellsort_double_complex(
     int M,
     const int src,
     MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_ellsort(
+    bml_matrix_ellsort_t * A,
+    const int root,
+    MPI_Comm comm);
 #endif
 
 #endif
