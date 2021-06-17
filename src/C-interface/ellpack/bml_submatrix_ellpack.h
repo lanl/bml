@@ -235,4 +235,69 @@ void bml_adjacency_group_ellpack(
     int *adjncy,
     int base_flag);
 
+bml_matrix_ellpack_t *bml_extract_submatrix_ellpack(
+    bml_matrix_ellpack_t * A,
+    int irow,
+    int icol,
+    int B_N,
+    int B_M);
+
+bml_matrix_ellpack_t
+    * bml_extract_submatrix_ellpack_single_real(bml_matrix_ellpack_t * A,
+                                                int irow,
+                                                int icol,
+                                                int B_N,
+                                                int B_M);
+
+bml_matrix_ellpack_t
+    * bml_extract_submatrix_ellpack_double_real(bml_matrix_ellpack_t * A,
+                                                int irow,
+                                                int icol,
+                                                int B_N,
+                                                int B_M);
+
+bml_matrix_ellpack_t
+    * bml_extract_submatrix_ellpack_single_complex(bml_matrix_ellpack_t * A,
+                                                   int irow,
+                                                   int icol,
+                                                   int B_N,
+                                                   int B_M);
+
+bml_matrix_ellpack_t
+    * bml_extract_submatrix_ellpack_double_complex(bml_matrix_ellpack_t * A,
+                                                   int irow,
+                                                   int icol,
+                                                   int B_N,
+                                                   int B_M);
+
+void bml_assign_submatrix_ellpack(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellpack_single_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellpack_double_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellpack_single_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellpack_double_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int irow,
+    int icol);
+
 #endif

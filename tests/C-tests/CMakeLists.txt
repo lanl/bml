@@ -127,6 +127,7 @@ set(testlist-mpi
     copy
     diagonalize
     import_export
+    io_matrix
     scale
     mpi_sendrecv
     multiply

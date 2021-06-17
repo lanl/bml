@@ -5,6 +5,7 @@
 #include "bml_allocate_ellblock.h"
 #include "bml_setters_ellblock.h"
 #include "bml_types_ellblock.h"
+#include "../bml_logger.h"
 
 #include <complex.h>
 #include <math.h>

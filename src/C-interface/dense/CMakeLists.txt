@@ -16,6 +16,7 @@ set(HEADERS-DENSE
   bml_parallel_dense.h
   bml_scale_dense.h
   bml_setters_dense.h
+  bml_submatrix_dense.h
   bml_threshold_dense.h
   bml_trace_dense.h
   bml_transpose_dense.h
@@ -41,6 +42,7 @@ set(SOURCES-DENSE
   bml_parallel_dense.c
   bml_scale_dense.c
   bml_setters_dense.c
+  bml_submatrix_dense.c
   bml_threshold_dense.c
   bml_trace_dense.c
   bml_transpose_dense.c
@@ -74,6 +76,7 @@ set(SOURCES-DENSE-TYPED
   bml_parallel_dense_typed.c
   bml_scale_dense_typed.c
   bml_setters_dense_typed.c
+  bml_submatrix_dense_typed.c
   bml_threshold_dense_typed.c
   bml_trace_dense_typed.c
   bml_transpose_dense_typed.c

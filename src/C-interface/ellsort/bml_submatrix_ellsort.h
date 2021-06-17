@@ -235,4 +235,68 @@ void bml_adjacency_group_ellsort(
     int *adjncy,
     int base_flag);
 
+bml_matrix_ellsort_t *bml_extract_submatrix_ellsort(
+    bml_matrix_ellsort_t * A,
+    int irow,
+    int icol,
+    int B_N,
+    int B_M);
+
+bml_matrix_ellsort_t
+    * bml_extract_submatrix_ellsort_single_real(bml_matrix_ellsort_t * A,
+                                                int irow,
+                                                int icol,
+                                                int B_N,
+                                                int B_M);
+
+bml_matrix_ellsort_t
+    * bml_extract_submatrix_ellsort_double_real(bml_matrix_ellsort_t * A,
+                                                int irow,
+                                                int icol,
+                                                int B_N,
+                                                int B_M);
+
+bml_matrix_ellsort_t
+    * bml_extract_submatrix_ellsort_single_complex(bml_matrix_ellsort_t * A,
+                                                   int irow,
+                                                   int icol,
+                                                   int B_N,
+                                                   int B_M);
+
+bml_matrix_ellsort_t
+    * bml_extract_submatrix_ellsort_double_complex(bml_matrix_ellsort_t * A,
+                                                   int irow,
+                                                   int icol,
+                                                   int B_N,
+                                                   int B_M);
+
+void bml_assign_submatrix_ellsort(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellsort_single_real(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellsort_double_real(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellsort_single_complex(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    int irow,
+    int icol);
+
+void bml_assign_submatrix_ellsort_double_complex(
+    bml_matrix_ellsort_t * A,
+    bml_matrix_ellsort_t * B,
+    int irow,
+    int icol);
 #endif

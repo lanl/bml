@@ -13,7 +13,8 @@ set(HEADERS-DISTRIBUTED
   bml_setters_distributed2d.h
   bml_threshold_distributed2d.h
   bml_transpose_distributed2d.h
-  bml_trace_distributed2d.h )
+  bml_trace_distributed2d.h
+  bml_utilities_distributed2d.h )
 
 set(SOURCES-DISTRIBUTED
   bml_allocate_distributed2d.c
@@ -31,7 +32,8 @@ set(SOURCES-DISTRIBUTED
   bml_setters_distributed2d.c
   bml_threshold_distributed2d.c
   bml_transpose_distributed2d.c
-  bml_trace_distributed2d.c )
+  bml_trace_distributed2d.c
+  bml_utilities_distributed2d.c )
 
 add_library(bml-distributed2d OBJECT ${SOURCES-DISTRIBUTED})
 set_target_properties(bml-distributed2d

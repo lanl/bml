@@ -541,3 +541,92 @@ bml_matrix_ellpack_t
 
     return B;
 }
+
+/** Extract submatrix into new matrix of same format
+ *
+ * \ingroup submatrix_group_C
+ *
+ * \param A Matrix A to extract submatrix from
+ * \param irow Index of first row to extract
+ * \param icol Index of first column to extract
+ * \param B_N Number of rows/columns to extract
+ * \param B_M Max number of non-zero elemnts/row in exttacted matrix
+ */
+bml_matrix_ellpack_t
+    * TYPED_FUNC(bml_extract_submatrix_ellpack) (bml_matrix_ellpack_t * A,
+                                                 int irow, int icol,
+                                                 int B_N, int B_M)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    REAL_T *A_value = A->value;
+
+    bml_matrix_ellpack_t *B;
+    B = TYPED_FUNC(bml_zero_matrix_ellpack) (B_N, B_M, A->distribution_mode);
+
+    int *B_index = B->index;
+    int *B_nnz = B->nnz;
+    REAL_T *B_value = B->value;
+
+    // loop over subset of rows of A
+    for (int i = irow; i < irow + B_N; i++)
+    {
+        for (int jp = 0; jp < A_nnz[i]; jp++)
+        {
+            int j = A_index[ROWMAJOR(i, jp, A_N, A_M)];
+            if (j >= icol && j < icol + B_N)
+            {
+                int iB = i - irow;
+                B_index[ROWMAJOR(i - irow, B_nnz[iB], B_N, B_M)] = j - icol;
+                B_value[ROWMAJOR(i - irow, B_nnz[iB], B_N, B_M)] =
+                    A_value[ROWMAJOR(i, jp, A_N, A_M)];
+                B_nnz[iB]++;
+            }
+        }
+    }
+
+    return B;
+}
+
+/** Assign a block B into matrix A
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param irow First row where to insert block B
+ * \param icol Offset column to insert block B
+ */
+void TYPED_FUNC(
+    bml_assign_submatrix_ellpack) (
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    int irow,
+    int icol)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+    REAL_T *A_value = A->value;
+
+    int B_N = B->N;
+    int B_M = B->M;
+    int *B_index = B->index;
+    int *B_nnz = B->nnz;
+    REAL_T *B_value = B->value;
+
+    // loop over rows of B
+    for (int i = 0; i < B_N; i++)
+    {
+        for (int jp = 0; jp < B_nnz[i]; jp++)
+        {
+            int jB = B_index[ROWMAJOR(i, jp, B_N, B_M)];
+            int jpA = A_nnz[i + irow];
+            A_value[ROWMAJOR(i + irow, jpA, A_N, A_M)] =
+                B_value[ROWMAJOR(i, jp, B_N, B_M)];
+            A_index[ROWMAJOR(i + irow, jpA, A_N, A_M)] = jB + icol;
+            A_nnz[i + irow]++;
+        }
+    }
+}
