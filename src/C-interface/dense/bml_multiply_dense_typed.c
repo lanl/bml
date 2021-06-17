@@ -22,6 +22,12 @@
 #include <omp.h>
 #endif
 
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#endif
+
 /** Matrix multiply.
  *
  * \f$ C \leftarrow \alpha \, A \, B + \beta C \f$
@@ -66,6 +72,32 @@ void TYPED_FUNC(
                  A->N, A->N, A->N, alpha_, B->matrix, B->ld,
                  A->matrix, A->ld, beta_, C->matrix, C->ld, C->queue);
     magma_queue_sync(C->queue);
+#elif defined(MKL_GPU)
+    int sizea = A->N * A->N;
+    int dnum = 0;
+
+    REAL_T *amatrix = (REAL_T *) A->matrix;
+    REAL_T *bmatrix = (REAL_T *) B->matrix;
+    REAL_T *cmatrix = (REAL_T *) C->matrix;
+
+    MKL_T alpha_;
+    MKL_T beta_;
+
+    MKL_REAL(alpha_) = (REAL_T) alpha;
+    MKL_REAL(beta_) = (REAL_T) beta;
+    MKL_IMAG(alpha_);
+    MKL_IMAG(beta_);
+
+#pragma omp target data map(to:bmatrix[0:sizea],amatrix[0:sizea]) map(tofrom:cmatrix[0:sizea]) device(dnum)
+    {
+        // run gemm on gpu, use standard oneMKL interface within a variant dispatch construct
+#pragma omp target variant dispatch device(dnum) use_device_ptr(bmatrix, amatrix, cmatrix)
+        {
+            G_BLAS(gemm) (CblasColMajor, CblasNoTrans, CblasNoTrans, A->N,
+                          A->N, A->N, MKL_ADDRESS(alpha_), bmatrix, A->N,
+                          amatrix, A->N, MKL_ADDRESS(beta_), cmatrix, A->N);
+        }
+    }
 #else
     REAL_T alpha_ = (REAL_T) alpha;
     REAL_T beta_ = (REAL_T) beta;

@@ -160,6 +160,10 @@ else()
   message(STATUS "Will not build with OpenMP")
 endif()
 
+if(MKL_GPU)
+	add_definitions(-DMKL_GPU)
+endif()
+
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
   message(STATUS "Will build with MPI")

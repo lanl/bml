@@ -47,6 +47,7 @@ EOF
     echo "CXX                    Path to C++ compiler        (default is ${CXX})"
     echo "FC                     Path to Fortran compiler    (default is ${FC})"
     echo "BML_OPENMP             {yes,no}                    (default is ${BML_OPENMP})"
+    echo "MKL_GPU                {yes,no}                    (default is ${MKL_GPU})"
     echo "BML_MPI                {yes,no}                    (default is ${BML_MPI})"
     echo "BML_MPIEXEC_EXECUTABLE Command to prepend MPI tests (default is ${BML_MPIEXEC_EXECUTABLE})"
     echo "BML_MPIEXEC_NUMPROCS_FLAG Flags to specify number of MPI tasks for MPI tests (default is ${BML_MPIEXEC_NUMPROCS_FLAG})"
@@ -90,6 +91,7 @@ set_defaults() {
     : ${CXX:=g++}
     : ${FC:=gfortran}
     : ${BML_OPENMP:=yes}
+    : ${MKL_GPU:=no}
     : ${BML_MPI:=no}
     : ${BML_MPIEXEC_EXECUTABLE:=}
     : ${BML_MPIEXEC_NUMPROCS_FLAG:=-n}
@@ -177,6 +179,7 @@ configure() {
         -DBLAS_LIBRARIES="${BLAS_LIBRARIES}" \
         -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
         -DBML_OPENMP="${BML_OPENMP}" \
+        -DMKL_GPU="${MKL_GPU}" \
         -DBML_MPI="${BML_MPI}" \
         -DBML_MPIEXEC_EXECUTABLE="${BML_MPIEXEC_EXECUTABLE}" \
         -DBML_MPIEXEC_NUMPROCS_FLAG="${BML_MPIEXEC_NUMPROCS_FLAG}" \
