@@ -52,11 +52,7 @@ necessary compiler tool chain to build and test the `bml` library.
 Using `docker` is a convenient and quick way to develop, build, and
 test the `bml` library.
 
-    $ docker pull nicolasbock/bml:latest
-    $ docker run --interactive --tty --rm \
-        --volume ${PWD}:/bml --workdir /bml \
-        --user $(id --user):$(id --group) \
-        nicolasbock/bml:latest
+    $ ./scripts/run-local-docker-container.sh
 
 Inside the container:
 
