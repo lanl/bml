@@ -18,6 +18,10 @@
 #if defined(SINGLE_REAL) || (defined(SINGLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T float
 #define MAGMA_T float
+#define MKL_T float
+#define MKL_REAL(a) a
+#define MKL_IMAG(a) a
+#define MKL_ADDRESS(a) a
 #define MPI_T MPI_FLOAT
 #define MATRIX_PRECISION single_real
 #define BLAS_PREFIX S
@@ -31,6 +35,10 @@
 #elif defined(DOUBLE_REAL) || (defined(DOUBLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T double
 #define MAGMA_T double
+#define MKL_T  double
+#define MKL_REAL(a) a
+#define MKL_IMAG(a) a
+#define MKL_ADDRESS(a) a
 #define MPI_T MPI_DOUBLE
 #define MATRIX_PRECISION double_real
 #define BLAS_PREFIX D
@@ -44,6 +52,10 @@
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float _Complex
 #define MAGMA_T magmaFloatComplex
+#define MKL_T MKL_Complex8
+#define MKL_REAL(a) a.real
+#define MKL_IMAG(a) a.imag=0.0
+#define MKL_ADDRESS(a) &a
 #define MPI_T MPI_C_FLOAT_COMPLEX
 #define MATRIX_PRECISION single_complex
 #define BLAS_PREFIX C
@@ -57,6 +69,11 @@
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double _Complex
 #define MAGMA_T magmaDoubleComplex
+#define MKL_T MKL_Complex16
+#define MKL_REAL(a) a.real
+#define MKL_IMAG(a) a.imag=0.0
+#define MKL_ADDRESS(a) &a
+
 #define MPI_T MPI_C_DOUBLE_COMPLEX
 #define MATRIX_PRECISION double_complex
 #define BLAS_PREFIX Z
@@ -78,6 +95,7 @@
 #define CONCAT(a, b) CONCAT2(a, b)
 
 #define TYPED_FUNC(a) CONCAT_(a, FUNC_SUFFIX)
+#define G_BLAS(a) CONCAT_(cblas, CONCAT(MAGMA_PREFIX , a))
 #define C_BLAS(a) CONCAT_(C, CONCAT(BLAS_PREFIX , a))
 #define XSMM(a) CONCAT(XSMM_PREFIX , a)
 #define MAGMACOMPLEX(a) CONCAT_(MAGMA, CONCAT_(BLAS_PREFIX, a))
