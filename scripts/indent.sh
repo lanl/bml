@@ -35,11 +35,8 @@ else
   readarray -t FORTRAN_FILES < <(git ls-files -- '*.F90')
 fi
 
-for f in "${C_FILES[@]}" "${FORTRAN_FILES[@]}"; do
-  sed -i -e 's:\s\+$::' "${f}"
-done
-
 for f in "${C_FILES[@]}"; do
+  sed -i -e 's:\s\+$::' "${f}"
   indent ${INDENT_ARGS} "${f}"
 done
 
@@ -49,6 +46,7 @@ for f in "${FORTRAN_FILES[@]}"; do
     --eval "(setq f90-do-indent 2)" \
     --eval "(setq f90-if-indent 2)" \
     --eval "(setq f90-type-indent 2)" \
+    --eval "(whitespace-cleanup)" \
     --eval "(indent-region (minibuffer-prompt-end) (point-max) nil)" \
     -f save-buffer
 done

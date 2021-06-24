@@ -1,4 +1,3 @@
-
 !> General test driver.
 !! \brief This program will execute a bml fortran test.
 !! \usage testf -n <testName> -t <matrixFormat> -p <precision>
