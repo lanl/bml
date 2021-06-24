@@ -39,10 +39,10 @@ contains
     do i = 1, n
       do j = 1, n
         if(element_kind == "real")then
-	  a_dense(i, j) = a_random_re(i, j)
-	else
-	  a_dense(i, j) = cmplx(a_random_re(i, j),a_random_im(i,j))
-	endif
+          a_dense(i, j) = a_random_re(i, j)
+        else
+          a_dense(i, j) = cmplx(a_random_re(i, j),a_random_im(i,j))
+        endif
       end do
     end do
     call bml_import_from_dense(matrix_type, a_dense, a, 0.0d0, m)

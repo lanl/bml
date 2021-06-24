@@ -1,4 +1,3 @@
-
 !> Routine to set elements, rows and diagonals.
 !!
 module bml_setters_m

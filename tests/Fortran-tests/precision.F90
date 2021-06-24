@@ -1,4 +1,3 @@
-
 !> Presicion module
 !! \brief Simple and double precision definition.
 module prec
