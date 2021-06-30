@@ -26,9 +26,6 @@ struct bml_matrix_dense_t
     bml_domain_t *domain;
     /** A copy of the domain decomposition. */
     bml_domain_t *domain2;
-#ifdef BML_USE_MAGMA
-    magma_queue_t queue;
-#endif
 };
 typedef struct bml_matrix_dense_t bml_matrix_dense_t;
 

@@ -54,9 +54,9 @@ void TYPED_FUNC(
     nElems = B->N * B->ld;
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
     MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
-    MAGMA(scal) (nElems, alpha_, A->matrix, inc, A->queue);
+    MAGMA(scal) (nElems, alpha_, A->matrix, inc, bml_queue());
     MAGMA(axpy) (nElems, beta_, B->matrix, inc,
-                 A->matrix + startIndex, inc, A->queue);
+                 A->matrix + startIndex, inc, bml_queue());
 #else
     REAL_T alpha_ = alpha;
     REAL_T beta_ = beta;
@@ -135,7 +135,7 @@ void TYPED_FUNC(
     bml_matrix_dense_t *B =
         TYPED_FUNC(bml_identity_matrix_dense) (N, sequential);
     MAGMABLAS(geadd) (N, N, beta_, (MAGMA_T *) B->matrix, B->ld,
-                      A_matrix, A->ld, A->queue);
+                      A_matrix, A->ld, bml_queue());
     bml_deallocate_dense(B);
 #else
     REAL_T *A_matrix = (REAL_T *) A->matrix;

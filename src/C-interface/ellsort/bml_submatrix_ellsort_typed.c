@@ -266,7 +266,7 @@ void TYPED_FUNC(
     }
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (B_N, B_N, (MAGMA_T *) B_matrix, B_N,
-                      B->matrix, B->ld, B->queue);
+                      B->matrix, B->ld, bml_queue());
     bml_free_memory(B_matrix);
 #endif
 }
@@ -294,7 +294,8 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
     MAGMA(getmatrix) (A->N, A->N,
-                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N,
+                      bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
 #endif

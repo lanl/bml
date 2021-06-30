@@ -120,4 +120,11 @@ void bml_update_domain_dense(
     int *localPartMax,
     int *nnodesInPart);
 
+#ifdef BML_USE_MAGMA
+magma_queue_t bml_queue(
+    );
+void bml_queue_create(
+    int device);
+#endif
+
 #endif

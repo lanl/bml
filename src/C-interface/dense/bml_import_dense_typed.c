@@ -36,7 +36,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     bml_matrix_dense_t *A_bml =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension, distrib_mode);
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (N, N, A, N, A_bml->matrix, A_bml->ld, A_bml->queue);
+    MAGMA(setmatrix) (N, N, A, N, A_bml->matrix, A_bml->ld, bml_queue());
 #endif
     switch (order)
     {
@@ -49,7 +49,7 @@ bml_matrix_dense_t *TYPED_FUNC(
         {
 #ifdef BML_USE_MAGMA
             MAGMABLAS(transpose_inplace) (N, A_bml->matrix, A_bml->ld,
-                                          A_bml->queue);
+                                          bml_queue());
 #else
             REAL_T *A_ptr = (REAL_T *) A;
             REAL_T *B_ptr = (REAL_T *) A_bml->matrix;

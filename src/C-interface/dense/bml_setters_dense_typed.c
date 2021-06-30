@@ -9,6 +9,7 @@
 #include "../bml_utilities.h"
 #include "bml_setters_dense.h"
 #include "bml_types_dense.h"
+#include "bml_allocate_dense.h"
 
 #include <complex.h>
 #include <stdio.h>
@@ -29,7 +30,7 @@ void TYPED_FUNC(
 
 #ifdef BML_USE_MAGMA
     MAGMA(setvector) (N, (MAGMA_T *) value, 1,
-                      (MAGMA_T *) A->matrix + i * A->ld + j, 1, A->queue);
+                      (MAGMA_T *) A->matrix + i * A->ld + j, 1, bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
     A_matrix[ROWMAJOR(i, j, N, N)] = *((REAL_T *) value);
@@ -52,7 +53,7 @@ void TYPED_FUNC(
 
 #ifdef BML_USE_MAGMA
     MAGMA(setvector) (N, (MAGMA_T *) row, 1,
-                      (MAGMA_T *) A->matrix + i * A->ld, 1, A->queue);
+                      (MAGMA_T *) A->matrix + i * A->ld, 1, bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
     for (int j = 0; j < N; j++)
@@ -82,7 +83,7 @@ void TYPED_FUNC(
         diagonal_[j] = MAGMACOMPLEX(MAKE) (diagonal[j], 0);
     }
     MAGMA(setvector) (N, diagonal_, 1, (MAGMA_T *) A->matrix, A->ld + 1,
-                      A->queue);
+                      bml_queue());
     free(diagonal_);
 #else
     REAL_T *A_matrix = A->matrix;

@@ -11,6 +11,7 @@
 #include "../bml_types.h"
 #include "bml_trace_dense.h"
 #include "bml_types_dense.h"
+#include "bml_allocate_dense.h"
 
 #include <complex.h>
 #include <stdlib.h>
@@ -44,14 +45,14 @@ double TYPED_FUNC(
     for (int i = 0; i < N; i++)
         htmp[i] = MAGMACOMPLEX(MAKE) (1., 0.);
 
-    MAGMA(setvector) (N, htmp, 1, dtmp, 1, A->queue);
+    MAGMA(setvector) (N, htmp, 1, dtmp, 1, bml_queue());
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
     MAGMA_T ttrace = MAGMA(dotu) (N, (MAGMA_T *) A->matrix, A->ld + 1,
-                                  dtmp, 1, A->queue);
+                                  dtmp, 1, bml_queue());
     trace = MAGMACOMPLEX(REAL) (ttrace) + I * MAGMACOMPLEX(IMAG) (ttrace);
 #else
     trace = MAGMA(dot) (N, (REAL_T *) A->matrix, A->ld + 1,
-                        dtmp, 1, A->queue);
+                        dtmp, 1, bml_queue());
 #endif
 
     magma_free(dtmp);
@@ -113,12 +114,13 @@ double TYPED_FUNC(
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
         MAGMA_T ttrace = MAGMA(dotu) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
                                       (MAGMA_T *) B->matrix + i * B->ld, 1,
-                                      A->queue);
+                                      bml_queue());
         trace +=
             MAGMACOMPLEX(REAL) (ttrace) + I * MAGMACOMPLEX(IMAG) (ttrace);
 #else
         trace += MAGMA(dot) (N, (REAL_T *) A->matrix + i * A->ld, 1,
-                             (REAL_T *) B->matrix + i * B->ld, 1, A->queue);
+                             (REAL_T *) B->matrix + i * B->ld, 1,
+                             bml_queue());
 #endif
     }
 

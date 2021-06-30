@@ -33,7 +33,7 @@ bml_matrix_dense_t *TYPED_FUNC(
                                            A->distribution_mode);
 #ifdef BML_USE_MAGMA
     MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
-                       B->matrix, B->ld, A->queue);
+                       B->matrix, B->ld, bml_queue());
 #else
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
 #endif
@@ -56,7 +56,7 @@ void TYPED_FUNC(
 {
 #ifdef BML_USE_MAGMA
     MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
-                       B->matrix, B->ld, A->queue);
+                       B->matrix, B->ld, bml_queue());
 #else
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
 #endif

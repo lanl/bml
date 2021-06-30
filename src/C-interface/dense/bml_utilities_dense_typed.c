@@ -10,6 +10,7 @@
 #include "bml_types_dense.h"
 #include "bml_utilities_dense.h"
 #include "bml_export_dense.h"
+#include "bml_allocate_dense.h"
 
 #include <complex.h>
 #include <math.h>
@@ -107,7 +108,7 @@ void TYPED_FUNC(
 
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (N, N, (MAGMA_T *) A_value, N, A->matrix, A->ld,
-                      A->queue);
+                      bml_queue());
     bml_free_memory(A_value);
 #endif
 
@@ -136,7 +137,7 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     REAL_T *A_value = bml_noinit_allocate_memory(N * N * sizeof(REAL_T));
     MAGMA(getmatrix) (N, N, A->matrix, A->ld, (MAGMA_T *) A_value, N,
-                      A->queue);
+                      bml_queue());
 #else
     REAL_T *A_value = A->matrix;
 #endif
@@ -200,7 +201,8 @@ void TYPED_FUNC(
     //index
     REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
     MAGMA(getmatrix) (A->N, A->N,
-                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N, A->queue);
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N,
+                      bml_queue());
 #else
     REAL_T *A_matrix = (REAL_T *) A->matrix;
 #endif
