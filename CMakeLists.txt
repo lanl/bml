@@ -636,7 +636,10 @@ if(BML_TESTING)
   find_program(VALGRIND valgrind
     DOC "valgrind - a suite of tools for debugging and profiling programs")
   if(VALGRIND AND BML_VALGRIND)
-    message(STATUS "Will test for memory leaks")
+    execute_process(COMMAND ${VALGRIND} --version
+      OUTPUT_VARIABLE VALGRIND_VERSION)
+    string(REPLACE "\n" "" VALGRIND_VERSION ${VALGRIND_VERSION})
+    message(STATUS "Will test for memory leaks (${VALGRIND_VERSION})")
   else()
     message(STATUS "Will _not_ test for memory leaks")
   endif()

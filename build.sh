@@ -63,6 +63,7 @@ EOF
     echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
     echo "PARALLEL_TEST_JOBS     The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
+    echo "TESTING_EXTRA_ARGS     Arguments to ctest, e.g. '-R C-.*-double_real'"
     echo "INSTALL_DIR            Path to install dir         (default is ${INSTALL_DIR})"
     echo "CMAKE_C_FLAGS          Set C compiler flags        (default is '${CMAKE_C_FLAGS}')"
     echo "CMAKE_CXX_FLAGS        Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
