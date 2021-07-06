@@ -30,6 +30,7 @@ env:
   BUILD_SHARED_LIBS: no
   VERBOSE_MAKEFILE: yes
   CMAKE_BUILD_TYPE: Debug
+  TEST_SCRIPT: ./build.sh
 
 jobs:
   lint:
@@ -64,33 +65,13 @@ jobs:
       matrix:
         include:
           - JOBNAME: gcc-4.8 test 1
-            CC: gcc-4.8
-            CXX: g++-4.8
-            FC: gfortran-4.8
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
+            TEST_SCRIPT: ./scripts/ci-gcc-4.8-test-1.sh
           - JOBNAME: gcc-4.8 test 2
-            CC: gcc-4.8
-            CXX: g++-4.8
-            FC: gfortran-4.8
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-4.8-test-2.sh
           - JOBNAME: gcc-4.8 test 3
-            CC: gcc-4.8
-            CXX: g++-4.8
-            FC: gfortran-4.8
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: yes
-            BML_INTERNAL_BLAS: no
+            TEST_SCRIPT: ./scripts/ci-gcc-4.8-test-3.sh
           - JOBNAME: gcc-4.8 test 4
-            CC: gcc-4.8
-            CXX: g++-4.8
-            FC: gfortran-4.8
-            BUILD_SHARED_LIBS: yes
-            BML_OPENMP: yes
-            BML_INTERNAL_BLAS: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-4.8-test-4.sh
           - JOBNAME: gcc-11 C single real
             CC: gcc-11
             CXX: g++-11
@@ -249,4 +230,5 @@ jobs:
           BML_VALGRIND: ${{ matrix.BML_VALGRIND || env.BML_VALGRIND }}
           EXTRA_LINK_FLAGS: ${{ matrix.EXTRA_LINK_FLAGS }}
           CMAKE_BUILD_TYPE: ${{ matrix.CMAKE_BUILD_TYPE || env.CMAKE_BUILD_TYPE }}
-        run: ./build.sh testing
+          TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
+        run: ${TEST_SCRIPT} testing
