@@ -1,0 +1,13 @@
+export CC=gcc
+export CXX=g++
+export FC=gfortran
+export BML_INTERNAL_BLAS=no
+export BML_MPI=no
+export BML_MPIEXEC_NUMPROCS_FLAG=-n
+export BML_MPIEXEC_NUMPROCS=4
+export BML_OPENMP=no
+export BML_VALGRIND=no
+export BML_SCALAPACK=no
+export BUILD_SHARED_LIBS=no
+export VERBOSE_MAKEFILE=yes
+export CMAKE_BUILD_TYPE=Debug
