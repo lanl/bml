@@ -53,6 +53,7 @@ DEBIAN_FRONTEND=noninteractive ${SUDO} dpkg-reconfigure \
 ${SUDO} apt-get install --assume-yes --no-install-recommends \
   apt-utils \
   build-essential \
+  gfortran \
   bundler \
   cmake cmake-data \
   emacs27 \

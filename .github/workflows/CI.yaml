@@ -17,19 +17,6 @@ on:
 
 # Defaults
 env:
-  CC: gcc
-  CXX: g++
-  FC: gfortran
-  BML_INTERNAL_BLAS: no
-  BML_MPI: no
-  BML_MPIEXEC_NUMPROCS_FLAG: -n
-  BML_MPIEXEC_NUMPROCS: 4
-  BML_OPENMP: no
-  BML_VALGRIND: no
-  BML_SCALAPACK: no
-  BUILD_SHARED_LIBS: no
-  VERBOSE_MAKEFILE: yes
-  CMAKE_BUILD_TYPE: Debug
   TEST_SCRIPT: ./build.sh
 
 jobs:
@@ -73,142 +60,29 @@ jobs:
           - JOBNAME: gcc-4.8 test 4
             TEST_SCRIPT: ./scripts/ci-gcc-4.8-test-4.sh
           - JOBNAME: gcc-11 C single real
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R C-.*-single_real"
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-real.sh
           - JOBNAME: gcc-11 C double real
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R C-.*-double_real"
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-real.sh
           - JOBNAME: gcc-11 C single complex
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R C-.*-single_complex"
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-complex.sh
           - JOBNAME: gcc-11 C double complex
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R C-.*-double_complex"
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-complex.sh
           - JOBNAME: gcc-11 Fortran single real
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R fortran-.*-single_real"
-            # [nicolasbock] Valgrind cannot handle a Debug build with
-            # valgrind and fails with:
-            #
-            # parse DIE(readdwarf3.c:3619): confused by:
-            #  <2><60e>: Abbrev Number: 25 (DW_TAG_subrange_type)
-            #      DW_AT_type        : <42>
-            #      DW_AT_upper_bound : 4 byte block: 91 c0 7b 6
-            # parse_type_DIE:
-            # --18653-- WARNING: Serious error when reading debug info
-            # --18653-- When reading debug info from /home/runner/work/bml/bml/build/tests/Fortran-tests/bml-testf:
-            # --18653-- confused by the above DIE
-            #
-            # Bionic ships with valgrind-3.13.0. This issue might be
-            # fixed with later versions.
-            #
-            # Re-review once we have a backport of valgrind for
-            # Bionic.
-            CMAKE_BUILD_TYPE: Release
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-single-real.sh
           - JOBNAME: gcc-11 Fortran double real
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R fortran-.*-double_real"
-            CMAKE_BUILD_TYPE: Release
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-real.sh
           - JOBNAME: gcc-11 Fortran single complex
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex"
-            CMAKE_BUILD_TYPE: Release
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-single-complex.sh
           - JOBNAME: gcc-11 Fortran double complex
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R fortran-.*-double_complex"
-            CMAKE_BUILD_TYPE: Release
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-complex.sh
           - JOBNAME: MPI single real
-            CC: mpicc
-            CXX: mpic++
-            FC: mpifort
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            BML_MPI: yes
-            TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real"
-            EXTRA_LINK_FLAGS: -lscalapack-openmpi
-            BML_SCALAPACK: yes
+            TEST_SCRIPT: ./scripts/ci-MPI-single-real.sh
           - JOBNAME: MPI double real
-            CC: mpicc
-            CXX: mpic++
-            FC: mpifort
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            BML_MPI: yes
-            TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_real"
-            EXTRA_LINK_FLAGS: -lscalapack-openmpi
-            BML_SCALAPACK: yes
+            TEST_SCRIPT: ./scripts/ci-MPI-double-real.sh
           - JOBNAME: MPI single complex
-            CC: mpicc
-            CXX: mpic++
-            FC: mpifort
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            BML_MPI: yes
-            TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_complex"
-            EXTRA_LINK_FLAGS: -lscalapack-openmpi
-            BML_SCALAPACK: yes
+            TEST_SCRIPT: ./scripts/ci-MPI-single-complex.sh
           - JOBNAME: MPI double complex
-            CC: mpicc
-            CXX: mpic++
-            FC: mpifort
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            BML_MPI: yes
-            TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex"
-            EXTRA_LINK_FLAGS: -lscalapack-openmpi
-            BML_SCALAPACK: yes
+            TEST_SCRIPT: ./scripts/ci-MPI-double-complex.sh
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
@@ -216,19 +90,5 @@ jobs:
         run: ./scripts/prepare-container.sh
       - name: Build and test library
         env:
-          CC: ${{ matrix.CC || env.CC }}
-          CXX: ${{ matrix.CXX || env.CXX }}
-          FC: ${{ matrix.FC || env.FC }}
-          BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || env.BUILD_SHARED_LIBS }}
-          BML_OPENMP: ${{ matrix.BML_OPENMP || env.BML_OPENMP }}
-          BML_MPI: ${{ matrix.BML_MPI || env.BML_MPI }}
-          BML_MPIEXEC_NUMPROCS_FLAG: ${{ matrix.BML_MPIEXEC_NUMPROCS_FLAG || env.BML_MPIEXEC_NUMPROCS_FLAG }}
-          BML_MPIEXEC_NUMPROCS: ${{ matrix.BML_MPIEXEC_NUMPROCS || env.BML_MPIEXEC_NUMPROCS }}
-          BML_SCALAPACK: ${{ matrix.BML_SCALAPACK || env.BML_SCALAPACK }}
-          BML_INTERNAL_BLAS: ${{ matrix.BML_INTERNAL_BLAS || env.BML_INTERNAL_BLAS }}
-          TESTING_EXTRA_ARGS: ${{ matrix.TESTING_EXTRA_ARGS || env.TESTING_EXTRA_ARGS }}
-          BML_VALGRIND: ${{ matrix.BML_VALGRIND || env.BML_VALGRIND }}
-          EXTRA_LINK_FLAGS: ${{ matrix.EXTRA_LINK_FLAGS }}
-          CMAKE_BUILD_TYPE: ${{ matrix.CMAKE_BUILD_TYPE || env.CMAKE_BUILD_TYPE }}
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
