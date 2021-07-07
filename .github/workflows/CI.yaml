@@ -85,15 +85,7 @@ jobs:
           - JOBNAME: gcc-11 Fortran double real
             TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-real.sh
           - JOBNAME: gcc-11 Fortran single complex
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R fortran-.*-single_complex"
-            CMAKE_BUILD_TYPE: Release
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-single-complex.sh
           - JOBNAME: gcc-11 Fortran double complex
             CC: gcc-11
             CXX: g++-11
