@@ -17,19 +17,6 @@ on:
 
 # Defaults
 env:
-  CC: gcc
-  CXX: g++
-  FC: gfortran
-  BML_INTERNAL_BLAS: no
-  BML_MPI: no
-  BML_MPIEXEC_NUMPROCS_FLAG: -n
-  BML_MPIEXEC_NUMPROCS: 4
-  BML_OPENMP: no
-  BML_VALGRIND: no
-  BML_SCALAPACK: no
-  BUILD_SHARED_LIBS: no
-  VERBOSE_MAKEFILE: yes
-  CMAKE_BUILD_TYPE: Debug
   TEST_SCRIPT: ./build.sh
 
 jobs:
@@ -103,19 +90,5 @@ jobs:
         run: ./scripts/prepare-container.sh
       - name: Build and test library
         env:
-          CC: ${{ matrix.CC || env.CC }}
-          CXX: ${{ matrix.CXX || env.CXX }}
-          FC: ${{ matrix.FC || env.FC }}
-          BUILD_SHARED_LIBS: ${{ matrix.BUILD_SHARED_LIBS || env.BUILD_SHARED_LIBS }}
-          BML_OPENMP: ${{ matrix.BML_OPENMP || env.BML_OPENMP }}
-          BML_MPI: ${{ matrix.BML_MPI || env.BML_MPI }}
-          BML_MPIEXEC_NUMPROCS_FLAG: ${{ matrix.BML_MPIEXEC_NUMPROCS_FLAG || env.BML_MPIEXEC_NUMPROCS_FLAG }}
-          BML_MPIEXEC_NUMPROCS: ${{ matrix.BML_MPIEXEC_NUMPROCS || env.BML_MPIEXEC_NUMPROCS }}
-          BML_SCALAPACK: ${{ matrix.BML_SCALAPACK || env.BML_SCALAPACK }}
-          BML_INTERNAL_BLAS: ${{ matrix.BML_INTERNAL_BLAS || env.BML_INTERNAL_BLAS }}
-          TESTING_EXTRA_ARGS: ${{ matrix.TESTING_EXTRA_ARGS || env.TESTING_EXTRA_ARGS }}
-          BML_VALGRIND: ${{ matrix.BML_VALGRIND || env.BML_VALGRIND }}
-          EXTRA_LINK_FLAGS: ${{ matrix.EXTRA_LINK_FLAGS }}
-          CMAKE_BUILD_TYPE: ${{ matrix.CMAKE_BUILD_TYPE || env.CMAKE_BUILD_TYPE }}
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
