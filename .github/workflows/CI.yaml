@@ -73,14 +73,7 @@ jobs:
           - JOBNAME: gcc-4.8 test 4
             TEST_SCRIPT: ./scripts/ci-gcc-4.8-test-4.sh
           - JOBNAME: gcc-11 C single real
-            CC: gcc-11
-            CXX: g++-11
-            FC: gfortran-11
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            TESTING_EXTRA_ARGS: "-R C-.*-single_real"
-            BML_VALGRIND: yes
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-real.sh
           - JOBNAME: gcc-11 C double real
             CC: gcc-11
             CXX: g++-11
