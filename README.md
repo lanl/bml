@@ -58,6 +58,10 @@ Inside the container:
 
     $ ./build.sh compile
 
+Alternatively, you can run one of the CI tests by executing e.g.
+
+    $ ./scripts/ci-gcc-11-C-single-real.sh
+
 # Build Instructions
 
 The bml library is built with CMake. For convenience, we provide a shell
@@ -67,10 +71,9 @@ the tests, and installs it (in the `install` directory).
 ## For a quick installation
 
 We suggest to take a look at the `example_build.sh` script that sets
-the most important
-environmental variables needed by `build.sh` script. Change the Variables
-according to the compilers and architecture. The script can be run just by
-doing:
+the most important environmental variables needed by `build.sh`
+script. Change the Variables according to the compilers and
+architecture. The script can be run just by doing:
 
     $ ./example_build.sh
 
