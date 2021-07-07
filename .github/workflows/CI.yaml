@@ -95,16 +95,7 @@ jobs:
           - JOBNAME: MPI single complex
             TEST_SCRIPT: ./scripts/ci-MPI-single-complex.sh
           - JOBNAME: MPI double complex
-            CC: mpicc
-            CXX: mpic++
-            FC: mpifort
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            BML_MPI: yes
-            TESTING_EXTRA_ARGS: "-R MPI-C-.*-double_complex"
-            EXTRA_LINK_FLAGS: -lscalapack-openmpi
-            BML_SCALAPACK: yes
+            TEST_SCRIPT: ./scripts/ci-MPI-double-complex.sh
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
