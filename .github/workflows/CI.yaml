@@ -89,16 +89,7 @@ jobs:
           - JOBNAME: gcc-11 Fortran double complex
             TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-complex.sh
           - JOBNAME: MPI single real
-            CC: mpicc
-            CXX: mpic++
-            FC: mpifort
-            BUILD_SHARED_LIBS: no
-            BML_OPENMP: no
-            BML_INTERNAL_BLAS: no
-            BML_MPI: yes
-            TESTING_EXTRA_ARGS: "-R MPI-C-.*-single_real"
-            EXTRA_LINK_FLAGS: -lscalapack-openmpi
-            BML_SCALAPACK: yes
+            TEST_SCRIPT: ./scripts/ci-MPI-single-real.sh
           - JOBNAME: MPI double real
             CC: mpicc
             CXX: mpic++
