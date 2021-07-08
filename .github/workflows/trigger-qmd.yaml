@@ -17,6 +17,6 @@ jobs:
       - run: |
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token x${WORKFLOW_TOKEN}" \
+            -H "Authorization: token ${WORKFLOW_TOKEN}" \
             -d '{"event_type":"bml_update"}' \
             https://api.github.com/repos/lanl/qmd-progress/dispatches
