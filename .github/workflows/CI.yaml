@@ -35,7 +35,6 @@ jobs:
   docs:
     name: Build docs
     runs-on: ubuntu-18.04
-    needs: lint
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
@@ -47,8 +46,8 @@ jobs:
   build:
     name: Build and test the library (${{ matrix.JOBNAME }})
     runs-on: ubuntu-18.04
-    needs: lint
     strategy:
+      fail-fast: false
       matrix:
         include:
           - JOBNAME: gcc-4.8 test 1
