@@ -223,7 +223,7 @@ compile() {
 }
 
 docs() {
-    cmake --build -C "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
+    cmake --build "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
     #check_pipe_error
