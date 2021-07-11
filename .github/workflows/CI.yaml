@@ -78,6 +78,39 @@ jobs:
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
 
+  build_windows:
+    name: Build and test the library on Windows Server (${{ matrix.JOBNAME }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - JOBNAME: gcc-11 C single real
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-real.sh
+          - JOBNAME: gcc-11 C double real
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-real.sh
+          - JOBNAME: gcc-11 C single complex
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-complex.sh
+          - JOBNAME: gcc-11 C double complex
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-complex.sh
+          - JOBNAME: gcc-11 Fortran single real
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-single-real.sh
+          - JOBNAME: gcc-11 Fortran double real
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-real.sh
+          - JOBNAME: gcc-11 Fortran single complex
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-single-complex.sh
+          - JOBNAME: gcc-11 Fortran double complex
+            TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-complex.sh
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v2
+      - name: Prepare container
+        run: ./scripts/prepare-container-windows.sh
+      - name: Build and test library
+        env:
+          TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
+        run: bash ${TEST_SCRIPT} testing
+
   build:
     name: Build and test the library (${{ matrix.JOBNAME }})
     runs-on: ubuntu-18.04
