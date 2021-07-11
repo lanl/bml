@@ -86,6 +86,8 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-clang-11-gfortran-11-C-single-real.sh
           - JOBNAME: clang-11 / gfortran-11 C double real
             TEST_SCRIPT: ./scripts/ci-clang-11-gfortran-11-C-double-real.sh
+          - JOBNAME: clang-11 / gfortran-11 C single complex
+            TEST_SCRIPT: ./scripts/ci-clang-11-gfortran-11-C-single-complex.sh
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
