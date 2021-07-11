@@ -83,6 +83,7 @@ EOF
     echo "BML_ELLBLOCK_MEMPOOL   Use ellblock memory pool    (default is ${BML_ELLBLOCK_MEMPOOL}"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
     echo "INTEL_OPT              {yes, no}                   (default is ${INTEL_OPT})"
+    echo "CMAKE_ARGS             pass-through CMake flags    (default is ${CMAKE_ARGS})"
 }
 
 set_defaults() {
@@ -125,6 +126,7 @@ set_defaults() {
     : ${BML_ELLBLOCK_MEMPOOL:=no}
     : ${CUDA_TOOLKIT_ROOT_DIR:=}
     : ${INTEL_OPT:=no}
+    : ${CMAKE_ARGS:=}
 }
 
 die() {
@@ -209,18 +211,19 @@ configure() {
         -DBML_ELLBLOCK_MEMPOOL="${BML_ELLBLOCK_MEMPOOL}" \
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         -DINTEL_OPT="${INTEL_OPT:=no}" \
+        ${CMAKE_ARGS} \
         | tee --append "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
 
 compile() {
-    make -C "${BUILD_DIR}" | tee --append "${LOG_FILE}"
+    cmake --build "${BUILD_DIR}" | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 docs() {
-    make -C "${BUILD_DIR}" docs 2>&1 | tee --append "${LOG_FILE}"
+    cmake --build -C "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
     #check_pipe_error
@@ -230,7 +233,7 @@ docs() {
 }
 
 install() {
-    make -C "${BUILD_DIR}" install 2>&1 | tee --append "${LOG_FILE}"
+    cmake --install "${BUILD_DIR}" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
@@ -284,7 +287,7 @@ tags() {
 }
 
 dist() {
-    make -C "${BUILD_DIR}" dist 2>&1 | tee --append "${LOG_FILE}"
+    cmake --build "${BUILD_DIR}" --target dist 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
