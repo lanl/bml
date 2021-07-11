@@ -41,7 +41,7 @@ jobs:
       - name: Prepare container
         run: ./scripts/prepare-container.sh
       - name: Build docs
-        run: ./build.sh docs
+        run: ./build.sh --debug docs
 
   build:
     name: Build and test the library (${{ matrix.JOBNAME }})

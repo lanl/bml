@@ -13,4 +13,4 @@ export BUILD_SHARED_LIBS=yes
 export BML_OPENMP=yes
 export BML_INTERNAL_BLAS=yes
 
-${basedir}/build.sh testing
+${basedir}/build.sh --debug testing

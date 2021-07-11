@@ -33,4 +33,4 @@ export BML_VALGRIND=yes
 # Re-review once we have a backport of valgrind for Bionic.
 export CMAKE_BUILD_TYPE=Release
 
-${basedir}/build.sh testing
+${basedir}/build.sh --debug testing

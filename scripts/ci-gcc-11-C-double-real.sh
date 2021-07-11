@@ -15,4 +15,4 @@ export BML_INTERNAL_BLAS=no
 export TESTING_EXTRA_ARGS="-R C-.*-double_real"
 export BML_VALGRIND=yes
 
-${basedir}/build.sh testing
+${basedir}/build.sh --debug testing
