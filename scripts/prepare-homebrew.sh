@@ -5,4 +5,5 @@ brew install \
   cmake \
   gcc@5 \
   gcc@11 \
+  ninja \
   openblas
