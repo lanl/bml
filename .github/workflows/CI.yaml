@@ -82,6 +82,8 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-MPI-single-complex.sh
           - JOBNAME: MPI double complex
             TEST_SCRIPT: ./scripts/ci-MPI-double-complex.sh
+          - JOBNAME: clang-11 / gfortran-11 C single real
+            TEST_SCRIPT: ./scripts/ci-clang-11-gfortran-11-C-single-real.sh
     steps:
       - name: Check out sources
         uses: actions/checkout@v2
