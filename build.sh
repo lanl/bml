@@ -10,6 +10,7 @@ if (( $? != 0 )); then
     TOP_DIR=$(pwd -P $TOP_DIR)
 fi
 
+: ${CMAKE:=cmake}
 : ${BUILD_DIR:=${TOP_DIR}/build}
 : ${INSTALL_DIR:=${TOP_DIR}/install}
 : ${PARALLEL_TEST_JOBS:=1}
@@ -172,7 +173,7 @@ configure() {
     if [[ -f "${BUILD_DIR}/CMakeCache.txt" ]]; then
         rm -v "${BUILD_DIR}/CMakeCache.txt" || die
     fi
-    ${CMAKE:=cmake} .. \
+    ${CMAKE} .. \
         -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" \
         -DCMAKE_C_COMPILER="${CC}" \
         -DCMAKE_CXX_COMPILER="${CXX}" \
@@ -220,12 +221,12 @@ configure() {
 }
 
 compile() {
-    cmake --build "${BUILD_DIR}" | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 docs() {
-    cmake --build "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
     #check_pipe_error
@@ -235,16 +236,16 @@ docs() {
 }
 
 install() {
-    cmake --install "${BUILD_DIR}" 2>&1 | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target install 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 testing() {
     cd "${BUILD_DIR}"
     ctest --output-on-failure \
-      --parallel ${PARALLEL_TEST_JOBS} \
-      ${TESTING_EXTRA_ARGS} \
-      2>&1 | tee --append "${LOG_FILE}"
+        --parallel ${PARALLEL_TEST_JOBS} \
+        ${TESTING_EXTRA_ARGS} \
+        2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 
     # Get skipped tests and re-run them with verbose output.
@@ -254,11 +255,11 @@ testing() {
         echo "Found skipped tests: ${SKIPPED_TESTS[*]}"
         local skipped
         for skipped in "${SKIPPED_TESTS[@]}"; do
-          echo "Re-running skipped test ${skipped}"
-          ctest --verbose \
-            ${TESTING_EXTRA_ARGS} \
-            --tests-regex "${skipped}" \
-            2>&1 | tee --append "${LOG_FILE}"
+            echo "Re-running skipped test ${skipped}"
+            ctest --verbose \
+                ${TESTING_EXTRA_ARGS} \
+                --tests-regex "${skipped}" \
+                2>&1 | tee --append "${LOG_FILE}"
         done
     fi
     cd "${TOP_DIR}"
@@ -289,7 +290,7 @@ tags() {
 }
 
 dist() {
-    cmake --build "${BUILD_DIR}" --target dist 2>&1 | tee --append "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target dist 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
