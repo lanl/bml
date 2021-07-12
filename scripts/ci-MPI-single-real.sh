@@ -17,4 +17,4 @@ export TESTING_EXTRA_ARGS="-R MPI-C-.*-single_real"
 export EXTRA_LINK_FLAGS=-lscalapack-openmpi
 export BML_SCALAPACK=yes
 
-${basedir}/build.sh testing
+${basedir}/build.sh --debug testing

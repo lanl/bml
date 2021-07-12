@@ -21,8 +21,10 @@ help() {
     cat <<EOF
 Usage:
 
-This script can be used to build and test the bml library.  The script has to
-be given a command. Known commands are:
+build.sh [--debug] COMMAND
+
+This script can be used to build and test the bml library. The script
+has to be given a COMMAND. Known commands are:
 
 cleanup         - Clean up and remove build and install directories
 create          - Create the build and install directories
@@ -36,8 +38,8 @@ check_indent    - Check the indentation of the sources
 tags            - Create tags file for vim and emacs
 dist            - Generate a tar file (this only works with git)
 
-The following environment variables can be set to influence the configuration
-step and the build:
+The following environment variables can be set to influence the
+configuration step and the build:
 
 EOF
     set_defaults
