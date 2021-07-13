@@ -358,7 +358,6 @@ if [[ $# -gt 0 ]]; then
                 indent
                 ;;
             "check_indent")
-                create
                 check_indent
                 ;;
             "tags")
