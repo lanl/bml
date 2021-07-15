@@ -4,16 +4,14 @@ set -e -u -x
 
 basedir=$(readlink --canonicalize $(dirname $0)/..)
 
-[[ -f ${basedir}/scripts/ci-defaults.sh ]] && . ${basedir}/scripts/ci-defaults.sh
-
-export CC=gcc-11
-export CXX=g++-11
-export FC=gfortran-11
-export BUILD_SHARED_LIBS=no
-export BML_OPENMP=no
-export BML_INTERNAL_BLAS=no
-export TESTING_EXTRA_ARGS="-R fortran-.*-double_real"
-export BML_VALGRIND=yes
+export CC=${CC:-gcc-11}
+export CXX=${CXX:-g++-11}
+export FC=${FC:-gfortran-11}
+export BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:-no}
+export BML_OPENMP=${BML_OPENMP:-no}
+export BML_INTERNAL_BLAS=${BML_INTERNAL_BLAS:-no}
+export TESTING_EXTRA_ARGS=${TESTING_EXTRA_ARGS:-"-R fortran-.*-double_real"}
+export BML_VALGRIND=${BML_VALGRIND:-yes}
 
 # [nicolasbock] Valgrind cannot handle a Debug build with valgrind and
 # fails with:
@@ -31,6 +29,8 @@ export BML_VALGRIND=yes
 # later versions.
 #
 # Re-review once we have a backport of valgrind for Bionic.
-export CMAKE_BUILD_TYPE=Release
+export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
+
+[[ -f ${basedir}/scripts/ci-defaults.sh ]] && . ${basedir}/scripts/ci-defaults.sh
 
 ${basedir}/build.sh --debug testing
