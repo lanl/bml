@@ -9,7 +9,8 @@ Generate a sparse N x N Hamiltonian matrix given the matrix dimension, N, and th
 Output to terminal given in matrix market format.
 
 Usage: 
-         $> ./sparse N eps
+         $> gcc -o gen-sparse gen-sparse.c -lm        
+         $> ./gen-sparse N eps
 
 
 
@@ -43,11 +44,8 @@ main(
 
     //
     // Generate sparse Hamiltonian matrix
-    // 
-    
-    fprintf(stdout, "i j X_ij\n");
-    fprintf(stdout, "===========\n");
-    
+    //     
+    fprintf(stdout, "\n %%%MatrixMarket matrix coordinate real general \n \n");
      
     for (i = 0; i < N; ++i)
     {
@@ -72,7 +70,7 @@ main(
             }
             else
             {
-                fprintf(stdout, "%d %d %10.3g\n", i + 1, j + 1, X[i + j * N]);
+                fprintf(stdout, "    %d %d %10.3g\n", i + 1, j + 1, X[i + j * N]);
 
             }
 
