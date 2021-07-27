@@ -20,51 +20,64 @@ Authors: Josh Finkelstein
 
 Date:    7/22/2021
 
-*/ 
+*/
 
 
-int main(int argc, char *argv[])
+int
+main(
+    int argc,
+    char *argv[])
 {
-  //
-  // Input parameters
-  //  
+    //
+    // Input parameters
+    //  
     int N = atoi(argv[1]);
     float thresh = atof(argv[2]);
 
-  // Set memory
+    //
+    // Set memory
+    //
     int i, j;
     float *X;
-    X = (float*) malloc( N * N * sizeof(float));
- 
-  //
-  // Generate sparse Hamiltonian matrix
-  //  
-    for (i = 0; i<N; ++i) {
+    X = (float *) malloc(N * N * sizeof(float));
+
+    //
+    // Generate sparse Hamiltonian matrix
+    // 
     
-      for (j = i; j<N; ++j) {
-           
-        X[i+j*N] = exp(-0.5f*abs((float)(i-j)))*sin((float)(i+1));
-  
-        X[j+i*N] = X[i+j*N];
-
+    fprintf(stdout, "i j X_ij\n");
+    fprintf(stdout, "===========\n");
     
-        // Threshold matrix entries
+     
+    for (i = 0; i < N; ++i)
+    {
 
-          if (X[i+j*N] < thresh){
-      
-            X[i+j*N] = 0.;
-            X[j+i*N] = 0.;
-               
-          }
-          else {
- 
-            fprintf(stdout, "%d %d %10.3g\n", i+1, j+1, X[i+j*N]);
+        for (j = i; j < N; ++j)
+        {
 
-          }
-       
-      }
+            X[i + j * N] =
+                exp(-0.5f * abs((float) (i - j))) * sin((float) (i + 1));
+
+            X[j + i * N] = X[i + j * N];
+
+            //
+            // Threshold matrix entries
+            //
+            if (X[i + j * N] < thresh)
+            {
+
+                X[i + j * N] = 0.;
+                X[j + i * N] = 0.;
+
+            }
+            else
+            {
+                fprintf(stdout, "%d %d %10.3g\n", i + 1, j + 1, X[i + j * N]);
+
+            }
+
+        }
     }
 
     return 0;
 }
-
