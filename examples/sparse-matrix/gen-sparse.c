@@ -8,15 +8,15 @@
 Generate a sparse N x N Hamiltonian matrix given the matrix dimension, N, and threshold value, eps.
 Output to terminal given in matrix market format.
 
-Usage: 
-         $> gcc -o gen-sparse gen-sparse.c -lm        
+Usage:
+         $> gcc -o gen-sparse gen-sparse.c -lm
          $> ./gen-sparse N eps
 
 
 
 Authors: Josh Finkelstein
          Christian F. A. Negre
-         
+
          Los Alamos National Laboratory
 
 Date:    7/22/2021
@@ -31,7 +31,7 @@ main(
 {
     //
     // Input parameters
-    //  
+    //
     int N = atoi(argv[1]);
     float thresh = atof(argv[2]);
 
@@ -44,9 +44,10 @@ main(
 
     //
     // Generate sparse Hamiltonian matrix
-    //     
-    fprintf(stdout, "\n %%%MatrixMarket matrix coordinate real general \n \n");
-     
+    //
+    fprintf(stdout,
+            "\n %%%MatrixMarket matrix coordinate real general \n \n");
+
     for (i = 0; i < N; ++i)
     {
 
@@ -70,7 +71,8 @@ main(
             }
             else
             {
-                fprintf(stdout, "    %d %d %10.3g\n", i + 1, j + 1, X[i + j * N]);
+                fprintf(stdout, "    %d %d %10.3g\n", i + 1, j + 1,
+                        X[i + j * N]);
 
             }
 
