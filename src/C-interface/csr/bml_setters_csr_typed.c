@@ -85,24 +85,25 @@ void TYPED_FUNC(
     }
 }
 
-/** Set row entries from dense array
+/** Set row entries from dense array, given nonzero column indexes
  *
  *  \ingroup setters
  *
  *  \param arow The row to be set
  *  \param count The number of entries to set
- *  \param cols The column indexes
- *  \param vals The row entries
+ *  \param nzcolids Indexes of entries to keep
+ *  \param rowvals The row entries (assumed dense)
  *  \WARNING sets a row from scratch
  *
  *
  */
+
 void TYPED_FUNC(
     csr_set_row) (
     csr_sparse_row_t * arow,
     const int count,
-    void *rowvals,
-    const double threshold)
+    const int *nzcolids,
+    void *rowvals)
 {
     int *index = arow->cols_;
     REAL_T *vals = rowvals;
@@ -119,15 +120,13 @@ void TYPED_FUNC(
         data = (REAL_T *) arow->vals_;
     }
     // set entries
-    arow->NNZ_ = 0;
     for (int j = 0; j < count; j++)
     {
-        if (ABS(vals[j]) > threshold)
-        {
-            index[arow->NNZ_] = j;
-            data[arow->NNZ_++] = vals[j];
-        }
+        int col = nzcolids[j];
+        index[j] = col;
+        data[j] = vals[col];
     }
+    arow->NNZ_ = count;
 }
 
 /** Set (new) element i,j asuming there's no resetting of any element of A.
@@ -201,12 +200,27 @@ void TYPED_FUNC(
     const double threshold)
 {
     const int A_N = A->N_;
+    int nzcount, *cols;
+    REAL_T *vals = rowvals;
     csr_sparse_row_t *arow = A->data_[i];
     // reset nnz row count to zero (in case row is not empty)
     arow->NNZ_ = 0;
 
+    // do a scan to extract entries here.
+    // this is necessary to avoid allocating a dense row of size N
+    cols = bml_noinit_allocate_memory(sizeof(int) * A_N);
+    nzcount = 0;
+    for (int j = 0; j < A_N; j++)
+    {
+        if (ABS(vals[j]) > threshold)
+        {
+            cols[nzcount] = j;
+            nzcount++;
+        }
+    }
     // set row values
-    TYPED_FUNC(csr_set_row) (arow, A_N, rowvals, threshold);
+    TYPED_FUNC(csr_set_row) (arow, nzcount, cols, rowvals);
+    bml_free_memory(cols);
 }
 
 /** Set diagonal of matrix A.
