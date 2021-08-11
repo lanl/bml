@@ -69,26 +69,26 @@ void csr_set_row(
 void csr_set_row_single_real(
     csr_sparse_row_t * arow,
     const int count,
-    void *vals,
-    const double threshold);
+    const int *cols,
+    void *vals);
 
 void csr_set_row_double_real(
     csr_sparse_row_t * arow,
     const int count,
-    void *vals,
-    const double threshold);
+    const int *cols,
+    void *vals);
 
 void csr_set_row_single_complex(
     csr_sparse_row_t * arow,
     const int count,
-    void *vals,
-    const double threshold);
+    const int *cols,
+    void *vals);
 
 void csr_set_row_double_complex(
     csr_sparse_row_t * arow,
     const int count,
-    void *vals,
-    const double threshold);
+    const int *cols,
+    void *vals);
 
 void csr_set_sparse_row_single_real(
     csr_sparse_row_t * arow,
