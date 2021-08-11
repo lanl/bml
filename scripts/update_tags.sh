@@ -1,8 +1,10 @@
 #!/bin/bash
 
-basedir=$(dirname $0)
+set -e -u -x
+
+basedir=$(readlink --canonicalize $(dirname $0)/..)
+pushd "${basedir}"
 readarray -t files < <(git ls-files '*.c' '*.h' '*.F90')
-pushd "${basedir}" || exit
 ctags "${files[@]}"
 etags "${files[@]}"
-popd || exit
+popd
