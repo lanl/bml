@@ -18,7 +18,7 @@ contains
     integer, intent(in) :: n, m
     logical :: test_result
 
-    real(DUMMY_PREC), parameter :: alpha = 1.2_MP
+    real(DUMMY_PREC) :: alpha
     real(DUMMY_PREC) :: abs_tol
 
     type(bml_matrix_t) :: a
@@ -26,6 +26,8 @@ contains
 
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: c_dense(:, :)
+
+    alpha = 1.2_MP
 
     if(element_precision == sp)then
       abs_tol = 1e-6
