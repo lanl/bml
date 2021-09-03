@@ -1,7 +1,7 @@
 #!/bin/bash
 module load cmake
 module load cuda
-module load gcc/8.1.1
+module load gcc/9.3.0
 module load netlib-lapack
 module load openblas
 module load magma
@@ -32,6 +32,6 @@ export BML_ELLBLOCK_MEMPOOL=${BML_ELLBLOCK_MEMPOOL:=no}
 
 #use jsrun to run tests on a compute node
 export BML_NONMPI_PRECOMMAND=${BML_NONMPI_PRECOMMAND:=${JSRUN}}
-export BML_NONMPI_PRECOMMAND_ARGS=${BML_NONMPI_PRECOMMAND_ARGS:="-n1;-a1;-g1;-c7"}
+export BML_NONMPI_PRECOMMAND_ARGS=${BML_NONMPI_PRECOMMAND_ARGS:="-n1;-a1;-g1;-c7;--smpiargs=off"}
 
 ./build.sh install
