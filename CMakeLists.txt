@@ -238,6 +238,7 @@ if(BML_CUDA OR BML_CUSOLVER)
 endif()
 if (CUDA_FOUND)
    message("CUDA CUBLAS libraries: ${CUDA_CUBLAS_LIBRARIES}")
+   message("CUDA libraries: ${CUDA_LIBRARIES}")
    include_directories(${CUDA_INCLUDE_DIRS})
 endif()
 
@@ -272,6 +273,14 @@ if (MAGMA_FOUND)
     message(STATUS "Will use cuSOLVER")
     add_definitions(-DBML_USE_CUSOLVER)
   endif()
+endif()
+
+if (CUBLAS_FOUND)
+  list(APPEND LINK_LIBRARIES ${CUBLAS_LIBRARIES})
+endif()
+
+if (CUDA_FOUND)
+  list(APPEND LINK_LIBRARIES ${CUDA_LIBRARIES})
 endif()
 
 set(BML_SCALAPACK FALSE CACHE BOOL "Whether to use ScaLAPACK library")
