@@ -64,10 +64,11 @@ void TYPED_FUNC(
     MPI_Datatype dtype[1];
     dtype[0] = MPI_T;
 
-    int blength = A->N * A->N;
+    int blength[1];
+    blength[0] = A->N * A->N;
     MPI_Aint displ[0];
     displ[0] = addr0 - baseaddr;
-    int mpiret = MPI_Type_create_struct(1, &blength, displ, dtype, newtype);
+    int mpiret = MPI_Type_create_struct(1, blength, displ, dtype, newtype);
     if (mpiret != MPI_SUCCESS)
         LOG_ERROR("MPI_Type_create_struct failed!");
     mpiret = MPI_Type_commit(newtype);
