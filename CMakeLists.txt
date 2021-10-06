@@ -239,6 +239,7 @@ endif()
 if (CUDA_FOUND)
    message("CUDA CUBLAS libraries: ${CUDA_CUBLAS_LIBRARIES}")
    message("CUDA libraries: ${CUDA_LIBRARIES}")
+   list(APPEND LINK_LIBRARIES ${CUDA_LIBRARIES})
    include_directories(${CUDA_INCLUDE_DIRS})
 endif()
 
