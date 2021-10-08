@@ -133,6 +133,7 @@ set(testlist-mpi
     multiply
     norm
     print
+    set_row
     threshold
     trace
     transpose

@@ -19,6 +19,15 @@ int TYPED_FUNC(
     REAL_T *A_row = NULL;
     REAL_T *B_row = NULL;
 
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
     // Create a row
     switch (matrix_precision)
     {
@@ -41,33 +50,42 @@ int TYPED_FUNC(
 
     for (int i = 0; i < N; i++)
     {
-        A_row[i] = i;
+        A_row[i] = (REAL_T) i;
     }
+    for (int i = 0; i < N; i++)
+        LOG_INFO("A_row[%d]=%e\n", i, A_row[i]);
+    A = bml_zero_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
-    A = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+    // Set the 9th row
+    int irow = 9;
+    bml_set_row(A, irow, A_row, 1.0e-10);
+    bml_print_bml_matrix(A, 0, N, 0, N);
 
-    // Set the second row
-    bml_set_row(A, 2, A_row, 1.0e-10);
+    // Retrieve the second row
+    B_row = bml_get_row(A, irow);
 
-    // Retrive the second row
-    B_row = bml_get_row(A, 2);
+    // Verify B_row is correct
+    for (int i = 0; i < N; i++)
+        LOG_INFO("A_row[%d]=%e, B_row[%d]=%e\n", i, i, A_row[i], B_row[i]);
 
     for (int i = 0; i < N; i++)
     {
         if (ABS(A_row[i] - B_row[i]) > 1e-12)
         {
-            LOG_ERROR("bml_set_row and/or bml_get_row are corrupted\n");
+            LOG_ERROR("A_row[%d]=%le, B_row[%d]=%le\n", i, i, A_row[i],
+                      B_row[i]);
+            LOG_ERROR
+                ("bml_set_row and/or bml_get_row failed for task %d\n",
+                 bml_getMyRank());
             return -1;
         }
     }
-
-    bml_print_bml_matrix(A, 0, N, 0, N);
 
     bml_deallocate(&A);
     free(A_row);
     free(B_row);
 
-    LOG_INFO("bml_set_row passed\n");
+    LOG_INFO("bml_set_row passed for task %d\n", bml_getMyRank());
 
     return 0;
 }

@@ -6,6 +6,9 @@
 #include "ellsort/bml_getters_ellsort.h"
 #include "ellblock/bml_getters_ellblock.h"
 #include "csr/bml_getters_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_getters_distributed2d.h"
+#endif
 
 #include <stdio.h>
 
@@ -74,6 +77,11 @@ bml_get_row(
         case csr:
             return bml_get_row_csr(A, i);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_row_distributed2d(A, i);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type in bml_get_row\n");
             break;
