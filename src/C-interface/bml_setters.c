@@ -95,6 +95,11 @@ bml_set_row(
         case csr:
             bml_set_row_csr(A, i, row, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            bml_set_row_distributed2d(A, i, row, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type in bml_set_row\n");
             break;

@@ -28,4 +28,34 @@ void bml_set_diagonal_distributed2d_double_complex(
     void *diagonal,
     double threshold);
 
+void bml_set_row_distributed2d(
+    bml_matrix_distributed2d_t * A,
+    int i,
+    void *row,
+    double threshold);
+
+void bml_set_row_distributed2d_single_real(
+    bml_matrix_distributed2d_t * A,
+    int i,
+    void *row,
+    double threshold);
+
+void bml_set_row_distributed2d_double_real(
+    bml_matrix_distributed2d_t * A,
+    int i,
+    void *row,
+    double threshold);
+
+void bml_set_row_distributed2d_single_complex(
+    bml_matrix_distributed2d_t * A,
+    int i,
+    void *row,
+    double threshold);
+
+void bml_set_row_distributed2d_double_complex(
+    bml_matrix_distributed2d_t * A,
+    int i,
+    void *row,
+    double threshold);
+
 #endif
