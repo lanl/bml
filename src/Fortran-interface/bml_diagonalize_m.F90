@@ -20,8 +20,10 @@ contains
   subroutine bml_diagonalize(a, eigenvalues, eigenvectors)
 
     type(bml_matrix_t), intent(in) :: a
+    !real(C_FLOAT), target, intent(inout) :: eigenvalues(*)
     real(C_DOUBLE), target, intent(inout) :: eigenvalues(*)
     type(bml_matrix_t), intent(inout) :: eigenvectors
+    !call bml_diagonalize_C(a%ptr, eigenvalues, eigenvectors%ptr)
 
     call bml_diagonalize_C(a%ptr, c_loc(eigenvalues), eigenvectors%ptr)
 

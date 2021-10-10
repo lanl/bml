@@ -7,6 +7,8 @@
 #include "bml_types_dense.h"
 #include "../bml_utilities.h"
 #include <float.h>
+        
+#include <stdio.h>
 
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
@@ -36,63 +38,145 @@ bml_diagonalize_dense_single_real(
 {
     int info;
     float *A_matrix;
-    float *typed_eigenvalues = (float *) eigenvalues;
-
-//    void mkl_thread_free_buffers(void);
+    double *typed_eigenvalues = (double *) eigenvalues;
+    float *single_eigenvalues = malloc(sizeof(float)*A->N);
+    printf("SINGLE-PREC CUSOLVER DIAG\n");
 
 #ifdef BML_USE_MAGMA
-    int nb = magma_get_ssytrd_nb(A->N);
-    float *evecs;
-    magma_int_t ret = magma_smalloc(&evecs, A->N * A->ld);
-    assert(ret == MAGMA_SUCCESS);
+    
+   //copy matrix into evecs
+   float *evecs;
+   magma_int_t ret = magma_smalloc(&evecs, A->N * A->ld);
+   assert(ret == MAGMA_SUCCESS);
 
-    float *evals;
-    evals = malloc(A->N * sizeof(float));
-    float *work;
-    int lwork = 2 * A->N + A->N * nb;
-    int tmp = 1 + 6 * A->N + 2 * A->N * A->N;
-    if (tmp > lwork)
-        lwork = tmp;
-    work = malloc(lwork * sizeof(float));
-    int liwork = 3 + 5 * A->N;
-    int *iwork;
-    iwork = malloc(liwork * sizeof(int));
-    float *wa;
-    int ldwa = A->ld;
-    wa = malloc(A->N * ldwa * sizeof(float));
+   magmablas_slacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
+                    A->queue);
 
-    //copy matrix into evecs
-    magmablas_slacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
-                     A->queue);
 
-    magma_ssyevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
-                     wa, ldwa, work, lwork, iwork, liwork, &info);
-    if (info != 0)
-        LOG_ERROR("ERROR in magma_ssyevd_gpu");
+   #ifdef BML_USE_CUSOLVER
+    
+       // create cusolver/cublas handle
+       cusolverDnHandle_t cusolverH = NULL;
+       cusolverStatus_t cusolver_status = cusolverDnCreate(&cusolverH);
+       assert(CUSOLVER_STATUS_SUCCESS == cusolver_status);
 
-#else
+       // allocate memory for eigenvalues
+       float *d_W = NULL;
+       cudaError_t cudaStat = cudaMalloc((void **) &d_W, sizeof(float) * A->N);
+       assert(cudaSuccess == cudaStat);
+
+       // compute eigenvalues and eigenvectors
+       cusolverEigMode_t jobz = CUSOLVER_EIG_MODE_VECTOR;
+       cublasFillMode_t uplo = CUBLAS_FILL_MODE_LOWER;
+
+       // query working space of syevd
+       int lwork = 0;
+       cusolver_status =
+           cusolverDnSsyevd_bufferSize(cusolverH, jobz, uplo, A->N, evecs, A->ld,
+                                       d_W, &lwork);
+       assert(cusolver_status == CUSOLVER_STATUS_SUCCESS);
+
+       float *d_work = NULL;
+       cudaStat = cudaMalloc((void **) &d_work, sizeof(float) * lwork);
+       assert(cudaSuccess == cudaStat);
+
+       // solve
+       int *devInfo = NULL;
+       cudaStat = cudaMalloc((void **) &devInfo, sizeof(int));
+       assert(cudaSuccess == cudaStat);
+
+       cusolver_status =
+            cusolverDnSsyevd(cusolverH, jobz, uplo, A->N, evecs, A->ld, d_W,
+                             d_work, lwork, devInfo);
+       cudaStat = cudaDeviceSynchronize();
+       assert(CUSOLVER_STATUS_SUCCESS == cusolver_status);
+       assert(cudaSuccess == cudaStat);
+
+       // copy eigenvalues to CPU
+       cudaStat =
+           //cudaMemcpy(typed_eigenvalues, d_W, sizeof(float) * A->N,
+           cudaMemcpy(single_eigenvalues, d_W, sizeof(float) * A->N,
+                      cudaMemcpyDeviceToHost);
+        printf("inside single-prec cusolver\n");
+        //for (int j=0;j< A->N;j++){
+        //printf("eig(%d) =  %f \n", j, single_eigenvalues[j]);
+        //}
+        assert(cudaSuccess == cudaStat);
+
+       // free resources
+       cudaFree(d_W);
+       cudaFree(devInfo);
+       cudaFree(d_work);
+
+       if (cusolverH)
+           cusolverDnDestroy(cusolverH);
+        
+
+    printf("typecast eigenvalues\n");
+
+    for (int i = 0; i < A->N; i++)
+    {
+        //printf("%f \n",single_eigenvalues[i]);
+        typed_eigenvalues[i] = (double)single_eigenvalues[i];
+    };        
+    
+   #else //MAGMA ONLY, no cuSOLVER
+
+        int nb = magma_get_ssytrd_nb(A->N);
+
+        float *evals = malloc(A->N * sizeof(float));
+        int lwork = 2 * A->N + A->N * nb;
+        int tmp = 1 + 6 * A->N + 2 * A->N * A->N;
+        if (tmp > lwork)
+            lwork = tmp;
+        float *work = malloc(lwork * sizeof(float));
+        int liwork = 3 + 5 * A->N;
+        int *iwork = malloc(liwork * sizeof(int));
+        int ldwa = A->ld;
+        float *wa = malloc(A->N * ldwa * sizeof(float));
+
+        // magma single-prec diag
+        magma_ssyevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
+                         wa, ldwa, work, lwork, iwork, liwork, &info);
+        if (info != 0)
+            LOG_ERROR("ERROR in magma_ssyevd_gpu");
+
+        free(wa);
+        free(work);
+       
+        for (int i = 0; i < A->N; i++)
+            typed_eigenvalues[i] = (float) evals[i];
+        free(evals);
+ 
+        magma_queue_sync(A->queue);
+   
+   #endif
+
+    printf("transpose eigenvector matrix on GPU\n");
+    // transpose eigenvactors matrix on GPU
+    A_matrix = (float *) eigenvectors->matrix;
+    magmablas_stranspose(A->N, A->N, evecs, A->ld,
+                         A_matrix, eigenvectors->ld, A->queue);
+    magma_queue_sync(eigenvectors->queue);
+    
+    magma_free(evecs);
+    printf("exiting single-prec cusolver\n");
+    
+#else  // CPU code
+    
     int lwork = 3 * A->N;
     float *evecs = calloc(A->N * A->N, sizeof(float));
     float *evals = calloc(A->N, sizeof(float));
     float *work = calloc(lwork, sizeof(float));
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
 
-#ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
-#else
-    C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-#endif
-
-#endif
-    // mkl_free_buffers();
+    #ifdef NOBLAS
+      LOG_ERROR("No BLAS library");
+    #else
+      C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+    #endif
 
     A_matrix = (float *) eigenvectors->matrix;
-#ifdef BML_USE_MAGMA
-    magmablas_stranspose(A->N, A->N, evecs, A->ld,
-                         A_matrix, eigenvectors->ld, A->queue);
-    for (int i = 0; i < A->N; i++)
-        typed_eigenvalues[i] = (float) evals[i];
-#else
     for (int i = 0; i < A->N; i++)
     {
         typed_eigenvalues[i] = (float) evals[i];
@@ -102,19 +186,12 @@ bml_diagonalize_dense_single_real(
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
-#endif
-
-#ifdef BML_USE_MAGMA
-    magma_free(evecs);
-    magma_free(wa);
-#else
     free(evecs);
-#endif
     free(evals);
     free(work);
 
-//    free(lwork);
-//    mkl_thread_free_buffers();
+#endif
+    
 }
 
 void
@@ -126,6 +203,7 @@ bml_diagonalize_dense_double_real(
     int info;
     double *A_matrix;
     double *typed_eigenvalues = (double *) eigenvalues;
+    printf("DOUBLE-PREC DIAG\n");
 
 #ifdef BML_USE_MAGMA
     //copy matrix into evecs
@@ -138,91 +216,88 @@ bml_diagonalize_dense_double_real(
 
     magma_queue_sync(A->queue);
 
-#ifdef BML_USE_CUSOLVER
-    // create cusolver/cublas handle
-    cusolverDnHandle_t cusolverH = NULL;
-    cusolverStatus_t cusolver_status = cusolverDnCreate(&cusolverH);
-    assert(CUSOLVER_STATUS_SUCCESS == cusolver_status);
+    #ifdef BML_USE_CUSOLVER
+      
+      // create cusolver/cublas handle
+      cusolverDnHandle_t cusolverH = NULL;
+      cusolverStatus_t cusolver_status = cusolverDnCreate(&cusolverH);
+      assert(CUSOLVER_STATUS_SUCCESS == cusolver_status);
 
-    // allocate memory for eigenvalues
-    double *d_W = NULL;
-    cudaError_t cudaStat = cudaMalloc((void **) &d_W, sizeof(double) * A->N);
-    assert(cudaSuccess == cudaStat);
+      // allocate memory for eigenvalues
+      double *d_W = NULL;
+      cudaError_t cudaStat = cudaMalloc((void **) &d_W, sizeof(double) * A->N);
+      assert(cudaSuccess == cudaStat);
 
-    // compute eigenvalues and eigenvectors
-    cusolverEigMode_t jobz = CUSOLVER_EIG_MODE_VECTOR;
-    cublasFillMode_t uplo = CUBLAS_FILL_MODE_LOWER;
+      // compute eigenvalues and eigenvectors
+      cusolverEigMode_t jobz = CUSOLVER_EIG_MODE_VECTOR;
+      cublasFillMode_t uplo = CUBLAS_FILL_MODE_LOWER;
 
-    // query working space of syevd
-    int lwork = 0;
-    cusolver_status =
-        cusolverDnDsyevd_bufferSize(cusolverH, jobz, uplo, A->N, evecs, A->ld,
+      // query working space of syevd
+      int lwork = 0;
+      cusolver_status =
+          cusolverDnDsyevd_bufferSize(cusolverH, jobz, uplo, A->N, evecs, A->ld,
                                     d_W, &lwork);
-    assert(cusolver_status == CUSOLVER_STATUS_SUCCESS);
+      assert(cusolver_status == CUSOLVER_STATUS_SUCCESS);
 
-    double *d_work = NULL;
-    cudaStat = cudaMalloc((void **) &d_work, sizeof(double) * lwork);
-    assert(cudaSuccess == cudaStat);
+      double *d_work = NULL;
+      cudaStat = cudaMalloc((void **) &d_work, sizeof(double) * lwork);
+      assert(cudaSuccess == cudaStat);
 
-    // solve
-    int *devInfo = NULL;
-    cudaStat = cudaMalloc((void **) &devInfo, sizeof(int));
-    assert(cudaSuccess == cudaStat);
+      // solve
+      int *devInfo = NULL;
+      cudaStat = cudaMalloc((void **) &devInfo, sizeof(int));
+      assert(cudaSuccess == cudaStat);
 
-    cusolver_status =
-        cusolverDnDsyevd(cusolverH, jobz, uplo, A->N, evecs, A->ld, d_W,
+      cusolver_status =
+          cusolverDnDsyevd(cusolverH, jobz, uplo, A->N, evecs, A->ld, d_W,
                          d_work, lwork, devInfo);
-    cudaStat = cudaDeviceSynchronize();
-    assert(CUSOLVER_STATUS_SUCCESS == cusolver_status);
-    assert(cudaSuccess == cudaStat);
+      cudaStat = cudaDeviceSynchronize();
+      assert(CUSOLVER_STATUS_SUCCESS == cusolver_status);
+      assert(cudaSuccess == cudaStat);
 
-    // copy eigenvalues to CPU
-    cudaStat =
-        cudaMemcpy(typed_eigenvalues, d_W, sizeof(double) * A->N,
-                   cudaMemcpyDeviceToHost);
-    assert(cudaSuccess == cudaStat);
+      // copy eigenvalues to CPU
+      cudaStat =
+          cudaMemcpy(typed_eigenvalues, d_W, sizeof(double) * A->N,
+                     cudaMemcpyDeviceToHost);
+      assert(cudaSuccess == cudaStat);
 
-    // free resources
-    cudaFree(d_W);
-    cudaFree(devInfo);
-    cudaFree(d_work);
+      // free resources
+      cudaFree(d_W);
+      cudaFree(devInfo);
+      cudaFree(d_work);
 
-    if (cusolverH)
-        cusolverDnDestroy(cusolverH);
-#else // MAGMA
-    int nb = magma_get_ssytrd_nb(A->N);
+      if (cusolverH)
+          cusolverDnDestroy(cusolverH);
+    
+    #else //MAGMA ONLY, no cuSOLVER
+    
+      int nb = magma_get_ssytrd_nb(A->N);
 
-    double *evals = malloc(A->N * sizeof(double));
-    int lwork = 2 * A->N + A->N * nb;
-    int tmp = 1 + 6 * A->N + 2 * A->N * A->N;
-    if (tmp > lwork)
-        lwork = tmp;
-    double *work = malloc(lwork * sizeof(double));
-    int liwork = 3 + 5 * A->N;
-    int *iwork = malloc(liwork * sizeof(int));
-    int ldwa = A->N;
-    double *wa = malloc(A->N * ldwa * sizeof(double));
+      double *evals = malloc(A->N * sizeof(double));
+      int lwork = 2 * A->N + A->N * nb;
+      int tmp = 1 + 6 * A->N + 2 * A->N * A->N;
+      if (tmp > lwork)
+          lwork = tmp;
+      double *work = malloc(lwork * sizeof(double));
+      int liwork = 3 + 5 * A->N;
+      int *iwork = malloc(liwork * sizeof(int));
+      int ldwa = A->N;
+      double *wa = malloc(A->N * ldwa * sizeof(double));
 
-    magma_dsyevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
-                     wa, ldwa, work, lwork, iwork, liwork, &info);
-    if (info != 0)
-        LOG_ERROR("ERROR in magma_dsyevd_gpu");
+      magma_dsyevd_gpu(MagmaVec, MagmaUpper, A->N, evecs, A->ld, evals,
+                       wa, ldwa, work, lwork, iwork, liwork, &info);
+      if (info != 0)
+          LOG_ERROR("ERROR in magma_dsyevd_gpu");
 
-    free(wa);
-    free(work);
+      free(wa);
+      free(work);
 
-    for (int i = 0; i < A->N; i++)
-        typed_eigenvalues[i] = (double) evals[i];
-    free(evals);
+      for (int i = 0; i < A->N; i++)
+          typed_eigenvalues[i] = (double) evals[i];
+      free(evals);
 
-    //verify norm eigenvectors
-    //for(int i=0;i<A->N;i++)
-    //{
-    //    double norm = magma_dnrm2(A->N, evecs+A->ld*i, 1, A->queue);
-    //    printf("norm = %le\n", norm);
-    //}
-    magma_queue_sync(A->queue);
-#endif
+      magma_queue_sync(A->queue);
+    #endif
 
     // transpose eigenvactors matrix on GPU
     A_matrix = (double *) eigenvectors->matrix;
@@ -230,12 +305,6 @@ bml_diagonalize_dense_double_real(
                          A_matrix, eigenvectors->ld, A->queue);
     magma_queue_sync(eigenvectors->queue);
 
-    //verify norm eigenvectors transposed
-    //for(int i=0;i<A->N;i++)
-    //{
-    //    double norm = magma_dnrm2(A->N, evecs+i, A->ld, A->queue);
-    //    printf("norm transposed vector = %le\n", norm);
-    //}
     magma_free(evecs);
 
 #else // CPU code
@@ -472,6 +541,7 @@ bml_diagonalize_dense(
     switch (A->matrix_precision)
     {
         case single_real:
+            printf("INSIDE BML DIAGONALIZE DENSE SINGLE\n");
             bml_diagonalize_dense_single_real(A, eigenvalues, eigenvectors);
             break;
         case double_real:
