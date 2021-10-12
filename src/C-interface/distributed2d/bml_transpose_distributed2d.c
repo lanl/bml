@@ -27,12 +27,19 @@ bml_transpose_new_distributed2d(
     bml_matrix_distributed2d_t *B = bml_copy_distributed2d_new(A);
     assert(B != NULL);
 
-    if (A->myprow != A->mypcol)
+    int remote_task = A->mypcol * A->npcols + A->myprow;
+
+    if (A->myprow > A->mypcol)
     {
         assert(A->mpitask == A->myprow * A->npcols + A->mypcol);
-        int remote_task = A->mypcol * A->npcols + A->myprow;
         bml_mpi_send(A->matrix, remote_task, A->comm);
         bml_mpi_recv(B->matrix, remote_task, A->comm);
+    }
+    else if (A->myprow < A->mypcol)
+    {
+        assert(A->mpitask == A->myprow * A->npcols + A->mypcol);
+        bml_mpi_recv(B->matrix, remote_task, A->comm);
+        bml_mpi_send(A->matrix, remote_task, A->comm);
     }
 
     bml_transpose(B->matrix);
