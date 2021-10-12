@@ -12,8 +12,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  containers:
-    name: Update CI container images
+  default_container:
+    name: Update default CI container image
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'lanl/bml' }}
     steps:
@@ -32,6 +32,22 @@ jobs:
           file: Dockerfile
           push: true
           tags: nicolasbock/bml:latest
+      - name: Image digest
+        run: |
+          echo "Default image: ${{ steps.docker_build.outputs.digest }}"
+
+  focal_container:
+    name: Update Focal CI container image
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'lanl/bml' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push experimental Focal Docker image
         uses: docker/build-push-action@v2
         id: docker_build_focal
@@ -40,6 +56,22 @@ jobs:
           file: Dockerfile-focal
           push: true
           tags: nicolasbock/bml:focal
+      - name: Image digest
+        run: |
+          echo "Focal image: ${{ steps.docker_build_focal.outputs.digest }}"
+
+  hirsute_container:
+    name: Update Hirsute CI container image
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'lanl/bml' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push experimental Hirsute Docker image
         uses: docker/build-push-action@v2
         id: docker_build_hirsute
@@ -48,6 +80,22 @@ jobs:
           file: Dockerfile-hirsute
           push: true
           tags: nicolasbock/bml:hirsute
+      - name: Image digest
+        run: |
+          echo "Hirsute image: ${{ steps.docker_build_hirsute.outputs.digest }}"
+
+  impish_container:
+    name: Update Impish CI container image
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'lanl/bml' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push experimental Impish Docker image
         uses: docker/build-push-action@v2
         id: docker_build_impish
@@ -58,7 +106,4 @@ jobs:
           tags: nicolasbock/bml:impish
       - name: Image digest
         run: |
-          echo "Default image: ${{ steps.docker_build.outputs.digest }}"
-          echo "Focal image: ${{ steps.docker_build_focal.outputs.digest }}"
-          echo "Hirsute image: ${{ steps.docker_build_hirsute.outputs.digest }}"
           echo "Impish image: ${{ steps.docker_build_impish.outputs.digest }}"
