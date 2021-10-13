@@ -21,6 +21,7 @@ typedef int (
 #include "get_set_diagonal.h"
 #include "get_sparsity.h"
 #include "import_export_matrix.h"
+#include "introspection.h"
 #include "inverse_matrix.h"
 #include "io_matrix.h"
 #include "mpi_sendrecv.h"

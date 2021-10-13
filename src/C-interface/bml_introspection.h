@@ -8,6 +8,9 @@
 bml_matrix_type_t bml_get_type(
     bml_matrix_t * A);
 
+bml_matrix_type_t bml_get_deep_type(
+    bml_matrix_t * A);
+
 bml_matrix_precision_t bml_get_precision(
     bml_matrix_t * A);
 

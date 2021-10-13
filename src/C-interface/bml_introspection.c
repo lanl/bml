@@ -35,6 +35,31 @@ bml_get_type(
 
 }
 
+/** Return the matrix type for the data storage
+ *  For distributed2 matrices, return the matrix type
+ *  for the local submatrices
+ *
+ * \param A The matrix.
+ * \return The matrix type
+ */
+bml_matrix_type_t
+bml_get_deep_type(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_type(bml_get_local_matrix(A));
+            break;
+#endif
+        default:
+            return bml_get_type(A);
+            break;
+    }
+    return -1;
+}
+
 /** Return the matrix precision.
  *
  * \param A The matrix.
