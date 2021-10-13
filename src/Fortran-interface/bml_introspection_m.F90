@@ -10,6 +10,7 @@ module bml_introspection_m
   public :: bml_get_N
   public :: bml_get_M
   public :: bml_get_type
+  public :: bml_get_deep_type
   public :: bml_get_element_precision
   public :: bml_get_precision
   public :: bml_get_element_type
@@ -104,6 +105,37 @@ contains
     end select
 
   end function bml_get_type
+
+  !> Get the type of a local matrix.
+  !!
+  !! @param a The matrix.
+  !! @returns The bml format type of the matrix.
+  function bml_get_deep_type(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_type_num
+    character(20) :: bml_get_deep_type
+
+    bml_get_type_num = bml_get_deep_type_C(a%ptr)
+
+    select case(bml_get_type_num)
+    case(0)
+      bml_get_deep_type = "Unformatted"
+    case(1)
+      bml_get_deep_type = "dense"
+    case(2)
+      bml_get_deep_type = "ellpack"
+    case(3)
+      bml_get_deep_type = "ellblock"
+    case(4)
+      bml_get_deep_type = "ellsort"
+    case(5)
+      bml_get_deep_type = "csr"
+    case default
+      stop 'Unknown matrix type in bml_get_deep_type'
+    end select
+
+  end function bml_get_deep_type
 
   !> Get the precision/type index of the elements of a matrix.
   !!

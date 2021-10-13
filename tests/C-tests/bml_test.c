@@ -9,9 +9,9 @@
 #include "bml_test.h"
 
 #ifdef DO_MPI
-const int NUM_TESTS = 29;
+const int NUM_TESTS = 30;
 #else
-const int NUM_TESTS = 28;
+const int NUM_TESTS = 29;
 #endif
 
 typedef struct
@@ -34,6 +34,7 @@ const char *test_name[] = {
     "get_element",
     "get_set_diagonal",
     "get_sparsity",
+    "introspection",
     "inverse",
     "io_matrix",
 #ifdef DO_MPI
@@ -68,6 +69,7 @@ const char *test_description[] = {
     "Get an element from a bml matrix",
     "Set the diagonal elements of bml matrices",
     "Get the sparsity",
+    "Query matrix properties",
     "Matrix inverse",
     "Read and write an mtx matrix",
 #ifdef DO_MPI
@@ -102,6 +104,7 @@ const test_function_t testers[] = {
     test_get_element,
     test_get_set_diagonal,
     test_get_sparsity,
+    test_introspection,
     test_inverse,
     test_io_matrix,
 #ifdef DO_MPI

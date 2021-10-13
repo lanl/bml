@@ -12,6 +12,7 @@ set(SOURCES_TYPED
   get_set_diagonal_typed.c
   get_sparsity_typed.c
   import_export_matrix_typed.c
+  introspection_typed.c
   inverse_matrix_typed.c
   io_matrix_typed.c
   mpi_sendrecv_typed.c
@@ -59,6 +60,7 @@ add_executable(bml-test
   get_set_diagonal.c
   get_sparsity.c
   import_export_matrix.c
+  introspection.c
   inverse_matrix.c
   io_matrix.c
   mpi_sendrecv.c
@@ -127,6 +129,7 @@ set(testlist-mpi
     copy
     diagonalize
     import_export
+    introspection
     io_matrix
     scale
     mpi_sendrecv
@@ -152,6 +155,7 @@ set(testlist
   get_set_diagonal
   get_sparsity
   import_export
+  introspection
   inverse
   io_matrix
   multiply
