@@ -1,6 +1,6 @@
-[![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
-[![GitHub Actions](https://github.com/lanl/bml/workflows/CI/badge.svg)](https://github.com/lanl/bml/actions)
+| Issues | Pull Requests | CI | Conda |
+| ------ | ------------- | -- | ----- |
+| [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues) | [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls) | [![GitHub Actions](https://github.com/lanl/bml/workflows/CI/badge.svg)](https://github.com/lanl/bml/actions) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/bml.svg)](https://anaconda.org/conda-forge/bml) |
 
 # Introduction
 
