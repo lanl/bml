@@ -28,6 +28,26 @@ void bml_normalize_ellsort_double_complex(
     double mineval,
     double maxeval);
 
+void *bml_accumulate_offdiag_ellsort(
+    bml_matrix_ellsort_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellsort_single_real(
+    bml_matrix_ellsort_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellsort_double_real(
+    bml_matrix_ellsort_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellsort_single_complex(
+    bml_matrix_ellsort_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellsort_double_complex(
+    bml_matrix_ellsort_t * A,
+    int);
+
 void *bml_gershgorin_ellsort(
     bml_matrix_ellsort_t * A);
 

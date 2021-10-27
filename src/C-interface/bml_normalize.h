@@ -20,4 +20,7 @@ void *bml_gershgorin_partial(
     bml_matrix_t * A,
     int nrows);
 
+void *bml_accumulate_offdiag(
+    bml_matrix_t * A,
+    int flag);
 #endif

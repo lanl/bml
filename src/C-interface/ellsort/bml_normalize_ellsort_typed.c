@@ -44,6 +44,33 @@ void TYPED_FUNC(
     bml_add_identity_ellsort(A, gershfact, threshold);
 }
 
+void *TYPED_FUNC(
+    bml_accumulate_offdiag_ellsort) (
+    bml_matrix_ellsort_t * A,
+    int include_diag)
+{
+    int N = A->N;
+    int M = A->M;
+    int *A_nnz = (int *) A->nnz;
+    int *A_index = (int *) A->index;
+    REAL_T *offdiag_sum = calloc(N, sizeof(REAL_T));
+    REAL_T *A_value = (REAL_T *) A->value;
+
+    for (int i = 0; i < N; i++)
+    {
+        double radius = 0.0;
+        for (int j = 0; j < A_nnz[i]; j++)
+        {
+            int ind = ROWMAJOR(i, j, N, M);
+            if ((i != A_index[ind]) || include_diag)
+                radius += (double) ABS(A_value[ind]);
+        }
+        offdiag_sum[i] = radius;
+    }
+
+    return offdiag_sum;
+}
+
 /** Calculate Gershgorin bounds for an ellsort matrix.
  *
  *  \ingroup normalize_group

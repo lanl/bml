@@ -45,6 +45,47 @@ void TYPED_FUNC(
     bml_add_identity_ellblock(A, gershfact, threshold);
 }
 
+void *TYPED_FUNC(
+    bml_accumulate_offdiag_ellblock) (
+    bml_matrix_ellblock_t * A,
+    int include_diag)
+{
+    int NB = A->NB;
+    int MB = A->MB;
+    int *A_nnzb = (int *) A->nnzb;
+    int *A_indexb = (int *) A->indexb;
+    int *bsize = A->bsize;
+
+    REAL_T *offdiag_sum = calloc(A->N, sizeof(REAL_T));
+
+    REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
+
+    int ioffset = 0;
+    for (int ib = 0; ib < NB; ib++)
+    {
+        for (int jp = 0; jp < A_nnzb[ib]; jp++)
+        {
+            int ind = ROWMAJOR(ib, jp, NB, MB);
+            int jb = A_indexb[ind];
+            REAL_T *A_value = A_ptr_value[ind];
+            for (int ii = 0; ii < bsize[ib]; ii++)
+            {
+                int i = ioffset + ii;
+                for (int jj = 0; jj < bsize[jb]; jj++)
+                {
+                    REAL_T absham =
+                        A_value[ROWMAJOR(ii, jj, bsize[ib], bsize[jb])];
+                    if ((ib != jb || ii != jj) || include_diag)
+                        offdiag_sum[i] += (double) ABS(absham);
+                }
+            }
+        }
+        ioffset += bsize[ib];
+    }
+
+    return offdiag_sum;
+}
+
 /** Calculate Gershgorin bounds for an ellblock matrix.
  *
  *  \ingroup normalize_group

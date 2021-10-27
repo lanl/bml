@@ -47,6 +47,30 @@ void TYPED_FUNC(
     TYPED_FUNC(bml_scale_add_identity_dense) (A, alpha, beta);
 }
 
+void *TYPED_FUNC(
+    bml_accumulate_offdiag_dense) (
+    bml_matrix_dense_t * A,
+    int include_diag)
+{
+    int N = A->N;
+    REAL_T *offdiag_sum = calloc(N, sizeof(REAL_T));
+    REAL_T *A_value = (REAL_T *) A->matrix;
+
+    for (int i = 0; i < N; i++)
+    {
+        double radius = 0.0;
+        for (int j = 0; j < N; j++)
+        {
+            int ind = ROWMAJOR(i, j, N, N);
+            if ((i != j) || include_diag)
+                radius += (double) ABS(A_value[ind]);
+        }
+        offdiag_sum[i] = radius;
+    }
+
+    return offdiag_sum;
+}
+
 /** Calculate Gershgorin bounds for a dense matrix.
  *
  *  \ingroup gershgorin_group

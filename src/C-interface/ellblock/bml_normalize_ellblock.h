@@ -28,6 +28,26 @@ void bml_normalize_ellblock_double_complex(
     double mineval,
     double maxeval);
 
+void *bml_accumulate_offdiag_ellblock(
+    bml_matrix_ellblock_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellblock_single_real(
+    bml_matrix_ellblock_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellblock_double_real(
+    bml_matrix_ellblock_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellblock_single_complex(
+    bml_matrix_ellblock_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellblock_double_complex(
+    bml_matrix_ellblock_t * A,
+    int);
+
 void *bml_gershgorin_ellblock(
     bml_matrix_ellblock_t * A);
 
