@@ -28,6 +28,26 @@ void bml_normalize_dense_double_complex(
     double mineval,
     double maxeval);
 
+void *bml_accumulate_offdiag_dense(
+    bml_matrix_dense_t * A,
+    int);
+
+void *bml_accumulate_offdiag_dense_single_real(
+    bml_matrix_dense_t * A,
+    int);
+
+void *bml_accumulate_offdiag_dense_double_real(
+    bml_matrix_dense_t * A,
+    int);
+
+void *bml_accumulate_offdiag_dense_single_complex(
+    bml_matrix_dense_t * A,
+    int);
+
+void *bml_accumulate_offdiag_dense_double_complex(
+    bml_matrix_dense_t * A,
+    int);
+
 void *bml_gershgorin_dense(
     bml_matrix_dense_t * A);
 

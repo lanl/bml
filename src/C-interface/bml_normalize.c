@@ -6,6 +6,9 @@
 #include "ellsort/bml_normalize_ellsort.h"
 #include "ellblock/bml_normalize_ellblock.h"
 #include "csr/bml_normalize_csr.h"
+#ifdef DO_MPI
+#include "distributed2d/bml_normalize_distributed2d.h"
+#endif
 
 #include <stdlib.h>
 
@@ -40,10 +43,44 @@ bml_normalize(
         case csr:
             bml_normalize_csr(A, mineval, maxeval);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_normalize_distributed2d(A, mineval, maxeval);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }
+}
+
+void *
+bml_accumulate_offdiag(
+    bml_matrix_t * A,
+    int flag)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            return bml_accumulate_offdiag_dense(A, flag);
+            break;
+        case ellpack:
+            return bml_accumulate_offdiag_ellpack(A, flag);
+            break;
+        case ellsort:
+            return bml_accumulate_offdiag_ellsort(A, flag);
+            break;
+        case ellblock:
+            return bml_accumulate_offdiag_ellblock(A, flag);
+            break;
+        case csr:
+            return bml_accumulate_offdiag_csr(A, flag);
+            break;
+        default:
+            LOG_ERROR("unknown matrix type\n");
+            break;
+    }
+    return NULL;
 }
 
 /** Calculate Gershgorin bounds.
@@ -75,6 +112,11 @@ bml_gershgorin(
         case csr:
             return bml_gershgorin_csr(A);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_gershgorin_distributed2d(A);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type\n");
             break;

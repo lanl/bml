@@ -9,6 +9,7 @@ set(HEADERS-DISTRIBUTED
   bml_add_distributed2d.h
   bml_introspection_distributed2d.h
   bml_multiply_distributed2d.h
+  bml_normalize_distributed2d.h
   bml_norm_distributed2d.h
   bml_getters_distributed2d.h
   bml_setters_distributed2d.h
@@ -29,6 +30,7 @@ set(SOURCES-DISTRIBUTED
   bml_introspection_distributed2d.c
   bml_import_distributed2d.c
   bml_multiply_distributed2d.c
+  bml_normalize_distributed2d.c
   bml_norm_distributed2d.c
   bml_getters_distributed2d.c
   bml_setters_distributed2d.c
@@ -51,6 +53,7 @@ set(SOURCES-DISTRIBUTED-TYPED
   bml_export_distributed2d_typed.c
   bml_import_distributed2d_typed.c
   bml_multiply_distributed2d_typed.c
+  bml_normalize_distributed2d_typed.c
   bml_diagonalize_distributed2d_typed.c
   bml_getters_distributed2d_typed.c
   bml_setters_distributed2d_typed.c

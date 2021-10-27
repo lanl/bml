@@ -10,6 +10,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+void *
+bml_accumulate_offdiag_dense(
+    bml_matrix_dense_t * A,
+    int flag)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_accumulate_offdiag_dense_single_real(A, flag);
+            break;
+        case double_real:
+            return bml_accumulate_offdiag_dense_double_real(A, flag);
+            break;
+        case single_complex:
+            return bml_accumulate_offdiag_dense_single_complex(A, flag);
+            break;
+        case double_complex:
+            return bml_accumulate_offdiag_dense_double_complex(A, flag);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
 /** Normalize dense matrix given Gershgorin bounds.
  *
  *  \ingroup normalize_group

@@ -28,6 +28,26 @@ void bml_normalize_ellpack_double_complex(
     double mineval,
     double maxeval);
 
+void *bml_accumulate_offdiag_ellpack(
+    bml_matrix_ellpack_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellpack_single_real(
+    bml_matrix_ellpack_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellpack_double_real(
+    bml_matrix_ellpack_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellpack_single_complex(
+    bml_matrix_ellpack_t * A,
+    int);
+
+void *bml_accumulate_offdiag_ellpack_double_complex(
+    bml_matrix_ellpack_t * A,
+    int);
+
 void *bml_gershgorin_ellpack(
     bml_matrix_ellpack_t * A);
 

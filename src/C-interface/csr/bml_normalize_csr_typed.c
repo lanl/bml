@@ -44,6 +44,32 @@ void TYPED_FUNC(
     bml_add_identity_csr(A, gershfact, threshold);
 }
 
+void *TYPED_FUNC(
+    bml_accumulate_offdiag_csr) (
+    bml_matrix_csr_t * A,
+    int include_diag)
+{
+    int N = A->N_;
+    REAL_T *offdiag_sum = calloc(N, sizeof(REAL_T));
+
+    for (int i = 0; i < N; i++)
+    {
+        double radius = 0.0;
+        int *cols = A->data_[i]->cols_;
+        REAL_T *vals = (REAL_T *) A->data_[i]->vals_;
+        const int annz = A->data_[i]->NNZ_;
+        for (int pos = 0; pos < annz; pos++)
+        {
+            const int j = cols[pos];
+            if ((i != j) || include_diag)
+                radius += (double) ABS(vals[pos]);
+        }
+        offdiag_sum[i] = radius;
+    }
+
+    return offdiag_sum;
+}
+
 /** Calculate Gershgorin bounds for an csr matrix.
  *
  *  \ingroup normalize_group

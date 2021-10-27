@@ -40,8 +40,8 @@ bml_import_from_dense(
 #ifdef DO_MPI
     if (distrib_mode == distributed)
         return bml_import_from_dense_distributed2d(matrix_type,
-                                                   matrix_precision,
-                                                   order, N, A, threshold, M);
+                                                   matrix_precision, order, N,
+                                                   A, threshold, M);
     else
 #endif
         switch (matrix_type)

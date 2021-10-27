@@ -23,6 +23,8 @@ struct bml_matrix_distributed2d_t
     int n;
     /** MPI communicator */
     MPI_Comm comm;
+    MPI_Comm row_comm;
+    MPI_Comm col_comm;
     /** number of MPI tasks */
     int ntasks;
     /** number of processors rows */

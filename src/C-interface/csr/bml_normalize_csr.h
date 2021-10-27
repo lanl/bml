@@ -28,6 +28,26 @@ void bml_normalize_csr_double_complex(
     double mineval,
     double maxeval);
 
+void *bml_accumulate_offdiag_csr(
+    bml_matrix_csr_t * A,
+    int);
+
+void *bml_accumulate_offdiag_csr_single_real(
+    bml_matrix_csr_t * A,
+    int);
+
+void *bml_accumulate_offdiag_csr_double_real(
+    bml_matrix_csr_t * A,
+    int);
+
+void *bml_accumulate_offdiag_csr_single_complex(
+    bml_matrix_csr_t * A,
+    int);
+
+void *bml_accumulate_offdiag_csr_double_complex(
+    bml_matrix_csr_t * A,
+    int);
+
 void *bml_gershgorin_csr(
     bml_matrix_csr_t * A);
 

@@ -135,6 +135,7 @@ set(testlist-mpi
     mpi_sendrecv
     multiply
     norm
+    normalize
     print
     set_row
     threshold
