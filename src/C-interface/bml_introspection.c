@@ -91,11 +91,11 @@ bml_get_precision(
             break;
 #ifdef DO_MPI
         case distributed2d:
-            bml_get_precision(bml_get_local_matrix(A));
+            return bml_get_precision(bml_get_local_matrix(A));
             break;
 #endif
         default:
-            LOG_ERROR("unknown precision");
+            LOG_ERROR("unknown type");
             break;
     }
     return precision_uninitialized;
