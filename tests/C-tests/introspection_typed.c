@@ -25,6 +25,8 @@ int TYPED_FUNC(
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
+    // test "bml_get_deep_type" function
+
     bml_matrix_type_t deep_type = bml_get_deep_type(A);
 
     bml_matrix_type_t type = bml_get_type(A);
@@ -64,6 +66,28 @@ int TYPED_FUNC(
         return -1;
     }
 #endif
+
+    // test "bml_get_precision" function
+
+    bml_matrix_precision_t mat_prec = bml_get_precision(A);
+
+    switch (mat_prec)
+    {
+        case single_real:
+            LOG_INFO("precision is single_real\n");
+            break;
+        case double_real:
+            LOG_INFO("precision is double_real\n");
+            break;
+        case single_complex:
+            LOG_INFO("precision is single_complex\n");
+            break;
+        case double_complex:
+            LOG_INFO("precision is double_complex\n");
+            break;
+        default:
+            LOG_ERROR("unknown matrix precision\n");
+    }
 
     LOG_INFO("bml_introspection passed for task %d\n", bml_getMyRank());
 
