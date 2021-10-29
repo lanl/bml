@@ -22,6 +22,10 @@
 #include <omp.h>
 #endif
 
+#ifdef BML_USE_CUSPARSE
+#include <cusparse.h>
+#endif
+
 /** Matrix multiply.
  *
  * \f$ C \leftarrow \alpha A \, B + \beta C \f$
@@ -617,3 +621,198 @@ void TYPED_FUNC(
 #pragma omp target update to(C_nnz[:C_N], C_index[:C_N*C_M], C_value[:C_N*C_M])
 #endif
 }
+
+
+
+/** cuSPARSE matrix multiply.
+ *
+ * \f$ C \leftarrow B \, A \f$
+ *
+ * \ingroup multiply_group
+ *
+ * \param A Matrix A
+ * \param B Matrix B
+ * \param C Matrix C
+ * \param threshold Used for sparse multiply
+ */
+void TYPED_FUNC(
+    bml_multiply_AB_cusparse_ellpack) (
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double threshold)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_nnz = A->nnz;
+    int *A_index = A->index;
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
+
+    int B_N = B->N;
+    int B_M = B->M;
+    int *B_nnz = B->nnz;
+    int *B_index = B->index;
+
+    int C_N = C->N;
+    int C_M = C->M;
+    int *C_nnz = C->nnz;
+    int *C_index = C->index;
+
+    REAL_T *A_value = (REAL_T *) A->value;
+    REAL_T *B_value = (REAL_T *) B->value;
+    REAL_T *C_value = (REAL_T *) C->value;
+
+    int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
+
+    int *csrColIndA = A->csrColInd;
+    int *csrColIndB = B->csrColInd;
+    int *csrColIndC = C->csrColInd;
+    int *csrRowPtrA = A->csrRowPtr;
+    int *csrRowPtrB = B->csrRowPtr;
+    int *csrRowPtrC = C->csrRowPtr;
+    REAL_T *csrValA = (REAL_T *)A->csrVal;    
+    REAL_T *csrValB = (REAL_T *)B->csrVal;    
+    REAL_T *csrValC = (REAL_T *)C->csrVal;  
+    
+    cusparseStatus_t status = CUSPARSE_STATUS_SUCCESS;
+    
+    REAL_T alpha = 1.0;
+    REAL_T beta = 0.0;      
+
+    cusparseOperation_t opA = CUSPARSE_OPERATION_NON_TRANSPOSE;
+    cusparseOperation_t opB = CUSPARSE_OPERATION_NON_TRANSPOSE;
+    
+    cudaDataType computeType = CUDA_C_64F;
+
+    // CUSPARSE APIs
+    cusparseHandle_t handle = NULL;
+    cusparseSpMatDescr_t matA, matB, matC;
+    void*  dBuffer1 = NULL, *dBuffer2 = NULL;
+    size_t bufferSize1 = 0,  bufferSize2 = 0;
+    
+    // convert ellpack to cucsr
+    TYPED_FUNC (bml_ellpack2cucsr_ellpack) (A);
+    TYPED_FUNC (bml_ellpack2cucsr_ellpack) (B);    
+    TYPED_FUNC (bml_ellpack2cucsr_ellpack) (C);
+    
+    // Create sparse matrix A in CSR format    
+#pragma omp target update from(csrRowPtrA[:A_N+1])
+#pragma omp target update from(csrRowPtrB[:B_N+1])
+    int nnzA = csrRowPtrA[A_N];
+    int nnzB = csrRowPtrB[B_N]; 
+
+#pragma omp target data use_device_ptr(csrRowPtrA,csrColIndA,csrValA, \
+		csrRowPtrB,csrColIndB,csrValB, \
+		csrRowPtrC,csrColIndC,csrValC)    
+{		
+    status = cusparseCreate(&handle) ;    
+    status = cusparseCreateCsr(&matA, A_N, A_N, nnzA,
+                                      csrRowPtrA, csrColIndA, csrValA,
+                                      CUSPARSE_INDEX_32I, CUSPARSE_INDEX_32I,
+                                      CUSPARSE_INDEX_BASE_ZERO, computeType);
+
+    status = cusparseCreateCsr(&matB, B_N, B_N, nnzB,
+                                      csrRowPtrB, csrColIndB, csrValB,
+                                      CUSPARSE_INDEX_32I, CUSPARSE_INDEX_32I,
+                                      CUSPARSE_INDEX_BASE_ZERO, computeType);
+    status = cusparseCreateCsr(&matC, C_N, B_N, 0,
+                                      NULL, NULL, NULL,
+                                      CUSPARSE_INDEX_32I, CUSPARSE_INDEX_32I,
+                                      CUSPARSE_INDEX_BASE_ZERO, computeType);
+}
+    // SpGEMM Computation
+    cusparseSpGEMMDescr_t spgemmDesc;
+    status = cusparseSpGEMM_createDescr(&spgemmDesc);
+
+    // ask bufferSize1 bytes for external memory
+    status = cusparseSpGEMM_workEstimation(handle, opA, opB,
+                                      &alpha, matA, matB, &beta, matC,
+                                      computeType, CUSPARSE_SPGEMM_DEFAULT,
+                                      spgemmDesc, &bufferSize1, NULL);
+
+//#pragma omp target enter data map(alloc:dBuffer1[:bufferSize1])  
+    dBuffer1 = (void *) omp_target_alloc (bufferSize1, omp_get_default_device());                                 
+    // inspect the matrices A and B to understand the memory requirement for
+    // the next step
+#pragma omp target data use_device_ptr(dBuffer1)
+{
+    status = cusparseSpGEMM_workEstimation(handle, opA, opB,
+                                      &alpha, matA, matB, &beta, matC,
+                                      computeType, CUSPARSE_SPGEMM_DEFAULT,
+                                      spgemmDesc, &bufferSize1, dBuffer1);
+}
+
+    // ask bufferSize2 bytes for external memory
+    status = cusparseSpGEMM_compute(handle, opA, opB,
+                               &alpha, matA, matB, &beta, matC,
+                               computeType, CUSPARSE_SPGEMM_DEFAULT,
+                               spgemmDesc, &bufferSize2, NULL);
+
+    dBuffer2 = (void *) omp_target_alloc (bufferSize2, omp_get_default_device());                                 
+    // compute the intermediate product of A * B
+#pragma omp target data use_device_ptr(dBuffer1)
+{
+    status = cusparseSpGEMM_compute(handle, opA, opB,
+                                           &alpha, matA, matB, &beta, matC,
+                                           computeType, CUSPARSE_SPGEMM_DEFAULT,
+                                           spgemmDesc, &bufferSize2, dBuffer2);
+}
+
+    // get matrix C non-zero entries C_nnz1
+    // Required by cusparse api (as of 11) to be int64_t 
+    int64_t C_num_rows1, C_num_cols1, C_nnz1;
+    status = cusparseSpMatGetSize(matC, &C_num_rows1, &C_num_cols1, &C_nnz1);
+    // allocate matrix C
+    csrColIndC = (int *) omp_target_alloc (C_nnz1 * sizeof(int), omp_get_default_device());                                 
+    csrValC = (REAL_T *) omp_target_alloc (C_nnz1 * sizeof(REAL_T), omp_get_default_device());                                 
+    // update matC with the new pointers
+#pragma omp target data use_device_ptr(csrRowPtrC, csrColIndC, csrValC)
+{
+    status = cusparseCsrSetPointers(matC, csrRowPtrC, csrColIndC, csrValC);
+}
+    // copy the final products to the matrix C
+    status = cusparseSpGEMM_copy(handle, opA, opB,
+                            &alpha, matA, matB, &beta, matC,
+                            computeType, CUSPARSE_SPGEMM_DEFAULT, spgemmDesc);
+
+    // destroy matrix/vector descriptors
+/*
+    BML_CHECK_CUSPARSE( cusparseSpGEMM_destroyDescr(spgemmDesc) )
+    BML_CHECK_CUSPARSE( cusparseDestroySpMat(matA) )
+    BML_CHECK_CUSPARSE( cusparseDestroySpMat(matB) )
+    BML_CHECK_CUSPARSE( cusparseDestroySpMat(matC) )
+    BML_CHECK_CUSPARSE( cusparseDestroy(handle) )
+*/
+    status = cusparseSpGEMM_destroyDescr(spgemmDesc);
+    status = cusparseDestroySpMat(matA);
+    status = cusparseDestroySpMat(matB);
+    status = cusparseDestroySpMat(matC);
+    status = cusparseDestroy(handle);
+    
+    // compress to drop small entries (TODO)
+/*
+    int *csrColIndD = (int *) omp_target_alloc (C_nnz1 * sizeof(int), omp_get_default_device());                                 
+    int *csrRowPtrD = (int *) omp_target_alloc ((C_num_rows1+1) * sizeof(int), omp_get_default_device());                                     
+    int *nnzPerRowD = (int *) omp_target_alloc ((C_num_rows1) * sizeof(int), omp_get_default_device());                                     
+    REAL_T* csrValD = (REAL_T *) omp_target_alloc (C_nnz1 * sizeof(REAL_T), omp_get_default_device());    
+
+#pragma omp target data use_device_ptr(csrRowPtrC, csrColIndC, csrValC)    
+    status = cusparseDcsr2csr_compress( handle, C_num_rows1, C_num_cols1, matC, csrValC,
+                                              csrColIndC, csrRowPtrC,
+                                              C_nnz1,  nnzPerRowD,
+                                              csrValD, csrColIndD,
+                                              csrRowPtrD, threshold);
+
+*/
+
+    // update: copy to ellpack format
+    TYPED_FUNC (bml_cucsr2ellpack_ellpack) (C);
+
+    // device memory deallocation
+    omp_target_free(dBuffer1, omp_get_default_device());
+    omp_target_free(dBuffer2, omp_get_default_device());
+}
+

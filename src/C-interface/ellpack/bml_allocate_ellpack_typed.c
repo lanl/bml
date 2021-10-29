@@ -15,6 +15,11 @@
 #include <omp.h>
 #endif
 
+#if defined(BML_USE_CUSPARSE)
+//#include <thrust/scan.h>
+//#include <thrust/execution_policy.h>
+#endif 
+
 /** Deallocate a matrix.
  *
  * \ingroup allocate_group
@@ -41,6 +46,11 @@ void TYPED_FUNC(
     bml_free_memory(A->value);
     bml_free_memory(A->index);
     bml_free_memory(A->nnz);
+
+#if defined(BML_USE_CUSPARSE)
+    bml_free_memory(A->csrRowPtr);
+#endif        
+    
     bml_free_memory(A);
 }
 
@@ -144,11 +154,20 @@ bml_matrix_ellpack_t
     int N = A->N;
     int M = A->M;
     int *A_index = A->index;
+    int *csrColInd = A->csrColInd;
     int *A_nnz = A->nnz;
+    int * csrRowPtr = A->csrRowPtr;
     REAL_T *A_value = A->value;
+    REAL_T *csrVal = A->csrVal;
 
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+#if defined(BML_USE_CUSPARSE)
+    A->csrRowPtr = bml_allocate_memory(sizeof(int) * (A->N+1));
+    csrRowPtr = A->csrRowPtr;
+#pragma omp target enter data map(alloc:csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+#pragma omp target update to(csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+#endif
 #endif
 
     return A;
@@ -199,6 +218,10 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_index = A->index;
     int NM = N * M;
 
+    int *csrColInd = A->csrColInd;
+    int * csrRowPtr = A->csrRowPtr;
+    REAL_T *csrVal = A->csrVal;
+
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
 #pragma omp target teams distribute parallel for schedule (static, 1)
@@ -216,6 +239,13 @@ bml_matrix_ellpack_t *TYPED_FUNC(
             A_value[ROWMAJOR(i, j, N, M)] = 0.0;
         }
     }
+
+#if defined(BML_USE_CUSPARSE)
+    A->nnz = bml_allocate_memory(sizeof(int) * (N+1));
+    csrRowPtr = A->csrRowPtr;
+#pragma omp target enter data map(alloc:csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+#pragma omp target update to(csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+#endif
 #endif
     return A;
 }
@@ -361,3 +391,110 @@ bml_matrix_ellpack_t *TYPED_FUNC(
 #endif
     return A;
 }
+
+/** Ellpack to cuCSR conversion.
+ *
+ *  Convert from Ellpack format to cusparse csr format.
+ *  Naive implementation for testing. Use thrust library for optimal code.
+ *
+ *  \ingroup 
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+void TYPED_FUNC(
+    bml_ellpack2cucsr_ellpack) (
+    bml_matrix_ellpack_t * A)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_index = A->index;
+    int *csrColInd = A->csrColInd;
+    int *A_nnz = A->nnz;
+    int * csrRowPtr = A->csrRowPtr;
+    REAL_T *A_value = A->value;
+    REAL_T *csrVal = A->csrVal;
+/*
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
+    int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
+*/
+
+#pragma omp target update from(A_nnz[:A_N])
+    
+    csrRowPtr[0] = 0;
+    for(int i=0; i<A_N; i++)
+    {
+        csrRowPtr[i+1] += A_nnz[i];
+    }
+#pragma omp target update to(csrRowPtr[:A_N+1])
+    
+#pragma omp target teams distribute parallel for \
+    shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(csrVal, csrRowPtr, csrColInd)
+    for(int i=0; i<A_N; i++)
+    {
+        for(int j = 0; j<A_nnz[i]; j++)
+        {
+            int idx = csrRowPtr[i] + j;
+            csrVal[idx] = A_value[ROWMAJOR(i, j, A_N, A_M)];
+            csrColInd[idx] = A_index[ROWMAJOR(i, j, A_N, A_M)];
+        }
+    }
+}    
+
+/** cuCSR to Ellpack conversion.
+ *
+ *  Convert from cusparse csr format to Ellpack format.
+ *  Naive implementation for testing. Use thrust library for optimal code.
+ *
+ *  \ingroup 
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param N The matrix size.
+ *  \param M The number of non-zeroes per row.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+
+void TYPED_FUNC(
+    bml_cucsr2ellpack_ellpack) (
+    bml_matrix_ellpack_t * A)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+    int *A_index = A->index;
+    int *csrColInd = A->csrColInd;
+    int *A_nnz = A->nnz;
+    int * csrRowPtr = A->csrRowPtr;
+    REAL_T *A_value = A->value;
+    REAL_T *csrVal = A->csrVal;
+/*
+    int *A_localRowMin = A->domain->localRowMin;
+    int *A_localRowMax = A->domain->localRowMax;
+    int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
+*/    
+#pragma omp target teams distribute parallel for \
+    shared(A_N, A_M, A_nnz, A_index, A_value) \
+    shared(csrVal, csrRowPtr, csrColInd)
+    for(int i=0; i<A_N; i++)
+    {
+        A_nnz[i] = csrRowPtr[i+1] - csrRowPtr[i];
+        for(int j = 0; j<A_nnz[i]; j++)
+        {
+            int idx = csrRowPtr[i] + j;
+            A_value[ROWMAJOR(i, j, A_N, A_M)] = csrVal[idx];
+            A_index[ROWMAJOR(i, j, A_N, A_M)] = csrColInd[idx];
+        }
+    }
+}    
+
