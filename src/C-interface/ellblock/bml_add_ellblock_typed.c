@@ -45,7 +45,6 @@ void TYPED_FUNC(
 
     int NB = A->NB;
     int MB = A->MB;
-    int ix[NB], jx[NB];
 
     int *A_nnzb = A->nnzb;
     int *A_indexb = A->indexb;
@@ -55,12 +54,16 @@ void TYPED_FUNC(
 
     int *bsize = A->bsize;
 
-    REAL_T *x_ptr[NB];
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
 
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[NB], jx[NB];
+    REAL_T *x_ptr[NB];
+
     memset(ix, 0, NB * sizeof(int));
     memset(jx, 0, NB * sizeof(int));
+#endif
 
     int maxbsize = 0;
     for (int ib = 0; ib < NB; ib++)
@@ -74,13 +77,29 @@ void TYPED_FUNC(
     REAL_T *x_ptr_storage = calloc(maxbsize2 * NB * nthreads, sizeof(REAL_T));
 
     char xptrset = 0;
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for \
+    shared(A_indexb, A_ptr_value, A_nnzb)       \
+    shared(B_indexb, B_ptr_value, B_nnzb)       \
+    shared(x_ptr_storage) \
+    firstprivate(xptrset)
+#else
 #pragma omp parallel for                  \
     shared(A_indexb, A_ptr_value, A_nnzb)       \
     shared(B_indexb, B_ptr_value, B_nnzb)       \
     shared(x_ptr_storage) \
     firstprivate(ix, jx, x_ptr, xptrset)
+#endif
     for (int ib = 0; ib < NB; ib++)
     {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
+        int ix[NB], jx[NB];
+        REAL_T *x_ptr[NB];
+
+        memset(ix, 0, NB * sizeof(int));
+#endif
+
         if (!xptrset)
         {
 #ifdef _OPENMP

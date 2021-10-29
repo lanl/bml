@@ -17,7 +17,11 @@ module io_matrix_typed
     integer(c_int) function getpid() bind(c,name="getpid")
       use iso_c_binding
     end function getpid
-  end interface
+  end interface 
+#endif
+
+#ifdef __IBMC__ .OR. __ibmxl__
+    integer, external :: getpid
 #endif
 
 contains
