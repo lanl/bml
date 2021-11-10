@@ -77,6 +77,12 @@ void bml_mpi_recv(
     bml_matrix_t * A,
     const int dst,
     MPI_Comm comm);
+void bml_mpi_irecv(
+    bml_matrix_t * A,
+    const int dst,
+    MPI_Comm comm);
+void bml_mpi_irecv_complete(
+    bml_matrix_t * A);
 bml_matrix_t *bml_mpi_recv_matrix(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,

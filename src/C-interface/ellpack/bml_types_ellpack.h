@@ -3,6 +3,10 @@
 
 #include "../bml_types.h"
 
+#ifdef DO_MPI
+#include <mpi.h>
+#endif
+
 /** ELLPACK matrix type. */
 struct bml_matrix_ellpack_t
 {
@@ -26,6 +30,10 @@ struct bml_matrix_ellpack_t
     bml_domain_t *domain;
     /** A copy of the domain decomposition. */
     bml_domain_t *domain2;
+#ifdef DO_MPI
+    /** request field for MPI communications*/
+    MPI_Request req;
+#endif
 };
 typedef struct bml_matrix_ellpack_t bml_matrix_ellpack_t;
 

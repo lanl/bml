@@ -117,6 +117,56 @@ bml_mpi_recv_ellpack(
     }
 }
 
+void
+bml_mpi_irecv_ellpack(
+    bml_matrix_ellpack_t * A,
+    const int dst,
+    MPI_Comm comm)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_mpi_irecv_ellpack_single_real(A, dst, comm);
+            break;
+        case double_real:
+            bml_mpi_irecv_ellpack_double_real(A, dst, comm);
+            break;
+        case single_complex:
+            bml_mpi_irecv_ellpack_single_complex(A, dst, comm);
+            break;
+        case double_complex:
+            bml_mpi_irecv_ellpack_double_complex(A, dst, comm);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
+void
+bml_mpi_irecv_complete_ellpack(
+    bml_matrix_ellpack_t * A)
+{
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            bml_mpi_irecv_complete_ellpack_single_real(A);
+            break;
+        case double_real:
+            bml_mpi_irecv_complete_ellpack_double_real(A);
+            break;
+        case single_complex:
+            bml_mpi_irecv_complete_ellpack_single_complex(A);
+            break;
+        case double_complex:
+            bml_mpi_irecv_complete_ellpack_double_complex(A);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
+}
+
 bml_matrix_ellpack_t *
 bml_mpi_recv_matrix_ellpack(
     bml_matrix_precision_t matrix_precision,

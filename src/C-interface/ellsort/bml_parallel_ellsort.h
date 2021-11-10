@@ -80,6 +80,40 @@ void bml_mpi_recv_ellsort_double_complex(
     const int src,
     MPI_Comm comm);
 
+void bml_mpi_irecv_ellsort(
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm);
+
+void bml_mpi_irecv_ellsort_single_real(
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_ellsort_double_real(
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_ellsort_single_complex(
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_ellsort_double_complex(
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm);
+
+void bml_mpi_irecv_complete_ellsort(
+    bml_matrix_ellsort_t * A);
+
+void bml_mpi_irecv_complete_ellsort_single_real(
+    bml_matrix_ellsort_t * A);
+void bml_mpi_irecv_complete_ellsort_double_real(
+    bml_matrix_ellsort_t * A);
+void bml_mpi_irecv_complete_ellsort_single_complex(
+    bml_matrix_ellsort_t * A);
+void bml_mpi_irecv_complete_ellsort_double_complex(
+    bml_matrix_ellsort_t * A);
+
 bml_matrix_ellsort_t *bml_mpi_recv_matrix_ellsort(
     bml_matrix_precision_t matrix_precision,
     int N,
