@@ -124,6 +124,58 @@ void TYPED_FUNC(
     bml_free_memory(values);
 }
 
+void TYPED_FUNC(
+    bml_mpi_irecv_csr) (
+    bml_matrix_csr_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+    // recv nnz for each row
+    A->nnz_buffer = bml_allocate_memory(sizeof(int) * A->N_);
+    int mpiret =
+        MPI_Irecv(A->nnz_buffer, A->N_, MPI_INT, src, 111, comm, A->req);
+    if (mpiret != MPI_SUCCESS)
+        LOG_ERROR("MPI_Irecv failed for nnz");
+
+    // estimate total number of non-zero one may receive
+    int totnnz = A->NZMAX_ * A->N_ * 2;
+
+    // receive column indexes
+    A->cols_buffer = bml_allocate_memory(sizeof(int) * totnnz);
+    mpiret =
+        MPI_Irecv(A->cols_buffer, totnnz, MPI_INT, src, 112, comm,
+                  A->req + 1);
+    if (mpiret != MPI_SUCCESS)
+        LOG_ERROR("MPI_Irecv failed for cols");
+
+    // recv matrix elements
+    A->buffer = bml_allocate_memory(sizeof(REAL_T) * totnnz);
+    mpiret = MPI_Irecv(A->buffer, totnnz, MPI_T, src, 113, comm, A->req + 2);
+    if (mpiret != MPI_SUCCESS)
+        LOG_ERROR("MPI_Irecv failed for values");
+}
+
+void TYPED_FUNC(
+    bml_mpi_irecv_complete_csr) (
+    bml_matrix_csr_t * A)
+{
+    MPI_Waitall(3, A->req, MPI_STATUS_IGNORE);
+
+    // move data from receive buffer into matrix
+    REAL_T *pvalues = A->buffer;
+    int *pcols = A->cols_buffer;
+    for (int i = 0; i < A->N_; i++)
+    {
+        TYPED_FUNC(bml_set_sparse_row_csr) (A, i, A->nnz_buffer[i], pcols,
+                                            pvalues, 0.);
+        pvalues += A->nnz_buffer[i];
+        pcols += A->nnz_buffer[i];
+    }
+    bml_free_memory(A->nnz_buffer);
+    bml_free_memory(A->buffer);
+    bml_free_memory(A->cols_buffer);
+}
+
 /*
  * Return BML matrix from data received from MPI task src
  */

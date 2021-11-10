@@ -99,6 +99,47 @@ void TYPED_FUNC(
     bml_free_memory(values);
 }
 
+void TYPED_FUNC(
+    bml_mpi_irecv_ellblock) (
+    bml_matrix_ellblock_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+
+    MPI_Irecv(A->indexb, A->NB * A->MB, MPI_INT, src, 112, comm, A->req);
+
+    MPI_Irecv(A->nnzb, A->NB, MPI_INT, src, 113, comm, A->req + 1);
+
+    A->buffer = bml_allocate_memory(sizeof(REAL_T) * A->N * A->M);
+    MPI_Irecv(A->buffer, A->N * A->M, MPI_T, src, 111, comm, A->req + 2);
+}
+
+void TYPED_FUNC(
+    bml_mpi_irecv_complete_ellblock) (
+    bml_matrix_ellblock_t * A)
+{
+    MPI_Waitall(3, A->req, MPI_STATUSES_IGNORE);
+
+    // copy data into bml matrix
+    REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
+
+    REAL_T *pvalues = A->buffer;
+    for (int ib = 0; ib < A->NB; ib++)
+    {
+        for (int jp = 0; jp < A->nnzb[ib]; jp++)
+        {
+            int ind = ROWMAJOR(ib, jp, A->NB, A->MB);
+            int jb = A->indexb[ind];
+            int nelements = A->bsize[ib] * A->bsize[jb];
+            A_ptr_value[ind] =
+                TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
+            memcpy(A_ptr_value[ind], pvalues, nelements * sizeof(REAL_T));
+            pvalues += nelements;
+        }
+    }
+    bml_free_memory(A->buffer);
+}
+
 /*
  * Return BML matrix from data received from MPI task src
  */

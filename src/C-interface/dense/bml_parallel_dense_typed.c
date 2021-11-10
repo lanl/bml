@@ -22,6 +22,11 @@
 #include <omp.h>
 #endif
 
+#ifdef BML_USE_MAGMA
+    // buffer on CPU to be used for communications
+static MAGMA_T *A_matrix_buffer;
+#endif
+
 /** Gather a bml matrix across MPI ranks.
  *
  *  \ingroup parallel_group
@@ -115,6 +120,34 @@ void TYPED_FUNC(
     MAGMA(setmatrix) (A->N, A->N, A_matrix, A->N, A->matrix, A->ld,
                       bml_queue());
     free(A_matrix);
+#endif
+}
+
+void TYPED_FUNC(
+    bml_mpi_irecv_dense) (
+    bml_matrix_dense_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+#ifdef BML_USE_MAGMA
+    A->buffer = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    REAL_T *A_matrix = A->buffer;
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
+
+    MPI_Irecv(A_matrix, A->N * A->N, MPI_T, src, 222, comm, &A->req);
+}
+
+void TYPED_FUNC(
+    bml_mpi_irecv_complete_dense) (
+    bml_matrix_dense_t * A)
+{
+    MPI_Wait(&A->req, MPI_STATUS_IGNORE);
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (A->N, A->N, A->buffer, A->N, A->matrix, A->ld,
+                      bml_queue());
+    free(A->buffer);
 #endif
 }
 

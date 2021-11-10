@@ -48,6 +48,40 @@ void bml_mpi_recv_ellblock_double_complex(
     const int src,
     MPI_Comm comm);
 
+void bml_mpi_irecv_ellblock(
+    bml_matrix_ellblock_t * A,
+    const int src,
+    MPI_Comm comm);
+
+void bml_mpi_irecv_ellblock_single_real(
+    bml_matrix_ellblock_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_ellblock_double_real(
+    bml_matrix_ellblock_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_ellblock_single_complex(
+    bml_matrix_ellblock_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_ellblock_double_complex(
+    bml_matrix_ellblock_t * A,
+    const int src,
+    MPI_Comm comm);
+
+void bml_mpi_irecv_complete_ellblock(
+    bml_matrix_ellblock_t * A);
+
+void bml_mpi_irecv_complete_ellblock_single_real(
+    bml_matrix_ellblock_t * A);
+void bml_mpi_irecv_complete_ellblock_double_real(
+    bml_matrix_ellblock_t * A);
+void bml_mpi_irecv_complete_ellblock_single_complex(
+    bml_matrix_ellblock_t * A);
+void bml_mpi_irecv_complete_ellblock_double_complex(
+    bml_matrix_ellblock_t * A);
+
 bml_matrix_ellblock_t *bml_mpi_recv_matrix_ellblock(
     bml_matrix_precision_t matrix_precision,
     int N,

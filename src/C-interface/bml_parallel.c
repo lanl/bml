@@ -249,6 +249,62 @@ bml_mpi_recv(
             bml_mpi_recv_csr(A, src, comm);
             break;
         default:
+            LOG_ERROR("bml_mpi_recv - unknown matrix type\n");
+            break;
+    }
+}
+
+void
+bml_mpi_irecv(
+    bml_matrix_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_mpi_irecv_dense(A, src, comm);
+            break;
+        case ellpack:
+            bml_mpi_irecv_ellpack(A, src, comm);
+            break;
+        case ellsort:
+            bml_mpi_irecv_ellsort(A, src, comm);
+            break;
+        case ellblock:
+            bml_mpi_irecv_ellblock(A, src, comm);
+            break;
+        case csr:
+            bml_mpi_irecv_csr(A, src, comm);
+            break;
+        default:
+            LOG_ERROR("bml_mpi_irecv - unknown matrix type\n");
+            break;
+    }
+}
+
+void
+bml_mpi_irecv_complete(
+    bml_matrix_t * A)
+{
+    switch (bml_get_type(A))
+    {
+        case dense:
+            bml_mpi_irecv_complete_dense(A);
+            break;
+        case ellpack:
+            bml_mpi_irecv_complete_ellpack(A);
+            break;
+        case ellsort:
+            bml_mpi_irecv_complete_ellsort(A);
+            break;
+        case ellblock:
+            bml_mpi_irecv_complete_ellblock(A);
+            break;
+        case csr:
+            bml_mpi_irecv_complete_csr(A);
+            break;
+        default:
             LOG_ERROR("unknown matrix type\n");
             break;
     }

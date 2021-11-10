@@ -48,6 +48,40 @@ void bml_mpi_recv_csr_double_complex(
     const int src,
     MPI_Comm comm);
 
+void bml_mpi_irecv_csr(
+    bml_matrix_csr_t * A,
+    const int src,
+    MPI_Comm comm);
+
+void bml_mpi_irecv_csr_single_real(
+    bml_matrix_csr_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_csr_double_real(
+    bml_matrix_csr_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_csr_single_complex(
+    bml_matrix_csr_t * A,
+    const int src,
+    MPI_Comm comm);
+void bml_mpi_irecv_csr_double_complex(
+    bml_matrix_csr_t * A,
+    const int src,
+    MPI_Comm comm);
+
+void bml_mpi_irecv_complete_csr(
+    bml_matrix_csr_t * A);
+
+void bml_mpi_irecv_complete_csr_single_real(
+    bml_matrix_csr_t * A);
+void bml_mpi_irecv_complete_csr_double_real(
+    bml_matrix_csr_t * A);
+void bml_mpi_irecv_complete_csr_single_complex(
+    bml_matrix_csr_t * A);
+void bml_mpi_irecv_complete_csr_double_complex(
+    bml_matrix_csr_t * A);
+
 bml_matrix_csr_t *bml_mpi_recv_matrix_csr(
     bml_matrix_precision_t matrix_precision,
     int N,
