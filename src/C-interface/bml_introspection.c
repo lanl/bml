@@ -339,6 +339,11 @@ bml_get_sparsity(
         case csr:
             return bml_get_sparsity_csr(A, threshold);
             break;
+#ifdef DO_MPI
+        case distributed2d:
+            return bml_get_sparsity_distributed2d(A, threshold);
+            break;
+#endif
         default:
             LOG_ERROR("unknown matrix type in bml_get_sparsity\n");
             break;
