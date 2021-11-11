@@ -23,36 +23,49 @@ int TYPED_FUNC(
     double threshold = 0.1;
     REAL_T *A_dense;
 
-    A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    bml_distribution_mode_t distrib_mode = sequential;
+#ifdef DO_MPI
+    if (bml_getNRanks() > 1)
+    {
+        LOG_INFO("Use distributed matrix\n");
+        distrib_mode = distributed;
+    }
+#endif
+
+    A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
 
     sparsity = bml_get_sparsity(A, threshold);
 
     // Form bml to dense_array
     A_dense = bml_export_to_dense(A, dense_row_major);
 
-    for (int i = 0; i < N; i++)
+    if (bml_getMyRank() == 0)
     {
-        for (int j = 0; j < N; j++)
+        for (int i = 0; i < N; i++)
         {
-            if (ABS(A_dense[ROWMAJOR(i, j, N, N)]) > threshold)
+            for (int j = 0; j < N; j++)
             {
-                nnzs++;
+                if (ABS(A_dense[ROWMAJOR(i, j, N, N)]) > threshold)
+                {
+                    nnzs++;
+                }
             }
         }
+
+        sparsity_ref = (1.0 - (double) nnzs / ((double) (N * N)));
+
+        if (fabs(sparsity - sparsity_ref) > 1e-12)
+        {
+            LOG_ERROR("bml_get_sparsity is corrupted\n");
+            return -1;
+        }
+
+        printf("Sparsity = %f\n", sparsity);
     }
-
-    sparsity_ref = (1.0 - (double) nnzs / ((double) (N * N)));
-
-    if (fabs(sparsity - sparsity_ref) > 1e-12)
-    {
-        LOG_ERROR("bml_get_sparsity is corrupted\n");
-        return -1;
-    }
-
-    printf("Sparsity = %f\n", sparsity);
 
     bml_deallocate(&A);
-    bml_free_memory(A_dense);
+    if (bml_getMyRank() == 0)
+        bml_free_memory(A_dense);
 
     LOG_INFO("bml_get_sparsity passed\n");
 

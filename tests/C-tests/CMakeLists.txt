@@ -128,6 +128,7 @@ set(testlist-mpi
     convert
     copy
     diagonalize
+    get_sparsity
     import_export
     introspection
     io_matrix
