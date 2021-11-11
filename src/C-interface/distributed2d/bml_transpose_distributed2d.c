@@ -27,19 +27,13 @@ bml_transpose_new_distributed2d(
     bml_matrix_distributed2d_t *B = bml_copy_distributed2d_new(A);
     assert(B != NULL);
 
-    int remote_task = A->mypcol * A->npcols + A->myprow;
-
-    if (A->myprow > A->mypcol)
+    if (A->myprow != A->mypcol)
     {
+        int remote_task = A->mypcol * A->npcols + A->myprow;
         assert(A->mpitask == A->myprow * A->npcols + A->mypcol);
+        bml_mpi_irecv(B->matrix, remote_task, A->comm);
         bml_mpi_send(A->matrix, remote_task, A->comm);
-        bml_mpi_recv(B->matrix, remote_task, A->comm);
-    }
-    else if (A->myprow < A->mypcol)
-    {
-        assert(A->mpitask == A->myprow * A->npcols + A->mypcol);
-        bml_mpi_recv(B->matrix, remote_task, A->comm);
-        bml_mpi_send(A->matrix, remote_task, A->comm);
+        bml_mpi_irecv_complete(B->matrix);
     }
 
     bml_transpose(B->matrix);
@@ -66,8 +60,9 @@ bml_transpose_distributed2d(
     {
         assert(A->mpitask == A->myprow * A->npcols + A->mypcol);
         int remote_task = A->mypcol * A->npcols + A->myprow;
+        bml_mpi_irecv(A->matrix, remote_task, A->comm);
         bml_mpi_send(B->matrix, remote_task, A->comm);
-        bml_mpi_recv(A->matrix, remote_task, A->comm);
+        bml_mpi_irecv_complete(A->matrix);
     }
 
     bml_transpose(A->matrix);
