@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 1e-6
+#define REL_TOL 2e-6
 #else
 #define REL_TOL 1e-12
 #endif
@@ -87,7 +87,7 @@ int TYPED_FUNC(
         || (A_gbnd[1] - A_gbnd[0]) > REL_TOL)
     {
         LOG_ERROR
-            ("A: incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
+            ("A: incorrect maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
              A_gbnd[0], A_gbnd[1], A_gbnd[1] - A_gbnd[0]);
         return -1;
     }
@@ -99,7 +99,7 @@ int TYPED_FUNC(
           REAL_PART(scale_factor * scale_factor - scale_factor))) > REL_TOL)
     {
         LOG_ERROR
-            ("B: incorrect mineval or maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
+            ("B: incorrect maxeval or maxminusmin; mineval = %e maxeval = %e maxminusmin = %e\n",
              B_gbnd[0], B_gbnd[1], B_gbnd[1] - B_gbnd[0]);
         return -1;
     }

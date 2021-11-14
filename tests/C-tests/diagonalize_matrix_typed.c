@@ -60,7 +60,7 @@ int TYPED_FUNC(
     bml_add(A, A_t, 0.5, 0.5, 0.0);
 
     LOG_INFO("(A + A_t)/2 = \n");
-    bml_print_bml_matrix(A, 0, N, 0, N);
+    bml_print_bml_matrix(A, 0, max_row, 0, max_col);
 
     switch (matrix_precision)
     {
@@ -134,7 +134,7 @@ int TYPED_FUNC(
     if (bml_getMyRank() == 0)
     {
         LOG_INFO("%s\n", "eigenvalues");
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < max_row; i++)
             LOG_INFO("val = %e  i%e\n", REAL_PART(eigenvalues[i]),
                      IMAGINARY_PART(eigenvalues[i]));
     }
