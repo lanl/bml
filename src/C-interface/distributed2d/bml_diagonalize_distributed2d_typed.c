@@ -202,15 +202,15 @@ void TYPED_FUNC(
     assert(atmp != NULL);
 
     int ione = 1;
-#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
-    int lwork = MAX(1 + 6 * m + 2 * mb * mb,
-                    3 * m + MAX(mb * (mb + 1), 3 * mb)) + 2 * m;
-#else
     int izero = 0;
-    int np0 = NUMROC(&m, &mb, &izero, &izero, &np_rows);
+    int np0 = NUMROC(&m, &mb, &my_prow, &izero, &np_rows);
+    int nq0 = NUMROC(&m, &mb, &my_pcol, &izero, &np_cols);
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+    int lwork = MAX(1 + 6 * m + 2 * np0 * nq0,
+                    3 * m + MAX(mb * (np0 + 1), 3 * mb)) + 2 * m;
+#else
     int lwork = m + (2 * np0 + mb) * mb;
 #endif
-    REAL_T *work = bml_allocate_memory(lwork * sizeof(REAL_T));
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
     float *ev = malloc(A->N * sizeof(float));
 #endif
@@ -237,6 +237,24 @@ void TYPED_FUNC(
     char jobz = 'V';
     char uplo = 'U';
     int info;
+    //LOG_INFO("lwork=%d\n",lwork);
+    lwork *= 2;                 // increase lwork to work around ScaLapack possible bug
+    REAL_T *work = bml_allocate_memory(lwork * sizeof(REAL_T));;
+
+    //// get lwork value from ScaLapack call
+    //// for verification
+    //lwork=-1;
+    //SYEVD(&jobz, &uplo, &m, atmp, &ione, &ione, desc, ev,
+    //      pzmat, &ione, &ione, desc, work, &lwork,
+//#if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+    //      rwork, &lrwork,
+//#endif
+    //      iwork, &liwork, &info);
+    //lwork=work[0];
+    //LOG_INFO("lwork=%d\n",lwork);
+    //lwork*=2;
+
+    // now solve eigenvalue problem
     SYEVD(&jobz, &uplo, &m, atmp, &ione, &ione, desc, ev,
           pzmat, &ione, &ione, desc, work, &lwork,
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
@@ -246,6 +264,9 @@ void TYPED_FUNC(
 
     if (info > 0)
         LOG_ERROR("Eigenvalue %d did not converge\n", info);
+    if (info < 0)
+        LOG_ERROR("%d -th argument of SYEVD call had an illegal value\n",
+                  info);
 
     for (int i = 0; i < A->N; i++)
         typed_eigenvalues[i] = (REAL_T) ev[i];
