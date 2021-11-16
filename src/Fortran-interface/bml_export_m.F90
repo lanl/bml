@@ -4,6 +4,7 @@ module bml_export_m
   use bml_types_m
   use bml_interface_m
   use bml_introspection_m
+  use bml_parallel_m
 
   implicit none
   private
@@ -36,9 +37,11 @@ contains
     real(C_FLOAT), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
-    a_dense = a_dense_ptr
-    call bml_free(a_ptr)
+    if(bml_getMyRank().eq.0)then
+      call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
+      a_dense = a_dense_ptr
+      call bml_free(a_ptr)
+    endif
 
   end subroutine bml_export_to_dense_single
 
@@ -59,9 +62,11 @@ contains
     real(C_DOUBLE), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
-    a_dense = a_dense_ptr
-    call bml_free(a_ptr)
+    if(bml_getMyRank().eq.0)then
+      call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
+      a_dense = a_dense_ptr
+      call bml_free(a_ptr)
+    endif
 
   end subroutine bml_export_to_dense_double
 
@@ -82,9 +87,11 @@ contains
     complex(C_FLOAT_COMPLEX), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
-    a_dense = a_dense_ptr
-    call bml_free(a_ptr)
+    if(bml_getMyRank().eq.0)then
+      call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
+      a_dense = a_dense_ptr
+      call bml_free(a_ptr)
+    endif
 
   end subroutine bml_export_to_dense_single_complex
 
@@ -105,9 +112,11 @@ contains
     complex(C_DOUBLE_COMPLEX), pointer :: a_dense_ptr(:, :)
 
     a_ptr = bml_export_to_dense_C(a%ptr, BML_DENSE_COLUMN_MAJOR)
-    call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
-    a_dense = a_dense_ptr
-    call bml_free(a_ptr)
+    if(bml_getMyRank().eq.0)then
+      call c_f_pointer(a_ptr, a_dense_ptr, [bml_get_n(a), bml_get_n(a)])
+      a_dense = a_dense_ptr
+      call bml_free(a_ptr)
+    endif
 
   end subroutine bml_export_to_dense_double_complex
 

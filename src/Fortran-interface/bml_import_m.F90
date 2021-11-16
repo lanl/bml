@@ -28,7 +28,8 @@ contains
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
   !! \param m The extra arg
-  subroutine bml_import_from_dense_single(matrix_type, a_dense, a, threshold, m, distrib_mode)
+  subroutine bml_import_from_dense_single(matrix_type, a_dense, a, threshold, &
+       & m, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type
     real(C_FLOAT), target, intent(in) :: a_dense(:, :)
@@ -88,7 +89,8 @@ contains
   !! \param a The bml matrix
   !! \param threshold The matrix element magnited threshold
   !! \param m the extra arg
-  subroutine bml_import_from_dense_double(matrix_type, a_dense, a, threshold, m, distrib_mode)
+  subroutine bml_import_from_dense_double(matrix_type, a_dense, a, threshold, &
+       & m, distrib_mode)
 
     character(len=*), intent(in) :: matrix_type
     real(C_DOUBLE), target, intent(in) :: a_dense(:, :)
