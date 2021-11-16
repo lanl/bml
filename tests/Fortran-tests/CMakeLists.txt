@@ -137,7 +137,9 @@ function(test_formats ${formats})
     endif()
     foreach(P ${precisions})
       set(testname ${language}-${N}-${T}-${P})
-      add_test(${testname} ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
+      add_test(${testname}
+               ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
+               ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
       if(NOT BML_MPI AND NOT BML_OPENMP AND VALGRIND AND BML_VALGRIND)
         add_test(${testname}-valgrind ${VALGRIND} ${VALGRIND_COMMON_ARGS}
           ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
@@ -150,6 +152,22 @@ function(test_formats ${formats})
     endforeach()
   endforeach()
 endfunction(test_formats)
+
+function(test_formats_mpi ${formats})
+  set(language fortran)
+  foreach(T ${formats} )
+    set(precisions single_real double_real)
+    if(BML_COMPLEX)
+      list(APPEND precisions single_complex double_complex)
+    endif()
+    foreach(P ${precisions})
+      add_test(MPI-${language}-${N}-${T}-${P}
+               ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROCS_FLAG}
+               ${MPIEXEC_NUMPROCS} ${MPIEXEC_PREFLAGS}
+               ${CMAKE_CURRENT_BINARY_DIR}/bml-testf -n ${N} -t ${T} -p ${P})
+    endforeach()
+  endforeach()
+endfunction(test_formats_mpi)
 
 # Adding tests
 foreach(N
@@ -200,3 +218,14 @@ foreach(N
   endif()
   test_formats(${formats})
 endforeach()
+
+set(testlist-mpi
+    copy
+)
+
+if(BML_MPI)
+  foreach(N ${testlist-mpi})
+    set(formats dense ellpack ellsort ellblock csr)
+    test_formats_mpi(${formats})
+  endforeach()
+endif()

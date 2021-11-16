@@ -71,6 +71,18 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
     end subroutine bml_allGatherVParallel_C
 
+    function bml_getNRanks_C() &
+         & bind(C, name="bml_getNRanks")
+      import :: C_INT
+      integer(C_INT) :: bml_getNRanks_C
+    end function bml_getNRanks_C
+
+    function bml_getMyRank_C() &
+         & bind(C, name="bml_getMyRank")
+      import :: C_INT
+      integer(C_INT) :: bml_getMyRank_C
+    end function bml_getMyRank_C
+
     subroutine bml_adjungate_triangle_C(a, triangle) &
          & bind(C, name="bml_adjungate_triangle")
       import :: C_PTR, C_CHAR
