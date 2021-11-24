@@ -4,6 +4,7 @@ module bml_utilities_MATRIX_TYPE_m
   use bml_c_interface_m
   use bml_types_m
   use bml_interface_m
+  use bml_parallel_m
 
   implicit none
   private
@@ -34,7 +35,7 @@ contains
     integer(C_INT), intent(in) :: j_l
     integer(C_INT), intent(in) :: j_u
 
-    write(*, "(A)") tag
+    if(bml_getMyRank().eq.0)write(*, "(A)") tag
     associate(a_ptr => a(lbound(a, 1), lbound(a, 2)))
       ! Print bounds are inclusive here, i.e. [i_l, i_u], but are
       ! exclusive in the upper bound in the C code.

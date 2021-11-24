@@ -27,7 +27,9 @@ bml_setcomm_distributed2d(
     int p = bml_sqrtint(ntasks);
     if (p * p != ntasks)
     {
-        LOG_ERROR("Invalid number of tasks. Must be an integer square.\n");
+        LOG_ERROR
+            ("p=%d: invalid number of tasks. Must be an integer square.\n",
+             p);
     }
     int dims[2] = { p, p };
     int periods[2] = { 1, 1 };
