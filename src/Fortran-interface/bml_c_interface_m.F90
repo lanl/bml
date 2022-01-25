@@ -406,6 +406,15 @@ module bml_c_interface_m
       real(C_DOUBLE), value, intent(in) :: threshold
     end subroutine bml_multiply_C
 
+    subroutine bml_element_multiply_AB_C(a, b, c, threshold) &
+         & bind(C, name="bml_element_multiply_AB")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      type(C_PTR), value, intent(in) :: c
+      real(C_DOUBLE), value, intent(in) :: threshold
+    end subroutine bml_element_multiply_AB_C
+
     function bml_multiply_x2_C(x, x2, threshold) &
          & bind(C, name="bml_multiply_x2")
       import :: C_PTR, C_DOUBLE

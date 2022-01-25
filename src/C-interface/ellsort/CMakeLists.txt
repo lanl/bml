@@ -9,6 +9,7 @@ set(HEADERS-ELLSORT
   bml_import_ellsort.h
   bml_introspection_ellsort.h
   bml_multiply_ellsort.h
+  bml_element_multiply_ellsort.h
   bml_normalize_ellsort.h
   bml_norm_ellsort.h
   bml_parallel_ellsort.h
@@ -32,6 +33,7 @@ set(SOURCES-ELLSORT
   bml_import_ellsort.c
   bml_introspection_ellsort.c
   bml_multiply_ellsort.c
+  bml_element_multiply_ellsort.c
   bml_normalize_ellsort.c
   bml_norm_ellsort.c
   bml_parallel_ellsort.c
@@ -64,6 +66,7 @@ set(SOURCES-ELLSORT-TYPED
   bml_import_ellsort_typed.c
   bml_introspection_ellsort_typed.c
   bml_multiply_ellsort_typed.c
+  bml_element_multiply_ellsort_typed.c
   bml_normalize_ellsort_typed.c
   bml_norm_ellsort_typed.c
   bml_parallel_ellsort_typed.c

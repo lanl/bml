@@ -207,6 +207,7 @@
 #include "bml_inverse.h"
 #include "bml_logger.h"
 #include "bml_multiply.h"
+#include "bml_element_multiply.h"
 #include "bml_normalize.h"
 #include "bml_norm.h"
 #include "bml_parallel.h"

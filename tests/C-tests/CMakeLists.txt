@@ -18,6 +18,7 @@ set(SOURCES_TYPED
   mpi_sendrecv_typed.c
   multiply_banded_matrix_typed.c
   multiply_matrix_typed.c
+  element_multiply_matrix_typed.c
   multiply_matrix_x2_typed.c
   normalize_matrix_typed.c
   norm_matrix_typed.c
@@ -66,6 +67,7 @@ add_executable(bml-test
   mpi_sendrecv.c
   multiply_banded_matrix.c
   multiply_matrix.c
+  element_multiply_matrix.c
   multiply_matrix_x2.c
   normalize_matrix.c
   norm_matrix.c
@@ -161,6 +163,7 @@ set(testlist
   inverse
   io_matrix
   multiply
+  element_multiply
   multiply_banded
   multiply_x2
   norm
@@ -187,6 +190,9 @@ foreach(N ${testlist})
   endif()
   if(${N} MATCHES set_element)
     set(formats dense ellpack ellsort ellblock csr)
+  endif()
+  if(${N} MATCHES element_multiply)
+    set(formats dense ellpack ellsort csr)
   endif()
 
   test_formats(${formats})
