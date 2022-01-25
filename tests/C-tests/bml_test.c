@@ -9,9 +9,9 @@
 #include "bml_test.h"
 
 #ifdef DO_MPI
-const int NUM_TESTS = 30;
+const int NUM_TESTS = 31;
 #else
-const int NUM_TESTS = 29;
+const int NUM_TESTS = 30;
 #endif
 
 typedef struct
@@ -41,6 +41,7 @@ const char *test_name[] = {
     "mpi_sendrecv",
 #endif
     "multiply",
+    "element_multiply",
     "multiply_banded",
     "multiply_x2",
     "norm",
@@ -76,6 +77,7 @@ const char *test_description[] = {
     "Send/Recv matrix with MPI",
 #endif
     "Multiply two bml matrices",
+    "Element-wise multiply two bml matrices",
     "Multiply two banded bml matrices",
     "Multiply two identical matrices",
     "Norm of bml matrix",
@@ -111,6 +113,7 @@ const test_function_t testers[] = {
     test_mpi_sendrecv,
 #endif
     test_multiply,
+    test_element_multiply,
     test_multiply_banded,
     test_multiply_x2,
     test_norm,

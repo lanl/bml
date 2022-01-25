@@ -11,6 +11,7 @@ set(HEADERS-ELLPACK
   bml_introspection_ellpack.h
   bml_inverse_ellpack.h
   bml_multiply_ellpack.h
+  bml_element_multiply_ellpack.h
   bml_normalize_ellpack.h
   bml_norm_ellpack.h
   bml_parallel_ellpack.h
@@ -36,6 +37,7 @@ set(SOURCES-ELLPACK
   bml_introspection_ellpack.c
   bml_inverse_ellpack.c
   bml_multiply_ellpack.c
+  bml_element_multiply_ellpack.c
   bml_normalize_ellpack.c
   bml_norm_ellpack.c
   bml_parallel_ellpack.c
@@ -70,6 +72,7 @@ set(SOURCES-ELLPACK-TYPED
   bml_introspection_ellpack_typed.c
   bml_inverse_ellpack_typed.c
   bml_multiply_ellpack_typed.c
+  bml_element_multiply_ellpack_typed.c
   bml_normalize_ellpack_typed.c
   bml_norm_ellpack_typed.c
   bml_parallel_ellpack_typed.c
