@@ -34,10 +34,10 @@ void *TYPED_FUNC(
     bml_matrix_distributed2d_t * A)
 {
     int nloc = A->N / A->nprows;
-    double *rad = bml_allocate_memory(nloc * sizeof(double));
-    double *offdiag_sum =
+    REAL_T *rad = bml_allocate_memory(nloc * sizeof(REAL_T));
+    REAL_T *offdiag_sum =
         bml_accumulate_offdiag(A->matrix, A->myprow != A->mypcol);
-    MPI_Allreduce(offdiag_sum, rad, nloc, MPI_DOUBLE, MPI_SUM, A->row_comm);
+    MPI_Allreduce(offdiag_sum, rad, nloc, MPI_T, MPI_SUM, A->row_comm);
     free(offdiag_sum);
 
     double emin = DBL_MAX;
