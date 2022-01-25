@@ -4,5 +4,5 @@
 
 int main() {
     printf("starting tests\n");
-    return 1;
+    BMLMatrix * A = bml_identity_matrix(dense, double_real, 10, 10, sequential);
 }

@@ -24,5 +24,7 @@ bml_identity_matrix(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-    return NULL;
+    BMLMatrix * A = new BMLMatrix();
+
+    return A;
 }

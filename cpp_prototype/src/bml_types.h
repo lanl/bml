@@ -8,6 +8,25 @@ class BMLMatrix
     int N;
 };
 
+/** The supported matrix types. */
+typedef enum
+{
+    /** The matrix is not initialized. */
+    type_uninitialized,
+    /** Dense matrix. */
+    dense,
+    /** ELLPACK matrix. */
+    ellpack,
+    /** BLOCK ELLPACK matrix. */
+    ellblock,
+    /** ELLSORT matrix. */
+    ellsort,
+    /** CSR matrix. */
+    csr,
+    /** distributed matrix. */
+    distributed2d
+} bml_matrix_type_t;
+
 /** The supported real precisions. */
 typedef enum
 {

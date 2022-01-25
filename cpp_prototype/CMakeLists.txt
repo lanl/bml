@@ -12,7 +12,9 @@ endif()
 set(BML_BUILD_PYTHON_INTERFACE TRUE CACHE BOOL
   "Build the Python API (requires Python dev package)")
 
-project(bml ${LANGUAGES}) # don't move this line as it changes PROJECT_SOURCE_DIR
+project(bml ${LANGUAGES})
 
 add_subdirectory(src)
+
+enable_testing()
 add_subdirectory(tests)
