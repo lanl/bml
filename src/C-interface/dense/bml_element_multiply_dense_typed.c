@@ -85,11 +85,9 @@ void TYPED_FUNC(
          i++)
     {
 #ifdef BML_USE_MAGMA
-        MAGMA_T ttemp =
+        MAGMA_T temp =
             MAGMACOMPLEX(MUL) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
                                B_matrix[i]);
-        REAL_T temp =
-            MAGMACOMPLEX(REAL) (ttemp) + I * MAGMACOMPLEX(IMAG) (ttemp);
 #else
         REAL_T temp = alpha_ * A_matrix[i] * B_matrix[i];
 #endif
