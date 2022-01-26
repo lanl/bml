@@ -55,15 +55,13 @@ void TYPED_FUNC(
     MAGMA_T *B_matrix = bml_allocate_memory(sizeof(MAGMA_T) * B->N * B->N);
     MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N,
                       bml_queue());
-    MAGMA_T *C_matrix = bml_allocate_memory(sizeof(MAGMA_T) * C->N * C->N);
-    MAGMA(getmatrix) (C->N, C->N, C->matrix, C->ld, C_matrix, C->N,
-                      bml_queue());
 
 #else
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
-    REAL_T *C_matrix = C->matrix;
 #endif
+
+    REAL_T *C_matrix = C->matrix;
 
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
@@ -85,9 +83,11 @@ void TYPED_FUNC(
          i++)
     {
 #ifdef BML_USE_MAGMA
-        MAGMA_T temp =
-            MAGMACOMPLEX(MUL) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
-                               B_matrix[i]);
+       MAGMA_T ttemp =
+	 MAGMACOMPLEX(MUL) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
+			    B_matrix[i]);
+       REAL_T temp =
+	 MAGMACOMPLEX(REAL) (ttemp) + I * MAGMACOMPLEX(IMAG) (ttemp);
 #else
         REAL_T temp = alpha_ * A_matrix[i] * B_matrix[i];
 #endif
@@ -96,6 +96,5 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     free(A_matrix);
     free(B_matrix);
-    free(C_matrix);
 #endif
 }
