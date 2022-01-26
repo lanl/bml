@@ -224,9 +224,8 @@ Citing
 If you find this library useful, we encourage you to cite us. Our project has a
 citable DOI:
 
-.. image:: https://zenodo.org/badge/20454/qmmd/bml.svg
-  :alt: DOI
-  :target: https://zenodo.org/badge/latestdoi/20454/qmmd/bml
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5570404.svg
+   :target: https://doi.org/10.5281/zenodo.5570404
 
 with the following `bibtex` snipped:
 
@@ -240,11 +239,11 @@ with the following `bibtex` snipped:
                       Christian F. A. Negre
                       Jamal Mohd-Yusof and
                       Anders N. M. Niklasson},
-      title        = {qmmd/bml v1.2.3},
+      title        = {qmmd/bml v2.1.2},
       month        = feb,
-      year         = 2018,
-      doi          = {10.5281/zenodo.841949},
-      url          = {https://doi.org/10.5281/zenodo.841949}
+      year         = 2022,
+      doi          = {10.5281/zenodo.5570404},
+      url          = {https://doi.org/10.5281/zenodo.5570404}
     }
 
 Another citation source is the following journal article:
