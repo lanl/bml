@@ -249,7 +249,7 @@ with the following `bibtex` snipped:
 
 Another citation source is the following journal article:
 
-`DOI: 10.1038/467775a <https://doi.org/10.1038/467775a>`_.
+`DOI: 10.1007/s11227-018-2533-0 <https://doi.org/10.1007/s11227-018-2533-0>`_.
 
 Authors
 =======
