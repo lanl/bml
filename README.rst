@@ -174,7 +174,7 @@ In case the build fails for some reason, please contact the developers by
 opening an issue on GitHub (https://github.com/lanl/bml/issues) and attach the
 files
 
-.. code-block::
+.. code-block:: shell
 
   build/CMakeFiles/CMakeOutput.log
   build/CMakeFiles/CMakeError.log
