@@ -1,19 +1,25 @@
-| Issues | Pull Requests | CI | Conda |
-| ------ | ------------- | -- | ----- |
-| [![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues) | [![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls) | [![GitHub Actions](https://github.com/lanl/bml/workflows/CI/badge.svg)](https://github.com/lanl/bml/actions) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/bml.svg)](https://anaconda.org/conda-forge/bml) |
-||||||| parent of 3d02cc4 (Automate API doc building)
-[![Build Status](https://travis-ci.org/lanl/bml.svg?branch=master)](https://travis-ci.org/lanl/bml)
-[![codecov.io](https://codecov.io/github/lanl/bml/coverage.svg?branch=master)](https://codecov.io/github/lanl/bml?branch=master)
-[![Coverage Status](https://coveralls.io/repos/github/lanl/bml/badge.svg?branch=master)](https://coveralls.io/github/lanl/bml?branch=master)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/13443/badge.svg)](https://scan.coverity.com/projects/lanl-bml)
-[![GitHub issues](https://img.shields.io/github/issues/lanl/bml.svg)](https://github.com/lanl/bml/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/lanl/bml.svg)](https://github.com/lanl/bml/pulls)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d34f276064ea4421a4d7a3380910cb1c)](https://www.codacy.com/app/nicolasbock/bml?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lanl/bml&amp;utm_campaign=Badge_Grade)
-[![CircleCI](https://circleci.com/gh/lanl/bml/tree/master.svg?style=svg)](https://circleci.com/gh/lanl/bml/tree/master)
-![](https://github.com/lanl/bml/workflows/CI/badge.svg)
-[![Documentation Status](https://readthedocs.org/projects/basic-matrix-library/badge/?version=latest)](https://basic-matrix-library.readthedocs.io/en/latest/?badge=latest)
+.. list-table::
+  :header-rows: 1
 
-# Introduction
+  * - Issues 
+    - Pull Requests
+    - CI
+    - Conda
+  * - .. image:: https://img.shields.io/github/issues/lanl/bml
+        :alt: GitHub issues
+        :target: https://github.com/lanl/bml/issues>
+    - .. image:: https://img.shields.io/github/issues-pr/lanl/bml.svg
+        :alt: GitHub pull requests
+        :target: https://github.com/lanl/bml/pulls
+    - .. image:: https://github.com/lanl/bml/workflows/CI/badge.svg 
+        :alt: GitHub Actions
+        :target: https://github.com/lanl/bml/actions
+    - .. image:: https://img.shields.io/conda/vn/conda-forge/bml.svg
+        :alt: Conda Version
+        :target: https://anaconda.org/conda-forge/bml
+
+Introduction
+============
 
 This website is intended to provide some guidance on how to get and install
 the bml library. LA-UR number LA-UR-**17-27373**.
@@ -27,7 +33,8 @@ Currently these formats are: dense, ELLPACK-R, ELLBLOCK, ELLSORT, and
 CSR. For information on how to use the BML library can be find in
 [BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
 
-# Mailing List
+Mailing List
+============
 
 We are running the following mailing list for discussions on usage and features of the bml library:
 
@@ -35,7 +42,8 @@ We are running the following mailing list for discussions on usage and features 
   * [Subscribe](https://groups.io/g/bml/signup)
   * [Archives](https://groups.io/g/bml/topics)
 
-# Supported Matrix Formats
+Supported Matrix Formats
+========================
 
 The bml library supports the following matrix formats:
 
@@ -45,14 +53,16 @@ The bml library supports the following matrix formats:
 * ELLBLOCK
 * CSR
 
-# Binary Packages
+Binary Packages
+===============
 
 We offer binary packages of the bml library in [RPM
 format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml)
 thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
 format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
 
-# Testing in our CI container
+Testing in our CI container
+===========================
 
 We are switching our CI tests from Travis-CI to GitHub Actions because
 Travis-CI is [limiting the number of builds for open source
@@ -73,13 +83,15 @@ Alternatively, you can run one of the CI tests by executing e.g.
 
     $ ./scripts/ci-gcc-11-C-single-real.sh
 
-# Build Instructions
+Build Instructions
+==================
 
 The bml library is built with CMake. For convenience, we provide a shell
 script which goes through the necessary motions and builds the library, runs
 the tests, and installs it (in the `install` directory).
 
-## For a quick installation
+For a quick installation
+------------------------
 
 We suggest to take a look at the `example_build.sh` script that sets
 the most important environmental variables needed by `build.sh`
@@ -124,7 +136,8 @@ To build with MPI, OpenMP, and use Intel MKL do the following.
         BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path \
         ./build.sh install
 
-## Prerequisites
+Prerequisites
+-------------
 
 In order to build the library, the following tools need to be installed:
 
@@ -133,7 +146,8 @@ In order to build the library, the following tools need to be installed:
 - `>=python-2.7`
 - `>=OpenMP-3.1` (i.e. `>=gcc-4.7`)
 
-## If the build fails
+If the build fails
+------------------
 
 In case the build fails for some reason, please contact the developers by
 opening an issue on GitHub (https://github.com/lanl/bml/issues) and attach the
@@ -142,7 +156,8 @@ files
     build/CMakeFiles/CMakeOutput.log
     build/CMakeFiles/CMakeError.log
 
-# Developer Suggested Workflow
+Developer Suggested Workflow
+============================
 
 Our main development happens on the `master` branch and is continuously
 verified for correctness. If you would like to contribute with your work to the bml
@@ -166,7 +181,8 @@ sure that your pull request contains only one logical change (see
 change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
 for further details.
 
-# Coding Style
+Coding Style
+============
 
 Please indent your C code using
 
@@ -174,7 +190,8 @@ Please indent your C code using
 
 You can use the script `indent.sh` to indent all C code.
 
-# Citing
+Citing
+======
 
 If you find this library useful, we encourage you to cite us. Our project has
 a citable DOI:
@@ -200,7 +217,8 @@ with the following `bibtex` snipped:
 
 Another citation source is the following journal article: [BMLPaper](https://link.springer.com/article/10.1007/s11227-018-2533-0)
 
-# Authors
+Authors
+=======
 
 The core developers of the bml in alphabetical order:
 
@@ -208,7 +226,8 @@ The core developers of the bml in alphabetical order:
 * Nicolas Bock <nicolasbock@gmail.com>
 * Susan M. Mniszewski <smm@lanl.gov>
 
-# Contributors
+Contributors
+============
 
 * Adedoyin Adetokunbo <aadedoyin@lanl.gov>
 * Bálint Aradi <aradi@uni-bremen.de>
@@ -217,7 +236,8 @@ The core developers of the bml in alphabetical order:
 * Jean-Luc Fattebert <fattebertj@ornl.gov>
 * Mike Wall <mewall@lanl.gov>
 
-# License
+License
+=======
 
 The bml library is licensed under the BSD 3-clause license.
 
@@ -258,14 +278,16 @@ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# LA-CC
+LA-CC
+=====
 
 NOTICE OF OSS COPYRIGHT ASSERTION:
 
 LANS has asserted copyright on the software package entitled *Basic
 Matrix Library (bml), Version 0.x (C16006)*.
 
-## ABSTRACT
+ABSTRACT
+--------
 
 The basic matrix library (bml) is a collection of various matrix data
 formats (for dense and sparse) and their associated algorithms for basic
