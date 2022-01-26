@@ -18,8 +18,8 @@
     - .. image:: https://img.shields.io/conda/vn/conda-forge/bml.svg
         :alt: Conda Version
         :target: https://anaconda.org/conda-forge/bml
-    - .. image:: https://readthedocs.org/projects/basic-matrix-library/badge/?version=latest
-        :target: https://basic-matrix-library.readthedocs.io/en/latest/?badge=latest
+    - .. image:: https://readthedocs.org/projects/basic-matrix-library/badge/?version=master
+        :target: https://basic-matrix-library.readthedocs.io/en/master/?badge=master
         :alt: Documentation Status
 
 Introduction
