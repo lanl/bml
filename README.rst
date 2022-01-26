@@ -224,11 +224,13 @@ Citing
 If you find this library useful, we encourage you to cite us. Our project has a
 citable DOI:
 
-[![DOI](https://zenodo.org/badge/20454/qmmd/bml.svg)](https://zenodo.org/badge/latestdoi/20454/qmmd/bml)
+.. image:: https://zenodo.org/badge/20454/qmmd/bml.svg
+  :alt: DOI
+  :target: https://zenodo.org/badge/latestdoi/20454/qmmd/bml
 
 with the following `bibtex` snipped:
 
-.. code-block:: shell
+.. code-block:: bibtex
 
     @misc{bml,
       author       = {Nicolas Bock and
