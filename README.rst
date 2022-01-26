@@ -43,20 +43,20 @@ Mailing List
 We are running the following mailing list for discussions on usage and features
 of the bml library:
 
-* `bml <https://groups.io/g/bml>`_
-* `Subscribe <https://groups.io/g/bml/signup>`_
-* `Archives <https://groups.io/g/bml/topics>`_
+- `bml <https://groups.io/g/bml>`_
+- `Subscribe <https://groups.io/g/bml/signup>`_
+- `Archives <https://groups.io/g/bml/topics>`_
 
 Supported Matrix Formats
 ========================
 
 The bml library supports the following matrix formats:
 
-* dense
-* ELLPACK-R
-* ELLSORT
-* ELLBLOCK
-* CSR
+- dense
+- ELLPACK-R
+- ELLSORT
+- ELLBLOCK
+- CSR
 
 Binary Packages
 ===============
@@ -253,19 +253,19 @@ Authors
 
 The core developers of the bml in alphabetical order:
 
-* Christian Negre <cnegre@lanl.gov>
-* Nicolas Bock <nicolasbock@gmail.com>
-* Susan M. Mniszewski <smm@lanl.gov>
+- Christian Negre <cnegre@lanl.gov>
+- Nicolas Bock <nicolasbock@gmail.com>
+- Susan M. Mniszewski <smm@lanl.gov>
 
 Contributors
 ============
 
-* Adedoyin Adetokunbo <aadedoyin@lanl.gov>
-* Bálint Aradi <aradi@uni-bremen.de>
-* Daniel Osei-Kuffuor <oseikuffuor1@llnl.gov>
-* Jamaludin Mohd-Yusof <jamal@lanl.gov>
-* Jean-Luc Fattebert <fattebertj@ornl.gov>
-* Mike Wall <mewall@lanl.gov>
+- Adedoyin Adetokunbo <aadedoyin@lanl.gov>
+- Bálint Aradi <aradi@uni-bremen.de>
+- Daniel Osei-Kuffuor <oseikuffuor1@llnl.gov>
+- Jamaludin Mohd-Yusof <jamal@lanl.gov>
+- Jean-Luc Fattebert <fattebertj@ornl.gov>
+- Mike Wall <mewall@lanl.gov>
 
 License
 =======
