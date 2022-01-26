@@ -16,7 +16,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'BML'
+project = 'Basic Matrix Library (bml)'
 copyright = '2022, bml authors'
 author = 'bml authors'
 
