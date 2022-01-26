@@ -21,26 +21,27 @@
 Introduction
 ============
 
-This website is intended to provide some guidance on how to get and install
-the bml library. LA-UR number LA-UR-**17-27373**.
+This website is intended to provide some guidance on how to get and install the
+bml library. LA-UR number LA-UR-**17-27373**.
 
-The basic matrix library (bml) is a collection of various matrix data
-formats (for dense and sparse) and their associated algorithms for
-basic matrix operations. Application programming interfaces (API) are
-available for both C and FORTRAN. The current status of this library
-allows us to use two different formats for representing matrix data.
-Currently these formats are: dense, ELLPACK-R, ELLBLOCK, ELLSORT, and
-CSR. For information on how to use the BML library can be find in
-[BML-API](https://lanl.github.io/bml/API/developer_documentation.html).
+The basic matrix library (bml) is a collection of various matrix data formats
+(for dense and sparse) and their associated algorithms for basic matrix
+operations. Application programming interfaces (API) are available for both C
+and FORTRAN. The current status of this library allows us to use two different
+formats for representing matrix data. Currently these formats are: dense,
+ELLPACK-R, ELLBLOCK, ELLSORT, and CSR. For information on how to use the BML
+library can be find in
+`BML-API <https://lanl.github.io/bml/API/developer_documentation.html>`_.
 
 Mailing List
 ============
 
-We are running the following mailing list for discussions on usage and features of the bml library:
+We are running the following mailing list for discussions on usage and features
+of the bml library:
 
-* [bml](https://groups.io/g/bml)
-  * [Subscribe](https://groups.io/g/bml/signup)
-  * [Archives](https://groups.io/g/bml/topics)
+* `bml <https://groups.io/g/bml>`_
+* `Subscribe <https://groups.io/g/bml/signup>`_
+* `Archives <https://groups.io/g/bml/topics>`_
 
 Supported Matrix Formats
 ========================
@@ -56,82 +57,102 @@ The bml library supports the following matrix formats:
 Binary Packages
 ===============
 
-We offer binary packages of the bml library in [RPM
-format](http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml)
-thanks to SUSE's OpenBuild Service and for Ubuntu in [DEB
-format](https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd).
+We offer binary packages of the bml library in `RPM format
+<http://software.opensuse.org/download.html?project=home%3Anicolasbock%3Aqmmd&package=bml>`_
+thanks to SUSE's OpenBuild Service and for Ubuntu in `DEB format
+<https://launchpad.net/~nicolasbock/+archive/ubuntu/qmmd>`_.
 
 Testing in our CI container
 ===========================
 
-We are switching our CI tests from Travis-CI to GitHub Actions because
-Travis-CI is [limiting the number of builds for open source
-projects](https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing).
-Our workflow uses a [custom Docker
-image](https://hub.docker.com/r/nicolasbock/bml) which comes with the
-necessary compiler tool chain to build and test the `bml` library.
-Using `docker` is a convenient and quick way to develop, build, and
+We are switching our CI tests from Travis-CI to GitHub Actions because Travis-CI
+is `limiting the number of builds for open source projects
+<https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing>`_. Our workflow
+uses a `custom Docker image <https://hub.docker.com/r/nicolasbock/bml>`_ which
+comes with the necessary compiler tool chain to build and test the `bml`
+library. Using `docker` is a convenient and quick way to develop, build, and
 test the `bml` library.
 
-    $ ./scripts/run-local-docker-container.sh
+.. code-block:: shell
+
+  $ ./scripts/run-local-docker-container.sh
 
 Inside the container:
 
-    $ ./build.sh compile
+.. code-block:: shell
+
+  $ ./build.sh compile
 
 Alternatively, you can run one of the CI tests by executing e.g.
 
-    $ ./scripts/ci-gcc-11-C-single-real.sh
+.. code-block:: shell
+
+  $ ./scripts/ci-gcc-11-C-single-real.sh
 
 Build Instructions
 ==================
 
-The bml library is built with CMake. For convenience, we provide a shell
-script which goes through the necessary motions and builds the library, runs
-the tests, and installs it (in the `install` directory).
+The bml library is built with CMake. For convenience, we provide a shell script
+which goes through the necessary motions and builds the library, runs the tests,
+and installs it (in the `install` directory).
 
 For a quick installation
 ------------------------
 
-We suggest to take a look at the `example_build.sh` script that sets
-the most important environmental variables needed by `build.sh`
-script. Change the Variables according to the compilers and
-architecture. The script can be run just by doing:
+We suggest to take a look at the `example_build.sh` script that sets the most
+important environmental variables needed by `build.sh` script. Change the
+Variables according to the compilers and architecture. The script can be run
+just by doing:
 
-    $ ./example_build.sh
+.. code-block:: shell
 
-## For a more involved installation
+  $ ./example_build.sh
+
+For a more involved installation
+--------------------------------
 
 By running:
 
-    $ ./build.sh install
+.. code-block:: shell
+
+  $ ./build.sh install
 
 the library will be built in the `build` directory and installed in the
-`install` directory. In case you change any sources and simply want to
-rebuild the library, you don't have to run `build.sh` again, but rather
+`install` directory. In case you change any sources and simply want to rebuild
+the library, you don't have to run `build.sh` again, but rather
 
-    $ make -C build
+.. code-block:: shell
+
+  $ make -C build
 
 The compiled library can be installed by running
 
-    $ make -C build install
+.. code-block:: shell
+
+  $ make -C build install
 
 The install directory can be modified by running
 
-    $ CMAKE_INSTALL_PREFIX=/some/path ./build.sh install
+.. code-block:: shell
+
+  $ CMAKE_INSTALL_PREFIX=/some/path ./build.sh install
 
 (which assumes that you are using the bash shell).
 
 To build with GNU compilers, OpenMP, and Intel MKL do the following.
 
-    $ CC=gcc FC=gfortran \
+.. code-block:: shell
+
+  $ CC=gcc FC=gfortran \
         BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
         BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path \
         ./build.sh install
 
 To build with MPI, OpenMP, and use Intel MKL do the following.
 
-    $ CC=mpicc FC=mpif90 \
+.. code-block:: shell
+
+  $ CC=mpicc FC=mpif90 \
         BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
         BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path \
         ./build.sh install
@@ -153,16 +174,18 @@ In case the build fails for some reason, please contact the developers by
 opening an issue on GitHub (https://github.com/lanl/bml/issues) and attach the
 files
 
-    build/CMakeFiles/CMakeOutput.log
-    build/CMakeFiles/CMakeError.log
+.. code-block::
+
+  build/CMakeFiles/CMakeOutput.log
+  build/CMakeFiles/CMakeError.log
 
 Developer Suggested Workflow
 ============================
 
-Our main development happens on the `master` branch and is continuously
-verified for correctness. If you would like to contribute with your work to the bml
-project, please follow the instructions at the GitHub help page ["About pull
-requests"](https://help.github.com/articles/about-pull-requests/). To
+Our main development happens on the `master` branch and is continuously verified
+for correctness. If you would like to contribute with your work to the bml
+project, please follow the instructions at the GitHub help page `"About pull
+requests" <https://help.github.com/articles/about-pull-requests/>`_. To
 summarize:
 
 - Fork the project on github
@@ -172,13 +195,12 @@ summarize:
 - Push the branch to your forked repository
 - Go to https://github.com/lanl/bml and click on 'Create Pull Request'
 
-During the review process you might want to update your pull
-request. Please add commits or `amend` your existing commits as
-necessary. If you amend any commits you need to add the
-`--force-with-lease` option to the `git push` command. Please make
-sure that your pull request contains only one logical change (see
-["Structural split of
-change"](https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes)
+During the review process you might want to update your pull request. Please add
+commits or `amend` your existing commits as necessary. If you amend any commits
+you need to add the `--force-with-lease` option to the `git push` command.
+Please make sure that your pull request contains only one logical change (see
+`"Structural split of change"
+<https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes>`_
 for further details.
 
 Coding Style
@@ -186,19 +208,23 @@ Coding Style
 
 Please indent your C code using
 
-    $ indent -gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda
+.. code-block:: shell
+
+  $ indent -gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda
 
 You can use the script `indent.sh` to indent all C code.
 
 Citing
 ======
 
-If you find this library useful, we encourage you to cite us. Our project has
-a citable DOI:
+If you find this library useful, we encourage you to cite us. Our project has a
+citable DOI:
 
 [![DOI](https://zenodo.org/badge/20454/qmmd/bml.svg)](https://zenodo.org/badge/latestdoi/20454/qmmd/bml)
 
 with the following `bibtex` snipped:
+
+.. code-block:: shell
 
     @misc{bml,
       author       = {Nicolas Bock and
@@ -215,7 +241,8 @@ with the following `bibtex` snipped:
       url          = {https://doi.org/10.5281/zenodo.841949}
     }
 
-Another citation source is the following journal article: [BMLPaper](https://link.springer.com/article/10.1007/s11227-018-2533-0)
+Another citation source is the following journal article:
+[BMLPaper](https://link.springer.com/article/10.1007/s11227-018-2533-0)
 
 Authors
 =======
@@ -255,6 +282,7 @@ as not to confuse it with the version available from LANL.
 Additionally, redistribution and use in source and binary forms, with
 or without modification, are permitted provided that the following
 conditions are met:
+
 - Redistributions of source code must retain the above copyright
   notice, this list of conditions and the following disclaimer.
 - Redistributions in binary form must reproduce the above copyright
@@ -331,8 +359,13 @@ LANS acknowledges that it will comply with the DOE OSS policy as follows:
 
 Following is a table briefly summarizes information for this software package:
 
-| CODE NAME                                   | Basic Matrix Library (bml), Version 0.x (C16006) |
-| ------------------------------------------- | ------------------------------------------------ |
-| Classification Review Number                | **LA-CC-15-093**                                 |
-| Export Control Classification Number (ECCN) | **EAR99**                                        |
-| B&R Code                                    | **YN0100000**                                    |
+.. list-table::
+
+  * - CODE NAME
+    - **Basic Matrix Library (bml), Version 0.x (C16006)**
+  * - Classification Review Number
+    - **LA-CC-15-093**
+  * - Export Control Classification Number (ECCN)
+    - **EAR99**
+  * - B&R Code
+    - **YN0100000**
