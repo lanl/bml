@@ -5,6 +5,7 @@
     - Pull Requests
     - CI
     - Conda
+    - Documentation
   * - .. image:: https://img.shields.io/github/issues/lanl/bml
         :alt: GitHub issues
         :target: https://github.com/lanl/bml/issues>
@@ -17,6 +18,9 @@
     - .. image:: https://img.shields.io/conda/vn/conda-forge/bml.svg
         :alt: Conda Version
         :target: https://anaconda.org/conda-forge/bml
+    - .. image:: https://readthedocs.org/projects/basic-matrix-library/badge/?version=latest
+        :target: https://basic-matrix-library.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
 
 Introduction
 ============
