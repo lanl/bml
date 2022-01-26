@@ -248,7 +248,8 @@ with the following `bibtex` snipped:
     }
 
 Another citation source is the following journal article:
-[BMLPaper](https://link.springer.com/article/10.1007/s11227-018-2533-0)
+
+`DOI: 10.1038/467775a <https://doi.org/10.1038/467775a>`_.
 
 Authors
 =======
