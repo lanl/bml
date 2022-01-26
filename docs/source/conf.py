@@ -14,12 +14,11 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'BML'
-copyright = '2022, bml-authors'
-author = 'bml-authors'
+copyright = '2022, bml authors'
+author = 'bml authors'
 
 # The full version, including alpha/beta/rc tags
 release = 'v2.1.2'
@@ -27,6 +26,12 @@ release = 'v2.1.2'
 
 # -- General configuration ---------------------------------------------------
 
+# The document name of the “root” document, that is, the document that contains
+# the root toctree directive. Default is 'index'.
+#
+# Changed in version 2.0: The default is changed to 'index' from 'contents'.
+#
+# Changed in version 4.0: Renamed root_doc from master_doc.
 master_doc = 'index'
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -42,7 +47,6 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
-
 
 # -- Options for HTML output -------------------------------------------------
 
