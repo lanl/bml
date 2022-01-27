@@ -242,7 +242,7 @@ install() {
 
 testing() {
     cd "${BUILD_DIR}"
-    ctest --output-on-failure \
+    ctest --verbose \
         --parallel ${PARALLEL_TEST_JOBS} \
         ${TESTING_EXTRA_ARGS} \
         2>&1 | tee --append "${LOG_FILE}"
