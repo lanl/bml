@@ -1,7 +1,7 @@
 .. list-table::
   :header-rows: 1
 
-  * - Issues 
+  * - Issues
     - Pull Requests
     - CI
     - Conda
@@ -12,7 +12,7 @@
     - .. image:: https://img.shields.io/github/issues-pr/lanl/bml.svg
         :alt: GitHub pull requests
         :target: https://github.com/lanl/bml/pulls
-    - .. image:: https://github.com/lanl/bml/workflows/CI/badge.svg 
+    - .. image:: https://github.com/lanl/bml/workflows/CI/badge.svg
         :alt: GitHub Actions
         :target: https://github.com/lanl/bml/actions
     - .. image:: https://img.shields.io/conda/vn/conda-forge/bml.svg
@@ -73,71 +73,108 @@ We are switching our CI tests from Travis-CI to GitHub Actions because Travis-CI
 is `limiting the number of builds for open source projects
 <https://blog.travis-ci.com/2020-11-02-travis-ci-new-billing>`_. Our workflow
 uses a `custom Docker image <https://hub.docker.com/r/nicolasbock/bml>`_ which
-comes with the necessary compiler tool chain to build and test the `bml`
-library. Using `docker` is a convenient and quick way to develop, build, and
-test the `bml` library.
+comes with the necessary compiler tool chain to build and test the :code:`bml`
+library. Using :code:`docker` is a convenient and quick way to develop, build,
+and test the :code:`bml` library.
 
-.. code-block:: shell
+.. code-block:: console
 
   $ ./scripts/run-local-docker-container.sh
+  latest: Pulling from nicolasbock/bml
+  2f94e549220a: Already exists
+  8d8ab0ffcd5e: Pull complete
+  3fa4d3b6f5b4: Pull complete
+  4f4fb700ef54: Pull complete
+  Digest: sha256:18237f909f19896a57c658c93af5e8ed91c9fa596f15021be777a97444a3eaaf
+  Status: Downloaded newer image for nicolasbock/bml:latest
+  docker.io/nicolasbock/bml:latest
+  groups: cannot find name for group ID 1000
+  I have no name!@3a4ae718ba4f:/bml$
 
 Inside the container:
 
-.. code-block:: shell
+.. code-block:: console
 
-  $ ./build.sh compile
+  I have no name!@6ea3f4937c0d:/bml$ ./build.sh compile
+  Writing output to /bml/build.log
+  Running command compile
+  mkdir: created directory '/bml/build'
+  mkdir: created directory '/bml/install'
+  -- CMake version 3.12.1
+  -- The C compiler identification is GNU 7.5.0
+  -- The CXX compiler identification is GNU 7.5.0
+  -- The Fortran compiler identification is GNU 7.5.0
+  -- Check for working C compiler: /usr/bin/gcc
+  -- Check for working C compiler: /usr/bin/gcc -- works
 
 Alternatively, you can run one of the CI tests by executing e.g.
 
-.. code-block:: shell
+.. code-block:: console
 
-  $ ./scripts/ci-gcc-11-C-single-real.sh
+  I have no name!@6ea3f4937c0d:/bml$ ./scripts/ci-gcc-11-C-single-real.sh
+  +++ dirname ./scripts/ci-gcc-11-C-single-real.sh
+  ++ readlink --canonicalize ./scripts/..
+  + basedir=/bml
+  + export CC=gcc-11
+  + CC=gcc-11
+  + export CXX=g++-11
+  + CXX=g++-11
+  + export FC=gfortran-11
+  + FC=gfortran-11
 
 Build Instructions
 ==================
 
 The bml library is built with CMake. For convenience, we provide a shell script
 which goes through the necessary motions and builds the library, runs the tests,
-and installs it (in the `install` directory).
+and installs it (in the :code:`install` directory).
 
 For a quick installation
 ------------------------
 
-We suggest to take a look at the `example_build.sh` script that sets the most
-important environmental variables needed by `build.sh` script. Change the
-Variables according to the compilers and architecture. The script can be run
+We suggest to take a look at the :code:`example_build.sh` script that sets the
+most important environmental variables needed by :code:`build.sh` script. Change
+the Variables according to the compilers and architecture. The script can be run
 just by doing:
 
-.. code-block:: shell
+.. code-block:: console
 
-  $ ./example_build.sh
+  $ ./scripts/example_build.sh
+  Writing output to /bml/build.log
+  Running command configure
+  mkdir: created directory '/bml/build'
+  mkdir: created directory '/bml/install'
+  -- CMake version 3.12.1
+  -- The C compiler identification is GNU 7.5.0
+  -- The CXX compiler identification is GNU 7.5.0
+  -- The Fortran compiler identification is GNU 7.5.0
 
 For a more involved installation
 --------------------------------
 
 By running:
 
-.. code-block:: shell
+.. code-block:: console
 
   $ ./build.sh install
 
-the library will be built in the `build` directory and installed in the
-`install` directory. In case you change any sources and simply want to rebuild
-the library, you don't have to run `build.sh` again, but rather
+the library will be built in the :code:`build` directory and installed in the
+:code:`install` directory. In case you change any sources and simply want to
+rebuild the library, you don't have to run :code:`build.sh` again, but rather
 
-.. code-block:: shell
+.. code-block:: console
 
   $ make -C build
 
 The compiled library can be installed by running
 
-.. code-block:: shell
+.. code-block:: console
 
   $ make -C build install
 
 The install directory can be modified by running
 
-.. code-block:: shell
+.. code-block:: console
 
   $ CMAKE_INSTALL_PREFIX=/some/path ./build.sh install
 
@@ -145,31 +182,31 @@ The install directory can be modified by running
 
 To build with GNU compilers, OpenMP, and Intel MKL do the following.
 
-.. code-block:: shell
+.. code-block:: console
 
   $ CC=gcc FC=gfortran \
-        BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
-        BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path \
-        ./build.sh install
+    BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
+    BML_OPENMP=yes CMAKE_INSTALL_PREFIX=/some/path \
+    ./build.sh install
 
 To build with MPI, OpenMP, and use Intel MKL do the following.
 
-.. code-block:: shell
+.. code-block:: console
 
   $ CC=mpicc FC=mpif90 \
-        BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
-        BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path \
-        ./build.sh install
+    BLAS_VENDOR=Intel CMAKE_BUILD_TYPE=Release \
+    BML_OPENMP=yes BML_MPI=yes CMAKE_INSTALL_PREFIX=/some/path \
+    ./build.sh install
 
 Prerequisites
 -------------
 
 In order to build the library, the following tools need to be installed:
 
-- `gcc` with Fortran support
-- `>=cmake-2.8.8`
-- `>=python-2.7`
-- `>=OpenMP-3.1` (i.e. `>=gcc-4.7`)
+- :code:`gcc` with Fortran support
+- :code:`>=cmake-2.8.8`
+- :code:`>=python-2.7`
+- :code:`>=OpenMP-3.1` (i.e. :code:`>=gcc-4.7`)
 
 If the build fails
 ------------------
@@ -186,9 +223,9 @@ files
 Developer Suggested Workflow
 ============================
 
-Our main development happens on the `master` branch and is continuously verified
-for correctness. If you would like to contribute with your work to the bml
-project, please follow the instructions at the GitHub help page `"About pull
+Our main development happens on the :code:`master` branch and is continuously
+verified for correctness. If you would like to contribute with your work to the
+bml project, please follow the instructions at the GitHub help page `"About pull
 requests" <https://help.github.com/articles/about-pull-requests/>`_. To
 summarize:
 
@@ -200,10 +237,10 @@ summarize:
 - Go to https://github.com/lanl/bml and click on 'Create Pull Request'
 
 During the review process you might want to update your pull request. Please add
-commits or `amend` your existing commits as necessary. If you amend any commits
-you need to add the `--force-with-lease` option to the `git push` command.
-Please make sure that your pull request contains only one logical change (see
-`"Structural split of change"
+commits or :code:`amend` your existing commits as necessary. If you amend any
+commits you need to add the :code:`--force-with-lease` option to the
+:code:`git push` command. Please make sure that your pull request contains only
+one logical change (see `"Structural split of change"
 <https://wiki.openstack.org/wiki/GitCommitMessages#Structural_split_of_changes>`_
 for further details.
 
@@ -212,11 +249,11 @@ Coding Style
 
 Please indent your C code using
 
-.. code-block:: shell
+.. code-block:: console
 
   $ indent -gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda
 
-You can use the script `indent.sh` to indent all C code.
+You can use the script :code:`indent.sh` to indent all C code.
 
 Citing
 ======
@@ -227,7 +264,7 @@ citable DOI:
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.5570404.svg
    :target: https://doi.org/10.5281/zenodo.5570404
 
-with the following `bibtex` snipped:
+with the following :code:`bibtex` snipped:
 
 .. code-block:: bibtex
 
