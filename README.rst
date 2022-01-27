@@ -268,24 +268,44 @@ with the following :code:`bibtex` snipped:
 
 .. code-block:: bibtex
 
-    @misc{bml,
-      author       = {Nicolas Bock and
-                      Susan Mniszewski and
-                      Bálint Aradi and
-                      Michael Wall and
-                      Christian F. A. Negre
-                      Jamal Mohd-Yusof and
-                      Anders N. M. Niklasson},
-      title        = {qmmd/bml v2.1.2},
-      month        = feb,
-      year         = 2022,
-      doi          = {10.5281/zenodo.5570404},
-      url          = {https://doi.org/10.5281/zenodo.5570404}
-    }
+  @misc{bml,
+    author       = {Nicolas Bock and
+                    Susan Mniszewski and
+                    Bálint Aradi and
+                    Michael Wall and
+                    Christian F. A. Negre
+                    Jamal Mohd-Yusof and
+                    Anders N. M. Niklasson},
+    title        = {qmmd/bml v2.1.2},
+    month        = feb,
+    year         = 2022,
+    doi          = {10.5281/zenodo.5570404},
+    url          = {https://doi.org/10.5281/zenodo.5570404}
+  }
 
-Another citation source is the following journal article:
+Another citation source is the following journal article (`DOI:
+10.1007/s11227-018-2533-0 <https://doi.org/10.1007/s11227-018-2533-0>`_):
 
-`DOI: 10.1007/s11227-018-2533-0 <https://doi.org/10.1007/s11227-018-2533-0>`_
+.. code-block:: bibtex
+
+  @article{bock2018basic,
+    title     = {The basic matrix library (BML) for quantum chemistry},
+    author    = {Bock, Nicolas and
+                 Negre, Christian FA and
+                 Mniszewski, Susan M and
+                 Mohd-Yusof, Jamaludin and
+                 Aradi, B{\'a}lint and
+                 Fattebert, Jean-Luc and
+                 Osei-Kuffuor, Daniel and
+                 Germann, Timothy C and
+                 Niklasson, Anders MN},
+    journal   = {The Journal of Supercomputing},
+    volume    = {74},
+    number    = {11},
+    pages     = {6201--6219},
+    year      = {2018},
+    publisher = {Springer}
+  }
 
 Authors
 =======
