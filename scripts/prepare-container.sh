@@ -83,9 +83,11 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
   vim
 
 PYTHON=$(command -v python)
-if [[ -z PYTHON ]]; then
+if [[ -z ${PYTHON} ]]; then
   PYTHON=$(command -v python3)
 fi
 
 ${SUDO} pip install --system bashate
 ${SUDO} ${PYTHON} setup.py install
+
+command -v convert-template
