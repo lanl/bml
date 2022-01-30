@@ -12,7 +12,6 @@ on:
   schedule:
     # Weekly on Sundays:
     - cron: '00 04 * * 0'
-
   workflow_dispatch:
 
 # Defaults
