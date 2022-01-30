@@ -691,6 +691,11 @@ else()
   add_custom_target(dist)
 endif()
 
+include(FindPythonInterp)
+if(NOT PYTHONINTERP_FOUND)
+  message(FATAL "Could not find Python interpreter")
+endif()
+
 message(STATUS "When building executables with the bml library, please use the following link flags")
 
 if(OPENMP_FOUND)
