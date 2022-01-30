@@ -83,6 +83,7 @@ EOF
     echo "BML_CUDA               Build with CUDA             (default is ${BML_CUDA})"
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
     echo "BML_CUSOLVER           Build with cuSOLVER         (default is ${BML_CUSOLVER})"
+    echo "BML_ROCSOLVER          Build with rocSOLVER        (default is ${BML_ROCSOLVER})"
     echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "BML_SCALAPACK          Build with SCALAPACK        (default is ${BML_SCALAPACK})"
     echo "SCALAPACK_LIBRARIES    ScaLapack libraries         (default is ${SCALAPACK_LIBRARIES})"
@@ -129,6 +130,7 @@ set_defaults() {
     : ${BML_CUDA:=no}
     : ${BML_MAGMA:=no}
     : ${BML_CUSOLVER:=no}
+    : ${BML_ROCSOLVER:=no}
     : ${BML_XSMM:=no}
     : ${BML_SCALAPACK:=no}
     : ${BML_ELLBLOCK_MEMPOOL:=no}
@@ -215,6 +217,7 @@ configure() {
         -DBML_CUDA="${BML_CUDA}" \
         -DBML_MAGMA="${BML_MAGMA}" \
         -DBML_CUSOLVER="${BML_CUSOLVER}" \
+        -DBML_ROCSOLVER="${BML_ROCSOLVER}" \
         -DBML_XSMM="${BML_XSMM}" \
         -DBML_SCALAPACK="${BML_SCALAPACK}" \
         -DBML_ELLBLOCK_MEMPOOL="${BML_ELLBLOCK_MEMPOOL}" \
