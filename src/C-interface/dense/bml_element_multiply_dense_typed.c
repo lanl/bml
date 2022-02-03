@@ -45,19 +45,17 @@ void TYPED_FUNC(
     bml_matrix_dense_t * C)
 {
     int N = A->N;
-    double alpha = 1.0;
 
-    REAL_T sum = 0.0;
 #ifdef BML_USE_MAGMA            //do work on CPU for now...
-    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
-    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N,
-                      bml_queue());
-    MAGMA_T *B_matrix = bml_allocate_memory(sizeof(MAGMA_T) * B->N * B->N);
-    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, B_matrix, B->N,
-                      bml_queue());
-    MAGMA_T *C_matrix = bml_allocate_memory(sizeof(MAGMA_T) * C->N * C->N);
-    MAGMA(getmatrix) (C->N, C->N, C->matrix, C->ld, C_matrix, C->N,
-                      bml_queue());
+    REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, (MAGMA_T *) A_matrix,
+                      A->N, bml_queue());
+    REAL_T *B_matrix = bml_allocate_memory(sizeof(REAL_T) * B->N * B->N);
+    MAGMA(getmatrix) (B->N, B->N, B->matrix, B->ld, (MAGMA_T *) B_matrix,
+                      B->N, bml_queue());
+    REAL_T *C_matrix = bml_allocate_memory(sizeof(REAL_T) * C->N * C->N);
+    MAGMA(getmatrix) (C->N, C->N, C->matrix, C->ld, (MAGMA_T *) C_matrix,
+                      C->N, bml_queue());
 
 #else
     REAL_T *A_matrix = A->matrix;
@@ -68,36 +66,23 @@ void TYPED_FUNC(
     int *A_localRowMin = A->domain->localRowMin;
     int *A_localRowMax = A->domain->localRowMax;
 
-#ifdef BML_USE_MAGMA
-    MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
-#else
-    REAL_T alpha_ = (REAL_T) alpha;
-#endif
-
     int myRank = bml_getMyRank();
 
 #pragma omp parallel for                        \
-  shared(alpha_)                         \
-  shared(N, A_matrix, B_matrix)                 \
+  shared(N, C_matrix, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)  \
                                 //for (int i = 0; i < N * N; i++)
     for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
          i++)
     {
-#ifdef BML_USE_MAGMA
-        MAGMA_T ttemp =
-            MAGMACOMPLEX(MUL) (MAGMACOMPLEX(MUL) (alpha_, A_matrix[i]),
-                               B_matrix[i]);
-        REAL_T temp =
-            MAGMACOMPLEX(REAL) (ttemp) + I * MAGMACOMPLEX(IMAG) (ttemp);
-#else
-        REAL_T temp = alpha_ * A_matrix[i] * B_matrix[i];
-#endif
-        C_matrix[i] = temp;     //* temp;
+        C_matrix[i] = A_matrix[i] * B_matrix[i];
     }
 #ifdef BML_USE_MAGMA
-    free(A_matrix);
-    free(B_matrix);
-    free(C_matrix);
+    MAGMA(setmatrix) (C->N, C->N, (MAGMA_T *) C_matrix, C->N, C->matrix,
+                      C->ld, bml_queue());
+
+    bml_free_memory(A_matrix);
+    bml_free_memory(B_matrix);
+    bml_free_memory(C_matrix);
 #endif
 }
