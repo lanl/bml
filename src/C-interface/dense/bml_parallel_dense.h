@@ -146,6 +146,23 @@ void bml_mpi_bcast_matrix_dense(
     bml_matrix_dense_t * A,
     const int root,
     MPI_Comm comm);
+
+void bml_mpi_bcast_matrix_dense_single_real(
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm);
+void bml_mpi_bcast_matrix_dense_double_real(
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm);
+void bml_mpi_bcast_matrix_dense_single_complex(
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm);
+void bml_mpi_bcast_matrix_dense_double_complex(
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm);
 #endif
 
 #endif

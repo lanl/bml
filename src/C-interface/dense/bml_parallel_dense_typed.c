@@ -22,11 +22,6 @@
 #include <omp.h>
 #endif
 
-#ifdef BML_USE_MAGMA
-    // buffer on CPU to be used for communications
-static MAGMA_T *A_matrix_buffer;
-#endif
-
 /** Gather a bml matrix across MPI ranks.
  *
  *  \ingroup parallel_group
@@ -162,6 +157,29 @@ bml_matrix_dense_t
     bml_mpi_recv_dense(A_bml, src, comm);
 
     return A_bml;
+}
+
+void TYPED_FUNC(
+    bml_mpi_bcast_matrix_dense) (
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+#ifdef BML_USE_MAGMA
+    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N,
+                      bml_queue());
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
+
+    MPI_Bcast(A_matrix, A->N * A->N, MPI_T, root, comm);
+
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (A->N, A->N, A_matrix, A->N, A->matrix, A->ld,
+                      bml_queue());
+    bml_free_memory(A_matrix);
+#endif
 }
 
 #endif

@@ -204,13 +204,24 @@ bml_mpi_bcast_matrix_dense(
     const int root,
     MPI_Comm comm)
 {
-    // create MPI data type to avoid multiple messages
-    MPI_Datatype mpi_data_type;
-    bml_mpi_type_create_struct_dense(A, &mpi_data_type);
-
-    MPI_Bcast(A, 1, mpi_data_type, root, comm);
-
-    MPI_Type_free(&mpi_data_type);
+    switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_mpi_bcast_matrix_dense_single_real(A, root, comm);
+            break;
+        case double_real:
+            return bml_mpi_bcast_matrix_dense_double_real(A, root, comm);
+            break;
+        case single_complex:
+            return bml_mpi_bcast_matrix_dense_single_complex(A, root, comm);
+            break;
+        case double_complex:
+            return bml_mpi_bcast_matrix_dense_double_complex(A, root, comm);
+            break;
+        default:
+            LOG_ERROR("unknown precision\n");
+            break;
+    }
 }
 
 #endif
