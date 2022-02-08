@@ -25,28 +25,33 @@ deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main
 deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
 # deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
 EOF
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | ${SUDO} apt-key add -
+${SUDO} bash -c "cat > /etc/apt/trusted.gpg.d/llvm.gpg" < <(wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor)
 
 cat <<EOF | ${SUDO} tee /etc/apt/sources.list.d/cmake.list
 deb http://ppa.launchpad.net/janisozaur/cmake-update-bionic/ubuntu bionic main
 # deb-src http://ppa.launchpad.net/janisozaur/cmake-update-bionic/ubuntu bionic main
 EOF
-${SUDO} apt-key adv --keyserver keyserver.ubuntu.com \
+gpg --keyserver keyserver.ubuntu.com \
   --recv-keys DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4
+${SUDO} bash -c "cat > /etc/apt/trusted.gpg.d/cmake.gpg" < <(gpg --export DBA92F17B25AD78F9F2D9F713DEC686D130FF5E4)
 
 cat <<EOF | ${SUDO} tee /etc/apt/sources.list.d/toolchain.list
 deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main
 # deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu bionic main
 EOF
-${SUDO} apt-key adv --keyserver keyserver.ubuntu.com \
+gpg --keyserver keyserver.ubuntu.com \
   --recv-keys 60C317803A41BA51845E371A1E9377A2BA9EF27F
+${SUDO} bash -c "cat > /etc/apt/trusted.gpg.d/toolchain.gpg" < <(gpg --export 60C317803A41BA51845E371A1E9377A2BA9EF27F)
 
 cat <<EOF | ${SUDO} tee /etc/apt/sources.list.d/emacs.list
 deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu bionic main
 # deb-src http://ppa.launchpad.net/kelleyk/emacs/ubuntu bionic main
 EOF
-${SUDO} apt-key adv --keyserver keyserver.ubuntu.com \
+gpg --keyserver keyserver.ubuntu.com \
   --recv-keys 873503A090750CDAEB0754D93FF0E01EEAAFC9CD
+${SUDO} bash -c "cat > /etc/apt/trusted.gpg.d/emacs.gpg" < <(gpg --export 873503A090750CDAEB0754D93FF0E01EEAAFC9CD)
+
+apt-key list
 
 for i in $(seq 5); do
   ${SUDO} apt-get update && break
