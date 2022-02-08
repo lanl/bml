@@ -255,6 +255,56 @@ Please indent your C code using
 
 You can use the script :code:`indent.sh` to indent all C code.
 
+Helpful Developer Resources
+===========================
+
+Optimizations
+-------------
+
+For low level optimization work it is useful to understand what assembly code
+the compiler generates. For example, to verify that the compiler vectorizes the
+loop in the following example:
+
+.. code-block:: C
+   :linenos:
+   :lineno-start: 5
+   :emphasize-lines: 5
+
+   void double_array(float a[8]) {
+     a = __builtin_assume_aligned(a, 64);
+     for (int i = 0; i < 8; i++) {
+      a[i] *= 2;
+     }
+   }
+
+we can build the source with
+
+.. code-block:: console
+
+  gcc -S -O3 -fverbose-asm test.c
+
+and analyze the generated assembly code,
+
+.. code-block:: asm
+   :linenos:
+   :emphasize-lines: 2-4
+
+   # test.c:8:    a[i] *= 2;
+     movaps	(%rdi), %xmm0	# MEM <vector(4) float> [(float *)a_9], vect__5.8
+     addps	%xmm0, %xmm0	#, vect__5.8
+     movaps	%xmm0, (%rdi)	# vect__5.8, MEM <vector(4) float> [(float *)a_9]
+     movaps	16(%rdi), %xmm0	# MEM <vector(4) float> [(float *)a_9 + 16B], vect__5.8
+     addps	%xmm0, %xmm0	#, vect__5.8
+     movaps	%xmm0, 16(%rdi)	# vect__5.8, MEM <vector(4) float> [(float *)a_9 + 16B]
+
+The aligned memory access, `movaps`, moving 4 (aligned packed single-precision)
+`float` values into `%xmm0`, and the subsequent `addps` instruction show that
+the compiler fully vectorized the loop.
+
+Note that the `Compiler Explorer <https://godbolt.org/>`_ provides an
+alternative that does not require local compilations, see
+`https://godbolt.org/z/ejEdqKa6Y <https://godbolt.org/#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:___c,selection:(endColumn:1,endLineNumber:22,positionColumn:1,positionLineNumber:22,selectionStartColumn:1,selectionStartLineNumber:22,startColumn:1,startLineNumber:22),source:'%23include+%3Cstdio.h%3E%0A%0A%23define+N+8%0A%0Avoid+double_array(float+a%5BN%5D)+%7B%0A++a+%3D+__builtin_assume_aligned(a,+64)%3B%0A%23pragma+omp+simd%0A++for+(int+i+%3D+0%3B+i+%3C+N%3B+i%2B%2B)+%7B%0A+++a%5Bi%5D+*%3D+2%3B%0A++%7D%0A%7D%0A%0Aint+main+()+%7B%0A++float+a%5BN%5D+__attribute__((aligned(64)))%3B%0A++for+(int+i+%3D+0%3B+i+%3C+N%3B+i%2B%2B)+%7B%0A++++printf(%22a%5B%25d%5D+%3D+%25p%5Cn%22,+i,+%26a%5Bi%5D)%3B%0A++++a%5Bi%5D+%3D+i%3B%0A++%7D%0A++double_array(a)%3B%0A++printf(%22a%5B0%5D+%3D+%25e%5Cn%22,+a%5B0%5D)%3B%0A%7D%0A'),l:'5',n:'0',o:'C+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:cg112,filters:(b:'0',binary:'1',commentOnly:'0',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:___c,libs:!(),options:'-O3',selection:(endColumn:1,endLineNumber:1,positionColumn:1,positionLineNumber:1,selectionStartColumn:1,selectionStartLineNumber:1,startColumn:1,startLineNumber:1),source:1,tree:'1'),l:'5',n:'0',o:'x86-64+gcc+11.2+(C,+Editor+%231,+Compiler+%231)',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',n:'0',o:'',t:'0')),version:4>`_.
+
 Citing
 ======
 
