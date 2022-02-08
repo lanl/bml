@@ -63,7 +63,9 @@ EOF
     echo "BML_NONMPI_PRECOMMAND  Command to prepend to tests (default is ${BML_NONMPI_PRECOMMAND})"
     echo "BML_NONMPI_PRECOMMAND_ARGS  Arguments for prepend command (default is ${BML_NONMPI_PRECOMMAND_ARGS})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
+    echo "BLA_VENDOR or BLAS_VENDOR    Any vendor defined in"
+    echo "                             FindBLAS.cmake https://cmake.org/cmake/help/latest/module/FindBLAS.html"
+    echo "                             (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
     echo "PARALLEL_TEST_JOBS     The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
     echo "TESTING_EXTRA_ARGS     Arguments to ctest, e.g. '-R C-.*-double_real'"
@@ -104,6 +106,7 @@ set_defaults() {
     : ${BML_MPIEXEC_PREFLAGS:=}
     : ${BML_COMPLEX:=yes}
     : ${BLAS_VENDOR:=}
+    : ${BLA_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
     : ${EXTRA_CFLAGS:=}
     : ${EXTRA_FFLAGS:=}
@@ -302,6 +305,14 @@ dist() {
 echo "Writing output to ${LOG_FILE}"
 
 set_defaults
+
+if [[ -n ${BLA_VENDOR} ]]; then
+    if [[ -n ${BLAS_VENDOR} ]]; then
+        echo "WARNING: BLAS_VENDOR (${BLAS_VENDOR}) will be used instead of BLA_VENDOR (${BLA_VENDOR})" | tee --append "${LOG_FILE}"
+    else
+        BLAS_VENDOR=${BLA_VENDOR}
+    fi
+fi
 
 if [[ $# -gt 0 ]]; then
     if [[ $1 = "-h" || $1 = "--help" ]]; then
