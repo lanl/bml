@@ -268,7 +268,7 @@ loop in the following example:
 .. code-block:: C
    :linenos:
    :lineno-start: 5
-   :emphasize-lines: 5
+   :emphasize-lines: 4
 
    void double_array(float a[8]) {
      a = __builtin_assume_aligned(a, 64);
