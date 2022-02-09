@@ -3,6 +3,10 @@
 #include "bml_allocate_dense.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 #include <memory.h>
 #include <complex.h>
 
@@ -21,7 +25,6 @@ bml_matrix_dense_t
                                                int irow, int icol,
                                                int B_N, int B_M)
 {
-    int A_N = A->N;
     REAL_T *A_value = A->matrix;
 
     bml_matrix_dimension_t matrix_dimension = { B_N, B_N, B_N };
@@ -31,6 +34,11 @@ bml_matrix_dense_t
 
     REAL_T *B_value = B->matrix;
 
+#ifdef BML_USE_MAGMA
+    MAGMA(copymatrix) (B_N, B_N, (MAGMA_T *) (A_value + irow * A->ld + icol),
+                       A->ld, (MAGMA_T *) B_value, B->ld, bml_queue());
+#else
+    int A_N = A->N;
     // loop over subset of rows of A
     for (int i = irow; i < irow + B_N; i++)
     {
@@ -40,7 +48,7 @@ bml_matrix_dense_t
                 A_value[ROWMAJOR(i, j, A_N, A_N)];
         }
     }
-
+#endif
     return B;
 }
 
@@ -58,12 +66,17 @@ void TYPED_FUNC(
     int irow,
     int icol)
 {
-    int A_N = A->N;
     REAL_T *A_value = A->matrix;
 
     int B_N = B->N;
     REAL_T *B_value = B->matrix;
 
+#ifdef BML_USE_MAGMA
+    MAGMA(copymatrix) (B_N, B_N, (MAGMA_T *) B_value, B->ld,
+                       (MAGMA_T *) (A_value + irow * A->ld + icol), A->ld,
+                       bml_queue());
+#else
+    int A_N = A->N;
     // loop over rows of B
     for (int i = 0; i < B_N; i++)
     {
@@ -71,4 +84,5 @@ void TYPED_FUNC(
         int offsetB = ROWMAJOR(i, 0, B_N, B_N);
         memcpy(A_value + offsetA, B_value + offsetB, B_N * sizeof(REAL_T));
     }
+#endif
 }
