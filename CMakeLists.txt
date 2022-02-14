@@ -364,17 +364,6 @@ if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
   set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_Fortran_FLAGS})
-  check_fortran_function_exists(sgemm HAVE_SGEMM)
-  check_fortran_function_exists(dgemm HAVE_DGEMM)
-  check_fortran_function_exists(cgemm HAVE_CGEMM)
-  check_fortran_function_exists(zgemm HAVE_ZGEMM)
-  if(NOT (HAVE_SGEMM AND HAVE_DGEMM AND HAVE_CGEMM AND HAVE_ZGEMM))
-    message(FATAL_ERROR "Could not find {s,d,c,z}gemm")
-  endif()
-  add_definitions(-DHAVE_SGEMM -DHAVE_DGEMM)
-
-  set(CMAKE_REQUIRED_LIBRARIES
     ${LINK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
   bml_check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
@@ -407,21 +396,6 @@ endif()
 
 if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
-
-  set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${LAPACK_LIBRARIES} ${OpenMP_Fortran_FLAGS})
-  check_fortran_function_exists(ssyev HAVE_SSYEV)
-  check_fortran_function_exists(dsyev HAVE_DSYEV)
-  check_fortran_function_exists(cheevr HAVE_CHEEVR)
-  check_fortran_function_exists(zheevr HAVE_ZHEEVR)
-  check_fortran_function_exists(sgetrf HAVE_SGETRF)
-  check_fortran_function_exists(dgetrf HAVE_DGETRF)
-  check_fortran_function_exists(cgetri HAVE_CGETRI)
-  check_fortran_function_exists(zgetri HAVE_ZGETRI)
-  if(NOT (HAVE_SSYEV AND HAVE_DSYEV AND HAVE_CHEEVR AND HAVE_ZHEEVR))
-    message(FATAL_ERROR "Could not find {s,d}syev or {c,z}heevr")
-  endif()
-  add_definitions(-DHAVE_SSYEV -DHAVE_DSYEV -DHAVE_CSYEVR -DHAVE_ZSYEVR)
 
   set(CMAKE_REQUIRED_LIBRARIES
     ${LINK_LIBRARIES} ${LAPACK_LIBRARIES} ${OpenMP_C_FLAGS})
