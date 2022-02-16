@@ -74,7 +74,7 @@ EOF
     echo "CMAKE_CXX_FLAGS        Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
     echo "CMAKE_Fortran_FLAGS    Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
     echo "BLAS_LIBRARIES         Blas libraries              (default is '${BLAS_LIBRARIES}')"
-    echo "LAPACK LIBRARIES       Lapack libraries            (default is '${LAPACK_LIBRARIES}')"
+    echo "LAPACK_LIBRARIES       Lapack libraries            (default is '${LAPACK_LIBRARIES}')"
     echo "EXTRA_CFLAGS           Extra C flags               (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FFLAGS           Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "EXTRA_LINK_FLAGS       Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
@@ -85,6 +85,7 @@ EOF
     echo "BML_CUSOLVER           Build with cuSOLVER         (default is ${BML_CUSOLVER})"
     echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "BML_SCALAPACK          Build with SCALAPACK        (default is ${BML_SCALAPACK})"
+    echo "SCALAPACK_LIBRARIES    ScaLapack libraries         (default is ${SCALAPACK_LIBRARIES})"
     echo "BML_ELLBLOCK_MEMPOOL   Use ellblock memory pool    (default is ${BML_ELLBLOCK_MEMPOOL}"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
     echo "INTEL_OPT              {yes, no}                   (default is ${INTEL_OPT})"
@@ -115,6 +116,7 @@ set_defaults() {
     : ${CMAKE_Fortran_FLAGS:=}
     : ${BLAS_LIBRARIES:=}
     : ${LAPACK_LIBRARIES:=}
+    : ${SCALAPACK_LIBRARIES:=}
     : ${BML_TESTING:=yes}
     : ${BML_VALGRIND:=no}
     : ${BML_COVERAGE:=no}
@@ -187,6 +189,7 @@ configure() {
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBLAS_LIBRARIES="${BLAS_LIBRARIES}" \
         -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
+        -DSCALAPACK_LIBRARIES="${SCALAPACK_LIBRARIES}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DMKL_GPU="${MKL_GPU}" \
         -DBML_MPI="${BML_MPI}" \

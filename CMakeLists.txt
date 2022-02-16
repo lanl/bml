@@ -297,6 +297,7 @@ endif()
 set(BML_SCALAPACK FALSE CACHE BOOL "Whether to use ScaLAPACK library")
 if(BML_SCALAPACK)
   add_definitions(-DBML_USE_SCALAPACK)
+  message(STATUS "SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES}")
 endif()
 
 set(BML_INTERNAL_BLAS FALSE
@@ -339,32 +340,29 @@ if(NOT (LAPACK_FOUND OR NOBLAS OR MAGMA_FOUND))
   endif()
 endif()
 message(STATUS "LAPACK_LIBRARIES=${LAPACK_LIBRARIES}")
+if(MAGMA_FOUND)
+  if(BML_CUSOLVER)
+    message(STATUS "cuSOLVER: ${CUDA_cusolver_LIBRARY}")
+  endif()
+endif()
 
+#check existence of required math and linear algebra functions
+#in third party libraries
 include(CheckFunctionExists)
 include(CheckFortranFunctionExists)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
 
 set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} -lm)
 check_function_exists(fabs HAVE_FABS)
 if(NOT HAVE_FABS)
   message(FATAL_ERROR "Could not find the fabs() function")
 endif()
-list(APPEND LINK_LIBRARIES -lm)
 
-include(${PROJECT_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
-if(MAGMA_FOUND)
-  set(CMAKE_REQUIRED_LIBRARIES
-    ${MAGMA_LIBRARIES})
-  list(APPEND LINK_LIBRARIES ${MAGMA_LIBRARIES})
-  if(BML_CUSOLVER)
-    message(STATUS "cuSOLVER: ${CUDA_cusolver_LIBRARY}")
-    list(APPEND LINK_LIBRARIES ${CUDA_cusolver_LIBRARY})
-  endif()
-endif()
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
   set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
+    ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
   bml_check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(cgemm C_CGEMM REQUIRED)
@@ -390,15 +388,13 @@ if(BLAS_FOUND)
     -DC_DAXPY=${C_DAXPY}
     -DC_CAXPY=${C_CAXPY}
     -DC_ZAXPY=${C_ZAXPY})
-
-  list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
 endif()
 
 if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${LAPACK_LIBRARIES} ${OpenMP_C_FLAGS})
+    ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
   bml_check_C_Fortran_function_exists(ssyev C_SSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
@@ -432,16 +428,17 @@ if(LAPACK_FOUND)
     -DC_DLACPY=${C_DLACPY}
     -DC_CLACPY=${C_CLACPY}
     -DC_ZLACPY=${C_ZLACPY})
-
-  list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
 if(BML_SCALAPACK)
+  set(CMAKE_REQUIRED_LIBRARIES ${SCALAPACK_LIBRARIES}
+      ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
+  message(STATUS "SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES}")
+  bml_check_C_Fortran_function_exists(numroc NUMROC REQUIRED)
   bml_check_C_Fortran_function_exists(pssyevd PSSYEVD REQUIRED)
   bml_check_C_Fortran_function_exists(pdsyevd PDSYEVD REQUIRED)
   bml_check_C_Fortran_function_exists(pcheevd PCHEEVD REQUIRED)
   bml_check_C_Fortran_function_exists(pzheevd PZHEEVD REQUIRED)
-  bml_check_C_Fortran_function_exists(numroc NUMROC REQUIRED)
   add_definitions(
     -DPSSYEVD=${PSSYEVD}
     -DPDSYEVD=${PDSYEVD}
@@ -449,6 +446,25 @@ if(BML_SCALAPACK)
     -DPZHEEVD=${PZHEEVD}
     -DNUMROC=${NUMROC})
 endif()
+
+#append linear algebra libraries to list of libraries to link with
+#warning: order matters!
+if(MAGMA_FOUND)
+  list(APPEND LINK_LIBRARIES ${MAGMA_LIBRARIES})
+  if(BML_CUSOLVER)
+    list(APPEND LINK_LIBRARIES ${CUDA_cusolver_LIBRARY})
+  endif()
+endif()
+if(BML_SCALAPACK)
+  list(APPEND LINK_LIBRARIES ${SCALAPACK_LIBRARIES})
+endif()
+if(LAPACK_FOUND)
+  list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
+endif()
+if(BLAS_FOUND)
+  list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
+endif()
+list(APPEND LINK_LIBRARIES -lm)
 
 # Check whether the compiler supports complex types. The Nvidia
 # compiler is known not to support them for example.
