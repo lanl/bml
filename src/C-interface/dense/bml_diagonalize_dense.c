@@ -80,6 +80,13 @@ bml_diagonalize_dense_single_real(
     float *evecs = calloc(A->N * A->N, sizeof(float));
     float *evals = calloc(A->N, sizeof(float));
     float *work = calloc(lwork, sizeof(float));
+
+    int N = A->N;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
+
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
 
 #ifdef NOBLAS
@@ -107,6 +114,10 @@ bml_diagonalize_dense_single_real(
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
 
 #ifdef BML_USE_MAGMA
@@ -293,6 +304,11 @@ bml_diagonalize_dense_double_real(
     double *evecs = calloc(A->N * A->N, sizeof(double));
     double *evals = calloc(A->N, sizeof(double));
     double *work = calloc(lwork, sizeof(double));
+    int N = A->N;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
 
 #ifdef NOBLAS
@@ -311,6 +327,10 @@ bml_diagonalize_dense_double_real(
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
     free(evecs);
     free(evals);
     free(work);
@@ -380,6 +400,11 @@ bml_diagonalize_dense_single_complex(
     float complex *evecs = calloc(A->N * A->N, sizeof(float complex));
     float complex *work = calloc(lwork, sizeof(float complex));
 
+    int N = A->N;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(float complex));
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -405,6 +430,10 @@ bml_diagonalize_dense_single_complex(
         }
     }
 
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
     free(A_copy);
     free(evecs);
     free(isuppz);
@@ -477,6 +506,11 @@ bml_diagonalize_dense_double_complex(
     double complex *evecs = calloc(A->N * A->N, sizeof(double complex));
     double complex *work = calloc(lwork, sizeof(double complex));
 
+    int N = A->N;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(double complex));
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -503,6 +537,10 @@ bml_diagonalize_dense_double_complex(
         }
     }
 
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
     free(A_copy);
     free(evecs);
     free(isuppz);

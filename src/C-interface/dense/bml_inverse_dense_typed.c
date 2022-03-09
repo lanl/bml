@@ -1,9 +1,14 @@
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
+//#elif (MKL_GPU)
+//#include "stdio.h"
+//#include "mkl.h"
+//#include "mkl_omp_offload.h"
 #else
 #include "../blas.h"
 #include "../lapack.h"
 #endif
+
 #include "../../typed.h"
 #include "../bml_allocate.h"
 #include "../bml_copy.h"
@@ -59,6 +64,7 @@ void TYPED_FUNC(
     int N = A->N;
     int lda = A->ld;
     int *ipiv = bml_allocate_memory(N * sizeof(int));
+
 #ifdef BML_USE_MAGMA
     MAGMAGPU(getrf) (M, N, A->matrix, A->ld, ipiv, &info);
     if (info != 0)
@@ -71,6 +77,38 @@ void TYPED_FUNC(
     if (info != 0)
         LOG_ERROR("ERROR in getri_gpu");
     magma_free(dwork);
+//#elif defined(MKL_GPU)
+    //printf("Got to here 1 \n");
+
+// for now pull the data back to the CPU
+    //int sizea = A->N * A->N;
+    //int dnum = 0;
+//
+    //MKL_T *A_matrix = (MKL_T *) A->matrix;
+    //MKL_T *wmatrix = (MKL_T *) malloc(sizea*sizeof(REAL_T));
+//
+    //MKL_INT *la_info = (MKL_INT *) malloc(sizeof(MKL_INT));
+    //MKL_INT *g_ipiv = (MKL_INT *) malloc(N*sizeof(MKL_INT));
+
+//#pragma omp target data map(g_ipiv[0:N], wmatrix[0:sizea], la_info[0:1])
+//#pragma omp target variant dispatch device(dnum) use_device_ptr(A_matrix, g_ipiv, la_info)
+    // la_info = G_LAPACK(getrf) (LAPACK_ROW_MAJOR, M, N, A_matrix, lda, g_ipiv);
+    //G_LAPACK(getrf) (&M, &N, A_matrix, &lda, g_ipiv, la_info);
+//#pragma omp target update from(A_matrix[0:sizea], g_ipiv[0:N])
+    //printf("After getrf \n");
+    //bml_print_bml_matrix(A, 0, N, 0, N);
+    //for (int i=0; i<N; i++) {
+    //    printf("%d,", g_ipiv[i]);
+    //}
+    //printf("\n");
+    //printf("%d \n", la_info);
+//#pragma omp target variant dispatch device(dnum) use_device_ptr(A_matrix, g_ipiv, wmatrix, la_info)
+    //la_info = G_LAPACK(getri) (LAPACK_ROW_MAJOR, N, A_matrix, lda, g_ipiv);
+    //G_LAPACK(getri) (&N, A_matrix, &lda, g_ipiv, wmatrix, &N, la_info);
+//#pragma omp target update from(A_matrix[0:sizea])
+    //printf("After getri \n");
+    //bml_print_bml_matrix(A, 0, N, 0, N);
+    //printf("%d \n", la_info);
 #else
     int lwork = N * N;
     REAL_T *work = bml_allocate_memory(lwork * sizeof(REAL_T));
@@ -78,8 +116,17 @@ void TYPED_FUNC(
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
+#ifdef MKL_GPU
+// pull from GPU
+    REAL_T *A_matrix = A->matrix;
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     C_BLAS(GETRF) (&M, &N, A->matrix, &lda, ipiv, &info);
     C_BLAS(GETRI) (&N, A->matrix, &N, ipiv, work, &lwork, &info);
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
     bml_free_memory(work);
 #endif /* BML_USE_MAGMA */

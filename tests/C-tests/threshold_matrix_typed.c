@@ -5,6 +5,7 @@
 #include <complex.h>
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int TYPED_FUNC(
     test_threshold) (
@@ -50,11 +51,12 @@ int TYPED_FUNC(
     B_dense = bml_export_to_dense(B, dense_row_major);
     if (bml_getMyRank() == 0)
     {
+        printf("A \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
                                0, N, 0, N);
-        if (bml_getMyRank() == 0)
-            bml_print_dense_matrix(N, matrix_precision, dense_row_major,
-                                   B_dense, 0, N, 0, N);
+        printf("B (A thresholded at %f \n", threshold);
+        bml_print_dense_matrix(N, matrix_precision, dense_row_major,
+                               B_dense, 0, N, 0, N);
         for (int i = 0; i < N * N; i++)
         {
             if (ABS(B_dense[i]) > 0 && ABS(B_dense[i]) < threshold)
@@ -75,6 +77,10 @@ int TYPED_FUNC(
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     REAL_T scale_factor = 1.e-2;
     bml_scale_inplace(&scale_factor, A);
+    if (bml_getMyRank() == 0)
+    {
+        printf("A scaled by %f \n", scale_factor);
+    }
     bml_print_bml_matrix(A, 0, max_row, 0, max_col);
 
     REAL_T *diagonal = bml_allocate_memory(N * sizeof(REAL_T));

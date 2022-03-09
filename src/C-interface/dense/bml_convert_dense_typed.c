@@ -47,5 +47,9 @@ bml_matrix_dense_t *TYPED_FUNC(
                       bml_queue());
     free(Bij);
 #endif
+#ifdef MKL_GPU
+// push to GPU
+#pragma omp target update to(Bij[0:N*N])
+#endif
     return B;
 }

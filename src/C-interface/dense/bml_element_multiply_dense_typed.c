@@ -61,6 +61,12 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
     REAL_T *C_matrix = C->matrix;
+
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N], B_matrix[0:N*N])
+#endif
+
 #endif
 
     int *A_localRowMin = A->domain->localRowMin;
@@ -84,5 +90,9 @@ void TYPED_FUNC(
     bml_free_memory(A_matrix);
     bml_free_memory(B_matrix);
     bml_free_memory(C_matrix);
+#endif
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(C_matrix[0:N*N])
 #endif
 }

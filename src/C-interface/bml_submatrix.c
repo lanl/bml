@@ -15,9 +15,9 @@
  *
  * \param A Hamiltonian matrix A
  * \param B Graph matrix B
- * \param nodelist List of node/orbital indeces
+ * \param nodelist List of node/orbital indices
  * \param nsize Size of nodelist
- * \param core_halo_index List of core+halo indeces
+ * \param core_halo_index List of core+halo indices
  * \param vsize Size of core_halo_index and core_pos
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
@@ -65,9 +65,9 @@ bml_matrix2submatrix_index(
  * \ingroup submatrix_group_C
  *
  * \param B Graph matrix B
- * \param nodelist List of node/orbital indeces
+ * \param nodelist List of node/orbital indices
  * \param nsize Size of nodelist
- * \param core_halo_index List of core+halo indeces
+ * \param core_halo_index List of core+halo indices
  * \param vsize Size of core_halo_index and core_pos
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
@@ -114,7 +114,7 @@ bml_matrix2submatrix_index_graph(
  * \ingroup submatrix_group_C
  *
  * \param A Matrix A
- * \param hindex Indeces of nodes
+ * \param hindex Indices of nodes
  * \param ngroups Number of groups
  * \param threshold Threshold for graph
  */
@@ -156,8 +156,8 @@ bml_group_matrix(
  *
  * \param A Matrix A
  * \param B Submatrix B
- * \param core_halo_index Set of row indeces for submatrix
- * \param llsize Number of indeces
+ * \param core_halo_index Set of row indices for submatrix
+ * \param llsize Number of indices
  */
 void
 bml_matrix2submatrix(
@@ -190,14 +190,14 @@ bml_matrix2submatrix(
     }
 }
 
-/** Assemble submatrix into a full matrix based on core+halo indeces.
+/** Assemble submatrix into a full matrix based on core+halo indices.
  *
  * \ingroup submatrix_group_C
  *
  * \param A Submatrix A
  * \param B Matrix B
- * \param core_halo_index Set of submatrix row indeces
- * \param lsize Number of indeces
+ * \param core_halo_index Set of submatrix row indices
+ * \param lsize Number of indices
  * \param llsize Number of core positions
  */
 void

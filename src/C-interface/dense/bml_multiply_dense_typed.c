@@ -72,9 +72,9 @@ void TYPED_FUNC(
     int sizea = A->N * A->N;
     int dnum = 0;
 
-    REAL_T *amatrix = (REAL_T *) A->matrix;
-    REAL_T *bmatrix = (REAL_T *) B->matrix;
-    REAL_T *cmatrix = (REAL_T *) C->matrix;
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
+    REAL_T *C_matrix = (REAL_T *) C->matrix;
 
     MKL_T alpha_;
     MKL_T beta_;
@@ -84,14 +84,13 @@ void TYPED_FUNC(
     MKL_IMAG(alpha_);
     MKL_IMAG(beta_);
 
-#pragma omp target data map(to:bmatrix[0:sizea],amatrix[0:sizea]) map(tofrom:cmatrix[0:sizea]) device(dnum)
     {
         // run gemm on gpu, use standard oneMKL interface within a variant dispatch construct
-#pragma omp target variant dispatch device(dnum) use_device_ptr(bmatrix, amatrix, cmatrix)
+#pragma omp target variant dispatch device(dnum) use_device_ptr(B_matrix, A_matrix, C_matrix)
         {
             G_BLAS(gemm) (CblasColMajor, CblasNoTrans, CblasNoTrans, A->N,
-                          A->N, A->N, MKL_ADDRESS(alpha_), bmatrix, A->N,
-                          amatrix, A->N, MKL_ADDRESS(beta_), cmatrix, A->N);
+                          A->N, A->N, MKL_ADDRESS(alpha_), B_matrix, A->N,
+                          A_matrix, A->N, MKL_ADDRESS(beta_), C_matrix, A->N);
         }
     }
 #else
@@ -101,6 +100,7 @@ void TYPED_FUNC(
     TYPED_FUNC(bml_gemm) ("N", "N", &A->N, &A->N, &A->N, &alpha_, B->matrix,
                           &A->N, A->matrix, &A->N, &beta_, C->matrix, &A->N);
 #endif
+
 }
 
 /** Matrix multiply.

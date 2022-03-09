@@ -43,6 +43,7 @@ int TYPED_FUNC(
     }
 #endif
 
+    printf("Testing identity matrices \n");
     A = bml_identity_matrix(matrix_type, matrix_precision, N, M,
                             distrib_mode);
     B = bml_scale_new(&scalar, A);
@@ -58,10 +59,13 @@ int TYPED_FUNC(
 
     if (bml_getMyRank() == 0)
     {
+        printf("A \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
                                0, N, 0, N);
+        printf("B \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
                                0, N, 0, N);
+        printf("C \n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, C_dense,
                                0, N, 0, N);
 
@@ -121,6 +125,7 @@ int TYPED_FUNC(
     // Test when more values that just diagonal
     if (bml_getMyRank() == 0)
     {
+        printf("Testing random matrices \n");
         A_dense = bml_allocate_memory(sizeof(REAL_T) * N * N);
         for (int i = 0; i < N * N; i++)
         {

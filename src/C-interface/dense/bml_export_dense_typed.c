@@ -27,6 +27,12 @@ void *TYPED_FUNC(
     bml_matrix_dense_t * A,
     bml_dense_order_t order)
 {
+#ifdef MKL_GPU
+// pull from GPU
+    REAL_T *A_matrix = A->matrix;
+    int N = A->N;
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     REAL_T *A_dense = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
 
     switch (order)

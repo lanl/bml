@@ -3,7 +3,6 @@
 #endif
 
 #include "../../typed.h"
-#include "../blas.h"
 #include "../bml_allocate.h"
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
@@ -20,6 +19,14 @@
 
 #ifdef _OPENMP
 #include <omp.h>
+#endif
+
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#else
+#include "../blas.h"
 #endif
 
 /** Scale a dense matrix - result in new matrix.
@@ -45,6 +52,12 @@ bml_matrix_dense_t *TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
     MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, bml_queue());
+#elif defined (MKL_GPU)
+    int dnum = 0;
+
+    REAL_T scale = *scale_factor;
+#pragma omp target variant dispatch device(dnum) use_device_ptr(B_matrix)
+    G_BLAS(scal) (nElems, MKL_ADDRESS(scale), B_matrix, inc);
 #else
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -83,6 +96,12 @@ void TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
     MAGMA(scal) (nElems, scale_factor_, B->matrix, inc, bml_queue());
+#elif defined (MKL_GPU)
+    int dnum = 0;
+
+    REAL_T scale = *scale_factor;
+#pragma omp target variant dispatch device(dnum) use_device_ptr(B_matrix)
+    G_BLAS(scal) (nElems, MKL_ADDRESS(scale), B_matrix, inc);
 #else
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
@@ -100,18 +119,23 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *scale_factor = _scale_factor;
     int myRank = bml_getMyRank();
-    int number_elements = A->domain->localRowExtent[myRank] * A->ld;
+    int nElems = A->domain->localRowExtent[myRank] * A->ld;
     int startIndex = A->domain->localDispl[myRank];
     int inc = 1;
 #ifdef BML_USE_MAGMA
     MAGMA_T scale_factor_ = MAGMACOMPLEX(MAKE) (*scale_factor, 0.);
-    MAGMA(scal) (number_elements, scale_factor_, A->matrix, inc, bml_queue());
+    MAGMA(scal) (nElems, scale_factor_, A->matrix, inc, bml_queue());
+#elif defined (MKL_GPU)
+    int dnum = 0;
+
+    REAL_T scale = *scale_factor;
+#pragma omp target variant dispatch device(dnum) use_device_ptr(A_matrix)
+    G_BLAS(scal) (nElems, MKL_ADDRESS(scale), A_matrix, inc);
 #else
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
-    C_BLAS(SCAL) (&number_elements, scale_factor, &(A_matrix[startIndex]),
-                  &inc);
+    C_BLAS(SCAL) (&nElems, scale_factor, &(A_matrix[startIndex]), &inc);
 #endif
 #endif
 }
