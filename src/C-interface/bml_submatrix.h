@@ -5,7 +5,7 @@
 
 #include "bml_types.h"
 
-// Determine element indeces for submatrix, given a set of nodes.
+// Determine element indices for submatrix, given a set of nodes.
 void bml_matrix2submatrix_index(
     bml_matrix_t * A,
     bml_matrix_t * B,
@@ -15,7 +15,7 @@ void bml_matrix2submatrix_index(
     int *vsize,
     int double_jump_flag);
 
-// Determine core+halo indeces from graph only
+// Determine core+halo indices from graph only
 void bml_matrix2submatrix_index_graph(
     bml_matrix_t * B,
     int *nodelist,
@@ -24,7 +24,7 @@ void bml_matrix2submatrix_index_graph(
     int *vsize,
     int double_jump_flag);
 
-// Create contracted submatrix from a set of element indeces.
+// Create contracted submatrix from a set of element indices.
 void bml_matrix2submatrix(
     bml_matrix_t * A,
     bml_matrix_t * B,

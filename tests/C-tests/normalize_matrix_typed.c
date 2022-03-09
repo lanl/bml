@@ -59,10 +59,10 @@ int TYPED_FUNC(
     A_dense = bml_export_to_dense(A, dense_row_major);
     B_dense = bml_export_to_dense(B, dense_row_major);
     if (bml_getMyRank() == 0)
+    {
+        LOG_INFO("A\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, A_dense,
                                0, N, 0, N);
-    if (bml_getMyRank() == 0)
-    {
         LOG_INFO("B\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
                                0, N, 0, N);

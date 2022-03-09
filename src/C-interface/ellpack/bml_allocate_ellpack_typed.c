@@ -60,7 +60,7 @@ void TYPED_FUNC(
 
 /** Clear a matrix.
  *
- * Numbers of non-zeroes, indeces, and values are set to zero.
+ * Numbers of non-zeroes, indices, and values are set to zero.
  *
  * \ingroup allocate_group
  *

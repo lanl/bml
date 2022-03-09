@@ -59,7 +59,7 @@ void TYPED_FUNC(
                    A_nnz, A_domain->localRowExtent,
                    A_domain->localRowMin, MPI_INT, ccomm);
 
-    // Indeces
+    // Indices
     MPI_Allgatherv(MPI_IN_PLACE, 0, MPI_DATATYPE_NULL,
                    A_index, A_domain->localElements, A_domain->localDispl,
                    MPI_INT, ccomm);

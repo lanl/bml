@@ -33,7 +33,15 @@ void TYPED_FUNC(
                       (MAGMA_T *) A->matrix + i * A->ld + j, 1, bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     A_matrix[ROWMAJOR(i, j, N, N)] = *((REAL_T *) value);
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
 }
 
@@ -56,10 +64,18 @@ void TYPED_FUNC(
                       (MAGMA_T *) A->matrix + i * A->ld, 1, bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     for (int j = 0; j < N; j++)
     {
         A_matrix[ROWMAJOR(i, j, N, N)] = row[j];
     }
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
 }
 
@@ -87,9 +103,17 @@ void TYPED_FUNC(
     free(diagonal_);
 #else
     REAL_T *A_matrix = A->matrix;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     for (int j = 0; j < N; j++)
     {
         A_matrix[ROWMAJOR(j, j, N, N)] = diagonal[j];
     }
+#ifdef MKL_GPU
+// push to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
 }

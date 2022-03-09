@@ -187,6 +187,7 @@ int TYPED_FUNC(
                                   threshold);
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, E_dense,
                                0, max_row, 0, max_col);
+        printf("Reference\n");
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, D_dense,
                                0, max_row, 0, max_col);
 

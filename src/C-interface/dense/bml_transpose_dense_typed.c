@@ -8,6 +8,7 @@
 #include "../bml_parallel.h"
 #include "../bml_transpose.h"
 #include "../bml_types.h"
+#include "../bml_utilities.h"
 #include "bml_allocate_dense.h"
 #include "bml_transpose_dense.h"
 #include "bml_types_dense.h"
@@ -50,6 +51,14 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMABLAS(transpose) (A->N, A->N, A->matrix, A->ld,
                           B->matrix, B->ld, bml_queue());
 #else
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
+
+#ifdef VERBOSE
+    bml_print_bml_matrix(A, 0, N, 0, N);
+#endif
+
 #pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)
@@ -61,6 +70,9 @@ bml_matrix_dense_t *TYPED_FUNC(
             B_matrix[ROWMAJOR(i, j, N, N)] = A_matrix[ROWMAJOR(j, i, N, N)];
         }
     }
+#ifdef MKL_GPU
+#pragma omp target update to(B_matrix[0:N*N])
+#endif
 #endif
     return B;
 }
@@ -84,6 +96,9 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T tmp;
 
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
 #pragma omp parallel for                        \
   private(tmp)                                  \
   shared(N, A_matrix)
@@ -100,5 +115,8 @@ void TYPED_FUNC(
             }
         }
     }
+#ifdef MKL_GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
 }

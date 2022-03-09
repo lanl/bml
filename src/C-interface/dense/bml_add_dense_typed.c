@@ -5,13 +5,13 @@
 
 #include "../../macros.h"
 #include "../../typed.h"
-#include "../blas.h"
 #include "../bml_add.h"
 #include "../bml_allocate.h"
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
 #include "../bml_scale.h"
 #include "../bml_types.h"
+#include "../bml_utilities.h"
 #include "bml_add_dense.h"
 #include "bml_allocate_dense.h"
 #include "bml_copy_dense.h"
@@ -21,9 +21,18 @@
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #ifdef _OPENMP
 #include <omp.h>
+#endif
+
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#else
+#include "../blas.h"
 #endif
 
 /** Matrix addition.
@@ -50,6 +59,15 @@ void TYPED_FUNC(
     int startIndex = B->domain->localDispl[myRank];
     int inc = 1;
 
+#ifdef VERBOSE
+    printf("Initial values \n");
+    printf("%i, %i, %i \n", nElems, startIndex, inc);
+    printf("A \n");
+    bml_print_bml_matrix(A, 0, 10, 0, 10);
+    printf("B \n");
+    bml_print_bml_matrix(B, 0, 10, 0, 10);
+#endif
+
 #ifdef BML_USE_MAGMA
     nElems = B->N * B->ld;
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
@@ -57,6 +75,58 @@ void TYPED_FUNC(
     MAGMA(scal) (nElems, alpha_, A->matrix, inc, bml_queue());
     MAGMA(axpy) (nElems, beta_, B->matrix, inc,
                  A->matrix + startIndex, inc, bml_queue());
+#elif defined(MKL_GPU)
+    int sizea = nElems;
+    int dnum = 0;
+
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
+
+    const MKL_INT gpuSize = nElems;
+    const MKL_INT gpuInc = inc;
+
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+    MKL_T alpha_ = alpha;
+    MKL_T beta_ = beta;
+#else
+    MKL_T alpha_;
+    MKL_T beta_;
+
+    MKL_REAL(alpha_) = (REAL_T) alpha;
+    MKL_REAL(beta_) = (REAL_T) beta;
+    MKL_IMAG(alpha_);
+    MKL_IMAG(beta_);
+#endif
+
+// this should now be handled by the alloc
+//#pragma omp target data map(to:A_matrix[0:sizea], B_matrix[0:sizea]) device(dnum)
+    {
+#ifdef VERBOSE
+        printf("Initial values on GPU \n");
+#pragma omp target update from(A_matrix[0:sizea])
+#pragma omp target update from(B_matrix[0:sizea])
+        printf("A \n");
+        bml_print_bml_matrix(A, 0, 10, 0, 10);
+        printf("B \n");
+        bml_print_bml_matrix(B, 0, 10, 0, 10);
+#endif
+        // run scal + axpy on gpu, use standard oneMKL interface within a variant dispatch construct
+#pragma omp target variant dispatch device(dnum) use_device_ptr(A_matrix)
+        {
+            G_BLAS(scal) (gpuSize, MKL_ADDRESS(alpha_), A_matrix, gpuInc);
+        }
+#ifdef VERBOSE
+        printf("After scal \n");
+        printf("A \n");
+        bml_print_bml_matrix(A, 0, 10, 0, 10);
+#endif
+#pragma omp target variant dispatch device(dnum) use_device_ptr(A_matrix, B_matrix)
+        {
+            G_BLAS(axpy) (gpuSize, MKL_ADDRESS(beta_), B_matrix, gpuInc,
+                          A_matrix, gpuInc);
+            //G_BLAS(axpby) (gpuSize, MKL_ADDRESS(beta_), B_matrix, gpuInc, MKL_ADDRESS(alpha_), A_matrix, gpuInc);
+        }
+    }
 #else
     REAL_T alpha_ = alpha;
     REAL_T beta_ = beta;
@@ -68,7 +138,7 @@ void TYPED_FUNC(
     C_BLAS(AXPY) (&nElems, &beta_, B->matrix + startIndex, &inc,
                   A->matrix + startIndex, &inc);
 #endif
-
+    printf("I shouldn't be here \n");
 #endif
 }
 
@@ -144,6 +214,9 @@ void TYPED_FUNC(
     int *A_localRowMax = A->domain->localRowMax;
     int myRank = bml_getMyRank();
 
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
 #pragma omp parallel for                                \
   shared(A_matrix, A_localRowMin, A_localRowMax)        \
   shared(N, myRank, beta_)
@@ -152,6 +225,9 @@ void TYPED_FUNC(
     {
         A_matrix[ROWMAJOR(i, i, N, N)] += beta_;
     }
+#ifdef MKL_GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #endif
 }
 

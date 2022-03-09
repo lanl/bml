@@ -54,8 +54,12 @@ void *TYPED_FUNC(
 {
     int N = A->N;
     REAL_T *offdiag_sum = calloc(N, sizeof(REAL_T));
-    REAL_T *A_value = (REAL_T *) A->matrix;
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
 
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     for (int i = 0; i < N; i++)
     {
         double radius = 0.0;
@@ -63,7 +67,7 @@ void *TYPED_FUNC(
         {
             int ind = ROWMAJOR(i, j, N, N);
             if ((i != j) || include_diag)
-                radius += (double) ABS(A_value[ind]);
+                radius += (double) ABS(A_matrix[ind]);
         }
         offdiag_sum[i] = radius;
     }
@@ -105,8 +109,12 @@ void *TYPED_FUNC(
                       bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
-#endif
 
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
+#endif
 #pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)  \
@@ -177,13 +185,17 @@ void *TYPED_FUNC(
     REAL_T radius, dvalue, absham;
 
     int N = A->N;
-    REAL_T *A_matrix = A->matrix;
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
 
     double emin = DBL_MAX;
     double emax = DBL_MIN;
 
     double *eval = bml_allocate_memory(sizeof(double) * 2);
 
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
 #pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   private(absham, radius, dvalue)               \

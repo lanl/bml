@@ -29,9 +29,9 @@
  *
  * \param A Hamiltonian matrix A
  * \param B Graph matrix B
- * \param nodelist List of node/orbital indeces
+ * \param nodelist List of node/orbital indices
  * \param nsize Size of nodelist
- * \param core_halo_index List of core+halo indeces
+ * \param core_halo_index List of core+halo indices
  * \param vsize Size of core_halo_index and number of cores
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
@@ -81,7 +81,7 @@ void TYPED_FUNC(
 
     }
 
-    // Collect halo indeces from graph
+    // Collect halo indices from graph
     for (int j = 0; j < nsize; j++)
     {
         ii = nodelist[j];
@@ -146,9 +146,9 @@ void TYPED_FUNC(
  * \ingroup submatrix_group_C
  *
  * \param B Graph matrix B
- * \param nodelist List of node/orbital indeces
+ * \param nodelist List of node/orbital indices
  * \param nsize Size of nodelist
- * \param core_halo_index List of core+halo indeces
+ * \param core_halo_index List of core+halo indices
  * \param vsize Size of core_halo_index and number of cores
  * \param double_jump_flag Flag to use double jump (0=no, 1=yes)
  */
@@ -190,7 +190,7 @@ void TYPED_FUNC(
         }
     }
 
-    // Collext halo indeces from graph
+    // Collext halo indices from graph
     for (int j = 0; j < nsize; j++)
     {
         ii = nodelist[j];
@@ -238,8 +238,8 @@ void TYPED_FUNC(
  *
  * \param A Matrix A
  * \param B Submatrix B
- * \param core_halo_index Set of row indeces for submatrix
- * \param llsize Number of indeces
+ * \param core_halo_index Set of row indices for submatrix
+ * \param lsize Number of indices
  */
 void TYPED_FUNC(
     bml_matrix2submatrix_ellpack) (
@@ -287,16 +287,20 @@ void TYPED_FUNC(
                       B->matrix, B->ld, bml_queue());
     bml_free_memory(B_matrix);
 #endif
+#ifdef MKL_GPU
+#pragma omp target update to(B_matrix[0:B_N*B_N])
+#endif
+
 }
 
-/** Assemble submatrix into a full matrix based on core+halo indeces.
+/** Assemble submatrix into a full matrix based on core+halo indices.
  *
  * \ingroup submatrix_group_C
  *
  * \param A Submatrix A
  * \param B Matrix B
- * \param core_halo_index Set of submatrix row indeces
- * \param lsize Number of indeces
+ * \param core_halo_index Set of submatrix row indices
+ * \param lsize Number of indices
  * \param llsize Number of core positions
  */
 void TYPED_FUNC(
@@ -316,6 +320,10 @@ void TYPED_FUNC(
                       bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:A_N*A_N])
+#endif
+
 #endif
 
     int B_N = B->N;
@@ -402,7 +410,7 @@ void *TYPED_FUNC(
  * \ingroup submatrix_group_C
  *
  * \param A Matrix A
- * \param hindex Indeces of nodes
+ * \param hindex Indices of nodes
  * \param ngroups Number of groups
  * \param threshold Threshold for graph
  */

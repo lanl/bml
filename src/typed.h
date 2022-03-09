@@ -149,6 +149,8 @@
 #define CONCAT(a, b) CONCAT2(a, b)
 
 #define TYPED_FUNC(a) CONCAT_(a, FUNC_SUFFIX)
+#define G_LAPACK(a) CONCAT(MAGMA_PREFIX , a)
+//#define G_LAPACK(a) CONCAT_(LAPACKE, CONCAT(MAGMA_PREFIX , a))
 #define G_BLAS(a) CONCAT_(cblas, CONCAT(MAGMA_PREFIX , a))
 #define C_BLAS(a) CONCAT_(C, CONCAT(BLAS_PREFIX , a))
 #define XSMM(a) CONCAT(XSMM_PREFIX , a)

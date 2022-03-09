@@ -64,13 +64,18 @@ double TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
 #pragma omp parallel for                        \
   shared(N, A_matrix)                           \
-  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(rowMin, rowMax, myRank)  \
   reduction(+:trace)
     //for (int i = 0; i < N; i++)
-    for (int i = A_localRowMin[myRank]; i < A_localRowMax[myRank]; i++)
+    for (int i = rowMin; i < rowMax; i++)
     {
         trace += A_matrix[ROWMAJOR(i, i, N, N)];
     }
@@ -100,6 +105,8 @@ double TYPED_FUNC(
     int *A_localRowMax = A->domain->localRowMax;
 
     int myRank = bml_getMyRank();
+    int rowMin = A_localRowMin[myRank];
+    int rowMax = A_localRowMax[myRank];
 
     if (N != B->N)
     {
@@ -129,16 +136,21 @@ double TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
+#ifdef MKL_GPU
+#pragma omp target data map(A_matrix[0:N*N], B_matrix[0:N*N])
+#endif
 #pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
-  shared(A_localRowMin, A_localRowMax, myRank)  \
+  shared(rowMin, rowMax, myRank)  \
   reduction(+:trace)
-    for (int i = A_localRowMin[myRank] * N; i < A_localRowMax[myRank] * N;
-         i++)
+    for (int i = rowMin * N; i < rowMax * N; i++)
     {
         trace += A_matrix[i] * B_matrix[i];
     }
 
+#ifdef MKL_GPU
+//#pragma omp target update from(trace[0:1])
+#endif
 #endif
 
     return (double) REAL_PART(trace);

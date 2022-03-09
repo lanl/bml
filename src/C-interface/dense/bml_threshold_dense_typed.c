@@ -54,6 +54,9 @@ bml_matrix_dense_t *TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
 #pragma omp parallel for                        \
   shared(N, A_matrix, B_matrix)                 \
   shared(A_localRowMin, A_localRowMax, myRank)
@@ -66,6 +69,9 @@ bml_matrix_dense_t *TYPED_FUNC(
             B_matrix[i] = A_matrix[i];
         }
     }
+#ifdef MKL_GPU
+#pragma omp target update to(B_matrix[0:N*N])
+#endif
     return B;
 }
 
@@ -94,6 +100,9 @@ void TYPED_FUNC(
 
     int myRank = bml_getMyRank();
 
+#ifdef MKL_GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
 #pragma omp parallel for                        \
   shared(N, A_matrix)                           \
   shared(A_localRowMin, A_localRowMax, myRank)
@@ -106,6 +115,9 @@ void TYPED_FUNC(
             A_matrix[i] = (REAL_T) 0.0;
         }
     }
+#ifdef MKL_GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
 #ifdef BML_USE_MAGMA
     MAGMA(setmatrix) (N, N, (MAGMA_T *) A_matrix, N, A_bml->matrix, A_bml->ld,
                       bml_queue());

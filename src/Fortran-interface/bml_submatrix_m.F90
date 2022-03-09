@@ -16,7 +16,7 @@ module bml_submatrix_m
 
 contains
 
-  !> Determine element indeces for submatrix, given a set of nodes.
+  !> Determine element indices for submatrix, given a set of nodes.
   !!
   !! \ingroup submatrix_group_F
   !!
@@ -24,7 +24,7 @@ contains
   !! \param b Graph as a matrix
   !! \param nodelist List of nodes to define submatrix
   !! \param nsize Number of nodes
-  !! \param core_halo_index Indeces of core+halo
+  !! \param core_halo_index Indices of core+halo
   !! \param vsize Sizes of core_halo_index and cores
   !! \param double_jump_flag Flag 0=no 1=yes
   subroutine bml_matrix2submatrix_index(b, nodelist, nsize, &
@@ -58,14 +58,14 @@ contains
 
   end subroutine bml_matrix2submatrix_index
 
-  !> Create contracted submatrix from a set of element indeces.
+  !> Create contracted submatrix from a set of element indices.
   !!
   !! \ingroup submatrix_group_F
   !!
   !! \param a Matrix
   !! \param b Submatrix
-  !! \param core_halo_index Indeces of core+halo
-  !! \param lsize Number of indeces in core_halo_index
+  !! \param core_halo_index Indices of core+halo
+  !! \param lsize Number of indices in core_halo_index
   subroutine bml_matrix2submatrix(a, b, core_halo_index, lsize)
 
     type(bml_matrix_t), intent(in) :: a
@@ -83,8 +83,8 @@ contains
   !!
   !! \param a Submatrix
   !! \param b Matrix
-  !! \param core_halo_index Indeces of core+halo
-  !! \param lsize Number of indeces in core_halo_index
+  !! \param core_halo_index Indices of core+halo
+  !! \param lsize Number of indices in core_halo_index
   !! \param llsize Number of cores
   subroutine bml_submatrix2matrix(a, b, core_halo_index, lsize, &
        llsize, threshold)
@@ -113,7 +113,7 @@ contains
   !! \ingroup submatrix_group_F
   !!
   !! \param a Matrix
-  !! \param xadj Start indeces for each row
+  !! \param xadj Start indices for each row
   !! \param adjncy Indices of non-zero values
   !! \param base_flag Return 0- or 1-based
   subroutine bml_adjacency(a, xadj, adjncy, base_flag)
@@ -132,9 +132,9 @@ contains
   !! \ingroup submatrix_group_F
   !!
   !! \param a Matrix
-  !! \param hindex Indeces of nodes in matrix
+  !! \param hindex Indices of nodes in matrix
   !! \param nnodes Number of nodes
-  !! \param xadj Start indeces for each row
+  !! \param xadj Start indices for each row
   !! \param adjncy Indices of non-zero values
   !! \param base_flag Return 0- or 1-based
   subroutine bml_adjacency_group(a, hindex, nnodes, xadj, adjncy, base_flag)
@@ -155,7 +155,7 @@ contains
   !!
   !! \param a Original matrix
   !! \param b Group-based matrix
-  !! \param hindex Indeces of group nodes in matrix
+  !! \param hindex Indices of group nodes in matrix
   !! \param ngroups Number of groups
   !! \param threshold Threshold to determine positions
   subroutine bml_group_matrix(a, b, hindex, ngroups, threshold)

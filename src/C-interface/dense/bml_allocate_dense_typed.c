@@ -19,7 +19,11 @@
 #include <omp.h>
 #endif
 
-
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#endif
 
 /** Clear the matrix.
  *
@@ -39,6 +43,12 @@ void TYPED_FUNC(
                       bml_queue());
 #else
     memset(A->matrix, 0.0, A->N * A->ld * sizeof(REAL_T));
+#ifdef MKL_GPU
+    int sizea = A->N * A->N;
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+#pragma omp target update to(A_matrix[sizea])
+#endif
+
 #endif
 }
 
@@ -81,6 +91,16 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->matrix =
         bml_allocate_memory(sizeof(REAL_T) * matrix_dimension.N_rows *
                             matrix_dimension.N_rows);
+#ifdef MKL_GPU
+    int sizea = A->ld * A->ld;
+    int dnum = 0;
+
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:A_matrix[0:sizea]) device(dnum)
+#pragma omp target update to(A_matrix[0:sizea])
+#endif // end of MKL_GPU
+
 #endif
     A->domain =
         bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
@@ -137,6 +157,16 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, bml_queue());
     bml_free_memory(A_dense);
 #endif
+#ifdef MKL_GPU
+    int sizea = A->N * A->N;
+    int dnum = 0;
+
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:A_matrix[0:sizea]) device(dnum)
+#pragma omp target update to(A_matrix[0:sizea])
+#endif // end of MKL_GPU
+
     return A;
 }
 
@@ -186,6 +216,16 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, bml_queue());
     bml_free_memory(A_dense);
 #endif
+#ifdef MKL_GPU
+    int sizea = A->N * A->N;
+    int dnum = 0;
+
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:A_matrix[0:sizea]) device(dnum)
+#pragma omp target update to(A_matrix[0:sizea])
+#endif // end of MKL_GPU
+
     return A;
 }
 
@@ -229,5 +269,15 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMA(setmatrix) (N, N, A_dense, N, A->matrix, A->ld, bml_queue());
     bml_free_memory(A_dense);
 #endif
+#ifdef MKL_GPU
+    int sizea = A->N * A->N;
+    int dnum = 0;
+
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:A_matrix[0:sizea]) device(dnum)
+#pragma omp target update to(A_matrix[0:sizea])
+#endif // end of MKL_GPU
+
     return A;
 }

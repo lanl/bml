@@ -38,9 +38,9 @@ void TYPED_FUNC(
     int N = A->N;
 
 #ifdef BML_USE_MAGMA
-    REAL_T *A_value = bml_allocate_memory(N * N * sizeof(REAL_T));
+    REAL_T *A_matrix = bml_allocate_memory(N * N * sizeof(REAL_T));
 #else
-    REAL_T *A_value = A->matrix;
+    REAL_T *A_matrix = A->matrix;
 #endif
 
     matrix_file = fopen(filename, "r");
@@ -71,7 +71,7 @@ void TYPED_FUNC(
             LOG_ERROR("Line %d, expected 3 entries, read %d\n", i + 3,
                       values_read);
         }
-        A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] = real_part;
+        A_matrix[ROWMAJOR(irow - 1, icol - 1, N, N)] = real_part;
 #elif defined(DOUBLE_REAL)
         if ((values_read =
              fscanf(matrix_file, "%d %d %lg\n", &irow, &icol,
@@ -80,7 +80,7 @@ void TYPED_FUNC(
             LOG_ERROR("Line %d, expected 3 entries, read %d\n", i + 3,
                       values_read);
         }
-        A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] = real_part;
+        A_matrix[ROWMAJOR(irow - 1, icol - 1, N, N)] = real_part;
 #elif defined(SINGLE_COMPLEX)
         if ((values_read =
              fscanf(matrix_file, "%d %d %lg %lg\n", &irow, &icol, &real_part,
@@ -89,7 +89,7 @@ void TYPED_FUNC(
             LOG_ERROR("Line %d, expected 4 entries, read %d\n", i + 3,
                       values_read);
         }
-        A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] =
+        A_matrix[ROWMAJOR(irow - 1, icol - 1, N, N)] =
             real_part + I * imaginary_part;
 #elif defined(DOUBLE_COMPLEX)
         if ((values_read =
@@ -99,7 +99,7 @@ void TYPED_FUNC(
             LOG_ERROR("Line %d, expected 4 entries, read %d\n", i + 3,
                       values_read);
         }
-        A_value[ROWMAJOR(irow - 1, icol - 1, N, N)] =
+        A_matrix[ROWMAJOR(irow - 1, icol - 1, N, N)] =
             real_part + I * imaginary_part;
 #else
         LOG_ERROR("unknown precision\n");
@@ -107,11 +107,14 @@ void TYPED_FUNC(
     }
 
 #ifdef BML_USE_MAGMA
-    MAGMA(setmatrix) (N, N, (MAGMA_T *) A_value, N, A->matrix, A->ld,
+    MAGMA(setmatrix) (N, N, (MAGMA_T *) A_matrix, N, A->matrix, A->ld,
                       bml_queue());
-    bml_free_memory(A_value);
+    bml_free_memory(A_matrix);
 #endif
-
+#ifdef MKL_GPU
+// push back to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
     fclose(matrix_file);
 }
 
@@ -135,11 +138,16 @@ void TYPED_FUNC(
     int msum = N * N;
 
 #ifdef BML_USE_MAGMA
-    REAL_T *A_value = bml_noinit_allocate_memory(N * N * sizeof(REAL_T));
-    MAGMA(getmatrix) (N, N, A->matrix, A->ld, (MAGMA_T *) A_value, N,
+    REAL_T *A_matrix = bml_noinit_allocate_memory(N * N * sizeof(REAL_T));
+    MAGMA(getmatrix) (N, N, A->matrix, A->ld, (MAGMA_T *) A_matrix, N,
                       bml_queue());
 #else
-    REAL_T *A_value = A->matrix;
+    REAL_T *A_matrix = A->matrix;
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
+
 #endif
 
     matrix_file = fopen(filename, "w");
@@ -163,18 +171,18 @@ void TYPED_FUNC(
         {
 #if defined(SINGLE_REAL)
             fprintf(matrix_file, "%d %d %20.15g\n", i + 1, j + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
 #elif defined(DOUBLE_REAL)
             fprintf(matrix_file, "%d %d %20.15lg\n", i + 1, j + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
 #elif defined(SINGLE_COMPLEX)
             fprintf(matrix_file, "%d %d %20.15g %20.15g\n", i + 1, j + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, N, N)]),
-                    IMAGINARY_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]),
+                    IMAGINARY_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
 #elif defined(DOUBLE_COMPLEX)
             fprintf(matrix_file, "%d %d %20.15lg %20.15lg\n", i + 1, j + 1,
-                    REAL_PART(A_value[ROWMAJOR(i, j, N, N)]),
-                    IMAGINARY_PART(A_value[ROWMAJOR(i, j, N, N)]));
+                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]),
+                    IMAGINARY_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
 #else
             LOG_ERROR("unknown precision\n");
 #endif
@@ -182,7 +190,7 @@ void TYPED_FUNC(
     }
 
 #ifdef BML_USE_MAGMA
-    bml_free_memory(A_value);
+    bml_free_memory(A_matrix);
 #endif
     fclose(matrix_file);
 }
@@ -205,6 +213,13 @@ void TYPED_FUNC(
                       bml_queue());
 #else
     REAL_T *A_matrix = (REAL_T *) A->matrix;
+    int N = A->N;
+
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
+
 #endif
 
     bml_print_dense_matrix(A->N, A->matrix_precision, dense_row_major,

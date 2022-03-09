@@ -25,27 +25,26 @@ bml_matrix_dense_t
                                                int irow, int icol,
                                                int B_N, int B_M)
 {
-    REAL_T *A_value = A->matrix;
-
     bml_matrix_dimension_t matrix_dimension = { B_N, B_N, B_N };
     bml_matrix_dense_t *B =
         TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension,
                                            A->distribution_mode);
 
-    REAL_T *B_value = B->matrix;
+    int A_N = A->N;
+    REAL_T *A_matrix = A->matrix;
+    REAL_T *B_matrix = B->matrix;
 
 #ifdef BML_USE_MAGMA
-    MAGMA(copymatrix) (B_N, B_N, (MAGMA_T *) (A_value + irow * A->ld + icol),
-                       A->ld, (MAGMA_T *) B_value, B->ld, bml_queue());
+    MAGMA(copymatrix) (B_N, B_N, (MAGMA_T *) (A_matrix + irow * A->ld + icol),
+                       A->ld, (MAGMA_T *) B_matrix, B->ld, bml_queue());
 #else
-    int A_N = A->N;
     // loop over subset of rows of A
     for (int i = irow; i < irow + B_N; i++)
     {
         for (int j = icol; j < icol + B_N; j++)
         {
-            B_value[ROWMAJOR(i - irow, j - icol, B_N, B_N)] =
-                A_value[ROWMAJOR(i, j, A_N, A_N)];
+            B_matrix[ROWMAJOR(i - irow, j - icol, B_N, B_N)] =
+                A_matrix[ROWMAJOR(i, j, A_N, A_N)];
         }
     }
 #endif
@@ -66,23 +65,22 @@ void TYPED_FUNC(
     int irow,
     int icol)
 {
-    REAL_T *A_value = A->matrix;
-
+    int A_N = A->N;
     int B_N = B->N;
-    REAL_T *B_value = B->matrix;
+    REAL_T *A_matrix = A->matrix;
+    REAL_T *B_matrix = B->matrix;
 
 #ifdef BML_USE_MAGMA
-    MAGMA(copymatrix) (B_N, B_N, (MAGMA_T *) B_value, B->ld,
-                       (MAGMA_T *) (A_value + irow * A->ld + icol), A->ld,
+    MAGMA(copymatrix) (B_N, B_N, (MAGMA_T *) B_matrix, B->ld,
+                       (MAGMA_T *) (A_matrix + irow * A->ld + icol), A->ld,
                        bml_queue());
 #else
-    int A_N = A->N;
     // loop over rows of B
     for (int i = 0; i < B_N; i++)
     {
         int offsetA = ROWMAJOR(i + irow, icol, A_N, A_N);
         int offsetB = ROWMAJOR(i, 0, B_N, B_N);
-        memcpy(A_value + offsetA, B_value + offsetB, B_N * sizeof(REAL_T));
+        memcpy(A_matrix + offsetA, B_matrix + offsetB, B_N * sizeof(REAL_T));
     }
 #endif
 }

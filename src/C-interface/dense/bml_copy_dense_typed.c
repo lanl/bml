@@ -11,6 +11,12 @@
 #include "magma_v2.h"
 #endif
 
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#endif
+
 #include <complex.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,7 +41,22 @@ bml_matrix_dense_t *TYPED_FUNC(
     MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
                        B->matrix, B->ld, bml_queue());
 #else
+#ifdef MKL_GPU
+// pull from GPU
+    int N = A->N;
+    REAL_T *A_matrix = A->matrix;
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
+#ifdef MKL_GPU
+    int sizea = B->N * B->N;
+    int dnum = 0;
+
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:B_matrix[0:N*N]) device(dnum)
+#pragma omp target update to(B_matrix[0:N*N])
+#endif // end of MKL_GPU
 #endif
     bml_copy_domain(A->domain, B->domain);
     bml_copy_domain(A->domain2, B->domain2);
@@ -58,8 +79,23 @@ void TYPED_FUNC(
     MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
                        B->matrix, B->ld, bml_queue());
 #else
+#ifdef MKL_GPU
+// pull from GPU
+    int N = A->N;
+    REAL_T *A_matrix = A->matrix;
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     memcpy(B->matrix, A->matrix, sizeof(REAL_T) * A->N * A->N);
 #endif
+#ifdef MKL_GPU
+    int sizea = B->N * B->N;
+    int dnum = 0;
+
+    REAL_T *B_matrix = (REAL_T *) B->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:B_matrix[0:N*N]) device(dnum)
+#pragma omp target update to(B_matrix[0:N*N])
+#endif // end of MKL_GPU
     if (A->distribution_mode == B->distribution_mode)
     {
         bml_copy_domain(A->domain, B->domain);
@@ -85,6 +121,10 @@ void TYPED_FUNC(
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;
 
+#ifdef MKL_GPU
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+#endif
     // Reorder rows - need to copy
 #pragma omp parallel for
     for (int i = 0; i < N; i++)
@@ -103,6 +143,13 @@ void TYPED_FUNC(
                 B_matrix[ROWMAJOR(i, perm[j], N, N)];
         }
     }
+#ifdef MKL_GPU
+    int dnum = 0;
+
+    // allocate and offload the matrix to GPU
+//#pragma omp target enter data map(alloc:A_matrix[0:N*N]) device(dnum)
+#pragma omp target update to(A_matrix[0:N*N])
+#endif // end of MKL_GPU
 
     bml_deallocate_dense(B);
 }

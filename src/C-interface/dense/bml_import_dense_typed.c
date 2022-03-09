@@ -67,5 +67,10 @@ bml_matrix_dense_t *TYPED_FUNC(
             LOG_ERROR("logic error\n");
             break;
     }
+#ifdef MKL_GPU
+    REAL_T *A_matrix = A_bml->matrix;
+// push to GPU
+#pragma omp target update to(A_matrix[0:N*N])
+#endif
     return A_bml;
 }
