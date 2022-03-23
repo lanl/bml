@@ -20,6 +20,7 @@ set(HEADERS-C
   bml_inverse.h
   bml_logger.h
   bml_multiply.h
+  bml_element_multiply.h
   bml_norm.h
   bml_normalize.h
   bml_parallel.h
@@ -56,6 +57,7 @@ set(SOURCES-C
   bml_inverse.c
   bml_logger.c
   bml_multiply.c
+  bml_element_multiply.c
   bml_norm.c
   bml_normalize.c
   bml_parallel.c

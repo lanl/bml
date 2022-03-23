@@ -21,6 +21,7 @@ set(HEADERS-CSR
   bml_add_csr.h
   bml_normalize_csr.h
   bml_multiply_csr.h
+  bml_element_multiply_csr.h
 )
 
 
@@ -46,6 +47,7 @@ set(SOURCES-CSR
   bml_add_csr.c
   bml_normalize_csr.c
   bml_multiply_csr.c  
+  bml_element_multiply_csr.c  
 )
 
 add_library(bml-csr OBJECT ${SOURCES-CSR})
@@ -80,6 +82,7 @@ set(SOURCES-CSR-TYPED
   bml_add_csr_typed.c
   bml_normalize_csr_typed.c
   bml_multiply_csr_typed.c
+  bml_element_multiply_csr_typed.c
   )
   
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)

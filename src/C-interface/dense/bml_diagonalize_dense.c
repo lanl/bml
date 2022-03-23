@@ -14,6 +14,11 @@
 #include <cuda_runtime.h>
 #include <cusolverDn.h>
 #endif
+#ifdef BML_USE_ROCSOLVER
+#include <hip/hip_runtime_api.h>
+#include <rocblas.h>
+#include <rocsolver.h>
+#endif
 #else
 #include "../lapack.h"
 #endif
@@ -189,6 +194,53 @@ bml_diagonalize_dense_double_real(
 
     if (cusolverH)
         cusolverDnDestroy(cusolverH);
+#else
+#ifdef BML_USE_ROCSOLVER
+    // See https://rocsolver.readthedocs.io/_/downloads/en/latest/pdf/
+    // create cusolver/cublas handle
+    rocblas_handle rocblasH = NULL;
+    rocblas_status rocblasS = rocblas_create_handle(&rocblasH);
+    assert(rocblas_status_success == rocblasS);
+
+    // allocate memory for eigenvalues
+    double *d_W = NULL;
+    hipError_t hipStat = hipMalloc((void **) &d_W, sizeof(double) * A->N);
+    assert(hipSuccess == hipStat);
+
+    // compute eigenvalues and eigenvectors
+    rocblas_evect evect = rocblas_evect_original;
+    rocblas_fill uplo = rocblas_fill_lower;
+
+    // allocate working space of syevd
+    double *d_work = NULL;
+    hipStat = hipMalloc((void **) &d_work, sizeof(double) * A->N * A->N);
+    assert(hipSuccess == hipStat);
+
+    // solve
+    rocblas_int *devInfo = NULL;
+    hipStat = hipMalloc((void **) &devInfo, sizeof(rocblas_int));
+    assert(hipSuccess == hipStat);
+
+    rocblasS =
+        rocsolver_dsyevd(rocblasH, evect, uplo, A->N, evecs, A->ld, d_W,
+                         d_work, devInfo);
+    hipStat = hipDeviceSynchronize();
+    assert(rocblas_status_success == rocblasS);
+    assert(hipSuccess == hipStat);
+
+    // copy eigenvalues to CPU
+    hipStat =
+        hipMemcpy(typed_eigenvalues, d_W, sizeof(double) * A->N,
+                  hipMemcpyDeviceToHost);
+    assert(hipSuccess == hipStat);
+
+    // free resources
+    hipFree(d_W);
+    hipFree(devInfo);
+    hipFree(d_work);
+
+    if (rocblasH)
+        rocblas_destroy_handle(rocblasH);
 #else // MAGMA
     int nb = magma_get_ssytrd_nb(A->N);
 
@@ -222,7 +274,7 @@ bml_diagonalize_dense_double_real(
     //    printf("norm = %le\n", norm);
     //}
 #endif
-
+#endif
     // transpose eigenvactors matrix on GPU
     A_matrix = (double *) eigenvectors->matrix;
     magmablas_dtranspose(A->N, A->N, evecs, A->ld,

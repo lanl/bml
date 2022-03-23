@@ -63,7 +63,9 @@ EOF
     echo "BML_NONMPI_PRECOMMAND  Command to prepend to tests (default is ${BML_NONMPI_PRECOMMAND})"
     echo "BML_NONMPI_PRECOMMAND_ARGS  Arguments for prepend command (default is ${BML_NONMPI_PRECOMMAND_ARGS})"
     echo "BUILD_DIR              Path to build dir           (default is ${BUILD_DIR})"
-    echo "BLAS_VENDOR            {,Intel,MKL,ACML,GNU,IBM,Auto}  (default is '${BLAS_VENDOR}')"
+    echo "BLA_VENDOR or BLAS_VENDOR    Any vendor defined in"
+    echo "                             FindBLAS.cmake https://cmake.org/cmake/help/latest/module/FindBLAS.html"
+    echo "                             (default is '${BLAS_VENDOR}')"
     echo "BML_INTERNAL_BLAS      {yes,no}                    (default is ${BML_INTERNAL_BLAS})"
     echo "PARALLEL_TEST_JOBS     The number of test jobs     (default is ${PARALLEL_TEST_JOBS})"
     echo "TESTING_EXTRA_ARGS     Arguments to ctest, e.g. '-R C-.*-double_real'"
@@ -72,7 +74,7 @@ EOF
     echo "CMAKE_CXX_FLAGS        Set C++ compiler flags      (default is '${CMAKE_CXX_FLAGS}')"
     echo "CMAKE_Fortran_FLAGS    Set Fortran compiler flags  (default is '${CMAKE_Fortran_FLAGS}')"
     echo "BLAS_LIBRARIES         Blas libraries              (default is '${BLAS_LIBRARIES}')"
-    echo "LAPACK LIBRARIES       Lapack libraries            (default is '${LAPACK_LIBRARIES}')"
+    echo "LAPACK_LIBRARIES       Lapack libraries            (default is '${LAPACK_LIBRARIES}')"
     echo "EXTRA_CFLAGS           Extra C flags               (default is '${EXTRA_CFLAGS}')"
     echo "EXTRA_FFLAGS           Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "EXTRA_LINK_FLAGS       Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
@@ -82,8 +84,10 @@ EOF
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
     echo "BML_CUSOLVER           Build with cuSOLVER         (default is ${BML_CUSOLVER})"
     echo "BML_CUSPARSE       Build with cuSPARSE         (default is ${BML_CUSPARSE})"
+    echo "BML_ROCSOLVER          Build with rocSOLVER        (default is ${BML_ROCSOLVER})"
     echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "BML_SCALAPACK          Build with SCALAPACK        (default is ${BML_SCALAPACK})"
+    echo "SCALAPACK_LIBRARIES    ScaLapack libraries         (default is ${SCALAPACK_LIBRARIES})"
     echo "BML_ELLBLOCK_MEMPOOL   Use ellblock memory pool    (default is ${BML_ELLBLOCK_MEMPOOL}"
     echo "CUDA_TOOLKIT_ROOT_DIR  Path to CUDA dir            (default is ${CUDA_TOOLKIT_ROOT_DIR})"
     echo "INTEL_OPT              {yes, no}                   (default is ${INTEL_OPT})"
@@ -105,6 +109,7 @@ set_defaults() {
     : ${BML_MPIEXEC_PREFLAGS:=}
     : ${BML_COMPLEX:=yes}
     : ${BLAS_VENDOR:=}
+    : ${BLA_VENDOR:=}
     : ${BML_INTERNAL_BLAS:=no}
     : ${EXTRA_CFLAGS:=}
     : ${EXTRA_FFLAGS:=}
@@ -113,6 +118,7 @@ set_defaults() {
     : ${CMAKE_Fortran_FLAGS:=}
     : ${BLAS_LIBRARIES:=}
     : ${LAPACK_LIBRARIES:=}
+    : ${SCALAPACK_LIBRARIES:=}
     : ${BML_TESTING:=yes}
     : ${BML_VALGRIND:=no}
     : ${BML_COVERAGE:=no}
@@ -126,6 +132,7 @@ set_defaults() {
     : ${BML_MAGMA:=no}
     : ${BML_CUSOLVER:=no}
     : ${BML_CUSPARSE:=no}
+    : ${BML_ROCSOLVER:=no}
     : ${BML_XSMM:=no}
     : ${BML_SCALAPACK:=no}
     : ${BML_ELLBLOCK_MEMPOOL:=no}
@@ -186,6 +193,7 @@ configure() {
         -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
         -DBLAS_LIBRARIES="${BLAS_LIBRARIES}" \
         -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
+        -DSCALAPACK_LIBRARIES="${SCALAPACK_LIBRARIES}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DMKL_GPU="${MKL_GPU}" \
         -DBML_MPI="${BML_MPI}" \
@@ -212,6 +220,7 @@ configure() {
         -DBML_MAGMA="${BML_MAGMA}" \
         -DBML_CUSOLVER="${BML_CUSOLVER}" \
         -DBML_CUSPARSE="${BML_CUSPARSE}" \
+        -DBML_ROCSOLVER="${BML_ROCSOLVER}" \
         -DBML_XSMM="${BML_XSMM}" \
         -DBML_SCALAPACK="${BML_SCALAPACK}" \
         -DBML_ELLBLOCK_MEMPOOL="${BML_ELLBLOCK_MEMPOOL}" \
@@ -245,7 +254,7 @@ install() {
 
 testing() {
     cd "${BUILD_DIR}"
-    ctest --output-on-failure \
+    ctest --verbose \
         --parallel ${PARALLEL_TEST_JOBS} \
         ${TESTING_EXTRA_ARGS} \
         2>&1 | tee --append "${LOG_FILE}"
@@ -276,6 +285,11 @@ indent() {
 
 check_indent() {
     cd "${TOP_DIR}"
+    if which bashate; then
+        git ls-files '*.sh' \
+            | xargs --no-run-if-empty --verbose --max-args 1 bashate \
+            2>&1 | tee --append "${LOG_FILE}"
+    fi
     "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     git diff 2>&1 | tee --append "${LOG_FILE}"
@@ -301,17 +315,24 @@ echo "Writing output to ${LOG_FILE}"
 
 set_defaults
 
+if [[ -n ${BLA_VENDOR} ]]; then
+    if [[ -n ${BLAS_VENDOR} ]]; then
+        echo "WARNING: BLAS_VENDOR (${BLAS_VENDOR}) will be used instead of BLA_VENDOR (${BLA_VENDOR})" | tee --append "${LOG_FILE}"
+    else
+        BLAS_VENDOR=${BLA_VENDOR}
+    fi
+fi
+
 if [[ $# -gt 0 ]]; then
     if [[ $1 = "-h" || $1 = "--help" ]]; then
         help
-	shift
+        shift
     fi
 
     if [[ $# -gt 0 && $1 = "--debug" ]]; then
         PS4='+(${BASH_SOURCE##*/}:${LINENO}) ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
-	shift
-        continue
+        shift
     fi
 
     while [[ $# -gt 0 ]]; do
@@ -356,7 +377,6 @@ if [[ $# -gt 0 ]]; then
                 indent
                 ;;
             "check_indent")
-                create
                 check_indent
                 ;;
             "tags")

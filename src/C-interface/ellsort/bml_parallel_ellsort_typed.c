@@ -149,6 +149,28 @@ void TYPED_FUNC(
     MPI_Type_free(&mpi_data_type);
 }
 
+void TYPED_FUNC(
+    bml_mpi_irecv_ellsort) (
+    bml_matrix_ellsort_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+    // create MPI data type to avoid multiple messages
+    MPI_Datatype mpi_data_type;
+    bml_mpi_type_create_struct_ellsort(A, &mpi_data_type);
+
+    MPI_Irecv(A, 1, mpi_data_type, src, 111, comm, &A->req);
+
+    MPI_Type_free(&mpi_data_type);
+}
+
+void TYPED_FUNC(
+    bml_mpi_irecv_complete_ellsort) (
+    bml_matrix_ellsort_t * A)
+{
+    MPI_Wait(&A->req, MPI_STATUS_IGNORE);
+}
+
 /*
  * Return BML matrix from data received from MPI task src
  */

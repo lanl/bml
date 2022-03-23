@@ -27,6 +27,7 @@ typedef int (
 #include "mpi_sendrecv.h"
 #include "multiply_banded_matrix.h"
 #include "multiply_matrix.h"
+#include "element_multiply_matrix.h"
 #include "multiply_matrix_x2.h"
 #include "normalize_matrix.h"
 #include "norm_matrix.h"

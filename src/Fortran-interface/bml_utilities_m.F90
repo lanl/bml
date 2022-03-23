@@ -8,6 +8,7 @@ module bml_utilities_m
   use bml_utilities_single_complex_m
   use bml_utilities_double_complex_m
   use bml_fc_tools_m
+  use bml_parallel_m
 
   implicit none
   private
@@ -44,7 +45,7 @@ contains
     integer(C_INT), intent(in) :: j_l
     integer(C_INT), intent(in) :: j_u
 
-    write(*, "(A)") tag
+    if (bml_getMyRank() .eq. 0) write(*, "(A)") tag
     call bml_print_bml_matrix_C(a%ptr, i_l, i_u, j_l, j_u)
 
   end subroutine bml_print_bml_matrix

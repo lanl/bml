@@ -71,6 +71,18 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
     end subroutine bml_allGatherVParallel_C
 
+    function bml_getNRanks_C() &
+         & bind(C, name="bml_getNRanks")
+      import :: C_INT
+      integer(C_INT) :: bml_getNRanks_C
+    end function bml_getNRanks_C
+
+    function bml_getMyRank_C() &
+         & bind(C, name="bml_getMyRank")
+      import :: C_INT
+      integer(C_INT) :: bml_getMyRank_C
+    end function bml_getMyRank_C
+
     subroutine bml_adjungate_triangle_C(a, triangle) &
          & bind(C, name="bml_adjungate_triangle")
       import :: C_PTR, C_CHAR
@@ -393,6 +405,15 @@ module bml_c_interface_m
       real(C_DOUBLE), value, intent(in) :: beta
       real(C_DOUBLE), value, intent(in) :: threshold
     end subroutine bml_multiply_C
+
+    subroutine bml_element_multiply_AB_C(a, b, c, threshold) &
+         & bind(C, name="bml_element_multiply_AB")
+      import :: C_PTR, C_DOUBLE
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR), value, intent(in) :: b
+      type(C_PTR), value, intent(in) :: c
+      real(C_DOUBLE), value, intent(in) :: threshold
+    end subroutine bml_element_multiply_AB_C
 
     function bml_multiply_x2_C(x, x2, threshold) &
          & bind(C, name="bml_multiply_x2")

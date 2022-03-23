@@ -24,6 +24,7 @@ contains
     type(bml_matrix_t) :: d
     type(bml_matrix_t) :: f
     type(bml_matrix_t) :: g
+    type(bml_matrix_t) :: h
 
 
     DUMMY_KIND(DUMMY_PREC), allocatable :: a_dense(:, :)
@@ -33,6 +34,7 @@ contains
     DUMMY_KIND(DUMMY_PREC), allocatable :: e_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: f_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: g_dense(:, :)
+    DUMMY_KIND(DUMMY_PREC), allocatable :: h_dense(:, :)
 
     real(dp), allocatable :: trace(:)
 
@@ -61,8 +63,10 @@ contains
 
     call bml_zero_matrix(matrix_type, element_kind, element_precision, n, m, f)
     call bml_zero_matrix(matrix_type, element_kind, element_precision, n, m, g)
+    call bml_zero_matrix(matrix_type, element_kind, element_precision, n, m, h)
     call bml_multiply_x2(a, f, threshold, trace)
     call bml_multiply(a, a, g, ONE, ZERO, threshold)
+    call bml_element_multiply_AB(a, a, h, threshold)
 
     test_result = .true.
 
@@ -84,6 +88,16 @@ contains
       print *, "max abs diff = ", maxval(abs(e_dense - d_dense))
     endif
 
+    allocate(h_dense(n,n))
+    call bml_export_to_dense(h, h_dense)
+
+    h_dense = h_dense - a_dense * a_dense
+    if(maxval(abs(h_dense)) > abs_tol) then
+      test_result = .false.
+      print *, "incorrect matrix product"
+      print *, "max abs diff = ", maxval(abs(h_dense))
+    endif
+
     call bml_export_to_dense(f, f_dense)
     call bml_export_to_dense(g, g_dense)
     call bml_print_matrix("F", f_dense, 1, n, 1, n)
@@ -100,6 +114,7 @@ contains
     call bml_deallocate(d)
     call bml_deallocate(f)
     call bml_deallocate(g)
+    call bml_deallocate(h)
 
   end function test_multiply_matrix_typed
 

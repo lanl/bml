@@ -8,6 +8,7 @@ module bml_multiply_m
   private
 
   public :: bml_multiply
+  public :: bml_element_multiply_AB
   public :: bml_multiply_x2
 
 contains
@@ -57,6 +58,34 @@ contains
     call bml_multiply_c(a%ptr, b%ptr, c%ptr, alpha_, beta_, threshold_)
 
   end subroutine bml_multiply
+
+  !! Element-wise Matrix multiply (Hadamard product)
+  !!
+  !! \ingroup multiply_group
+  !!
+  !! \f$ C_{ij} \leftarrow A_{ij} * B_{ij} \f$
+  !!
+  !! \param a Matrix \f$ A \f$.
+  !! \param b Matrix \f$ B \f$.
+  !! \param c Matrix \f$ C \f$.
+  !! \param threshold The threshold \f$ threshold \f$.
+  subroutine bml_element_multiply_AB(a, b, c, threshold)
+
+    type(bml_matrix_t), intent(in) :: a, b
+    type(bml_matrix_t), intent(inout) :: c
+    real(C_DOUBLE), optional, intent(in) :: threshold
+
+    real(C_DOUBLE) :: threshold_
+
+    if(present(threshold)) then
+      threshold_ = threshold
+    else
+      threshold_ = 0
+    end if
+    call bml_element_multiply_AB_c(a%ptr, b%ptr, c%ptr, threshold_)
+
+  end subroutine bml_element_multiply_AB
+
 
   !> Square a matrix.
   !!

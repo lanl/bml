@@ -3,6 +3,9 @@
 
 #include "../bml_types.h"
 
+#ifdef DO_MPI
+#include <mpi.h>
+#endif
 
 #define INIT_ROW_SPACE 10
 #define EXPAND_FACT 1.3
@@ -80,6 +83,14 @@ struct bml_matrix_csr_t
     bml_domain_t *domain;
     /** A copy of the domain decomposition. */
     bml_domain_t *domain2;
+#ifdef DO_MPI
+    /** Buffer for communications */
+    void *buffer;
+    int *nnz_buffer;
+    int *cols_buffer;
+    /** request field for MPI communications*/
+    MPI_Request req[3];
+#endif
 };
 typedef struct bml_matrix_csr_t bml_matrix_csr_t;
 

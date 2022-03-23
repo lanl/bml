@@ -36,7 +36,11 @@ program testf
 
   implicit none
   character(20) :: args(6)
+#ifdef DO_MPI
+  integer, parameter :: N = 14, M = 14
+#else
   integer, parameter :: N = 13, M = 13
+#endif
   integer :: i, narg, ierr
   logical :: missingarg = .false.
   logical :: test_result = .false.

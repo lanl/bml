@@ -14,7 +14,7 @@ project(bml ${LANGUAGES}) # don't move this line as it changes PROJECT_SOURCE_DI
 # The library version is versioned off the major version. If the API
 # changes, the library version should be bumped.
 set(PROJECT_VERSION_MAJOR "2")
-set(PROJECT_VERSION_MINOR "1")
+set(PROJECT_VERSION_MINOR "2")
 set(PROJECT_VERSION_PATCH "0")
 
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
@@ -40,14 +40,24 @@ else()
   add_definitions(-DGLOBAL_DEBUG=BML_LOG_INFO)
 endif()
 
+include(CheckCCompilerFlag)
+check_c_compiler_flag(-fmacro-prefix-map=/a=/b MACRO_PREFIX_MAP_FLAG_WORKS)
+if (MACRO_PREFIX_MAP_FLAG_WORKS)
+  set(MACRO_PREFIX_MAP_FLAG -fmacro-prefix-map=${CMAKE_SOURCE_DIR}=.)
+endif()
+
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99)
-set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG)
-set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG)
+  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99
+  ${MACRO_PREFIX_MAP_FLAG})
+set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG
+  ${MACRO_PREFIX_MAP_FLAG})
+set(GNU_C_FLAGS_RELWITHDEBINFO -O3 -g -std=c99 -DNDEBUG
+  ${MACRO_PREFIX_MAP_FLAG})
 set(GNU_Fortran_FLAGS_DEBUG -O0 -g -fcheck=all
   -ffree-line-length-none)
 set(GNU_Fortran_FLAGS_RELEASE -O3 -g -ffree-line-length-none)
-set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none -DNDEBUG)
+set(GNU_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -ffree-line-length-none
+  -DNDEBUG)
 
 set(Intel_C_FLAGS_DEBUG -O0 -g -std=c99 -check=conversions,stack,uninit
   -traceback -qopt-report=5 -DINTEL_SDK)
@@ -251,6 +261,33 @@ if(BML_CUSPARSE)
    list(APPEND LINK_LIBRARIES ${CUDA_cusparse_LIBRARY})      
 endif()
 
+if(BML_MAGMA)
+  find_package(hip)
+endif()
+
+if(BML_ROCSOLVER)
+  find_package(rocblas REQUIRED)
+  find_package(rocsolver REQUIRED)
+endif()
+
+if (hip_FOUND)
+   message("HIP libraries: ${hip_LIBRARIES}")
+   list(APPEND LINK_LIBRARIES ${hip_LIBRARIES})
+   include_directories(${hip_INCLUDE_DIRS})
+endif()
+
+if (rocblas_FOUND)
+   message("ROCBLAS libraries: ${rocblas_LIBRARIES}")
+   list(APPEND LINK_LIBRARIES ${rocblas_LIBRARIES})
+   include_directories(${rocblas_INCLUDE_DIRS})
+endif()
+
+if (rocsolver_FOUND)
+   message("ROCSOLVER libraries: ${rocsolver_LIBRARIES}")
+   list(APPEND LINK_LIBRARIES ${rocsolver_LIBRARIES})
+   include_directories(${rocsolver_INCLUDE_DIRS})
+endif()
+
 set(BML_OPENCL FALSE CACHE BOOL "Whether to compiler with OpenCL support")
 if(BML_OPENCL)
   include(FindOpenCL)
@@ -259,9 +296,11 @@ endif()
 SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 set(BML_MAGMA FALSE CACHE BOOL "Whether to use MAGMA library")
+
 if(BML_MAGMA)
   FIND_PACKAGE(MAGMA)
 endif()
+
 if (MAGMA_FOUND)
   add_definitions(-DBML_USE_MAGMA)
   message(STATUS
@@ -282,15 +321,24 @@ if (MAGMA_FOUND)
     message(STATUS "Will use cuSOLVER")
     add_definitions(-DBML_USE_CUSOLVER)
   endif()
+  if(BML_ROCSOLVER)
+    message(STATUS "Will use rocSOLVER")
+    add_definitions(-DBML_USE_ROCSOLVER)
+  endif()
 endif()
 
 if (CUBLAS_FOUND)
   list(APPEND LINK_LIBRARIES ${CUBLAS_LIBRARIES})
 endif()
 
+if (CUDA_FOUND)
+  list(APPEND LINK_LIBRARIES ${CUDA_LIBRARIES})
+endif()
+
 set(BML_SCALAPACK FALSE CACHE BOOL "Whether to use ScaLAPACK library")
 if(BML_SCALAPACK)
   add_definitions(-DBML_USE_SCALAPACK)
+  message(STATUS "SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES}")
 endif()
 
 set(BML_INTERNAL_BLAS FALSE
@@ -304,96 +352,26 @@ if(BML_INTERNAL_GEMM)
 endif()
 
 set(BLAS_VENDOR ""
-  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {Intel,MKL,ACML,GNU,IBM}")
+  CACHE STRING "If set, the preferred BLAS/LAPACK vendor. Possible choices: {OpenBLAS,Intel,ACML,IBMESSL,...}")
 
-if(BLAS_VENDOR STREQUAL "Intel" OR BLAS_VENDOR STREQUAL "MKL")
-  set(MKLROOT $ENV{MKLROOT})
-  message(STATUS "Attempting to use Intel's BLAS/LAPACK (MKL)")
-  if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-    message(STATUS "Look for MKL in ${MKLROOT}")
-    if(BML_OPENMP)
-      set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
-        -lmkl_lapack95_lp64 -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread
-        -lpthread -lm)
-    else()
-      set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
-        -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -lm)
-    endif()
-  else()
-    if(BML_OPENMP)
-      set(BLAS_LIBRARIES "-L${MKLROOT}/lib/intel64"
-        -Wl,--no-as-needed -lmkl_gf_lp64 -lmkl_gnu_thread -lmkl_core -lgomp
-        -lpthread -lm -ldl)
-    else()
-      set(BLAS_LIBRARIES -Wl,--no-as-needed "-L${MKLROOT}/lib/intel64"
-        -lmkl_lapack95_lp64 -lmkl_gf_lp64 -lmkl_sequential -lmkl_core
-        -lmkl_sequential -lmkl_core -lpthread -lm)
-    endif()
-  endif()
-  set(BLAS_FOUND TRUE)
-  set(LAPACK_FOUND TRUE)
-elseif(BLAS_VENDOR STREQUAL "ACML")
-  if(CMAKE_Fortran_COMPILER_ID STREQUAL "Intel")
-    if(BML_OPENMP)
-      set(BLAS_LIBRARIES "-L$ENV{ACML_DIR}/ifort64_mp/lib" -lacml_mp)
-    else()
-      set(BLAS_LIBRARIES "-L$ENV{ACML_DIR}/ifort64/lib" -lacml)
-    endif()
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU"
-      OR CMAKE_Fortran_COMPILER_ID STREQUAL "PathScale")
-    if(BML_OPENMP)
-      set(BLAS_LIBRARIES "-L$ENV{ACML_DIR}/gfortran64_mp/lib" -lacml_mp)
-    else()
-      set(BLAS_LIBRARIES "-L$ENV{ACML_DIR}/gfortran64/lib" -lacml)
-    endif()
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "PGI")
-    if(OPENMP)
-      set(BLAS_LIBRARIES "-L$ENV{ACML_DIR}/pgi64_mp/lib" -lacml_mp)
-    else()
-      set(BLAS_LIBRARIES "-L$ENV{ACML_DIR}/pgi64/lib" -lacml)
-    endif()
-  endif()
-  set(BLAS_FOUND TRUE)
-  set(LAPACK_FOUND TRUE)
-elseif(BLAS_VENDOR STREQUAL "GNU")
-  if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
-    set(BLAS_LIBRARIES  -llapack -lblas)
-  endif()
-  set(BLAS_FOUND TRUE)
-  set(LAPACK_FOUND TRUE)
-elseif(BLAS_VENDOR STREQUAL "IBM")
-  if(CMAKE_Fortran_COMPILER_ID STREQUAL "XL")
-    set(BLAS_LIBRARIES "-L$ENV{ESSL_DIR}/lib64" -lesslsmp)
-  endif()
-  set(BLAS_FOUND TRUE)
-  set(LAPACK_FOUND TRUE)
-elseif(BLAS_VENDOR STREQUAL "None")
+if(BLAS_VENDOR STREQUAL "None")
   set(NOBLAS TRUE)
   add_definitions(-DNOBLAS)
-elseif(BLAS_VENDOR STREQUAL "Auto")
-  set(BLAS_FOUND TRUE)
-  set(LAPACK_FOUND TRUE)
-  message(STATUS "I will skip BLAS/LAPACK detection")
-elseif(BLAS_VENDOR STREQUAL "")
-  message(STATUS "I will rely on the default paths or environment variables to find BLAS/LAPACK")
-else()
-  message(FATAL_ERROR "Unknown BLAS_VENDOR ${BLAS_VENDOR}")
+elseif(NOT BLAS_LIBRARIES)
+  set(BLA_VENDOR ${BLAS_VENDOR})
+  message(STATUS "BLA_VENDOR=${BLA_VENDOR}")
+  include(FindBLAS)
+  if(NOT BLAS_FOUND)
+    message(FATAL_ERROR "Can not find suitable BLAS library")
+  endif()
 endif()
 message(STATUS "BLAS_LIBRARIES=${BLAS_LIBRARIES}")
 if(BLAS_LIBRARIES)
   set(BLAS_FOUND TRUE)
 endif()
+
 if(LAPACK_LIBRARIES)
   set(LAPACK_FOUND TRUE)
-endif()
-
-if(NOT (BLAS_FOUND OR NOBLAS))
-  include(FindBLAS)
-  message(STATUS "BLA_VENDOR=${BLA_VENDOR}")
-  message(STATUS "BLAS_LIBRARIES=${BLAS_LIBRARIES}")
-  if(NOT BLAS_FOUND)
-    message(FATAL_ERROR "Can not find suitable BLAS library")
-  endif()
 endif()
 
 if(NOT (LAPACK_FOUND OR NOBLAS OR MAGMA_FOUND))
@@ -402,53 +380,33 @@ if(NOT (LAPACK_FOUND OR NOBLAS OR MAGMA_FOUND))
     message(FATAL_ERROR "Can not find suitable LAPACK library")
   endif()
 endif()
+message(STATUS "LAPACK_LIBRARIES=${LAPACK_LIBRARIES}")
+if(MAGMA_FOUND)
+  if(BML_CUSOLVER)
+    message(STATUS "cuSOLVER: ${CUDA_cusolver_LIBRARY}")
+  endif()
+  if(BML_ROCSOLVER)
+      message(STATUS "rocSOLVER: ${ROCM_rocsolver_LIBRARIES}")
+  endif()
+endif()
 
+#check existence of required math and linear algebra functions
+#in third party libraries
 include(CheckFunctionExists)
 include(CheckFortranFunctionExists)
+include(${PROJECT_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
 
 set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} -lm)
 check_function_exists(fabs HAVE_FABS)
 if(NOT HAVE_FABS)
   message(FATAL_ERROR "Could not find the fabs() function")
 endif()
-list(APPEND LINK_LIBRARIES -lm)
 
-if(NOT (BLAS_FOUND OR NOBLAS))
-  message(FATAL_ERROR "Could not find BLAS library.")
-endif()
-
-if(NOT (LAPACK_FOUND OR NOBLAS))
-  if(NOT (MAGMA_FOUND) )
-    message(FATAL_ERROR "Could not find LAPACK library.")
-  endif()
-endif()
-
-include(${PROJECT_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
-if(MAGMA_FOUND)
-  set(CMAKE_REQUIRED_LIBRARIES
-    ${MAGMA_LIBRARIES})
-  list(APPEND LINK_LIBRARIES ${MAGMA_LIBRARIES})
-  if(BML_CUSOLVER)
-    message(STATUS "cuSOLVER: ${CUDA_cusolver_LIBRARY}")
-    list(APPEND LINK_LIBRARIES ${CUDA_cusolver_LIBRARY})
-  endif()
-endif()
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
   set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_Fortran_FLAGS})
-  check_fortran_function_exists(sgemm HAVE_SGEMM)
-  check_fortran_function_exists(dgemm HAVE_DGEMM)
-  check_fortran_function_exists(cgemm HAVE_CGEMM)
-  check_fortran_function_exists(zgemm HAVE_ZGEMM)
-  if(NOT (HAVE_SGEMM AND HAVE_DGEMM AND HAVE_CGEMM AND HAVE_ZGEMM))
-    message(FATAL_ERROR "Could not find {s,d,c,z}gemm")
-  endif()
-  add_definitions(-DHAVE_SGEMM -DHAVE_DGEMM)
-
-  set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
+    ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
   bml_check_C_Fortran_function_exists(dgemm C_DGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(sgemm C_SGEMM REQUIRED)
   bml_check_C_Fortran_function_exists(cgemm C_CGEMM REQUIRED)
@@ -474,30 +432,13 @@ if(BLAS_FOUND)
     -DC_DAXPY=${C_DAXPY}
     -DC_CAXPY=${C_CAXPY}
     -DC_ZAXPY=${C_ZAXPY})
-
-  list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
 endif()
 
 if(LAPACK_FOUND)
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${LAPACK_LIBRARIES} ${OpenMP_Fortran_FLAGS})
-  check_fortran_function_exists(ssyev HAVE_SSYEV)
-  check_fortran_function_exists(dsyev HAVE_DSYEV)
-  check_fortran_function_exists(cheevr HAVE_CHEEVR)
-  check_fortran_function_exists(zheevr HAVE_ZHEEVR)
-  check_fortran_function_exists(sgetrf HAVE_SGETRF)
-  check_fortran_function_exists(dgetrf HAVE_DGETRF)
-  check_fortran_function_exists(cgetri HAVE_CGETRI)
-  check_fortran_function_exists(zgetri HAVE_ZGETRI)
-  if(NOT (HAVE_SSYEV AND HAVE_DSYEV AND HAVE_CHEEVR AND HAVE_ZHEEVR))
-    message(FATAL_ERROR "Could not find {s,d}syev or {c,z}heevr")
-  endif()
-  add_definitions(-DHAVE_SSYEV -DHAVE_DSYEV -DHAVE_CSYEVR -DHAVE_ZSYEVR)
-
-  set(CMAKE_REQUIRED_LIBRARIES
-    ${LINK_LIBRARIES} ${LAPACK_LIBRARIES} ${OpenMP_C_FLAGS})
+    ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
   bml_check_C_Fortran_function_exists(ssyev C_SSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
@@ -531,16 +472,17 @@ if(LAPACK_FOUND)
     -DC_DLACPY=${C_DLACPY}
     -DC_CLACPY=${C_CLACPY}
     -DC_ZLACPY=${C_ZLACPY})
-
-  list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
 endif()
 
 if(BML_SCALAPACK)
+  set(CMAKE_REQUIRED_LIBRARIES ${SCALAPACK_LIBRARIES}
+      ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
+  message(STATUS "SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES}")
+  bml_check_C_Fortran_function_exists(numroc NUMROC REQUIRED)
   bml_check_C_Fortran_function_exists(pssyevd PSSYEVD REQUIRED)
   bml_check_C_Fortran_function_exists(pdsyevd PDSYEVD REQUIRED)
   bml_check_C_Fortran_function_exists(pcheevd PCHEEVD REQUIRED)
   bml_check_C_Fortran_function_exists(pzheevd PZHEEVD REQUIRED)
-  bml_check_C_Fortran_function_exists(numroc NUMROC REQUIRED)
   add_definitions(
     -DPSSYEVD=${PSSYEVD}
     -DPDSYEVD=${PDSYEVD}
@@ -548,6 +490,25 @@ if(BML_SCALAPACK)
     -DPZHEEVD=${PZHEEVD}
     -DNUMROC=${NUMROC})
 endif()
+
+#append linear algebra libraries to list of libraries to link with
+#warning: order matters!
+if(MAGMA_FOUND)
+  list(APPEND LINK_LIBRARIES ${MAGMA_LIBRARIES})
+  if(BML_CUSOLVER)
+    list(APPEND LINK_LIBRARIES ${CUDA_cusolver_LIBRARY})
+  endif()
+endif()
+if(BML_SCALAPACK)
+  list(APPEND LINK_LIBRARIES ${SCALAPACK_LIBRARIES})
+endif()
+if(LAPACK_FOUND)
+  list(APPEND LINK_LIBRARIES ${LAPACK_LIBRARIES})
+endif()
+if(BLAS_FOUND)
+  list(APPEND LINK_LIBRARIES ${BLAS_LIBRARIES})
+endif()
+list(APPEND LINK_LIBRARIES -lm)
 
 # Check whether the compiler supports complex types. The Nvidia
 # compiler is known not to support them for example.

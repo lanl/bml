@@ -25,21 +25,25 @@ deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main
 deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main
 # deb-src http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main
 EOF
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | ${SUDO} apt-key add -
+${SUDO} cat > /etc/apt/trusted.gpg.d/llvm.gpg < <(wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor)
 
 cat <<EOF | ${SUDO} tee /etc/apt/sources.list.d/toolchain.list
 deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal main
 # deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu focal main
 EOF
-${SUDO} apt-key adv --keyserver keyserver.ubuntu.com \
+gpg --keyserver keyserver.ubuntu.com \
   --recv-keys 60C317803A41BA51845E371A1E9377A2BA9EF27F
+${SUDO} cat > /etc/apt/trusted.gpg.d/toolchain.gpg < <(gpg --export 60C317803A41BA51845E371A1E9377A2BA9EF27F)
 
 cat <<EOF | ${SUDO} tee /etc/apt/sources.list.d/emacs.list
 deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu focal main
 # deb-src http://ppa.launchpad.net/kelleyk/emacs/ubuntu focal main
 EOF
-${SUDO} apt-key adv --keyserver keyserver.ubuntu.com \
+gpg --keyserver keyserver.ubuntu.com \
   --recv-keys 873503A090750CDAEB0754D93FF0E01EEAAFC9CD
+${SUDO} cat > /etc/apt/trusted.gpg.d/emacs.gpg < <(gpg --export 873503A090750CDAEB0754D93FF0E01EEAAFC9CD)
+
+apt-key list
 
 for i in $(seq 5); do
   ${SUDO} apt-get update && break
@@ -68,8 +72,10 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
   mpi-default-dev \
   openmpi-bin \
   openssh-client \
-  python python3-pip python3-wheel \
+  python python3-pip python3-wheel python3-pkg-resources \
   sudo \
   texlive \
   valgrind \
   vim
+
+${SUDO} pip install --system bashate

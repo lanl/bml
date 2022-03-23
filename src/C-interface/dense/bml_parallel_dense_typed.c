@@ -118,6 +118,34 @@ void TYPED_FUNC(
 #endif
 }
 
+void TYPED_FUNC(
+    bml_mpi_irecv_dense) (
+    bml_matrix_dense_t * A,
+    const int src,
+    MPI_Comm comm)
+{
+#ifdef BML_USE_MAGMA
+    A->buffer = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    REAL_T *A_matrix = A->buffer;
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
+
+    MPI_Irecv(A_matrix, A->N * A->N, MPI_T, src, 222, comm, &A->req);
+}
+
+void TYPED_FUNC(
+    bml_mpi_irecv_complete_dense) (
+    bml_matrix_dense_t * A)
+{
+    MPI_Wait(&A->req, MPI_STATUS_IGNORE);
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (A->N, A->N, A->buffer, A->N, A->matrix, A->ld,
+                      bml_queue());
+    free(A->buffer);
+#endif
+}
+
 bml_matrix_dense_t
     * TYPED_FUNC(bml_mpi_recv_matrix_dense) (int N, int M,
                                              const int src, MPI_Comm comm)
@@ -129,6 +157,29 @@ bml_matrix_dense_t
     bml_mpi_recv_dense(A_bml, src, comm);
 
     return A_bml;
+}
+
+void TYPED_FUNC(
+    bml_mpi_bcast_matrix_dense) (
+    bml_matrix_dense_t * A,
+    const int root,
+    MPI_Comm comm)
+{
+#ifdef BML_USE_MAGMA
+    MAGMA_T *A_matrix = bml_allocate_memory(sizeof(MAGMA_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N, A->matrix, A->ld, A_matrix, A->N,
+                      bml_queue());
+#else
+    REAL_T *A_matrix = A->matrix;
+#endif
+
+    MPI_Bcast(A_matrix, A->N * A->N, MPI_T, root, comm);
+
+#ifdef BML_USE_MAGMA
+    MAGMA(setmatrix) (A->N, A->N, A_matrix, A->N, A->matrix, A->ld,
+                      bml_queue());
+    bml_free_memory(A_matrix);
+#endif
 }
 
 #endif
