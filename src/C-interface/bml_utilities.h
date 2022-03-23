@@ -4,7 +4,7 @@
 #define __BML_UTILITIES_H
 
 #include "bml_types.h"
-#define PRINT_THRESHOLD 16
+#define PRINT_THRESHOLD 100
 
 void bml_print_dense_matrix(
     int N,

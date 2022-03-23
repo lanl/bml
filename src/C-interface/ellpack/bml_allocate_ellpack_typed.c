@@ -154,19 +154,21 @@ bml_matrix_ellpack_t
     int N = A->N;
     int M = A->M;
     int *A_index = A->index;
-    int *csrColInd = A->csrColInd;
     int *A_nnz = A->nnz;
-    int * csrRowPtr = A->csrRowPtr;
     REAL_T *A_value = A->value;
-    REAL_T *csrVal = A->csrVal;
 
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #if defined(BML_USE_CUSPARSE)
-    A->csrRowPtr = bml_allocate_memory(sizeof(int) * (A->N+1));
-    csrRowPtr = A->csrRowPtr;
-#pragma omp target enter data map(alloc:csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
-#pragma omp target update to(csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+    A->csrColInd = bml_noinit_allocate_memory(sizeof(int) * N * M);
+    A->csrRowPtr = bml_allocate_memory(sizeof(int) * (N+1));
+    A->csrVal = bml_noinit_allocate_memory(sizeof(REAL_T) * N * M);
+
+    int *csrColInd = A->csrColInd;
+    int * csrRowPtr = A->csrRowPtr;
+    REAL_T *csrVal = A->csrVal;
+#pragma omp target enter data map(alloc:csrVal[:N*M], csrColInd[:N*M])
+#pragma omp target enter data map(to:csrRowPtr[:N+1])
 #endif
 #endif
 
@@ -207,7 +209,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
-
+#if defined(BML_USE_CUSPARSE)
+    A->csrColInd = bml_allocate_memory(sizeof(int) * N * M);
+    A->csrRowPtr = bml_allocate_memory(sizeof(int) * (N+1));
+    A->csrVal = bml_allocate_memory(sizeof(REAL_T) * N * M);
+#endif
     REAL_T *A_value = A->value;
 
     A->domain = bml_default_domain(N, M, distrib_mode);
@@ -217,11 +223,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int NM = N * M;
-
+#if defined(BML_USE_CUSPARSE)
     int *csrColInd = A->csrColInd;
     int * csrRowPtr = A->csrRowPtr;
     REAL_T *csrVal = A->csrVal;
-
+#endif
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 
 #pragma omp target teams distribute parallel for schedule (static, 1)
@@ -241,10 +247,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 
 #if defined(BML_USE_CUSPARSE)
-    A->nnz = bml_allocate_memory(sizeof(int) * (N+1));
-    csrRowPtr = A->csrRowPtr;
-#pragma omp target enter data map(alloc:csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
-#pragma omp target update to(csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+//    A->csrRowPtr = bml_allocate_memory(sizeof(int) * (N+1));
+//    csrColInd = A->csrColInd;
+//    csrRowPtr = A->csrRowPtr;
+//    csrVal = A->csrVal;
+#pragma omp target enter data map(to:csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
+//#pragma omp target update to(csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
 #endif
 #endif
     return A;
@@ -342,6 +350,11 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 #if defined(USE_OMP_OFFLOAD)
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
+
+// update cuCSR arrays (Note this call should come after ellpack arrays are updated)
+//#if defined(BML_USE_CUSPARSE)
+//    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
+//#endif
 #endif
     return A;
 }
@@ -392,6 +405,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     return A;
 }
 
+#if defined(BML_USE_CUSPARSE)
 /** Ellpack to cuCSR conversion.
  *
  *  Convert from Ellpack format to cusparse csr format.
@@ -431,7 +445,7 @@ void TYPED_FUNC(
     csrRowPtr[0] = 0;
     for(int i=0; i<A_N; i++)
     {
-        csrRowPtr[i+1] += A_nnz[i];
+        csrRowPtr[i+1] = csrRowPtr[i] + A_nnz[i];
     }
 #pragma omp target update to(csrRowPtr[:A_N+1])
     
@@ -473,6 +487,7 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *csrColInd = A->csrColInd;
     int *A_nnz = A->nnz;
+    
     int * csrRowPtr = A->csrRowPtr;
     REAL_T *A_value = A->value;
     REAL_T *csrVal = A->csrVal;
@@ -497,4 +512,4 @@ void TYPED_FUNC(
         }
     }
 }    
-
+#endif

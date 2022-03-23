@@ -17,6 +17,9 @@
 /* Define numeric types. */
 #if defined(SINGLE_REAL) || (defined(SINGLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T float
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_R_32F
+#endif
 #define MAGMA_T float
 #define MKL_T float
 #define MKL_REAL(a) a
@@ -34,6 +37,9 @@
 #define is_above_threshold(x, t) (fabsf(x) > (float) (t))
 #elif defined(DOUBLE_REAL) || (defined(DOUBLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T double
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_R_64F
+#endif
 #define MAGMA_T double
 #define MKL_T  double
 #define MKL_REAL(a) a
@@ -51,6 +57,9 @@
 #define is_above_threshold(x, t) (fabs(x) > (double) (t))
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float _Complex
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_C_32F
+#endif
 #define MAGMA_T magmaFloatComplex
 #define MKL_T MKL_Complex8
 #define MKL_REAL(a) a.real
@@ -68,6 +77,9 @@
 #define is_above_threshold(x, t) (cabsf(x) > (float) (t))
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double _Complex
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_C_64F
+#endif
 #define MAGMA_T magmaDoubleComplex
 #define MKL_T MKL_Complex16
 #define MKL_REAL(a) a.real
