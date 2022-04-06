@@ -255,9 +255,6 @@ void *TYPED_FUNC(
     int *X2_indexb = X2->indexb;
     int *X2_nnzb = X2->nnzb;
 
-    int ix[NB], jx[NB];
-    REAL_T *x_ptr[NB];
-
     REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
     REAL_T **X_ptr_value = (REAL_T **) X->ptr_value;
@@ -265,8 +262,13 @@ void *TYPED_FUNC(
 
     double *trace = bml_allocate_memory(sizeof(double) * 2);
 
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[NB], jx[NB];
+    REAL_T *x_ptr[NB];
+
     memset(ix, 0, NB * sizeof(int));
     memset(jx, 0, NB * sizeof(int));
+#endif
 
     int maxbsize = 0;
     for (int ib = 0; ib < NB; ib++)
@@ -297,14 +299,26 @@ void *TYPED_FUNC(
             TYPED_FUNC(bml_multiply_block4),
             TYPED_FUNC(bml_multiply_block5), TYPED_FUNC(bml_multiply_block6)};
 
-
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for                           \
+    firstprivate(xptrset)            \
+    reduction(+: traceX, traceX2)
+#else
 #pragma omp parallel for                           \
     firstprivate(ix,jx, x_ptr, xptrset)            \
     reduction(+: traceX, traceX2)
-
+#endif
     //loop over row blocks
     for (int ib = 0; ib < NB; ib++)
     {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
+        int ix[NB], jx[NB];
+        REAL_T *x_ptr[NB];
+
+        memset(ix, 0, NB * sizeof(int));
+#endif
+
         int lb = 0;
         if (!xptrset)
         {
@@ -456,15 +470,17 @@ void TYPED_FUNC(
     int *C_nnzb = C->nnzb;
     int *C_indexb = C->indexb;
 
-    int ix[NB], jx[NB];
-    REAL_T *x_ptr[NB];
-
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     REAL_T **B_ptr_value = (REAL_T **) B->ptr_value;
     REAL_T **C_ptr_value = (REAL_T **) C->ptr_value;
 
+#if !(defined(__IBMC__) || defined(__ibmxl__))
+    int ix[NB], jx[NB];
+    REAL_T *x_ptr[NB];
+
     memset(ix, 0, NB * sizeof(int));
     memset(jx, 0, NB * sizeof(int));
+#endif
 
     int maxbsize = 0;
     for (int ib = 0; ib < NB; ib++)
@@ -495,11 +511,24 @@ void TYPED_FUNC(
             TYPED_FUNC(bml_multiply_block5), TYPED_FUNC(bml_multiply_block6)};
 
     //loop over row blocks
+#if defined(__IBMC__) || defined(__ibmxl__)
+#pragma omp parallel for                       \
+    firstprivate( xptrset)
+#else
 #pragma omp parallel for                       \
     firstprivate(ix, jx, x_ptr, xptrset)
+#endif
 
     for (int ib = 0; ib < NB; ib++)
     {
+
+#if defined(__IBMC__) || defined(__ibmxl__)
+        int ix[NB], jx[NB];
+        REAL_T *x_ptr[NB];
+
+        memset(ix, 0, NB * sizeof(int));
+#endif
+
         int lb = 0;
         if (!xptrset)
         {

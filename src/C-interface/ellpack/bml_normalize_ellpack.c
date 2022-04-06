@@ -30,6 +30,7 @@ bml_accumulate_offdiag_ellpack(
             LOG_ERROR("unknown precision\n");
             break;
     }
+    return NULL;
 }
 
 /** Normalize ellpack matrix given gershgorin bounds.
