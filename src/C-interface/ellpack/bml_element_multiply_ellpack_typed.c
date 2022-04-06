@@ -74,7 +74,7 @@ void TYPED_FUNC(
     memset(x, 0.0, C->N * sizeof(REAL_T));
 #endif
 
-#if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK))
+#if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__))
     int num_chunks = MIN(OFFLOAD_NUM_CHUNKS, rowMax - rowMin + 1);
 
     int all_ix[C_N * num_chunks], all_jx[C_N * num_chunks];
@@ -89,7 +89,7 @@ void TYPED_FUNC(
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
-#if defined(INTEL_SDK) || defined(CRAY_SDK)
+#if defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__)
 #pragma omp teams distribute parallel for \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
@@ -129,11 +129,11 @@ void TYPED_FUNC(
 #endif
 #endif
     //for (int i = 0; i < A_N; i++)
-#if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK))
+#if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__))
     for (int i = rowMin + chunk; i < rowMax; i = i + num_chunks)
+    {
 #else
     for (int i = rowMin; i < rowMax; i++)
-#endif
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         int ix[C_N], jx[C_N];
@@ -141,7 +141,7 @@ void TYPED_FUNC(
 
         memset(ix, 0, C_N * sizeof(int));
 #endif
-
+#endif
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
@@ -198,7 +198,7 @@ void TYPED_FUNC(
         }
         C_nnz[i] = ll;
     }
-#if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK))
+#if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__))
 }
 #endif
 }

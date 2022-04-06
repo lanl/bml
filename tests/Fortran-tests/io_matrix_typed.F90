@@ -20,6 +20,10 @@ module io_matrix_typed
   end interface
 #endif
 
+#ifdef __IBMC__ .OR. __ibmxl__
+  integer, external :: getpid
+#endif
+
 contains
 
   function test_io_matrix_typed(matrix_type, element_kind, element_precision, n, m) &
