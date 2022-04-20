@@ -1,5 +1,16 @@
 include_directories(${PROJECT_SOURCE_DIR}/src/C-interface)
 
+if(BML_OMP_OFFLOAD)
+  add_executable(test-openmp_offload test_openmp_offload.c)
+  target_link_libraries(test-openmp_offload bml ${LINK_LIBRARIES})
+  set_target_properties(test-openmp_offload
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS}
+    LINK_FLAGS ${OpenMP_C_FLAGS})
+  add_test(openmp_offload ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
+           ${CMAKE_CURRENT_BINARY_DIR}/test-openmp_offload)
+endif()
+
 set(SOURCES_TYPED
   add_matrix_typed.c
   adjacency_matrix_typed.c
