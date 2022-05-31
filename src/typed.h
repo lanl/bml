@@ -1,6 +1,8 @@
 #ifndef __TYPED_H
 #define __TYPED_H
 
+#include <float.h>
+
 /* Fix the generated function name. */
 #if defined(SINGLE_REAL)
 #define FUNC_SUFFIX single_real
@@ -32,6 +34,19 @@
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabsf(x))
 #define is_above_threshold(x, t) (fabsf(x) > (float) (t))
+/* floating point limit types */
+#define BML_REAL_MAX FLT_MAX
+#define BML_REAL_MIN FLT_MIN
+#define BML_REAL_EPSILON FLT_EPSILON
+/* cusparse types */
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_R_32F
+#define bml_cusparseCSRgeam2_bufferSizeExt cusparseScsrgeam2_bufferSizeExt
+#define bml_cusparseCSRgeam2 cusparseScsrgeam2
+#define bml_cusparsePruneCSR_bufferSizeExt cusparseSpruneCsr2csr_bufferSizeExt
+#define bml_cusparsePruneCSRNnz cusparseSpruneCsr2csrNnz
+#define bml_cusparsePruneCSR cusparseSpruneCsr2csr
+#endif
 #elif defined(DOUBLE_REAL) || (defined(DOUBLE_COMPLEX) && ! defined(BML_COMPLEX))
 #define REAL_T double
 #define MAGMA_T double
@@ -49,6 +64,19 @@
 #define COMPLEX_CONJUGATE(x) (x)
 #define ABS(x) (fabs(x))
 #define is_above_threshold(x, t) (fabs(x) > (double) (t))
+/* floating point limit types */
+#define BML_REAL_MAX DBL_MAX
+#define BML_REAL_MIN DBL_MIN
+#define BML_REAL_EPSILON DBL_EPSILON
+/* cusparse types */
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_R_64F
+#define bml_cusparseCSRgeam2_bufferSizeExt cusparseDcsrgeam2_bufferSizeExt
+#define bml_cusparseCSRgeam2 cusparseDcsrgeam2
+#define bml_cusparsePruneCSR_bufferSizeExt cusparseDpruneCsr2csr_bufferSizeExt
+#define bml_cusparsePruneCSRNnz cusparseDpruneCsr2csrNnz
+#define bml_cusparsePruneCSR cusparseDpruneCsr2csr
+#endif
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float _Complex
 #define MAGMA_T magmaFloatComplex
@@ -66,6 +94,19 @@
 #define COMPLEX_CONJUGATE(x) (conjf(x))
 #define ABS(x) (cabsf(x))
 #define is_above_threshold(x, t) (cabsf(x) > (float) (t))
+/* floating point limit types */
+#define BML_REAL_MAX FLT_MAX
+#define BML_REAL_MIN FLT_MIN
+#define BML_REAL_EPSILON FLT_EPSILON
+/* cusparse types */
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_C_32F
+#define bml_cusparseCSRgeam2_bufferSizeExt cusparseCcsrgeam2_bufferSizeExt
+#define bml_cusparseCSRgeam2 cusparseCcsrgeam2
+#define bml_cusparsePruneCSR_bufferSizeExt cusparseCpruneCsr2csr_bufferSizeExt
+#define bml_cusparsePruneCSRNnz cusparseCpruneCsr2csrNnz
+#define bml_cusparsePruneCSR cusparseCpruneCsr2csr
+#endif
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double _Complex
 #define MAGMA_T magmaDoubleComplex
@@ -84,6 +125,19 @@
 #define COMPLEX_CONJUGATE(x) (conj(x))
 #define ABS(x) (cabs(x))
 #define is_above_threshold(x, t) (cabs(x) > (double) (t))
+/* floating point limit types */
+#define BML_REAL_MAX DBL_MAX
+#define BML_REAL_MIN DBL_MIN
+#define BML_REAL_EPSILON DBL_EPSILON
+/* cusparse types */
+#if defined (BML_USE_CUSPARSE)
+#define BML_CUSPARSE_T CUDA_C_64F
+#define bml_cusparseCSRgeam2_bufferSizeExt cusparseZcsrgeam2_bufferSizeExt
+#define bml_cusparseCSRgeam2 cusparseZcsrgeam2
+#define bml_cusparsePruneCSR_bufferSizeExt cusparseZpruneCsr2csr_bufferSizeExt
+#define bml_cusparsePruneCSRNnz cusparseZpruneCsr2csrNnz
+#define bml_cusparsePruneCSR cusparseZpruneCsr2csr
+#endif
 #else
 #error Unknown precision type
 #endif
@@ -102,4 +156,21 @@
 #define MAGMA(a) CONCAT_(magma, CONCAT(MAGMA_PREFIX , a))
 #define MAGMAGPU(a) CONCAT_(magma, CONCAT(MAGMA_PREFIX , CONCAT_(a, gpu)))
 #define MAGMABLAS(a) CONCAT_(magmablas, CONCAT(MAGMA_PREFIX , a))
+
+#if defined(BML_USE_CUSPARSE)
+/* includes needed for use of printf (end EXIT_FAILURE if used.
+ * May be used in void functions, hence return void.
+ */
+#include "stdlib.h"
+#include "stdio.h"
+#define BML_CHECK_CUSPARSE(func)                                               \
+{                                                                              \
+    cusparseStatus_t status = (func);                                          \
+    if (status != CUSPARSE_STATUS_SUCCESS) {                                   \
+        printf("CUSPARSE API failed at line %d with error: %s (%d)\n",         \
+               __LINE__, cusparseGetErrorString(status), status);              \
+        exit(EXIT_FAILURE);                                                   \
+    }                                                                          \
+}
+#endif
 #endif

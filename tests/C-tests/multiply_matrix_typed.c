@@ -35,6 +35,8 @@ static void TYPED_FUNC(
                 C[ROWMAJOR(i, j, N, N)] +=
                     alpha * A[ROWMAJOR(i, k, N, N)] * B[ROWMAJOR(k, j, N, N)];
             }
+            REAL_T val = C[ROWMAJOR(i, j, N, N)];
+            C[ROWMAJOR(i, j, N, N)] = fabs(val) > threshold ? val : 0.;
         }
     }
 }
