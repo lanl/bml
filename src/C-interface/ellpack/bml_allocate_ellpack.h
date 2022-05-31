@@ -172,4 +172,27 @@ void bml_update_domain_ellpack(
     int *localPartMax,
     int *nnodesInPart);
 
+#if defined(BML_USE_CUSPARSE)
+void bml_ellpack2cucsr_ellpack(
+    bml_matrix_ellpack_t * A);
+void bml_ellpack2cucsr_ellpack_single_real(
+    bml_matrix_ellpack_t * A);
+void bml_ellpack2cucsr_ellpack_double_real(
+    bml_matrix_ellpack_t * A);
+void bml_ellpack2cucsr_ellpack_single_complex(
+    bml_matrix_ellpack_t * A);
+void bml_ellpack2cucsr_ellpack_double_complex(
+    bml_matrix_ellpack_t * A);
+
+void bml_cucsr2ellpack_ellpack(
+    bml_matrix_ellpack_t * A);
+void bml_cucsr2ellpack_ellpack_single_real(
+    bml_matrix_ellpack_t * A);
+void bml_cucsr2ellpack_ellpack_double_real(
+    bml_matrix_ellpack_t * A);
+void bml_cucsr2ellpack_ellpack_single_complex(
+    bml_matrix_ellpack_t * A);
+void bml_cucsr2ellpack_ellpack_double_complex(
+    bml_matrix_ellpack_t * A);
+#endif
 #endif

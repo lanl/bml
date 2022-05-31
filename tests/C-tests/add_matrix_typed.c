@@ -73,6 +73,7 @@ int TYPED_FUNC(
         for (int i = 0; i < N * N; i++)
         {
             double expected = alpha * A_dense[i] + beta * C_dense[i];
+            expected = fabs(expected) > threshold ? expected : 0.;
             double rel_diff_val = (expected - B_dense[i]) / expected;
             double rel_diff = fabs(rel_diff_val);
             if (rel_diff > REL_TOL)
