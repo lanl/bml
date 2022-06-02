@@ -2,8 +2,6 @@
 #define __BML_MULTIPLY_ELLPACK_H
 
 #include "bml_types_ellpack.h"
-//#include "stdlib.h"
-//#include "stdio.h"
 
 void bml_multiply_ellpack(
     bml_matrix_ellpack_t * A,
@@ -132,17 +130,6 @@ void bml_multiply_adjust_AB_ellpack_double_complex(
 
 
 #if defined(BML_USE_CUSPARSE)
-/*
-#define BML_CHECK_CUSPARSE(func)                                               \
-{                                                                              \
-    cusparseStatus_t status = (func);                                          \
-    if (status != CUSPARSE_STATUS_SUCCESS) {                                   \
-        printf("CUSPARSE API failed at line %d with error: %s (%d)\n",         \
-               __LINE__, cusparseGetErrorString(status), status);              \
-        return;                                                   \
-    }                                                                          \
-}
-*/
 void bml_multiply_cusparse_ellpack(
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B,

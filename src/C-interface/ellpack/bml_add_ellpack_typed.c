@@ -608,9 +608,9 @@ void TYPED_FUNC(
 
     /* set reference pointer mode for scalars */
     BML_CHECK_CUSPARSE(cusparseSetPointerMode
-                       (handle, CUSPARSE_POINTER_MODE_HOST))
-        // convert ellpack to cucsr
-        TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
+                       (handle, CUSPARSE_POINTER_MODE_HOST));
+    // convert ellpack to cucsr
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (B);
 
     // Get some csr info
@@ -628,12 +628,12 @@ void TYPED_FUNC(
 #pragma omp target data use_device_ptr(csrRowPtrA,csrColIndA,csrValA, \
 		csrRowPtrB,csrColIndB,csrValB)
     {
-    BML_CHECK_CUSPARSE(bml_cusparseCSRgeam2_bufferSizeExt
+        BML_CHECK_CUSPARSE(bml_cusparseCSRgeam2_bufferSizeExt
                            (handle, A_N, A_N, &alpha, matA, nnzA, csrValA,
-                                csrRowPtrA, csrColIndA, &beta, matB, nnzB,
-                                csrValB, csrRowPtrB, csrColIndB, matC,
-                                csrValC, csrRowPtrC, csrColIndC,
-                                &bufferSize))}
+                            csrRowPtrA, csrColIndA, &beta, matB, nnzB,
+                            csrValB, csrRowPtrB, csrColIndB, matC,
+                            csrValC, csrRowPtrC, csrColIndC, &bufferSize));
+    }
     dBuffer = (char *) omp_target_alloc(bufferSize, omp_get_default_device());
 
     /* Compute the sparsity pattern of result matrix C */
@@ -643,8 +643,8 @@ void TYPED_FUNC(
         BML_CHECK_CUSPARSE(cusparseXcsrgeam2Nnz
                            (handle, A_N, A_N, matA, nnzA, csrRowPtrA,
                             csrColIndA, matB, nnzB, csrRowPtrB, csrColIndB,
-                            matC, csrRowPtrC, nnzCDevHostPtr,
-                            dBuffer)) if (NULL != nnzCDevHostPtr)
+                            matC, csrRowPtrC, nnzCDevHostPtr, dBuffer));
+        if (NULL != nnzCDevHostPtr)
         {
             nnzC = *nnzCDevHostPtr;
         }
@@ -676,12 +676,12 @@ void TYPED_FUNC(
                            (handle, A_N, A_N, &alpha, matA, nnzA, csrValA,
                             csrRowPtrA, csrColIndA, &beta, matB, nnzB,
                             csrValB, csrRowPtrB, csrColIndB, matC, csrValC,
-                            csrRowPtrC, csrColIndC, dBuffer))
-            // Done with matrix addition. Now prune to drop small entries. This is an "in-place" implementation
-            // Note: cusparse has either cusparse<t>pruneCsr2csr or cusparse<t>csr2csr_compress to
-            // accomplish this. We use cusparse<t>pruneCsr2csr here for convenience.
-            // Prune allows the use of device pointers, whereas Compress works with managed memory.
-            if (threshold > BML_REAL_MIN)
+                            csrRowPtrC, csrColIndC, dBuffer));
+        // Done with matrix addition. Now prune to drop small entries. This is an "in-place" implementation
+        // Note: cusparse has either cusparse<t>pruneCsr2csr or cusparse<t>csr2csr_compress to
+        // accomplish this. We use cusparse<t>pruneCsr2csr here for convenience.
+        // Prune allows the use of device pointers, whereas Compress works with managed memory.
+        if (threshold > BML_REAL_MIN)
         {
             // Get size of buffer and allocate
 //        BML_CHECK_CUSPARSE( bml_cusparsePruneCSR_bufferSizeExt(handle, C_num_rows, C_num_cols, C_nnz_tmp, (cusparseMatDescr_t)matC,
@@ -693,15 +693,15 @@ void TYPED_FUNC(
             BML_CHECK_CUSPARSE(bml_cusparsePruneCSRNnz
                                (handle, A_N, A_N, nnzC, matC, csrValC,
                                 csrRowPtrC, csrColIndC, &threshold, matA,
-                                csrRowPtrA, &nnzA /* host */ , dBuffer))
-                // Prune the matrix into existing A matrix arrays
-                BML_CHECK_CUSPARSE(bml_cusparsePruneCSR
-                                   (handle, A_N, A_N, nnzC, matC, csrValC,
-                                    csrRowPtrC, csrColIndC, &threshold, matA,
-                                    csrValA, csrRowPtrA, csrColIndA, dBuffer))
-                // copy row pointer data from temp array to pruned result
+                                csrRowPtrA, &nnzA /* host */ , dBuffer));
+            // Prune the matrix into existing A matrix arrays
+            BML_CHECK_CUSPARSE(bml_cusparsePruneCSR
+                               (handle, A_N, A_N, nnzC, matC, csrValC,
+                                csrRowPtrC, csrColIndC, &threshold, matA,
+                                csrValA, csrRowPtrA, csrColIndA, dBuffer));
+            // copy row pointer data from temp array to pruned result
 //        omp_target_memcpy(csrRowPtrC, csrRowPtrC_tmp, (C_N+1) * sizeof(int), 0, 0, omp_get_default_device(), omp_get_default_device());
-                // free work buffer
+            // free work buffer
 //        omp_target_free(dwork, omp_get_default_device());
         }
         else
@@ -738,8 +738,9 @@ for(int k=0; k<nnzC; k++)
     omp_target_free(csrRowPtrC, omp_get_default_device());
     omp_target_free(csrColIndC, omp_get_default_device());
     omp_target_free(csrValC, omp_get_default_device());
-BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matA))
-        BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matB))
-        BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matC))
-        BML_CHECK_CUSPARSE(cusparseDestroy(handle))}
+    BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matA));
+    BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matB));
+    BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matC));
+    BML_CHECK_CUSPARSE(cusparseDestroy(handle));
+}
 #endif

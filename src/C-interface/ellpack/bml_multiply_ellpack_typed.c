@@ -58,11 +58,12 @@ void TYPED_FUNC(
     {
         LOG_ERROR("Either matrix A or B are NULL\n");
     }
-#if defined(BML_USE_CUSPARSE)
-    TYPED_FUNC(bml_multiply_cusparse_ellpack) (A, B, C, alpha, beta,
-                                               threshold);
+// To Do: Direct implementation of (C = alpha*A*B + beta*C) to reduce data motion -DOK
+//#if defined(BML_USE_CUSPARSE)
+//    TYPED_FUNC(bml_multiply_cusparse_ellpack) (A, B, C, alpha, beta,
+//                                               threshold);
 
-#else
+//#else
     if (A == B && alpha == ONE && beta == ZERO)
     {
         trace = TYPED_FUNC(bml_multiply_x2_ellpack) (A, C, threshold);
@@ -94,7 +95,7 @@ void TYPED_FUNC(
 
         bml_deallocate_ellpack(A2);
     }
-#endif
+//#endif
     bml_free_memory(trace);
 }
 
@@ -664,6 +665,12 @@ void TYPED_FUNC(
  *
  * \f$ C \leftarrow \alpha A \, B + \beta C \f$
  *
+ * NOTE!! cusparse's documentation suggests that the routines used here should be able to perform the
+ * above operation (C = alpha*A*B + beta*C). However, it appears that this assumes the input C and the
+ * result of A*B have the same sparsity pattern. Otherwise, the sparsity pattern of A*B takes precedence.
+ * For now, we assume beta = 0. to ensure that we get C = alpha*A*B. This routine should be updated later
+ * to internally do the addition when the data is already in the cusparse arrays.
+ *
  * \ingroup multiply_group
  *
  * \param A Matrix A
@@ -703,10 +710,17 @@ void TYPED_FUNC(
     REAL_T *csrValB = (REAL_T *) B->csrVal;
     REAL_T *csrValC = (REAL_T *) C->csrVal;
 
+    /* temporary arrays to hold initial C values */
+    int *d_ccols = NULL;
+    int *d_rptr = NULL;
+    REAL_T *d_cvals = NULL;
+
     cusparseStatus_t status = CUSPARSE_STATUS_SUCCESS;
 
     REAL_T alpha = (REAL_T) alpha1;
     REAL_T beta = (REAL_T) beta1;
+    // force beta = 0. (See Note!! above) -DOK
+    beta = 0.;
     REAL_T threshold = (REAL_T) threshold1;
 
     cusparseOperation_t opA = CUSPARSE_OPERATION_NON_TRANSPOSE;
@@ -726,37 +740,76 @@ void TYPED_FUNC(
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (C);
 
     // Create cusparse matrix A and B in CSR format
+    // Note: The following update is not necessary since the ellpack2cucsr
+    // routine updates the csr rowpointers on host and device
 #pragma omp target update from(csrRowPtrA[:A_N+1])
 #pragma omp target update from(csrRowPtrB[:B_N+1])
+#pragma omp target update from(csrRowPtrC[:C_N+1])
     int nnzA = csrRowPtrA[A_N];
     int nnzB = csrRowPtrB[B_N];
+    int nnzC_in = csrRowPtrC[C_N];
 
-    BML_CHECK_CUSPARSE(cusparseCreate(&handle));
+    // copy C into temporary arrays if nonzero
+/*
+    if(nnzC_in > 0)
+    {
+        // allocate memory
+        d_rptr = (int *) omp_target_alloc((C_N+1)*sizeof(int), omp_get_default_device());
+        d_ccols = (int *) omp_target_alloc(nnzC_in*sizeof(int), omp_get_default_device());
+        d_cvals = (REAL_T *) omp_target_alloc(nnzC_in*sizeof(REAL_T), omp_get_default_device());
+        // copy
+        omp_target_memcpy(d_rptr, csrRowPtrC,
+                                  (C_N + 1) * sizeof(int), 0, 0,
+                                  omp_get_default_device(),
+                                  omp_get_default_device());
+        omp_target_memcpy(d_ccols, csrColIndC,
+                                  nnzC_in * sizeof(int), 0, 0,
+                                  omp_get_default_device(),
+                                  omp_get_default_device());
+        omp_target_memcpy(d_cvals, csrValC,
+                                  nnzC_in * sizeof(REAL_T), 0, 0,
+                                  omp_get_default_device(),
+                                  omp_get_default_device());
+    }
+*/
+    // special case not well handled by cusparse
+    if (nnzA == 0 || nnzB == 0)
+    {
+#pragma omp target teams distribute parallel for \
+    shared(nnzC_in, csrValC)
+        for (int i = 0; i < nnzC_in; i++)
+        {
+            csrValC[i] *= beta;
+        }
+        TYPED_FUNC(bml_cucsr2ellpack_ellpack) (C);
+    }
+    else
+    {
+        BML_CHECK_CUSPARSE(cusparseCreate(&handle));
 #pragma omp target data use_device_ptr(csrRowPtrA,csrColIndA,csrValA, \
 		csrRowPtrB,csrColIndB,csrValB)
-    {
-    BML_CHECK_CUSPARSE(cusparseCreateCsr(&matA, A_N, A_N, nnzA,
-                                             csrRowPtrA, csrColIndA,
-                                             csrValA, CUSPARSE_INDEX_32I,
-                                             CUSPARSE_INDEX_32I,
-                                             CUSPARSE_INDEX_BASE_ZERO,
-                                             computeType))
+        {
+            BML_CHECK_CUSPARSE(cusparseCreateCsr(&matA, A_N, A_N, nnzA,
+                                                 csrRowPtrA, csrColIndA,
+                                                 csrValA, CUSPARSE_INDEX_32I,
+                                                 CUSPARSE_INDEX_32I,
+                                                 CUSPARSE_INDEX_BASE_ZERO,
+                                                 computeType));
+            BML_CHECK_CUSPARSE(cusparseCreateCsr(&matB, B_N, B_N, nnzB,
+                                                 csrRowPtrB, csrColIndB,
+                                                 csrValB, CUSPARSE_INDEX_32I,
+                                                 CUSPARSE_INDEX_32I,
+                                                 CUSPARSE_INDEX_BASE_ZERO,
+                                                 computeType));
             BML_CHECK_CUSPARSE(cusparseCreateCsr
-                                   (&matB, B_N, B_N, nnzB, csrRowPtrB,
-                                        csrColIndB, csrValB,
-                                        CUSPARSE_INDEX_32I,
-                                        CUSPARSE_INDEX_32I,
-                                        CUSPARSE_INDEX_BASE_ZERO,
-                                        computeType))
-            BML_CHECK_CUSPARSE(cusparseCreateCsr
-                                   (&matC, C_N, B_N, 0, NULL, NULL, NULL,
-                                        CUSPARSE_INDEX_32I,
-                                        CUSPARSE_INDEX_32I,
-                                        CUSPARSE_INDEX_BASE_ZERO,
-                                        computeType))}
-    // SpGEMM Computation
-    cusparseSpGEMMDescr_t spgemmDesc;
-    BML_CHECK_CUSPARSE(cusparseSpGEMM_createDescr(&spgemmDesc))
+                               (&matC, C_N, B_N, nnzC_in, csrRowPtrC,
+                                csrColIndC, csrValC, CUSPARSE_INDEX_32I,
+                                CUSPARSE_INDEX_32I, CUSPARSE_INDEX_BASE_ZERO,
+                                computeType));
+        }
+        // SpGEMM Computation
+        cusparseSpGEMMDescr_t spgemmDesc;
+        BML_CHECK_CUSPARSE(cusparseSpGEMM_createDescr(&spgemmDesc));
         // ask bufferSize1 bytes for external memory
         BML_CHECK_CUSPARSE(cusparseSpGEMM_workEstimation(handle, opA, opB,
                                                          &alpha, matA, matB,
@@ -764,124 +817,122 @@ void TYPED_FUNC(
                                                          computeType,
                                                          CUSPARSE_SPGEMM_DEFAULT,
                                                          spgemmDesc,
+                                                         &bufferSize1, NULL));
+        dBuffer1 =
+            (void *) omp_target_alloc(bufferSize1, omp_get_default_device());
+        // inspect the matrices A and B to understand the memory requirement for
+        // the next step
+        BML_CHECK_CUSPARSE(cusparseSpGEMM_workEstimation(handle, opA, opB,
+                                                         &alpha, matA, matB,
+                                                         &beta, matC,
+                                                         computeType,
+                                                         CUSPARSE_SPGEMM_DEFAULT,
+                                                         spgemmDesc,
                                                          &bufferSize1,
-                                                         NULL)) dBuffer1 =
-        (void *) omp_target_alloc(bufferSize1, omp_get_default_device());
-    // inspect the matrices A and B to understand the memory requirement for
-    // the next step
-    BML_CHECK_CUSPARSE(cusparseSpGEMM_workEstimation(handle, opA, opB,
-                                                     &alpha, matA, matB,
-                                                     &beta, matC, computeType,
-                                                     CUSPARSE_SPGEMM_DEFAULT,
-                                                     spgemmDesc, &bufferSize1,
-                                                     dBuffer1))
+                                                         dBuffer1));
         // ask bufferSize2 bytes for external memory
         BML_CHECK_CUSPARSE(cusparseSpGEMM_compute(handle, opA, opB,
                                                   &alpha, matA, matB, &beta,
                                                   matC, computeType,
                                                   CUSPARSE_SPGEMM_DEFAULT,
                                                   spgemmDesc, &bufferSize2,
-                                                  NULL)) dBuffer2 =
-        (void *) omp_target_alloc(bufferSize2, omp_get_default_device());
+                                                  NULL));
+        dBuffer2 =
+            (void *) omp_target_alloc(bufferSize2, omp_get_default_device());
 
-    // compute the intermediate product of A * B
-    BML_CHECK_CUSPARSE(cusparseSpGEMM_compute(handle, opA, opB,
-                                              &alpha, matA, matB, &beta, matC,
-                                              computeType,
-                                              CUSPARSE_SPGEMM_DEFAULT,
-                                              spgemmDesc, &bufferSize2,
-                                              dBuffer2))
+        // compute the intermediate product of A * B
+        BML_CHECK_CUSPARSE(cusparseSpGEMM_compute(handle, opA, opB,
+                                                  &alpha, matA, matB, &beta,
+                                                  matC, computeType,
+                                                  CUSPARSE_SPGEMM_DEFAULT,
+                                                  spgemmDesc, &bufferSize2,
+                                                  dBuffer2));
         /* Note: Ideally we would allocate new arrays to hold the result and do a memcpy to the appropriate storage
          * after computing the product, since we do not know apriori the number of nonzeros of C. However, for ellpack,
          * we know the max nnz, so we can preallocate arrays of that size and use them here directly.
-         **  1. Get data sizes for result
-         **       // Get matrix C data sizes ( required to be int64_t as of cusparse api v. 11)
-         **        int64_t C_num_rows, C_num_cols, C_nnz_tmp;
-         **        BML_CHECK_CUSPARSE( cusparseSpMatGetSize(matC, &C_num_rows, &C_num_cols, &C_nnz))
-         **  2. Allocate new result arrays
-         **        REAL_T *csrValC_tmp = (REAL_T *) omp_target_alloc (sizeof(REAL_T) * C_nnz, omp_get_default_device());
-         **        int *csrColIndC_tmp = (int *) omp_target_alloc (sizeof(int) * C_nnz, omp_get_default_device());
-         **        int *csrRowPtrC_tmp = (int *) omp_target_alloc (sizeof(int) * (C_N+1), omp_get_default_device());
-         **  3. Copy previous data into new arrays if beta != 0.0
-         **  4. Set CSR pointers (as below) to use new array pointers, complete multiplication, then copy from new arrays
-         **     back to result arrays.
          */
+
 #pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
-    {
-        // update matC with the new pointers (We use existing preallocated arrays here. See note above )
-    BML_CHECK_CUSPARSE(cusparseCsrSetPointers
-                           (matC, csrRowPtrC, csrColIndC, csrValC))}
-    // copy the final products to the matrix C
-    BML_CHECK_CUSPARSE(cusparseSpGEMM_copy(handle, opA, opB,
-                                           &alpha, matA, matB, &beta, matC,
-                                           computeType,
-                                           CUSPARSE_SPGEMM_DEFAULT,
-                                           spgemmDesc))
+        {
+            // update matC with the new pointers (We use existing preallocated arrays here. See note above )
+            BML_CHECK_CUSPARSE(cusparseCsrSetPointers
+                               (matC, csrRowPtrC, csrColIndC, csrValC));
+        }
+        // copy the final products to the matrix C
+        BML_CHECK_CUSPARSE(cusparseSpGEMM_copy(handle, opA, opB,
+                                               &alpha, matA, matB, &beta,
+                                               matC, computeType,
+                                               CUSPARSE_SPGEMM_DEFAULT,
+                                               spgemmDesc));
         // Done with matrix multiplication. Now prune to drop small entries. This is an "in-place" implementation
         // Note: cusparse has either cusparse<t>pruneCsr2csr or cusparse<t>csr2csr_compress to
         // accomplish this. We use cusparse<t>pruneCsr2csr here for convenience.
         // Prune allows the use of device pointers, whereas Compress works with managed memory.
         if (threshold > BML_REAL_MIN)
-    {
-        int nnzC = 0;
-        size_t lworkInBytes = 0;
-        char *dwork = NULL;
-        cusparseMatDescr_t matC_tmp = NULL;
-        // Get matrix C data sizes ( required to be int64_t as of cusparse api v. 11)
-        int64_t C_num_rows, C_num_cols, C_nnz_tmp;
-        BML_CHECK_CUSPARSE(cusparseSpMatGetSize
-                           (matC, &C_num_rows, &C_num_cols, &C_nnz_tmp))
-            // create matrix descriptor for pruned matrix
-            BML_CHECK_CUSPARSE(cusparseCreateMatDescr(&matC_tmp))
-            cusparseSetMatIndexBase(matC_tmp, CUSPARSE_INDEX_BASE_ZERO);
-        cusparseSetMatType(matC_tmp, CUSPARSE_MATRIX_TYPE_GENERAL);
-
-        // Allocate temp array for holding row pointer data of pruned matrix.
-        int *csrRowPtrC_tmp =
-            (int *) omp_target_alloc(sizeof(int) * (C_N + 1),
-                                     omp_get_default_device());
-
-
-        /* Remaining work needs to use existing device pointers from C matrix so we create a target data region
-         * to use these device pointers.
-         */
-#pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
         {
-            // Get size of buffer and allocate
-            BML_CHECK_CUSPARSE(bml_cusparsePruneCSR_bufferSizeExt
-                               (handle, C_num_rows, C_num_cols, C_nnz_tmp,
-                                (cusparseMatDescr_t) matC, csrValC,
-                                csrRowPtrC, csrColIndC, &threshold, matC_tmp,
-                                NULL, csrRowPtrC_tmp, NULL,
-                                &lworkInBytes)) dwork =
-                (char *) omp_target_alloc(lworkInBytes,
-                                          omp_get_default_device());
+            int nnzC = 0;
+            size_t lworkInBytes = 0;
+            char *dwork = NULL;
+            cusparseMatDescr_t matC_tmp = NULL;
+            // Get matrix C data sizes ( required to be int64_t as of cusparse api v. 11)
+            int64_t C_num_rows, C_num_cols, C_nnz_tmp;
+            BML_CHECK_CUSPARSE(cusparseSpMatGetSize
+                               (matC, &C_num_rows, &C_num_cols, &C_nnz_tmp));
+            // create matrix descriptor for pruned matrix
+            BML_CHECK_CUSPARSE(cusparseCreateMatDescr(&matC_tmp));
+            BML_CHECK_CUSPARSE(cusparseSetMatIndexBase
+                               (matC_tmp, CUSPARSE_INDEX_BASE_ZERO));
+            BML_CHECK_CUSPARSE(cusparseSetMatType
+                               (matC_tmp, CUSPARSE_MATRIX_TYPE_GENERAL));
 
-            // Estimate number of nonzeros of pruned matrix
-            BML_CHECK_CUSPARSE(bml_cusparsePruneCSRNnz
-                               (handle, C_num_rows, C_num_cols, C_nnz_tmp,
-                                (cusparseMatDescr_t) matC, csrValC,
-                                csrRowPtrC, csrColIndC, &threshold, matC_tmp,
-                                csrRowPtrC_tmp, &nnzC /* host */ , dwork))
+            // Allocate temp array for holding row pointer data of pruned matrix.
+            int *csrRowPtrC_tmp =
+                (int *) omp_target_alloc(sizeof(int) * (C_N + 1),
+                                         omp_get_default_device());
+
+            /* Remaining work needs to use existing device pointers from C matrix so we create a target data region
+             * to use these device pointers.
+             */
+#pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
+            {
+                // Get size of buffer and allocate
+                BML_CHECK_CUSPARSE(bml_cusparsePruneCSR_bufferSizeExt
+                                   (handle, C_num_rows, C_num_cols, C_nnz_tmp,
+                                    (cusparseMatDescr_t) matC, csrValC,
+                                    csrRowPtrC, csrColIndC, &threshold,
+                                    matC_tmp, NULL, csrRowPtrC_tmp, NULL,
+                                    &lworkInBytes));
+                dwork =
+                    (char *) omp_target_alloc(lworkInBytes,
+                                              omp_get_default_device());
+
+                // Estimate number of nonzeros of pruned matrix
+                BML_CHECK_CUSPARSE(bml_cusparsePruneCSRNnz
+                                   (handle, C_num_rows, C_num_cols, C_nnz_tmp,
+                                    (cusparseMatDescr_t) matC, csrValC,
+                                    csrRowPtrC, csrColIndC, &threshold,
+                                    matC_tmp, csrRowPtrC_tmp,
+                                    &nnzC /* host */ , dwork));
                 // Prune the matrix into existing C matrix arrays (in-place)
                 BML_CHECK_CUSPARSE(bml_cusparsePruneCSR
                                    (handle, C_num_rows, C_num_cols, C_nnz_tmp,
                                     (cusparseMatDescr_t) matC, csrValC,
                                     csrRowPtrC, csrColIndC, &threshold,
                                     matC_tmp, csrValC, csrRowPtrC_tmp,
-                                    csrColIndC, dwork))
+                                    csrColIndC, dwork));
                 // copy row pointer data from temp array to pruned result
                 omp_target_memcpy(csrRowPtrC, csrRowPtrC_tmp,
                                   (C_N + 1) * sizeof(int), 0, 0,
                                   omp_get_default_device(),
                                   omp_get_default_device());
-            // free work buffer
-            omp_target_free(dwork, omp_get_default_device());
-        }                       //end target data region
+                // free work buffer
+                omp_target_free(dwork, omp_get_default_device());
+            }                   //end target data region
 
-        // free tmp memory and matrix descriptor
-        omp_target_free(csrRowPtrC_tmp, omp_get_default_device());
-    BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matC_tmp))}
+            // free tmp memory and matrix descriptor
+            omp_target_free(csrRowPtrC_tmp, omp_get_default_device());
+            BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matC_tmp));
+        }
 
 /*
 // DEBUG:
@@ -894,16 +945,19 @@ for(int k=0; k<C_nnz1; k++)
 }
 */
 
-    // Done with matrix multiplication.
-    // Update ellpack C matrix (on device): copy from csr to ellpack format
-    TYPED_FUNC(bml_cucsr2ellpack_ellpack) (C);
+        // Done with matrix multiplication.
+        // Update ellpack C matrix (on device): copy from csr to ellpack format
+        TYPED_FUNC(bml_cucsr2ellpack_ellpack) (C);
 
-    // device memory deallocation
-    omp_target_free(dBuffer1, omp_get_default_device());
-    omp_target_free(dBuffer2, omp_get_default_device());
-BML_CHECK_CUSPARSE(cusparseSpGEMM_destroyDescr(spgemmDesc))
-        BML_CHECK_CUSPARSE(cusparseDestroySpMat(matA))
-        BML_CHECK_CUSPARSE(cusparseDestroySpMat(matB))
-        BML_CHECK_CUSPARSE(cusparseDestroySpMat(matC))
-        BML_CHECK_CUSPARSE(cusparseDestroy(handle))}
+        // device memory deallocation
+        omp_target_free(dBuffer1, omp_get_default_device());
+        omp_target_free(dBuffer2, omp_get_default_device());
+        BML_CHECK_CUSPARSE(cusparseSpGEMM_destroyDescr(spgemmDesc));
+        BML_CHECK_CUSPARSE(cusparseDestroySpMat(matA));
+        BML_CHECK_CUSPARSE(cusparseDestroySpMat(matB));
+        BML_CHECK_CUSPARSE(cusparseDestroySpMat(matC));
+        BML_CHECK_CUSPARSE(cusparseDestroy(handle));
+    }
+}
+
 #endif
