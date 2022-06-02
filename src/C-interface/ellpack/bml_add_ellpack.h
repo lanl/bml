@@ -3,9 +3,6 @@
 
 #include "bml_types_ellpack.h"
 
-//#include "stdlib.h"
-//#include "stdio.h"
-
 void bml_add_ellpack(
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B,
@@ -132,17 +129,6 @@ void bml_scale_add_identity_ellpack_double_complex(
     double threshold);
 
 #if defined(BML_USE_CUSPARSE)
-/*
-#define BML_CHECK_CUSPARSE(func)                                               \
-{                                                                              \
-    cusparseStatus_t status = (func);                                          \
-    if (status != CUSPARSE_STATUS_SUCCESS) {                                   \
-        printf("CUSPARSE API failed at line %d with error: %s (%d)\n",         \
-               __LINE__, cusparseGetErrorString(status), status);              \
-        return;                                                   \
-    }                                                                          \
-}
-*/
 void bml_add_cusparse_ellpack(
     bml_matrix_ellpack_t * A,
     bml_matrix_ellpack_t * B,
