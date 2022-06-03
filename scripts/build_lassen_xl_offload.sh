@@ -28,10 +28,6 @@ export BLAS_LIBRARIES=${BLAS_LIBRARIES:="-L${LAPACK_DIR} -llapack -lblas"}
 ./build.sh configure
 
 pushd build
-make -j 
+make -j
 make install
 popd
-
-
-                                                                                                                                                                                              
-                                    

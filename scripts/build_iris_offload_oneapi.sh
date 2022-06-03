@@ -3,11 +3,11 @@
 # Make sure all the paths are correct
 
 if [ -e build ];then
-  rm -r build
+    rm -r build
 fi
 
 if [ -e install ];then
-  rm -r install
+    rm -r install
 fi
 
 MY_PATH=$(pwd)

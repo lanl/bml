@@ -19,6 +19,3 @@ export EXTRA_CFLAGS=${EXTRA_CFLAGS:=""}
 export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:=""}
 
 ./build.sh configure
-
-                                                                                                                                                                                              
-                                    
