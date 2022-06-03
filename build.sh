@@ -34,7 +34,7 @@ compile         - Compile the sources
 install         - Install the compiled sources
 testing         - Run the test suite
 docs            - Generate the API documentation
-indent          - Indent the sources
+indent          - Check the indentation of the sources
 check_indent    - Check the indentation of the sources
 tags            - Create tags file for vim and emacs
 dist            - Generate a tar file (this only works with git)
@@ -277,28 +277,10 @@ testing() {
     cd "${TOP_DIR}"
 }
 
-indent() {
-    cd "${BUILD_DIR}"
-    "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
-    check_pipe_error
-}
-
 check_indent() {
     cd "${TOP_DIR}"
-    if which bashate; then
-        git ls-files '*.sh' \
-            | xargs --no-run-if-empty --verbose --max-args 1 bashate \
-            2>&1 | tee --append "${LOG_FILE}"
-    fi
     "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
-    git diff 2>&1 | tee --append "${LOG_FILE}"
-    check_pipe_error
-    LINES=$(git diff | wc -l)
-    if test ${LINES} -gt 0; then
-        echo "sources were not formatted correctly"
-        die
-    fi
 }
 
 tags() {
@@ -374,7 +356,7 @@ if [[ $# -gt 0 ]]; then
                 docs
                 ;;
             "indent")
-                indent
+                check_indent
                 ;;
             "check_indent")
                 check_indent

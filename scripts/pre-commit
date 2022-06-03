@@ -1,0 +1,29 @@
+#!/bin/sh
+
+debug=0
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        --debug)
+            debug=1
+            ;;
+        *)
+            # Ignoring
+            ;;
+    esac
+    shift
+done
+
+if [ ${debug} -ne 0 ]; then
+    set -x
+fi
+
+if ! ./scripts/run-local-docker-container.sh ./build.sh indent > ./indent.output 2>&1; then
+    cat <<EOF
+The linter found issues with this commit. Please verify the suggested
+changes:
+
+EOF
+    cat indent.output
+    exit 1
+fi

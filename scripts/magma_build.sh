@@ -19,5 +19,3 @@ export MAGMA_ROOT=$OLCF_MAGMA_ROOT
 
 ./build.sh testing
 #./build.sh install
-                                                                                                                                                                                              
-                                    
