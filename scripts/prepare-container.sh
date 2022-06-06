@@ -24,6 +24,8 @@ deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-11 main
 # 12
 deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
 # deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-12 main
+deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main
+# deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-13 main
 EOF
 ${SUDO} bash -c "cat > /etc/apt/trusted.gpg.d/llvm.gpg" < <(wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor)
 
@@ -69,7 +71,7 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
     bundler \
     cmake cmake-data \
     emacs27 \
-    clang-11 llvm-11-dev libomp-11-dev \
+    clang-12 llvm-12-dev libomp-12-dev \
     gcc-4.8 g++-4.8 gfortran-4.8 \
     gcc-9 g++-9 gfortran-9 \
     gcc-10 g++-10 gfortran-10 \
