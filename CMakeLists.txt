@@ -650,8 +650,6 @@ include(FindPythonInterp)
 if(NOT PYTHONINTERP_FOUND)
   message(FATAL "Could not find Python interpreter")
 endif()
-configure_file(${PROJECT_SOURCE_DIR}/scripts/convert-template.in
-  ${CMAKE_BINARY_DIR}/convert-template)
 
 message(STATUS "When building executables with the bml library, please use the following link flags")
 

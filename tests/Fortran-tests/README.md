@@ -5,10 +5,9 @@ The tests are driven by a general executable created when the code is
 compiled with `BML_TESTING=yes`. This driver is called bml-testf
 compiled with the `testf.F90` source.
 
-Every low level source code of the type name_typed.F90 is
-pre-processed using the `/scripts/convert-template.in` to change to
-the particular element kind and precision. Two dummy varibles are
-used:
+Every low level source code of the type name_typed.F90 is pre-processed using
+the `/scripts/convert_template.py` script to change to the particular element
+kind and precision. Two dummy varibles are used:
 
   - `DUMMY_KIND`: That gets replaced with either `real` or `complex`
   - `DUMMY_PREC` or `_MP`: That gets replaced with `SP/_SP` of
