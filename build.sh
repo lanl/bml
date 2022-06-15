@@ -142,6 +142,11 @@ set_defaults() {
 }
 
 die() {
+    if (( $# > 0 )); then
+        echo "*********************************************"
+        echo "$@"
+        echo "*********************************************"
+    fi
     echo "fatal error"
     if [[ -f "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" ]]; then
         echo "appending CMake output"
@@ -175,6 +180,20 @@ cleanup() {
 create() {
     mkdir -v -p "${BUILD_DIR}" || die
     mkdir -v -p "${INSTALL_DIR}" || die
+}
+
+is_enabled() {
+    if [[ $1 == yes || $1 == on || $1 == 1 ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+sanity_check() {
+    if is_enabled ${BML_CUSPARSE} && ! is_enabled ${BML_OMP_OFFLOAD}; then
+        die "In order to enable BML_CUSPARSE, BML_OMP_OFFLOAD needs to be enabled as well"
+    fi
 }
 
 configure() {
@@ -328,15 +347,18 @@ if [[ $# -gt 0 ]]; then
                 ;;
             "configure")
                 create
+                sanity_check
                 configure
                 ;;
             "compile")
                 create
+                sanity_check
                 configure
                 compile
                 ;;
             "install")
                 create
+                sanity_check
                 configure
                 install
                 ;;
@@ -346,12 +368,14 @@ if [[ $# -gt 0 ]]; then
                     exit 1
                 fi
                 create
+                sanity_check
                 configure
                 compile
                 testing
                 ;;
             "docs")
                 create
+                sanity_check
                 configure
                 docs
                 ;;
@@ -366,6 +390,7 @@ if [[ $# -gt 0 ]]; then
                 ;;
             "dist")
                 create
+                sanity_check
                 configure
                 dist
                 ;;
