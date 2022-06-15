@@ -80,3 +80,8 @@ write_basic_package_version_file("BMLConfigVersion.cmake" VERSION ${PROJECT_VERS
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/BMLConfigVersion.cmake" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BML)
 add_library(BML::bml ALIAS bml)
 add_library(BML::bml_fortran ALIAS bml_fortran)
+
+include_directories(${PROJECT_SOURCE_DIR}/src/C-interface)
+add_executable(bml-version bml_version.c)
+target_link_libraries(bml-version bml)
+install(TARGETS bml-version RUNTIME DESTINATION bin)

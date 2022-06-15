@@ -32,6 +32,9 @@ void bml_log_location(
     char *format,
     ...);
 
+char *bml_version(
+    void);
+
 /** Convenience macro to write a BML_LOG_DEBUG level message. */
 #define LOG_DEBUG(format, ...) \
     bml_log_location(BML_LOG_DEBUG, __FILE__, __LINE__, format, ##__VA_ARGS__)

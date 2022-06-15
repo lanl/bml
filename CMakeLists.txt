@@ -312,7 +312,7 @@ if (MAGMA_FOUND)
   include_directories(${MAGMA_INCLUDE_DIRS})
 else()
   message(STATUS
-    "MAGMA not found:\n"
+    "MAGMA not found"
   )
 endif()
 
@@ -577,11 +577,7 @@ else()
   message(STATUS "Did not find addr2line")
 endif()
 
-add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
-
 set(DIST_FILES CMakeLists.txt)
-
-add_subdirectory(src)
 
 include(FindDoxygen)
 
@@ -622,29 +618,42 @@ if(BML_TESTING)
   add_subdirectory(tests)
 endif()
 
-find_program(TAR tar)
+set(BML_VERSION "${PROJECT_VERSION}")
+
 find_program(GIT git)
-if(TAR AND GIT)
-  execute_process(COMMAND ${GIT} status
+if(GIT)
+  execute_process(COMMAND ${GIT} describe
     RESULT_VARIABLE IS_GIT_REPOSITORY
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    OUTPUT_QUIET
+    OUTPUT_VARIABLE GIT_DESCRIBE_OUTPUT
     ERROR_QUIET)
   if(NOT IS_GIT_REPOSITORY EQUAL 0)
     message(WARNING "Not in git repository, disabling dist target")
+    add_custom_target(dist)
   else()
-    message(STATUS "Creating dist target")
-    add_custom_target(dist
-      COMMAND ${GIT} archive
-      --format=tar.gz
-      --prefix=bml-${PROJECT_VERSION}/
-      --output=${CMAKE_BINARY_DIR}/bml-${PROJECT_VERSION}.tar.gz
-      master
-      WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+    find_program(TAR tar)
+    if(TAR)
+      message(STATUS "Creating dist target")
+      add_custom_target(dist
+        COMMAND ${GIT} archive
+        --format=tar.gz
+        --prefix=bml-${PROJECT_VERSION}/
+        --output=${CMAKE_BINARY_DIR}/bml-${PROJECT_VERSION}.tar.gz
+        master
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+      string(STRIP ${GIT_DESCRIBE_OUTPUT} BML_VERSION)
+    else()
+      message(WARNING "No tar found, disabling dist target")
+      add_custom_target(dist)
+    endif()
   endif()
 else()
+  message(WARNING "No git command found, disabling dist target")
   add_custom_target(dist)
 endif()
+add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
+add_definitions(-DBML_VERSION="${BML_VERSION}")
+message(STATUS "Setting BML_VERSION to '${BML_VERSION}'")
 
 include(FindPythonInterp)
 if(NOT PYTHONINTERP_FOUND)
@@ -668,3 +677,5 @@ message(STATUS "Link flags: '${LINKLINE}'")
 configure_file(src/bml.pc.in bml.pc)
 install(FILES ${CMAKE_BINARY_DIR}/bml.pc
   DESTINATION ${CMAKE_INSTALL_PKG_CONFIG_DIR})
+
+add_subdirectory(src)
