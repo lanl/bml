@@ -158,3 +158,13 @@ bml_log_location(
     bml_log_real(log_level, new_format, ap);
     va_end(ap);
 }
+
+/**
+ * @brief Return version string of library.
+ */
+char *
+bml_version(
+    void)
+{
+    return BML_VERSION;
+}

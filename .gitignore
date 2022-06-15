@@ -1,7 +1,8 @@
 *~
-/build.log
+/.vscode
+/TAGS
 /build
+/build.log
 /install
 /tags
-/TAGS
 /worktrees

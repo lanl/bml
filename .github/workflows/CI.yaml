@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Check out sources
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: Prepare container
         run: ./scripts/prepare-container.sh
       - run: bundle install
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Check out sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Prepare container
         run: ./scripts/prepare-container.sh
       - name: Build docs
@@ -70,13 +70,17 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-complex.sh
     steps:
       - name: Check out sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Prepare container
         run: ./scripts/prepare-container-macos.sh
       - name: Build and test library
         env:
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
+      - name: Get library version
+        run: ./build/src/bml-version
 
   build:
     name: Build and test the library (${{ matrix.JOBNAME }})
@@ -135,10 +139,14 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-clang-12-gfortran-11-C-double-complex.sh
     steps:
       - name: Check out sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Prepare container
         run: ./scripts/prepare-container.sh
       - name: Build and test library
         env:
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
+      - name: Get library version
+        run: ./build/src/bml-version
