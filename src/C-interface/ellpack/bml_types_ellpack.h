@@ -31,7 +31,7 @@ struct bml_matrix_ellpack_t
     /** A copy of the domain decomposition. */
     bml_domain_t *domain2;
 
-#if defined(BML_USE_CUSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
 /* need to ensure that this is sorted */
     int *csrRowPtr;
     int *csrColInd;
