@@ -164,4 +164,40 @@ void bml_add_cusparse_ellpack_double_complex(
     double beta,
     double threshold);
 #endif
+#if defined(BML_USE_ROCSPARSE)
+void bml_add_rocsparse_ellpack(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold);
+
+void bml_add_rocsparse_ellpack_single_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold);
+
+void bml_add_rocsparse_ellpack_double_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold);
+
+void bml_add_rocsparse_ellpack_single_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold);
+
+void bml_add_rocsparse_ellpack_double_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha,
+    double beta,
+    double threshold);
+#endif
 #endif

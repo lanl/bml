@@ -46,6 +46,13 @@
 #define bml_cusparsePruneCSR_bufferSizeExt cusparseSpruneCsr2csr_bufferSizeExt
 #define bml_cusparsePruneCSRNnz cusparseSpruneCsr2csrNnz
 #define bml_cusparsePruneCSR cusparseSpruneCsr2csr
+#elif defined (BML_USE_ROCSPARSE)
+#define BML_ROCSPARSE_T rocsparse_datatype_f32_r
+#define bml_rocsparse_csrgeam_buffer_size rocsparse_scsrgeam_buffer_size
+#define bml_rocsparse_csrgeam rocsparse_scsrgeam
+#define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_sprune_csr2csr_buffer_size
+#define bml_rocsparse_xprune_csr2csr_nnz rocsparse_sprune_csr2csr_nnz
+#define bml_rocsparse_xprune_csr2csr rocsparse_sprune_csr2csr
 #endif
 #elif defined(DOUBLE_REAL)
 #define REAL_T double
@@ -76,6 +83,13 @@
 #define bml_cusparsePruneCSR_bufferSizeExt cusparseDpruneCsr2csr_bufferSizeExt
 #define bml_cusparsePruneCSRNnz cusparseDpruneCsr2csrNnz
 #define bml_cusparsePruneCSR cusparseDpruneCsr2csr
+#elif defined (BML_USE_ROCSPARSE)
+#define BML_ROCSPARSE_T rocsparse_datatype_f64_r
+#define bml_rocsparse_csrgeam_buffer_size rocsparse_dcsrgeam_buffer_size
+#define bml_rocsparse_csrgeam rocsparse_dcsrgeam
+#define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_dprune_csr2csr_buffer_size
+#define bml_rocsparse_xprune_csr2csr_nnz rocsparse_dprune_csr2csr_nnz
+#define bml_rocsparse_xprune_csr2csr rocsparse_dprune_csr2csr
 #endif
 #elif defined(SINGLE_COMPLEX)
 #define REAL_T float _Complex
@@ -99,6 +113,7 @@
 #define BML_REAL_MIN FLT_MIN
 #define BML_REAL_EPSILON FLT_EPSILON
 /* cusparse types */
+/* Note: as of 6/16/22 there is no complex prune function, these are placeholders */
 #if defined (BML_USE_CUSPARSE)
 #define BML_CUSPARSE_T CUDA_C_32F
 #define bml_cusparseCSRgeam2_bufferSizeExt cusparseCcsrgeam2_bufferSizeExt
@@ -106,6 +121,13 @@
 #define bml_cusparsePruneCSR_bufferSizeExt cusparseCpruneCsr2csr_bufferSizeExt
 #define bml_cusparsePruneCSRNnz cusparseCpruneCsr2csrNnz
 #define bml_cusparsePruneCSR cusparseCpruneCsr2csr
+#elif defined (BML_USE_ROCSPARSE)
+#define BML_ROCSPARSE_T rocsparse_datatype_f32_c
+#define bml_rocsparse_csrgeam_buffer_size rocsparse_ccsrgeam_buffer_size
+#define bml_rocsparse_csrgeam rocsparse_ccsrgeam
+#define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_cprune_csr2csr_buffer_size
+#define bml_rocsparse_xprune_csr2csr_nnz rocsparse_cprune_csr2csr_nnz
+#define bml_rocsparse_xprune_csr2csr rocsparse_cprune_csr2csr
 #endif
 #elif defined(DOUBLE_COMPLEX)
 #define REAL_T double _Complex
@@ -137,6 +159,13 @@
 #define bml_cusparsePruneCSR_bufferSizeExt cusparseZpruneCsr2csr_bufferSizeExt
 #define bml_cusparsePruneCSRNnz cusparseZpruneCsr2csrNnz
 #define bml_cusparsePruneCSR cusparseZpruneCsr2csr
+#elif defined (BML_USE_ROCSPARSE)
+#define BML_ROCSPARSE_T rocsparse_datatype_f64_c
+#define bml_rocsparse_csrgeam_buffer_size rocsparse_zcsrgeam_buffer_size
+#define bml_rocsparse_csrgeam rocsparse_zcsrgeam
+#define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_zprune_csr2csr_buffer_size
+#define bml_rocsparse_xprune_csr2csr_nnz rocsparse_zprune_csr2csr_nnz
+#define bml_rocsparse_xprune_csr2csr rocsparse_zprune_csr2csr
 #endif
 #else
 #error Unknown precision type
@@ -171,6 +200,21 @@
     if (status != CUSPARSE_STATUS_SUCCESS) {                                   \
         printf("CUSPARSE API failed at line %d with error: %s (%d)\n",         \
                __LINE__, cusparseGetErrorString(status), status);              \
+        exit(EXIT_FAILURE);                                                   \
+    }                                                                          \
+}
+#elif defined(BML_USE_ROCSPARSE)
+/* includes needed for use of printf (end EXIT_FAILURE if used.
+ * May be used in void functions, hence return void.
+ */
+#include "stdlib.h"
+#include "stdio.h"
+#define BML_CHECK_ROCSPARSE(func)                                               \
+{                                                                              \
+    rocsparse_status status = (func);                                          \
+    if (status != rocsparse_status_success) {                                   \
+        printf("ROCPARSE API failed at line %d with error: %d\n",         \
+               __LINE__, status);              \
         exit(EXIT_FAILURE);                                                   \
     }                                                                          \
 }
