@@ -17,6 +17,7 @@ int TYPED_FUNC(
     bml_matrix_t *A = NULL;
     REAL_T *A_diagonal = NULL;
     REAL_T *B_diagonal = NULL;
+    double tol = 1.e-12;
 
     // Create a diagonal
     switch (matrix_precision)
@@ -45,16 +46,62 @@ int TYPED_FUNC(
     }
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
+    REAL_T *A_dense = bml_export_to_dense(A, dense_row_major);
 
     bml_set_diagonal(A, A_diagonal, 0.01);
 
+    LOG_INFO("Random matrix with set diagonal\n");
     bml_print_bml_matrix(A, 0, N, 0, N);
 
     B_diagonal = bml_get_diagonal(A);
 
     for (int i = 0; i < N; i++)
     {
-        if (ABS(A_diagonal[i] - B_diagonal[i]) > 1e-12)
+        if (ABS(A_diagonal[i] - B_diagonal[i]) > tol)
+        {
+            LOG_ERROR
+                ("bml_get_diagonal and/or bml_set_diagonal are corrupted\n");
+            return -1;
+        }
+    }
+
+    // check no off-diagonal elements was reset
+    REAL_T *B_dense = bml_export_to_dense(A, dense_row_major);
+    for (int i = 0; i < N * N; i++)
+    {
+        if (ABS(A_dense[i] - B_dense[i]) > tol && (i % (N + 1) != 0))
+        {
+            LOG_ERROR("matrices not identical A[%d] = %e, B[%d] = %e\n",
+                      i, A_dense[i], i, B_dense[i]);
+            return -1;
+        }
+    }
+
+    free(B_diagonal);
+    bml_free_memory(A_dense);
+    bml_free_memory(B_dense);
+    bml_deallocate(&A);
+    LOG_INFO("Test set/get diagonal for random matrix passed\n");
+
+    // 2nd test: set diagonal of zero matrix with two successive calls
+    A = bml_zero_matrix(matrix_type, matrix_precision, N, M, sequential);
+
+    // set diagonal with large threshold
+    // (should be setting a subset of diagonal entries)
+    bml_set_diagonal(A, A_diagonal, 4.);
+
+    // set diagonal again with smaller threshold
+    // (should be setting more diagonal entries)
+    bml_set_diagonal(A, A_diagonal, 0.01);
+
+    LOG_INFO("Zero matrix with set diagonal\n");
+    bml_print_bml_matrix(A, 0, N, 0, N);
+
+    B_diagonal = bml_get_diagonal(A);
+
+    for (int i = 0; i < N; i++)
+    {
+        if (ABS(A_diagonal[i] - B_diagonal[i]) > tol)
         {
             LOG_ERROR
                 ("bml_get_diagonal and/or bml_set_diagonal are corrupted\n");
@@ -66,7 +113,7 @@ int TYPED_FUNC(
     free(B_diagonal);
     bml_deallocate(&A);
 
-    LOG_INFO("bml_get_diagonal and bml_set_diagonal test passed\n");
+    LOG_INFO("Test set/get diagonal for zero matrix passed\n");
 
     return 0;
 }
