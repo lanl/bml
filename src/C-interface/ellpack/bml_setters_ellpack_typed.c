@@ -184,14 +184,13 @@ void TYPED_FUNC(
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    int ll = 0;
 
 #ifdef USE_OMP_OFFLOAD
 #pragma omp target parallel for map(to:diagonal[:A_N])
 #endif
     for (int i = 0; i < A_N; i++)
     {
-        ll = 0;
+        int ll = 0;
         for (int j = 0; j < A_nnz[i]; j++)
         {
             if (A_index[ROWMAJOR(i, j, A_N, A_M)] == i)
