@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
+
 message(STATUS "CMake version ${CMAKE_VERSION}")
 
 set(LANGUAGES C CXX)
@@ -214,7 +215,7 @@ if(BML_OMP_OFFLOAD)
 
   include(CheckCXXCompilerFlag)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(OpenMP_CXX_OFFLOAD_FLAG "-foffload='-lm'")
+    set(OpenMP_CXX_OFFLOAD_FLAG "-foffload=-misa=sm_35 -foffload=nvptx-none -foffload='-lm'")
   elseif(MAKE_CXX_COMPILER_ID STREQUAL "Intel")
     set(OpenMP_CXX_OFFLOAD_FLAG "-foffload='-lm'")
   elseif(MAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -236,7 +237,7 @@ if(BML_OMP_OFFLOAD)
   include(FindCUDA)
 
   set(GPU_ARCH "sm_60" CACHE STRING "LAMMPS GPU CUDA SM architecture")
-  set_property(CACHE GPU_ARCH PROPERTY STRINGS sm_30 sm_50 sm_60 sm_70)
+  set_property(CACHE GPU_ARCH PROPERTY STRINGS sm_50 sm_60 sm_70)
 
   message("CUDA libraries: ${CUDA_LIBRARIES}")
   message("CUDA CUBLAS libraries: ${CUDA_CUBLAS_LIBRARIES}")
