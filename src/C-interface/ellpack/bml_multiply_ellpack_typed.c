@@ -868,7 +868,7 @@ void TYPED_FUNC(
         // Note: cusparse has either cusparse<t>pruneCsr2csr or cusparse<t>csr2csr_compress to
         // accomplish this. We use cusparse<t>pruneCsr2csr here for convenience.
         // Prune allows the use of device pointers, whereas Compress works with managed memory.
-        if (threshold > BML_REAL_MIN)
+        if (is_above_threshold(threshold, BML_REAL_MIN))
         {
             int nnzC = 0;
             size_t lworkInBytes = 0;

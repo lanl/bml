@@ -1,3 +1,0 @@
-char *bml_version(
-char *bml_version(
-    void);

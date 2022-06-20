@@ -681,7 +681,7 @@ void TYPED_FUNC(
         // Note: cusparse has either cusparse<t>pruneCsr2csr or cusparse<t>csr2csr_compress to
         // accomplish this. We use cusparse<t>pruneCsr2csr here for convenience.
         // Prune allows the use of device pointers, whereas Compress works with managed memory.
-        if (threshold > BML_REAL_MIN)
+        if (is_above_threshold(threshold, BML_REAL_MIN))
         {
             // Get size of buffer and allocate
 //        BML_CHECK_CUSPARSE( bml_cusparsePruneCSR_bufferSizeExt(handle, C_num_rows, C_num_cols, C_nnz_tmp, (cusparseMatDescr_t)matC,
