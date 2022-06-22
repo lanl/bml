@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-
 message(STATUS "CMake version ${CMAKE_VERSION}")
 
 set(LANGUAGES C CXX)
