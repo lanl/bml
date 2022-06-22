@@ -1,8 +1,9 @@
 *~
-/.vscode
-/TAGS
 /build
 /build.log
+**/*.indented
 /install
 /tags
+/TAGS
+/.vscode
 /worktrees
