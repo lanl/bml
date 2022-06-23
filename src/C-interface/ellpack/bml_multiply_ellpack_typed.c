@@ -163,12 +163,12 @@ void *TYPED_FUNC(
 #if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__))
     int num_chunks = MIN(OFFLOAD_NUM_CHUNKS, rowMax - rowMin + 1);
 
-    int all_ix[X_N * num_chunks], all_jx[X_N * num_chunks];
-    REAL_T all_x[X_N * num_chunks];
+    int *all_ix, *all_jx;
+    REAL_T *all_x;
 
-    memset(all_ix, 0, X_N * num_chunks * sizeof(int));
-    memset(all_jx, 0, X_N * num_chunks * sizeof(int));
-    memset(all_x, 0.0, X_N * num_chunks * sizeof(REAL_T));
+    all_ix = calloc(X_N * num_chunks, sizeof(int));
+    all_jx = calloc(X_N * num_chunks, sizeof(int));
+    all_x = calloc(X_N * num_chunks, sizeof(REAL_T));
 
 #pragma omp target map(to:all_ix[0:X_N*num_chunks],all_jx[0:X_N*num_chunks],all_x[0:X_N*num_chunks])
 
@@ -374,12 +374,12 @@ void TYPED_FUNC(
 #if defined(USE_OMP_OFFLOAD) && (defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__))
     int num_chunks = MIN(OFFLOAD_NUM_CHUNKS, rowMax - rowMin + 1);
 
-    int all_ix[C_N * num_chunks], all_jx[C_N * num_chunks];
-    REAL_T all_x[C_N * num_chunks];
+    int *all_ix, *all_jx;
+    REAL_T *all_x;
 
-    memset(all_ix, 0, C_N * num_chunks * sizeof(int));
-    memset(all_jx, 0, C_N * num_chunks * sizeof(int));
-    memset(all_x, 0.0, C_N * num_chunks * sizeof(REAL_T));
+    all_ix = calloc(C_N * num_chunks, sizeof(int));
+    all_jx = calloc(C_N * num_chunks, sizeof(int));
+    all_x = calloc(C_N * num_chunks, sizeof(REAL_T));
 
 #pragma omp target map(to:all_ix[0:C_N*num_chunks],all_jx[0:C_N*num_chunks],all_x[0:C_N*num_chunks])
 
