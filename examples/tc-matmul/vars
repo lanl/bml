@@ -1,0 +1,5 @@
+alias src-dense="cd $HOME/bml/src/C-interface/dense"
+alias src-tc="cd $HOME/bml/src/C-interface/mptc"
+alias example="cd /home/finkeljo/bml/examples/tc-matmul"
+alias build="cd /home/finkeljo/bml/build"
+

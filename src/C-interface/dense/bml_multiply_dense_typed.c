@@ -14,6 +14,7 @@
 #include "bml_multiply_dense.h"
 #include "bml_trace_dense.h"
 #include "bml_types_dense.h"
+#include "mptc/bml_mptc_dense.cuh"
 
 #include <stdlib.h>
 #include <string.h>
@@ -62,12 +63,20 @@ void TYPED_FUNC(
     double beta)
 {
 #ifdef BML_USE_MAGMA
+
+    #ifdef BML_MPTC 
+    bml_mptc_dense();
+    exit(0); 
+    #else
+
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
     MAGMA_T beta_ = MAGMACOMPLEX(MAKE) (beta, 0.);
 
     MAGMA(gemm) (MagmaNoTrans, MagmaNoTrans,
                  A->N, A->N, A->N, alpha_, B->matrix, B->ld,
                  A->matrix, A->ld, beta_, C->matrix, C->ld, bml_queue());
+    #endif
+ 
 #elif defined(MKL_GPU)
     int sizea = A->N * A->N;
     int dnum = 0;

@@ -11,4 +11,4 @@ LINK = -L${BML_PATH} -lbml -lbml_fortran  -llapack -lblas -lm
 #LINK = -g -dynamic -qopt-report=5 -axMIC-AVX512,CORE-AVX2 -L${BML_PATH} -lbml -lbml_fortran  -lm
 
 main: main.o 
-	     $(CC) $(CFLAGS) -o main main.o $(LINK)
+	     $(CXX) $(CFLAGS) -o main main.cc $(LINK)

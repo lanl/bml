@@ -34,7 +34,7 @@ compile         - Compile the sources
 install         - Install the compiled sources
 testing         - Run the test suite
 docs            - Generate the API documentation
-indent          - Check the indentation of the sources
+indent          - Indent the sources
 check_indent    - Check the indentation of the sources
 tags            - Create tags file for vim and emacs
 dist            - Generate a tar file (this only works with git)
@@ -81,9 +81,9 @@ EOF
     echo "BML_OMP_OFFLOAD        {yes,no}                    (default is ${BML_OMP_OFFLOAD})"
     echo "GPU_ARCH               GPU architecture            (default is ${GPU_ARCH})"
     echo "BML_CUDA               Build with CUDA             (default is ${BML_CUDA})"
+    echo "BML_MPTC               Build with Tensor Core multiply (default is ${BML_MPTC})"
     echo "BML_MAGMA              Build with MAGMA            (default is ${BML_MAGMA})"
     echo "BML_CUSOLVER           Build with cuSOLVER         (default is ${BML_CUSOLVER})"
-    echo "BML_CUSPARSE           Build with cuSPARSE         (default is ${BML_CUSPARSE})"
     echo "BML_ROCSOLVER          Build with rocSOLVER        (default is ${BML_ROCSOLVER})"
     echo "BML_XSMM               Build with XSMM             (default is ${BML_XSMM})"
     echo "BML_SCALAPACK          Build with SCALAPACK        (default is ${BML_SCALAPACK})"
@@ -129,9 +129,9 @@ set_defaults() {
     : ${BML_OMP_OFFLOAD:=no}
     : ${GPU_ARCH:=}
     : ${BML_CUDA:=no}
+    : ${BML_MPTC:=no}
     : ${BML_MAGMA:=no}
     : ${BML_CUSOLVER:=no}
-    : ${BML_CUSPARSE:=no}
     : ${BML_ROCSOLVER:=no}
     : ${BML_XSMM:=no}
     : ${BML_SCALAPACK:=no}
@@ -236,9 +236,9 @@ configure() {
         -DBML_OMP_OFFLOAD="${BML_OMP_OFFLOAD}" \
         -DGPU_ARCH="${GPU_ARCH}" \
         -DBML_CUDA="${BML_CUDA}" \
+        -DBML_MPTC="${BML_MPTC}" \
         -DBML_MAGMA="${BML_MAGMA}" \
         -DBML_CUSOLVER="${BML_CUSOLVER}" \
-        -DBML_CUSPARSE="${BML_CUSPARSE}" \
         -DBML_ROCSOLVER="${BML_ROCSOLVER}" \
         -DBML_XSMM="${BML_XSMM}" \
         -DBML_SCALAPACK="${BML_SCALAPACK}" \
@@ -246,18 +246,18 @@ configure() {
         -DCUDA_TOOLKIT_ROOT_DIR="${CUDA_TOOLKIT_ROOT_DIR}" \
         -DINTEL_OPT="${INTEL_OPT:=no}" \
         ${CMAKE_ARGS} \
-        | tee -a "${LOG_FILE}"
+        | tee --append "${LOG_FILE}"
     check_pipe_error
     cd "${TOP_DIR}"
 }
 
 compile() {
-    ${CMAKE} --build "${BUILD_DIR}" | tee -a "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 docs() {
-    ${CMAKE} --build "${BUILD_DIR}" --target docs 2>&1 | tee -a "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target docs 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
     #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
     #check_pipe_error
@@ -267,7 +267,7 @@ docs() {
 }
 
 install() {
-    ${CMAKE} --build "${BUILD_DIR}" --target install 2>&1 | tee -a "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target install 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
@@ -276,7 +276,7 @@ testing() {
     ctest --verbose \
         --parallel ${PARALLEL_TEST_JOBS} \
         ${TESTING_EXTRA_ARGS} \
-        2>&1 | tee -a "${LOG_FILE}"
+        2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 
     # Get skipped tests and re-run them with verbose output.
@@ -290,25 +290,43 @@ testing() {
             ctest --verbose \
                 ${TESTING_EXTRA_ARGS} \
                 --tests-regex "${skipped}" \
-                2>&1 | tee -a "${LOG_FILE}"
+                2>&1 | tee --append "${LOG_FILE}"
         done
     fi
     cd "${TOP_DIR}"
 }
 
-check_indent() {
-    cd "${TOP_DIR}"
-    "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee -a "${LOG_FILE}"
+indent() {
+    cd "${BUILD_DIR}"
+    "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
+check_indent() {
+    cd "${TOP_DIR}"
+    if which bashate; then
+        git ls-files '*.sh' \
+            | xargs --no-run-if-empty --verbose --max-args 1 bashate \
+            2>&1 | tee --append "${LOG_FILE}"
+    fi
+    "${TOP_DIR}/scripts/indent.sh" 2>&1 | tee --append "${LOG_FILE}"
+    check_pipe_error
+    git diff 2>&1 | tee --append "${LOG_FILE}"
+    check_pipe_error
+    LINES=$(git diff | wc -l)
+    if test ${LINES} -gt 0; then
+        echo "sources were not formatted correctly"
+        die
+    fi
+}
+
 tags() {
-    "${TOP_DIR}/scripts/update_tags.sh" 2>&1 | tee -a "${LOG_FILE}"
+    "${TOP_DIR}/scripts/update_tags.sh" 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
 dist() {
-    ${CMAKE} --build "${BUILD_DIR}" --target dist 2>&1 | tee -a "${LOG_FILE}"
+    ${CMAKE} --build "${BUILD_DIR}" --target dist 2>&1 | tee --append "${LOG_FILE}"
     check_pipe_error
 }
 
@@ -318,7 +336,7 @@ set_defaults
 
 if [[ -n ${BLA_VENDOR} ]]; then
     if [[ -n ${BLAS_VENDOR} ]]; then
-        echo "WARNING: BLAS_VENDOR (${BLAS_VENDOR}) will be used instead of BLA_VENDOR (${BLA_VENDOR})" | tee -a "${LOG_FILE}"
+        echo "WARNING: BLAS_VENDOR (${BLAS_VENDOR}) will be used instead of BLA_VENDOR (${BLA_VENDOR})" | tee --append "${LOG_FILE}"
     else
         BLAS_VENDOR=${BLA_VENDOR}
     fi
@@ -380,7 +398,7 @@ if [[ $# -gt 0 ]]; then
                 docs
                 ;;
             "indent")
-                check_indent
+                indent
                 ;;
             "check_indent")
                 check_indent

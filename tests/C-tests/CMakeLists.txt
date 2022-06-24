@@ -44,11 +44,14 @@ set(SOURCES_TYPED
   trace_matrix_typed.c
   transpose_matrix_typed.c)
 
+set(OBJECT_MPTC "${PROJECT_BINARY_DIR}/src/C-interface/dense/mptc/CMakeFiles/bml-dense-mptc.dir")
+
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bmltests single_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests single_complex "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_complex "${SOURCES_TYPED}")
+
 
 add_library(bmltests
   $<TARGET_OBJECTS:bmltests-single_real>
@@ -56,8 +59,12 @@ add_library(bmltests
   $<TARGET_OBJECTS:bmltests-single_complex>
   $<TARGET_OBJECTS:bmltests-double_complex>)
 set_target_properties(bmltests
-  PROPERTIES
+  PROPERTIES 
+  COMPILE_FLAGS "-I${OBJECT_MPTC}/"
+  LINK_FLAGS 
+  "${OBJECT_MPTC}/bml_mptc_dense.cu.o"
   POSITION_INDEPENDENT_CODE yes)
+
 
 add_executable(bml-test
   add_matrix.c
@@ -98,6 +105,13 @@ target_link_libraries(bml-test bmltests bml ${LINK_LIBRARIES})
 set_target_properties(bml-test
   PROPERTIES
   LINK_FLAGS "--coverage")
+
+set_target_properties(bml-test
+  PROPERTIES
+  COMPILE_FLAGS "-I${OBJECT_MPTC}/"
+  LINK_FLAGS 
+  "${OBJECT_MPTC}/bml_mptc_dense.cu.o")
+
 if(OPENMP_FOUND)
   set_target_properties(bml-test
     PROPERTIES

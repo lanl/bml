@@ -90,6 +90,7 @@ add_subdirectory(ellpack)
 add_subdirectory(ellblock)
 add_subdirectory(ellsort)
 add_subdirectory(csr)
+
 if(BML_MPI)
   add_subdirectory(distributed2d)
 endif()

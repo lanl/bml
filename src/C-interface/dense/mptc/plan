@@ -1,0 +1,20 @@
+ bml_zero_matrix(.... dense, ....)  # Inside the dense format General API Handled by whats already there.
+
+	# ideff MPTC
+		A = bml_zer_matrix_mptc( ..
+	# elseif MAGAM 
+		A = MAGAM (
+	# else
+		Regular CPU 
+
+
+bml_add ( .. ) Unders dense
+	# ideff MPTC
+               exit(1) Raise an error 
+        # elseif MAGAM
+
+
+Under mixedprectc
+	bml_zero_matrix_mptc( ... 
+		send thing to gpu 
+

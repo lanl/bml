@@ -1,11 +1,9 @@
 #Assumes environment variable PKG_CONFIG_PATH includes
-#path to bml.pc, for instance, with a cshell
-#setenv PKG_CONFIG_PATH $PKG_CONFIG_PATH":$HOME/GIT/bml/install/lib64/pkgconfig"
+#path to bml.pc, for instance, with a cshe
 
 CXXFLAGS += -I/$(HOME)/bml/install/include
-LIBS+= -L/$(HOME)/bml/install/lib64/ -fopenmp -lbml
-LIBS+= -L$(CUDA_LIB) -lcublas -lcuda -lcudart
-
+LIBS+= -L/$(HOME)/bml/install/lib64/ -fopenmp -lbml -lm
+LIBS+= -L$(CUDA_LIB) -lcublas -lcuda -lcudart 
 # how to produce objects from source files
 
 %.o:%.cc

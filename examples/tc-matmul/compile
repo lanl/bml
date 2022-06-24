@@ -1,0 +1,7 @@
+
+nvcc -c bml_multiply_x2_mptc.cu -lcublas -lcuda -lcudart
+nvcc -c bml_import_mptc.cu -lcublas -lcuda -lcudart
+nvcc -c bml_deallocate_mptc.cu -lcublas -lcuda -lcudart
+nvcc -c linalg_tools.cu -lcublas -lcuda -lcudart
+#nvcc -o main.exe main.cu bml_import_mptc.cu bml_multiply_x2_mptc.cu -L$CUDA_LIB -lcublas -lcuda -lcudart
+nvcc -o main2.exe main2.cu bml_import_mptc.cu bml_deallocate_mptc.cu bml_multiply_x2_mptc.cu linalg_tools.cu -L$CUDA_LIB -lcublas -lcuda -lcudart
