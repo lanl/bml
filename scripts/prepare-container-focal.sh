@@ -61,12 +61,13 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
     bundler \
     cmake cmake-data \
     emacs27 \
-    clang-9 llvm-9-dev libomp-9-dev \
+    clang-12 llvm-12-dev libomp-12-dev \
     gcc-9 g++-9 gfortran-9 \
     gcc-10 g++-10 gfortran-10 \
     gcc-11 g++-11 gfortran-11 \
     git-core \
     indent \
+    less \
     libblas-dev liblapack-dev \
     libscalapack-openmpi-dev \
     mpi-default-dev \

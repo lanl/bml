@@ -78,6 +78,7 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
     gcc-11 g++-11 gfortran-11 \
     git-core \
     indent \
+    less \
     libblas-dev liblapack-dev \
     libscalapack-openmpi-dev \
     mpi-default-dev \
