@@ -138,7 +138,6 @@ void TYPED_FUNC(
     C_BLAS(AXPY) (&nElems, &beta_, B->matrix + startIndex, &inc,
                   A->matrix + startIndex, &inc);
 #endif
-    printf("I shouldn't be here \n");
 #endif
 }
 
