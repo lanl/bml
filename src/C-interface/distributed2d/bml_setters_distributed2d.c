@@ -25,6 +25,7 @@ bml_set_diagonal_distributed2d(
             bml_set_diagonal_distributed2d_double_real(A, diagonal,
                                                        threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_diagonal_distributed2d_single_complex(A, diagonal,
                                                           threshold);
@@ -33,6 +34,7 @@ bml_set_diagonal_distributed2d(
             bml_set_diagonal_distributed2d_double_complex(A, diagonal,
                                                           threshold);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision\n");
             break;
@@ -54,12 +56,14 @@ bml_set_row_distributed2d(
         case double_real:
             bml_set_row_distributed2d_double_real(A, i, row, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_row_distributed2d_single_complex(A, i, row, threshold);
             break;
         case double_complex:
             bml_set_row_distributed2d_double_complex(A, i, row, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision\n");
             break;

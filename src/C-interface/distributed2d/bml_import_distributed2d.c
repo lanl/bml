@@ -42,6 +42,7 @@ bml_import_from_dense_distributed2d(
                                                                 order, N, A,
                                                                 threshold, M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return
                 bml_import_from_dense_distributed2d_single_complex
@@ -52,6 +53,7 @@ bml_import_from_dense_distributed2d(
                 bml_import_from_dense_distributed2d_double_complex
                 (matrix_type, order, N, A, threshold, M);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
