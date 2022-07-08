@@ -31,12 +31,14 @@ bml_element_multiply_AB_dense(
         case double_real:
             bml_element_multiply_AB_dense_double_real(A, B, C);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_element_multiply_AB_dense_single_complex(A, B, C);
             break;
         case double_complex:
             bml_element_multiply_AB_dense_double_complex(A, B, C);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

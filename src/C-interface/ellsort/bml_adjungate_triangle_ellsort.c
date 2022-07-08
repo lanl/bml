@@ -25,12 +25,14 @@ bml_adjungate_triangle_ellsort(
         case double_real:
             bml_adjungate_triangle_ellsort_double_real(A, triangle);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_adjungate_triangle_ellsort_single_complex(A, triangle);
             break;
         case double_complex:
             bml_adjungate_triangle_ellsort_double_complex(A, triangle);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision for bml_adjungate_triangle\n");
             break;

@@ -25,12 +25,14 @@ bml_inverse_csr(
         case double_real:
             B = bml_inverse_csr_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_inverse_csr_single_complex(A);
             break;
         case double_complex:
             B = bml_inverse_csr_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

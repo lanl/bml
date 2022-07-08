@@ -17,12 +17,14 @@ bml_get_element_ellpack(
         case double_real:
             return bml_get_element_ellpack_double_real(A, i, j);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_element_ellpack_single_complex(A, i, j);
             break;
         case double_complex:
             return bml_get_element_ellpack_double_complex(A, i, j);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision in bml_get_element_ellpack\n");
             break;
@@ -43,12 +45,14 @@ bml_get_row_ellpack(
         case double_real:
             return bml_get_row_ellpack_double_real(A, i);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_row_ellpack_single_complex(A, i);
             break;
         case double_complex:
             return bml_get_row_ellpack_double_complex(A, i);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision in bml_get_row_ellpack\n");
             break;
@@ -68,12 +72,14 @@ bml_get_diagonal_ellpack(
         case double_real:
             return bml_get_diagonal_ellpack_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_diagonal_ellpack_single_complex(A);
             break;
         case double_complex:
             return bml_get_diagonal_ellpack_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision in bml_get_diagonal_ellpack\n");
             break;

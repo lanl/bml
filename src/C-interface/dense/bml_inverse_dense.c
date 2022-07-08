@@ -29,12 +29,14 @@ bml_inverse_dense(
         case double_real:
             B = bml_inverse_dense_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_inverse_dense_single_complex(A);
             break;
         case double_complex:
             B = bml_inverse_dense_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -63,12 +65,14 @@ bml_inverse_inplace_dense(
         case double_real:
             bml_inverse_inplace_dense_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_inverse_inplace_dense_single_complex(A);
             break;
         case double_complex:
             bml_inverse_inplace_dense_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

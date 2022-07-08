@@ -16,12 +16,14 @@ bml_read_bml_matrix_dense(
         case double_real:
             bml_read_bml_matrix_dense_double_real(A, filename);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_read_bml_matrix_dense_single_complex(A, filename);
             break;
         case double_complex:
             bml_read_bml_matrix_dense_double_complex(A, filename);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -41,12 +43,14 @@ bml_write_bml_matrix_dense(
         case double_real:
             bml_write_bml_matrix_dense_double_real(A, filename);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_write_bml_matrix_dense_single_complex(A, filename);
             break;
         case double_complex:
             bml_write_bml_matrix_dense_double_complex(A, filename);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -69,12 +73,14 @@ bml_print_bml_matrix_dense(
         case double_real:
             bml_print_bml_matrix_dense_double_real(A, i_l, i_u, j_l, j_u);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_print_bml_matrix_dense_single_complex(A, i_l, i_u, j_l, j_u);
             break;
         case double_complex:
             bml_print_bml_matrix_dense_double_complex(A, i_l, i_u, j_l, j_u);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

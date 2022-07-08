@@ -17,7 +17,7 @@
 #endif
 
 /* Define numeric types. */
-#if defined(SINGLE_REAL) || (defined(SINGLE_COMPLEX) && ! defined(BML_COMPLEX))
+#if defined(SINGLE_REAL)
 #define REAL_T float
 #define MAGMA_T float
 #define MKL_T float
@@ -47,7 +47,7 @@
 #define bml_cusparsePruneCSRNnz cusparseSpruneCsr2csrNnz
 #define bml_cusparsePruneCSR cusparseSpruneCsr2csr
 #endif
-#elif defined(DOUBLE_REAL) || (defined(DOUBLE_COMPLEX) && ! defined(BML_COMPLEX))
+#elif defined(DOUBLE_REAL)
 #define REAL_T double
 #define MAGMA_T double
 #define MKL_T  double

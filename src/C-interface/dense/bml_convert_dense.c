@@ -19,6 +19,7 @@ bml_convert_dense(
             return bml_convert_dense_double_real(A, matrix_precision,
                                                  distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_convert_dense_single_complex(A, matrix_precision,
                                                     distrib_mode);
@@ -27,6 +28,7 @@ bml_convert_dense(
             return bml_convert_dense_double_complex(A, matrix_precision,
                                                     distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

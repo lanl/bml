@@ -28,12 +28,14 @@ bml_transpose_new_ellpack(
         case double_real:
             B = bml_transpose_new_ellpack_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_transpose_new_ellpack_single_complex(A);
             break;
         case double_complex:
             B = bml_transpose_new_ellpack_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -61,12 +63,14 @@ bml_transpose_ellpack(
         case double_real:
             bml_transpose_ellpack_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_transpose_ellpack_single_complex(A);
             break;
         case double_complex:
             bml_transpose_ellpack_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

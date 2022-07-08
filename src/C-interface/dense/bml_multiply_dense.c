@@ -35,12 +35,14 @@ bml_multiply_dense(
         case double_real:
             bml_multiply_dense_double_real(A, B, C, alpha, beta);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_dense_single_complex(A, B, C, alpha, beta);
             break;
         case double_complex:
             bml_multiply_dense_double_complex(A, B, C, alpha, beta);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -69,12 +71,14 @@ bml_multiply_x2_dense(
         case double_real:
             return bml_multiply_x2_dense_double_real(X, X2);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_multiply_x2_dense_single_complex(X, X2);
             break;
         case double_complex:
             return bml_multiply_x2_dense_double_complex(X, X2);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -106,12 +110,14 @@ bml_multiply_AB_dense(
         case double_real:
             bml_multiply_AB_dense_double_real(A, B, C);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_AB_dense_single_complex(A, B, C);
             break;
         case double_complex:
             bml_multiply_AB_dense_double_complex(A, B, C);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -144,12 +150,14 @@ bml_multiply_adjust_AB_dense(
         case double_real:
             bml_multiply_AB_dense_double_real(A, B, C);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_AB_dense_single_complex(A, B, C);
             break;
         case double_complex:
             bml_multiply_AB_dense_double_complex(A, B, C);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

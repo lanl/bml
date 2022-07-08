@@ -37,6 +37,7 @@ bml_element_multiply_AB_ellsort(
         case double_real:
             bml_element_multiply_AB_ellsort_double_real(A, B, C, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_element_multiply_AB_ellsort_single_complex(A, B, C,
                                                            threshold);
@@ -45,6 +46,7 @@ bml_element_multiply_AB_ellsort(
             bml_element_multiply_AB_ellsort_double_complex(A, B, C,
                                                            threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

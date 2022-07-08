@@ -26,12 +26,14 @@ bml_allGatherVParallel_ellsort(
         case double_real:
             bml_allGatherVParallel_ellsort_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_allGatherVParallel_ellsort_single_complex(A);
             break;
         case double_complex:
             bml_allGatherVParallel_ellsort_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -53,12 +55,14 @@ bml_mpi_type_create_struct_ellsort(
         case double_real:
             bml_mpi_type_create_struct_ellsort_double_real(A, newtype);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_mpi_type_create_struct_ellsort_single_complex(A, newtype);
             break;
         case double_complex:
             bml_mpi_type_create_struct_ellsort_double_complex(A, newtype);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -79,12 +83,14 @@ bml_mpi_send_ellsort(
         case double_real:
             bml_mpi_send_ellsort_double_real(A, dst, comm);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_mpi_send_ellsort_single_complex(A, dst, comm);
             break;
         case double_complex:
             bml_mpi_send_ellsort_double_complex(A, dst, comm);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -105,12 +111,14 @@ bml_mpi_recv_ellsort(
         case double_real:
             bml_mpi_recv_ellsort_double_real(A, dst, comm);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_mpi_recv_ellsort_single_complex(A, dst, comm);
             break;
         case double_complex:
             bml_mpi_recv_ellsort_double_complex(A, dst, comm);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -131,12 +139,14 @@ bml_mpi_irecv_ellsort(
         case double_real:
             bml_mpi_irecv_ellsort_double_real(A, dst, comm);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_mpi_irecv_ellsort_single_complex(A, dst, comm);
             break;
         case double_complex:
             bml_mpi_irecv_ellsort_double_complex(A, dst, comm);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -155,12 +165,14 @@ bml_mpi_irecv_complete_ellsort(
         case double_real:
             bml_mpi_irecv_complete_ellsort_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_mpi_irecv_complete_ellsort_single_complex(A);
             break;
         case double_complex:
             bml_mpi_irecv_complete_ellsort_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -183,6 +195,7 @@ bml_mpi_recv_matrix_ellsort(
         case double_real:
             return bml_mpi_recv_matrix_ellsort_double_real(N, M, src, comm);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_mpi_recv_matrix_ellsort_single_complex(N, M, src,
                                                               comm);
@@ -191,6 +204,7 @@ bml_mpi_recv_matrix_ellsort(
             return bml_mpi_recv_matrix_ellsort_double_complex(N, M, src,
                                                               comm);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

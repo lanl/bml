@@ -88,6 +88,7 @@ int TYPED_FUNC(
             }
 #endif
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             eigenvalues = bml_allocate_memory(N * sizeof(float complex));
 #ifdef INTEL_OPT
@@ -112,6 +113,7 @@ int TYPED_FUNC(
             }
 #endif
             break;
+#endif
         default:
             LOG_DEBUG("matrix_precision is not set");
             break;

@@ -41,6 +41,7 @@ bml_import_from_dense_dense(
                 bml_import_from_dense_dense_double_real(order, N, A,
                                                         distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             A_bml =
                 bml_import_from_dense_dense_single_complex(order, N, A,
@@ -51,6 +52,7 @@ bml_import_from_dense_dense(
                 bml_import_from_dense_dense_double_complex(order, N, A,
                                                            distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

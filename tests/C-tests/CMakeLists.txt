@@ -47,14 +47,22 @@ set(SOURCES_TYPED
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bmltests single_real "${SOURCES_TYPED}")
 bml_add_typed_library(bmltests double_real "${SOURCES_TYPED}")
-bml_add_typed_library(bmltests single_complex "${SOURCES_TYPED}")
-bml_add_typed_library(bmltests double_complex "${SOURCES_TYPED}")
+if(BML_COMPLEX)
+  bml_add_typed_library(bmltests single_complex "${SOURCES_TYPED}")
+  bml_add_typed_library(bmltests double_complex "${SOURCES_TYPED}")
+endif()
 
-add_library(bmltests
-  $<TARGET_OBJECTS:bmltests-single_real>
-  $<TARGET_OBJECTS:bmltests-double_real>
-  $<TARGET_OBJECTS:bmltests-single_complex>
-  $<TARGET_OBJECTS:bmltests-double_complex>)
+if(BML_COMPLEX)
+  add_library(bmltests
+    $<TARGET_OBJECTS:bmltests-single_real>
+    $<TARGET_OBJECTS:bmltests-double_real>
+    $<TARGET_OBJECTS:bmltests-single_complex>
+    $<TARGET_OBJECTS:bmltests-double_complex>)
+else()
+  add_library(bmltests
+    $<TARGET_OBJECTS:bmltests-single_real>
+    $<TARGET_OBJECTS:bmltests-double_real>)
+endif()
 set_target_properties(bmltests
   PROPERTIES
   POSITION_INDEPENDENT_CODE yes)
@@ -113,9 +121,14 @@ endif()
 
 message(STATUS "BML_NONMPI_PRECOMMAND=${BML_NONMPI_PRECOMMAND}")
 message(STATUS "BML_NONMPI_PRECOMMAND_ARGS=${BML_NONMPI_PRECOMMAND_ARGS}")
+if(BML_COMPLEX)
+  set(precisions single_real double_real single_complex double_complex)
+else()
+  set(precisions single_real double_real)
+endif()
 function(test_formats ${formats})
   foreach(T ${formats} )
-    foreach(P single_real double_real single_complex double_complex)
+    foreach(P ${precisions})
       add_test(NAME C-${N}-${T}-${P}
         COMMAND ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
         ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})
@@ -129,7 +142,7 @@ endfunction(test_formats)
 
 function(test_formats_mpi ${formats})
   foreach(T ${formats} )
-    foreach(P single_real double_real single_complex double_complex)
+    foreach(P ${precisions})
       add_test(MPI-C-${N}-${T}-${P}
         ${MPIEXEC_EXECUTABLE} ${MPIEXEC_NUMPROCS_FLAG} ${MPIEXEC_NUMPROCS} ${MPIEXEC_PREFLAGS}
         ${CMAKE_CURRENT_BINARY_DIR}/bml-test -n ${N} -t ${T} -p ${P})

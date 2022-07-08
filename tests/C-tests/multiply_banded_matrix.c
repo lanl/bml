@@ -20,6 +20,7 @@ test_multiply_banded(
             return test_multiply_banded_double_real(N, matrix_type,
                                                     matrix_precision, M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return test_multiply_banded_single_complex(N, matrix_type,
                                                        matrix_precision, M);
@@ -28,6 +29,7 @@ test_multiply_banded(
             return test_multiply_banded_double_complex(N, matrix_type,
                                                        matrix_precision, M);
             break;
+#endif
         default:
             fprintf(stderr, "unknown matrix precision\n");
             return -1;

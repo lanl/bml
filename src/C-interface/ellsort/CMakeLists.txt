@@ -81,8 +81,10 @@ set(SOURCES-ELLSORT-TYPED
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellsort single_real "${SOURCES-ELLSORT-TYPED}")
 bml_add_typed_library(bml-ellsort double_real "${SOURCES-ELLSORT-TYPED}")
-bml_add_typed_library(bml-ellsort single_complex "${SOURCES-ELLSORT-TYPED}")
-bml_add_typed_library(bml-ellsort double_complex "${SOURCES-ELLSORT-TYPED}")
+if(BML_COMPLEX)
+  bml_add_typed_library(bml-ellsort single_complex "${SOURCES-ELLSORT-TYPED}")
+  bml_add_typed_library(bml-ellsort double_complex "${SOURCES-ELLSORT-TYPED}")
+endif()
 if(OPENMP_FOUND)
   set_target_properties(bml-ellsort-single_real
     PROPERTIES
@@ -90,10 +92,12 @@ if(OPENMP_FOUND)
   set_target_properties(bml-ellsort-double_real
     PROPERTIES
     COMPILE_FLAGS ${OpenMP_C_FLAGS})
-  set_target_properties(bml-ellsort-single_complex
-    PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
-  set_target_properties(bml-ellsort-double_complex
-    PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  if(BML_COMPLEX)
+    set_target_properties(bml-ellsort-single_complex
+      PROPERTIES
+      COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    set_target_properties(bml-ellsort-double_complex
+      PROPERTIES
+      COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  endif()
 endif()

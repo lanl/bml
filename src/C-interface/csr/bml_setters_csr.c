@@ -19,12 +19,14 @@ bml_set_element_new_csr(
         case double_real:
             bml_set_element_new_csr_double_real(A, i, j, value);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_element_new_csr_single_complex(A, i, j, value);
             break;
         case double_complex:
             bml_set_element_new_csr_double_complex(A, i, j, value);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision in bml_set_element_new_csr\n");
             break;
@@ -47,12 +49,14 @@ bml_set_element_csr(
         case double_real:
             bml_set_element_csr_double_real(A, i, j, value);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_element_csr_single_complex(A, i, j, value);
             break;
         case double_complex:
             bml_set_element_csr_double_complex(A, i, j, value);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision in bml_set_element_csr\n");
             break;
@@ -74,12 +78,14 @@ bml_set_row_csr(
         case double_real:
             bml_set_row_csr_double_real(A, i, row, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_row_csr_single_complex(A, i, row, threshold);
             break;
         case double_complex:
             bml_set_row_csr_double_complex(A, i, row, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision\n");
             break;
@@ -100,12 +106,14 @@ bml_set_diagonal_csr(
         case double_real:
             bml_set_diagonal_csr_double_real(A, diagonal, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_diagonal_csr_single_complex(A, diagonal, threshold);
             break;
         case double_complex:
             bml_set_diagonal_csr_double_complex(A, diagonal, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision\n");
             break;
@@ -131,6 +139,7 @@ bml_set_sparse_row_csr(
             bml_set_sparse_row_csr_double_real(A, i, count, cols, row,
                                                threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_set_sparse_row_csr_single_complex(A, i, count, cols, row,
                                                   threshold);
@@ -139,6 +148,7 @@ bml_set_sparse_row_csr(
             bml_set_sparse_row_csr_double_complex(A, i, count, cols, row,
                                                   threshold);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision\n");
             break;

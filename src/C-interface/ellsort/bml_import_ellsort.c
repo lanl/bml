@@ -40,6 +40,7 @@ bml_import_from_dense_ellsort(
                                                              threshold, M,
                                                              distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_import_from_dense_ellsort_single_complex(order, N, A,
                                                                 threshold,
@@ -52,6 +53,7 @@ bml_import_from_dense_ellsort(
                                                                 M,
                                                                 distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

@@ -28,12 +28,14 @@ bml_matrix_ellpack_t
         case double_real:
             B = bml_threshold_new_ellpack_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_threshold_new_ellpack_single_complex(A, threshold);
             break;
         case double_complex:
             B = bml_threshold_new_ellpack_double_complex(A, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -63,12 +65,14 @@ bml_threshold_ellpack(
         case double_real:
             bml_threshold_ellpack_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_threshold_ellpack_single_complex(A, threshold);
             break;
         case double_complex:
             bml_threshold_ellpack_double_complex(A, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

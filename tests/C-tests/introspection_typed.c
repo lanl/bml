@@ -79,12 +79,14 @@ int TYPED_FUNC(
         case double_real:
             LOG_INFO("precision is double_real\n");
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             LOG_INFO("precision is single_complex\n");
             break;
         case double_complex:
             LOG_INFO("precision is double_complex\n");
             break;
+#endif
         default:
             LOG_ERROR("unknown matrix precision\n");
     }

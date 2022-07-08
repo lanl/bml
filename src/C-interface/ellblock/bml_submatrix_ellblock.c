@@ -37,6 +37,7 @@ bml_extract_submatrix_ellblock(
             return bml_extract_submatrix_ellblock_double_real(A, irow, icol,
                                                               B_N, B_M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_extract_submatrix_ellblock_single_complex(A, irow,
                                                                  icol, B_N,
@@ -47,6 +48,7 @@ bml_extract_submatrix_ellblock(
                                                                  icol, B_N,
                                                                  B_M);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -69,12 +71,14 @@ bml_assign_submatrix_ellblock(
         case double_real:
             bml_assign_submatrix_ellblock_double_real(A, B, irow, icol);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_assign_submatrix_ellblock_single_complex(A, B, irow, icol);
             break;
         case double_complex:
             bml_assign_submatrix_ellblock_double_complex(A, B, irow, icol);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

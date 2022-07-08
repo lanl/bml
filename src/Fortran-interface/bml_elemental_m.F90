@@ -9,8 +9,10 @@ module bml_elemental_m
   interface bml_get_element
     module procedure bml_get_element_single_real
     module procedure bml_get_element_double_real
+#ifdef BML_COMPLEX
     module procedure bml_get_element_single_complex
     module procedure bml_get_element_double_complex
+#endif
   end interface bml_get_element
 
   public :: bml_get_element
@@ -51,6 +53,7 @@ contains
 
   end subroutine bml_get_element_double_real
 
+#ifdef BML_COMPLEX
   !> Get a single matrix element.
   !!
   !! \param a_ij The matrix element
@@ -84,5 +87,6 @@ contains
     a_ij = bml_get_element_double_complex_C(a%ptr, i-1, j-1)
 
   end subroutine bml_get_element_double_complex
+#endif
 
 end module bml_elemental_m

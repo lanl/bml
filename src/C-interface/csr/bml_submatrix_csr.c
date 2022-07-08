@@ -35,6 +35,7 @@ bml_extract_submatrix_csr(
             return bml_extract_submatrix_csr_double_real(A, irow, icol,
                                                          B_N, B_M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_extract_submatrix_csr_single_complex(A, irow, icol,
                                                             B_N, B_M);
@@ -43,6 +44,7 @@ bml_extract_submatrix_csr(
             return bml_extract_submatrix_csr_double_complex(A, irow, icol,
                                                             B_N, B_M);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -65,12 +67,14 @@ bml_assign_submatrix_csr(
         case double_real:
             bml_assign_submatrix_csr_double_real(A, B, irow, icol);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_assign_submatrix_csr_single_complex(A, B, irow, icol);
             break;
         case double_complex:
             bml_assign_submatrix_csr_double_complex(A, B, irow, icol);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

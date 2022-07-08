@@ -27,6 +27,7 @@ bml_diagonalize_ellblock(
             bml_diagonalize_ellblock_double_real(A, eigenvalues,
                                                  eigenvectors);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_diagonalize_ellblock_single_complex(A, eigenvalues,
                                                     eigenvectors);
@@ -35,6 +36,7 @@ bml_diagonalize_ellblock(
             bml_diagonalize_ellblock_double_complex(A, eigenvalues,
                                                     eigenvectors);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

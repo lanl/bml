@@ -83,8 +83,10 @@ set(SOURCES-ELLBLOCK-TYPED
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-ellblock single_real "${SOURCES-ELLBLOCK-TYPED}")
 bml_add_typed_library(bml-ellblock double_real "${SOURCES-ELLBLOCK-TYPED}")
-bml_add_typed_library(bml-ellblock single_complex "${SOURCES-ELLBLOCK-TYPED}")
-bml_add_typed_library(bml-ellblock double_complex "${SOURCES-ELLBLOCK-TYPED}")
+if(BML_COMPLEX)
+  bml_add_typed_library(bml-ellblock single_complex "${SOURCES-ELLBLOCK-TYPED}")
+  bml_add_typed_library(bml-ellblock double_complex "${SOURCES-ELLBLOCK-TYPED}")
+endif()
 if(OPENMP_FOUND)
   set_target_properties(bml-ellblock-single_real
     PROPERTIES
@@ -92,10 +94,12 @@ if(OPENMP_FOUND)
   set_target_properties(bml-ellblock-double_real
     PROPERTIES
     COMPILE_FLAGS ${OpenMP_C_FLAGS})
-  set_target_properties(bml-ellblock-single_complex
-    PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
-  set_target_properties(bml-ellblock-double_complex
-    PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  if(BML_COMPLEX)
+    set_target_properties(bml-ellblock-single_complex
+      PROPERTIES
+      COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    set_target_properties(bml-ellblock-double_complex
+      PROPERTIES
+      COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  endif()
 endif()

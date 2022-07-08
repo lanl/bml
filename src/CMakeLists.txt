@@ -2,7 +2,8 @@ add_subdirectory(Fortran-interface)
 add_subdirectory(C-interface)
 add_subdirectory(internal-blas)
 
-set(LIBRARY_SOURCES
+if(BML_COMPLEX)
+  set(LIBRARY_SOURCES
   $<TARGET_OBJECTS:bml-c>
   $<TARGET_OBJECTS:bml-internal-blas-double_complex>
   $<TARGET_OBJECTS:bml-internal-blas-double_real>
@@ -39,6 +40,31 @@ set(MPI_LIBRARY_SOURCES
   $<TARGET_OBJECTS:bml-distributed2d-single_complex>
   $<TARGET_OBJECTS:bml-distributed2d-single_real>
   $<TARGET_OBJECTS:bml-distributed2d>)
+else()
+  set(LIBRARY_SOURCES
+    $<TARGET_OBJECTS:bml-c>
+    $<TARGET_OBJECTS:bml-internal-blas-double_real>
+    $<TARGET_OBJECTS:bml-internal-blas-single_real>
+    $<TARGET_OBJECTS:bml-dense-double_real>
+    $<TARGET_OBJECTS:bml-dense-single_real>
+    $<TARGET_OBJECTS:bml-dense>
+    $<TARGET_OBJECTS:bml-ellpack-double_real>
+    $<TARGET_OBJECTS:bml-ellpack-single_real>
+    $<TARGET_OBJECTS:bml-ellpack>
+    $<TARGET_OBJECTS:bml-ellblock-double_real>
+    $<TARGET_OBJECTS:bml-ellblock-single_real>
+    $<TARGET_OBJECTS:bml-ellblock>
+    $<TARGET_OBJECTS:bml-ellsort-double_real>
+    $<TARGET_OBJECTS:bml-ellsort-single_real>
+    $<TARGET_OBJECTS:bml-ellsort>
+    $<TARGET_OBJECTS:bml-csr-double_real>
+    $<TARGET_OBJECTS:bml-csr-single_real>
+    $<TARGET_OBJECTS:bml-csr>)
+  set(MPI_LIBRARY_SOURCES
+    $<TARGET_OBJECTS:bml-distributed2d-double_real>
+    $<TARGET_OBJECTS:bml-distributed2d-single_real>
+    $<TARGET_OBJECTS:bml-distributed2d>)
+endif()
 if(BML_MPI)
   add_library(bml
     ${LIBRARY_SOURCES}

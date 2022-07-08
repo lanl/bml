@@ -62,12 +62,14 @@ void TYPED_FUNC(
         case double_real:
             FMT = "%d %d %lg\n";
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             FMT = "%d %d %g\n";
             break;
         case double_complex:
             FMT = "%d %d %lg\n";
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

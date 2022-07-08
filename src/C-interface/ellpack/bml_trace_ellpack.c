@@ -28,12 +28,14 @@ bml_trace_ellpack(
         case double_real:
             trace = bml_trace_ellpack_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             trace = bml_trace_ellpack_single_complex(A);
             break;
         case double_complex:
             trace = bml_trace_ellpack_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -65,12 +67,14 @@ bml_trace_mult_ellpack(
         case double_real:
             trace = bml_trace_mult_ellpack_double_real(A, B);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             trace = bml_trace_mult_ellpack_single_complex(A, B);
             break;
         case double_complex:
             trace = bml_trace_mult_ellpack_double_complex(A, B);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

@@ -175,6 +175,7 @@ bml_get_sparsity_ellblock(
         case double_real:
             return bml_get_sparsity_ellblock_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_sparsity_ellblock_single_complex(A, threshold);
             break;
@@ -184,6 +185,7 @@ bml_get_sparsity_ellblock(
         case precision_uninitialized:
             LOG_ERROR("precision not initialized");
             break;
+#endif
         default:
             LOG_ERROR("fatal logic error\n");
             break;

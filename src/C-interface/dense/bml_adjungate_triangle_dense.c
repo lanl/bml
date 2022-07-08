@@ -33,12 +33,14 @@ bml_adjungate_triangle_dense(
         case double_real:
             bml_adjungate_triangle_dense_double_real(A, triangle);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_adjungate_triangle_dense_single_complex(A, triangle);
             break;
         case double_complex:
             bml_adjungate_triangle_dense_double_complex(A, triangle);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
