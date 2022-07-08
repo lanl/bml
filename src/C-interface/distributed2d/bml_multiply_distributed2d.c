@@ -39,6 +39,7 @@ bml_multiply_distributed2d(
             bml_multiply_distributed2d_double_real(A, B, C, alpha, beta,
                                                    threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_distributed2d_single_complex(A, B, C, alpha, beta,
                                                       threshold);
@@ -47,6 +48,7 @@ bml_multiply_distributed2d(
             bml_multiply_distributed2d_double_complex(A, B, C, alpha, beta,
                                                       threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -79,6 +81,7 @@ bml_multiply_x2_distributed2d(
             bml_multiply_distributed2d_double_real(X, X, X2, 1., 0.,
                                                    threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_distributed2d_single_complex(X, X, X2, 1., 0.,
                                                       threshold);
@@ -87,6 +90,7 @@ bml_multiply_x2_distributed2d(
             bml_multiply_distributed2d_double_complex(X, X, X2, 1., 0.,
                                                       threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -122,6 +126,7 @@ bml_multiply_AB_distributed2d(
             bml_multiply_distributed2d_double_real(A, B, C, 1., 0.,
                                                    threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_distributed2d_single_complex(A, B, C, 1., 0.,
                                                       threshold);
@@ -130,6 +135,7 @@ bml_multiply_AB_distributed2d(
             bml_multiply_distributed2d_double_complex(A, B, C, 1., 0.,
                                                       threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

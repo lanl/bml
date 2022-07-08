@@ -30,12 +30,14 @@ bml_normalize_distributed2d(
         case double_real:
             bml_normalize_distributed2d_double_real(A, mineval, maxeval);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_normalize_distributed2d_single_complex(A, mineval, maxeval);
             break;
         case double_complex:
             bml_normalize_distributed2d_double_complex(A, mineval, maxeval);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -62,12 +64,14 @@ bml_gershgorin_distributed2d(
         case double_real:
             return bml_gershgorin_distributed2d_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_gershgorin_distributed2d_single_complex(A);
             break;
         case double_complex:
             return bml_gershgorin_distributed2d_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

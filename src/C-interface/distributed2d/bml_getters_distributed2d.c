@@ -14,12 +14,14 @@ bml_get_row_distributed2d(
         case double_real:
             return bml_get_row_distributed2d_double_real(A, i);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_row_distributed2d_single_complex(A, i);
             break;
         case double_complex:
             return bml_get_row_distributed2d_double_complex(A, i);
             break;
+#endif
         default:
             LOG_ERROR("unkonwn precision in bml_get_row_distributed2d\n");
             break;
