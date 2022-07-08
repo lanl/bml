@@ -35,12 +35,14 @@ bml_add_ellpack(
         case double_real:
             bml_add_ellpack_double_real(A, B, alpha, beta, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_add_ellpack_single_complex(A, B, alpha, beta, threshold);
             break;
         case double_complex:
             bml_add_ellpack_double_complex(A, B, alpha, beta, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -81,6 +83,7 @@ bml_add_norm_ellpack(
                 bml_add_norm_ellpack_double_real(A, B, alpha, beta,
                                                  threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             trnorm =
                 bml_add_norm_ellpack_single_complex(A, B, alpha, beta,
@@ -91,6 +94,7 @@ bml_add_norm_ellpack(
                 bml_add_norm_ellpack_double_complex(A, B, alpha, beta,
                                                     threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -122,12 +126,14 @@ bml_add_identity_ellpack(
         case double_real:
             bml_add_identity_ellpack_double_real(A, beta, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_add_identity_ellpack_single_complex(A, beta, threshold);
             break;
         case double_complex:
             bml_add_identity_ellpack_double_complex(A, beta, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -161,6 +167,7 @@ bml_scale_add_identity_ellpack(
             bml_scale_add_identity_ellpack_double_real(A, alpha, beta,
                                                        threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_scale_add_identity_ellpack_single_complex(A, alpha, beta,
                                                           threshold);
@@ -169,6 +176,7 @@ bml_scale_add_identity_ellpack(
             bml_scale_add_identity_ellpack_double_complex(A, alpha, beta,
                                                           threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

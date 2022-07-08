@@ -40,12 +40,14 @@ bml_multiply_csr(
         case double_real:
             bml_multiply_csr_double_real(A, B, C, alpha, beta, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_csr_single_complex(A, B, C, alpha, beta, threshold);
             break;
         case double_complex:
             bml_multiply_csr_double_complex(A, B, C, alpha, beta, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -76,12 +78,14 @@ bml_multiply_x2_csr(
         case double_real:
             return bml_multiply_x2_csr_double_real(X, X2, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_multiply_x2_csr_single_complex(X, X2, threshold);
             break;
         case double_complex:
             return bml_multiply_x2_csr_double_complex(X, X2, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -115,12 +119,14 @@ bml_multiply_AB_csr(
         case double_real:
             bml_multiply_AB_csr_double_real(A, B, C, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_AB_csr_single_complex(A, B, C, threshold);
             break;
         case double_complex:
             bml_multiply_AB_csr_double_complex(A, B, C, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -153,12 +159,14 @@ bml_multiply_adjust_AB_csr(
         case double_real:
             bml_multiply_adjust_AB_csr_double_real(A, B, C, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_multiply_adjust_AB_csr_single_complex(A, B, C, threshold);
             break;
         case double_complex:
             bml_multiply_adjust_AB_csr_double_complex(A, B, C, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

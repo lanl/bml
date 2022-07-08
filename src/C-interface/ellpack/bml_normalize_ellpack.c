@@ -20,12 +20,14 @@ bml_accumulate_offdiag_ellpack(
         case double_real:
             return bml_accumulate_offdiag_ellpack_double_real(A, flag);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_accumulate_offdiag_ellpack_single_complex(A, flag);
             break;
         case double_complex:
             return bml_accumulate_offdiag_ellpack_double_complex(A, flag);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -55,12 +57,14 @@ bml_normalize_ellpack(
         case double_real:
             bml_normalize_ellpack_double_real(A, mineval, maxeval);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_normalize_ellpack_single_complex(A, mineval, maxeval);
             break;
         case double_complex:
             bml_normalize_ellpack_double_complex(A, mineval, maxeval);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -87,12 +91,14 @@ bml_gershgorin_ellpack(
         case double_real:
             return bml_gershgorin_ellpack_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_gershgorin_ellpack_single_complex(A);
             break;
         case double_complex:
             return bml_gershgorin_ellpack_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -122,12 +128,14 @@ bml_gershgorin_partial_ellpack(
         case double_real:
             return bml_gershgorin_partial_ellpack_double_real(A, nrows);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_gershgorin_partial_ellpack_single_complex(A, nrows);
             break;
         case double_complex:
             return bml_gershgorin_partial_ellpack_double_complex(A, nrows);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

@@ -53,6 +53,7 @@ bml_matrix2submatrix_index_ellpack(
                                                            vsize,
                                                            double_jump_flag);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_matrix2submatrix_index_ellpack_single_complex(A, B, nodelist,
                                                               nsize,
@@ -67,6 +68,7 @@ bml_matrix2submatrix_index_ellpack(
                                                               vsize,
                                                               double_jump_flag);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -109,6 +111,7 @@ bml_matrix2submatrix_index_graph_ellpack(
                                                                  vsize,
                                                                  double_jump_flag);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_matrix2submatrix_index_graph_ellpack_double_complex(B,
                                                                     nodelist,
@@ -125,6 +128,7 @@ bml_matrix2submatrix_index_graph_ellpack(
                                                                     vsize,
                                                                     double_jump_flag);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -157,6 +161,7 @@ bml_matrix2submatrix_ellpack(
             bml_matrix2submatrix_ellpack_double_real(A, B, core_halo_index,
                                                      lsize);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_matrix2submatrix_ellpack_single_complex(A, B, core_halo_index,
                                                         lsize);
@@ -165,6 +170,7 @@ bml_matrix2submatrix_ellpack(
             bml_matrix2submatrix_ellpack_double_complex(A, B, core_halo_index,
                                                         lsize);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -203,6 +209,7 @@ bml_submatrix2matrix_ellpack(
                                                      lsize, llsize,
                                                      threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_submatrix2matrix_ellpack_single_complex(A, B, core_halo_index,
                                                         lsize,
@@ -213,6 +220,7 @@ bml_submatrix2matrix_ellpack(
                                                         lsize,
                                                         llsize, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -244,12 +252,14 @@ bml_getVector_ellpack(
         case double_real:
             return bml_getVector_ellpack_double_real(A, jj, irow, colCnt);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_getVector_ellpack_single_complex(A, jj, irow, colCnt);
             break;
         case double_complex:
             return bml_getVector_ellpack_double_complex(A, jj, irow, colCnt);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -283,6 +293,7 @@ bml_group_matrix_ellpack(
             return bml_group_matrix_ellpack_double_real(A, hindex, ngroups,
                                                         threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_group_matrix_ellpack_single_complex(A, hindex, ngroups,
                                                            threshold);
@@ -291,6 +302,7 @@ bml_group_matrix_ellpack(
             return bml_group_matrix_ellpack_double_complex(A, hindex, ngroups,
                                                            threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -527,6 +539,7 @@ bml_extract_submatrix_ellpack(
             return bml_extract_submatrix_ellpack_double_real(A, irow, icol,
                                                              B_N, B_M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_extract_submatrix_ellpack_single_complex(A, irow, icol,
                                                                 B_N, B_M);
@@ -535,6 +548,7 @@ bml_extract_submatrix_ellpack(
             return bml_extract_submatrix_ellpack_double_complex(A, irow, icol,
                                                                 B_N, B_M);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -557,12 +571,14 @@ bml_assign_submatrix_ellpack(
         case double_real:
             bml_assign_submatrix_ellpack_double_real(A, B, irow, icol);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_assign_submatrix_ellpack_single_complex(A, B, irow, icol);
             break;
         case double_complex:
             bml_assign_submatrix_ellpack_double_complex(A, B, irow, icol);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

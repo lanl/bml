@@ -157,6 +157,7 @@ bml_get_sparsity_csr(
         case double_real:
             return bml_get_sparsity_csr_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_sparsity_csr_single_complex(A, threshold);
             break;
@@ -166,6 +167,7 @@ bml_get_sparsity_csr(
         case precision_uninitialized:
             LOG_ERROR("precision not initialized");
             break;
+#endif
         default:
             LOG_ERROR("fatal logic error\n");
             break;

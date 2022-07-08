@@ -31,12 +31,14 @@ bml_copy_dense_new(
         case double_real:
             B = bml_copy_dense_new_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_copy_dense_new_single_complex(A);
             break;
         case double_complex:
             B = bml_copy_dense_new_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -66,12 +68,14 @@ bml_copy_dense(
         case double_real:
             bml_copy_dense_double_real(A, B);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_copy_dense_single_complex(A, B);
             break;
         case double_complex:
             bml_copy_dense_double_complex(A, B);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -98,12 +102,14 @@ bml_reorder_dense(
         case double_real:
             bml_reorder_dense_double_real(A, perm);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_reorder_dense_single_complex(A, perm);
             break;
         case double_complex:
             bml_reorder_dense_double_complex(A, perm);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

@@ -28,12 +28,14 @@ bml_export_to_dense_csr(
         case double_real:
             return bml_export_to_dense_csr_double_real(A, order);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_export_to_dense_csr_single_complex(A, order);
             break;
         case double_complex:
             return bml_export_to_dense_csr_double_complex(A, order);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

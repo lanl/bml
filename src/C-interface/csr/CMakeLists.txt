@@ -88,8 +88,10 @@ set(SOURCES-CSR-TYPED
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bml-csr single_real "${SOURCES-CSR-TYPED}")
 bml_add_typed_library(bml-csr double_real "${SOURCES-CSR-TYPED}")
-bml_add_typed_library(bml-csr single_complex "${SOURCES-CSR-TYPED}")
-bml_add_typed_library(bml-csr double_complex "${SOURCES-CSR-TYPED}")
+if(BML_COMPLEX)
+  bml_add_typed_library(bml-csr single_complex "${SOURCES-CSR-TYPED}")
+  bml_add_typed_library(bml-csr double_complex "${SOURCES-CSR-TYPED}")
+endif()
 if(OPENMP_FOUND)
   set_target_properties(bml-csr-single_real
     PROPERTIES
@@ -97,10 +99,12 @@ if(OPENMP_FOUND)
   set_target_properties(bml-csr-double_real
     PROPERTIES
     COMPILE_FLAGS ${OpenMP_C_FLAGS})
-  set_target_properties(bml-csr-single_complex
-    PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
-  set_target_properties(bml-csr-double_complex
-    PROPERTIES
-    COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  if(BML_COMPLEX)
+    set_target_properties(bml-csr-single_complex
+      PROPERTIES
+      COMPILE_FLAGS ${OpenMP_C_FLAGS})
+    set_target_properties(bml-csr-double_complex
+      PROPERTIES
+      COMPILE_FLAGS ${OpenMP_C_FLAGS})
+  endif()
 endif()

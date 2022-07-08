@@ -147,6 +147,7 @@ int TYPED_FUNC(
                         printf("Read: %f\n", realp);
                         data[ROWMAJOR(i, j, up, up)] = realp;
                         break;
+#ifdef BML_COMPLEX
                     case single_complex:
                     case double_complex:
                         //read complex number in 3 parts, discarding 'i'
@@ -158,6 +159,7 @@ int TYPED_FUNC(
                         printf("imagp %f\n", IMAGINARY_PART(tmp));
                         data[ROWMAJOR(i, j, up, up)] = tmp;
                         break;
+#endif
                     default:
                         fprintf(stderr, "Unknown precision\n");
                         break;

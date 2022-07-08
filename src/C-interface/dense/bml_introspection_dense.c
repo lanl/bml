@@ -98,6 +98,7 @@ bml_get_row_bandwidth_dense(
         case double_real:
             return bml_get_row_bandwidth_dense_double_real(A, i);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_row_bandwidth_dense_single_complex(A, i);
             break;
@@ -107,6 +108,7 @@ bml_get_row_bandwidth_dense(
         case precision_uninitialized:
             LOG_ERROR("precision not initialized");
             break;
+#endif
         default:
             LOG_ERROR("fatal logic error\n");
             break;
@@ -131,6 +133,7 @@ bml_get_bandwidth_dense(
         case double_real:
             return bml_get_bandwidth_dense_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_bandwidth_dense_single_complex(A);
             break;
@@ -140,6 +143,7 @@ bml_get_bandwidth_dense(
         case precision_uninitialized:
             LOG_ERROR("precision not initialized");
             break;
+#endif
         default:
             LOG_ERROR("fatal logic error\n");
             break;
@@ -172,6 +176,7 @@ bml_get_sparsity_dense(
         case double_real:
             return bml_get_sparsity_dense_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_get_sparsity_dense_single_complex(A, threshold);
             break;
@@ -181,6 +186,7 @@ bml_get_sparsity_dense(
         case precision_uninitialized:
             LOG_ERROR("precision not initialized");
             break;
+#endif
         default:
             LOG_ERROR("fatal logic error\n");
             break;

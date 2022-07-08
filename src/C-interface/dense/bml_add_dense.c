@@ -33,12 +33,14 @@ bml_add_dense(
         case double_real:
             bml_add_dense_double_real(A, B, alpha, beta);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_add_dense_single_complex(A, B, alpha, beta);
             break;
         case double_complex:
             bml_add_dense_double_complex(A, B, alpha, beta);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -73,12 +75,14 @@ bml_add_norm_dense(
         case double_real:
             trnorm = bml_add_norm_dense_double_real(A, B, alpha, beta);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             trnorm = bml_add_norm_dense_single_complex(A, B, alpha, beta);
             break;
         case double_complex:
             trnorm = bml_add_norm_dense_double_complex(A, B, alpha, beta);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -108,12 +112,14 @@ bml_add_identity_dense(
         case double_real:
             bml_add_identity_dense_double_real(A, beta);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_add_identity_dense_single_complex(A, beta);
             break;
         case double_complex:
             bml_add_identity_dense_double_complex(A, beta);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -144,12 +150,14 @@ bml_scale_add_identity_dense(
         case double_real:
             bml_scale_add_identity_dense_double_real(A, alpha, beta);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_scale_add_identity_dense_single_complex(A, alpha, beta);
             break;
         case double_complex:
             bml_scale_add_identity_dense_double_complex(A, alpha, beta);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

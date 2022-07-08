@@ -27,12 +27,14 @@ bml_sum_squares_csr(
         case double_real:
             return bml_sum_squares_csr_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_sum_squares_csr_single_complex(A);
             break;
         case double_complex:
             return bml_sum_squares_csr_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -62,12 +64,14 @@ bml_sum_squares_submatrix_csr(
         case double_real:
             return bml_sum_squares_submatrix_csr_double_real(A, core_size);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_sum_squares_submatrix_csr_single_complex(A, core_size);
             break;
         case double_complex:
             return bml_sum_squares_submatrix_csr_double_complex(A, core_size);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -101,12 +105,14 @@ bml_sum_AB_csr(
         case double_real:
             return bml_sum_AB_csr_double_real(A, B, alpha, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_sum_AB_csr_single_complex(A, B, alpha, threshold);
             break;
         case double_complex:
             return bml_sum_AB_csr_double_complex(A, B, alpha, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -145,6 +151,7 @@ bml_sum_squares2_csr(
             return bml_sum_squares2_csr_double_real(A, B, alpha, beta,
                                                     threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_sum_squares2_csr_single_complex(A, B, alpha, beta,
                                                        threshold);
@@ -153,6 +160,7 @@ bml_sum_squares2_csr(
             return bml_sum_squares2_csr_double_complex(A, B, alpha, beta,
                                                        threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -180,12 +188,14 @@ bml_fnorm_csr(
         case double_real:
             return bml_fnorm_csr_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_fnorm_csr_single_complex(A);
             break;
         case double_complex:
             return bml_fnorm_csr_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -215,12 +225,14 @@ bml_fnorm2_csr(
         case double_real:
             return bml_fnorm2_csr_double_real(A, B);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_fnorm2_csr_single_complex(A, B);
             break;
         case double_complex:
             return bml_fnorm2_csr_double_complex(A, B);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

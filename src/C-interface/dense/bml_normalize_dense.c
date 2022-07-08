@@ -23,12 +23,14 @@ bml_accumulate_offdiag_dense(
         case double_real:
             return bml_accumulate_offdiag_dense_double_real(A, flag);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_accumulate_offdiag_dense_single_complex(A, flag);
             break;
         case double_complex:
             return bml_accumulate_offdiag_dense_double_complex(A, flag);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -59,12 +61,14 @@ bml_normalize_dense(
         case double_real:
             bml_normalize_dense_double_real(A, mineval, maxeval);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_normalize_dense_single_complex(A, mineval, maxeval);
             break;
         case double_complex:
             bml_normalize_dense_double_complex(A, mineval, maxeval);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -93,12 +97,14 @@ bml_gershgorin_dense(
         case double_real:
             return bml_gershgorin_dense_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_gershgorin_dense_single_complex(A);
             break;
         case double_complex:
             return bml_gershgorin_dense_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -130,12 +136,14 @@ bml_gershgorin_partial_dense(
         case double_real:
             return bml_gershgorin_partial_dense_double_real(A, nrows);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_gershgorin_partial_dense_single_complex(A, nrows);
             break;
         case double_complex:
             return bml_gershgorin_partial_dense_double_complex(A, nrows);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

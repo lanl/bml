@@ -69,6 +69,7 @@ bml_get_element_double_real(
     return -1;
 }
 
+#ifdef BML_COMPLEX
 /** Return a single matrix element.
  *
  * \param i The row index
@@ -131,3 +132,4 @@ bml_get_element_double_complex(
     }
     return -1;
 }
+#endif

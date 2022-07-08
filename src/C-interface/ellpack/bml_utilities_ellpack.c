@@ -16,12 +16,14 @@ bml_read_bml_matrix_ellpack(
         case double_real:
             bml_read_bml_matrix_ellpack_double_real(A, filename);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_read_bml_matrix_ellpack_single_complex(A, filename);
             break;
         case double_complex:
             bml_read_bml_matrix_ellpack_double_complex(A, filename);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -41,12 +43,14 @@ bml_write_bml_matrix_ellpack(
         case double_real:
             bml_write_bml_matrix_ellpack_double_real(A, filename);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_write_bml_matrix_ellpack_single_complex(A, filename);
             break;
         case double_complex:
             bml_write_bml_matrix_ellpack_double_complex(A, filename);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

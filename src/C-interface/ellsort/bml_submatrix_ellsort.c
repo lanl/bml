@@ -52,6 +52,7 @@ bml_matrix2submatrix_index_ellsort(
                                                            vsize,
                                                            double_jump_flag);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_matrix2submatrix_index_ellsort_single_complex(A, B, nodelist,
                                                               nsize,
@@ -66,6 +67,7 @@ bml_matrix2submatrix_index_ellsort(
                                                               vsize,
                                                               double_jump_flag);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -108,6 +110,7 @@ bml_matrix2submatrix_index_graph_ellsort(
                                                                  vsize,
                                                                  double_jump_flag);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_matrix2submatrix_index_graph_ellsort_double_complex(B,
                                                                     nodelist,
@@ -124,6 +127,7 @@ bml_matrix2submatrix_index_graph_ellsort(
                                                                     vsize,
                                                                     double_jump_flag);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -156,6 +160,7 @@ bml_matrix2submatrix_ellsort(
             bml_matrix2submatrix_ellsort_double_real(A, B, core_halo_index,
                                                      lsize);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_matrix2submatrix_ellsort_single_complex(A, B, core_halo_index,
                                                         lsize);
@@ -164,6 +169,7 @@ bml_matrix2submatrix_ellsort(
             bml_matrix2submatrix_ellsort_double_complex(A, B, core_halo_index,
                                                         lsize);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -202,6 +208,7 @@ bml_submatrix2matrix_ellsort(
                                                      lsize, llsize,
                                                      threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_submatrix2matrix_ellsort_single_complex(A, B, core_halo_index,
                                                         lsize,
@@ -212,6 +219,7 @@ bml_submatrix2matrix_ellsort(
                                                         lsize,
                                                         llsize, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -243,12 +251,14 @@ bml_getVector_ellsort(
         case double_real:
             return bml_getVector_ellsort_double_real(A, jj, irow, colCnt);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_getVector_ellsort_single_complex(A, jj, irow, colCnt);
             break;
         case double_complex:
             return bml_getVector_ellsort_double_complex(A, jj, irow, colCnt);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -282,6 +292,7 @@ bml_group_matrix_ellsort(
             return bml_group_matrix_ellsort_double_real(A, hindex, ngroups,
                                                         threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_group_matrix_ellsort_single_complex(A, hindex, ngroups,
                                                            threshold);
@@ -290,6 +301,7 @@ bml_group_matrix_ellsort(
             return bml_group_matrix_ellsort_double_complex(A, hindex, ngroups,
                                                            threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -475,6 +487,7 @@ bml_extract_submatrix_ellsort(
             return bml_extract_submatrix_ellsort_double_real(A, irow, icol,
                                                              B_N, B_M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_extract_submatrix_ellsort_single_complex(A, irow, icol,
                                                                 B_N, B_M);
@@ -483,6 +496,7 @@ bml_extract_submatrix_ellsort(
             return bml_extract_submatrix_ellsort_double_complex(A, irow, icol,
                                                                 B_N, B_M);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -505,12 +519,14 @@ bml_assign_submatrix_ellsort(
         case double_real:
             bml_assign_submatrix_ellsort_double_real(A, B, irow, icol);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_assign_submatrix_ellsort_single_complex(A, B, irow, icol);
             break;
         case double_complex:
             bml_assign_submatrix_ellsort_double_complex(A, B, irow, icol);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

@@ -157,12 +157,14 @@ bml_clear_ellblock(
         case double_real:
             bml_clear_ellblock_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_clear_ellblock_single_complex(A);
             break;
         case double_complex:
             bml_clear_ellblock_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -187,6 +189,7 @@ bml_noinit_matrix_ellblock(
             A = bml_noinit_matrix_ellblock_double_real(matrix_dimension,
                                                        distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             A = bml_noinit_matrix_ellblock_single_complex(matrix_dimension,
                                                           distrib_mode);
@@ -195,6 +198,7 @@ bml_noinit_matrix_ellblock(
             A = bml_noinit_matrix_ellblock_double_complex(matrix_dimension,
                                                           distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -236,12 +240,14 @@ bml_zero_matrix_ellblock(
         case double_real:
             A = bml_zero_matrix_ellblock_double_real(N, M, distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             A = bml_zero_matrix_ellblock_single_complex(N, M, distrib_mode);
             break;
         case double_complex:
             A = bml_zero_matrix_ellblock_double_complex(N, M, distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -270,6 +276,7 @@ bml_block_matrix_ellblock(
             A = bml_block_matrix_ellblock_double_real(NB, MB, M, bsizes,
                                                       distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             A = bml_block_matrix_ellblock_single_complex(NB, MB, M, bsizes,
                                                          distrib_mode);
@@ -278,6 +285,7 @@ bml_block_matrix_ellblock(
             A = bml_block_matrix_ellblock_double_complex(NB, MB, M, bsizes,
                                                          distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -315,6 +323,7 @@ bml_banded_matrix_ellblock(
         case double_real:
             return bml_banded_matrix_ellblock_double_real(N, M, distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_banded_matrix_ellblock_single_complex(N, M,
                                                              distrib_mode);
@@ -323,6 +332,7 @@ bml_banded_matrix_ellblock(
             return bml_banded_matrix_ellblock_double_complex(N, M,
                                                              distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -360,6 +370,7 @@ bml_random_matrix_ellblock(
         case double_real:
             return bml_random_matrix_ellblock_double_real(N, M, distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_random_matrix_ellblock_single_complex(N, M,
                                                              distrib_mode);
@@ -368,6 +379,7 @@ bml_random_matrix_ellblock(
             return bml_random_matrix_ellblock_double_complex(N, M,
                                                              distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -407,6 +419,7 @@ bml_identity_matrix_ellblock(
             return bml_identity_matrix_ellblock_double_real(N, M,
                                                             distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_identity_matrix_ellblock_single_complex(N, M,
                                                                distrib_mode);
@@ -415,6 +428,7 @@ bml_identity_matrix_ellblock(
             return bml_identity_matrix_ellblock_double_complex(N, M,
                                                                distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

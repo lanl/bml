@@ -20,6 +20,7 @@ bml_convert_ellpack(
             return bml_convert_ellpack_double_real(A, matrix_precision, M,
                                                    distrib_mode);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_convert_ellpack_single_complex(A, matrix_precision, M,
                                                       distrib_mode);
@@ -28,6 +29,7 @@ bml_convert_ellpack(
             return bml_convert_ellpack_double_complex(A, matrix_precision, M,
                                                       distrib_mode);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

@@ -28,12 +28,14 @@ int TYPED_FUNC(
         case double_real:
             A_diagonal = calloc(N, sizeof(double));
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             A_diagonal = calloc(N, sizeof(float complex));
             break;
         case double_complex:
             A_diagonal = calloc(N, sizeof(double complex));
             break;
+#endif
         default:
             LOG_DEBUG("matrix_precision is not set");
             break;

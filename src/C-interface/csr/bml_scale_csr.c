@@ -29,12 +29,14 @@ bml_scale_csr_new(
         case double_real:
             B = bml_scale_csr_new_double_real(scale_factor, A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_scale_csr_new_single_complex(scale_factor, A);
             break;
         case double_complex:
             B = bml_scale_csr_new_double_complex(scale_factor, A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -63,12 +65,14 @@ bml_scale_csr(
         case double_real:
             bml_scale_csr_double_real(scale_factor, A, B);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_scale_csr_single_complex(scale_factor, A, B);
             break;
         case double_complex:
             bml_scale_csr_double_complex(scale_factor, A, B);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -88,12 +92,14 @@ bml_scale_inplace_csr(
         case double_real:
             bml_scale_inplace_csr_double_real(scale_factor, A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_scale_inplace_csr_single_complex(scale_factor, A);
             break;
         case double_complex:
             bml_scale_inplace_csr_double_complex(scale_factor, A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

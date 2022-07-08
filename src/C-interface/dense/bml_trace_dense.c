@@ -30,12 +30,14 @@ bml_trace_dense(
         case double_real:
             return bml_trace_dense_double_real(A);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_trace_dense_single_complex(A);
             break;
         case double_complex:
             return bml_trace_dense_double_complex(A);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -65,12 +67,14 @@ bml_trace_mult_dense(
         case double_real:
             return bml_trace_mult_dense_double_real(A, B);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return bml_trace_mult_dense_single_complex(A, B);
             break;
         case double_complex:
             return bml_trace_mult_dense_double_complex(A, B);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;

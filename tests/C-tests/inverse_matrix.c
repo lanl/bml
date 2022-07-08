@@ -20,6 +20,7 @@ test_inverse(
             return test_inverse_double_real(N, matrix_type,
                                             matrix_precision, M);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             return test_inverse_single_complex(N, matrix_type,
                                                matrix_precision, M);
@@ -28,6 +29,7 @@ test_inverse(
             return test_inverse_double_complex(N, matrix_type,
                                                matrix_precision, M);
             break;
+#endif
         default:
             fprintf(stderr, "unknown matrix precision\n");
             return -1;

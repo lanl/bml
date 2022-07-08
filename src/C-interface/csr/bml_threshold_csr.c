@@ -28,12 +28,14 @@ bml_matrix_csr_t
         case double_real:
             B = bml_threshold_new_csr_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             B = bml_threshold_new_csr_single_complex(A, threshold);
             break;
         case double_complex:
             B = bml_threshold_new_csr_double_complex(A, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
@@ -63,12 +65,14 @@ bml_threshold_csr(
         case double_real:
             bml_threshold_csr_double_real(A, threshold);
             break;
+#ifdef BML_COMPLEX
         case single_complex:
             bml_threshold_csr_single_complex(A, threshold);
             break;
         case double_complex:
             bml_threshold_csr_double_complex(A, threshold);
             break;
+#endif
         default:
             LOG_ERROR("unknown precision\n");
             break;
