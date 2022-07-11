@@ -325,28 +325,27 @@ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 
 if(BML_MAGMA)
-  FIND_PACKAGE(MAGMA)
-endif()
+  message(STATUS "Search for MAGMA...")
+  find_package(MAGMA)
 
-if (MAGMA_FOUND)
-  add_definitions(-DBML_USE_MAGMA)
-  message(STATUS
-    "MAGMA was found:\n"
-    "  MAGMA_INCLUDE_DIRS: ${MAGMA_INCLUDE_DIRS}\n"
-    "  MAGMA_LIBRARY_DIRS: ${MAGMA_LIBRARY_DIRS}\n"
-    "  MAGMA_LIBRARIES: ${MAGMA_LIBRARIES}"
-  )
-  include_directories(${MAGMA_INCLUDE_DIRS})
-  if(BML_CUSOLVER)
-    add_definitions(-DBML_USE_CUSOLVER)
+  if (MAGMA_FOUND)
+    add_definitions(-DBML_USE_MAGMA)
+    message(STATUS
+      "MAGMA was found:\n"
+      "  MAGMA_INCLUDE_DIRS: ${MAGMA_INCLUDE_DIRS}\n"
+      "  MAGMA_LIBRARY_DIRS: ${MAGMA_LIBRARY_DIRS}\n"
+      "  MAGMA_LIBRARIES: ${MAGMA_LIBRARIES}"
+    )
+    include_directories(${MAGMA_INCLUDE_DIRS})
+    if(BML_CUSOLVER)
+      add_definitions(-DBML_USE_CUSOLVER)
+    endif()
+    if(BML_ROCSOLVER)
+      add_definitions(-DBML_USE_ROCSOLVER)
+    endif()
+  else()
+    message(FATAL_ERROR "MAGMA was not found")
   endif()
-  if(BML_ROCSOLVER)
-    add_definitions(-DBML_USE_ROCSOLVER)
-  endif()
-else()
-  message(STATUS
-    "MAGMA not found"
-  )
 endif()
 
 set(BML_SCALAPACK FALSE CACHE BOOL "Whether to use ScaLAPACK library")
