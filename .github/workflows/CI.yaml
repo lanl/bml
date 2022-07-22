@@ -33,6 +33,13 @@ jobs:
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no EMACS=emacs27 ./build.sh --debug check_indent
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: lint-artifacts
+          path: |
+            **/*.indented
+            build.log
 
   docs:
     name: Build docs
