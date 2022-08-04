@@ -3,7 +3,9 @@
 #include "bml_elemental_dense.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_COMPLEX
 #include <complex.h>
+#endif
 
 /** Return a single matrix element.
  *
@@ -57,6 +59,7 @@ bml_get_element_dense_double_real(
     return ((double *) A->matrix)[ROWMAJOR(i, j, A->N, A->N)];
 }
 
+#ifdef BML_COMPLEX
 /** Return a single matrix element.
  *
  * \param A The bml matrix
@@ -64,7 +67,7 @@ bml_get_element_dense_double_real(
  * \param j The column index
  * \return The matrix element
  */
-float complex
+float _Complex
 bml_get_element_dense_single_complex(
     bml_matrix_dense_t * A,
     int i,
@@ -90,7 +93,7 @@ bml_get_element_dense_single_complex(
  * \param j The column index
  * \return The matrix element
  */
-double complex
+double _Complex
 bml_get_element_dense_double_complex(
     bml_matrix_dense_t * A,
     int i,
@@ -108,3 +111,4 @@ bml_get_element_dense_double_complex(
     }
     return ((double complex *) A->matrix)[ROWMAJOR(i, j, A->N, A->N)];
 }
+#endif

@@ -5,7 +5,9 @@
 #include "ellpack/bml_elemental_ellpack.h"
 #include "ellsort/bml_elemental_ellsort.h"
 
+#ifdef BML_COMPLEX
 #include <complex.h>
+#endif
 
 /** Return a single matrix element.
  *
@@ -77,7 +79,7 @@ bml_get_element_double_real(
  * \param A The bml matrix
  * \return The matrix element
  */
-float complex
+float _Complex
 bml_get_element_single_complex(
     bml_matrix_t * A,
     int i,
@@ -108,7 +110,7 @@ bml_get_element_single_complex(
  * \param A The bml matrix
  * \return The matrix element
  */
-double complex
+double _Complex
 bml_get_element_double_complex(
     bml_matrix_t * A,
     int i,
