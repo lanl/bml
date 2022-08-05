@@ -251,6 +251,9 @@ set(BML_CUSPARSE FALSE CACHE BOOL "Whether to compile with CuSPARSE support")
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
 if(BML_CUDA OR BML_CUSOLVER OR BML_CUSPARSE)
   include(FindCUDA)
+enable_language(CUDA)
+set(CMAKE_CUDA_FLAGS "-arch=sm_80")
+
 endif()
 
 if (CUDA_FOUND)
