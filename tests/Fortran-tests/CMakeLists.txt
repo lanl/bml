@@ -117,7 +117,7 @@ add_executable(bml-testf
   ${FORTRAN-SOURCES-PRIVATE}
   )
 
-target_link_libraries(bml-testf bml_fortran bml ${LINK_LIBRARIES})
+target_link_libraries(bml-testf bml_fortran bml ${LINK_LIBRARIES} -lcublas)
 
 # More flags
 if(OPENMP_FOUND)

@@ -1,5 +1,8 @@
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
+#ifdef BML_MPTC
+//#include "bml_mptc_dense.cuh"
+#endif
 #endif
 
 #include "../../internal-blas/bml_gemm.h"
@@ -61,12 +64,12 @@ void TYPED_FUNC(
     double alpha,
     double beta)
 {
+
+bml_mptc_dense();
 #ifdef BML_USE_MAGMA
-
     #ifdef BML_MPTC
-
-    bml_mptc_dense(A->matrix); //A->matrix,B->matrix,C->matrix);
-    
+    bml_mptc_dense(A-> N, alpha, A->matrix, B->matrix, beta, C->matrix);
+    //bml_mptc_dense(alpha, A->matrix, B->matrix, beta, C->matrix, C->ld);
     #else
 
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);

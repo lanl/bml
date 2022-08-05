@@ -44,7 +44,8 @@ set(SOURCES_TYPED
   trace_matrix_typed.c
   transpose_matrix_typed.c)
 
-set(OBJECT_MPTC "${PROJECT_BINARY_DIR}/src/C-interface/dense/mptc/CMakeFiles/bml-dense-mptc.dir")
+set(OBJECT_MPTC "${PROJECT_BINARY_DIR}/src/C-interface/dense/CMakeFiles/bml-dense.dir")
+#set(OBJECT_MPTC "${PROJECT_BINARY_DIR}/src/C-interface/dense/mptc/CMakeFiles/bml-dense-mptc.dir")
 
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bmltests single_real "${SOURCES_TYPED}")
@@ -101,7 +102,7 @@ add_executable(bml-test
   transpose_matrix.c)
 
 message(STATUS "tests: LINK_LIBRARIES=${LINK_LIBRARIES}")
-target_link_libraries(bml-test bmltests bml ${LINK_LIBRARIES})
+target_link_libraries(bml-test bmltests bml ${LINK_LIBRARIES} -lcublas)
 set_target_properties(bml-test
   PROPERTIES
   LINK_FLAGS "--coverage")

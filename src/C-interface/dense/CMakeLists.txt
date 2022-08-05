@@ -63,6 +63,11 @@ if(OPENMP_FOUND)
     COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
 
+  set_target_properties(bml-dense
+    PROPERTIES
+    COMPILE_FLAGS -lcublas)
+
+
 set(SOURCES-DENSE-TYPED
   bml_add_dense_typed.c
   bml_adjungate_triangle_dense_typed.c
