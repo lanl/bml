@@ -23,7 +23,8 @@ set(HEADERS-DENSE
   bml_transpose_dense.h
   bml_transpose_triangle_dense.h
   bml_types_dense.h
-  bml_utilities_dense.h)
+  bml_utilities_dense.h
+  bml_mptc_dense.cuh)
 
 set(SOURCES-DENSE
   bml_add_dense.c
@@ -49,7 +50,8 @@ set(SOURCES-DENSE
   bml_trace_dense.c
   bml_transpose_dense.c
   bml_transpose_triangle_dense.c
-  bml_utilities_dense.c)
+  bml_utilities_dense.c
+  bml_mptc_dense.cu)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
 set_target_properties(bml-dense
@@ -106,6 +108,5 @@ if(OPENMP_FOUND)
     COMPILE_FLAGS ${OpenMP_C_FLAGS})
 endif()
 
-add_subdirectory(mptc)
 
 

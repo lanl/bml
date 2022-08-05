@@ -9,6 +9,11 @@ if(BML_BUILD_FORTRAN_INTERFACE)
   list(APPEND LANGUAGES Fortran)
 endif()
 
+  list(APPEND LANGUAGES CUDA)
+  enable_language(CUDA)
+  set(CMAKE_CUDA_FLAGS "-arch=sm_80")
+
+
 project(bml ${LANGUAGES}) # don't move this line as it changes PROJECT_SOURCE_DIR
 
 # The library version is versioned off the major version. If the API
@@ -246,17 +251,15 @@ set(BML_CUSPARSE FALSE CACHE BOOL "Whether to compile with CuSPARSE support")
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
 if(BML_CUDA OR BML_CUSOLVER OR BML_CUSPARSE)
   include(FindCUDA)
-enable_language(CUDA)
-set(CMAKE_CUDA_FLAGS "-arch=sm_80")
-
 endif()
+
 if (CUDA_FOUND)
    message("CUDA CUBLAS libraries: ${CUDA_CUBLAS_LIBRARIES}")
    message("CUDA libraries: ${CUDA_LIBRARIES}")
    list(APPEND LINK_LIBRARIES ${CUDA_LIBRARIES})
    include_directories(${CUDA_INCLUDE_DIRS})
-enable_language(CUDA)
-set(CMAKE_CUDA_FLAGS "-arch=sm_80")
+   enable_language(CUDA)
+   set(CMAKE_CUDA_FLAGS "-arch=sm_80")
 endif()
 
 if(BML_CUSPARSE)

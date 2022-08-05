@@ -13,7 +13,6 @@ set(LIBRARY_SOURCES
   $<TARGET_OBJECTS:bml-dense-single_complex>
   $<TARGET_OBJECTS:bml-dense-single_real>
   $<TARGET_OBJECTS:bml-dense>
-  $<TARGET_OBJECTS:bml-dense-mptc>
   $<TARGET_OBJECTS:bml-ellpack-double_complex>
   $<TARGET_OBJECTS:bml-ellpack-double_real>
   $<TARGET_OBJECTS:bml-ellpack-single_complex>

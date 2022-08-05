@@ -14,7 +14,6 @@
 #include "bml_multiply_dense.h"
 #include "bml_trace_dense.h"
 #include "bml_types_dense.h"
-#include "mptc/bml_mptc_dense.cuh"
 
 #include <stdlib.h>
 #include <string.h>
@@ -64,9 +63,10 @@ void TYPED_FUNC(
 {
 #ifdef BML_USE_MAGMA
 
-    #ifdef BML_MPTC 
-    bml_mptc_dense();
-    exit(0); 
+    #ifdef BML_MPTC
+
+    bml_mptc_dense(A->matrix); //A->matrix,B->matrix,C->matrix);
+    
     #else
 
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
