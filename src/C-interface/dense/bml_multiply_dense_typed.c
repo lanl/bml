@@ -17,7 +17,6 @@
 #include "bml_multiply_dense.h"
 #include "bml_trace_dense.h"
 #include "bml_types_dense.h"
-#include "mptc/bml_mptc_dense.cuh"
 
 #include <stdlib.h>
 #include <string.h>

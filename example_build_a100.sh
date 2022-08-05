@@ -15,7 +15,9 @@ export CXX=${CXX:=g++}
 export BLAS_VENDOR=${BLAS_VENDOR:=Generic}
 export BML_OPENMP=${BML_OPENMP:=no}
 export BML_MAGMA=${BML_MAGMA:=yes}
+export BML_CUDA=${BML_CUDA:=yes}
 export BML_MPTC=${BML_MPTC:=yes}
+export BML_CUSPARSE=${BML_CUSOLVER:=no}
 export BML_CUSOLVER=${BML_CUSOLVER:=yes}
 export MAGMA_ROOT=${MAGMA_ROOT:="${HOME}/magma"}
 export OLCF_MAGMA_ROOT=${OLCF_MAGMA_ROOT:="${HOME}/magma"}
