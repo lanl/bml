@@ -18,12 +18,12 @@ double bml_get_element_dense_double_real(
     int j);
 
 #ifdef BML_COMPLEX
-float _Complex bml_get_element_dense_single_complex(
+float complex bml_get_element_dense_single_complex(
     bml_matrix_dense_t * A,
     int i,
     int j);
 
-double _Complex bml_get_element_dense_double_complex(
+double complex bml_get_element_dense_double_complex(
     bml_matrix_dense_t * A,
     int i,
     int j);

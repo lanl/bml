@@ -79,7 +79,7 @@ bml_get_element_double_real(
  * \param A The bml matrix
  * \return The matrix element
  */
-float _Complex
+float complex
 bml_get_element_single_complex(
     bml_matrix_t * A,
     int i,
@@ -110,7 +110,7 @@ bml_get_element_single_complex(
  * \param A The bml matrix
  * \return The matrix element
  */
-double _Complex
+double complex
 bml_get_element_double_complex(
     bml_matrix_t * A,
     int i,
