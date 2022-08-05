@@ -18,12 +18,12 @@ double bml_get_element_ellsort_double_real(
     int j);
 
 #ifdef BML_COMPLEX
-float _Complex bml_get_element_ellsort_single_complex(
+float complex bml_get_element_ellsort_single_complex(
     bml_matrix_ellsort_t * A,
     int i,
     int j);
 
-double _Complex bml_get_element_ellsort_double_complex(
+double complex bml_get_element_ellsort_double_complex(
     bml_matrix_ellsort_t * A,
     int i,
     int j);

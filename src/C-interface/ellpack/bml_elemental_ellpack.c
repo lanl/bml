@@ -82,7 +82,7 @@ bml_get_element_ellpack_double_real(
  * \param j The column index
  * \return The matrix element
  */
-float _Complex
+float complex
 bml_get_element_ellpack_single_complex(
     bml_matrix_ellpack_t * A,
     int i,
@@ -116,7 +116,7 @@ bml_get_element_ellpack_single_complex(
  * \param j The column index
  * \return The matrix element
  */
-double _Complex
+double complex
 bml_get_element_ellpack_double_complex(
     bml_matrix_ellpack_t * A,
     int i,

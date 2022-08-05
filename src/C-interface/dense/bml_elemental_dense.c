@@ -67,7 +67,7 @@ bml_get_element_dense_double_real(
  * \param j The column index
  * \return The matrix element
  */
-float _Complex
+float complex
 bml_get_element_dense_single_complex(
     bml_matrix_dense_t * A,
     int i,
@@ -93,7 +93,7 @@ bml_get_element_dense_single_complex(
  * \param j The column index
  * \return The matrix element
  */
-double _Complex
+double complex
 bml_get_element_dense_double_complex(
     bml_matrix_dense_t * A,
     int i,

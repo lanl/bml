@@ -344,7 +344,7 @@ bml_diagonalize_dense_single_complex(
     bml_matrix_dense_t * eigenvectors)
 {
     int info;
-    float _Complex *typed_eigenvalues = (float _Complex *) eigenvalues;
+    float complex *typed_eigenvalues = (float complex *) eigenvalues;
 
 #ifdef BML_USE_MAGMA
     int nb = magma_get_ssytrd_nb(A->N);
@@ -451,7 +451,7 @@ bml_diagonalize_dense_double_complex(
     bml_matrix_dense_t * eigenvectors)
 {
     int info;
-    double _Complex *typed_eigenvalues = (double _Complex *) eigenvalues;
+    double complex *typed_eigenvalues = (double complex *) eigenvalues;
 
 #ifdef BML_USE_MAGMA
     int nb = magma_get_ssytrd_nb(A->N);

@@ -92,6 +92,8 @@
 #define bml_rocsparse_xprune_csr2csr rocsparse_dprune_csr2csr
 #endif
 #elif defined(SINGLE_COMPLEX)
+/* Note that we are using `_Complex` here instead of the preferred `complex`
+   because the pre-processor cannot expand macros multiple times. */
 #define REAL_T float _Complex
 #define MAGMA_T magmaFloatComplex
 #define MKL_T MKL_Complex8
