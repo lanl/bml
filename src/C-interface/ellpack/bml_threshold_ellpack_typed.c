@@ -103,36 +103,31 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-    int rlen;
-
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target
-#endif
-    {
+#pragma omp target teams distribute
+#else
 #pragma omp parallel for               \
-    private(rlen) \
     shared(A_value,A_index,A_nnz) \
     shared(rowMin, rowMax)
-        //for (int i = 0; i < N; i++)
-        for (int i = rowMin; i < rowMax; i++)
+#endif
+    //for (int i = 0; i < N; i++)
+    for (int i = rowMin; i < rowMax; i++)
+    {
+        int rlen = 0;
+        for (int j = 0; j < A_nnz[i]; j++)
         {
-            rlen = 0;
-            for (int j = 0; j < A_nnz[i]; j++)
+            if (is_above_threshold(A_value[ROWMAJOR(i, j, N, M)], threshold))
             {
-                if (is_above_threshold
-                    (A_value[ROWMAJOR(i, j, N, M)], threshold))
+                if (rlen < j)
                 {
-                    if (rlen < j)
-                    {
-                        A_value[ROWMAJOR(i, rlen, N, M)] =
-                            A_value[ROWMAJOR(i, j, N, M)];
-                        A_index[ROWMAJOR(i, rlen, N, M)] =
-                            A_index[ROWMAJOR(i, j, N, M)];
-                    }
-                    rlen++;
+                    A_value[ROWMAJOR(i, rlen, N, M)] =
+                        A_value[ROWMAJOR(i, j, N, M)];
+                    A_index[ROWMAJOR(i, rlen, N, M)] =
+                        A_index[ROWMAJOR(i, j, N, M)];
                 }
+                rlen++;
             }
-            A_nnz[i] = rlen;
         }
-    }                           // end target region
+        A_nnz[i] = rlen;
+    }
 }
