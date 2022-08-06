@@ -186,11 +186,12 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
 
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target parallel for map(to:diagonal[:A_N])
+#pragma omp target teams distribute map(to:diagonal[:A_N])
 #endif
     for (int i = 0; i < A_N; i++)
     {
         int ll = 0;
+#pragma omp parallel for
         for (int j = 0; j < A_nnz[i]; j++)
         {
             if (A_index[ROWMAJOR(i, j, A_N, A_M)] == i)

@@ -44,11 +44,33 @@ double TYPED_FUNC(
     int myRank = bml_getMyRank();
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
+    int numrows = rowMax - rowMin;
 
 #ifdef USE_OMP_OFFLOAD
-#pragma omp target map(tofrom:trace)
-#endif
-
+    REAL_T *diag;
+    diag = (REAL_T *) calloc(numrows, sizeof(REAL_T));
+#pragma omp target enter data map(to:diag[:numrows])
+#pragma omp target teams distribute
+    //for (int i = 0; i < N; i++)
+    for (int i = rowMin; i < rowMax; i++)
+    {
+        REAL_T this_trace = 0.0;
+#pragma omp parallel for shared(this_trace)
+        for (int j = 0; j < A_nnz[i]; j++)
+        {
+            if (i == A_index[ROWMAJOR(i, j, N, M)])
+            {
+                this_trace = A_value[ROWMAJOR(i, j, N, M)];
+            }
+        }
+        diag[i - rowMin] = this_trace;
+    }
+#pragma omp target teams distribute parallel for reduction(+:trace)
+    for (int i = 0; i < numrows; i++)
+        trace += diag[i];
+#pragma omp target exit data map(delete:diag[:numrows])
+    free(diag);
+#else
 #pragma omp parallel for                        \
   shared(A_value, A_index, A_nnz)         \
   reduction(+:trace)
@@ -64,6 +86,7 @@ double TYPED_FUNC(
             }
         }
     }
+#endif
 
     return (double) REAL_PART(trace);
 }
