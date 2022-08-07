@@ -65,11 +65,9 @@ void TYPED_FUNC(
     double beta)
 {
 
-bml_mptc_dense();
 #ifdef BML_USE_MAGMA
     #ifdef BML_MPTC
-    bml_mptc_dense(A-> N, alpha, A->matrix, B->matrix, beta, C->matrix);
-    //bml_mptc_dense(alpha, A->matrix, B->matrix, beta, C->matrix, C->ld);
+    bml_mptc_dense(A-> N, A-> N, A-> N, alpha, B->matrix, A->matrix, A->ld, beta, C->matrix, C->ld);
     #else
 
     MAGMA_T alpha_ = MAGMACOMPLEX(MAKE) (alpha, 0.);
