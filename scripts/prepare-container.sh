@@ -81,6 +81,7 @@ ${SUDO} apt-get install --assume-yes --no-install-recommends \
     less \
     libblas-dev liblapack-dev \
     libscalapack-openmpi-dev \
+    libopenblas-dev \
     mpi-default-dev \
     openmpi-bin \
     openssh-client \
