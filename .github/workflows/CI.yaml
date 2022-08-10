@@ -120,6 +120,18 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-complex.sh
           - JOBNAME: gcc-11 C double complex
             TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-complex.sh
+          - JOBNAME: gcc-11 C single real (OpenBLAS)
+            BLAS_VENDOR: OpenBLAS
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-real.sh
+          - JOBNAME: gcc-11 C double real (OpenBLAS)
+            BLAS_VENDOR: OpenBLAS
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-real.sh
+          - JOBNAME: gcc-11 C single complex (OpenBLAS)
+            BLAS_VENDOR: OpenBLAS
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-single-complex.sh
+          - JOBNAME: gcc-11 C double complex (OpenBLAS)
+            BLAS_VENDOR: OpenBLAS
+            TEST_SCRIPT: ./scripts/ci-gcc-11-C-double-complex.sh
           - JOBNAME: gcc-11 Fortran single real
             TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-single-real.sh
           - JOBNAME: gcc-11 Fortran double real
@@ -153,6 +165,7 @@ jobs:
         run: ./scripts/prepare-container.sh
       - name: Build and test library
         env:
+          BLAS_VENDOR: ${{ matrix.BLAS_VENDOR || env.BLAS_VENDOR }}
           TEST_SCRIPT: ${{ matrix.TEST_SCRIPT || env.TEST_SCRIPT }}
         run: ${TEST_SCRIPT} testing
       - name: Get library version
