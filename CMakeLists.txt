@@ -473,7 +473,9 @@ if(BLAS_FOUND)
     -DC_ZAXPY=${C_ZAXPY})
 endif()
 
-if(LAPACK_FOUND)
+#check for functions in Lapack
+#(or OpenBLAS since OpenBLAS typically contains Lapack)
+if(LAPACK_FOUND OR (BLAS_VENDOR STREQUAL "OpenBLAS"))
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES
