@@ -6,6 +6,7 @@
 #include "bml_diagonalize_dense.h"
 #include "bml_types_dense.h"
 #include "../bml_utilities.h"
+
 #include <float.h>
 
 #ifdef BML_USE_MAGMA
@@ -24,6 +25,7 @@
 #endif
 
 #include <string.h>
+#include <complex.h>
 
 /** \page diagonalize
  *
