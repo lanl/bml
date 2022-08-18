@@ -101,13 +101,14 @@ void TYPED_FUNC(
     int *B_nnz = B->nnz;
     REAL_T *B_value = B->value;
 
+    size_t NbyM = (size_t)N*(size_t)M;
 #ifdef USE_OMP_OFFLOAD
 #pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
     {
         B_nnz[i] = A_nnz[i];
     }
-
+    /*
 #pragma omp target teams distribute parallel for collapse(2) schedule (static, 1)
     for (int i = 0; i < N; i++)
     {
@@ -116,6 +117,13 @@ void TYPED_FUNC(
             B_index[ROWMAJOR(i, j, N, M)] = A_index[ROWMAJOR(i, j, N, M)];
             B_value[ROWMAJOR(i, j, N, M)] = A_value[ROWMAJOR(i, j, N, M)];
         }
+    }
+    */
+#pragma omp target teams distribute parallel for schedule (static,1)
+    for (int i = 0; i < NbyM; i++)
+    {
+      B_index[i] = A_index[i];
+      B_value[i] = A_value[i];
     }
 #else
     // memcpy(B->index, A->index, sizeof(int) * A->N * A->M);
