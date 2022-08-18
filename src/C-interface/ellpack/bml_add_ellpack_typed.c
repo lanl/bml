@@ -21,6 +21,14 @@
 #ifdef BML_USE_CUSPARSE
 #include <cusparse.h>
 #endif
+#ifdef BML_USE_ROCSPARSE
+// Copy rocsparse headers into src/rocsparse/ and edit rocsparse_functions.h to remove '[[...]]' text
+#include "bml_threshold_ellpack.h"
+#include "../rocsparse/rocsparse.h"
+/* DEBUG
+#include <hip/hip_runtime.h> // needed for hipDeviceSynchronize()
+*/
+#endif
 
 /** Matrix addition.
  *
@@ -63,6 +71,9 @@ void TYPED_FUNC(
 
 #if defined(BML_USE_CUSPARSE)
     TYPED_FUNC(bml_add_cusparse_ellpack) (A, B, alpha, beta, threshold);
+#elif defined(BML_USE_ROCSPARSE)
+    TYPED_FUNC(bml_add_rocsparse_ellpack) (A, B, alpha, beta, threshold);
+    printf("Using rocSPARSE Add\n");
 #else
 
     //Should be safe to use BML_OFFLOAD_CHUNKS here but preserving old version
@@ -749,5 +760,205 @@ for(int k=0; k<nnzC; k++)
     BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matB));
     BML_CHECK_CUSPARSE(cusparseDestroyMatDescr(matC));
     BML_CHECK_CUSPARSE(cusparseDestroy(handle));
+}
+#elif defined(BML_USE_ROCSPARSE)
+void TYPED_FUNC(
+    bml_add_rocsparse_ellpack) (
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    double alpha1,
+    double beta1,
+    double threshold1)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+
+    int B_N = B->N;
+    int B_M = B->M;
+
+    REAL_T *A_value = (REAL_T *) A->value;
+    REAL_T *B_value = (REAL_T *) B->value;
+
+    int *csrColIndA = A->csrColInd;
+    int *csrColIndB = B->csrColInd;
+    int *csrColIndC_tmp = NULL;
+    int *csrRowPtrA = A->csrRowPtr;
+    int *csrRowPtrB = B->csrRowPtr;
+    int *csrRowPtrC_tmp = NULL;
+    REAL_T *csrValA = (REAL_T *) A->csrVal;
+    REAL_T *csrValB = (REAL_T *) B->csrVal;
+    REAL_T *csrValC_tmp = NULL;
+
+    /* temporary arrays to hold initial C values */
+    int *d_ccols = NULL;
+    int *d_rptr = NULL;
+    REAL_T *d_cvals = NULL;
+
+    REAL_T alpha = (REAL_T) alpha1;
+    REAL_T beta = (REAL_T) beta1;
+    REAL_T threshold = (REAL_T) threshold1;
+
+    // Variables used for pruning the final matrix
+    size_t lworkInBytes = 0;
+    char *dwork = NULL;
+
+
+    // rocSPARSE APIs
+    rocsparse_status status = rocsparse_status_success;
+
+    rocsparse_datatype computeType = BML_ROCSPARSE_T;
+
+    rocsparse_handle handle = NULL;
+    rocsparse_mat_descr matA, matB, matC_tmp;
+
+    // convert ellpack to cucsr
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (B);
+
+    // Create cusparse matrix A and B in CSR format
+    // Note: The following update is not necessary since the ellpack2cucsr
+    // routine updates the csr rowpointers on host and device
+#pragma omp target update from(csrRowPtrA[:A_N+1])
+#pragma omp target update from(csrRowPtrB[:B_N+1])
+    int nnzA = csrRowPtrA[A_N];
+    int nnzB = csrRowPtrB[B_N];
+    int nnzC_tmp = 0;
+
+    BML_CHECK_ROCSPARSE(rocsparse_create_handle(&handle));
+
+    // Allocate placeholder arrays for storing result of spgemm()
+    csrRowPtrC_tmp = (int *) malloc(sizeof(int) * (A_N + 1));
+    csrColIndC_tmp = (int *) malloc(sizeof(int) * 1);
+    csrValC_tmp = (REAL_T *) malloc(sizeof(REAL_T) * 1);
+
+    // Allocate the same arrays on device
+#pragma omp target enter data map(alloc:csrRowPtrC_tmp[:A_N+1], csrColIndC_tmp[:1], csrValC_tmp[:1])
+
+    // Create the rocSPARSE matrices
+    // Make these calls within an omp target data region to use device pointers
+#pragma omp target data use_device_ptr(csrRowPtrA,csrColIndA,csrValA,	\
+				       csrRowPtrB,csrColIndB,csrValB,	\
+				       csrRowPtrC_tmp,csrColIndC_tmp,   \
+				       csrValC_tmp)
+    {
+      BML_CHECK_ROCSPARSE(rocsparse_create_mat_descr
+			  (&matA));
+      BML_CHECK_ROCSPARSE(rocsparse_create_mat_descr
+			  (&matB));
+      BML_CHECK_ROCSPARSE(rocsparse_create_mat_descr
+			  (&matC_tmp));
+      // get the number of nonzero elements nnz
+      BML_CHECK_ROCSPARSE(rocsparse_csrgeam_nnz(handle, A_N, A_N,
+						matA, nnzA, csrRowPtrA,
+						csrColIndA,
+						matB, nnzB, csrRowPtrB,
+						csrColIndB,
+						matC_tmp, csrRowPtrC_tmp,
+						&nnzC_tmp));
+    }
+    // Free the placeholder arrays on the device
+#pragma omp target exit data map(delete:csrColIndC_tmp[:1], csrValC_tmp[:1])
+    // Re-allocate the placeholder arrays to create the working arrays on the host
+    csrColIndC_tmp =
+      (int *) realloc(csrColIndC_tmp, sizeof(int) * nnzC_tmp);
+    csrValC_tmp =
+      (REAL_T *) realloc(csrValC_tmp, sizeof(REAL_T) * nnzC_tmp);
+
+    // Allocate the working arrays on the device
+#pragma omp target enter data map(alloc:csrColIndC_tmp[:nnzC_tmp], csrValC_tmp[:nnzC_tmp])
+
+    // Variables used for rocSPARSE debugging calls
+    int64_t rows;
+    int64_t cols;
+    int64_t nnz;
+    void *csr_row_ptr;
+    void *csr_col_ind;
+    void *csr_val;
+    rocsparse_indextype row_ptr_type;
+    rocsparse_indextype col_ind_type;
+    rocsparse_index_base idx_base;
+    rocsparse_datatype data_type;
+    //      hipDeviceSynchronize();
+    // Replace the C_tmp matrix pointers and perform the csrgeam computation
+#pragma omp target data use_device_ptr(csrValA, csrRowPtrA, csrColIndA, csrValB, csrRowPtrB, csrColIndB, csrRowPtrC_tmp, csrColIndC_tmp, csrValC_tmp)
+    {
+      BML_CHECK_ROCSPARSE(bml_rocsparse_csrgeam(handle, A_N, A_N,
+						&alpha, matA, nnzA,
+						csrValA, csrRowPtrA,
+						csrColIndA,
+						&beta, matB, nnzB,
+						csrValB, csrRowPtrB,
+						csrColIndB,
+						matC_tmp, csrValC_tmp,
+						csrRowPtrC_tmp,
+						csrColIndC_tmp));
+      //      hipDeviceSynchronize();
+      /* DEBUG
+	 BML_CHECK_ROCSPARSE(rocsparse_csr_get(matA, &rows, &cols, &nnz, &csr_row_ptr, &csr_col_ind, &csr_val, &row_ptr_type, &col_ind_type, &idx_base, &data_type));
+	 for (int i=0;i<10;i++) printf("A[%d]=%f ",i,(((REAL_T *)(csr_val))[i])); printf("\n");
+	 BML_CHECK_ROCSPARSE(rocsparse_csr_get(matB, &rows, &cols, &nnz, &csr_row_ptr, &csr_col_ind, &csr_val, &row_ptr_type, &col_ind_type, &idx_base, &data_type));
+	 for (int i=0;i<10;i++) printf("B[%d]=%f ",i,(((REAL_T *)(csr_val))[i])); printf("\n");
+	 BML_CHECK_ROCSPARSE(rocsparse_csr_get(matC, &rows, &cols, &nnz, &csr_row_ptr, &csr_col_ind, &csr_val, &row_ptr_type, &col_ind_type, &idx_base, &data_type));
+	 for (int i=0;i<10;i++) printf("C[%d]=%f ",i,(((REAL_T *)(csr_val))[i])); printf("\n");
+      */
+
+    }
+    // Prune the output matrix and overwrite the A matrix with the result
+
+    // xprune stage 1 = determine working buffer size
+#pragma omp target data use_device_ptr(csrValC_tmp,csrRowPtrC_tmp, csrColIndC_tmp,csrValA, csrRowPtrA, csrColIndA)
+    {
+      BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr_buffer_size
+			  (handle, A_N, A_N, nnzC_tmp,
+			   matC_tmp, csrValC_tmp,
+			   csrRowPtrC_tmp, csrColIndC_tmp, &threshold,
+			   matA, csrValA,
+			   csrRowPtrA, csrColIndA, &lworkInBytes));
+    }
+
+    // Allocate the working buffer on the host and device
+    dwork = (char *) malloc(sizeof(char) * lworkInBytes);
+#pragma omp target enter data map(alloc:dwork[:lworkInBytes])
+
+    // xprune stages 2, 3 = determine nnz, perform pruning
+#pragma omp target data use_device_ptr(csrValC_tmp,csrRowPtrC_tmp, csrColIndC_tmp,dwork,csrValA, csrRowPtrA, csrColIndA)
+    {
+      BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr_nnz
+			  (handle, A_N, A_N, nnzC_tmp,
+			   matC_tmp, csrValC_tmp,
+			   csrRowPtrC_tmp, csrColIndC_tmp, &threshold,
+			   matA, csrRowPtrA,
+			   &csrRowPtrA[A_N], dwork));
+      BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr
+			  (handle, A_N, A_N, nnzC_tmp,
+			   (rocsparse_mat_descr) matC_tmp, csrValC_tmp,
+			   csrRowPtrC_tmp, csrColIndC_tmp, &threshold,
+			   (rocsparse_mat_descr) matA, csrValA,
+			   csrRowPtrA, csrColIndA, dwork));
+    }
+    /* DEBUG
+       hipDeviceSynchronize();
+       BML_CHECK_ROCSPARSE(rocsparse_csr_get(matC, &rows, &cols, &nnz, &csr_row_ptr, &csr_col_ind, &csr_val, &row_ptr_type, &col_ind_type, &idx_base, &data_type));
+       for (int i=0;i<10;i++) printf("C[%d]=%f ",i,(((REAL_T *)(csr_val))[i])); printf("\n");
+    */
+
+    // Free the temporary arrays used on the device and host
+#pragma omp target exit data map(delete:csrRowPtrC_tmp[:A_N+1],csrColIndC_tmp[:nnzC_tmp],csrValC_tmp[:nnzC_tmp],dwork[:lworkInBytes])
+    free(csrRowPtrC_tmp);
+    free(csrColIndC_tmp);
+    free(csrValC_tmp);
+    free(dwork);
+
+    // Done with matrix multiplication.
+    // Update ellpack C matrix (on device): copy from csr to ellpack format
+    TYPED_FUNC(bml_cucsr2ellpack_ellpack) (A);
+
+    bml_threshold_ellpack(A, threshold);
+	
+    // Clean up
+    BML_CHECK_ROCSPARSE(rocsparse_destroy_mat_descr(matA));
+    BML_CHECK_ROCSPARSE(rocsparse_destroy_mat_descr(matB));
+    BML_CHECK_ROCSPARSE(rocsparse_destroy_mat_descr(matC_tmp));
+    BML_CHECK_ROCSPARSE(rocsparse_destroy_handle(handle));
 }
 #endif

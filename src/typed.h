@@ -48,7 +48,6 @@
 #define bml_cusparsePruneCSR cusparseSpruneCsr2csr
 #elif defined (BML_USE_ROCSPARSE)
 #define BML_ROCSPARSE_T rocsparse_datatype_f32_r
-#define bml_rocsparse_csrgeam_buffer_size rocsparse_scsrgeam_buffer_size
 #define bml_rocsparse_csrgeam rocsparse_scsrgeam
 #define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_sprune_csr2csr_buffer_size
 #define bml_rocsparse_xprune_csr2csr_nnz rocsparse_sprune_csr2csr_nnz
@@ -86,7 +85,6 @@
 #define bml_cusparsePruneCSR cusparseDpruneCsr2csr
 #elif defined (BML_USE_ROCSPARSE)
 #define BML_ROCSPARSE_T rocsparse_datatype_f64_r
-#define bml_rocsparse_csrgeam_buffer_size rocsparse_dcsrgeam_buffer_size
 #define bml_rocsparse_csrgeam rocsparse_dcsrgeam
 #define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_dprune_csr2csr_buffer_size
 #define bml_rocsparse_xprune_csr2csr_nnz rocsparse_dprune_csr2csr_nnz
@@ -127,7 +125,6 @@
 #define bml_cusparsePruneCSR cusparseCpruneCsr2csr
 #elif defined (BML_USE_ROCSPARSE)
 #define BML_ROCSPARSE_T rocsparse_datatype_f32_c
-#define bml_rocsparse_csrgeam_buffer_size rocsparse_ccsrgeam_buffer_size
 #define bml_rocsparse_csrgeam rocsparse_ccsrgeam
 #define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_cprune_csr2csr_buffer_size
 #define bml_rocsparse_xprune_csr2csr_nnz rocsparse_cprune_csr2csr_nnz
@@ -165,7 +162,6 @@
 #define bml_cusparsePruneCSR cusparseZpruneCsr2csr
 #elif defined (BML_USE_ROCSPARSE)
 #define BML_ROCSPARSE_T rocsparse_datatype_f64_c
-#define bml_rocsparse_csrgeam_buffer_size rocsparse_zcsrgeam_buffer_size
 #define bml_rocsparse_csrgeam rocsparse_zcsrgeam
 #define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_zprune_csr2csr_buffer_size
 #define bml_rocsparse_xprune_csr2csr_nnz rocsparse_zprune_csr2csr_nnz
