@@ -23,7 +23,6 @@
 #endif
 #ifdef BML_USE_ROCSPARSE
 // Copy rocsparse headers into src/rocsparse/ and edit rocsparse_functions.h to remove '[[...]]' text
-#include "bml_threshold_ellpack.h"
 #include "../rocsparse/rocsparse.h"
 /* DEBUG
 #include <hip/hip_runtime.h> // needed for hipDeviceSynchronize()
@@ -928,7 +927,7 @@ void TYPED_FUNC(
 			   matC_tmp, csrValC_tmp,
 			   csrRowPtrC_tmp, csrColIndC_tmp, &threshold,
 			   matA, csrRowPtrA,
-			   &csrRowPtrA[A_N], dwork));
+			   &nnzA, dwork));
       BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr
 			  (handle, A_N, A_N, nnzC_tmp,
 			   (rocsparse_mat_descr) matC_tmp, csrValC_tmp,
@@ -953,7 +952,7 @@ void TYPED_FUNC(
     // Update ellpack C matrix (on device): copy from csr to ellpack format
     TYPED_FUNC(bml_cucsr2ellpack_ellpack) (A);
 
-    bml_threshold_ellpack(A, threshold);
+    //    bml_threshold_ellpack(A, threshold);
 	
     // Clean up
     BML_CHECK_ROCSPARSE(rocsparse_destroy_mat_descr(matA));
