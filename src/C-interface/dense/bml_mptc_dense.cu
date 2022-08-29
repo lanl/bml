@@ -17,7 +17,8 @@ split_double(const double x, half &hi, half &lo)
 {
     hi = __double2half(x);
     double y = (x - double(__half2float(hi)));
-    lo = __double2half(y * 1024.0); // scale to maintain precision
+    lo = __double2half(y); 
+    //lo = __double2half(y * 1024.0); // scale to maintain precision
 };
 
 template <typename T>
@@ -82,7 +83,9 @@ tcoreDHgemm(cublasHandle_t &handle
     array_split_double<half><<<BLOCKS_B, THREADS>>>(B_, Bh, Bl, K*N);
 
 
-    float gamma = powf(2,-10);
+    // Define GEMM constants, gamma is rescaling factor to reduce 
+    // destruction of significant digits in fp16 arithemtic
+    float gamma = powf(2,-10);   
     float alpha = (float) alpha_ * gamma;
     float beta = (float) beta_ ;
 
@@ -93,6 +96,7 @@ tcoreDHgemm(cublasHandle_t &handle
                               &beta, C, CUDA_R_32F, K, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
     beta = 1.0f;
+
     // alpha*A_lo*B_hi + C = C
     cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, K, N, &alpha,
                               Al, CUDA_R_16F, M,
@@ -100,23 +104,21 @@ tcoreDHgemm(cublasHandle_t &handle
                               &beta, C, CUDA_R_32F, K, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
     alpha = (float) alpha_ ;
+
     // Compute gemm for high, alpha*A_hi*B_hi + beta*C = C 
     cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, K, N, &alpha,
                               Ah, CUDA_R_16F, M,
                               Bh, CUDA_R_16F, K,
                               &beta, C, CUDA_R_32F, K, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
-    /*// alpha*A_lo*B_hi + C = C
-    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha,
-                              Al, CUDA_R_16F, N,
-                              Bl, CUDA_R_16F, N,
-                              &beta, C, CUDA_R_32F, N, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
-    */
     // convert back to double-precision
     array_float2double<<<BLOCKS_C, THREADS>>>(C, _C, M*N);
 
 };
 
+
+// Mixed fp16/fp32 tensor core matrix multiplications. Input/output matrices are double-precision 
+// while calculations done in single/half-precision.
 void 
 bml_mptc_dense(int M, int K, int N
               ,const double alpha
@@ -128,11 +130,11 @@ bml_mptc_dense(int M, int K, int N
     cudaError_t err;
     err = cudaSetDevice(0);
 
-    // Cublas Handle
+    // Define cublas Handle
     cublasHandle_t handle;
     cublasStatus_t cublasStat = cublasCreate(&handle);
 
-    // Set math mode
+    // Set math mode of cublas to use Tensor cores
     cublasStat = cublasSetMathMode(handle, CUBLAS_TENSOR_OP_MATH);
  
     // Define vars and allocate memory

@@ -8,7 +8,7 @@
 // Copy from dense to already allocated bml_tc matrix type 
 // if the matrix is not allocated in TC, then allocate and copy 
 
-extern "C" void bml_mptc_x2_dense(int, double*, double*);
+extern "C" void bml_mptc_symm_x2_dense(int, double*, double*);
 
 // Device function for splitting a single into two halves
 __device__
@@ -83,7 +83,7 @@ tcoreDHSymGemm(cublasHandle_t &handle
                               &beta, 
                               C, CUDA_R_32F, N, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
-    // Add transpose of C to C, (A_hi*A_lo)^t + C = C 
+    // Add transpose of C to C, C + (A_hi*A_lo)^t = C 
     cublasStat = cublasSgeam(handle,
                              CUBLAS_OP_N, CUBLAS_OP_T,
                              N, N,
@@ -108,9 +108,9 @@ tcoreDHSymGemm(cublasHandle_t &handle
 };
 
 void 
-bml_mptc_x2_dense(int N
-                 ,double *A
-                 ,double *A2) 
+bml_mptc_symm_x2_dense(int N
+                      ,double *A
+                      ,double *A2) 
 {
     cudaError_t err;
     err = cudaSetDevice(0);
@@ -131,7 +131,7 @@ bml_mptc_x2_dense(int N
     cudaMalloc(&dev_Ah, N * N * sizeof(half));
     cudaMalloc(&dev_Al, N * N * sizeof(half));
 
-    // Do the multiply
+    // Do the square with symmetric matrices
     tcoreDHSymGemm(handle
                   ,N
                   ,A

@@ -2,7 +2,7 @@
 #include "magma_v2.h"
 #ifdef BML_MPTC
 #include "bml_mptc_dense.cuh"
-#include "bml_mptc_x2_dense.cuh"
+#include "bml_mptc_symm_x2_dense.cuh"
 #endif
 #endif
 
@@ -131,8 +131,7 @@ void *TYPED_FUNC(
 
     #ifdef BML_MPTC
 
-        printf("BERGA BERG");
-        bml_mptc_x2_dense(X-> N, X->matrix, X2->matrix);
+        bml_mptc_symm_x2_dense(X-> N, X->matrix, X2->matrix);
 
     #else
 

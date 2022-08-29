@@ -24,7 +24,7 @@ set(HEADERS-DENSE
   bml_transpose_triangle_dense.h
   bml_types_dense.h
   bml_utilities_dense.h
-  bml_mptc_x2_dense.cuh
+  bml_mptc_symm_x2_dense.cuh
   bml_mptc_dense.cuh)
 
 set(SOURCES-DENSE
@@ -52,7 +52,7 @@ set(SOURCES-DENSE
   bml_transpose_dense.c
   bml_transpose_triangle_dense.c
   bml_utilities_dense.c
-  bml_mptc_x2_dense.cu
+  bml_mptc_symm_x2_dense.cu
   bml_mptc_dense.cu)
 
 add_library(bml-dense OBJECT ${SOURCES-DENSE})
