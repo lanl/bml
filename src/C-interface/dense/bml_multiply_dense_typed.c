@@ -1,7 +1,8 @@
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
 #ifdef BML_MPTC
-//#include "bml_mptc_dense.cuh"
+#include "bml_mptc_dense.cuh"
+#include "bml_mptc_x2_dense.cuh"
 #endif
 #endif
 
@@ -127,13 +128,23 @@ void *TYPED_FUNC(
     bml_matrix_dense_t * X,
     bml_matrix_dense_t * X2)
 {
-    double *trace = bml_allocate_memory(sizeof(double) * 2);
 
-    trace[0] = TYPED_FUNC(bml_trace_dense) (X);
-    TYPED_FUNC(bml_multiply_dense) (X, X, X2, 1.0, 0.0);
-    trace[1] = TYPED_FUNC(bml_trace_dense) (X2);
+    #ifdef BML_MPTC
 
-    return trace;
+        printf("BERGA BERG");
+        bml_mptc_x2_dense(X-> N, X->matrix, X2->matrix);
+
+    #else
+
+
+        double *trace = bml_allocate_memory(sizeof(double) * 2);
+
+        trace[0] = TYPED_FUNC(bml_trace_dense) (X);
+        TYPED_FUNC(bml_multiply_dense) (X, X, X2, 1.0, 0.0);
+        trace[1] = TYPED_FUNC(bml_trace_dense) (X2);
+    
+        return trace;
+    #endif
 }
 
 /** Matrix multiply.

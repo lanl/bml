@@ -52,31 +52,34 @@ array_float2double(const float *AF, double *AD, const unsigned N)
 
 void 
 tcoreDHgemm(cublasHandle_t &handle
+           ,const unsigned M
+	   ,const unsigned K
            ,const unsigned N
            ,const double alpha_
-           ,const double* A
-           ,const double* B
+           ,const double* A_
+           ,const double* B_
            ,half*  Ah
            ,half*  Al
            ,half*  Bh
            ,half*  Bl
            ,float* C
            ,const double beta_
-           ,double* C_double){
-//               ,cudaStream_t cuStrm) {
+           ,double* _C){
 
     cublasStatus_t cublasStat;
 
     // Setup kernel launch
     unsigned MAX_THREADS = 1024;
-    unsigned BLOCKS = ceil(N * N / float(MAX_THREADS));
+    unsigned BLOCKS_A = ceil(M * K / float(MAX_THREADS));
+    unsigned BLOCKS_B = ceil(K * N / float(MAX_THREADS));
+    unsigned BLOCKS_C = ceil(M * N / float(MAX_THREADS));
     unsigned THREADS = MAX_THREADS;
 
     // Split the double into the high and low parts
-    array_split_double<half><<<BLOCKS, THREADS>>>(A, Ah, Al, N*N);
+    array_split_double<half><<<BLOCKS_A, THREADS>>>(A_, Ah, Al, M*K);
 
     // Split the double into the high and low parts
-    array_split_double<half><<<BLOCKS, THREADS>>>(B, Bh, Bl, N*N);
+    array_split_double<half><<<BLOCKS_B, THREADS>>>(B_, Bh, Bl, K*N);
 
 
     float gamma = powf(2,-10);
@@ -84,24 +87,24 @@ tcoreDHgemm(cublasHandle_t &handle
     float beta = (float) beta_ ;
 
     // Compute gemms for low, alpha*A_hi*B_lo + C = C 
-    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha,
-                              Ah, CUDA_R_16F, N,
-                              Bl, CUDA_R_16F, N,
-                              &beta, C, CUDA_R_32F, N, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
+    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, K, N, &alpha,
+                              Ah, CUDA_R_16F, M,
+                              Bl, CUDA_R_16F, K,
+                              &beta, C, CUDA_R_32F, K, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
     beta = 1.0f;
     // alpha*A_lo*B_hi + C = C
-    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha,
-                              Al, CUDA_R_16F, N,
-                              Bh, CUDA_R_16F, N,
-                              &beta, C, CUDA_R_32F, N, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
+    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, K, N, &alpha,
+                              Al, CUDA_R_16F, M,
+                              Bh, CUDA_R_16F, K,
+                              &beta, C, CUDA_R_32F, K, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
     alpha = (float) alpha_ ;
     // Compute gemm for high, alpha*A_hi*B_hi + beta*C = C 
-    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha,
-                              Ah, CUDA_R_16F, N,
-                              Bh, CUDA_R_16F, N,
-                              &beta, C, CUDA_R_32F, N, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
+    cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, M, K, N, &alpha,
+                              Ah, CUDA_R_16F, M,
+                              Bh, CUDA_R_16F, K,
+                              &beta, C, CUDA_R_32F, K, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
 
     /*// alpha*A_lo*B_hi + C = C
     cublasStat = cublasGemmEx(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha,
@@ -110,7 +113,7 @@ tcoreDHgemm(cublasHandle_t &handle
                               &beta, C, CUDA_R_32F, N, CUDA_R_32F, CUBLAS_GEMM_DEFAULT_TENSOR_OP);
     */
     // convert back to double-precision
-    array_float2double<<<BLOCKS, THREADS>>>(C, C_double, N*N);
+    array_float2double<<<BLOCKS_C, THREADS>>>(C, _C, M*N);
 
 };
 
@@ -127,10 +130,10 @@ bml_mptc_dense(int M, int K, int N
 
     // Cublas Handle
     cublasHandle_t handle;
-    err = cublasCreate(&handle);
+    cublasStatus_t cublasStat = cublasCreate(&handle);
 
     // Set math mode
-    cublasStatus_t cublasStat = cublasSetMathMode(handle, CUBLAS_TENSOR_OP_MATH);
+    cublasStat = cublasSetMathMode(handle, CUBLAS_TENSOR_OP_MATH);
  
     // Define vars and allocate memory
     float *dev_C;
@@ -143,8 +146,8 @@ bml_mptc_dense(int M, int K, int N
     cudaMalloc(&dev_Bl, K * N * sizeof(half));
 
     // Do the multiply
-    tcoreDHGemm(handle
-               ,N
+    tcoreDHgemm(handle
+               ,M, K, N
                ,alpha
                ,A
                ,B
@@ -157,12 +160,6 @@ bml_mptc_dense(int M, int K, int N
                ,C);
 
 }
-
-
-
-
-
-
 
 
 

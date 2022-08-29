@@ -45,7 +45,6 @@ set(SOURCES_TYPED
   transpose_matrix_typed.c)
 
 set(OBJECT_MPTC "${PROJECT_BINARY_DIR}/src/C-interface/dense/CMakeFiles/bml-dense.dir")
-#set(OBJECT_MPTC "${PROJECT_BINARY_DIR}/src/C-interface/dense/mptc/CMakeFiles/bml-dense-mptc.dir")
 
 include(${PROJECT_SOURCE_DIR}/cmake/bmlAddTypedLibrary.cmake)
 bml_add_typed_library(bmltests single_real "${SOURCES_TYPED}")
@@ -64,6 +63,7 @@ set_target_properties(bmltests
   COMPILE_FLAGS "-I${OBJECT_MPTC}/"
   LINK_FLAGS 
   "${OBJECT_MPTC}/bml_mptc_dense.cu.o"
+#  "${OBJECT_MPTC}/bml_mptc_x2_dense.cu.o"
   POSITION_INDEPENDENT_CODE yes)
 
 
@@ -112,6 +112,7 @@ set_target_properties(bml-test
   COMPILE_FLAGS "-I${OBJECT_MPTC}/"
   LINK_FLAGS 
   "${OBJECT_MPTC}/bml_mptc_dense.cu.o")
+  #"${OBJECT_MPTC}/bml_mptc_x2_dense.cu.o")
 
 if(OPENMP_FOUND)
   set_target_properties(bml-test
