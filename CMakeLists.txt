@@ -382,6 +382,25 @@ if(BML_MAGMA)
   endif()
 endif()
 
+set(BML_ELPA FALSE CACHE BOOL "Whether to use ELPA library")
+if(BML_ELPA)
+  message(STATUS "Search for ELPA in directory ${ELPA_DIR}\n")
+  find_package(ELPA REQUIRED)
+
+  if(${ELPA_FOUND})
+    message(STATUS "ELPA was found:\n"
+      "  ELPA_INCLUDE_DIRS: ${ELPA_INCLUDE_DIRS}\n"
+      "  ELPA_LIBRARY_DIRS: ${ELPA_LIBRARY_DIRS}\n"
+      "  ELPA_LIBRARIES: ${ELPA_LIBRARIES}"
+    )
+    add_definitions(-DBML_USE_ELPA)
+    include_directories(${ELPA_INCLUDE_DIRS})
+    link_directories(${CUDAToolkit_LIBRARY_DIR})
+    link_directories(${ELPA_LIBRARY_DIRS})
+    list(APPEND LINK_LIBRARIES ${ELPA_LIBRARIES})
+  endif()
+endif()
+
 set(BML_SCALAPACK FALSE CACHE BOOL "Whether to use ScaLAPACK library")
 if(BML_SCALAPACK)
   add_definitions(-DBML_USE_SCALAPACK)

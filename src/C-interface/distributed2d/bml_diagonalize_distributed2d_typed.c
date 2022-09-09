@@ -14,6 +14,16 @@
 #include "../bml_transpose.h"
 #include "../bml_copy.h"
 
+#ifdef BML_USE_ELPA
+#include <elpa/elpa.h>
+#include <elpa/elpa_generic.h>
+#include "../dense/bml_allocate_dense.h"
+#ifdef BML_USE_MAGMA
+#include "../../typed.h"
+#include "magma_v2.h"
+#endif
+#endif
+
 #include <mpi.h>
 
 #include <complex.h>
@@ -139,13 +149,13 @@ void PZHEEVD(
  *  \param eigenvalues Eigenvalues of A
  *  \param eigenvectors Eigenvectors of A
  */
+#ifdef BML_USE_SCALAPACK
 void TYPED_FUNC(
-    bml_diagonalize_distributed2d) (
+    bml_diagonalize_distributed2d_scalapack) (
     bml_matrix_distributed2d_t * A,
     void *eigenvalues,
     bml_matrix_distributed2d_t * eigenvectors)
 {
-#ifdef BML_USE_SCALAPACK
     REAL_T *typed_eigenvalues = (REAL_T *) eigenvalues;
     // distributed2d format uses a row block distribution
     char order = 'R';
@@ -288,11 +298,195 @@ void TYPED_FUNC(
                         A->M / A->npcols, sequential);
         bml_deallocate(&zmat);
     }
-    // transpose eigenvectors to have them stored row-major
-    bml_transpose(eigenvectors->matrix);
+    return;
+}
+#endif
+
+#ifdef BML_USE_ELPA
+// Yu, V.; Moussa, J.; Kus, P.; Marek, A.; Messmer, P.; Yoon, M.; Lederer, H.; Blum, V.
+// "GPU-Acceleration of the ELPA2 Distributed Eigensolver for Dense Symmetric and Hermitian Eigenproblems",
+// Computer Physics Communications, 262, 2021
+void TYPED_FUNC(
+    bml_diagonalize_distributed2d_elpa) (
+    bml_matrix_distributed2d_t * A,
+    void *eigenvalues,
+    bml_matrix_distributed2d_t * eigenvectors)
+{
+    char order = 'R';
+    int np_rows = A->nprows;
+    int np_cols = A->npcols;
+    int my_prow = A->myprow;
+    int my_pcol = A->mypcol;
+    int my_blacs_ctxt = Csys2blacs_handle(A->comm);
+    Cblacs_gridinit(&my_blacs_ctxt, &order, np_rows, np_cols);
+    Cblacs_gridinfo(my_blacs_ctxt, &np_rows, &np_cols, &my_prow, &my_pcol);
+
+    int na = A->N;
+    int na_rows = na / np_rows;
+    int na_cols = na / np_cols;
+    if (na_rows * np_rows != na)
+    {
+        LOG_ERROR("Number of MPI tasks/row should divide matrix size\n");
+    }
+    //printf("Matrix size: %d\n", na);
+    //printf("Number of MPI process rows: %d\n", np_rows);
+    //printf("Number of MPI process cols: %d\n", np_cols);
+
+    if (elpa_init(ELPA_API_VERSION) != ELPA_OK)
+    {
+        LOG_ERROR("Error: ELPA API version not supported");
+    }
+
+    int error_elpa;
+    elpa_t handle = elpa_allocate(&error_elpa);
+    /* Set parameters */
+    elpa_set(handle, "na", (int) na, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "nev", (int) na, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "local_nrows", (int) na_rows, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "local_ncols", (int) na_cols, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    // use one block/MPI task, so sets block size to no. local rows
+    elpa_set(handle, "nblk", (int) na_rows, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "mpi_comm_parent", (int) (MPI_Comm_c2f(A->comm)),
+             &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "process_row", (int) my_prow, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "process_col", (int) my_pcol, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    MPI_Barrier(MPI_COMM_WORLD);
+
+    int success = elpa_setup(handle);
+    assert(success == ELPA_OK);
+
+    elpa_set(handle, "solver", ELPA_SOLVER_2STAGE, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    elpa_set(handle, "gpu", 1, &error_elpa);
+    assert(error_elpa == ELPA_OK);
+
+    bml_matrix_t *Alocal = A->matrix;
+
+    bml_matrix_t *zmat = NULL;
+    bml_matrix_t *amat = NULL;
+    if (bml_get_type(Alocal) == dense)
+    {
+        amat = bml_copy_new(Alocal);
+        zmat = eigenvectors->matrix;
+    }
+    else
+    {
+        LOG_INFO("WARNING: convert local matrices to dense...\n");
+        // convert local matrix to dense
+        amat = bml_convert(Alocal, dense, A->matrix_precision,
+                           -1, sequential);
+        zmat = bml_convert(eigenvectors->matrix, dense, A->matrix_precision,
+                           -1, sequential);
+    }
+
+    // transpose to satisfy column major ELPA convention
+    // (global matrix assumed symmetric, so no need for communications)
+    if (A->myprow != A->mypcol)
+        bml_transpose(amat);
+
+    REAL_T *z = bml_get_data_ptr(zmat);
+    assert(z != NULL);
+    REAL_T *a = bml_get_data_ptr(amat);
+    assert(a != NULL);
+
+    /* Solve EV problem */
+    // interface: see elpa_generic.h
+    // handle  handle of the ELPA object, which defines the problem
+    // a       device pointer to matrix a in GPU memory
+    // ev      on return: pointer to eigenvalues in GPU memory
+    // q       on return: pointer to eigenvectors in GPU memory
+    // error   on return the error code, which can be queried with elpa_strerr()
+    LOG_DEBUG("Call ELPA eigensolver");
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
+    float *ev;
+    magma_int_t ret = magma_smalloc(&ev, na);
+#else
+    double *ev;
+    magma_int_t ret = magma_dmalloc(&ev, na);
+#endif
+    assert(ret == MAGMA_SUCCESS);
+#if defined(SINGLE_REAL)
+    elpa_eigenvectors_float(handle, a, ev, z, &error_elpa);
+#endif
+#if defined(DOUBLE_REAL)
+    elpa_eigenvectors_double(handle, a, ev, z, &error_elpa);
+#endif
+#if defined(SINGLE_COMPLEX)
+    elpa_eigenvectors_float_complex(handle, a, ev, z, &error_elpa);
+#endif
+#if defined(DOUBLE_COMPLEX)
+    elpa_eigenvectors_double_complex(handle, a, ev, z, &error_elpa);
+#endif
+
+    assert(error_elpa == ELPA_OK);
+    // copy eigenvalues to CPU
+    LOG_DEBUG("copy eigenvalues to CPU");
+#if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
+    float *tmp = malloc(na * sizeof(float));
+    magma_sgetvector(na, ev, 1, tmp, 1, bml_queue());
+#endif
+#if defined(DOUBLE_REAL) || defined(DOUBLE_COMPLEX)
+    double *tmp = malloc(na * sizeof(double));
+    magma_dgetvector(na, ev, 1, tmp, 1, bml_queue());
+#endif
+    magma_queue_sync(bml_queue());
+
+    REAL_T *ev_ptr = eigenvalues;
+    for (int i = 0; i < A->N; i++)
+        ev_ptr[i] = (REAL_T) tmp[i];
+    free(tmp);
+
+    magma_free(ev);
+
+    bml_deallocate(&amat);
+    if (bml_get_type(Alocal) != dense)
+    {
+        bml_deallocate(&(eigenvectors->matrix));
+        eigenvectors->matrix =
+            bml_convert(zmat, bml_get_type(Alocal), A->matrix_precision,
+                        A->M / A->npcols, sequential);
+        bml_deallocate(&zmat);
+    }
+
+    elpa_deallocate(handle, &error_elpa);
+}
+#endif
+
+void TYPED_FUNC(
+    bml_diagonalize_distributed2d) (
+    bml_matrix_distributed2d_t * A,
+    void *eigenvalues,
+    bml_matrix_distributed2d_t * eigenvectors)
+{
+#ifdef BML_USE_ELPA
+    TYPED_FUNC(bml_diagonalize_distributed2d_elpa) (A, eigenvalues,
+                                                    eigenvectors);
+#else
+#ifdef BML_USE_SCALAPACK
+    TYPED_FUNC(bml_diagonalize_distributed2d_scalapack) (A, eigenvalues,
+                                                         eigenvectors);
 #else
     LOG_ERROR
         ("Build with ScaLAPACK required for distributed2d diagonalization\n");
 #endif
-    return;
+#endif
+    // transpose eigenvectors to have them stored row-major
+    bml_transpose(eigenvectors->matrix);
 }

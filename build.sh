@@ -94,6 +94,8 @@ EOF
     echo "BML_XSMM                   Build with XSMM             (default is ${BML_XSMM})"
     echo "BML_SCALAPACK              Build with SCALAPACK        (default is ${BML_SCALAPACK})"
     echo "SCALAPACK_LIBRARIES        ScaLapack libraries         (default is '${SCALAPACK_LIBRARIES}')"
+    echo "BML_ELPA                   Build with ELPA             (default is ${BML_ELPA})"
+    echo "ELPA_DIR                   ELPA directory              (default is ${ELPA_DIR})"
     echo "BML_ELLBLOCK_MEMPOOL       Use ellblock memory pool    (default is ${BML_ELLBLOCK_MEMPOOL}"
     echo "CUDA_TOOLKIT_ROOT_DIR      Path to CUDA dir            (default is '${CUDA_TOOLKIT_ROOT_DIR}')"
     echo "INTEL_OPT                  {yes, no}                   (default is ${INTEL_OPT})"
@@ -125,6 +127,8 @@ set_defaults() {
     : ${BLAS_LIBRARIES:=}
     : ${LAPACK_LIBRARIES:=}
     : ${SCALAPACK_LIBRARIES:=}
+    : ${BML_ELPA:=no}
+    : ${ELPA_DIR:=}
     : ${BML_TESTING:=yes}
     : ${BML_VALGRIND:=no}
     : ${BML_COVERAGE:=no}
@@ -214,6 +218,7 @@ configure() {
         -DCMAKE_C_COMPILER="${CC}" \
         -DCMAKE_CXX_COMPILER="${CXX}" \
         -DCMAKE_Fortran_COMPILER="${FC}" \
+        -DCMAKE_PREFIX_PATH="${ELPA_DIR}" \
         ${CMAKE_C_FLAGS:+-DCMAKE_C_FLAGS="${CMAKE_C_FLAGS}"} \
         ${CMAKE_CXX_FLAGS:+-DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"} \
         ${CMAKE_Fortran_FLAGS:+-DCMAKE_Fortran_FLAGS="${CMAKE_Fortran_FLAGS}"} \
@@ -221,6 +226,7 @@ configure() {
         -DBLAS_LIBRARIES="${BLAS_LIBRARIES}" \
         -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}" \
         -DSCALAPACK_LIBRARIES="${SCALAPACK_LIBRARIES}" \
+        -DBML_ELPA="${BML_ELPA}" \
         -DBML_OPENMP="${BML_OPENMP}" \
         -DMKL_GPU="${MKL_GPU}" \
         -DBML_MPI="${BML_MPI}" \
