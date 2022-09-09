@@ -186,8 +186,11 @@ main(
 #ifdef DO_MPI
     MPI_Init(&argc, &argv);
     bml_init(MPI_COMM_WORLD);
-    printf("with MPI\n");
-    int N = 14;
+    int nranks;
+    MPI_Comm_size(MPI_COMM_WORLD, &nranks);
+    LOG_INFO("Testing with MPI\n");
+    // N=64 seems to be the minimum to have ELPA work
+    int N = nranks > 1 ? 64 : 13;
 #else
     bml_init();
     int N = 13;

@@ -42,9 +42,9 @@ static void TYPED_FUNC(
 }
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define ABS_TOL 2e-6
+#define REL_TOL 0.2e-6
 #else
-#define ABS_TOL 1e-12
+#define REL_TOL 0.2e-12
 #endif
 
 static int TYPED_FUNC(
@@ -58,9 +58,10 @@ static int TYPED_FUNC(
     int max_col = MIN(N, PRINT_THRESHOLD);
 
     LOG_INFO("Compare matrices\n");
+    double abs_tol = N * REL_TOL;
     for (int i = 0; i < N * N; i++)
     {
-        if (ABS(A[i] - B[i]) > ABS_TOL)
+        if (ABS(A[i] - B[i]) > abs_tol)
         {
             LOG_INFO("First matrix\n");
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, A, 0,
@@ -68,7 +69,7 @@ static int TYPED_FUNC(
             LOG_INFO("Second matrix\n");
             bml_print_dense_matrix(N, matrix_precision, dense_row_major, B, 0,
                                    max_row, 0, max_col);
-            LOG_INFO("element %d outside %1.2e\n", i, ABS_TOL);
+            LOG_INFO("element %d outside %1.2e\n", i, abs_tol);
 #if defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
             LOG_INFO("A[%d] = %e+%ei\n", i, creal(A[i]), cimag(A[i]));
             LOG_INFO("B[%d] = %e+%ei\n", i, creal(B[i]), cimag(B[i]));
