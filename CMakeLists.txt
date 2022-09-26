@@ -435,12 +435,6 @@ include(CheckFunctionExists)
 include(CheckFortranFunctionExists)
 include(${PROJECT_SOURCE_DIR}/cmake/bmlCheckCFortranFunctionExists.cmake)
 
-set(CMAKE_REQUIRED_LIBRARIES ${LINK_LIBRARIES} -lm)
-check_function_exists(fabs HAVE_FABS)
-if(NOT HAVE_FABS)
-  message(FATAL_ERROR "Could not find the fabs() function")
-endif()
-
 if(BLAS_FOUND)
   add_definitions(-DHAVE_BLAS)
 
