@@ -40,8 +40,11 @@
 /** Number of outer loop iterations for offload code
  */
 
-#ifndef OFFLOAD_NUM_CHUNKS
-#define OFFLOAD_NUM_CHUNKS 128
-#endif
+#define BML_OFFLOAD_CHUNKS (defined(INTEL_SDK) || defined(CRAY_SDK) || defined(__IBMC__) || defined(__ibmxl__))
 
+#ifdef BML_OFFLOAD_CHUNKS
+#ifndef BML_OFFLOAD_NUM_CHUNKS
+#define BML_OFFLOAD_NUM_CHUNKS 128
+#endif
+#endif
 #endif
