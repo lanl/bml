@@ -6,7 +6,7 @@
 #include "ellsort/bml_transpose_ellsort.h"
 #include "ellblock/bml_transpose_ellblock.h"
 #include "csr/bml_transpose_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_transpose_distributed2d.h"
 #endif
 
@@ -40,7 +40,7 @@ bml_transpose_new(
         case csr:
             return bml_transpose_new_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_transpose_new_distributed2d(A);
             break;
@@ -80,7 +80,7 @@ bml_transpose(
         case csr:
             bml_transpose_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_transpose_distributed2d(A);
             break;

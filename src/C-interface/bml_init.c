@@ -19,7 +19,7 @@
  */
 void
 bml_init(
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     MPI_Comm comm
 #endif
     )
@@ -31,7 +31,7 @@ bml_init(
     // Initialize the library; pay for setup cost here
     libxsmm_init();
 #endif
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     bml_initParallel(comm);
 #endif
 }

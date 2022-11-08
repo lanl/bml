@@ -15,11 +15,11 @@
 #include <string.h>
 #include <assert.h>
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 #endif
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void TYPED_FUNC(
     bml_mpi_send_csr) (
     bml_matrix_csr_t * A,

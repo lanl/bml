@@ -7,7 +7,7 @@
 #include "ellpack/bml_diagonalize_ellpack.h"
 #include "ellblock/bml_diagonalize_ellblock.h"
 #include "csr/bml_diagonalize_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_diagonalize_distributed2d.h"
 #endif
 
@@ -34,7 +34,7 @@ bml_diagonalize(
         case csr:
             bml_diagonalize_csr(A, eigenvalues, eigenvectors);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_diagonalize_distributed2d(A, eigenvalues, eigenvectors);
             break;

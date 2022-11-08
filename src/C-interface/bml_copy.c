@@ -8,7 +8,7 @@
 #include "ellsort/bml_copy_ellsort.h"
 #include "ellblock/bml_copy_ellblock.h"
 #include "csr/bml_copy_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_copy_distributed2d.h"
 #endif
 
@@ -47,7 +47,7 @@ bml_copy_new(
         case csr:
             B = bml_copy_csr_new(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             B = bml_copy_distributed2d_new(A);
             break;
@@ -106,7 +106,7 @@ bml_copy(
         case csr:
             bml_copy_csr(A, B);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_copy_distributed2d(A, B);
             break;

@@ -5,7 +5,7 @@
 #include "ellpack/bml_element_multiply_ellpack.h"
 #include "ellsort/bml_element_multiply_ellsort.h"
 #include "csr/bml_element_multiply_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_multiply_distributed2d.h"
 #endif
 

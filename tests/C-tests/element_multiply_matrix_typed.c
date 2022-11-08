@@ -120,7 +120,7 @@ int TYPED_FUNC(
 {
     // set block sizes for ellblock tests
     // (unused by other tests)
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1)
     {
         int p2 = bml_getNRanks();
@@ -136,7 +136,7 @@ int TYPED_FUNC(
     }
 
     bml_distribution_mode_t distrib_mode = sequential;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1)
     {
         LOG_INFO("Use distributed matrix\n");

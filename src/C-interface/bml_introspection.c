@@ -6,7 +6,7 @@
 #include "ellsort/bml_introspection_ellsort.h"
 #include "ellblock/bml_introspection_ellblock.h"
 #include "csr/bml_introspection_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_introspection_distributed2d.h"
 #endif
 
@@ -48,7 +48,7 @@ bml_get_deep_type(
 {
     switch (bml_get_type(A))
     {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_type(bml_get_local_matrix(A));
             break;
@@ -89,7 +89,7 @@ bml_get_precision(
         case csr:
             return bml_get_precision_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_precision(bml_get_local_matrix(A));
             break;
@@ -130,7 +130,7 @@ bml_get_N(
         case csr:
             return bml_get_N_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_N_distributed2d(A);
             break;
@@ -171,7 +171,7 @@ bml_get_M(
         case csr:
             return bml_get_M_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_M_distributed2d(A);
             break;
@@ -339,7 +339,7 @@ bml_get_sparsity(
         case csr:
             return bml_get_sparsity_csr(A, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_sparsity_distributed2d(A, threshold);
             break;
@@ -357,7 +357,7 @@ bml_get_local_matrix(
 {
     switch (bml_get_type(A))
     {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_local_matrix_distributed2d(A);
             break;

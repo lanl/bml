@@ -32,7 +32,7 @@ void TYPED_FUNC(
     bml_allGatherVParallel_dense) (
     bml_matrix_dense_t * A)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     int myRank = bml_getMyRank();
 
     int N = A->N;
@@ -47,7 +47,7 @@ void TYPED_FUNC(
 #endif
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 
 void TYPED_FUNC(
     bml_mpi_type_create_struct_dense) (

@@ -5,7 +5,7 @@
 
 #include "bml_types.h"
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #ifdef SINGLE
 #define REAL_MPI_TYPE MPI_FLOAT
 #else
@@ -13,7 +13,7 @@
 #endif
 #endif
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 extern MPI_Comm ccomm;
 #endif
@@ -38,7 +38,7 @@ void bml_shutdownParallelF(
 int bml_printRank(
     void);
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 // Initialize some MPI stuff
 void bml_initParallel(
     MPI_Comm comm);
@@ -68,7 +68,7 @@ void bml_maxRealReduce(
 void bml_allGatherVParallel(
     bml_matrix_t * A);
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void bml_mpi_send(
     bml_matrix_t * A,
     const int dst,

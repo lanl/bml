@@ -28,7 +28,7 @@ program testf
   use threshold_matrix
   use trace_matrix
   use transpose_matrix
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
   use mpi
 #endif
 
@@ -36,7 +36,7 @@ program testf
 
   implicit none
   character(20) :: args(6)
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
   integer, parameter :: N = 14, M = 14
 #else
   integer, parameter :: N = 13, M = 13
@@ -46,7 +46,7 @@ program testf
   logical :: test_result = .false.
   character(20) :: test_name, matrix_type, element_type
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
   call MPI_Init(ierr)
   call bml_initF(MPI_COMM_WORLD)
 #else
@@ -110,7 +110,7 @@ program testf
   endif
 
   call bml_shutdownF()
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
   call MPI_Finalize(ierr)
 #endif
 

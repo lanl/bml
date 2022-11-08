@@ -242,7 +242,7 @@ double TYPED_FUNC(
     bml_matrix_csr_t * A)
 {
     double fnorm = TYPED_FUNC(bml_sum_squares_csr) (A);
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_sumRealReduce(&fnorm);

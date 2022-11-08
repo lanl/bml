@@ -154,7 +154,7 @@ void *TYPED_FUNC(
     bml_free_memory(A_matrix);
 #endif
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_minRealReduce(&emin);

@@ -7,7 +7,7 @@
 #include "ellblock/bml_allocate_ellblock.h"
 #include "ellsort/bml_allocate_ellsort.h"
 #include "csr/bml_allocate_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_allocate_distributed2d.h"
 #endif
 
@@ -190,7 +190,7 @@ bml_deallocate(
             case csr:
                 bml_deallocate_csr(*A);
                 break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
             case distributed2d:
                 bml_deallocate_distributed2d(*A);
                 break;
@@ -248,7 +248,7 @@ bml_clear(
         case csr:
             bml_clear_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_clear_distributed2d(A);
             break;
@@ -281,7 +281,7 @@ bml_noinit_rectangular_matrix(
 {
     LOG_DEBUG("noinit matrix of size %d (or zero matrix for dense)\n",
               matrix_dimension.N_rows);
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (distrib_mode == distributed)
         return bml_zero_matrix_distributed2d(matrix_type, matrix_precision,
                                              matrix_dimension.N_rows,
@@ -409,7 +409,7 @@ bml_zero_matrix(
 {
     LOG_DEBUG("zero matrix of size %d\n", N);
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (distrib_mode == distributed)
         return bml_zero_matrix_distributed2d(matrix_type, matrix_precision, N,
                                              M);
@@ -469,7 +469,7 @@ bml_random_matrix(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (distrib_mode == distributed)
         return bml_random_matrix_distributed2d(matrix_type, matrix_precision,
                                                N, M);
@@ -579,7 +579,7 @@ bml_identity_matrix(
     bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("identity matrix of size %d\n", N);
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (distrib_mode == distributed)
         return bml_identity_matrix_distributed2d(matrix_type,
                                                  matrix_precision, N, M);

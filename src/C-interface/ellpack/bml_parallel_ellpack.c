@@ -40,7 +40,7 @@ bml_allGatherVParallel_ellpack(
     }
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void
 bml_mpi_type_create_struct_ellpack(
     bml_matrix_ellpack_t * A,

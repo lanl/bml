@@ -3,7 +3,7 @@
 
 #include "../bml_types.h"
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 #endif
 

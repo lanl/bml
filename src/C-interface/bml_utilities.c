@@ -10,7 +10,7 @@
 #include "ellsort/bml_utilities_ellsort.h"
 #include "ellblock/bml_utilities_ellblock.h"
 #include "csr/bml_utilities_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "bml_parallel.h"
 #include "distributed2d/bml_introspection_distributed2d.h"
 #include "distributed2d/bml_utilities_distributed2d.h"
@@ -50,7 +50,7 @@ bml_print_bml_matrix(
     int j_l,
     int j_u)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     bml_matrix_t *Amat = NULL;
     if (bml_get_type(A) == distributed2d)
         Amat = bml_get_local_matrix_distributed2d(A);
@@ -236,7 +236,7 @@ bml_print_bml_matrix(
                     break;
             }
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             switch (bml_get_precision(Amat))
             {
@@ -559,7 +559,7 @@ bml_read_bml_matrix(
         case csr:
             bml_read_bml_matrix_csr(A, filename);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_read_bml_matrix_distributed2d(A, filename);
             break;
@@ -597,7 +597,7 @@ bml_write_bml_matrix(
         case csr:
             bml_write_bml_matrix_csr(A, filename);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_write_bml_matrix_distributed2d(A, filename);
             break;

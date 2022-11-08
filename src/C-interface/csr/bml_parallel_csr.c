@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void
 bml_mpi_send_csr(
     bml_matrix_csr_t * A,

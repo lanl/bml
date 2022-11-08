@@ -5,7 +5,7 @@
 #include "ellsort/bml_convert_ellsort.h"
 #include "ellblock/bml_convert_ellblock.h"
 #include "csr/bml_convert_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_convert_distributed2d.h"
 #endif
 
@@ -26,7 +26,7 @@ bml_convert(
     int M,
     bml_distribution_mode_t distrib_mode)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (distrib_mode == distributed)
         return bml_convert_distributed2d(A, matrix_type, matrix_precision, M);
     else

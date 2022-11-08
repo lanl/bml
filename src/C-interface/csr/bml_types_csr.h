@@ -3,7 +3,7 @@
 
 #include "../bml_types.h"
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 #endif
 
@@ -83,7 +83,7 @@ struct bml_matrix_csr_t
     bml_domain_t *domain;
     /** A copy of the domain decomposition. */
     bml_domain_t *domain2;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     /** Buffer for communications */
     void *buffer;
     int *nnz_buffer;

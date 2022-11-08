@@ -74,7 +74,7 @@ void TYPED_FUNC(
             TYPED_FUNC(bml_multiply_AB_csr) (A, B, A2, threshold);
         }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         if (bml_getNRanks() > 1 && A2->distribution_mode == distributed)
         {
             bml_allGatherVParallel(A2);

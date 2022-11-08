@@ -4,7 +4,7 @@ module bml_shutdown_m
   use bml_c_interface_m
   use bml_types_m
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
   use mpi
 #endif
 

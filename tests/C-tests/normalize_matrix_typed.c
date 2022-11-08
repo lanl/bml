@@ -26,7 +26,7 @@ int TYPED_FUNC(
     REAL_T *B_dense = NULL;
 
     bml_distribution_mode_t distrib_mode = sequential;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1)
     {
         LOG_INFO("Use distributed matrix\n");
@@ -78,7 +78,7 @@ int TYPED_FUNC(
         bml_print_dense_matrix(N, matrix_precision, dense_row_major, B_dense,
                                0, N, 0, N);
     }
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     MPI_Barrier(MPI_COMM_WORLD);
 #endif
 

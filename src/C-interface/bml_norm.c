@@ -6,7 +6,7 @@
 #include "ellsort/bml_norm_ellsort.h"
 #include "ellblock/bml_norm_ellblock.h"
 #include "csr/bml_norm_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_norm_distributed2d.h"
 #endif
 
@@ -40,7 +40,7 @@ bml_sum_squares(
         case csr:
             return bml_sum_squares_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_sum_squares_distributed2d(A);
             break;
@@ -123,7 +123,7 @@ bml_sum_squares2(
         case csr:
             return bml_sum_squares2_csr(A, B, alpha, beta, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_sum_squares2_distributed2d(A, B, alpha, beta,
                                                   threshold);
@@ -170,7 +170,7 @@ bml_sum_AB(
         case csr:
             return bml_sum_AB_csr(A, B, alpha, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_sum_AB_distributed2d(A, B, alpha, threshold);
             break;
@@ -210,7 +210,7 @@ bml_fnorm(
         case csr:
             return bml_fnorm_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_fnorm_distributed2d(A);
             break;

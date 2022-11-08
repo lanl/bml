@@ -8,7 +8,7 @@
 
 #include "bml_test.h"
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 const int NUM_TESTS = 31;
 #else
 const int NUM_TESTS = 30;
@@ -37,7 +37,7 @@ const char *test_name[] = {
     "introspection",
     "inverse",
     "io_matrix",
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     "mpi_sendrecv",
 #endif
     "multiply",
@@ -73,7 +73,7 @@ const char *test_description[] = {
     "Query matrix properties",
     "Matrix inverse",
     "Read and write an mtx matrix",
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     "Send/Recv matrix with MPI",
 #endif
     "Multiply two bml matrices",
@@ -109,7 +109,7 @@ const test_function_t testers[] = {
     test_introspection,
     test_inverse,
     test_io_matrix,
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     test_mpi_sendrecv,
 #endif
     test_multiply,
@@ -183,7 +183,7 @@ main(
     int argc,
     char **argv)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     MPI_Init(&argc, &argv);
     bml_init(MPI_COMM_WORLD);
     printf("with MPI\n");
@@ -333,7 +333,7 @@ main(
     test_result = testers[test_index] (N, matrix_type, precision, M);
 
     bml_shutdown();
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     MPI_Finalize();
 #endif
     return test_result;
