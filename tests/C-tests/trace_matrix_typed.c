@@ -35,7 +35,7 @@ int TYPED_FUNC(
     LOG_DEBUG("rel. tolerance = %e\n", REL_TOL);
 
     bml_distribution_mode_t distrib_mode = sequential;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1)
     {
         LOG_INFO("Use distributed matrix\n");

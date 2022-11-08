@@ -6,7 +6,7 @@
 #include "ellsort/bml_parallel_ellsort.h"
 #include "ellblock/bml_parallel_ellblock.h"
 #include "csr/bml_parallel_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_allocate_distributed2d.h"
 #endif
 
@@ -16,13 +16,13 @@
 #include <string.h>
 #include <assert.h>
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 #endif
 
 static int myRank = 0;
 static int nRanks = 1;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 static MPI_Request *requestList;
 MPI_Comm ccomm;
 static int *rUsed;
@@ -69,7 +69,7 @@ bml_printRank(
     return 0;
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void
 bml_initParallel(
     MPI_Comm comm)
@@ -96,7 +96,7 @@ void
 bml_initParallelF(
     int fcomm)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     MPI_Comm comm = MPI_Comm_f2c(fcomm);
     bml_initParallel(comm);
 #endif
@@ -113,7 +113,7 @@ void
 bml_shutdownParallel(
     void)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     free(requestList);
     free(rUsed);
 #endif
@@ -123,7 +123,7 @@ void
 bml_barrierParallel(
     void)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     MPI_Barrier(ccomm);
 #endif
 }
@@ -132,7 +132,7 @@ void
 bml_sumRealReduce(
     double *value)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
@@ -145,7 +145,7 @@ void
 bml_minRealReduce(
     double *value)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
@@ -158,7 +158,7 @@ void
 bml_maxRealReduce(
     double *value)
 {
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     double sLocal[1], sGlobal[1];
 
     sLocal[0] = *value;
@@ -195,7 +195,7 @@ bml_allGatherVParallel(
     }
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void
 bml_mpi_send(
     bml_matrix_t * A,

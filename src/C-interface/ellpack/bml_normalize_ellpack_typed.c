@@ -158,7 +158,7 @@ void *TYPED_FUNC(
 
     //printf("%d: emin = %e emax = %e\n", myRank, emin, emax);
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1 && A->distribution_mode == distributed)
     {
         bml_minRealReduce(&emin);

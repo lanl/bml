@@ -6,7 +6,7 @@
 #include "ellsort/bml_export_ellsort.h"
 #include "ellblock/bml_export_ellblock.h"
 #include "csr/bml_export_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_export_distributed2d.h"
 #endif
 
@@ -51,7 +51,7 @@ bml_export_to_dense(
             return bml_export_to_dense_ellblock(A, order);
         case csr:
             return bml_export_to_dense_csr(A, order);
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_export_to_dense_distributed2d(A, order);
 #endif

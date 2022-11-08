@@ -43,7 +43,7 @@ bml_allGatherVParallel_dense(
     }
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void
 bml_mpi_type_create_struct_dense(
     bml_matrix_dense_t * A,

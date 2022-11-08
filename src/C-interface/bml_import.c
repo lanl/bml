@@ -6,7 +6,7 @@
 #include "ellsort/bml_import_ellsort.h"
 #include "ellblock/bml_import_ellblock.h"
 #include "csr/bml_import_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_import_distributed2d.h"
 #endif
 
@@ -37,7 +37,7 @@ bml_import_from_dense(
     bml_distribution_mode_t distrib_mode)
 {
     LOG_DEBUG("importing dense matrix\n");
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (distrib_mode == distributed)
         return bml_import_from_dense_distributed2d(matrix_type,
                                                    matrix_precision, order, N,

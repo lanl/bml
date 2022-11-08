@@ -18,7 +18,7 @@ void bml_allGatherVParallel_dense_single_complex(
 void bml_allGatherVParallel_dense_double_complex(
     bml_matrix_dense_t * A);
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void bml_mpi_type_create_struct_dense(
     bml_matrix_dense_t * A,
     MPI_Datatype * newtype);

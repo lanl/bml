@@ -40,7 +40,7 @@ bml_allGatherVParallel_ellsort(
     }
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void
 bml_mpi_type_create_struct_ellsort(
     bml_matrix_ellsort_t * A,

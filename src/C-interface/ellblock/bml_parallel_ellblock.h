@@ -3,7 +3,7 @@
 
 #include "bml_types_ellblock.h"
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 void bml_mpi_send_ellblock(
     bml_matrix_ellblock_t * A,
     const int dst,

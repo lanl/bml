@@ -17,7 +17,7 @@
 #include <omp.h>
 #endif
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 #endif
 
@@ -43,7 +43,7 @@ void TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 /*
     for (int i = 0; i < nRanks; i++)
     {
@@ -82,7 +82,7 @@ void TYPED_FUNC(
 
 }
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 
 void TYPED_FUNC(
     bml_mpi_type_create_struct_ellsort) (

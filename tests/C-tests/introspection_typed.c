@@ -15,7 +15,7 @@ int TYPED_FUNC(
     bml_matrix_t *A = NULL;
 
     bml_distribution_mode_t distrib_mode = sequential;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     if (bml_getNRanks() > 1)
     {
         LOG_INFO("Use distributed matrix\n");
@@ -31,7 +31,7 @@ int TYPED_FUNC(
 
     bml_matrix_type_t type = bml_get_type(A);
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     switch (deep_type)
     {
         case dense:

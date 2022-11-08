@@ -6,7 +6,7 @@
 #include "ellsort/bml_threshold_ellsort.h"
 #include "ellblock/bml_threshold_ellblock.h"
 #include "csr/bml_threshold_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_threshold_distributed2d.h"
 #endif
 
@@ -42,7 +42,7 @@ bml_threshold_new(
         case csr:
             return bml_threshold_new_csr(A, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_threshold_new_distributed2d(A, threshold);
             break;
@@ -84,7 +84,7 @@ bml_threshold(
         case csr:
             bml_threshold_csr(A, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_threshold(bml_get_local_matrix(A), threshold);
             break;

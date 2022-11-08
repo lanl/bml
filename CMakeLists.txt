@@ -212,7 +212,7 @@ if(BML_MPI)
   message(STATUS "MPIEXEC_NUMPROCS_FLAG: ${MPIEXEC_NUMPROCS_FLAG}")
   message(STATUS "MPIEXEC_PREFLAGS: ${MPIEXEC_PREFLAGS}")
   message(STATUS "BML_MPIEXEC_NUMPROCS_FLAG: ${BML_MPIEXEC_NUMPROCS_FLAG}")
-  add_definitions(-DDO_MPI)
+  add_definitions(-DBML_USE_MPI)
 endif()
 
 set(BML_CUSPARSE FALSE CACHE BOOL "Whether to compile with CuSPARSE support")

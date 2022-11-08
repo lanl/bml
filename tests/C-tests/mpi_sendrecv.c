@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 
 int
 test_mpi_sendrecv(

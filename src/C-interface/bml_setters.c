@@ -6,7 +6,7 @@
 #include "ellsort/bml_setters_ellsort.h"
 #include "ellblock/bml_setters_ellblock.h"
 #include "csr/bml_setters_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_setters_distributed2d.h"
 #endif
 
@@ -95,7 +95,7 @@ bml_set_row(
         case csr:
             bml_set_row_csr(A, i, row, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_set_row_distributed2d(A, i, row, threshold);
             break;
@@ -129,7 +129,7 @@ bml_set_diagonal(
         case csr:
             bml_set_diagonal_csr(A, diagonal, threshold);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             bml_set_diagonal_distributed2d(A, diagonal, threshold);
             break;

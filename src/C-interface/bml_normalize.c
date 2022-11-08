@@ -6,7 +6,7 @@
 #include "ellsort/bml_normalize_ellsort.h"
 #include "ellblock/bml_normalize_ellblock.h"
 #include "csr/bml_normalize_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_normalize_distributed2d.h"
 #endif
 
@@ -43,7 +43,7 @@ bml_normalize(
         case csr:
             bml_normalize_csr(A, mineval, maxeval);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_normalize_distributed2d(A, mineval, maxeval);
             break;
@@ -112,7 +112,7 @@ bml_gershgorin(
         case csr:
             return bml_gershgorin_csr(A);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_gershgorin_distributed2d(A);
             break;

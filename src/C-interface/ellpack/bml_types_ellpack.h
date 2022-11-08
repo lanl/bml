@@ -3,7 +3,7 @@
 
 #include "../bml_types.h"
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include <mpi.h>
 #endif
 
@@ -38,7 +38,7 @@ struct bml_matrix_ellpack_t
     void *csrVal;
 #endif
 
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
     /** request field for MPI communications*/
     MPI_Request req;
 #endif

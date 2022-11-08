@@ -6,7 +6,7 @@
 #include "ellsort/bml_getters_ellsort.h"
 #include "ellblock/bml_getters_ellblock.h"
 #include "csr/bml_getters_csr.h"
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
 #include "distributed2d/bml_getters_distributed2d.h"
 #endif
 
@@ -77,7 +77,7 @@ bml_get_row(
         case csr:
             return bml_get_row_csr(A, i);
             break;
-#ifdef DO_MPI
+#ifdef BML_USE_MPI
         case distributed2d:
             return bml_get_row_distributed2d(A, i);
             break;
