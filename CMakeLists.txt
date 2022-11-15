@@ -350,11 +350,6 @@ if(BML_USE_DEVICE)
   endif()
 endif()
 
-set(BML_OPENCL FALSE CACHE BOOL "Whether to compiler with OpenCL support")
-if(BML_OPENCL)
-  include(FindOpenCL)
-endif()
-
 SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 
