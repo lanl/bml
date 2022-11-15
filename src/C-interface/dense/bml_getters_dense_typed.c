@@ -7,6 +7,7 @@
 #include "../bml_export.h"
 #include "../bml_introspection.h"
 #include "../bml_logger.h"
+#include "../bml_allocate.h"
 #include "bml_export_dense.h"
 #include "bml_getters_dense.h"
 #include "bml_types_dense.h"
@@ -56,13 +57,13 @@ void *TYPED_FUNC(
 
 #ifdef BML_USE_MAGMA
     MAGMA_T *A_matrix = A->matrix;
-    MAGMA_T *row = calloc(N, sizeof(MAGMA_T));
+    MAGMA_T *row = bml_allocate_memory(N * sizeof(MAGMA_T));
 
     MAGMA(getvector) (N, (MAGMA_T *) A->matrix + i * A->ld, 1,
                       row, 1, bml_queue());
 #else
     REAL_T *A_matrix = A->matrix;
-    REAL_T *row = calloc(N, sizeof(REAL_T));
+    REAL_T *row = bml_allocate_memory(N * sizeof(REAL_T));
 
     for (int j = 0; j < N; j++)
     {
@@ -88,14 +89,14 @@ void *TYPED_FUNC(
 #else
     REAL_T *A_matrix = A->matrix;
 #endif
-    REAL_T *diagonal = calloc(N, sizeof(REAL_T));
+    REAL_T *diagonal = bml_allocate_memory(N * sizeof(REAL_T));
 
     for (int j = 0; j < N; j++)
     {
         diagonal[j] = A_matrix[ROWMAJOR(j, j, N, N)];
     }
 #ifdef BML_USE_MAGMA
-    free(A_matrix);
+    bml_free_memory(A_matrix);
 #endif
 
     return diagonal;
