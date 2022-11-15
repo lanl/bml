@@ -28,13 +28,13 @@ static void TYPED_FUNC(
                 C[i * N + j] += alpha * A[i * N + k] * B[k * N + j];
             }
             REAL_T val = C[i * N + j];
-            C[i * N + j] = fabs(val) > threshold ? val : 0.;
+            C[i * N + j] = ABS(val) > threshold ? val : 0.;
         }
     }
 }
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define ABS_TOL 2e-6
+#define ABS_TOL 2e-6f
 #else
 #define ABS_TOL 1e-12
 #endif
