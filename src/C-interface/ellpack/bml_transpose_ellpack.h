@@ -33,4 +33,20 @@ void bml_transpose_ellpack_single_complex(
 void bml_transpose_ellpack_double_complex(
     bml_matrix_ellpack_t * A);
 
+#if defined(BML_USE_CUSPARSE)
+void bml_transpose_cusparse_ellpack(
+    bml_matrix_ellpack_t * A);
+
+void bml_transpose_cusparse_ellpack_single_real(
+    bml_matrix_ellpack_t * A);
+
+void bml_transpose_cusparse_ellpack_double_real(
+    bml_matrix_ellpack_t * A);
+
+void bml_transpose_cusparse_ellpack_single_complex(
+    bml_matrix_ellpack_t * A);
+
+void bml_transpose_cusparse_ellpack_double_complex(
+    bml_matrix_ellpack_t * A);
+#endif
 #endif
