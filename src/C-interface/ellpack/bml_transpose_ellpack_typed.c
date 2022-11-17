@@ -307,21 +307,6 @@ void TYPED_FUNC(
         omp_target_free(dBuffer, omp_get_default_device());
     }
 
-/*
-// DEBUG:
-#pragma omp target update from(csrRowPtrA[:N+1])
-#pragma omp target update from(csrValA[:nnzA])
-#pragma omp target update from(csrColIndA[:nnzA])
-   printf("From cuSPARSE: \n\n");
-for(int i=0; i<N; i++)
-{
-   for(int j=csrRowPtrA[i]; j<csrRowPtrA[i+1]; j++)
-   {
-      printf(" %f ", csrValA[j]);
-   }
-   printf("\n");
-}
-*/
     // Done with matrix transpose operation.
     // Update ellpack matrix (on device): copy from csr to ellpack format
     TYPED_FUNC(bml_cucsr2ellpack_ellpack) (A);
