@@ -54,8 +54,16 @@ void *TYPED_FUNC(
 {
     int N = A->N;
     REAL_T *offdiag_sum = calloc(N, sizeof(REAL_T));
-    REAL_T *A_matrix = (REAL_T *) A->matrix;
 
+#ifdef BML_USE_MAGMA
+    // copy matrix into tmp matrix on CPU
+    REAL_T *A_matrix = bml_allocate_memory(sizeof(REAL_T) * A->N * A->N);
+    MAGMA(getmatrix) (A->N, A->N,
+                      A->matrix, A->ld, (MAGMA_T *) A_matrix, A->N,
+                      bml_queue());
+#else
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+#endif
 #ifdef MKL_GPU
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
@@ -72,6 +80,9 @@ void *TYPED_FUNC(
         offdiag_sum[i] = radius;
     }
 
+#ifdef BML_USE_MAGMA
+    bml_free_memory(A_matrix);
+#endif
     return offdiag_sum;
 }
 
