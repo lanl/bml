@@ -29,7 +29,7 @@
 #ifdef BML_USE_ROCSPARSE
 #include "bml_trace_ellpack.h"
 // Copy rocsparse headers into src/rocsparse/ and edit rocsparse_functions.h to remove '[[...]]' text
-#include "../rocsparse/rocsparse.h"
+#include "rocsparse/rocsparse.h"
 /* DEBUG
 #include <hip/hip_runtime.h> // needed for hipDeviceSynchronize()
 */
