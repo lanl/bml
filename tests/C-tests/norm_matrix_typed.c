@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 1e-3
+#define REL_TOL 1e-5
 #else
-#define REL_TOL 1e-6
+#define REL_TOL 1e-8
 #endif
 
 int TYPED_FUNC(
@@ -28,10 +28,13 @@ int TYPED_FUNC(
 #ifdef BML_USE_MPI
     if (bml_getNRanks() > 1)
     {
-        LOG_INFO("Use distributed matrix\n");
+        if (bml_getMyRank() == 0)
+            LOG_INFO("Use distributed matrix\n");
         distrib_mode = distributed;
     }
 #endif
+    if (bml_getMyRank() == 0)
+        LOG_INFO("N = %d\n", N);
 
     const double alpha = 1.2;
     const double beta = 0.8;
@@ -44,6 +47,8 @@ int TYPED_FUNC(
     double fnorm = 0.0;
     double sqrt_sum = 0.0;
     double sqrt_sum2 = 0.0;
+
+    const double tol = REL_TOL * N * M;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
     B = bml_random_matrix(matrix_type, matrix_precision, N, M, distrib_mode);
@@ -61,7 +66,6 @@ int TYPED_FUNC(
     sum2 = bml_sum_squares2(A, B, alpha, beta, threshold);
 
     sum3 = bml_sum_AB(A, B, alpha, threshold);
-    //sum4 = bml_sum_AB_dense(A_dense, B_dense, alpha, threshold);
 
     if (bml_getMyRank() == 0)
     {
@@ -74,15 +78,22 @@ int TYPED_FUNC(
         }
     }
 
-    // get reference sum4, to be done!!!
-
     bml_add(A, B, alpha, beta, threshold);
     sum = bml_sum_squares(A);
     fnorm = bml_fnorm(A);
 
-    //if (ABS(sum - sum2) > REL_TOL)
     if (bml_getMyRank() == 0)
-        if (fabs(sum3 - sum4) > REL_TOL)
+    {
+        LOG_INFO("tol = %le\n", tol);
+        LOG_INFO("sum = %le\n", sum);
+        LOG_INFO("sum2 = %le\n", sum2);
+        LOG_INFO("sum3 = %le\n", sum3);
+        LOG_INFO("sum4 = %le\n", sum4);
+        LOG_INFO("fnorm = %le\n", fnorm);
+    }
+
+    if (bml_getMyRank() == 0)
+        if (fabs(sum3 - sum4) > tol)
         {
             LOG_ERROR
                 ("incorrect product of matrix A and B; sum3 = %e sum4 = %e\n",
@@ -90,8 +101,7 @@ int TYPED_FUNC(
             return -1;
         }
 
-    //if (ABS(sum - sum2) > REL_TOL)
-    if (fabs(sum - sum2) > REL_TOL)
+    if (fabs(sum - sum2) > tol)
     {
         LOG_ERROR
             ("incorrect sum of squares or sum of squares2; sum = %e sum2 = %e\n",
@@ -102,9 +112,8 @@ int TYPED_FUNC(
     sqrt_sum = sqrt(sum);
     sqrt_sum2 = sqrt(sum2);
 
-    if ((fabs(sqrt_sum - sqrt_sum2) > REL_TOL) ||
-        (fabs(sqrt_sum - fnorm) > REL_TOL) ||
-        (fabs(sqrt_sum2 - fnorm) > REL_TOL))
+    if ((fabs(sqrt_sum - sqrt_sum2) > tol) ||
+        (fabs(sqrt_sum - fnorm) > tol) || (fabs(sqrt_sum2 - fnorm) > tol))
     {
         LOG_ERROR
             ("incorrect sqrt(sum) or sqrt(sum2) of fnorm ; sqrt_sum = %e sqrt_sum2 = %e fnorm = %e\n",
