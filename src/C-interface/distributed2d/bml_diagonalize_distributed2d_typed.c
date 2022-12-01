@@ -1,3 +1,11 @@
+#ifdef BML_USE_ELPA
+#include <elpa/elpa.h>
+#include <elpa/elpa_generic.h>
+// ELPA define a macro double_complex that conflicts with ours.
+// So we undef it here since we don't use it when interfacing with ELPA
+#undef double_complex
+#endif
+
 #include "bml_allocate_distributed2d.h"
 #include "../bml_introspection.h"
 #include "../bml_allocate.h"
@@ -10,16 +18,12 @@
 #include "../bml_types.h"
 #include "../bml_utilities.h"
 #include "../../macros.h"
-#include "../../typed.h"
 #include "../bml_transpose.h"
 #include "../bml_copy.h"
 
 #ifdef BML_USE_ELPA
-#include <elpa/elpa.h>
-#include <elpa/elpa_generic.h>
 #include "../dense/bml_allocate_dense.h"
 #ifdef BML_USE_MAGMA
-#include "../../typed.h"
 #include "magma_v2.h"
 #endif
 #endif
@@ -31,6 +35,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+
+#include "../../typed.h"
 
 #ifdef BML_USE_SCALAPACK
 // since scalapack does not provide an include file, we add prototypes here
