@@ -13,9 +13,11 @@ build_gpu:
     - nvidia-smi
     - which jsrun
     - module load gcc/10.2.0
-    - module load openblas
+    - module load essl
     - module load cuda
     - module load magma/2.6.1
+    - module load netlib-scalapack
+    - module load netlib-lapack
     - module load git
     - module load cmake
     - export MAGMA_ROOT=${OLCF_MAGMA_ROOT}
@@ -23,13 +25,47 @@ build_gpu:
     - export BML_NONMPI_PRECOMMAND=${BML_NONMPI_PRECOMMAND:=${JSRUN}}
     - export BML_NONMPI_PRECOMMAND_ARGS=${BML_NONMPI_PRECOMMAND_ARGS:="-n1;-a1;-g1;-c7;--smpiargs=off"}
     - echo ${BML_NONMPI_PRECOMMAND_ARGS}
+    - export BML_MPIEXEC_EXECUTABLE=${BML_MPIEXEC_EXECUTABLE:=${JSRUN}}
+    - export BML_MPIEXEC_NUMPROCS_FLAG=${BML_MPIEXEC_NUMPROCS_FLAG:="-n"}
+    - export BML_MPIEXEC_PREFLAGS=${BML_MPIEXEC_PREFLAGS:="-a1;-c4;-bpacked:2;-g1"}
+    - export BLAS_LIBRARIES=${BLAS_LIBRARIES:="$OLCF_ESSL_ROOT/lib64/libesslsmp.so"}
+    - export LAPACK_LIBRARIES=${LAPACK_LIBRARIES:="$OLCF_NETLIB_LAPACK_ROOT/lib64/liblapack.so"}
+    - export BML_SCALAPACK=${BML_SCALAPACK:=yes}
+    - export SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES:="-L$OLCF_NETLIB_SCALAPACK_ROOT/lib -lscalapack"}
+    - export BML_CUDA=${BML_CUDA:=yes}
+    - export BML_ELPA=${BML_ELPA:=yes}
+    - export ELPA_DIR=${ELPA_DIR:=/gpfs/wolf/csc304/proj-shared/elpa}
+    - export BML_MPI=${BML_MPI:=yes}
+    - export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:="-lgfortran"}
     - echo ${CI_PROJECT_DIR}
     - mkdir ${EXTERNAL_WORKDIR}
     - cd ${EXTERNAL_WORKDIR}
     - git clone file://${CI_PROJECT_DIR} ${EXTERNAL_WORKDIR}
     - mkdir build
     - cd build
-    - cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DBML_TESTING=ON ${CMAKE_OPTS[@]} -DBML_NONMPI_PRECOMMAND="${BML_NONMPI_PRECOMMAND}" -DBML_NONMPI_PRECOMMAND_ARGS="${BML_NONMPI_PRECOMMAND_ARGS}" ${CMAKE_EXTRA_ARGS} .. &&
+    - cmake -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" 
+            -DCMAKE_C_COMPILER=mpicc
+            -DCMAKE_CXX_COMPILER=mpiCC
+            -DCMAKE_Fortran_COMPILER=mpif90
+            -DBML_TESTING=ON ${CMAKE_OPTS[@]} 
+            -DBLAS_LIBRARIES="${BLAS_LIBRARIES}" 
+            -DLAPACK_LIBRARIES="${LAPACK_LIBRARIES}"
+            -DSCALAPACK_LIBRARIES="${SCALAPACK_LIBRARIES}"
+            -DBML_ELPA="${BML_ELPA}"
+            -DELPA_DIR="${ELPA_DIR}"
+            -DCMAKE_PREFIX_PATH="${ELPA_DIR}"
+            -DBML_MPI="${BML_MPI}"
+            -DBML_NONMPI_PRECOMMAND="${BML_NONMPI_PRECOMMAND}"
+            -DBML_NONMPI_PRECOMMAND_ARGS="${BML_NONMPI_PRECOMMAND_ARGS}"
+            -DBML_MPIEXEC_EXECUTABLE="${BML_MPIEXEC_EXECUTABLE}"
+            -DBML_MPIEXEC_NUMPROCS_FLAG="${BML_MPIEXEC_NUMPROCS_FLAG}"
+            -DBML_MPIEXEC_NUMPROCS="${BML_MPIEXEC_NUMPROCS}"
+            -DBML_MPIEXEC_PREFLAGS="${BML_MPIEXEC_PREFLAGS}"
+            -DBML_CUDA="${BML_CUDA}"
+            -DBML_MAGMA="${BML_MAGMA}"
+            -DBML_SCALAPACK="${BML_SCALAPACK}"
+            -DEXTRA_LINK_FLAGS="${EXTRA_LINK_FLAGS}"
+            ${CMAKE_EXTRA_ARGS} .. &&
     - make VERBOSE=1
     - ctest --output-on-failure
   tags:
