@@ -300,8 +300,10 @@ if(BML_USE_DEVICE)
   message(STATUS "Will use device libraries for some solvers")
   if (CUDAToolkit_FOUND)
     message(STATUS "CUDA CUBLAS libraries: ${CUDA_cublas_LIBRARY}")
+    list(APPEND LINK_LIBRARIES "-L${CUDAToolkit_LIBRARY_DIR}")
     list(APPEND LINK_LIBRARIES ${CUDA_cublas_LIBRARY})
     list(APPEND LINK_LIBRARIES ${CUDA_cudart_LIBRARY})
+    message(STATUS "LINK_LIBRARIES: ${LINK_LIBRARIES}")
     include_directories(${CUDAToolkit_INCLUDE_DIR})
     if(BML_CUSOLVER)
       message(STATUS "Will use cuSOLVER")
@@ -386,13 +388,15 @@ if(BML_ELPA)
     message(STATUS "ELPA was found:\n"
       "  ELPA_INCLUDE_DIRS: ${ELPA_INCLUDE_DIRS}\n"
       "  ELPA_LIBRARY_DIRS: ${ELPA_LIBRARY_DIRS}\n"
-      "  ELPA_LIBRARIES: ${ELPA_LIBRARIES}"
+      "  ELPA_LINK_LIBRARIES: ${ELPA_LINK_LIBRARIES}"
     )
     add_definitions(-DBML_USE_ELPA)
     include_directories(${ELPA_INCLUDE_DIRS})
     link_directories(${CUDAToolkit_LIBRARY_DIR})
     link_directories(${ELPA_LIBRARY_DIRS})
+    list(APPEND LINK_LIBRARIES "-L${ELPA_LIBRARY_DIRS}")
     list(APPEND LINK_LIBRARIES ${ELPA_LIBRARIES})
+    message(STATUS "LINK_LIBRARIES: ${LINK_LIBRARIES}")
   endif()
 endif()
 
