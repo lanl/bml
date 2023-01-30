@@ -100,10 +100,7 @@ install(TARGETS bml bml_fortran EXPORT BML_Targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(EXPORT BML_Targets FILE BML_Targets.cmake NAMESPACE BML:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BML)
-include(CMakePackageConfigHelpers)
-configure_file(BMLConfig.cmakein ${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake @ONLY)
-write_basic_package_version_file("BMLConfigVersion.cmake" VERSION ${PROJECT_VERSION} COMPATIBILITY ExactVersion)
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/BMLConfigVersion.cmake" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BML)
+
 add_library(BML::bml ALIAS bml)
 add_library(BML::bml_fortran ALIAS bml_fortran)
 
