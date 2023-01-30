@@ -734,8 +734,13 @@ string(REPLACE ";" " " LINKLINE "${LINK_LIBRARIES}")
 string(STRIP "${LINKLINE}" LINKLINE)
 message(STATUS "Link flags: '${LINKLINE}'")
 
+add_subdirectory(src)
+
 configure_file(src/bml.pc.in bml.pc)
 install(FILES ${CMAKE_BINARY_DIR}/bml.pc
   DESTINATION ${CMAKE_INSTALL_PKG_CONFIG_DIR})
 
-add_subdirectory(src)
+include(CMakePackageConfigHelpers)
+configure_file(src/BMLConfig.cmakein ${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake @ONLY)
+write_basic_package_version_file("BMLConfigVersion.cmake" VERSION ${PROJECT_VERSION} COMPATIBILITY ExactVersion)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/BMLConfig.cmake" "${CMAKE_CURRENT_BINARY_DIR}/BMLConfigVersion.cmake" DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BML)
