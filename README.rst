@@ -6,6 +6,7 @@
     - CI
     - Conda
     - Documentation
+    - Docker
   * - .. image:: https://img.shields.io/github/issues/lanl/bml
         :alt: GitHub issues
         :target: https://github.com/lanl/bml/issues>
@@ -21,6 +22,9 @@
     - .. image:: https://readthedocs.org/projects/basic-matrix-library/badge/?version=master
         :target: https://basic-matrix-library.readthedocs.io/en/master/?badge=master
         :alt: Documentation Status
+    - .. image:: https://img.shields.io/docker/pulls/nicolasbock/bml
+        :alt: Docker Pulls
+        :target: https://hub.docker.com/repository/docker/nicolasbock/bml
 
 Introduction
 ============
