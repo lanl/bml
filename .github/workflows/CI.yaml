@@ -17,7 +17,6 @@ on:
 
   workflow_dispatch:
 
-# Defaults
 env:
   TEST_SCRIPT: ./build.sh
 
@@ -29,7 +28,7 @@ jobs:
       - name: Check out sources
         uses: actions/checkout@v3
       - name: Prepare container
-        run: ./scripts/prepare-container.sh
+        run: ./scripts/prepare-container-bionic.sh
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no EMACS=emacs27 ./build.sh --debug check_indent
@@ -48,7 +47,7 @@ jobs:
       - name: Check out sources
         uses: actions/checkout@v3
       - name: Prepare container
-        run: ./scripts/prepare-container.sh
+        run: ./scripts/prepare-container-bionic.sh
       - name: Build docs
         run: ./build.sh --debug docs
 
@@ -162,7 +161,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Prepare container
-        run: ./scripts/prepare-container.sh
+        run: ./scripts/prepare-container-bionic.sh
       - name: Build and test library
         env:
           BLAS_VENDOR: ${{ matrix.BLAS_VENDOR || env.BLAS_VENDOR }}
