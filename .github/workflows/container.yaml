@@ -12,44 +12,44 @@ on:
   workflow_dispatch:
 
 jobs:
-  default_container:
-    name: Update default CI container image
+  container-bionic:
+    name: Update default CI container image (Bionic)
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'lanl/bml' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push default Docker image
-        uses: docker/build-push-action@v2
-        id: docker_build
+        uses: docker/build-push-action@v4
+        id: docker_build_bionic
         with:
           context: .
-          file: Dockerfile
+          file: Dockerfile-bionic
           push: true
-          tags: nicolasbock/bml:latest
+          tags: nicolasbock/bml:latest, nicolasbock/bml:bionic
       - name: Image digest
         run: |
-          echo "Default image: ${{ steps.docker_build.outputs.digest }}"
+          echo "Default image: ${{ steps.docker_build_bionic.outputs.digest }}"
 
-  focal_container:
+  container-focal:
     name: Update Focal CI container image
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'lanl/bml' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push experimental Focal Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         id: docker_build_focal
         with:
           context: .
