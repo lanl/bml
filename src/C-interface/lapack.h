@@ -102,7 +102,7 @@ void C_CHEEVR(
     const char *RANGE,
     const char *UPLO,
     const int *N,
-    float complex * A,
+    float complex *A,
     const int *LDA,
     const float *VL,
     const float *VU,
@@ -111,10 +111,10 @@ void C_CHEEVR(
     const float *ABSTOL,
     int *M,
     float *W,
-    float complex * Z,
+    float complex *Z,
     const int *LDZ,
     int *ISUPPZ,
-    float complex * WORK,
+    float complex *WORK,
     const int *LWORK,
     float *RWORK,
     int *LRWORK,
@@ -127,7 +127,7 @@ void C_ZHEEVR(
     const char *RANGE,
     const char *UPLO,
     const int *N,
-    double complex * A,
+    double complex *A,
     const int *LDA,
     const double *VL,
     const double *VU,
@@ -136,10 +136,10 @@ void C_ZHEEVR(
     const double *ABSTOL,
     int *M,
     double *W,
-    double complex * Z,
+    double complex *Z,
     const int *LDZ,
     int *ISUPPZ,
-    double complex * WORK,
+    double complex *WORK,
     const int *LWORK,
     double *RWORK,
     int *LRWORK,
@@ -166,7 +166,7 @@ void C_DGETRF(
 void C_CGETRF(
     const int *M,
     const int *N,
-    float complex * A,
+    float complex *A,
     const int *LDA,
     int *IPIV,
     int *INFO);
@@ -174,7 +174,7 @@ void C_CGETRF(
 void C_ZGETRF(
     const int *M,
     const int *N,
-    double complex * A,
+    double complex *A,
     const int *LDA,
     int *IPIV,
     int *INFO);
@@ -202,7 +202,7 @@ void C_CGETRI(
     float *A,
     const int *LDA,
     int *IPIV,
-    float complex * WORK,
+    float complex *WORK,
     const int *LWORK,
     int *INFO);
 
@@ -211,7 +211,7 @@ void C_ZGETRI(
     double *A,
     const int *LDA,
     int *IPIV,
-    double complex * WORK,
+    double complex *WORK,
     const int *LWORK,
     int *INFO);
 
@@ -237,18 +237,18 @@ void C_CLACPY(
     const char *UPLO,
     const int *M,
     const int *N,
-    float complex * A,
+    float complex *A,
     const int *LDA,
-    float complex * B,
+    float complex *B,
     const int *LDB);
 
 void C_ZLACPY(
     const char *UPLO,
     const int *M,
     const int *N,
-    double complex * A,
+    double complex *A,
     const int *LDA,
-    double complex * B,
+    double complex *B,
     const int *LDB);
 
 #endif

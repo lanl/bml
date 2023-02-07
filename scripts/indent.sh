@@ -1,7 +1,7 @@
 #!/bin/bash
 
 : ${EMACS:=$(command -v emacs)}
-: ${INDENT_ARGS:="-gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda"}
+: ${INDENT_ARGS:="-gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda -par"}
 
 declare -a SH_FILES
 declare -a C_FILES
@@ -15,6 +15,14 @@ EOF
     exit 1
 fi
 
+check_only=0
+
+if (( $# > 0 )); then
+    if [[ $1 == 'check' ]]; then
+        check_only=1
+        shift
+    fi
+fi
 if (( $# > 0 )); then
     while (( $# > 0 )); do
         case "${1##*.}" in
@@ -49,6 +57,12 @@ for file in "${SH_FILES[@]}"; do
 done
 
 for file in "${C_FILES[@]}"; do
+    # Do not indent typed sources. indent-2.2.12 has a regression
+    # https://lists.gnu.org/archive/html/bug-indent/2023-04/msg00000.html and
+    # incorrectly aligns the indirection operator `*` in some cases.
+    if [[ ${file} =~ typed.c ]]; then
+        continue
+    fi
     indent ${INDENT_ARGS} "${file}" -o "${file}.indented"
     sed -i -e 's:\s\+$::' "${file}.indented"
     if (( $(diff --brief "${file}" "${file}.indented" | wc -l) > 0 )); then
@@ -81,9 +95,16 @@ if (( ${#FAILED_FILES[@]} > 0 )); then
         if [[ ${file} =~ .sh$ ]]; then
             echo "bashate ${file}"
             bashate "${file}"
+            if (( check_only == 0 )); then
+                mv "${file}" "${file}.backup"
+                bashat "${file}.backup" > "${file}"
+            fi
         else
             echo "diff -Naur ${file} ${file}.indented"
             diff -Naur "${file}" "${file}".indented
+            if (( check_only == 0 )); then
+                mv "${file}.indented" "${file}"
+            fi
         fi
     done
     echo

@@ -2,6 +2,14 @@ FROM ubuntu:focal
 LABEL org.opencontainers.image.authors="nicolasbock@gmail.com"
 
 COPY scripts/prepare-container-focal.sh /usr/sbin
-RUN /usr/sbin/prepare-container-focal.sh
+
+RUN /usr/sbin/prepare-container-focal.sh install_base
+RUN /usr/sbin/prepare-container-focal.sh configure_llvm
+RUN /usr/sbin/prepare-container-focal.sh configure_gcc
+RUN /usr/sbin/prepare-container-focal.sh configure_emacs
+RUN /usr/sbin/prepare-container-focal.sh set_timezone
+RUN /usr/sbin/prepare-container-focal.sh install_base_packages
+RUN /usr/sbin/prepare-container-focal.sh install_compilers
+RUN /usr/sbin/prepare-container-focal.sh install_linters
 
 WORKDIR /root
