@@ -115,12 +115,12 @@ Alternatively, you can run one of the CI tests by executing e.g.
 
 .. code-block:: console
 
-  I have no name!@6ea3f4937c0d:/bml$ ./scripts/ci-gcc-11-C-single-real.sh
-  +++ dirname ./scripts/ci-gcc-11-C-single-real.sh
+  I have no name!@6ea3f4937c0d:/bml$ ./scripts/ci-gcc-10-C-single-real.sh
+  +++ dirname ./scripts/ci-gcc-10-C-single-real.sh
   ++ readlink --canonicalize ./scripts/..
   + basedir=/bml
-  + export CC=gcc-11
-  + CC=gcc-11
+  + export CC=gcc-10
+  + CC=gcc-10
   + export CXX=g++-11
   + CXX=g++-11
   + export FC=gfortran-11

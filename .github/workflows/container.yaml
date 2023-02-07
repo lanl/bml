@@ -31,7 +31,7 @@ jobs:
           context: .
           file: Dockerfile-bionic
           push: true
-          tags: nicolasbock/bml:latest, nicolasbock/bml:bionic
+          tags: nicolasbock/bml:bionic
       - name: Image digest
         run: |
           echo "Default image: ${{ steps.docker_build_bionic.outputs.digest }}"
@@ -55,7 +55,7 @@ jobs:
           context: .
           file: Dockerfile-focal
           push: true
-          tags: nicolasbock/bml:focal
+          tags: nicolasbock/bml:latest, nicolasbock/bml:focal
       - name: Image digest
         run: |
           echo "Focal image: ${{ steps.docker_build_focal.outputs.digest }}"

@@ -105,7 +105,7 @@ Inside the container:
 
 Alternatively, you can run one of the CI tests by executing e.g.
 
-    $ ./scripts/ci-gcc-11-C-single-real.sh
+    $ ./scripts/ci-gcc-10-C-single-real.sh
 
 # Build Instructions
 

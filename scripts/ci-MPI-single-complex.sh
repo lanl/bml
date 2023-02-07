@@ -14,6 +14,7 @@ export BML_MPI=${BML_MPI:-yes}
 export TESTING_EXTRA_ARGS=${TESTING_EXTRA_ARGS:-"-R MPI-C-.*-single_complex"}
 export BML_SCALAPACK=${BML_SCALAPACK:-yes}
 export SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES:=scalapack-openmpi.so}
+export BML_MPIEXEC_PREFLAGS=--oversubscribe
 
 [[ -f ${basedir}/scripts/ci-defaults.sh ]] && . ${basedir}/scripts/ci-defaults.sh
 
