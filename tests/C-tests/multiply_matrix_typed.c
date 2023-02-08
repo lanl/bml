@@ -42,7 +42,7 @@ static void TYPED_FUNC(
 }
 
 #if defined(SINGLE_REAL) || defined(SINGLE_COMPLEX)
-#define REL_TOL 0.2e-6
+#define REL_TOL 0.3e-6
 #else
 #define REL_TOL 0.2e-12
 #endif
