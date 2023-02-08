@@ -53,6 +53,7 @@
 #define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_sprune_csr2csr_buffer_size
 #define bml_rocsparse_xprune_csr2csr_nnz rocsparse_sprune_csr2csr_nnz
 #define bml_rocsparse_xprune_csr2csr rocsparse_sprune_csr2csr
+#define bml_rocsparse_xgthr rocsparse_sgthr
 #endif
 #elif defined(DOUBLE_REAL)
 #define REAL_T double
@@ -90,6 +91,7 @@
 #define bml_rocsparse_xprune_csr2csr_buffer_size rocsparse_dprune_csr2csr_buffer_size
 #define bml_rocsparse_xprune_csr2csr_nnz rocsparse_dprune_csr2csr_nnz
 #define bml_rocsparse_xprune_csr2csr rocsparse_dprune_csr2csr
+#define bml_rocsparse_xgthr rocsparse_dgthr
 #endif
 #elif defined(SINGLE_COMPLEX)
 /* Note that we are using `_Complex` here instead of the preferred `complex`
