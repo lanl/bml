@@ -20,7 +20,7 @@ export BUILD_DIR=${BUILD_DIR:="${MY_PATH}/build"}
 export INSTALL_DIR=${INSTALL_DIR:="${MY_PATH}/install"}
 export BML_TESTING=${BML_TESTING:=yes}
 export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}
-
+#export EXTRA_CFLAGS=${EXTRA_CFLAGS:=-craype-verbose}
 ./build.sh configure
 
 pushd ${BUILD_DIR}
