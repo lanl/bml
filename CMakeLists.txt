@@ -79,9 +79,9 @@ set(XL_Fortran_FLAGS_DEBUG -O0 -g)
 set(XL_Fortran_FLAGS_RELEASE -O3 -g)
 set(XL_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -DNDEBUG)
 
-set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=c99)
-set(Clang_C_FLAGS_RELEASE -O2 -g -std=c99 -DNDEBUG)
-set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -std=c99 -DNDEBUG)
+set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=gnu99)
+set(Clang_C_FLAGS_RELEASE -O2 -g -DNDEBUG -std=gnu99)
+set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -DNDEBUG -std=gnu99)
 
 # If Cray Fortran compiler then assume Cray C compiler
 #  (This is needed as Cray C compiler ID is Clang)
