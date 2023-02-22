@@ -183,6 +183,7 @@ main(
     int argc,
     char **argv)
 {
+    bml_print_version(stdout);
 #ifdef BML_USE_MPI
     MPI_Init(&argc, &argv);
     bml_init(MPI_COMM_WORLD);
