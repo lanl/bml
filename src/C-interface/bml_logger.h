@@ -6,6 +6,7 @@
 #include "bml_types.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 /** The log-levels. */
 typedef enum
@@ -34,6 +35,9 @@ void bml_log_location(
 
 char *bml_version(
     void);
+
+void bml_print_version(
+    FILE * fp);
 
 /** Convenience macro to write a BML_LOG_DEBUG level message. */
 #define LOG_DEBUG(format, ...) \
