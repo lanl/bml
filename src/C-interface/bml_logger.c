@@ -171,25 +171,25 @@ bml_version(
 
 void
 bml_print_version(
-    FILE * fp)
+    void)
 {
-    fprintf(fp, "BML version: %s\n", BML_VERSION);
+    fprintf(stdout, "BML version: %s\n", BML_VERSION);
 #ifdef USE_OMP_OFFLOAD
-    fprintf(fp, "BML uses OpenMP offload\n");
+    fprintf(stdout, "BML uses OpenMP offload\n");
 #endif
 #ifdef BML_USE_MAGMA
-    fprintf(fp, "BML uses MAGMA\n");
+    fprintf(stdout, "BML uses MAGMA\n");
 #endif
 #ifdef BML_USE_CUSOLVER
-    fprintf(fp, "BML uses NVIDIA cuSolver\n");
+    fprintf(stdout, "BML uses NVIDIA cuSolver\n");
 #endif
 #ifdef BML_USE_ROCSOLVER
-    fprintf(fp, "BML uses AMD rocSolver\n");
+    fprintf(stdout, "BML uses AMD rocSolver\n");
 #endif
 #ifdef BML_USE_CUSPARSE
-    fprintf(fp, "BML uses NVIDIA cuSparse\n");
+    fprintf(stdout, "BML uses NVIDIA cuSparse\n");
 #endif
 #ifdef BML_USE_ROCSPARSE
-    fprintf(fp, "BML uses AMD rocSparse\n");
+    fprintf(stdout, "BML uses AMD rocSparse\n");
 #endif
 }
