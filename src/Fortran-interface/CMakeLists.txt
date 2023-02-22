@@ -9,15 +9,15 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_elemental_m.F90
   bml_error_m.F90
   bml_export_m.F90
-  bml.F90
   bml_getters_m.F90
   bml_import_m.F90
   bml_init_m.F90
   bml_introspection_m.F90
   bml_inverse_m.F90
+  bml_logger_m.F90
   bml_multiply_m.F90
-  bml_normalize_m.F90
   bml_norm_m.F90
+  bml_normalize_m.F90
   bml_parallel_m.F90
   bml_scale_m.F90
   bml_setters_m.F90
@@ -28,7 +28,8 @@ set(FORTRAN-SOURCES-PUBLIC
   bml_transpose_m.F90
   bml_transpose_triangle_m.F90
   bml_types_m.F90
-  bml_utilities_m.F90)
+  bml_utilities_m.F90
+  bml.F90)
 
 set(FORTRAN-SOURCES-PRIVATE
   bml_c_interface_m.F90

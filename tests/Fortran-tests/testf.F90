@@ -53,6 +53,7 @@ program testf
   call bml_initF()
 #endif
 
+  call bml_print_version()
   call get_arguments(test_name, matrix_type, element_type)
 
   select case(test_name)

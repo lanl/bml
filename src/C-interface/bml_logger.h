@@ -37,7 +37,7 @@ char *bml_version(
     void);
 
 void bml_print_version(
-    FILE * fp);
+    void);
 
 /** Convenience macro to write a BML_LOG_DEBUG level message. */
 #define LOG_DEBUG(format, ...) \

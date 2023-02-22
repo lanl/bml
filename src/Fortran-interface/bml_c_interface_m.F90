@@ -658,6 +658,9 @@ module bml_c_interface_m
       type(C_PTR) :: bml_noinit_matrix_C
     end function bml_noinit_matrix_C
 
+    subroutine bml_print_version_C() bind(C, name="bml_print_version")
+    end subroutine bml_print_version_C
+
   end interface
 
 end module bml_c_interface_m
