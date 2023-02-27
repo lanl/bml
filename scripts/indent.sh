@@ -80,8 +80,10 @@ if (( ${#FAILED_FILES[@]} > 0 )); then
     for file in "${FAILED_FILES[@]}"; do
         if [[ ${file} =~ .sh$ ]]; then
             echo "bashate ${file}"
+            bashate "${file}"
         else
             echo "diff -Naur ${file} ${file}.indented"
+            diff -Naur "${file}" "${file}".indented
         fi
     done
     echo
