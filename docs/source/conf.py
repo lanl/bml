@@ -21,7 +21,7 @@ copyright = '2022, bml authors'
 author = 'bml authors'
 
 # The full version, including alpha/beta/rc tags
-release = 'v2.2.0'
+release = 'v2.3.0'
 
 
 # -- General configuration ---------------------------------------------------
