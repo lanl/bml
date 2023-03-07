@@ -423,8 +423,9 @@ void TYPED_FUNC(
     memset(all_jx, 0, N * num_chunks * sizeof(int));
     memset(all_x, 0.0, N * num_chunks * sizeof(REAL_T));
 
+#if defined (USE_OMP_OFFLOAD)
 #pragma omp target map(to:all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
-
+#endif
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
