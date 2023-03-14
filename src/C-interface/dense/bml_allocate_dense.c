@@ -66,6 +66,7 @@ bml_deallocate_dense(
             break;
     }
 }
+
 /** Clear a matrix.
  *
  * \ingroup allocate_group

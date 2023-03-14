@@ -45,7 +45,7 @@ void TYPED_FUNC(
     int sizea = A->ld * A->ld;
     REAL_T *A_matrix = (REAL_T *) A->matrix;
 #pragma omp target exit data map(delete:A_matrix[0:sizea])
-#endif  /* MKL_GPU */
+#endif /* MKL_GPU */
     bml_free_memory(A->matrix);
 #endif
     bml_free_memory(A);
