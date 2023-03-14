@@ -93,7 +93,7 @@ void TYPED_FUNC(
 
     REAL_T *B_matrix = (REAL_T *) B->matrix;
     // allocate and offload the matrix to GPU
-#pragma omp target enter data map(alloc:B_matrix[0:N*N]) device(dnum)
+#pragma omp target enter data map(alloc:B_matrix[0:N*N])
 #pragma omp target update to(B_matrix[0:N*N])
 #endif // end of MKL_GPU
     if (A->distribution_mode == B->distribution_mode)
