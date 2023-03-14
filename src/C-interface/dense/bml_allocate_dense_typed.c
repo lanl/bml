@@ -32,7 +32,7 @@
  * \param A The matrix.
  */
 void TYPED_FUNC(
-bml_deallocate_dense) (
+    bml_deallocate_dense) (
     bml_matrix_dense_t * A)
 {
     bml_deallocate_domain(A->domain);
@@ -45,7 +45,7 @@ bml_deallocate_dense) (
     int sizea = A->ld * A->ld;
     REAL_T *A_matrix = (REAL_T *) A->matrix;
 #pragma omp target exit data map(delete:A_matrix[0:sizea])
-#endif # MKL_GPU
+#endif  /* MKL_GPU */
     bml_free_memory(A->matrix);
 #endif
     bml_free_memory(A);

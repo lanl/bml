@@ -45,7 +45,7 @@ void
 bml_deallocate_dense(
     bml_matrix_dense_t * A)
 {
-        switch (A->matrix_precision)
+    switch (A->matrix_precision)
     {
         case single_real:
             return bml_deallocate_dense_single_real(A);
