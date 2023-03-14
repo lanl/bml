@@ -25,6 +25,32 @@
 #include "mkl_omp_offload.h"
 #endif
 
+/** Deallocate a matrix.
+ *
+ * \ingroup allocate_group
+ *
+ * \param A The matrix.
+ */
+void TYPED_FUNC(
+bml_deallocate_dense) (
+    bml_matrix_dense_t * A)
+{
+    bml_deallocate_domain(A->domain);
+    bml_deallocate_domain(A->domain2);
+#ifdef BML_USE_MAGMA
+    magma_int_t ret = magma_free(A->matrix);
+    assert(ret == MAGMA_SUCCESS);
+#else
+#ifdef MKL_GPU
+    int sizea = A->ld * A->ld;
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+#pragma omp target exit data map(delete:A_matrix[0:sizea])
+#endif # MKL_GPU
+    bml_free_memory(A->matrix);
+#endif
+    bml_free_memory(A);
+}
+
 /** Clear the matrix.
  *
  * All values are zeroed.
@@ -97,7 +123,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 
     REAL_T *A_matrix = (REAL_T *) A->matrix;
     // allocate and offload the matrix to GPU
-#pragma omp target enter data map(alloc:A_matrix[0:sizea]) device(dnum)
+#pragma omp target enter data map(alloc:A_matrix[0:sizea])
 #pragma omp target update to(A_matrix[0:sizea])
 #endif // end of MKL_GPU
 
