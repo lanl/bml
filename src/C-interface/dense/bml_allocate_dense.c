@@ -29,6 +29,12 @@ bml_queue_create(
 }
 #endif
 
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#endif
+
 /** Deallocate a matrix.
  *
  * \ingroup allocate_group
@@ -39,17 +45,27 @@ void
 bml_deallocate_dense(
     bml_matrix_dense_t * A)
 {
-    bml_deallocate_domain(A->domain);
-    bml_deallocate_domain(A->domain2);
-#ifdef BML_USE_MAGMA
-    magma_int_t ret = magma_free(A->matrix);
-    assert(ret == MAGMA_SUCCESS);
-#else
-    bml_free_memory(A->matrix);
+        switch (A->matrix_precision)
+    {
+        case single_real:
+            return bml_deallocate_dense_single_real(A);
+            break;
+        case double_real:
+            return bml_deallocate_dense_double_real(A);
+            break;
+#ifdef BML_COMPLEX
+        case single_complex:
+            return bml_deallocate_dense_single_complex(A);
+            break;
+        case double_complex:
+            return bml_deallocate_dense_double_complex(A);
+            break;
 #endif
-    bml_free_memory(A);
+        default:
+            LOG_ERROR("unknown precision (%d)\n", A->matrix_precision);
+            break;
+    }
 }
-
 /** Clear a matrix.
  *
  * \ingroup allocate_group

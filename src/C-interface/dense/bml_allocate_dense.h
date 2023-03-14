@@ -6,6 +6,18 @@
 void bml_deallocate_dense(
     bml_matrix_dense_t * A);
 
+void bml_deallocate_dense_single_real(
+    bml_matrix_dense_t * A);
+
+void bml_deallocate_dense_double_real(
+    bml_matrix_dense_t * A);
+
+void bml_deallocate_dense_single_complex(
+    bml_matrix_dense_t * A);
+
+void bml_deallocate_dense_double_complex(
+    bml_matrix_dense_t * A);
+
 void bml_clear_dense(
     bml_matrix_dense_t * A);
 
