@@ -91,6 +91,7 @@ EOF
     echo "BML_CUSPARSE               Build with cuSPARSE         (default is ${BML_CUSPARSE})"
     echo "BML_ROCSOLVER              Build with rocSOLVER        (default is ${BML_ROCSOLVER})"
     echo "BML_ROCSPARSE              Build with rocSPARSE        (default is ${BML_ROCSPARSE})"
+    echo "BML_SYEVD                  Build with SYEVD            (default is ${BML_SYEVD})"
     echo "BML_XSMM                   Build with XSMM             (default is ${BML_XSMM})"
     echo "BML_SCALAPACK              Build with SCALAPACK        (default is ${BML_SCALAPACK})"
     echo "SCALAPACK_LIBRARIES        ScaLapack libraries         (default is '${SCALAPACK_LIBRARIES}')"
@@ -145,6 +146,7 @@ set_defaults() {
     : ${BML_CUSPARSE:=no}
     : ${BML_ROCSOLVER:=no}
     : ${BML_ROCSPARSE:=no}
+    : ${BML_SYEVD:=yes}
     : ${BML_XSMM:=no}
     : ${BML_SCALAPACK:=no}
     : ${BML_ELLBLOCK_MEMPOOL:=no}
@@ -256,6 +258,7 @@ configure() {
         -DBML_CUSPARSE="${BML_CUSPARSE}" \
         -DBML_ROCSOLVER="${BML_ROCSOLVER}" \
         -DBML_ROCSPARSE="${BML_ROCSPARSE}" \
+        -DBML_SYEVD="${BML_SYEVD}" \
         -DBML_XSMM="${BML_XSMM}" \
         -DBML_SCALAPACK="${BML_SCALAPACK}" \
         -DBML_ELLBLOCK_MEMPOOL="${BML_ELLBLOCK_MEMPOOL}" \

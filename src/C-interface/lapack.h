@@ -25,6 +25,32 @@ void C_DSYEV(
     const int *LWORK,
     int *INFO);
 
+void C_SSYEVD(
+    const char *JOBZ,
+    const char *UPLO,
+    const int *N,
+    float *A,
+    const int *LDA,
+    float *W,
+    float *WORK,
+    const int *LWORK,
+    int *IWORK,
+    const int *LIWORK,
+    int *INFO);
+
+void C_DSYEVD(
+    const char *JOBZ,
+    const char *UPLO,
+    const int *N,
+    double *A,
+    const int *LDA,
+    double *W,
+    double *WORK,
+    const int *LWORK,
+    int *IWORK,
+    const int *LIWORK,
+    int *INFO);
+
 void C_SSYEVR(
     const char *JOBZ,
     const char *RANGE,
