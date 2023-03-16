@@ -78,10 +78,8 @@ bml_diagonalize_dense_single_real(
         LOG_ERROR("ERROR in magma_ssyevd_gpu");
 
 #else
-    int lwork = 3 * A->N;
     float *evecs = calloc(A->N * A->N, sizeof(float));
     float *evals = calloc(A->N, sizeof(float));
-    float *work = calloc(lwork, sizeof(float));
 
     int N = A->N;
 #ifdef MKL_GPU
@@ -94,7 +92,20 @@ bml_diagonalize_dense_single_real(
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
+#ifdef BML_SYEVD
+    // Divide and conquer solver
+    int lwork = 1 + 6 * A->N + 2 * A->N * A->N;
+    float *work = malloc(lwork * sizeof(float));
+    int liwork = 3 + 5 * A->N;
+    int *iwork = malloc(liwork * sizeof(int));
+    C_SSYEVD("V", "U", &A->N, evecs, &A->N, evals, work, &lwork,
+             iwork, &liwork, &info);
+    free(iwork);
+#else
+    int lwork = 3 * A->N;
+    float *work = calloc(lwork, sizeof(float));
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+#endif
 #endif
 
 #endif
@@ -302,10 +313,8 @@ bml_diagonalize_dense_double_real(
     magma_free(evecs);
 
 #else // CPU code
-    int lwork = 3 * A->N;
     double *evecs = calloc(A->N * A->N, sizeof(double));
     double *evals = calloc(A->N, sizeof(double));
-    double *work = calloc(lwork, sizeof(double));
     int N = A->N;
 #ifdef MKL_GPU
 // pull from GPU
@@ -316,7 +325,20 @@ bml_diagonalize_dense_double_real(
 #ifdef NOBLAS
     LOG_ERROR("No BLAS library");
 #else
+#ifdef BML_SYEVD
+    // Divide and conquer solver
+    int lwork = 1 + 6 * A->N + 2 * A->N * A->N;
+    double *work = malloc(lwork * sizeof(double));
+    int liwork = 3 + 5 * A->N;
+    int *iwork = malloc(liwork * sizeof(int));
+    C_DSYEVD("V", "U", &A->N, evecs, &A->N, evals, work, &lwork,
+             iwork, &liwork, &info);
+    free(iwork);
+#else
+    int lwork = 3 * A->N;
+    double *work = calloc(lwork, sizeof(double));
     C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+#endif
 #endif
 
     A_matrix = (double *) eigenvectors->matrix;

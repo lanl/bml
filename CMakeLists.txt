@@ -187,6 +187,12 @@ if(MKL_GPU)
 	add_definitions(-DMKL_GPU)
 endif()
 
+set(BML_SYEVD TRUE CACHE BOOL "Compile with Divide and Conquer SYEV")
+if(BML_SYEVD)
+  message(STATUS "Will build with Divide and Conquer SYEV")
+  add_definitions(-DBML_SYEVD)
+endif()
+
 set(BML_MPI FALSE CACHE BOOL "Compile with MPI support")
 if(BML_MPI)
   message(STATUS "Will build with MPI")
@@ -499,6 +505,8 @@ if(LAPACK_FOUND OR (BLAS_VENDOR STREQUAL "OpenBLAS"))
     ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES} ${OpenMP_C_FLAGS})
   bml_check_C_Fortran_function_exists(ssyev C_SSYEV REQUIRED)
   bml_check_C_Fortran_function_exists(dsyev C_DSYEV REQUIRED)
+  bml_check_C_Fortran_function_exists(ssyevd C_SSYEVD REQUIRED)
+  bml_check_C_Fortran_function_exists(dsyevd C_DSYEVD REQUIRED)
   bml_check_C_Fortran_function_exists(cheevr C_CHEEVR REQUIRED)
   bml_check_C_Fortran_function_exists(zheevr C_ZHEEVR REQUIRED)
   bml_check_C_Fortran_function_exists(sgetrf C_SGETRF REQUIRED)
@@ -516,6 +524,8 @@ if(LAPACK_FOUND OR (BLAS_VENDOR STREQUAL "OpenBLAS"))
   add_definitions(
     -DC_SSYEV=${C_SSYEV}
     -DC_DSYEV=${C_DSYEV}
+    -DC_SSYEVD=${C_SSYEVD}
+    -DC_DSYEVD=${C_DSYEVD}
     -DC_CHEEVR=${C_CHEEVR}
     -DC_ZHEEVR=${C_ZHEEVR}
     -DC_SGETRF=${C_SGETRF}
