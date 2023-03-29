@@ -34,9 +34,9 @@
  * only used in the complex cases. We opted instead to explicitly
  * implement the four versions.
  */
-
+#ifdef BML_USE_MAGMA
 void
-bml_diagonalize_dense_single_real(
+bml_diagonalize_dense_magma_single_real(
     bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
@@ -45,28 +45,21 @@ bml_diagonalize_dense_single_real(
     float *A_matrix;
     float *typed_eigenvalues = (float *) eigenvalues;
 
-//    void mkl_thread_free_buffers(void);
-
-#ifdef BML_USE_MAGMA
     int nb = magma_get_ssytrd_nb(A->N);
     float *evecs;
     magma_int_t ret = magma_smalloc(&evecs, A->N * A->ld);
     assert(ret == MAGMA_SUCCESS);
 
-    float *evals;
-    evals = malloc(A->N * sizeof(float));
-    float *work;
+    float *evals = malloc(A->N * sizeof(float));
     int lwork = 2 * A->N + A->N * nb;
     int tmp = 1 + 6 * A->N + 2 * A->N * A->N;
     if (tmp > lwork)
         lwork = tmp;
-    work = malloc(lwork * sizeof(float));
+    float *work = malloc(lwork * sizeof(float));
     int liwork = 3 + 5 * A->N;
-    int *iwork;
-    iwork = malloc(liwork * sizeof(int));
-    float *wa;
+    int *iwork = malloc(liwork * sizeof(int));
     int ldwa = A->ld;
-    wa = malloc(A->N * ldwa * sizeof(float));
+    float *wa = malloc(A->N * ldwa * sizeof(float));
 
     //copy matrix into evecs
     magmablas_slacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
@@ -77,11 +70,36 @@ bml_diagonalize_dense_single_real(
     if (info != 0)
         LOG_ERROR("ERROR in magma_ssyevd_gpu");
 
+    A_matrix = (float *) eigenvectors->matrix;
+
+    magmablas_stranspose(A->N, A->N, evecs, A->ld,
+                         A_matrix, eigenvectors->ld, bml_queue());
+    for (int i = 0; i < A->N; i++)
+        typed_eigenvalues[i] = (float) evals[i];
+
+    magma_free(evecs);
+    free(wa);
+    free(evals);
+    free(work);
+}
+#endif
+
+void
+bml_diagonalize_dense_cpu_single_real(
+    bml_matrix_dense_t * A,
+    void *eigenvalues,
+    bml_matrix_dense_t * eigenvectors)
+{
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
 #else
+    int info;
+    float *A_matrix;
+    float *typed_eigenvalues = (float *) eigenvalues;
+
     float *evecs = calloc(A->N * A->N, sizeof(float));
     float *evals = calloc(A->N, sizeof(float));
 
-    int N = A->N;
 #ifdef MKL_GPU
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
@@ -89,9 +107,6 @@ bml_diagonalize_dense_single_real(
 
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
 
-#ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
-#else
 #ifdef BML_SYEVD
     // Divide and conquer solver
     int lwork = 1 + 6 * A->N + 2 * A->N * A->N;
@@ -105,19 +120,9 @@ bml_diagonalize_dense_single_real(
     int lwork = 3 * A->N;
     float *work = calloc(lwork, sizeof(float));
     C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-#endif
-#endif
-
-#endif
-    // mkl_free_buffers();
+#endif // BML_SYEVD
 
     A_matrix = (float *) eigenvectors->matrix;
-#ifdef BML_USE_MAGMA
-    magmablas_stranspose(A->N, A->N, evecs, A->ld,
-                         A_matrix, eigenvectors->ld, bml_queue());
-    for (int i = 0; i < A->N; i++)
-        typed_eigenvalues[i] = (float) evals[i];
-#else
     for (int i = 0; i < A->N; i++)
     {
         typed_eigenvalues[i] = (float) evals[i];
@@ -131,23 +136,29 @@ bml_diagonalize_dense_single_real(
 // push back to GPU
 #pragma omp target update to(A_matrix[0:N*N])
 #endif
-#endif
 
-#ifdef BML_USE_MAGMA
-    magma_free(evecs);
-    magma_free(wa);
-#else
     free(evecs);
-#endif
     free(evals);
     free(work);
-
-//    free(lwork);
-//    mkl_thread_free_buffers();
+#endif // NOBLAS
 }
 
 void
-bml_diagonalize_dense_double_real(
+bml_diagonalize_dense_single_real(
+    bml_matrix_dense_t * A,
+    void *eigenvalues,
+    bml_matrix_dense_t * eigenvectors)
+{
+#ifdef BML_USE_MAGMA
+    bml_diagonalize_dense_magma_single_real(A, eigenvalues, eigenvectors);
+#else
+    bml_diagonalize_dense_cpu_single_real(A, eigenvalues, eigenvectors);
+#endif
+}
+
+#ifdef BML_USE_MAGMA
+void
+bml_diagonalize_dense_magma_double_real(
     bml_matrix_dense_t * A,
     void *eigenvalues,
     bml_matrix_dense_t * eigenvectors)
@@ -156,7 +167,6 @@ bml_diagonalize_dense_double_real(
     double *A_matrix;
     double *typed_eigenvalues = (double *) eigenvalues;
 
-#ifdef BML_USE_MAGMA
     //copy matrix into evecs
     double *evecs;
     magma_int_t ret = magma_dmalloc(&evecs, A->N * A->ld);
@@ -164,7 +174,6 @@ bml_diagonalize_dense_double_real(
 
     magmablas_dlacpy(MagmaFull, A->N, A->N, A->matrix, A->ld, evecs, A->ld,
                      bml_queue());
-
     magma_queue_sync(bml_queue());
 
 #ifdef BML_USE_CUSOLVER
@@ -218,7 +227,7 @@ bml_diagonalize_dense_double_real(
 
     if (cusolverH)
         cusolverDnDestroy(cusolverH);
-#else
+#else // BML_USE_CUSOLVER
 #ifdef BML_USE_ROCSOLVER
     // See https://rocsolver.readthedocs.io/_/downloads/en/latest/pdf/
     // create cusolver/cublas handle
@@ -265,6 +274,7 @@ bml_diagonalize_dense_double_real(
 
     if (rocblasH)
         rocblas_destroy_handle(rocblasH);
+
 #else // MAGMA
     int nb = magma_get_ssytrd_nb(A->N);
 
@@ -298,7 +308,7 @@ bml_diagonalize_dense_double_real(
     //    printf("norm = %le\n", norm);
     //}
 #endif
-#endif
+#endif // BML_USE_CUSOLVER
     // transpose eigenvactors matrix on GPU
     A_matrix = (double *) eigenvectors->matrix;
     magmablas_dtranspose(A->N, A->N, evecs, A->ld,
@@ -311,20 +321,30 @@ bml_diagonalize_dense_double_real(
     //    printf("norm transposed vector = %le\n", norm);
     //}
     magma_free(evecs);
+}
+#endif
 
-#else // CPU code
+void
+bml_diagonalize_dense_cpu_double_real(
+    bml_matrix_dense_t * A,
+    void *eigenvalues,
+    bml_matrix_dense_t * eigenvectors)
+{
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
+    int info;
+    double *A_matrix;
+    double *typed_eigenvalues = (double *) eigenvalues;
+
     double *evecs = calloc(A->N * A->N, sizeof(double));
     double *evals = calloc(A->N, sizeof(double));
-    int N = A->N;
 #ifdef MKL_GPU
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
 #endif
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
 
-#ifdef NOBLAS
-    LOG_ERROR("No BLAS library");
-#else
 #ifdef BML_SYEVD
     // Divide and conquer solver
     int lwork = 1 + 6 * A->N + 2 * A->N * A->N;
@@ -338,7 +358,6 @@ bml_diagonalize_dense_double_real(
     int lwork = 3 * A->N;
     double *work = calloc(lwork, sizeof(double));
     C_DSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
-#endif
 #endif
 
     A_matrix = (double *) eigenvectors->matrix;
@@ -358,6 +377,19 @@ bml_diagonalize_dense_double_real(
     free(evecs);
     free(evals);
     free(work);
+#endif // NOBLAS
+}
+
+void
+bml_diagonalize_dense_double_real(
+    bml_matrix_dense_t * A,
+    void *eigenvalues,
+    bml_matrix_dense_t * eigenvectors)
+{
+#ifdef BML_USE_MAGMA
+    bml_diagonalize_dense_magma_double_real(A, eigenvalues, eigenvectors);
+#else // CPU code
+    bml_diagonalize_dense_cpu_double_real(A, eigenvalues, eigenvectors);
 #endif
 }
 
@@ -418,13 +450,11 @@ bml_diagonalize_dense_single_complex(
     int M;
     float *evals = calloc(A->N, sizeof(float));
     float *rwork = calloc(lrwork, sizeof(float));
-    float abstol = 0;
     float complex *A_copy = calloc(A->N * A->N, sizeof(float complex));
     float complex *A_matrix;
     float complex *evecs = calloc(A->N * A->N, sizeof(float complex));
     float complex *work = calloc(lwork, sizeof(float complex));
 
-    int N = A->N;
 #ifdef MKL_GPU
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
@@ -434,6 +464,7 @@ bml_diagonalize_dense_single_complex(
     LOG_ERROR("No BLAS library");
 #else
     {
+        float abstol = 0;
         float vl = -FLT_MAX;
         float vu = FLT_MAX;
         int il = 1;
@@ -524,13 +555,11 @@ bml_diagonalize_dense_double_complex(
     int M;
     double *evals = calloc(A->N, sizeof(double));
     double *rwork = calloc(lrwork, sizeof(double));
-    double abstol = 0;
     double complex *A_copy = calloc(A->N * A->N, sizeof(double complex));
     double complex *A_matrix;
     double complex *evecs = calloc(A->N * A->N, sizeof(double complex));
     double complex *work = calloc(lwork, sizeof(double complex));
 
-    int N = A->N;
 #ifdef MKL_GPU
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
@@ -540,6 +569,7 @@ bml_diagonalize_dense_double_complex(
     LOG_ERROR("No BLAS library");
 #else
     {
+        double abstol = 0;
         double vl = -DBL_MAX;
         double vu = DBL_MAX;
         int il = 1;
