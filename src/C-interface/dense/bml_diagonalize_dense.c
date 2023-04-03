@@ -20,9 +20,8 @@
 #include <rocblas.h>
 #include <rocsolver.h>
 #endif
-#else
-#include "../lapack.h"
 #endif
+#include "../lapack.h"
 
 #include <string.h>
 #include <complex.h>
