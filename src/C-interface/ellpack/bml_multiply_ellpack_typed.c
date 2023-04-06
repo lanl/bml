@@ -1235,6 +1235,7 @@ void TYPED_FUNC(
                                                  rocsparse_spgemm_stage_compute,
                                                  &bufferSize1, dBuffer1));
         }
+#pragma omp target exit data map(delete:dBuffer1[:bufferSize1])
         // Sort the resulting matrix
 #pragma omp target data use_device_ptr(csrRowPtrC_tmp, csrColIndC_tmp)
         {
@@ -1248,7 +1249,6 @@ void TYPED_FUNC(
         perm = (rocsparse_int *) malloc(C_nnz_tmp * sizeof(rocsparse_int));
         REAL_T *csrValC_tmp_sorted;
         csrValC_tmp_sorted = (REAL_T *) malloc(C_nnz_tmp * sizeof(REAL_T));
-
 #pragma omp target enter data map(alloc:dBuffer1[:bufferSize1],perm[:C_nnz_tmp],csrValC_tmp_sorted[:C_nnz_tmp])
 
 #pragma omp target data use_device_ptr(csrRowPtrC_tmp, \
