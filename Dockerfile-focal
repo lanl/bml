@@ -1,6 +1,11 @@
 FROM ubuntu:focal
 LABEL org.opencontainers.image.authors="nicolasbock@gmail.com"
 
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes sudo
+RUN useradd --create-home --user-group --groups sudo ubuntu
+RUN sed --in-place --expression '/^%sudo/ s/ALL$/NOPASSWD: ALL/' /etc/sudoers
+
 COPY scripts/prepare-container-focal.sh /usr/sbin
 
 RUN /usr/sbin/prepare-container-focal.sh install_base
