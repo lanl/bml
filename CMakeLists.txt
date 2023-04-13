@@ -90,7 +90,7 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "Cray")
   set(EXTRA_CFLAGS "-DCRAY_SDK ${EXTRA_CFLAGS}")
 endif()
 
-set(MALLOC_ALIGNMENT 64 CACHE INT "Alignment boundary for memory allocations")
+set(MALLOC_ALIGNMENT 64 CACHE STRING "Alignment boundary for memory allocations")
 add_definitions(-DMALLOC_ALIGNMENT=${MALLOC_ALIGNMENT})
 
 option(DONT_TOUCH_MY_FLAGS "Don't touch compiler flags" OFF)
