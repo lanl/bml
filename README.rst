@@ -16,8 +16,11 @@
     - .. image:: https://github.com/lanl/bml/workflows/CI/badge.svg
         :alt: GitHub Actions
         :target: https://github.com/lanl/bml/actions
-    - .. image:: https://img.shields.io/conda/vn/conda-forge/bml.svg
+    - .. image:: https://anaconda.org/conda-forge/bml/badges/version.svg
         :alt: Conda Version
+        :target: https://anaconda.org/conda-forge/bml
+      .. image :: https://anaconda.org/conda-forge/bml/badges/downloads.svg
+        :alt: Conda Downloads
         :target: https://anaconda.org/conda-forge/bml
     - .. image:: https://readthedocs.org/projects/basic-matrix-library/badge/?version=master
         :target: https://basic-matrix-library.readthedocs.io/en/master/?badge=master
