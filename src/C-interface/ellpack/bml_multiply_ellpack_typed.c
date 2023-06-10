@@ -1057,10 +1057,17 @@ void TYPED_FUNC(
     char *dBuffer1 = NULL;      // rocSPARSE needs char * here instead of void *
     size_t bufferSize1 = 0;
 
+    BML_CHECK_ROCSPARSE(rocsparse_create_handle(&handle));
+
     // convert ellpack to cucsr
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (B);
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (C);
+
+    // ensure the matrices are sorted
+    TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,A);
+    TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,B);
+    TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,C);
 
     // Create cusparse matrix A and B in CSR format
     // Note: The following update is not necessary since the ellpack2cucsr
@@ -1072,29 +1079,6 @@ void TYPED_FUNC(
     int nnzB = csrRowPtrB[B_N];
     int nnzC_in = csrRowPtrC[C_N];
 
-    // copy C into temporary arrays if nonzero
-/*
-    if(nnzC_in > 0)
-    {
-        // allocate memory
-        d_rptr = (int *) omp_target_alloc((C_N+1)*sizeof(int), omp_get_default_device());
-        d_ccols = (int *) omp_target_alloc(nnzC_in*sizeof(int), omp_get_default_device());
-        d_cvals = (REAL_T *) omp_target_alloc(nnzC_in*sizeof(REAL_T), omp_get_default_device());
-        // copy
-        omp_target_memcpy(d_rptr, csrRowPtrC,
-                                  (C_N + 1) * sizeof(int), 0, 0,
-                                  omp_get_default_device(),
-                                  omp_get_default_device());
-        omp_target_memcpy(d_ccols, csrColIndC,
-                                  nnzC_in * sizeof(int), 0, 0,
-                                  omp_get_default_device(),
-                                  omp_get_default_device());
-        omp_target_memcpy(d_cvals, csrValC,
-                                  nnzC_in * sizeof(REAL_T), 0, 0,
-                                  omp_get_default_device(),
-                                  omp_get_default_device());
-    }
-*/
     // special case not well handled by cusparse
 
     if (nnzA == 0 || nnzB == 0)
@@ -1109,7 +1093,6 @@ void TYPED_FUNC(
     }
     else
     {
-        BML_CHECK_ROCSPARSE(rocsparse_create_handle(&handle));
 
         // Allocate placeholder arrays for storing result of spgemm()
         csrRowPtrC_tmp = (int *) malloc(sizeof(int) * (C_N + 1));
@@ -1236,100 +1219,30 @@ void TYPED_FUNC(
                                                  &bufferSize1, dBuffer1));
         }
 #pragma omp target exit data map(delete:dBuffer1[:bufferSize1])
-        // Sort the resulting matrix
-#pragma omp target data use_device_ptr(csrRowPtrC_tmp, csrColIndC_tmp)
-        {
-            BML_CHECK_ROCSPARSE(rocsparse_csrsort_buffer_size
-                                (handle, C_num_rows, C_num_cols,
-                                 C_nnz_tmp, csrRowPtrC_tmp,
-                                 csrColIndC_tmp, &bufferSize1));
-        }
-        dBuffer1 = (char *) realloc(dBuffer1, bufferSize1);
-        rocsparse_int *perm;
-        perm = (rocsparse_int *) malloc(C_nnz_tmp * sizeof(rocsparse_int));
-        REAL_T *csrValC_tmp_sorted;
-        csrValC_tmp_sorted = (REAL_T *) malloc(C_nnz_tmp * sizeof(REAL_T));
-#pragma omp target enter data map(alloc:dBuffer1[:bufferSize1],perm[:C_nnz_tmp],csrValC_tmp_sorted[:C_nnz_tmp])
+	// Place the resulting matrix in C
+#pragma omp target teams distribute parallel for
+	for(int i = 0; i<=C_num_rows; i++) {
+	  csrRowPtrC[i] = csrRowPtrC_tmp[i];
+	}
+#pragma omp target teams distribute parallel for
+	for(int i = 0; i<C_nnz_tmp; i++) {
+	  csrColIndC[i] = csrColIndC_tmp[i];
+	  ((REAL_T *)csrValC)[i] = csrValC_tmp[i];
+	}
 
-#pragma omp target data use_device_ptr(csrRowPtrC_tmp, \
-			   csrColIndC_tmp, perm, dBuffer1, \
-			   csrValC_tmp_sorted, csrValC_tmp)
-        {
-            BML_CHECK_ROCSPARSE(rocsparse_create_identity_permutation
-                                (handle, C_nnz_tmp, perm));
-            BML_CHECK_ROCSPARSE(rocsparse_csrsort
-                                (handle, C_num_rows, C_num_cols,
-                                 C_nnz_tmp,
-                                 (rocsparse_mat_descr) matC_tmp,
-                                 csrRowPtrC_tmp, csrColIndC_tmp, perm,
-                                 dBuffer1));
-            BML_CHECK_ROCSPARSE(bml_rocsparse_xgthr
-                                (handle, C_nnz_tmp, csrValC_tmp,
-                                 csrValC_tmp_sorted, perm,
-                                 rocsparse_index_base_zero));
-            BML_CHECK_ROCSPARSE(rocsparse_spmat_set_values
-                                (matC_tmp, csrValC_tmp_sorted));
-        }
-        rocsparse_set_mat_storage_mode(matC_tmp,
-                                       rocsparse_storage_mode_sorted);
-        rocsparse_set_mat_storage_mode(matC, rocsparse_storage_mode_sorted);
-        // Prune the output matrix and overwrite the C matrix with the result
+	// Sort the resulting matrix
+	TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,C);
+	BML_CHECK_ROCSPARSE(rocsparse_set_mat_storage_mode(matC, rocsparse_storage_mode_sorted));
+	// Prune (threshold) the resulting matrix
+	TYPED_FUNC(bml_prune_rocsparse_ellpack) (handle,C,threshold);
 
-        // xprune stage 1 = determine working buffer size
-
-#pragma omp target data use_device_ptr(csrValC_tmp_sorted,csrRowPtrC_tmp, \
-				       csrColIndC_tmp,csrValC, csrRowPtrC, \
-				       csrColIndC)
-        {
-            BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr_buffer_size
-                                (handle, C_num_rows, C_num_cols,
-                                 C_nnz_tmp,
-                                 (rocsparse_mat_descr) matC_tmp,
-                                 csrValC_tmp_sorted, csrRowPtrC_tmp,
-                                 csrColIndC_tmp, &threshold,
-                                 (rocsparse_mat_descr) matC, csrValC,
-                                 csrRowPtrC, csrColIndC, &lworkInBytes));
-        }
-
-        // Allocate the working buffer on the host and device
-        dwork = (char *) malloc(sizeof(char) * lworkInBytes);
-#pragma omp target enter data map(alloc:dwork[:lworkInBytes])
-
-        // xprune stages 2, 3 = determine nnz, perform pruning
-#pragma omp target data use_device_ptr(csrValC_tmp_sorted, csrRowPtrC_tmp, csrColIndC_tmp, dwork, csrValC, csrRowPtrC, csrColIndC)
-        {
-            BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr_nnz
-                                (handle, C_num_rows, C_num_cols,
-                                 C_nnz_tmp,
-                                 (rocsparse_mat_descr) matC_tmp,
-                                 csrValC_tmp_sorted, csrRowPtrC_tmp,
-                                 csrColIndC_tmp, &threshold,
-                                 (rocsparse_mat_descr) matC, csrRowPtrC,
-                                 &nnzC, dwork));
-            BML_CHECK_ROCSPARSE(bml_rocsparse_xprune_csr2csr
-                                (handle, C_num_rows, C_num_cols,
-                                 C_nnz_tmp,
-                                 (rocsparse_mat_descr) matC_tmp,
-                                 csrValC_tmp_sorted, csrRowPtrC_tmp,
-                                 csrColIndC_tmp, &threshold,
-                                 (rocsparse_mat_descr) matC, csrValC,
-                                 csrRowPtrC, csrColIndC, dwork));
-        }
-/* DEBUG
-	    hipDeviceSynchronize();
-	    BML_CHECK_ROCSPARSE(rocsparse_csr_get(matC, &rows, &cols, &nnz, &csr_row_ptr, &csr_col_ind, &csr_val, &row_ptr_type, &col_ind_type, &idx_base, &data_type));
-	    for (int i=0;i<10;i++) printf("C[%d]=%f ",i,(((REAL_T *)(csr_val))[i])); printf("\n");
-*/
 
         // Free the temporary arrays used on the device and host
-#pragma omp target exit data map(delete:csrRowPtrC_tmp[:C_num_rows+1],csrColIndC_tmp[:C_nnz_tmp],csrValC_tmp[:C_nnz_tmp],csrValC_tmp_sorted[:C_nnz_tmp],perm[:C_nnz_tmp],dwork[:lworkInBytes],dBuffer1[:bufferSize1])
+#pragma omp target exit data map(delete:csrRowPtrC_tmp[:C_num_rows+1],csrColIndC_tmp[:C_nnz_tmp],csrValC_tmp[:C_nnz_tmp],dBuffer1[:bufferSize1])
 
         free(csrRowPtrC_tmp);
         free(csrColIndC_tmp);
         free(csrValC_tmp);
-        free(csrValC_tmp_sorted);
-        free(perm);
-        free(dwork);
         free(dBuffer1);
 
         // Done with matrix multiplication.
@@ -1341,7 +1254,7 @@ void TYPED_FUNC(
         BML_CHECK_ROCSPARSE(rocsparse_destroy_spmat_descr(matB));
         BML_CHECK_ROCSPARSE(rocsparse_destroy_spmat_descr(matC));
         BML_CHECK_ROCSPARSE(rocsparse_destroy_spmat_descr(matC_tmp));
-        BML_CHECK_ROCSPARSE(rocsparse_destroy_handle(handle));
     }
+    BML_CHECK_ROCSPARSE(rocsparse_destroy_handle(handle));
 }
 #endif
