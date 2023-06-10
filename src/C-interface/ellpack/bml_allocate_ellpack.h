@@ -2,6 +2,13 @@
 #define __BML_ALLOCATE_ELLPACK_H
 
 #include "bml_types_ellpack.h"
+#ifdef BML_USE_ROCSPARSE
+// Copy rocsparse headers into src/rocsparse/ and edit rocsparse_functions.h to remove '[[...]]' text
+#include "../rocsparse/rocsparse.h"
+/* DEBUG
+#include <hip/hip_runtime.h> // needed for hipDeviceSynchronize()
+*/
+#endif
 
 void bml_deallocate_ellpack(
     bml_matrix_ellpack_t * A);
@@ -194,5 +201,43 @@ void bml_cucsr2ellpack_ellpack_single_complex(
     bml_matrix_ellpack_t * A);
 void bml_cucsr2ellpack_ellpack_double_complex(
     bml_matrix_ellpack_t * A);
+#endif
+
+#ifdef BML_USE_ROCSPARSE
+void bml_sort_rocsparse_ellpack(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A);
+void bml_sort_rocsparse_ellpack_single_real(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A);
+void bml_sort_rocsparse_ellpack_double_real(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A);
+void bml_sort_rocsparse_ellpack_single_complex(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A);
+void bml_sort_rocsparse_ellpack_double_complex(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A);
+void bml_prune_rocsparse_ellpack(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A,
+    double threshold);
+void bml_prune_rocsparse_ellpack_single_real(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A,
+    double threshold);
+void bml_prune_rocsparse_ellpack_double_real(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A,
+    double threshold);
+void bml_prune_rocsparse_ellpack_single_complex(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A,
+    double threshold);
+void bml_prune_rocsparse_ellpack_double_complex(
+    rocsparse_handle handle,
+    bml_matrix_ellpack_t * A,
+    double threshold);
 #endif
 #endif
