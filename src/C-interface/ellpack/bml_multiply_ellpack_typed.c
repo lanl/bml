@@ -1232,7 +1232,7 @@ void TYPED_FUNC(
 
 	// Sort the resulting matrix
 	TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,C);
-	BML_CHECK_ROCSPARSE(rocsparse_set_mat_storage_mode(matC, rocsparse_storage_mode_sorted));
+	BML_CHECK_ROCSPARSE(rocsparse_set_mat_storage_mode((rocsparse_mat_descr)matC, rocsparse_storage_mode_sorted));
 	
 	// Prune (threshold) the resulting matrix
 	TYPED_FUNC(bml_prune_rocsparse_ellpack) (handle,C,threshold);
