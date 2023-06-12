@@ -819,13 +819,14 @@ void TYPED_FUNC(
     TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,A);
     TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,B);
 
-    // Create cusparse matrix A and B in CSR format
-    // Note: The following update is not necessary since the ellpack2cucsr
-    // routine updates the csr rowpointers on host and device
-#pragma omp target update from(csrRowPtrA[:A_N+1])
-#pragma omp target update from(csrRowPtrB[:B_N+1])
-    int nnzA = csrRowPtrA[A_N];
-    int nnzB = csrRowPtrB[B_N];
+    // Get total number of nonzero elements for rocsparse calls
+    int nnzA, nnzB;
+#pragma omp target map(from:nnzA,nnzB)
+    {
+      nnzA = csrRowPtrA[A_N];
+      nnzB = csrRowPtrB[B_N];
+    }
+    
     int nnzC_tmp = 0;
 
     // Allocate placeholder arrays for storing result of csrgeam()
@@ -942,7 +943,6 @@ void TYPED_FUNC(
     free(csrColIndC_tmp);
     free(csrValC_tmp);
 
-    // Done with matrix multiplication.
     // Update ellpack A matrix (on device): copy from csr to ellpack format
     TYPED_FUNC(bml_cucsr2ellpack_ellpack) (A);
 
