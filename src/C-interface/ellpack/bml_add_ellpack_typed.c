@@ -22,7 +22,7 @@
 #include <cusparse.h>
 #endif
 #ifdef BML_USE_ROCSPARSE
-// Copy rocsparse headers into src/rocsparse/ and edit rocsparse_functions.h to remove '[[...]]' text
+// Copy rocsparse headers into src/C-interface/rocsparse/ and edit rocsparse_functions.h to remove '[[...]]' text
 #include "../rocsparse/rocsparse.h"
 /* DEBUG
 #include <hip/hip_runtime.h> // needed for hipDeviceSynchronize()
