@@ -517,7 +517,7 @@ void TYPED_FUNC(
     bml_prune_rocsparse_ellpack) (
     rocsparse_handle handle,
     bml_matrix_ellpack_t * A,
-    double threshold)
+    double threshold_in)
 {
     int N = A->N;
     int M = A->M;
@@ -537,6 +537,8 @@ void TYPED_FUNC(
       
     size_t lworkInBytes = 0;
     char *dwork = NULL;
+
+    REAL_T threshold = (REAL_T)threshold_in;
 
 #pragma omp target map(from:nnz)
     {
@@ -617,7 +619,7 @@ void TYPED_FUNC(
 }
 #endif
 #if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
- /** Ellpack to cuCSR conversion.
+/** Ellpack to cuCSR conversion.
  *
  *  Convert from Ellpack format to cusparse csr format.
  *  Naive implementation for testing. Use thrust library for optimal code.
