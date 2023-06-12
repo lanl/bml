@@ -119,7 +119,7 @@ void TYPED_FUNC(
         }
     }
     */
-#pragma omp target teams distribute parallel for schedule (static,1)
+#pragma omp target teams distribute parallel for schedule (static,1) map(to:NbyM)
     for (int i = 0; i < NbyM; i++)
     {
       B_index[i] = A_index[i];

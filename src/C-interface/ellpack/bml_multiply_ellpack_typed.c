@@ -1233,9 +1233,9 @@ void TYPED_FUNC(
 	// Sort the resulting matrix
 	TYPED_FUNC(bml_sort_rocsparse_ellpack) (handle,C);
 	BML_CHECK_ROCSPARSE(rocsparse_set_mat_storage_mode(matC, rocsparse_storage_mode_sorted));
+	
 	// Prune (threshold) the resulting matrix
 	TYPED_FUNC(bml_prune_rocsparse_ellpack) (handle,C,threshold);
-
 
         // Free the temporary arrays used on the device and host
 #pragma omp target exit data map(delete:csrRowPtrC_tmp[:C_num_rows+1],csrColIndC_tmp[:C_nnz_tmp],csrValC_tmp[:C_nnz_tmp],dBuffer1[:bufferSize1])
