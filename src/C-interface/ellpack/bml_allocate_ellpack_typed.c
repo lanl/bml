@@ -540,7 +540,7 @@ void TYPED_FUNC(
 
     REAL_T threshold = (REAL_T)threshold_in;
 
-#pragma omp target map(from:nnz)
+#pragma omp target map(to:N) map(from:nnz)
     {
       nnz = csrRowPtr[N];
     }

@@ -95,11 +95,12 @@ void TYPED_FUNC(
     all_jx = calloc(N * num_chunks, sizeof(int));
     all_x = calloc(N * num_chunks, sizeof(REAL_T));
 
-#pragma omp target map(to:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
-
+#pragma omp target enter data map(to:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
+    
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
+#pragma omp target
 #if BML_OFFLOAD_CHUNKS
 #pragma omp teams distribute parallel for \
     shared(rowMin, rowMax)                \
@@ -115,7 +116,7 @@ void TYPED_FUNC(
         x = &all_x[chunk * N];
 
 #else
-#pragma omp target teams distribute parallel for \
+#pragma omp teams distribute parallel for \
     shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
@@ -197,6 +198,10 @@ void TYPED_FUNC(
     }
 #if defined(USE_OMP_OFFLOAD) && BML_OFFLOAD_CHUNKS
 }
+#pragma omp target exit data map(delete:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
+    free(all_ix);
+    free(all_jx);
+    free(all_x);
 #endif
 
 #endif
@@ -269,11 +274,12 @@ double TYPED_FUNC(
     all_x = calloc(N * num_chunks, sizeof(REAL_T));
     all_y = calloc(N * num_chunks, sizeof(REAL_T));
 
-#pragma omp target map(to:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks],all_y[0:N*num_chunks]) map(tofrom:trnorm)
+#pragma omp target enter data map(to:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks],all_y[0:N*num_chunks])
 
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
+#pragma omp target map(tofrom:trnorm)
 #if BML_OFFLOAD_CHUNKS
 #pragma omp teams distribute parallel for \
     shared(rowMin, rowMax)                \
@@ -292,7 +298,7 @@ double TYPED_FUNC(
 
 #else
 
-#pragma omp target teams distribute parallel for	\
+#pragma omp teams distribute parallel for	\
     shared(rowMin, rowMax)                \
     shared(A_index, A_value, A_nnz)       \
     shared(B_index, B_value, B_nnz)       \
@@ -385,6 +391,11 @@ double TYPED_FUNC(
     }
 #if defined(USE_OMP_OFFLOAD) && BML_OFFLOAD_CHUNKS
 }
+#pragma omp target exit data map(delete:all_ix[0:N*num_chunks],all_jx[0:N*num_chunks],all_x[0:N*num_chunks],all_y[0:N*num_chunks])
+    free(all_ix);
+    free(all_jx);
+    free(all_x);
+    free(all_y);
 #endif
 
 return trnorm;
@@ -426,18 +437,19 @@ void TYPED_FUNC(
 #if BML_OFFLOAD_CHUNKS
     int num_chunks = MIN(BML_OFFLOAD_NUM_CHUNKS, N);
 
-    int all_jx[N * num_chunks];
-    REAL_T all_x[N * num_chunks];
+    int *all_jx;
+    REAL_T *all_x;
 
-    memset(all_jx, 0, N * num_chunks * sizeof(int));
-    memset(all_x, 0.0, N * num_chunks * sizeof(REAL_T));
+    all_jx = calloc(N * num_chunks, sizeof(int));
+    all_x = calloc(N * num_chunks, sizeof(REAL_T));
 
 #if defined (USE_OMP_OFFLOAD)
-#pragma omp target map(to:all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
+#pragma omp target enter data map(to:all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
 #endif
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
+#pragma omp target
 #if BML_OFFLOAD_CHUNKS
 #pragma omp teams distribute parallel for \
     shared(N, A_M)                \
@@ -451,7 +463,7 @@ void TYPED_FUNC(
         x = &all_x[chunk * N];
 
 #else
-#pragma omp target teams distribute parallel for \
+#pragma omp teams distribute parallel for \
   shared(N, A_M)           \
     shared(A_index, A_value, A_nnz)       \
     firstprivate(jx, x)
@@ -524,6 +536,9 @@ void TYPED_FUNC(
     }
 #if defined(USE_OMP_OFFLOAD) && BML_OFFLOAD_CHUNKS
 }
+#pragma omp target exit data map(delete:all_jx[0:N*num_chunks],all_x[0:N*num_chunks])
+    free(all_jx);
+    free(all_x);
 #endif
 }
 
