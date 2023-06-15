@@ -187,11 +187,12 @@ void *TYPED_FUNC(
     all_jx = calloc(X_N * num_chunks, sizeof(int));
     all_x = calloc(X_N * num_chunks, sizeof(REAL_T));
 
-#pragma omp target map(to:all_ix[0:X_N*num_chunks],all_jx[0:X_N*num_chunks],all_x[0:X_N*num_chunks])
+#pragma omp target enter data map(to:all_ix[0:X_N*num_chunks],all_jx[0:X_N*num_chunks],all_x[0:X_N*num_chunks])
 
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
+#pragma omp target
 #if BML_OFFLOAD_CHUNKS
 #pragma omp teams distribute parallel for	\
     shared(X_N, X_M, X_index, X_nnz, X_value)  \
@@ -208,7 +209,7 @@ void *TYPED_FUNC(
         x = &all_x[chunk * X_N];
 
 #else
-#pragma omp target teams distribute parallel for                               \
+#pragma omp teams distribute parallel for                               \
     shared(X_N, X_M, X_index, X_nnz, X_value)  \
     shared(X2_N, X2_M, X2_index, X2_nnz, X2_value)     \
     shared(rowMin, rowMax)                             \
@@ -319,6 +320,10 @@ void *TYPED_FUNC(
 
 #if defined(USE_OMP_OFFLOAD) && BML_OFFLOAD_CHUNKS
 }
+#pragma omp target exit data map(delete:all_ix[0:X_N*num_chunks],all_jx[0:X_N*num_chunks],all_x[0:X_N*num_chunks])
+    free(all_ix);
+    free(all_jx);
+    free(all_x);
 #endif
 
 #endif // endif cusparse or rocsparse
@@ -407,11 +412,12 @@ void TYPED_FUNC(
     all_jx = calloc(C_N * num_chunks, sizeof(int));
     all_x = calloc(C_N * num_chunks, sizeof(REAL_T));
 
-#pragma omp target map(to:all_ix[0:C_N*num_chunks],all_jx[0:C_N*num_chunks],all_x[0:C_N*num_chunks])
+#pragma omp target enter data map(to:all_ix[0:C_N*num_chunks],all_jx[0:C_N*num_chunks],all_x[0:C_N*num_chunks])
 
 #endif
 
 #if defined (USE_OMP_OFFLOAD)
+#pragma omp target
 #if BML_OFFLOAD_CHUNKS
 #pragma omp teams distribute parallel for \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
@@ -428,7 +434,7 @@ void TYPED_FUNC(
         x = &all_x[chunk * C_N];
 
 #else
-#pragma omp target teams distribute parallel for \
+#pragma omp teams distribute parallel for \
     shared(A_N, A_M, A_nnz, A_index, A_value)  \
     shared(A_localRowMin, A_localRowMax)       \
     shared(B_N, B_M, B_nnz, B_index, B_value)  \
@@ -520,6 +526,10 @@ void TYPED_FUNC(
     }
 #if defined(USE_OMP_OFFLOAD) && BML_OFFLOAD_CHUNKS
 }
+#pragma omp target exit data map(delete:all_ix[0:C_N*num_chunks],all_jx[0:C_N*num_chunks],all_x[0:C_N*num_chunks])
+    free(all_ix);
+    free(all_jx);
+    free(all_x);
 #endif
 
 #endif // endif cusparse or rocsparse
@@ -1157,7 +1167,8 @@ void TYPED_FUNC(
                                              rocsparse_spgemm_alg_default,
                                              rocsparse_spgemm_stage_buffer_size,
                                              &bufferSize1, NULL));
-        //      hipDeviceSynchronize();
+	// hipDeviceSynchronize(); // Ensure that the previous call is finished
+	
         // Allocate the spgemm working buffer
         dBuffer1 = (char *) malloc(sizeof(char) * bufferSize1);
         // Allocate the same array on the device
@@ -1174,7 +1185,8 @@ void TYPED_FUNC(
                                                  rocsparse_spgemm_stage_nnz,
                                                  &bufferSize1, dBuffer1));
         }
-        //      hipDeviceSynchronize();
+	// hipDeviceSynchronize(); // Ensure that the previous call is finished
+	
         // Get nnz value returned by spgemm()
         int64_t C_num_rows, C_num_cols, C_nnz_tmp;
         BML_CHECK_ROCSPARSE(rocsparse_spmat_get_size
@@ -1217,6 +1229,9 @@ void TYPED_FUNC(
                                                  rocsparse_spgemm_stage_compute,
                                                  &bufferSize1, dBuffer1));
         }
+	// hipDeviceSynchronize(); // Ensure that the previous call is finished
+
+	// Delete the temporary work array
 #pragma omp target exit data map(delete:dBuffer1[:bufferSize1])
 	// Place the resulting matrix in C
 #pragma omp target teams distribute parallel for
@@ -1237,7 +1252,7 @@ void TYPED_FUNC(
 	TYPED_FUNC(bml_prune_rocsparse_ellpack) (handle,C,threshold);
 
         // Free the temporary arrays used on the device and host
-#pragma omp target exit data map(delete:csrRowPtrC_tmp[:C_num_rows+1],csrColIndC_tmp[:C_nnz_tmp],csrValC_tmp[:C_nnz_tmp],dBuffer1[:bufferSize1])
+#pragma omp target exit data map(delete:csrRowPtrC_tmp[:C_num_rows+1],csrColIndC_tmp[:C_nnz_tmp],csrValC_tmp[:C_nnz_tmp])
 
         free(csrRowPtrC_tmp);
         free(csrColIndC_tmp);

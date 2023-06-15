@@ -146,14 +146,11 @@ void TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     REAL_T scale = *scale_factor;
-#pragma omp target teams distribute parallel for collapse(2)
-    for (int i = 0; i < N; i++)
+    size_t MbyN = N * M;
+#pragma omp target teams distribute parallel for map(to:MbyN,scale)
+    for (size_t i = 0; i < MbyN; i++)
     {
-        for (int j = 0; j < M; j++)
-        {
-            A_value[ROWMAJOR(i, j, M, N)] =
-                scale * A_value[ROWMAJOR(i, j, M, N)];
-        }
+      A_value[i] = scale * A_value[i];
     }
 #else // offload conditional
 
