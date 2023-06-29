@@ -39,6 +39,7 @@ if (( $# > 0 )); then
                 echo "unknown suffix"
                 ;;
         esac
+        shift
     done
 else
     readarray -t SH_FILES < <(git ls-files -- '*.sh')
