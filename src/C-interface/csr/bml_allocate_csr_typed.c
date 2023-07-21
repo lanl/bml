@@ -273,6 +273,11 @@ bml_matrix_csr_t *TYPED_FUNC(
  *  already allocated then the matrix will be deallocated in the
  *  process.
  *
+ *  * NOTE: 
+ *  The resulting nonzero structure is not necessarily uniform since we 
+ *  are sampling between [0, N], N << RAND_MAX. The diagonal entry is 
+ *  stored first.
+ * 
  *  \ingroup allocate_group
  *
  *  \param matrix_precision The precision of the matrix. The default
@@ -291,20 +296,46 @@ bml_matrix_csr_t *TYPED_FUNC(
     bml_matrix_csr_t *A =
         TYPED_FUNC(bml_zero_matrix_csr) (N, M, distrib_mode);
 
-#pragma omp parallel for
+    int *col_marker = bml_allocate_memory(sizeof(int) * N );
+    int *col_marker_pos = bml_allocate_memory(sizeof(int) * M );
+
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+
+/* initialize col_marker */
+    for (int j = 0; j < N; j++)
+    {
+        col_marker[j] = -1;
+    }
+
+//#pragma omp parallel for
     for (int i = 0; i < N; i++)
     {
-        int jind = 0;
         csr_sparse_row_t *row = A->data_[i];
         int *col_indexes = row->cols_;
         REAL_T *row_vals = row->vals_;
+        int col = i;
+        int nnz_row = 0;
         for (int j = 0; j < M; j++)
         {
-            col_indexes[jind] = j;
-            row_vals[jind] = rand() / (REAL_T) RAND_MAX;
-            jind++;
+            if(col_marker[col] == -1)
+            {
+                row_vals[nnz_row] = rand() * INV_RAND_MAX;
+                col_indexes[nnz_row] = col;
+                /* save position of col_marker */
+                col_marker_pos[nnz_row] = col;
+                /* mark column index position */
+                col_marker[col] = 1;
+                nnz_row++;
+            }
+            col = rand() % (N + 1);
         }
-        row->NNZ_ = jind;
+        /* update nnz of row */
+        row->NNZ_ = nnz_row;
+        /* reset col_marker */
+        for (int j = 0; j < nnz_row; j++)
+        {
+            col_marker[col_marker_pos[j]] = -1; 
+        }
     }
     /** initialize hash table */
     if (distrib_mode == sequential)
