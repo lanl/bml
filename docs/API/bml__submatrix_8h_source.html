@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_submatrix.h Source File</title>
+<title>bml: /bml/src/C-interface/bml_submatrix.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('bml__submatrix_8h_source.html',''); in
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="bml__types_8h.html">bml_types.h</a>&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// Determine element indeces for submatrix, given a set of nodes.</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// Determine element indices for submatrix, given a set of nodes.</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__submatrix_8h.html#aed513cf5f070925d10cd6fbaa07f0c1c">bml_matrix2submatrix_index</a>(</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * B,</div>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('bml__submatrix_8h_source.html',''); in
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">int</span> *vsize,</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">int</span> double_jump_flag);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// Determine core+halo indeces from graph only</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// Determine core+halo indices from graph only</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__submatrix_8h.html#a1e3f458b2031d1783dd93c89cf0200ea">bml_matrix2submatrix_index_graph</a>(</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * B,</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">int</span> *nodelist,</div>
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('bml__submatrix_8h_source.html',''); in
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">int</span> *vsize,</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">int</span> double_jump_flag);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Create contracted submatrix from a set of element indeces.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="comment">// Create contracted submatrix from a set of element indices.</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__submatrix_8h.html#a331b7ab46bcffcabfdaef4d9dfdd378b">bml_matrix2submatrix</a>(</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * B,</div>
@@ -158,33 +158,45 @@ $(document).ready(function(){initNavTree('bml__submatrix_8h_source.html',''); in
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">int</span> ngroups,</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">double</span> threshold);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// Return a submatrix from a matrix</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *bml_extract_submatrix(</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">int</span> irow,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">int</span> icol,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">int</span> B_N,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">int</span> B_M);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">void</span> bml_assign_submatrix(</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * B,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">int</span> irow,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">int</span> icol);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="abml__submatrix_8h_html_af54e52c53f85579791ffa25d8ccf0b94"><div class="ttname"><a href="bml__submatrix_8h.html#af54e52c53f85579791ffa25d8ccf0b94">bml_group_matrix</a></div><div class="ttdeci">bml_matrix_t * bml_group_matrix(bml_matrix_t *A, int *hindex, int ngroups, double threshold)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:120</div></div>
-<div class="ttc" id="abml__submatrix_8h_html_a331b7ab46bcffcabfdaef4d9dfdd378b"><div class="ttname"><a href="bml__submatrix_8h.html#a331b7ab46bcffcabfdaef4d9dfdd378b">bml_matrix2submatrix</a></div><div class="ttdeci">void bml_matrix2submatrix(bml_matrix_t *A, bml_matrix_t *B, int *core_halo_index, int lsize)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:161</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_af54e52c53f85579791ffa25d8ccf0b94"><div class="ttname"><a href="bml__submatrix_8h.html#af54e52c53f85579791ffa25d8ccf0b94">bml_group_matrix</a></div><div class="ttdeci">bml_matrix_t * bml_group_matrix(bml_matrix_t *A, int *hindex, int ngroups, double threshold)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:111</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_a331b7ab46bcffcabfdaef4d9dfdd378b"><div class="ttname"><a href="bml__submatrix_8h.html#a331b7ab46bcffcabfdaef4d9dfdd378b">bml_matrix2submatrix</a></div><div class="ttdeci">void bml_matrix2submatrix(bml_matrix_t *A, bml_matrix_t *B, int *core_halo_index, int lsize)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:149</div></div>
 <div class="ttc" id="abml__logger_8h_html"><div class="ttname"><a href="bml__logger_8h.html">bml_logger.h</a></div></div>
-<div class="ttc" id="abml__submatrix_8h_html_a5fb3d87427a5449d7fd39bad9034b075"><div class="ttname"><a href="bml__submatrix_8h.html#a5fb3d87427a5449d7fd39bad9034b075">bml_adjacency_group</a></div><div class="ttdeci">void bml_adjacency_group(bml_matrix_t *A, int *hindex, int nnodes, int *xadj, int *adjncy, int base_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:290</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_a5fb3d87427a5449d7fd39bad9034b075"><div class="ttname"><a href="bml__submatrix_8h.html#a5fb3d87427a5449d7fd39bad9034b075">bml_adjacency_group</a></div><div class="ttdeci">void bml_adjacency_group(bml_matrix_t *A, int *hindex, int nnodes, int *xadj, int *adjncy, int base_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:268</div></div>
 <div class="ttc" id="abml__submatrix_8h_html"><div class="ttname"><a href="bml__submatrix_8h.html">bml_submatrix.h</a></div></div>
-<div class="ttc" id="abml__submatrix_8h_html_aed513cf5f070925d10cd6fbaa07f0c1c"><div class="ttname"><a href="bml__submatrix_8h.html#aed513cf5f070925d10cd6fbaa07f0c1c">bml_matrix2submatrix_index</a></div><div class="ttdeci">void bml_matrix2submatrix_index(bml_matrix_t *A, bml_matrix_t *B, int *nodelist, int nsize, int *core_halo_index, int *vsize, int double_jump_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:23</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_aed513cf5f070925d10cd6fbaa07f0c1c"><div class="ttname"><a href="bml__submatrix_8h.html#aed513cf5f070925d10cd6fbaa07f0c1c">bml_matrix2submatrix_index</a></div><div class="ttdeci">void bml_matrix2submatrix_index(bml_matrix_t *A, bml_matrix_t *B, int *nodelist, int nsize, int *core_halo_index, int *vsize, int double_jump_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:24</div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48">ellpack</a></div><div class="ttdeci">@ ellpack</div><div class="ttdef"><b>Definition:</b> bml_types.h:14</div></div>
-<div class="ttc" id="abml__submatrix_8h_html_a77fef8e0e8749b499f979e356df0f03e"><div class="ttname"><a href="bml__submatrix_8h.html#a77fef8e0e8749b499f979e356df0f03e">bml_adjacency</a></div><div class="ttdeci">void bml_adjacency(bml_matrix_t *A, int *xadj, int *adjncy, int base_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:247</div></div>
-<div class="ttc" id="abml__introspection_8h_html_a0866fa0746f283b3a1fbb9c7315a79d1"><div class="ttname"><a href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1">bml_get_type</a></div><div class="ttdeci">bml_matrix_type_t bml_get_type(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:20</div></div>
-<div class="ttc" id="abml__logger_8h_html_abffaf9cecb61026cac6db71a16ace9c5"><div class="ttname"><a href="bml__logger_8h.html#abffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR(format,...)</div><div class="ttdef"><b>Definition:</b> bml_logger.h:45</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_a77fef8e0e8749b499f979e356df0f03e"><div class="ttname"><a href="bml__submatrix_8h.html#a77fef8e0e8749b499f979e356df0f03e">bml_adjacency</a></div><div class="ttdeci">void bml_adjacency(bml_matrix_t *A, int *xadj, int *adjncy, int base_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:228</div></div>
+<div class="ttc" id="abml__introspection_8h_html_a0866fa0746f283b3a1fbb9c7315a79d1"><div class="ttname"><a href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1">bml_get_type</a></div><div class="ttdeci">bml_matrix_type_t bml_get_type(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:22</div></div>
+<div class="ttc" id="abml__logger_8h_html_abffaf9cecb61026cac6db71a16ace9c5"><div class="ttname"><a href="bml__logger_8h.html#abffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR(format,...)</div><div class="ttdef"><b>Definition:</b> bml_logger.h:52</div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26">dense</a></div><div class="ttdeci">@ dense</div><div class="ttdef"><b>Definition:</b> bml_types.h:12</div></div>
-<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d">ellsort</a></div><div class="ttdeci">@ ellsort</div><div class="ttdef"><b>Definition:</b> bml_types.h:18</div></div>
 <div class="ttc" id="abml__introspection_8h_html"><div class="ttname"><a href="bml__introspection_8h.html">bml_introspection.h</a></div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee">ellblock</a></div><div class="ttdeci">@ ellblock</div><div class="ttdef"><b>Definition:</b> bml_types.h:16</div></div>
-<div class="ttc" id="abml__submatrix_8h_html_adc606505575f2681b5db802021fe6a60"><div class="ttname"><a href="bml__submatrix_8h.html#adc606505575f2681b5db802021fe6a60">bml_submatrix2matrix</a></div><div class="ttdeci">void bml_submatrix2matrix(bml_matrix_t *A, bml_matrix_t *B, int *core_halo_index, int lsize, int llsize, double threshold)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:202</div></div>
-<div class="ttc" id="abml__submatrix_8h_html_a1e3f458b2031d1783dd93c89cf0200ea"><div class="ttname"><a href="bml__submatrix_8h.html#a1e3f458b2031d1783dd93c89cf0200ea">bml_matrix2submatrix_index_graph</a></div><div class="ttdeci">void bml_matrix2submatrix_index_graph(bml_matrix_t *B, int *nodelist, int nsize, int *core_halo_index, int *vsize, int double_jump_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:73</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_adc606505575f2681b5db802021fe6a60"><div class="ttname"><a href="bml__submatrix_8h.html#adc606505575f2681b5db802021fe6a60">bml_submatrix2matrix</a></div><div class="ttdeci">void bml_submatrix2matrix(bml_matrix_t *A, bml_matrix_t *B, int *core_halo_index, int lsize, int llsize, double threshold)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:187</div></div>
+<div class="ttc" id="abml__submatrix_8h_html_a1e3f458b2031d1783dd93c89cf0200ea"><div class="ttname"><a href="bml__submatrix_8h.html#a1e3f458b2031d1783dd93c89cf0200ea">bml_matrix2submatrix_index_graph</a></div><div class="ttdeci">void bml_matrix2submatrix_index_graph(bml_matrix_t *B, int *nodelist, int nsize, int *core_halo_index, int *vsize, int double_jump_flag)</div><div class="ttdef"><b>Definition:</b> bml_submatrix.c:69</div></div>
 <div class="ttc" id="abml__types_8h_html_afe10f3a7e985a8627616dfda2dec6fc9"><div class="ttname"><a href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a></div><div class="ttdeci">void bml_matrix_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:51</div></div>
 <div class="ttc" id="abml__types_8h_html"><div class="ttname"><a href="bml__types_8h.html">bml_types.h</a></div></div>
-<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954">csr</a></div><div class="ttdeci">@ csr</div><div class="ttdef"><b>Definition:</b> bml_types.h:20</div></div>
+<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954">csr</a></div><div class="ttdeci">@ csr</div><div class="ttdef"><b>Definition:</b> bml_types.h:18</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__submatrix_8h.html">bml_submatrix.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

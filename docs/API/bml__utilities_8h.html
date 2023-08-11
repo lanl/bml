@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_utilities.h File Reference</title>
+<title>bml: /bml/src/C-interface/bml_utilities.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -91,33 +91,22 @@ $(document).ready(function(){initNavTree('bml__utilities_8h.html',''); initResiz
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">bml_utilities.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="bml__types_8h_source.html">bml_types.h</a>&quot;</code><br />
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for bml_utilities.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__utilities_8h__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__utilities_8h" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__utilities_8h" id="_2tmp_2bml_2src_2C-interface_2bml__utilities_8h">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml__types_8h.html" title=" " alt="" coords="40,95,133,121"/>
-</map>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__utilities_8h__dep__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__utilities_8hdep" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__utilities_8hdep" id="_2tmp_2bml_2src_2C-interface_2bml__utilities_8hdep">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml_8h.html" title=" " alt="" coords="5,95,168,136"/>
-</map>
-</div>
 </div>
 <p><a href="bml__utilities_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a8d0ac7033fb1bd905e0215fadfb69c57"><td class="memItemLeft" align="right" valign="top"><a id="a8d0ac7033fb1bd905e0215fadfb69c57"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PRINT_THRESHOLD</b>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a8d0ac7033fb1bd905e0215fadfb69c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a9f51d6ec2bc0109ae0677e3e1c3806b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__utilities_8h.html#a9f51d6ec2bc0109ae0677e3e1c3806b5">bml_print_dense_matrix</a> (int N, <a class="el" href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a> matrix_precision, <a class="el" href="bml__types_8h.html#aee75766924480bd077ae554927c85233">bml_dense_order_t</a> order, void *A, int i_l, int i_u, int j_l, int j_u)</td></tr>
@@ -132,6 +121,9 @@ Functions</h2></td></tr>
 <tr class="separator:a03cdb2dd9c6b1aa1747a3deab690c281"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae80010a9a582ccdd81500357ffb8f505"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__utilities_8h.html#ae80010a9a582ccdd81500357ffb8f505">bml_write_bml_matrix</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, char *filename)</td></tr>
 <tr class="separator:ae80010a9a582ccdd81500357ffb8f505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ad96db749cab024d83489cafe70883c"><td class="memItemLeft" align="right" valign="top"><a id="a2ad96db749cab024d83489cafe70883c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>bml_sqrtint</b> (const int x)</td></tr>
+<tr class="separator:a2ad96db749cab024d83489cafe70883c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ad4de58c7dbc719120733c7caca20db49"></a>
@@ -188,20 +180,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__utilities_8h_ad4de58c7dbc719120733c7caca20db49_cgraph.png" border="0" usemap="#bml__utilities_8h_ad4de58c7dbc719120733c7caca20db49_cgraph" alt=""/></div>
-<map name="bml__utilities_8h_ad4de58c7dbc719120733c7caca20db49_cgraph" id="bml__utilities_8h_ad4de58c7dbc719120733c7caca20db49_cgraph">
-<area shape="rect" title=" " alt="" coords="5,132,152,159"/>
-<area shape="rect" href="group__convert__group__C.html#ga287f7c9a50a4541ba28dadad4b3d432e" title=" " alt="" coords="207,5,353,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="408,107,508,133"/>
-<area shape="rect" href="group__allocate__group__C.html#ga511db66cb871701e1620f85b307d0157" title=" " alt="" coords="217,107,343,133"/>
-<area shape="rect" href="bml__introspection_8h.html#a020000b9660d63c9d904b253499abee7" title=" " alt="" coords="237,157,323,184"/>
-<area shape="rect" href="bml__introspection_8h.html#ad7617fd544436c7f9725078dc70be254" title=" " alt="" coords="217,208,343,235"/>
-<area shape="rect" href="bml__utilities_8h.html#a9f51d6ec2bc0109ae0677e3e1c3806b5" title=" " alt="" coords="200,259,360,285"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -323,15 +301,6 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__utilities_8h_a9f51d6ec2bc0109ae0677e3e1c3806b5_icgraph.png" border="0" usemap="#bml__utilities_8h_a9f51d6ec2bc0109ae0677e3e1c3806b5_icgraph" alt=""/></div>
-<map name="bml__utilities_8h_a9f51d6ec2bc0109ae0677e3e1c3806b5_icgraph" id="bml__utilities_8h_a9f51d6ec2bc0109ae0677e3e1c3806b5_icgraph">
-<area shape="rect" title=" " alt="" coords="200,5,360,32"/>
-<area shape="rect" href="bml__utilities_8h.html#ad4de58c7dbc719120733c7caca20db49" title=" " alt="" coords="5,5,152,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -425,15 +394,6 @@ Here is the caller graph for this function:</div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__utilities_8h_a03cdb2dd9c6b1aa1747a3deab690c281_cgraph.png" border="0" usemap="#bml__utilities_8h_a03cdb2dd9c6b1aa1747a3deab690c281_cgraph" alt=""/></div>
-<map name="bml__utilities_8h_a03cdb2dd9c6b1aa1747a3deab690c281_cgraph" id="bml__utilities_8h_a03cdb2dd9c6b1aa1747a3deab690c281_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,152,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="200,5,300,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -470,15 +430,6 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__utilities_8h_ae80010a9a582ccdd81500357ffb8f505_cgraph.png" border="0" usemap="#bml__utilities_8h_ae80010a9a582ccdd81500357ffb8f505_cgraph" alt=""/></div>
-<map name="bml__utilities_8h_ae80010a9a582ccdd81500357ffb8f505_cgraph" id="bml__utilities_8h_ae80010a9a582ccdd81500357ffb8f505_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,155,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="203,5,303,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -488,7 +439,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__utilities_8h.html">bml_utilities.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

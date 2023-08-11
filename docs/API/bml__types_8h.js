@@ -26,7 +26,7 @@ var bml__types_8h =
       [ "dense", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26", null ],
       [ "ellpack", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48", null ],
       [ "ellblock", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee", null ],
-      [ "ellsort", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d", null ],
-      [ "csr", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954", null ]
+      [ "csr", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954", null ],
+      [ "distributed2d", "bml__types_8h.html#ab7d3c21318898af00e7c28712f369842aa4ec306759a6a7076aee2d7bf1289309", null ]
     ] ]
 ];

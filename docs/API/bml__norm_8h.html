@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_norm.h File Reference</title>
+<title>bml: /bml/src/C-interface/bml_norm.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -97,24 +97,6 @@ $(document).ready(function(){initNavTree('bml__norm_8h.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="bml__types_8h_source.html">bml_types.h</a>&quot;</code><br />
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for bml_norm.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__norm_8h" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__norm_8h" id="_2tmp_2bml_2src_2C-interface_2bml__norm_8h">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml__types_8h.html" title=" " alt="" coords="40,95,133,121"/>
-</map>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h__dep__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__norm_8hdep" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__norm_8hdep" id="_2tmp_2bml_2src_2C-interface_2bml__norm_8hdep">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml_8h.html" title=" " alt="" coords="5,95,168,136"/>
-</map>
-</div>
 </div>
 <p><a href="bml__norm_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -124,6 +106,8 @@ Functions</h2></td></tr>
 <tr class="separator:a78a41eb60c15e6015f49781b3ab21716"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06bf3428243be284c82fd8e097611a0f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__norm_8h.html#a06bf3428243be284c82fd8e097611a0f">bml_sum_squares2</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, <a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *B, double alpha, double beta, double threshold)</td></tr>
 <tr class="separator:a06bf3428243be284c82fd8e097611a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6dbf3d77d990714499e6c525e75fa3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__norm_8h.html#a2a6dbf3d77d990714499e6c525e75fa3">bml_sum_AB</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, <a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *B, double alpha, double threshold)</td></tr>
+<tr class="separator:a2a6dbf3d77d990714499e6c525e75fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3aa87dccc95164a1a7f592546ec14fa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__norm_8h.html#ac3aa87dccc95164a1a7f592546ec14fa">bml_sum_squares_submatrix</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, int core_size)</td></tr>
 <tr class="separator:ac3aa87dccc95164a1a7f592546ec14fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb791703b9dc12713f715dc1b37da2c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__norm_8h.html#a6fb791703b9dc12713f715dc1b37da2c">bml_fnorm</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A)</td></tr>
@@ -155,15 +139,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Frobenius norm of Matrix A </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h_a6fb791703b9dc12713f715dc1b37da2c_cgraph.png" border="0" usemap="#bml__norm_8h_a6fb791703b9dc12713f715dc1b37da2c_cgraph" alt=""/></div>
-<map name="bml__norm_8h_a6fb791703b9dc12713f715dc1b37da2c_cgraph" id="bml__norm_8h_a6fb791703b9dc12713f715dc1b37da2c_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,88,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="136,5,236,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -201,15 +176,57 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Frobenius norm of Matrix A </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h_a17db5f5d0bcb1e7d8bfd8cde1d8611a5_cgraph.png" border="0" usemap="#bml__norm_8h_a17db5f5d0bcb1e7d8bfd8cde1d8611a5_cgraph" alt=""/></div>
-<map name="bml__norm_8h_a17db5f5d0bcb1e7d8bfd8cde1d8611a5_cgraph" id="bml__norm_8h_a17db5f5d0bcb1e7d8bfd8cde1d8611a5_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,96,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="144,5,244,32"/>
-</map>
+
 </div>
+</div>
+<a id="a2a6dbf3d77d990714499e6c525e75fa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a6dbf3d77d990714499e6c525e75fa3">&#9670;&nbsp;</a></span>bml_sum_AB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double bml_sum_AB </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *&#160;</td>
+          <td class="paramname"><em>A</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *&#160;</td>
+          <td class="paramname"><em>B</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>threshold</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculate sum of all the elements of \alpha A(i,j) * B(i,j)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">A</td><td>Matrix </td></tr>
+    <tr><td class="paramname">B</td><td>Matrix </td></tr>
+    <tr><td class="paramname">alpha</td><td>Multiplier for matrix A </td></tr>
+    <tr><td class="paramname">threshold</td><td>Threshold </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sum of squares of alpha * A + beta * B </dd></dl>
 
 </div>
 </div>
@@ -236,15 +253,6 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>sum of squares of all elements in A </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h_a78a41eb60c15e6015f49781b3ab21716_cgraph.png" border="0" usemap="#bml__norm_8h_a78a41eb60c15e6015f49781b3ab21716_cgraph" alt=""/></div>
-<map name="bml__norm_8h_a78a41eb60c15e6015f49781b3ab21716_cgraph" id="bml__norm_8h_a78a41eb60c15e6015f49781b3ab21716_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,133,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="181,5,281,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -303,15 +311,6 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>sum of squares of alpha * A + beta * B </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h_a06bf3428243be284c82fd8e097611a0f_cgraph.png" border="0" usemap="#bml__norm_8h_a06bf3428243be284c82fd8e097611a0f_cgraph" alt=""/></div>
-<map name="bml__norm_8h_a06bf3428243be284c82fd8e097611a0f_cgraph" id="bml__norm_8h_a06bf3428243be284c82fd8e097611a0f_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,140,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="188,5,288,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -350,15 +349,6 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>sum of squares of all elements in A </dd></dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__norm_8h_ac3aa87dccc95164a1a7f592546ec14fa_cgraph.png" border="0" usemap="#bml__norm_8h_ac3aa87dccc95164a1a7f592546ec14fa_cgraph" alt=""/></div>
-<map name="bml__norm_8h_ac3aa87dccc95164a1a7f592546ec14fa_cgraph" id="bml__norm_8h_ac3aa87dccc95164a1a7f592546ec14fa_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,197,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="245,5,345,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -368,7 +358,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__norm_8h.html">bml_norm.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

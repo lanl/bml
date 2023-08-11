@@ -1,7 +1,10 @@
 var bml__introspection_8h =
 [
     [ "bml_get_bandwidth", "bml__introspection_8h.html#accec6eabd0ac7d0d5a3b0ef56c8a43aa", null ],
+    [ "bml_get_data_ptr", "bml__introspection_8h.html#a7ac04dde242844b11bafc344bc0486a4", null ],
+    [ "bml_get_deep_type", "bml__introspection_8h.html#a93e4b5c36bd2fba764c3ed491d13fc58", null ],
     [ "bml_get_distribution_mode", "bml__introspection_8h.html#a62d4504402d9becd8f73dbeb5e950657", null ],
+    [ "bml_get_local_matrix", "bml__introspection_8h.html#a72200da7bbae202e864859551676aa22", null ],
     [ "bml_get_M", "bml__introspection_8h.html#ab67839d414b9b3044e6c424fc686c94d", null ],
     [ "bml_get_N", "bml__introspection_8h.html#a020000b9660d63c9d904b253499abee7", null ],
     [ "bml_get_NB", "bml__introspection_8h.html#a4e826aec246a054d967b239b128329c5", null ],
