@@ -83,16 +83,17 @@ install_base_packages() {
     ${SUDO} apt-get install --assume-yes --no-install-recommends \
         apt-utils \
         build-essential \
-        gfortran \
         bundler \
         cmake cmake-data \
+        doxygen \
         emacs27 \
+        gfortran \
         git-core \
         indent \
         less \
         libblas-dev liblapack-dev \
-        libscalapack-openmpi-dev \
         libopenblas-dev \
+        libscalapack-openmpi-dev \
         mpi-default-dev \
         openmpi-bin \
         openssh-client \
