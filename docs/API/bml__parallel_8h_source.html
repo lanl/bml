@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_parallel.h Source File</title>
+<title>bml: /bml/src/C-interface/bml_parallel.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('bml__parallel_8h_source.html',''); ini
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="bml__types_8h.html">bml_types.h</a>&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifdef DO_MPI</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifdef BML_USE_MPI</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifdef SINGLE</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define REAL_MPI_TYPE MPI_FLOAT</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#else</span></div>
@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('bml__parallel_8h_source.html',''); ini
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifdef DO_MPI</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifdef BML_USE_MPI</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">extern</span> MPI_Comm ccomm;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
@@ -133,57 +133,89 @@ $(document).ready(function(){initNavTree('bml__parallel_8h_source.html',''); ini
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">int</span> bml_printRank(</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// Wrapper for MPI_Init.</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> bml_initParallel(</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">int</span> *argc,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">char</span> ***argv);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// Wrapper for MPI_Finalize.</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span> bml_shutdownParallel(</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Wrapper for MPI_Barrier.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> bml_barrierParallel(</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Wrapper for real sum MPI_AllReduce</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> bml_sumRealReduce(</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double</span> *value);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// Wrapper for real min MPI_AllReduce</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">void</span> bml_minRealReduce(</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">double</span> *value);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// Wrapper for real max MPI_AllReduce</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">void</span> bml_maxRealReduce(</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">double</span> *value);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// Wrapper for MPI_allGatherV</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__parallel_8h.html#aefbce4ada56f7e873bf9194d11836f03">bml_allGatherVParallel</a>(</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifdef BML_USE_MPI</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">// Initialize some MPI stuff</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> bml_initParallel(</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    MPI_Comm comm);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// Deallocate some MPI stuff</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">void</span> bml_shutdownParallel(</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">// Wrapper for MPI_Barrier.</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> bml_barrierParallel(</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// Wrapper for real sum MPI_AllReduce</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span> bml_sumRealReduce(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> *value);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">// Wrapper for real min MPI_AllReduce</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">void</span> bml_minRealReduce(</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">double</span> *value);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// Wrapper for real max MPI_AllReduce</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">void</span> bml_maxRealReduce(</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">double</span> *value);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">// Wrapper for MPI_allGatherV</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__parallel_8h.html#aefbce4ada56f7e873bf9194d11836f03">bml_allGatherVParallel</a>(</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#ifdef BML_USE_MPI</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span> bml_mpi_send(</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> dst,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    MPI_Comm comm);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">void</span> bml_mpi_recv(</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> dst,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    MPI_Comm comm);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordtype">void</span> bml_mpi_irecv(</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> dst,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    MPI_Comm comm);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">void</span> bml_mpi_irecv_complete(</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *bml_mpi_recv_matrix(</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842">bml_matrix_type_t</a> matrix_type,</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a> matrix_precision,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">int</span> N,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">int</span> M,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> src,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    MPI_Comm comm);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">void</span> bml_mpi_bcast_matrix(</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> root,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    MPI_Comm comm);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="abml__parallel_8h_html_a3b0afce75822d733bd695bb11681841a"><div class="ttname"><a href="bml__parallel_8h.html#a3b0afce75822d733bd695bb11681841a">bml_getMyRank</a></div><div class="ttdeci">int bml_getMyRank(void)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:46</div></div>
-<div class="ttc" id="abml__parallel_8h_html_a56f2a8d8e4902f16e3f84afacd4aa159"><div class="ttname"><a href="bml__parallel_8h.html#a56f2a8d8e4902f16e3f84afacd4aa159">bml_getNRanks</a></div><div class="ttdeci">int bml_getNRanks(void)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:37</div></div>
+<div class="ttc" id="abml__parallel_8h_html_a3b0afce75822d733bd695bb11681841a"><div class="ttname"><a href="bml__parallel_8h.html#a3b0afce75822d733bd695bb11681841a">bml_getMyRank</a></div><div class="ttdeci">int bml_getMyRank(void)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:50</div></div>
+<div class="ttc" id="abml__parallel_8h_html_a56f2a8d8e4902f16e3f84afacd4aa159"><div class="ttname"><a href="bml__parallel_8h.html#a56f2a8d8e4902f16e3f84afacd4aa159">bml_getNRanks</a></div><div class="ttdeci">int bml_getNRanks(void)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:41</div></div>
 <div class="ttc" id="abml__logger_8h_html"><div class="ttname"><a href="bml__logger_8h.html">bml_logger.h</a></div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48">ellpack</a></div><div class="ttdeci">@ ellpack</div><div class="ttdef"><b>Definition:</b> bml_types.h:14</div></div>
-<div class="ttc" id="abml__introspection_8h_html_a0866fa0746f283b3a1fbb9c7315a79d1"><div class="ttname"><a href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1">bml_get_type</a></div><div class="ttdeci">bml_matrix_type_t bml_get_type(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:20</div></div>
-<div class="ttc" id="abml__logger_8h_html_abffaf9cecb61026cac6db71a16ace9c5"><div class="ttname"><a href="bml__logger_8h.html#abffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR(format,...)</div><div class="ttdef"><b>Definition:</b> bml_logger.h:45</div></div>
+<div class="ttc" id="abml__introspection_8h_html_a0866fa0746f283b3a1fbb9c7315a79d1"><div class="ttname"><a href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1">bml_get_type</a></div><div class="ttdeci">bml_matrix_type_t bml_get_type(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:22</div></div>
+<div class="ttc" id="abml__logger_8h_html_abffaf9cecb61026cac6db71a16ace9c5"><div class="ttname"><a href="bml__logger_8h.html#abffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR(format,...)</div><div class="ttdef"><b>Definition:</b> bml_logger.h:52</div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26">dense</a></div><div class="ttdeci">@ dense</div><div class="ttdef"><b>Definition:</b> bml_types.h:12</div></div>
-<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d">ellsort</a></div><div class="ttdeci">@ ellsort</div><div class="ttdef"><b>Definition:</b> bml_types.h:18</div></div>
-<div class="ttc" id="abml__parallel_8h_html_aefbce4ada56f7e873bf9194d11836f03"><div class="ttname"><a href="bml__parallel_8h.html#aefbce4ada56f7e873bf9194d11836f03">bml_allGatherVParallel</a></div><div class="ttdeci">void bml_allGatherVParallel(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:183</div></div>
+<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842">bml_matrix_type_t</a></div><div class="ttdeci">bml_matrix_type_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:7</div></div>
+<div class="ttc" id="abml__parallel_8h_html_aefbce4ada56f7e873bf9194d11836f03"><div class="ttname"><a href="bml__parallel_8h.html#aefbce4ada56f7e873bf9194d11836f03">bml_allGatherVParallel</a></div><div class="ttdeci">void bml_allGatherVParallel(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:174</div></div>
 <div class="ttc" id="abml__introspection_8h_html"><div class="ttname"><a href="bml__introspection_8h.html">bml_introspection.h</a></div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee">ellblock</a></div><div class="ttdeci">@ ellblock</div><div class="ttdef"><b>Definition:</b> bml_types.h:16</div></div>
 <div class="ttc" id="abml__parallel_8h_html"><div class="ttname"><a href="bml__parallel_8h.html">bml_parallel.h</a></div></div>
 <div class="ttc" id="abml__types_8h_html_afe10f3a7e985a8627616dfda2dec6fc9"><div class="ttname"><a href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a></div><div class="ttdeci">void bml_matrix_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:51</div></div>
 <div class="ttc" id="abml__types_8h_html"><div class="ttname"><a href="bml__types_8h.html">bml_types.h</a></div></div>
+<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954">csr</a></div><div class="ttdeci">@ csr</div><div class="ttdef"><b>Definition:</b> bml_types.h:18</div></div>
+<div class="ttc" id="abml__types_8h_html_a8d762ed64876f48d5eb687cb62f20d5c"><div class="ttname"><a href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a></div><div class="ttdeci">bml_matrix_precision_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:24</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__parallel_8h.html">bml_parallel.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

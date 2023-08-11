@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_submatrix.h File Reference</title>
+<title>bml: /bml/src/C-interface/bml_submatrix.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -97,24 +97,6 @@ $(document).ready(function(){initNavTree('bml__submatrix_8h.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="bml__types_8h_source.html">bml_types.h</a>&quot;</code><br />
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for bml_submatrix.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__submatrix_8h" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__submatrix_8h" id="_2tmp_2bml_2src_2C-interface_2bml__submatrix_8h">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml__types_8h.html" title=" " alt="" coords="40,95,133,121"/>
-</map>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h__dep__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__submatrix_8hdep" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__submatrix_8hdep" id="_2tmp_2bml_2src_2C-interface_2bml__submatrix_8hdep">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml_8h.html" title=" " alt="" coords="5,95,168,136"/>
-</map>
-</div>
 </div>
 <p><a href="bml__submatrix_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -134,6 +116,12 @@ Functions</h2></td></tr>
 <tr class="separator:a5fb3d87427a5449d7fd39bad9034b075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af54e52c53f85579791ffa25d8ccf0b94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__submatrix_8h.html#af54e52c53f85579791ffa25d8ccf0b94">bml_group_matrix</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, int *hindex, int ngroups, double threshold)</td></tr>
 <tr class="separator:af54e52c53f85579791ffa25d8ccf0b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd36e233c4b3b247d929617bbf6a0189"><td class="memItemLeft" align="right" valign="top"><a id="abd36e233c4b3b247d929617bbf6a0189"></a>
+<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>bml_extract_submatrix</b> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, int irow, int icol, int B_N, int B_M)</td></tr>
+<tr class="separator:abd36e233c4b3b247d929617bbf6a0189"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a187a453d4e0aa0c348cb359083394b4f"><td class="memItemLeft" align="right" valign="top"><a id="a187a453d4e0aa0c348cb359083394b4f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>bml_assign_submatrix</b> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, <a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *B, int irow, int icol)</td></tr>
+<tr class="separator:a187a453d4e0aa0c348cb359083394b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a77fef8e0e8749b499f979e356df0f03e"></a>
@@ -183,15 +171,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_a77fef8e0e8749b499f979e356df0f03e_cgraph.png" border="0" usemap="#bml__submatrix_8h_a77fef8e0e8749b499f979e356df0f03e_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_a77fef8e0e8749b499f979e356df0f03e_cgraph" id="bml__submatrix_8h_a77fef8e0e8749b499f979e356df0f03e_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,115,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="163,5,263,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -256,15 +235,6 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_a5fb3d87427a5449d7fd39bad9034b075_cgraph.png" border="0" usemap="#bml__submatrix_8h_a5fb3d87427a5449d7fd39bad9034b075_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_a5fb3d87427a5449d7fd39bad9034b075_cgraph" id="bml__submatrix_8h_a5fb3d87427a5449d7fd39bad9034b075_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,153,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="201,5,301,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -309,21 +279,12 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Matrix A </td></tr>
-    <tr><td class="paramname">hindex</td><td>Indeces of nodes </td></tr>
+    <tr><td class="paramname">hindex</td><td>Indices of nodes </td></tr>
     <tr><td class="paramname">ngroups</td><td>Number of groups </td></tr>
     <tr><td class="paramname">threshold</td><td>Threshold for graph </td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_af54e52c53f85579791ffa25d8ccf0b94_cgraph.png" border="0" usemap="#bml__submatrix_8h_af54e52c53f85579791ffa25d8ccf0b94_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_af54e52c53f85579791ffa25d8ccf0b94_cgraph" id="bml__submatrix_8h_af54e52c53f85579791ffa25d8ccf0b94_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,131,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="179,5,279,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -369,20 +330,11 @@ Here is the call graph for this function:</div>
   <table class="params">
     <tr><td class="paramname">A</td><td>Matrix A </td></tr>
     <tr><td class="paramname">B</td><td>Submatrix B </td></tr>
-    <tr><td class="paramname">core_halo_index</td><td>Set of row indeces for submatrix </td></tr>
-    <tr><td class="paramname">llsize</td><td>Number of indeces </td></tr>
+    <tr><td class="paramname">core_halo_index</td><td>Set of row indices for submatrix </td></tr>
+    <tr><td class="paramname">llsize</td><td>Number of indices </td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_a331b7ab46bcffcabfdaef4d9dfdd378b_cgraph.png" border="0" usemap="#bml__submatrix_8h_a331b7ab46bcffcabfdaef4d9dfdd378b_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_a331b7ab46bcffcabfdaef4d9dfdd378b_cgraph" id="bml__submatrix_8h_a331b7ab46bcffcabfdaef4d9dfdd378b_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,156,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="204,5,304,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -446,23 +398,14 @@ Here is the call graph for this function:</div>
   <table class="params">
     <tr><td class="paramname">A</td><td>Hamiltonian matrix A </td></tr>
     <tr><td class="paramname">B</td><td>Graph matrix B </td></tr>
-    <tr><td class="paramname">nodelist</td><td>List of node/orbital indeces </td></tr>
+    <tr><td class="paramname">nodelist</td><td>List of node/orbital indices </td></tr>
     <tr><td class="paramname">nsize</td><td>Size of nodelist </td></tr>
-    <tr><td class="paramname">core_halo_index</td><td>List of core+halo indeces </td></tr>
+    <tr><td class="paramname">core_halo_index</td><td>List of core+halo indices </td></tr>
     <tr><td class="paramname">vsize</td><td>Size of core_halo_index and core_pos </td></tr>
     <tr><td class="paramname">double_jump_flag</td><td>Flag to use double jump (0=no, 1=yes) </td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_aed513cf5f070925d10cd6fbaa07f0c1c_cgraph.png" border="0" usemap="#bml__submatrix_8h_aed513cf5f070925d10cd6fbaa07f0c1c_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_aed513cf5f070925d10cd6fbaa07f0c1c_cgraph" id="bml__submatrix_8h_aed513cf5f070925d10cd6fbaa07f0c1c_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,156,47"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="204,13,304,39"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -519,23 +462,14 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">B</td><td>Graph matrix B </td></tr>
-    <tr><td class="paramname">nodelist</td><td>List of node/orbital indeces </td></tr>
+    <tr><td class="paramname">nodelist</td><td>List of node/orbital indices </td></tr>
     <tr><td class="paramname">nsize</td><td>Size of nodelist </td></tr>
-    <tr><td class="paramname">core_halo_index</td><td>List of core+halo indeces </td></tr>
+    <tr><td class="paramname">core_halo_index</td><td>List of core+halo indices </td></tr>
     <tr><td class="paramname">vsize</td><td>Size of core_halo_index and core_pos </td></tr>
     <tr><td class="paramname">double_jump_flag</td><td>Flag to use double jump (0=no, 1=yes) </td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_a1e3f458b2031d1783dd93c89cf0200ea_cgraph.png" border="0" usemap="#bml__submatrix_8h_a1e3f458b2031d1783dd93c89cf0200ea_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_a1e3f458b2031d1783dd93c89cf0200ea_cgraph" id="bml__submatrix_8h_a1e3f458b2031d1783dd93c89cf0200ea_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,156,47"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="204,13,304,39"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -588,26 +522,17 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Assemble submatrix into a full matrix based on core+halo indeces.</p>
+<p>Assemble submatrix into a full matrix based on core+halo indices.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">A</td><td>Submatrix A </td></tr>
     <tr><td class="paramname">B</td><td>Matrix B </td></tr>
-    <tr><td class="paramname">core_halo_index</td><td>Set of submatrix row indeces </td></tr>
-    <tr><td class="paramname">lsize</td><td>Number of indeces </td></tr>
+    <tr><td class="paramname">core_halo_index</td><td>Set of submatrix row indices </td></tr>
+    <tr><td class="paramname">lsize</td><td>Number of indices </td></tr>
     <tr><td class="paramname">llsize</td><td>Number of core positions </td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__submatrix_8h_adc606505575f2681b5db802021fe6a60_cgraph.png" border="0" usemap="#bml__submatrix_8h_adc606505575f2681b5db802021fe6a60_cgraph" alt=""/></div>
-<map name="bml__submatrix_8h_adc606505575f2681b5db802021fe6a60_cgraph" id="bml__submatrix_8h_adc606505575f2681b5db802021fe6a60_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,156,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="204,5,304,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -617,7 +542,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__submatrix_8h.html">bml_submatrix.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

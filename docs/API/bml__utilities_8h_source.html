@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_utilities.h Source File</title>
+<title>bml: /bml/src/C-interface/bml_utilities.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -99,85 +99,90 @@ $(document).ready(function(){initNavTree('bml__utilities_8h_source.html',''); in
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#define __BML_UTILITIES_H</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="bml__types_8h.html">bml_types.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#a9f51d6ec2bc0109ae0677e3e1c3806b5">bml_print_dense_matrix</a>(</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keywordtype">int</span> N,</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a> matrix_precision,</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="bml__types_8h.html#aee75766924480bd077ae554927c85233">bml_dense_order_t</a> order,</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">void</span> *A,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">int</span> i_u,</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">int</span> j_l,</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">int</span> j_u);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#af15258cd8da4415d492fd8ef005fd951">bml_print_dense_vector</a>(</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">int</span> N,</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a> matrix_precision,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> *v,</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">int</span> i_u);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#affd749f81dd284459f95fd9e5072d49e">bml_print_bml_vector</a>(</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="bml__types_8h.html#a9d6f9ce8185b0741d087e196388df34a">bml_vector_t</a> * v,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">int</span> i_u);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#ad4de58c7dbc719120733c7caca20db49">bml_print_bml_matrix</a>(</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> i_u,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">int</span> j_l,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">int</span> j_u);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#a03cdb2dd9c6b1aa1747a3deab690c281">bml_read_bml_matrix</a>(</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#ae80010a9a582ccdd81500357ffb8f505">bml_write_bml_matrix</a>(</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">char</span> *filename);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#define PRINT_THRESHOLD 16</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#a9f51d6ec2bc0109ae0677e3e1c3806b5">bml_print_dense_matrix</a>(</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keywordtype">int</span> N,</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a> matrix_precision,</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="bml__types_8h.html#aee75766924480bd077ae554927c85233">bml_dense_order_t</a> order,</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">void</span> *A,</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">int</span> i_u,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">int</span> j_l,</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">int</span> j_u);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#af15258cd8da4415d492fd8ef005fd951">bml_print_dense_vector</a>(</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">int</span> N,</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a> matrix_precision,</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">void</span> *v,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">int</span> i_u);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#affd749f81dd284459f95fd9e5072d49e">bml_print_bml_vector</a>(</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="bml__types_8h.html#a9d6f9ce8185b0741d087e196388df34a">bml_vector_t</a> * v,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">int</span> i_u);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#ad4de58c7dbc719120733c7caca20db49">bml_print_bml_matrix</a>(</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> i_l,</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">int</span> i_u,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">int</span> j_l,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">int</span> j_u);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#a03cdb2dd9c6b1aa1747a3deab690c281">bml_read_bml_matrix</a>(</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">void</span> <a class="code" href="bml__utilities_8h.html#ae80010a9a582ccdd81500357ffb8f505">bml_write_bml_matrix</a>(</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> * A,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">char</span> *filename);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">int</span> bml_sqrtint(</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> x);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="abml__utilities_8h_html_a9f51d6ec2bc0109ae0677e3e1c3806b5"><div class="ttname"><a href="bml__utilities_8h.html#a9f51d6ec2bc0109ae0677e3e1c3806b5">bml_print_dense_matrix</a></div><div class="ttdeci">void bml_print_dense_matrix(int N, bml_matrix_precision_t matrix_precision, bml_dense_order_t order, void *A, int i_l, int i_u, int j_l, int j_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:247</div></div>
-<div class="ttc" id="agroup__allocate__group__C_html_ga511db66cb871701e1620f85b307d0157"><div class="ttname"><a href="group__allocate__group__C.html#ga511db66cb871701e1620f85b307d0157">bml_free_memory</a></div><div class="ttdeci">void bml_free_memory(void *ptr)</div><div class="ttdef"><b>Definition:</b> bml_allocate.c:127</div></div>
-<div class="ttc" id="agroup__convert__group__C_html_ga287f7c9a50a4541ba28dadad4b3d432e"><div class="ttname"><a href="group__convert__group__C.html#ga287f7c9a50a4541ba28dadad4b3d432e">bml_export_to_dense</a></div><div class="ttdeci">void * bml_export_to_dense(bml_matrix_t *A, bml_dense_order_t order)</div><div class="ttdef"><b>Definition:</b> bml_export.c:35</div></div>
+<div class="ttc" id="abml__utilities_8h_html_a9f51d6ec2bc0109ae0677e3e1c3806b5"><div class="ttname"><a href="bml__utilities_8h.html#a9f51d6ec2bc0109ae0677e3e1c3806b5">bml_print_dense_matrix</a></div><div class="ttdeci">void bml_print_dense_matrix(int N, bml_matrix_precision_t matrix_precision, bml_dense_order_t order, void *A, int i_l, int i_u, int j_l, int j_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:270</div></div>
+<div class="ttc" id="abml__parallel_8h_html_a3b0afce75822d733bd695bb11681841a"><div class="ttname"><a href="bml__parallel_8h.html#a3b0afce75822d733bd695bb11681841a">bml_getMyRank</a></div><div class="ttdeci">int bml_getMyRank(void)</div><div class="ttdef"><b>Definition:</b> bml_parallel.c:50</div></div>
+<div class="ttc" id="agroup__allocate__group__C_html_ga511db66cb871701e1620f85b307d0157"><div class="ttname"><a href="group__allocate__group__C.html#ga511db66cb871701e1620f85b307d0157">bml_free_memory</a></div><div class="ttdeci">void bml_free_memory(void *ptr)</div><div class="ttdef"><b>Definition:</b> bml_allocate.c:129</div></div>
+<div class="ttc" id="agroup__convert__group__C_html_ga287f7c9a50a4541ba28dadad4b3d432e"><div class="ttname"><a href="group__convert__group__C.html#ga287f7c9a50a4541ba28dadad4b3d432e">bml_export_to_dense</a></div><div class="ttdeci">void * bml_export_to_dense(bml_matrix_t *A, bml_dense_order_t order)</div><div class="ttdef"><b>Definition:</b> bml_export.c:37</div></div>
 <div class="ttc" id="abml__types_8h_html_aee75766924480bd077ae554927c85233a9604ec32306f68f7f9b7f92ae8d0b600"><div class="ttname"><a href="bml__types_8h.html#aee75766924480bd077ae554927c85233a9604ec32306f68f7f9b7f92ae8d0b600">dense_column_major</a></div><div class="ttdeci">@ dense_column_major</div><div class="ttdef"><b>Definition:</b> bml_types.h:44</div></div>
 <div class="ttc" id="abml__types_8h_html_a8d762ed64876f48d5eb687cb62f20d5cab1dee362b4b8fac13bfc3e3df1d88af0"><div class="ttname"><a href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5cab1dee362b4b8fac13bfc3e3df1d88af0">single_real</a></div><div class="ttdeci">@ single_real</div><div class="ttdef"><b>Definition:</b> bml_types.h:29</div></div>
-<div class="ttc" id="abml__utilities_8h_html_af15258cd8da4415d492fd8ef005fd951"><div class="ttname"><a href="bml__utilities_8h.html#af15258cd8da4415d492fd8ef005fd951">bml_print_dense_vector</a></div><div class="ttdeci">void bml_print_dense_vector(int N, bml_matrix_precision_t matrix_precision, void *v, int i_l, int i_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:410</div></div>
+<div class="ttc" id="abml__utilities_8h_html_af15258cd8da4415d492fd8ef005fd951"><div class="ttname"><a href="bml__utilities_8h.html#af15258cd8da4415d492fd8ef005fd951">bml_print_dense_vector</a></div><div class="ttdeci">void bml_print_dense_vector(int N, bml_matrix_precision_t matrix_precision, void *v, int i_l, int i_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:433</div></div>
 <div class="ttc" id="abml__allocate_8h_html"><div class="ttname"><a href="bml__allocate_8h.html">bml_allocate.h</a></div></div>
-<div class="ttc" id="abml__utilities_8h_html_ad4de58c7dbc719120733c7caca20db49"><div class="ttname"><a href="bml__utilities_8h.html#ad4de58c7dbc719120733c7caca20db49">bml_print_bml_matrix</a></div><div class="ttdeci">void bml_print_bml_matrix(bml_matrix_t *A, int i_l, int i_u, int j_l, int j_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:41</div></div>
+<div class="ttc" id="abml__utilities_8h_html_ad4de58c7dbc719120733c7caca20db49"><div class="ttname"><a href="bml__utilities_8h.html#ad4de58c7dbc719120733c7caca20db49">bml_print_bml_matrix</a></div><div class="ttdeci">void bml_print_bml_matrix(bml_matrix_t *A, int i_l, int i_u, int j_l, int j_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:45</div></div>
 <div class="ttc" id="abml__utilities_8h_html"><div class="ttname"><a href="bml__utilities_8h.html">bml_utilities.h</a></div></div>
 <div class="ttc" id="abml__types_8h_html_a9d6f9ce8185b0741d087e196388df34a"><div class="ttname"><a href="bml__types_8h.html#a9d6f9ce8185b0741d087e196388df34a">bml_vector_t</a></div><div class="ttdeci">void bml_vector_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:48</div></div>
 <div class="ttc" id="abml__types_8h_html_aee75766924480bd077ae554927c85233a49a37e300b888e838954d75ba69a6392"><div class="ttname"><a href="bml__types_8h.html#aee75766924480bd077ae554927c85233a49a37e300b888e838954d75ba69a6392">dense_row_major</a></div><div class="ttdeci">@ dense_row_major</div><div class="ttdef"><b>Definition:</b> bml_types.h:42</div></div>
-<div class="ttc" id="abml__utilities_8h_html_affd749f81dd284459f95fd9e5072d49e"><div class="ttname"><a href="bml__utilities_8h.html#affd749f81dd284459f95fd9e5072d49e">bml_print_bml_vector</a></div><div class="ttdeci">void bml_print_bml_vector(bml_vector_t *v, int i_l, int i_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:24</div></div>
+<div class="ttc" id="abml__utilities_8h_html_affd749f81dd284459f95fd9e5072d49e"><div class="ttname"><a href="bml__utilities_8h.html#affd749f81dd284459f95fd9e5072d49e">bml_print_bml_vector</a></div><div class="ttdeci">void bml_print_bml_vector(bml_vector_t *v, int i_l, int i_u)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:28</div></div>
 <div class="ttc" id="abml__types_8h_html_a8d762ed64876f48d5eb687cb62f20d5ca9e8955d27a2db22bf39bdb8b9af4e543"><div class="ttname"><a href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5ca9e8955d27a2db22bf39bdb8b9af4e543">double_complex</a></div><div class="ttdeci">@ double_complex</div><div class="ttdef"><b>Definition:</b> bml_types.h:35</div></div>
 <div class="ttc" id="abml__types_8h_html_a8d762ed64876f48d5eb687cb62f20d5ca1e3cccb950b0263ba0c1ddd6495031d5"><div class="ttname"><a href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5ca1e3cccb950b0263ba0c1ddd6495031d5">single_complex</a></div><div class="ttdeci">@ single_complex</div><div class="ttdef"><b>Definition:</b> bml_types.h:33</div></div>
 <div class="ttc" id="abml__logger_8h_html"><div class="ttname"><a href="bml__logger_8h.html">bml_logger.h</a></div></div>
-<div class="ttc" id="abml__introspection_8h_html_ad7617fd544436c7f9725078dc70be254"><div class="ttname"><a href="bml__introspection_8h.html#ad7617fd544436c7f9725078dc70be254">bml_get_precision</a></div><div class="ttdeci">bml_matrix_precision_t bml_get_precision(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:41</div></div>
-<div class="ttc" id="abml__introspection_8h_html_a020000b9660d63c9d904b253499abee7"><div class="ttname"><a href="bml__introspection_8h.html#a020000b9660d63c9d904b253499abee7">bml_get_N</a></div><div class="ttdeci">int bml_get_N(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:77</div></div>
+<div class="ttc" id="abml__introspection_8h_html_ad7617fd544436c7f9725078dc70be254"><div class="ttname"><a href="bml__introspection_8h.html#ad7617fd544436c7f9725078dc70be254">bml_get_precision</a></div><div class="ttdeci">bml_matrix_precision_t bml_get_precision(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:68</div></div>
+<div class="ttc" id="abml__introspection_8h_html_a020000b9660d63c9d904b253499abee7"><div class="ttname"><a href="bml__introspection_8h.html#a020000b9660d63c9d904b253499abee7">bml_get_N</a></div><div class="ttdeci">int bml_get_N(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:106</div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a24b256c25cebbc6eda1078275b3dbd48">ellpack</a></div><div class="ttdeci">@ ellpack</div><div class="ttdef"><b>Definition:</b> bml_types.h:14</div></div>
-<div class="ttc" id="abml__introspection_8h_html_a0866fa0746f283b3a1fbb9c7315a79d1"><div class="ttname"><a href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1">bml_get_type</a></div><div class="ttdeci">bml_matrix_type_t bml_get_type(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:20</div></div>
-<div class="ttc" id="abml__logger_8h_html_abffaf9cecb61026cac6db71a16ace9c5"><div class="ttname"><a href="bml__logger_8h.html#abffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR(format,...)</div><div class="ttdef"><b>Definition:</b> bml_logger.h:45</div></div>
+<div class="ttc" id="abml__introspection_8h_html_a0866fa0746f283b3a1fbb9c7315a79d1"><div class="ttname"><a href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1">bml_get_type</a></div><div class="ttdeci">bml_matrix_type_t bml_get_type(bml_matrix_t *A)</div><div class="ttdef"><b>Definition:</b> bml_introspection.c:22</div></div>
+<div class="ttc" id="abml__logger_8h_html_abffaf9cecb61026cac6db71a16ace9c5"><div class="ttname"><a href="bml__logger_8h.html#abffaf9cecb61026cac6db71a16ace9c5">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR(format,...)</div><div class="ttdef"><b>Definition:</b> bml_logger.h:52</div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ae8716347cc7fdaf9fc25cc0e20c2ab26">dense</a></div><div class="ttdeci">@ dense</div><div class="ttdef"><b>Definition:</b> bml_types.h:12</div></div>
-<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842ab9d31d5e20d72da17bef927e2752ad3d">ellsort</a></div><div class="ttdeci">@ ellsort</div><div class="ttdef"><b>Definition:</b> bml_types.h:18</div></div>
 <div class="ttc" id="abml__introspection_8h_html"><div class="ttname"><a href="bml__introspection_8h.html">bml_introspection.h</a></div></div>
-<div class="ttc" id="abml__utilities_8h_html_ae80010a9a582ccdd81500357ffb8f505"><div class="ttname"><a href="bml__utilities_8h.html#ae80010a9a582ccdd81500357ffb8f505">bml_write_bml_matrix</a></div><div class="ttdeci">void bml_write_bml_matrix(bml_matrix_t *A, char *filename)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:506</div></div>
+<div class="ttc" id="abml__utilities_8h_html_ae80010a9a582ccdd81500357ffb8f505"><div class="ttname"><a href="bml__utilities_8h.html#ae80010a9a582ccdd81500357ffb8f505">bml_write_bml_matrix</a></div><div class="ttdeci">void bml_write_bml_matrix(bml_matrix_t *A, char *filename)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:531</div></div>
 <div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a5f22e1eeefdb33ea7810804347747fee">ellblock</a></div><div class="ttdeci">@ ellblock</div><div class="ttdef"><b>Definition:</b> bml_types.h:16</div></div>
 <div class="ttc" id="abml__types_8h_html_a8d762ed64876f48d5eb687cb62f20d5cabc5f098fe5cb31d71e85d8be8b85b03a"><div class="ttname"><a href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5cabc5f098fe5cb31d71e85d8be8b85b03a">double_real</a></div><div class="ttdeci">@ double_real</div><div class="ttdef"><b>Definition:</b> bml_types.h:31</div></div>
-<div class="ttc" id="abml__utilities_8h_html_a03cdb2dd9c6b1aa1747a3deab690c281"><div class="ttname"><a href="bml__utilities_8h.html#a03cdb2dd9c6b1aa1747a3deab690c281">bml_read_bml_matrix</a></div><div class="ttdeci">void bml_read_bml_matrix(bml_matrix_t *A, char *filename)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:473</div></div>
+<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842aa4ec306759a6a7076aee2d7bf1289309"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842aa4ec306759a6a7076aee2d7bf1289309">distributed2d</a></div><div class="ttdeci">@ distributed2d</div><div class="ttdef"><b>Definition:</b> bml_types.h:20</div></div>
+<div class="ttc" id="abml__utilities_8h_html_a03cdb2dd9c6b1aa1747a3deab690c281"><div class="ttname"><a href="bml__utilities_8h.html#a03cdb2dd9c6b1aa1747a3deab690c281">bml_read_bml_matrix</a></div><div class="ttdeci">void bml_read_bml_matrix(bml_matrix_t *A, char *filename)</div><div class="ttdef"><b>Definition:</b> bml_utilities.c:496</div></div>
 <div class="ttc" id="abml__types_8h_html_aee75766924480bd077ae554927c85233"><div class="ttname"><a href="bml__types_8h.html#aee75766924480bd077ae554927c85233">bml_dense_order_t</a></div><div class="ttdeci">bml_dense_order_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:39</div></div>
+<div class="ttc" id="abml__parallel_8h_html"><div class="ttname"><a href="bml__parallel_8h.html">bml_parallel.h</a></div></div>
 <div class="ttc" id="abml__types_8h_html_afe10f3a7e985a8627616dfda2dec6fc9"><div class="ttname"><a href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a></div><div class="ttdeci">void bml_matrix_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:51</div></div>
 <div class="ttc" id="abml__types_8h_html"><div class="ttname"><a href="bml__types_8h.html">bml_types.h</a></div></div>
-<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954">csr</a></div><div class="ttdeci">@ csr</div><div class="ttdef"><b>Definition:</b> bml_types.h:20</div></div>
+<div class="ttc" id="abml__types_8h_html_ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954"><div class="ttname"><a href="bml__types_8h.html#ab7d3c21318898af00e7c28712f369842a3f553532794be93f9d14a4ace94a1954">csr</a></div><div class="ttdeci">@ csr</div><div class="ttdef"><b>Definition:</b> bml_types.h:18</div></div>
 <div class="ttc" id="abml__types_8h_html_a8d762ed64876f48d5eb687cb62f20d5c"><div class="ttname"><a href="bml__types_8h.html#a8d762ed64876f48d5eb687cb62f20d5c">bml_matrix_precision_t</a></div><div class="ttdeci">bml_matrix_precision_t</div><div class="ttdef"><b>Definition:</b> bml_types.h:24</div></div>
 <div class="ttc" id="abml__export_8h_html"><div class="ttname"><a href="bml__export_8h.html">bml_export.h</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__utilities_8h.html">bml_utilities.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

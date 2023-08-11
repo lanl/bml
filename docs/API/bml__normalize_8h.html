@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bml: /tmp/bml/src/C-interface/bml_normalize.h File Reference</title>
+<title>bml: /bml/src/C-interface/bml_normalize.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -33,7 +33,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">bml
-   &#160;<span id="projectnumber">1.3.1</span>
+   &#160;<span id="projectnumber">2.3.0</span>
    </div>
    <div id="projectbrief">Basic Matrix Library (bml):  A matrix library for linear algebra operations,  supporting several data structures.</div>
   </td>
@@ -97,24 +97,6 @@ $(document).ready(function(){initNavTree('bml__normalize_8h.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="bml__types_8h_source.html">bml_types.h</a>&quot;</code><br />
-</div><div class="textblock"><div class="dynheader">
-Include dependency graph for bml_normalize.h:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__normalize_8h__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__normalize_8h" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__normalize_8h" id="_2tmp_2bml_2src_2C-interface_2bml__normalize_8h">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml__types_8h.html" title=" " alt="" coords="40,95,133,121"/>
-</map>
-</div>
-</div><div class="textblock"><div class="dynheader">
-This graph shows which files directly or indirectly include this file:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__normalize_8h__dep__incl.png" border="0" usemap="#_2tmp_2bml_2src_2C-interface_2bml__normalize_8hdep" alt=""/></div>
-<map name="_2tmp_2bml_2src_2C-interface_2bml__normalize_8hdep" id="_2tmp_2bml_2src_2C-interface_2bml__normalize_8hdep">
-<area shape="rect" title=" " alt="" coords="5,5,168,47"/>
-<area shape="rect" href="bml_8h.html" title=" " alt="" coords="5,95,168,136"/>
-</map>
-</div>
 </div>
 <p><a href="bml__normalize_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -126,6 +108,9 @@ Functions</h2></td></tr>
 <tr class="separator:aa75eaf96a480fa5bc84f895c729d2b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a355405d0e49e5096d08b5c6c6b884319"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bml__normalize_8h.html#a355405d0e49e5096d08b5c6c6b884319">bml_gershgorin_partial</a> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, int nrows)</td></tr>
 <tr class="separator:a355405d0e49e5096d08b5c6c6b884319"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5959525a156fbfd96ba4900953188a9d"><td class="memItemLeft" align="right" valign="top"><a id="a5959525a156fbfd96ba4900953188a9d"></a>
+void *&#160;</td><td class="memItemRight" valign="bottom"><b>bml_accumulate_offdiag</b> (<a class="el" href="bml__types_8h.html#afe10f3a7e985a8627616dfda2dec6fc9">bml_matrix_t</a> *A, int flag)</td></tr>
+<tr class="separator:a5959525a156fbfd96ba4900953188a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aa75eaf96a480fa5bc84f895c729d2b93"></a>
@@ -150,15 +135,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__normalize_8h_aa75eaf96a480fa5bc84f895c729d2b93_cgraph.png" border="0" usemap="#bml__normalize_8h_aa75eaf96a480fa5bc84f895c729d2b93_cgraph" alt=""/></div>
-<map name="bml__normalize_8h_aa75eaf96a480fa5bc84f895c729d2b93_cgraph" id="bml__normalize_8h_aa75eaf96a480fa5bc84f895c729d2b93_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,116,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="164,5,264,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -195,15 +171,6 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__normalize_8h_a355405d0e49e5096d08b5c6c6b884319_cgraph.png" border="0" usemap="#bml__normalize_8h_a355405d0e49e5096d08b5c6c6b884319_cgraph" alt=""/></div>
-<map name="bml__normalize_8h_a355405d0e49e5096d08b5c6c6b884319_cgraph" id="bml__normalize_8h_a355405d0e49e5096d08b5c6c6b884319_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,157,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="205,5,305,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -247,15 +214,6 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="bml__normalize_8h_a9f176dae39c3375697bc397b8b9e3f55_cgraph.png" border="0" usemap="#bml__normalize_8h_a9f176dae39c3375697bc397b8b9e3f55_cgraph" alt=""/></div>
-<map name="bml__normalize_8h_a9f176dae39c3375697bc397b8b9e3f55_cgraph" id="bml__normalize_8h_a9f176dae39c3375697bc397b8b9e3f55_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,112,32"/>
-<area shape="rect" href="bml__introspection_8h.html#a0866fa0746f283b3a1fbb9c7315a79d1" title=" " alt="" coords="160,5,260,32"/>
-</map>
-</div>
 
 </div>
 </div>
@@ -265,7 +223,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_40f4bd1e0d79afce1878e17dca4050b7.html">C-interface</a></li><li class="navelem"><a class="el" href="bml__normalize_8h.html">bml_normalize.h</a></li>
-    <li class="footer">Generated on Wed Sep 9 2020 19:37:59 for bml by
+    <li class="footer">Generated on Fri Aug 11 2023 18:45:31 for bml by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

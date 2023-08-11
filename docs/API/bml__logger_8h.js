@@ -11,5 +11,7 @@ var bml__logger_8h =
       [ "BML_LOG_ERROR", "bml__logger_8h.html#a4e5211e771917d13c27085693bbdbc6da10730f0c0bb49ada3b16514e9c673434", null ]
     ] ],
     [ "bml_log", "bml__logger_8h.html#a85424fdf9cd0472a5abddfabc426d131", null ],
-    [ "bml_log_location", "bml__logger_8h.html#a1f689b34b60c96c1b835d69e7bb9e342", null ]
+    [ "bml_log_location", "bml__logger_8h.html#a1f689b34b60c96c1b835d69e7bb9e342", null ],
+    [ "bml_print_version", "bml__logger_8h.html#a995a517cac0326e6da37a560d87d4ce8", null ],
+    [ "bml_version", "bml__logger_8h.html#a3398ecfe55dd2c235e4473711b55966a", null ]
 ];

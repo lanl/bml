@@ -28,28 +28,6 @@ var NAVTREE =
       [ "Modifying the library itself", "index.html#developers", null ],
       [ "Planned Features", "index.html#planned_features", null ]
     ] ],
-    [ "README", "md__tmp_bml_README.html", [
-      [ "Introduction", "md__tmp_bml_README.html#autotoc_md0", null ],
-      [ "Mailing List", "md__tmp_bml_README.html#autotoc_md1", null ],
-      [ "Supported Matrix Formats", "md__tmp_bml_README.html#autotoc_md2", null ],
-      [ "Binary Packages", "md__tmp_bml_README.html#autotoc_md3", null ],
-      [ "Build Instructions", "md__tmp_bml_README.html#autotoc_md4", [
-        [ "For a quick installation", "md__tmp_bml_README.html#autotoc_md5", null ],
-        [ "For a more involved installation", "md__tmp_bml_README.html#autotoc_md6", null ],
-        [ "Prerequisites", "md__tmp_bml_README.html#autotoc_md7", null ],
-        [ "If the build fails", "md__tmp_bml_README.html#autotoc_md8", null ]
-      ] ],
-      [ "Developer Suggested Workflow", "md__tmp_bml_README.html#autotoc_md9", [
-        [ "Coding Style", "md__tmp_bml_README.html#autotoc_md10", null ]
-      ] ],
-      [ "Citing", "md__tmp_bml_README.html#autotoc_md11", null ],
-      [ "Authors", "md__tmp_bml_README.html#autotoc_md12", null ],
-      [ "Contributors", "md__tmp_bml_README.html#autotoc_md13", null ],
-      [ "License", "md__tmp_bml_README.html#autotoc_md14", null ],
-      [ "LA-CC", "md__tmp_bml_README.html#autotoc_md15", [
-        [ "ABSTRACT", "md__tmp_bml_README.html#autotoc_md16", null ]
-      ] ]
-    ] ],
     [ "Future Plans", "future_plans.html", [
       [ "Matrix Types", "future_plans.html#planned_type", null ],
       [ "Precisions", "future_plans.html#planned_precisions", null ],
@@ -61,12 +39,12 @@ var NAVTREE =
       [ "Developer Suggested Workflow", "developer_documentation.html#workflow", null ],
       [ "Coding Style", "developer_documentation.html#coding_style", null ]
     ] ],
-    [ "FORTRAN TESTS", "md__tmp_bml_tests_Fortran-tests_README.html", [
-      [ "Conventions and rules", "md__tmp_bml_tests_Fortran-tests_README.html#autotoc_md17", null ]
+    [ "FORTRAN TESTS", "md__bml_tests_Fortran-tests_README.html", [
+      [ "Conventions and rules", "md__bml_tests_Fortran-tests_README.html#autotoc_md0", null ]
     ] ],
-    [ "ADDING A C TEST", "md__tmp_bml_tests_README.html", [
-      [ "Compiling, running and checking the test", "md__tmp_bml_tests_README.html#autotoc_md18", null ],
-      [ "ADDING A FORTRAN TEST", "md__tmp_bml_tests_README.html#autotoc_md19", null ]
+    [ "C TEST", "md__bml_tests_README.html", [
+      [ "Compiling, running and checking the test", "md__bml_tests_README.html#autotoc_md1", null ],
+      [ "ADDING A FORTRAN TEST", "md__bml_tests_README.html#autotoc_md2", null ]
     ] ],
     [ "Modules", "modules.html", "modules" ],
     [ "Classes", "annotated.html", [
@@ -94,7 +72,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "C_usage.html",
-"md__tmp_bml_README.html#autotoc_md10"
+"group__convert__group__C.html#ga287f7c9a50a4541ba28dadad4b3d432e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
