@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_elemental_dense.h"
 #include "ellpack/bml_elemental_ellpack.h"
-#include "ellsort/bml_elemental_ellsort.h"
 
 #ifdef BML_COMPLEX
 #include <complex.h>
@@ -29,9 +28,6 @@ bml_get_element_single_real(
             break;
         case ellpack:
             return bml_get_element_ellpack_single_real(A, i, j);
-            break;
-        case ellsort:
-            return bml_get_element_ellsort_single_real(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -60,9 +56,6 @@ bml_get_element_double_real(
             break;
         case ellpack:
             return bml_get_element_ellpack_double_real(A, i, j);
-            break;
-        case ellsort:
-            return bml_get_element_ellsort_double_real(A, i, j);
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
@@ -93,9 +86,6 @@ bml_get_element_single_complex(
         case ellpack:
             return bml_get_element_ellpack_single_complex(A, i, j);
             break;
-        case ellsort:
-            return bml_get_element_ellsort_single_complex(A, i, j);
-            break;
         default:
             LOG_ERROR("unknown matrix type\n");
             break;
@@ -123,9 +113,6 @@ bml_get_element_double_complex(
             break;
         case ellpack:
             return bml_get_element_ellpack_double_complex(A, i, j);
-            break;
-        case ellsort:
-            return bml_get_element_ellsort_double_complex(A, i, j);
             break;
 
         default:

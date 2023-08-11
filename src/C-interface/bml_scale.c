@@ -3,7 +3,6 @@
 #include "bml_scale.h"
 #include "dense/bml_scale_dense.h"
 #include "ellpack/bml_scale_ellpack.h"
-#include "ellsort/bml_scale_ellsort.h"
 #include "ellblock/bml_scale_ellblock.h"
 #include "csr/bml_scale_csr.h"
 #ifdef BML_USE_MPI
@@ -34,9 +33,6 @@ bml_scale_new(
             break;
         case ellpack:
             B = bml_scale_ellpack_new(scale_factor, A);
-            break;
-        case ellsort:
-            B = bml_scale_ellsort_new(scale_factor, A);
             break;
         case ellblock:
             B = bml_scale_ellblock_new(scale_factor, A);
@@ -78,9 +74,6 @@ bml_scale(
         case ellpack:
             bml_scale_ellpack(scale_factor, A, B);
             break;
-        case ellsort:
-            bml_scale_ellsort(scale_factor, A, B);
-            break;
         case ellblock:
             bml_scale_ellblock(scale_factor, A, B);
             break;
@@ -117,9 +110,6 @@ bml_scale_inplace(
             break;
         case ellpack:
             bml_scale_inplace_ellpack(scale_factor, A);
-            break;
-        case ellsort:
-            bml_scale_inplace_ellsort(scale_factor, A);
             break;
         case ellblock:
             bml_scale_inplace_ellblock(scale_factor, A);

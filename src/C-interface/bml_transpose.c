@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_transpose_dense.h"
 #include "ellpack/bml_transpose_ellpack.h"
-#include "ellsort/bml_transpose_ellsort.h"
 #include "ellblock/bml_transpose_ellblock.h"
 #include "csr/bml_transpose_csr.h"
 #ifdef BML_USE_MPI
@@ -30,9 +29,6 @@ bml_transpose_new(
             break;
         case ellpack:
             return bml_transpose_new_ellpack(A);
-            break;
-        case ellsort:
-            return bml_transpose_new_ellsort(A);
             break;
         case ellblock:
             return bml_transpose_new_ellblock(A);
@@ -70,9 +66,6 @@ bml_transpose(
             break;
         case ellpack:
             bml_transpose_ellpack(A);
-            break;
-        case ellsort:
-            bml_transpose_ellsort(A);
             break;
         case ellblock:
             bml_transpose_ellblock(A);

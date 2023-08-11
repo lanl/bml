@@ -25,9 +25,6 @@ bml_diagonalize(
         case ellpack:
             bml_diagonalize_ellpack(A, eigenvalues, eigenvectors);
             break;
-        case ellsort:
-            LOG_ERROR("diagonalize routine is not implemented for ellsort\n");
-            break;
         case ellblock:
             bml_diagonalize_ellblock(A, eigenvalues, eigenvectors);
             break;

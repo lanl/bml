@@ -3,7 +3,6 @@
 #include "bml_normalize.h"
 #include "dense/bml_normalize_dense.h"
 #include "ellpack/bml_normalize_ellpack.h"
-#include "ellsort/bml_normalize_ellsort.h"
 #include "ellblock/bml_normalize_ellblock.h"
 #include "csr/bml_normalize_csr.h"
 #ifdef BML_USE_MPI
@@ -34,9 +33,6 @@ bml_normalize(
         case ellpack:
             bml_normalize_ellpack(A, mineval, maxeval);
             break;
-        case ellsort:
-            bml_normalize_ellsort(A, mineval, maxeval);
-            break;
         case ellblock:
             bml_normalize_ellblock(A, mineval, maxeval);
             break;
@@ -66,9 +62,6 @@ bml_accumulate_offdiag(
             break;
         case ellpack:
             return bml_accumulate_offdiag_ellpack(A, flag);
-            break;
-        case ellsort:
-            return bml_accumulate_offdiag_ellsort(A, flag);
             break;
         case ellblock:
             return bml_accumulate_offdiag_ellblock(A, flag);
@@ -102,9 +95,6 @@ bml_gershgorin(
             break;
         case ellpack:
             return bml_gershgorin_ellpack(A);
-            break;
-        case ellsort:
-            return bml_gershgorin_ellsort(A);
             break;
         case ellblock:
             return bml_gershgorin_ellblock(A);
@@ -145,9 +135,6 @@ bml_gershgorin_partial(
             break;
         case ellpack:
             return bml_gershgorin_partial_ellpack(A, nrows);
-            break;
-        case ellsort:
-            return bml_gershgorin_partial_ellsort(A, nrows);
             break;
         case ellblock:
             LOG_ERROR("bml_gershgorin_partial_ellblock not implemented\n");

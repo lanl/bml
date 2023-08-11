@@ -21,7 +21,7 @@ int TYPED_FUNC(
     bml_matrix_t *A = NULL;
     REAL_T *A_dense = NULL;
 
-    if (matrix_type == dense || matrix_type == ellsort
+    if (matrix_type == dense
         || matrix_type == ellblock || matrix_type == csr)
     {
         LOG_INFO("adjacency matrix test not available\n");

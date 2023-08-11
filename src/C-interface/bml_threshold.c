@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_threshold_dense.h"
 #include "ellpack/bml_threshold_ellpack.h"
-#include "ellsort/bml_threshold_ellsort.h"
 #include "ellblock/bml_threshold_ellblock.h"
 #include "csr/bml_threshold_csr.h"
 #ifdef BML_USE_MPI
@@ -32,9 +31,6 @@ bml_threshold_new(
             break;
         case ellpack:
             return bml_threshold_new_ellpack(A, threshold);
-            break;
-        case ellsort:
-            return bml_threshold_new_ellsort(A, threshold);
             break;
         case ellblock:
             return bml_threshold_new_ellblock(A, threshold);
@@ -74,9 +70,6 @@ bml_threshold(
             break;
         case ellpack:
             bml_threshold_ellpack(A, threshold);
-            break;
-        case ellsort:
-            bml_threshold_ellsort(A, threshold);
             break;
         case ellblock:
             bml_threshold_ellblock(A, threshold);

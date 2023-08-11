@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_norm_dense.h"
 #include "ellpack/bml_norm_ellpack.h"
-#include "ellsort/bml_norm_ellsort.h"
 #include "ellblock/bml_norm_ellblock.h"
 #include "csr/bml_norm_csr.h"
 #ifdef BML_USE_MPI
@@ -30,9 +29,6 @@ bml_sum_squares(
             break;
         case ellpack:
             return bml_sum_squares_ellpack(A);
-            break;
-        case ellsort:
-            return bml_sum_squares_ellsort(A);
             break;
         case ellblock:
             return bml_sum_squares_ellblock(A);
@@ -74,9 +70,6 @@ bml_sum_squares_submatrix(
         case ellpack:
             return bml_sum_squares_submatrix_ellpack(A, core_size);
             break;
-        case ellsort:
-            return bml_sum_squares_submatrix_ellsort(A, core_size);
-            break;
         case csr:
             return bml_sum_squares_submatrix_csr(A, core_size);
             break;
@@ -113,9 +106,6 @@ bml_sum_squares2(
             break;
         case ellpack:
             return bml_sum_squares2_ellpack(A, B, alpha, beta, threshold);
-            break;
-        case ellsort:
-            return bml_sum_squares2_ellsort(A, B, alpha, beta, threshold);
             break;
         case ellblock:
             return bml_sum_squares2_ellblock(A, B, alpha, beta, threshold);
@@ -161,9 +151,6 @@ bml_sum_AB(
         case ellpack:
             return bml_sum_AB_ellpack(A, B, alpha, threshold);
             break;
-        case ellsort:
-            return bml_sum_AB_ellsort(A, B, alpha, threshold);
-            break;
         case ellblock:
             return bml_sum_AB_ellblock(A, B, alpha, threshold);
             break;
@@ -200,9 +187,6 @@ bml_fnorm(
             break;
         case ellpack:
             return bml_fnorm_ellpack(A);
-            break;
-        case ellsort:
-            return bml_fnorm_ellsort(A);
             break;
         case ellblock:
             return bml_fnorm_ellblock(A);
@@ -242,9 +226,6 @@ bml_fnorm2(
             break;
         case ellpack:
             return bml_fnorm2_ellpack(A, B);
-            break;
-        case ellsort:
-            return bml_fnorm2_ellsort(A, B);
             break;
         case csr:
             return bml_fnorm2_csr(A, B);

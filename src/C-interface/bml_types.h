@@ -14,8 +14,6 @@ typedef enum
     ellpack,
     /** BLOCK ELLPACK matrix. */
     ellblock,
-    /** ELLSORT matrix. */
-    ellsort,
     /** CSR matrix. */
     csr,
     /** distributed matrix. */

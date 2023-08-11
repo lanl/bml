@@ -22,9 +22,6 @@ bml_inverse(
         case ellpack:
             B = bml_inverse_ellpack(A);
             break;
-        case ellsort:
-            LOG_ERROR("inverse routine is not implemented for ellsort\n");
-            break;
         case ellblock:
             B = bml_inverse_ellblock(A);
             break;

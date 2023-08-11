@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_trace_dense.h"
 #include "ellpack/bml_trace_ellpack.h"
-#include "ellsort/bml_trace_ellsort.h"
 #include "ellblock/bml_trace_ellblock.h"
 #include "csr/bml_trace_csr.h"
 #ifdef BML_USE_MPI
@@ -30,9 +29,6 @@ bml_trace(
             break;
         case ellpack:
             return bml_trace_ellpack(A);
-            break;
-        case ellsort:
-            return bml_trace_ellsort(A);
             break;
         case ellblock:
             return bml_trace_ellblock(A);
@@ -72,9 +68,6 @@ bml_trace_mult(
             break;
         case ellpack:
             return bml_trace_mult_ellpack(A, B);
-            break;
-        case ellsort:
-            return bml_trace_mult_ellsort(A, B);
             break;
         case ellblock:
             return bml_trace_mult_ellblock(A, B);

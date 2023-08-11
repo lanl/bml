@@ -8,7 +8,7 @@ module bml_types_m
 
   public :: bml_vector_t, bml_matrix_t
   public :: bml_deallocate
-  public :: BML_MATRIX_DENSE, BML_MATRIX_ELLPACK, BML_MATRIX_ELLBLOCK, BML_MATRIX_ELLSORT
+  public :: BML_MATRIX_DENSE, BML_MATRIX_ELLPACK, BML_MATRIX_ELLBLOCK
   public :: BML_MATRIX_CSR
   public :: BML_ELEMENT_REAL, BML_ELEMENT_COMPLEX
   public :: BML_DMODE_SEQUENTIAL, BML_DMODE_DISTRIBUTED
@@ -50,9 +50,6 @@ module bml_types_m
 
   !> The bml-ellblock matrix type identifier.
   character(len=*), parameter :: BML_MATRIX_ELLBLOCK = "ellblock"
-
-  !> The bml-ellsort matrix type identifier.
-  character(len=*), parameter :: BML_MATRIX_ELLSORT = "ellsort"
 
   !> The bml-csr matrix type identifier.
   character(len=*), parameter :: BML_MATRIX_CSR = "csr"

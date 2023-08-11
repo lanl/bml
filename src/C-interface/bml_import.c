@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_import_dense.h"
 #include "ellpack/bml_import_ellpack.h"
-#include "ellsort/bml_import_ellsort.h"
 #include "ellblock/bml_import_ellblock.h"
 #include "csr/bml_import_csr.h"
 #ifdef BML_USE_MPI
@@ -52,10 +51,6 @@ bml_import_from_dense(
                                                    distrib_mode);
             case ellpack:
                 return bml_import_from_dense_ellpack(matrix_precision, order,
-                                                     N, A, threshold, M,
-                                                     distrib_mode);
-            case ellsort:
-                return bml_import_from_dense_ellsort(matrix_precision, order,
                                                      N, A, threshold, M,
                                                      distrib_mode);
             case ellblock:

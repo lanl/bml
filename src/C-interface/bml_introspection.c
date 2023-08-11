@@ -3,7 +3,6 @@
 #include "bml_types.h"
 #include "dense/bml_introspection_dense.h"
 #include "ellpack/bml_introspection_ellpack.h"
-#include "ellsort/bml_introspection_ellsort.h"
 #include "ellblock/bml_introspection_ellblock.h"
 #include "csr/bml_introspection_csr.h"
 #ifdef BML_USE_MPI
@@ -80,9 +79,6 @@ bml_get_precision(
         case ellpack:
             return bml_get_precision_ellpack(A);
             break;
-        case ellsort:
-            return bml_get_precision_ellsort(A);
-            break;
         case ellblock:
             return bml_get_precision_ellblock(A);
             break;
@@ -120,9 +116,6 @@ bml_get_N(
             break;
         case ellpack:
             return bml_get_N_ellpack(A);
-            break;
-        case ellsort:
-            return bml_get_N_ellsort(A);
             break;
         case ellblock:
             return bml_get_N_ellblock(A);
@@ -162,9 +155,6 @@ bml_get_M(
         case ellpack:
             return bml_get_M_ellpack(A);
             break;
-        case ellsort:
-            return bml_get_M_ellsort(A);
-            break;
         case ellblock:
             return bml_get_M_ellblock(A);
             break;
@@ -197,9 +187,6 @@ bml_get_NB(
             return 1;
             break;
         case ellpack:
-            return 1;
-            break;
-        case ellsort:
             return 1;
             break;
         case ellblock:
@@ -238,9 +225,6 @@ bml_get_row_bandwidth(
         case ellpack:
             return bml_get_row_bandwidth_ellpack(A, i);
             break;
-        case ellsort:
-            return bml_get_row_bandwidth_ellsort(A, i);
-            break;
         case csr:
             return bml_get_row_bandwidth_csr(A, i);
             break;
@@ -268,9 +252,6 @@ bml_get_bandwidth(
         case ellpack:
             return bml_get_bandwidth_ellpack(A);
             break;
-        case ellsort:
-            return bml_get_bandwidth_ellsort(A);
-            break;
         case csr:
             return bml_get_bandwidth_csr(A);
             break;
@@ -297,9 +278,6 @@ bml_get_distribution_mode(
             break;
         case ellpack:
             return bml_get_distribution_mode_ellpack(A);
-            break;
-        case ellsort:
-            return bml_get_distribution_mode_ellsort(A);
             break;
         case csr:
             return bml_get_distribution_mode_csr(A);
@@ -329,9 +307,6 @@ bml_get_sparsity(
             break;
         case ellpack:
             return bml_get_sparsity_ellpack(A, threshold);
-            break;
-        case ellsort:
-            return bml_get_sparsity_ellsort(A, threshold);
             break;
         case ellblock:
             return bml_get_sparsity_ellblock(A, threshold);

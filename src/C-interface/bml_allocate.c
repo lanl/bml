@@ -5,7 +5,6 @@
 #include "dense/bml_allocate_dense.h"
 #include "ellpack/bml_allocate_ellpack.h"
 #include "ellblock/bml_allocate_ellblock.h"
-#include "ellsort/bml_allocate_ellsort.h"
 #include "csr/bml_allocate_csr.h"
 #ifdef BML_USE_MPI
 #include "distributed2d/bml_allocate_distributed2d.h"
@@ -181,9 +180,6 @@ bml_deallocate(
             case ellpack:
                 bml_deallocate_ellpack(*A);
                 break;
-            case ellsort:
-                bml_deallocate_ellsort(*A);
-                break;
             case ellblock:
                 bml_deallocate_ellblock(*A);
                 break;
@@ -239,9 +235,6 @@ bml_clear(
         case ellpack:
             bml_clear_ellpack(A);
             break;
-        case ellsort:
-            bml_clear_ellsort(A);
-            break;
         case ellblock:
             bml_clear_ellblock(A);
             break;
@@ -296,11 +289,6 @@ bml_noinit_rectangular_matrix(
                 break;
             case ellpack:
                 return bml_noinit_matrix_ellpack(matrix_precision,
-                                                 matrix_dimension,
-                                                 distrib_mode);
-                break;
-            case ellsort:
-                return bml_noinit_matrix_ellsort(matrix_precision,
                                                  matrix_dimension,
                                                  distrib_mode);
                 break;
@@ -427,10 +415,6 @@ bml_zero_matrix(
                 return bml_zero_matrix_ellpack(matrix_precision, N, M,
                                                distrib_mode);
                 break;
-            case ellsort:
-                return bml_zero_matrix_ellsort(matrix_precision, N, M,
-                                               distrib_mode);
-                break;
             case ellblock:
                 return bml_zero_matrix_ellblock(matrix_precision, N, M,
                                                 distrib_mode);
@@ -485,10 +469,6 @@ bml_random_matrix(
                 return bml_random_matrix_ellpack(matrix_precision, N, M,
                                                  distrib_mode);
                 break;
-            case ellsort:
-                return bml_random_matrix_ellsort(matrix_precision, N, M,
-                                                 distrib_mode);
-                break;
             case ellblock:
                 return bml_random_matrix_ellblock(matrix_precision, N, M,
                                                   distrib_mode);
@@ -535,10 +515,6 @@ bml_banded_matrix(
             break;
         case ellpack:
             return bml_banded_matrix_ellpack(matrix_precision, N, M,
-                                             distrib_mode);
-            break;
-        case ellsort:
-            return bml_banded_matrix_ellsort(matrix_precision, N, M,
                                              distrib_mode);
             break;
         case ellblock:
@@ -593,10 +569,6 @@ bml_identity_matrix(
                 break;
             case ellpack:
                 return bml_identity_matrix_ellpack(matrix_precision, N, M,
-                                                   distrib_mode);
-                break;
-            case ellsort:
-                return bml_identity_matrix_ellsort(matrix_precision, N, M,
                                                    distrib_mode);
                 break;
             case ellblock:
@@ -757,10 +729,6 @@ bml_update_domain(
             break;
         case ellpack:
             bml_update_domain_ellpack(A, localPartMin, localPartMax,
-                                      nnodesInPart);
-            break;
-        case ellsort:
-            bml_update_domain_ellsort(A, localPartMin, localPartMax,
                                       nnodesInPart);
             break;
         default:

@@ -4,7 +4,6 @@
 #include "csr/bml_submatrix_csr.h"
 #include "dense/bml_submatrix_dense.h"
 #include "ellpack/bml_submatrix_ellpack.h"
-#include "ellsort/bml_submatrix_ellsort.h"
 #include "ellblock/bml_submatrix_ellblock.h"
 
 #include <stdlib.h>
@@ -40,11 +39,6 @@ bml_matrix2submatrix_index(
             break;
         case ellpack:
             bml_matrix2submatrix_index_ellpack(A, B, nodelist, nsize,
-                                               core_halo_index,
-                                               vsize, double_jump_flag);
-            break;
-        case ellsort:
-            bml_matrix2submatrix_index_ellsort(A, B, nodelist, nsize,
                                                core_halo_index,
                                                vsize, double_jump_flag);
             break;
@@ -92,11 +86,6 @@ bml_matrix2submatrix_index_graph(
                                                      nsize, core_halo_index,
                                                      vsize, double_jump_flag);
             break;
-        case ellsort:
-            bml_matrix2submatrix_index_graph_ellsort(B, nodelist,
-                                                     nsize, core_halo_index,
-                                                     vsize, double_jump_flag);
-            break;
         case ellblock:
             LOG_ERROR("bml_matrix2submatrix_index_ellblock NOT available\n");
             break;
@@ -133,9 +122,6 @@ bml_group_matrix(
             break;
         case ellpack:
             return bml_group_matrix_ellpack(A, hindex, ngroups, threshold);
-            break;
-        case ellsort:
-            return bml_group_matrix_ellsort(A, hindex, ngroups, threshold);
             break;
         case ellblock:
             LOG_ERROR("bml_group_matrix_ellblock NOT available\n");
@@ -174,9 +160,6 @@ bml_matrix2submatrix(
             break;
         case ellpack:
             bml_matrix2submatrix_ellpack(A, B, core_halo_index, lsize);
-            break;
-        case ellsort:
-            bml_matrix2submatrix_ellsort(A, B, core_halo_index, lsize);
             break;
         case ellblock:
             LOG_ERROR("bml_matrix2submatrix_ellblock NOT available\n");
@@ -220,10 +203,6 @@ bml_submatrix2matrix(
             bml_submatrix2matrix_ellpack(A, B, core_halo_index, lsize,
                                          llsize, threshold);
             break;
-        case ellsort:
-            bml_submatrix2matrix_ellsort(A, B, core_halo_index, lsize,
-                                         llsize, threshold);
-            break;
         case ellblock:
             LOG_ERROR("bml_submatrix2matrix_ellblock NOT available\n");
             break;
@@ -260,9 +239,6 @@ bml_adjacency(
             break;
         case ellpack:
             bml_adjacency_ellpack(A, xadj, adjncy, base_flag);
-            break;
-        case ellsort:
-            bml_adjacency_ellsort(A, xadj, adjncy, base_flag);
             break;
         case ellblock:
             LOG_ERROR
@@ -308,10 +284,6 @@ bml_adjacency_group(
             bml_adjacency_group_ellpack(A, hindex, nnodes, xadj, adjncy,
                                         base_flag);
             break;
-        case ellsort:
-            bml_adjacency_group_ellsort(A, hindex, nnodes, xadj, adjncy,
-                                        base_flag);
-            break;
         case ellblock:
             LOG_ERROR
                 ("bml_adjacency_group routine is not implemented for ellblock\n");
@@ -350,9 +322,6 @@ bml_extract_submatrix(
         case ellblock:
             B = bml_extract_submatrix_ellblock(A, irow, icol, B_N, B_M);
             break;
-        case ellsort:
-            B = bml_extract_submatrix_ellsort(A, irow, icol, B_N, B_M);
-            break;
         default:
             LOG_ERROR
                 ("bml_extract_submatrix not implemented for matrix format\n");
@@ -381,9 +350,6 @@ bml_assign_submatrix(
             break;
         case ellblock:
             bml_assign_submatrix_ellblock(A, B, irow, icol);
-            break;
-        case ellsort:
-            bml_assign_submatrix_ellsort(A, B, irow, icol);
             break;
         default:
             LOG_ERROR
