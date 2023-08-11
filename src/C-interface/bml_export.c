@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_export_dense.h"
 #include "ellpack/bml_export_ellpack.h"
-#include "ellsort/bml_export_ellsort.h"
 #include "ellblock/bml_export_ellblock.h"
 #include "csr/bml_export_csr.h"
 #ifdef BML_USE_MPI
@@ -45,8 +44,6 @@ bml_export_to_dense(
             return bml_export_to_dense_dense(A, order);
         case ellpack:
             return bml_export_to_dense_ellpack(A, order);
-        case ellsort:
-            return bml_export_to_dense_ellsort(A, order);
         case ellblock:
             return bml_export_to_dense_ellblock(A, order);
         case csr:

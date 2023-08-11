@@ -8,7 +8,6 @@
  *   - ellpack (sparse)
  *   - csr (sparse)
  *   - ellblock (sparse)
- *   - ellsort (sparse)
  *
  * \section usage_examples Usage Examples
  *

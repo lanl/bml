@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_parallel_dense.h"
 #include "ellpack/bml_parallel_ellpack.h"
-#include "ellsort/bml_parallel_ellsort.h"
 #include "ellblock/bml_parallel_ellblock.h"
 #include "csr/bml_parallel_csr.h"
 #ifdef BML_USE_MPI
@@ -183,9 +182,6 @@ bml_allGatherVParallel(
         case ellpack:
             bml_allGatherVParallel_ellpack(A);
             break;
-        case ellsort:
-            bml_allGatherVParallel_ellsort(A);
-            break;
         case ellblock:
             LOG_ERROR
                 ("bml_allGatherVParallel function not implemented for ellblock\n");
@@ -209,9 +205,6 @@ bml_mpi_send(
             break;
         case ellpack:
             bml_mpi_send_ellpack(A, dst, comm);
-            break;
-        case ellsort:
-            bml_mpi_send_ellsort(A, dst, comm);
             break;
         case ellblock:
             bml_mpi_send_ellblock(A, dst, comm);
@@ -239,9 +232,6 @@ bml_mpi_recv(
         case ellpack:
             bml_mpi_recv_ellpack(A, src, comm);
             break;
-        case ellsort:
-            bml_mpi_recv_ellsort(A, src, comm);
-            break;
         case ellblock:
             bml_mpi_recv_ellblock(A, src, comm);
             break;
@@ -268,9 +258,6 @@ bml_mpi_irecv(
         case ellpack:
             bml_mpi_irecv_ellpack(A, src, comm);
             break;
-        case ellsort:
-            bml_mpi_irecv_ellsort(A, src, comm);
-            break;
         case ellblock:
             bml_mpi_irecv_ellblock(A, src, comm);
             break;
@@ -294,9 +281,6 @@ bml_mpi_irecv_complete(
             break;
         case ellpack:
             bml_mpi_irecv_complete_ellpack(A);
-            break;
-        case ellsort:
-            bml_mpi_irecv_complete_ellsort(A);
             break;
         case ellblock:
             bml_mpi_irecv_complete_ellblock(A);
@@ -327,10 +311,6 @@ bml_mpi_recv_matrix(
             break;
         case ellpack:
             return bml_mpi_recv_matrix_ellpack(matrix_precision, N, M, src,
-                                               comm);
-            break;
-        case ellsort:
-            return bml_mpi_recv_matrix_ellsort(matrix_precision, N, M, src,
                                                comm);
             break;
         case ellblock:
@@ -365,9 +345,6 @@ bml_mpi_bcast_matrix(
             break;
         case ellblock:
             return bml_mpi_bcast_matrix_ellblock(A, root, comm);
-            break;
-        case ellsort:
-            return bml_mpi_bcast_matrix_ellsort(A, root, comm);
             break;
         default:
             LOG_ERROR("bml_mpi_bcast: matrix format not implemented\n");

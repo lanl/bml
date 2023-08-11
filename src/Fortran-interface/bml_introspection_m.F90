@@ -96,8 +96,6 @@ contains
       bml_get_type = "ellpack"
     case(3)
       bml_get_type = "ellblock"
-    case(4)
-      bml_get_type = "ellsort"
     case(5)
       bml_get_type = "csr"
     case default
@@ -127,8 +125,6 @@ contains
       bml_get_deep_type = "ellpack"
     case(3)
       bml_get_deep_type = "ellblock"
-    case(4)
-      bml_get_deep_type = "ellsort"
     case(5)
       bml_get_deep_type = "csr"
     case default

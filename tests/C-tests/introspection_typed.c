@@ -40,9 +40,6 @@ int TYPED_FUNC(
         case ellpack:
             LOG_INFO("deep type is ellpack\n");
             break;
-        case ellsort:
-            LOG_INFO("deep type is ellsort\n");
-            break;
         case ellblock:
             LOG_INFO("deep type is ellblock\n");
             break;

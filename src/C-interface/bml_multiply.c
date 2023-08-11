@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_multiply_dense.h"
 #include "ellpack/bml_multiply_ellpack.h"
-#include "ellsort/bml_multiply_ellsort.h"
 #include "ellblock/bml_multiply_ellblock.h"
 #include "csr/bml_multiply_csr.h"
 #ifdef BML_USE_MPI
@@ -41,9 +40,6 @@ bml_multiply(
             break;
         case ellpack:
             bml_multiply_ellpack(A, B, C, alpha, beta, threshold);
-            break;
-        case ellsort:
-            bml_multiply_ellsort(A, B, C, alpha, beta, threshold);
             break;
         case ellblock:
             bml_multiply_ellblock(A, B, C, alpha, beta, threshold);
@@ -85,9 +81,6 @@ bml_multiply_x2(
             break;
         case ellpack:
             return bml_multiply_x2_ellpack(X, X2, threshold);
-            break;
-        case ellsort:
-            return bml_multiply_x2_ellsort(X, X2, threshold);
             break;
         case ellblock:
             return bml_multiply_x2_ellblock(X, X2, threshold);
@@ -133,9 +126,6 @@ bml_multiply_AB(
         case ellpack:
             bml_multiply_AB_ellpack(A, B, C, threshold);
             break;
-        case ellsort:
-            bml_multiply_AB_ellsort(A, B, C, threshold);
-            break;
         case ellblock:
             bml_multiply_AB_ellblock(A, B, C, threshold);
             break;
@@ -178,9 +168,6 @@ bml_multiply_adjust_AB(
             break;
         case ellpack:
             bml_multiply_adjust_AB_ellpack(A, B, C, threshold);
-            break;
-        case ellsort:
-            bml_multiply_adjust_AB_ellsort(A, B, C, threshold);
             break;
         case ellblock:
             bml_multiply_adjust_AB_ellblock(A, B, C, threshold);

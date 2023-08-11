@@ -3,7 +3,6 @@
 #include "bml_getters.h"
 #include "dense/bml_getters_dense.h"
 #include "ellpack/bml_getters_ellpack.h"
-#include "ellsort/bml_getters_ellsort.h"
 #include "ellblock/bml_getters_ellblock.h"
 #include "csr/bml_getters_csr.h"
 #ifdef BML_USE_MPI
@@ -32,9 +31,6 @@ bml_get_element(
             break;
         case ellpack:
             return bml_get_element_ellpack(A, i, j);
-            break;
-        case ellsort:
-            return bml_get_element_ellsort(A, i, j);
             break;
         case ellblock:
             return bml_get_element_ellblock(A, i, j);
@@ -67,9 +63,6 @@ bml_get_row(
             break;
         case ellpack:
             return bml_get_row_ellpack(A, i);
-            break;
-        case ellsort:
-            return bml_get_row_ellsort(A, i);
             break;
         case ellblock:
             return bml_get_row_ellblock(A, i);
@@ -105,9 +98,6 @@ bml_get_diagonal(
             break;
         case ellpack:
             return bml_get_diagonal_ellpack(A);
-            break;
-        case ellsort:
-            return bml_get_diagonal_ellsort(A);
             break;
         case ellblock:
             return bml_get_diagonal_ellblock(A);

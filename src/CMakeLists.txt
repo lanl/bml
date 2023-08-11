@@ -24,11 +24,6 @@ if(BML_COMPLEX)
   $<TARGET_OBJECTS:bml-ellblock-single_complex>
   $<TARGET_OBJECTS:bml-ellblock-single_real>
   $<TARGET_OBJECTS:bml-ellblock>
-  $<TARGET_OBJECTS:bml-ellsort-double_complex>
-  $<TARGET_OBJECTS:bml-ellsort-double_real>
-  $<TARGET_OBJECTS:bml-ellsort-single_complex>
-  $<TARGET_OBJECTS:bml-ellsort-single_real>
-  $<TARGET_OBJECTS:bml-ellsort>
   $<TARGET_OBJECTS:bml-csr-double_complex>
   $<TARGET_OBJECTS:bml-csr-double_real>
   $<TARGET_OBJECTS:bml-csr-single_complex>
@@ -54,9 +49,6 @@ else()
     $<TARGET_OBJECTS:bml-ellblock-double_real>
     $<TARGET_OBJECTS:bml-ellblock-single_real>
     $<TARGET_OBJECTS:bml-ellblock>
-    $<TARGET_OBJECTS:bml-ellsort-double_real>
-    $<TARGET_OBJECTS:bml-ellsort-single_real>
-    $<TARGET_OBJECTS:bml-ellsort>
     $<TARGET_OBJECTS:bml-csr-double_real>
     $<TARGET_OBJECTS:bml-csr-single_real>
     $<TARGET_OBJECTS:bml-csr>)

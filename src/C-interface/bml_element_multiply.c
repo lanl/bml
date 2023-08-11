@@ -3,7 +3,6 @@
 #include "bml_logger.h"
 #include "dense/bml_element_multiply_dense.h"
 #include "ellpack/bml_element_multiply_ellpack.h"
-#include "ellsort/bml_element_multiply_ellsort.h"
 #include "csr/bml_element_multiply_csr.h"
 #ifdef BML_USE_MPI
 #include "distributed2d/bml_multiply_distributed2d.h"
@@ -36,9 +35,6 @@ bml_element_multiply_AB(
             break;
         case ellpack:
             bml_element_multiply_AB_ellpack(A, B, C, threshold);
-            break;
-        case ellsort:
-            bml_element_multiply_AB_ellsort(A, B, C, threshold);
             break;
         case csr:
             bml_element_multiply_AB_csr(A, B, C, threshold);
