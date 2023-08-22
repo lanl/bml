@@ -7,6 +7,7 @@
 #include "bml_allocate_ellpack.h"
 #include "bml_transpose_ellpack.h"
 #include "bml_types_ellpack.h"
+#include "../bml_logger.h"
 
 #include <complex.h>
 #include <math.h>
@@ -137,9 +138,42 @@ bml_matrix_ellpack_t
      */
 }
 
-
-/** Transpose a matrix in place.
+/** swap row entries in position ipos and jpos.
  *
+ * column indexes and non-zero entries are swapped
+ *
+ * \ingroup transpose_group
+ *
+ * \param A The matrix.
+ */
+void TYPED_FUNC(
+    ellpack_swap_row_entries) (
+    bml_matrix_ellpack_t * A,
+    const int row,
+    const int ipos,
+    const int jpos)
+{
+    if (ipos == jpos)
+        return;
+
+    int N = A->N;
+    int M = A->M;
+    REAL_T *A_value = (REAL_T *) A->value;
+    int *A_index = A->index;  
+
+    REAL_T tmp = A_value[ROWMAJOR(row, ipos, N, M)];  
+    int itmp = A_index[ROWMAJOR(row, ipos, N, M)];  
+
+    /* swap */
+    A_value[ROWMAJOR(row, ipos, N, M)] = A_value[ROWMAJOR(row, jpos, N, M)];
+    A_value[ROWMAJOR(row, jpos, N, M)] = tmp;
+    A_index[ROWMAJOR(row, ipos, N, M)] = A_index[ROWMAJOR(row, jpos, N, M)];
+    A_index[ROWMAJOR(row, jpos, N, M)] = itmp;
+}
+
+#if 1
+/** Transpose a matrix in place.
+ *  Sequential backward-looking algorithm - good for non-structurally symmetric systems
  *  \ingroup transpose_group
  *
  *  \param A The matrix to be transposeed
@@ -156,6 +190,11 @@ void TYPED_FUNC(
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
+    REAL_T tmp = 0.;
+
+    int nz_t[N];
+    memset(nz_t, 0, sizeof(int) * N);
+
 #if defined(BML_USE_CUSPARSE)
     TYPED_FUNC(bml_transpose_cusparse_ellpack) (A);
 #else
@@ -166,52 +205,86 @@ void TYPED_FUNC(
 #pragma omp target
 #endif
 #endif
-    {                           // begin target region
-#pragma omp parallel for shared(N, M, A_value, A_index, A_nnz)
+    {  // begin target region
+//#pragma omp parallel for shared(N, M, A_value, A_index, A_nnz)
         for (int i = 0; i < N; i++)
         {
-            for (int j = A_nnz[i] - 1; j >= 0; j--)
-            {
-                if (A_index[ROWMAJOR(i, j, N, M)] > i)
-                {
-                    int ind = A_index[ROWMAJOR(i, j, N, M)];
-                    int exchangeDone = 0;
-                    for (int k = 0; k < A_nnz[ind]; k++)
-                    {
-                        // Existing corresponding value for transpose - exchange
-                        if (A_index[ROWMAJOR(ind, k, N, M)] == i)
-                        {
-                            REAL_T tmp = A_value[ROWMAJOR(i, j, N, M)];
+            const int innz = A_nnz[i];
+            int ipos = innz - 1;
 
-#pragma omp critical
-                            {
-                                A_value[ROWMAJOR(i, j, N, M)] =
-                                    A_value[ROWMAJOR(ind, k, N, M)];
-                                A_value[ROWMAJOR(ind, k, N, M)] = tmp;
-                            }
-                            exchangeDone = 1;
+            while (ipos >= nz_t[i])
+            {
+                const int j = A_index[ROWMAJOR(i, ipos, N, M)];
+                if (j > i)
+                {
+                    const int jnnz = A_nnz[j];
+                    const int jstart = nz_t[j];
+                    int found = 0;
+                    /* search for symmetric position */
+                    for (int jpos = jstart; jpos < jnnz; jpos++)
+                    {
+                        /* symmetric position found so just swap entries */
+                        if (A_index[ROWMAJOR(j, jpos, N, M)] == i)
+                        {
+                            tmp = A_value[ROWMAJOR(i, ipos, N, M)];
+                            A_value[ROWMAJOR(i, ipos, N, M)] =
+                            A_value[ROWMAJOR(j, jpos, N, M)];
+                            A_value[ROWMAJOR(j, jpos, N, M)] = tmp;
+
+                            /* swap position in row i to process next entry */
+                            TYPED_FUNC(ellpack_swap_row_entries) (A, i, ipos, nz_t[i]);
+                            /* swap position in row j */
+                            TYPED_FUNC(ellpack_swap_row_entries) (A, j, jpos,
+                                                              nz_t[j]);
+                            /* update nonzero count */
+                            nz_t[i]++;
+                            nz_t[j]++;
+                            found = 1;
                             break;
                         }
                     }
-
-                    // If no match add to end of row
-                    if (!exchangeDone)
+                    if (!found)
                     {
-                        int jind = A_nnz[ind];
-
-#pragma omp critical
-                        {
-                            A_index[ROWMAJOR(ind, jind, N, M)] = i;
-                            A_value[ROWMAJOR(ind, jind, N, M)] =
-                                A_value[ROWMAJOR(i, j, N, M)];
-                            A_nnz[ind]++;
-                            A_nnz[i]--;
-                        }
+                        /* nonsymmetric entry. Insert entry and swap position */
+                        A_value[ROWMAJOR(j, A_nnz[j], N, M)] = A_value[ROWMAJOR(i, ipos, N, M)];
+                        A_index[ROWMAJOR(j, A_nnz[j], N, M)] = i;
+                        A_nnz[j]++;
+                        /* swap position in updated row j */
+                        const int nzpos = A_nnz[j] - 1;
+                        TYPED_FUNC(ellpack_swap_row_entries) (A, j, nzpos,
+                                                          nz_t[j]);
+                        /* update nonzero count for row j */
+                        nz_t[j]++;
+                        /* update nnz for row i */
+                        A_nnz[i]--;
+                        /* update ipos */
+                        ipos--;
                     }
+                }
+                else if (j < i)
+                {
+                    // insert entry in row j
+                    A_value[ROWMAJOR(j, A_nnz[j], N, M)] = A_value[ROWMAJOR(i, ipos, N, M)];
+                    A_index[ROWMAJOR(j, A_nnz[j], N, M)] = i;
+                    A_nnz[j]++;
+                    /* update nonzero countfor row j */
+                    nz_t[j]++;
+                    /* update nnz for row i */
+                    A_nnz[i]--;
+                    /* update ipos */
+                    ipos--;
+                }
+                else /* j == i */
+                {
+                    /* swap position in row i */
+                    TYPED_FUNC(ellpack_swap_row_entries) (A, i, ipos,
+                                                      nz_t[i]);
+                    /* update nonzero count */
+                    nz_t[i]++;
                 }
             }
         }
-    }                           // end target region
+    }   // end target region
 #ifdef USE_OMP_OFFLOAD
 #ifdef COMPUTE_ON_HOST
 #pragma omp target update to(A_index[:N*M], A_value[:N*M], A_nnz[:N])
@@ -219,6 +292,121 @@ void TYPED_FUNC(
 #endif
 #endif
 }
+#else
+/** Transpose a matrix in place.
+ *  Sequential forward-looking algorithm - good for structurally symmetric systems
+ *  \ingroup transpose_group
+ *
+ *  \param A The matrix to be transposeed
+ *  \return the transposed A
+ */
+void TYPED_FUNC(
+    bml_transpose_ellpack) (
+    bml_matrix_ellpack_t * A)
+{
+    int N = A->N;
+    int M = A->M;
+
+    REAL_T *A_value = (REAL_T *) A->value;
+    int *A_index = A->index;
+    int *A_nnz = A->nnz;
+
+    REAL_T tmp = 0.;
+
+    int nz_t[N];
+    memset(nz_t, 0, sizeof(int) * N);
+
+#if defined(BML_USE_CUSPARSE)
+    TYPED_FUNC(bml_transpose_cusparse_ellpack) (A);
+#else
+#if defined(USE_OMP_OFFLOAD)
+#ifdef COMPUTE_ON_HOST
+#pragma omp target update from(A_index[:N*M], A_value[:N*M], A_nnz[:N])
+#else
+#pragma omp target
+#endif
+#endif
+    {  // begin target region
+        for (int i = 0; i < N; i++)
+        {
+            int ipos = nz_t[i];
+            while (ipos < A_nnz[i])
+            {
+                const int j = A_index[ROWMAJOR(i, ipos, N, M)];
+                if (j > i)
+                {
+                    const int jnnz = A_nnz[j];
+                    const int jstart = nz_t[j];
+                    int found = 0;
+                    /* search for symmetric position */
+                    for (int jpos = jstart; jpos < jnnz; jpos++)
+                    {
+                        /* symmetric position found so just swap entries */
+                        if (A_index[ROWMAJOR(j, jpos, N, M)] == i)
+                        {
+                            tmp = A_value[ROWMAJOR(i, ipos, N, M)];
+                            A_value[ROWMAJOR(i, ipos, N, M)] =
+                            A_value[ROWMAJOR(j, jpos, N, M)];
+                            A_value[ROWMAJOR(j, jpos, N, M)] = tmp;
+                            /* swap position in row j */
+                            TYPED_FUNC(ellpack_swap_row_entries) (A, j, jpos,
+                                                              nz_t[j]);
+                            /* update nonzero count */
+                            nz_t[i]++;
+                            nz_t[j]++;
+                            found = 1;
+                            ipos++;
+                            break;
+                        }
+                    }
+                    if (!found)
+                    {
+                        /* nonsymmetric entry. Insert entry and swap position */
+                        A_value[ROWMAJOR(j, A_nnz[j], N, M)] = A_value[ROWMAJOR(i, ipos, N, M)];
+                        A_index[ROWMAJOR(j, A_nnz[j], N, M)] = i;
+                        A_nnz[j]++;
+                        /* swap position in row i to process next entry */
+                        const int inzpos = A_nnz[i] - 1;
+                        TYPED_FUNC(ellpack_swap_row_entries) (A, i, ipos, inzpos);
+                        /* swap position in updated row j */
+                        const int jnzpos = A_nnz[j] - 1;
+                        TYPED_FUNC(ellpack_swap_row_entries) (A, j, jnzpos,
+                                                          nz_t[j]);
+                        /* update nonzero count */
+                        nz_t[j]++;
+                        A_nnz[i]--;
+                    }
+                }
+                else if (j < i)
+                {
+                    // insert entry in row j
+                    A_value[ROWMAJOR(j, A_nnz[j], N, M)] = A_value[ROWMAJOR(i, ipos, N, M)];
+                    A_index[ROWMAJOR(j, A_nnz[j], N, M)] = i;
+                    A_nnz[j]++;
+                    /* swap position in row i to process next entry */
+                    const int inzpos = A_nnz[i] - 1;
+                    TYPED_FUNC(ellpack_swap_row_entries) (A, i, ipos, inzpos);
+                    /* update nonzero count */
+                    nz_t[j]++;
+                    A_nnz[i]--;
+                }
+                else /* j == i*/
+                {
+                    /* update nonzero count */
+                    nz_t[i]++;
+                    ipos++;
+                }
+            }
+        }
+    }   // end target region
+#ifdef USE_OMP_OFFLOAD
+#ifdef COMPUTE_ON_HOST
+#pragma omp target update to(A_index[:N*M], A_value[:N*M], A_nnz[:N])
+#endif
+#endif
+#endif
+}
+#endif
 
 #if defined(BML_USE_CUSPARSE)
 /** cuSPARSE matrix transpose
