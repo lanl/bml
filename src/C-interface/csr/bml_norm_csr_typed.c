@@ -105,8 +105,10 @@ double TYPED_FUNC(
     const int N = A->N_;
     REAL_T sum = 0.0;
     REAL_T cvals[N];
+    int ipos[N];
 
     memset(cvals, 0.0, N * sizeof(REAL_T));
+    memset(ipos, 0, N * sizeof(int));
 
     for (int i = 0; i < N; i++)
     {
@@ -124,7 +126,7 @@ double TYPED_FUNC(
         int *bcols = B->data_[i]->cols_;
         REAL_T *bvals = (REAL_T *) B->data_[i]->vals_;
         const int bnnz = B->data_[i]->NNZ_;
-        int cnt = annz;
+        int cnt = 0;
         for (int pos = 0; pos < bnnz; pos++)
         {
             int *idx = (int *) csr_table_lookup(table, bcols[pos]);
@@ -132,24 +134,19 @@ double TYPED_FUNC(
             if (idx)
             {
                 cvals[*idx] *= val;
+                ipos[cnt] = *idx;
+                cnt++;
             }
-            //else
-            //{
-            //    cvals[cnt] = val;
-            //    cnt++;
-            //}
         }
         // clear table
         csr_deallocate_table(table);
         // apply threshold and compute norm
         for (int k = 0; k < cnt; k++)
         {
-            if (ABS(cvals[k]) > threshold)
+            if (ABS(cvals[ipos[k]]) > threshold)
             {
-                sum += cvals[k];        //* cvals[k];
+                sum += cvals[ipos[k]];
             }
-            // reset cvals
-            cvals[k] = 0.;
         }
     }
 
