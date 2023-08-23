@@ -109,21 +109,16 @@ double TYPED_FUNC(
         {
             int ind = ROWMAJOR(ib, jp, NB, MB);
             int jb = A_indexb[ind];
-            int nelements = bsize[ib] * bsize[jb];
-            if (ix[jb] == 0)
-            {
-                memset(y_ptr[jb], 0, nelements * sizeof(REAL_T));
-                ix[jb] = ib + 1;
-                jjb[lb] = jb;
-                lb++;
-            }
+
+            ix[jb] = ib + 1;
+
             REAL_T *y_value = y_ptr[jb];
             REAL_T *A_value = A_ptr_value[ind];
             for (int ii = 0; ii < bsize[ib]; ii++)
                 for (int jj = 0; jj < bsize[jb]; jj++)
                 {
                     int index = ROWMAJOR(ii, jj, bsize[ib], bsize[jb]);
-                    y_value[index] += alpha_ * A_value[index];
+                    y_value[index] = alpha_ * A_value[index];
                 }
         }
 
@@ -131,36 +126,33 @@ double TYPED_FUNC(
         {
             int ind = ROWMAJOR(ib, jp, NB, MB);
             int jb = B_indexb[ind];
-            int nelements = bsize[ib] * bsize[jb];
-            if (ix[jb] == 0)
+            if (ix[jb] != 0)
             {
-                memset(y_ptr[jb], 0, nelements * sizeof(REAL_T));
-                ix[jb] = ib + 1;
                 jjb[lb] = jb;
                 lb++;
-            }
-            REAL_T *y_value = y_ptr[jb];
-            REAL_T *B_value = B_ptr_value[ind];
-            for (int ii = 0; ii < bsize[ib]; ii++)
-                for (int jj = 0; jj < bsize[jb]; jj++)
+        
+                REAL_T *y_value = y_ptr[jb];
+                REAL_T *B_value = B_ptr_value[ind];
+                for (int ii = 0; ii < bsize[ib]; ii++)
                 {
-                    int index = ROWMAJOR(ii, jj, bsize[ib], bsize[jb]);
-                    y_value[index] *= B_value[index];
+                    for (int jj = 0; jj < bsize[jb]; jj++)
+                    {
+                        int index = ROWMAJOR(ii, jj, bsize[ib], bsize[jb]);
+                        y_value[index] *= B_value[index];
+                    }
                 }
+            }
         }
 
         for (int jp = 0; jp < lb; jp++)
         {
             double normx = TYPED_FUNC(bml_sum_AB)
-                (y_ptr[jjb[jp]], bsize[ib], bsize[jp], bsize[jp]);
+                (y_ptr[jjb[jp]], bsize[ib], bsize[jjb[jp]], bsize[jjb[jp]]);
 
             if (normx > threshold * threshold)
                 sum += normx;
-
-            ix[jjb[jp]] = 0;
-            memset(y_ptr[jjb[jp]], 0, maxbsize2 * sizeof(REAL_T));
-            jjb[jp] = 0;
         }
+        memset(ix, 0, NB * sizeof(int));       
     }
 
     for (int ib = 0; ib < NB; ib++)
@@ -266,7 +258,7 @@ double TYPED_FUNC(
         for (int jp = 0; jp < lb; jp++)
         {
             double normx = TYPED_FUNC(bml_sum_squares)
-                (y_ptr[jjb[jp]], bsize[ib], bsize[jp], bsize[jp]);
+                (y_ptr[jjb[jp]], bsize[ib], bsize[jjb[jp]], bsize[jjb[jp]]);
 
             if (normx > threshold * threshold)
                 sum += normx;
