@@ -171,16 +171,15 @@ void TYPED_FUNC(
     A_index[ROWMAJOR(row, jpos, N, M)] = itmp;
 }
 
-#if 1
 /** Transpose a matrix in place.
- *  Sequential backward-looking algorithm - good for non-structurally symmetric systems
+ *  Sequential left-looking algorithm - good for structurally non-symmetric systems
  *  \ingroup transpose_group
  *
- *  \param A The matrix to be transposeed
+ *  \param A The matrix to be transposed
  *  \return the transposed A
  */
 void TYPED_FUNC(
-    bml_transpose_ellpack) (
+    ellpack_transpose_left_looking) (
     bml_matrix_ellpack_t * A)
 {
     int N = A->N;
@@ -292,16 +291,16 @@ void TYPED_FUNC(
 #endif
 #endif
 }
-#else
+
 /** Transpose a matrix in place.
- *  Sequential forward-looking algorithm - good for structurally symmetric systems
+ *  Sequential right-looking algorithm - good for structurally symmetric systems
  *  \ingroup transpose_group
  *
  *  \param A The matrix to be transposeed
  *  \return the transposed A
  */
 void TYPED_FUNC(
-    bml_transpose_ellpack) (
+    ellpack_transpose_right_looking) (
     bml_matrix_ellpack_t * A)
 {
     int N = A->N;
@@ -406,7 +405,24 @@ void TYPED_FUNC(
 #endif
 #endif
 }
-#endif
+
+/** Transpose a matrix in place.
+ *  \ingroup transpose_group
+ *
+ *  \param A The matrix to be transposed
+ *  \return the transposed A
+ */
+void TYPED_FUNC(
+    bml_transpose_ellpack) (
+    bml_matrix_ellpack_t * A)
+{
+    /* Call in-place transpose function. 
+     * consider: ellpack_transpose_left_looking(A) - for structurally non-symmetric matrices 
+     * consider: ellpack_transpose_right_looking(A) - for structurally symmetric matrices
+     * Either algorithm is sufficient for arbitrary sparse matrices
+    */
+    TYPED_FUNC(ellpack_transpose_left_looking) (A);
+}    
 
 #if defined(BML_USE_CUSPARSE)
 /** cuSPARSE matrix transpose

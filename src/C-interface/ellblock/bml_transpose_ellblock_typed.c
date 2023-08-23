@@ -105,7 +105,6 @@ void TYPED_FUNC(
     A_indexb[ROWMAJOR(block_row, jposb, NB, MB)] = itmp;
 }
 
-#if 1
 /** Transpose a matrix in place.
  *
  *  \ingroup transpose_group
@@ -269,91 +268,3 @@ void TYPED_FUNC(
         }
     }
 }
-#else
-/** Transpose a matrix in place.
- *
- *  \ingroup transpose_group
- *
- *  \param A The matrix to be transposeed
- *  \return the transposed A
- */
-void TYPED_FUNC(
-    bml_transpose_ellblock) (
-    bml_matrix_ellblock_t * A)
-{
-    int NB = A->NB;
-    int MB = A->MB;
-
-    REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
-    int *A_indexb = A->indexb;
-    int *A_nnzb = A->nnzb;
-    int *bsize = A->bsize;
-
-    for (int ib = 0; ib < NB; ib++)
-    {
-        for (int jp = A_nnzb[ib] - 1; jp >= 0; jp--)
-        {
-            int indl = ROWMAJOR(ib, jp, NB, MB);
-            int jb = A_indexb[indl];
-            printf("ib %d: jp = %d\n", ib, jb);
-            if (jb >= ib)
-            {
-                int exchangeDone = 0;
-                for (int kp = 0; kp < A_nnzb[jb]; kp++)
-                {
-                    int indr = ROWMAJOR(jb, kp, NB, MB);
-                    if (A_indexb[indr] == ib)
-                    {
-                        REAL_T *A_value_l = A_ptr_value[indl];
-                        REAL_T *A_value_r = A_ptr_value[indr];
-                        if (ib == jb)
-                        {
-                            for (int ii = 0; ii < bsize[ib]; ii++)
-                                for (int jj = 0; jj < ii; jj++)
-                                {
-                                    int il = ROWMAJOR(ii, jj, bsize[ib],
-                                                      bsize[jb]);
-                                    int ir = ROWMAJOR(jj, ii, bsize[jb],
-                                                      bsize[ib]);
-                                    double tmp = A_value_r[il];
-                                    A_value_l[il] = A_value_r[ir];
-                                    A_value_l[ir] = tmp;
-                                }
-                        }
-                        else
-                        {
-                            for (int ii = 0; ii < bsize[ib]; ii++)
-                                for (int jj = 0; jj < bsize[jb]; jj++)
-                                {
-                                    int il = ROWMAJOR(ii, jj, bsize[ib],
-                                                      bsize[jb]);
-                                    int ir = ROWMAJOR(jj, ii, bsize[jb],
-                                                      bsize[ib]);
-                                    double tmp = A_value_l[il];
-                                    A_value_l[il] = A_value_r[ir];
-                                    A_value_r[ir] = tmp;
-                                }
-                        }
-                        exchangeDone = 1;
-                        break;
-                    }
-                }
-                assert(exchangeDone);
-                // If no match add to end of row
-//                if (!exchangeDone)
-//                {
-//                    int jind = A_nnzb[ind];
-//                    {
-//                        A_index[ROWMAJOR(ind, jind, N, M)] = i;
-//                        A_value[ROWMAJOR(ind, jind, N, M)] =
-//                            A_value[ROWMAJOR(i, j, N, M)];
-//                        A_nnz[ind]++;
-//                        A_nnz[i]--;
-//                    }
-//                }
-            }
-        }
-    }
-
-}
-#endif
