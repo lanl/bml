@@ -78,6 +78,59 @@ void TYPED_FUNC(
 #endif
 }
 
+/** Allocate a matrix with uninitialized values.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param matrix_dimension The matrix size.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_dense_t *TYPED_FUNC(
+    bml_noinit_matrix_dense) (
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
+{
+    bml_matrix_dense_t *A =
+        bml_noinit_allocate_memory(sizeof(bml_matrix_dense_t));
+    A->matrix_type = dense;
+    A->matrix_precision = MATRIX_PRECISION;
+    A->N = matrix_dimension.N_rows;
+    A->distribution_mode = distrib_mode;
+#ifdef BML_USE_MAGMA
+    A->ld = magma_roundup(matrix_dimension.N_rows, 32);
+    int device;
+    magma_getdevice(&device);
+    bml_queue_create(device);
+    magma_int_t ret = MAGMA(malloc) ((MAGMA_T **) & A->matrix,
+                                     A->ld * matrix_dimension.N_rows);
+    assert(ret == MAGMA_SUCCESS);
+#else
+    A->ld = matrix_dimension.N_rows;
+    A->matrix =
+        bml_noinit_allocate_memory(sizeof(REAL_T) * matrix_dimension.N_rows *
+                                   matrix_dimension.N_rows);
+#ifdef MKL_GPU
+    int sizea = A->ld * A->ld;
+    int dnum = 0;
+
+    REAL_T *A_matrix = (REAL_T *) A->matrix;
+    // allocate and offload the matrix to GPU
+#pragma omp target enter data map(alloc:A_matrix[0:sizea])
+#endif // end of MKL_GPU
+
+#endif
+    A->domain =
+        bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
+                           distrib_mode);
+    A->domain2 =
+        bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
+                           distrib_mode);
+    return A;
+}
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is

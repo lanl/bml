@@ -23,9 +23,9 @@ bml_scale_distributed2d_new(
     assert(A->M > 0);
 
     bml_matrix_distributed2d_t *B =
-        bml_zero_matrix_distributed2d(bml_get_type(A->matrix),
-                                      bml_get_precision(A->matrix), A->N,
-                                      A->M);
+        bml_noinit_matrix_distributed2d(bml_get_type(A->matrix),
+                                        bml_get_precision(A->matrix), A->N,
+                                        A->M);
 
     bml_scale(scale_factor, A->matrix, B->matrix);
 

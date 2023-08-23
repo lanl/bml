@@ -276,16 +276,17 @@ bml_noinit_rectangular_matrix(
               matrix_dimension.N_rows);
 #ifdef BML_USE_MPI
     if (distrib_mode == distributed)
-        return bml_zero_matrix_distributed2d(matrix_type, matrix_precision,
-                                             matrix_dimension.N_rows,
-                                             matrix_dimension.N_nz_max);
+        return bml_noinit_matrix_distributed2d(matrix_type, matrix_precision,
+                                               matrix_dimension.N_rows,
+                                               matrix_dimension.N_nz_max);
     else
 #endif
         switch (matrix_type)
         {
             case dense:
-                return bml_zero_matrix_dense(matrix_precision,
-                                             matrix_dimension, distrib_mode);
+                return bml_noinit_matrix_dense(matrix_precision,
+                                               matrix_dimension,
+                                               distrib_mode);
                 break;
             case ellpack:
                 return bml_noinit_matrix_ellpack(matrix_precision,
