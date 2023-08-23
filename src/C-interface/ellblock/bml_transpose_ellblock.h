@@ -3,25 +3,25 @@
 
 #include "bml_types_ellblock.h"
 
-void ellblock_swap_block_row_entries_single_real (
+void ellblock_swap_block_row_entries_single_real(
     bml_matrix_ellblock_t * A,
     const int block_row,
     const int iposb,
     const int jposb);
 
-void ellblock_swap_block_row_entries_double_real (
+void ellblock_swap_block_row_entries_double_real(
     bml_matrix_ellblock_t * A,
     const int block_row,
     const int iposb,
     const int jposb);
 
-void ellblock_swap_block_row_entries_single_complex (
+void ellblock_swap_block_row_entries_single_complex(
     bml_matrix_ellblock_t * A,
     const int block_row,
     const int iposb,
     const int jposb);
 
-void ellblock_swap_block_row_entries_double_complex (
+void ellblock_swap_block_row_entries_double_complex(
     bml_matrix_ellblock_t * A,
     const int block_row,
     const int iposb,
