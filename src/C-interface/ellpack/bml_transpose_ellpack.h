@@ -3,52 +3,52 @@
 
 #include "bml_types_ellpack.h"
 
-void ellpack_swap_row_entries_single_real (
+void ellpack_swap_row_entries_single_real(
     bml_matrix_ellpack_t * A,
     const int row,
     const int ipos,
     const int jpos);
 
-void ellpack_swap_row_entries_double_real (
+void ellpack_swap_row_entries_double_real(
     bml_matrix_ellpack_t * A,
     const int row,
     const int ipos,
     const int jpos);
 
-void ellpack_swap_row_entries_single_complex (
+void ellpack_swap_row_entries_single_complex(
     bml_matrix_ellpack_t * A,
     const int row,
     const int ipos,
     const int jpos);
 
-void ellpack_swap_row_entries_double_complex (
+void ellpack_swap_row_entries_double_complex(
     bml_matrix_ellpack_t * A,
     const int row,
     const int ipos,
     const int jpos);
 
-void ellpack_transpose_left_looking_single_real (
+void ellpack_transpose_left_looking_single_real(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_left_looking_double_real (
+void ellpack_transpose_left_looking_double_real(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_left_looking_single_complex (
+void ellpack_transpose_left_looking_single_complex(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_left_looking_double_complex (
+void ellpack_transpose_left_looking_double_complex(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_right_looking_single_real (
+void ellpack_transpose_right_looking_single_real(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_right_looking_double_real (
+void ellpack_transpose_right_looking_double_real(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_right_looking_single_complex (
+void ellpack_transpose_right_looking_single_complex(
     bml_matrix_ellpack_t * A);
 
-void ellpack_transpose_right_looking_double_complex (
+void ellpack_transpose_right_looking_double_complex(
     bml_matrix_ellpack_t * A);
 
 bml_matrix_ellpack_t *bml_transpose_new_ellpack(
