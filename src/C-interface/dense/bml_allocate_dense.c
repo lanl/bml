@@ -99,6 +99,49 @@ bml_clear_dense(
     }
 }
 
+/** Allocate an uninitialized matrix.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param matrix_dimension The matrix size.
+ *  \param distrib_mode The distribution mode.
+ *  \return The matrix.
+ */
+bml_matrix_dense_t *
+bml_noinit_matrix_dense(
+    bml_matrix_precision_t matrix_precision,
+    bml_matrix_dimension_t matrix_dimension,
+    bml_distribution_mode_t distrib_mode)
+{
+    switch (matrix_precision)
+    {
+        case single_real:
+            return bml_noinit_matrix_dense_single_real(matrix_dimension,
+                                                       distrib_mode);
+            break;
+        case double_real:
+            return bml_noinit_matrix_dense_double_real(matrix_dimension,
+                                                       distrib_mode);
+            break;
+#ifdef BML_COMPLEX
+        case single_complex:
+            return bml_noinit_matrix_dense_single_complex(matrix_dimension,
+                                                          distrib_mode);
+            break;
+        case double_complex:
+            return bml_noinit_matrix_dense_double_complex(matrix_dimension,
+                                                          distrib_mode);
+            break;
+#endif
+        default:
+            LOG_ERROR("unknown precision (%d)\n", matrix_precision);
+            break;
+    }
+    return NULL;
+}
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is

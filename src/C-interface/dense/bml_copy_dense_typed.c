@@ -35,8 +35,8 @@ bml_matrix_dense_t *TYPED_FUNC(
 {
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
     bml_matrix_dense_t *B =
-        TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension,
-                                           A->distribution_mode);
+        TYPED_FUNC(bml_noinit_matrix_dense) (matrix_dimension,
+                                             A->distribution_mode);
 #ifdef BML_USE_MAGMA
     MAGMA(copymatrix) (A->N, A->N, A->matrix, A->ld,
                        B->matrix, B->ld, bml_queue());

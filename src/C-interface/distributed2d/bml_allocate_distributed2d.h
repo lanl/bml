@@ -28,6 +28,12 @@ void bml_clear_distributed2d_single_complex(
 void bml_clear_distributed2d_double_complex(
     bml_matrix_distributed2d_t * A);
 
+bml_matrix_distributed2d_t *bml_noinit_matrix_distributed2d(
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M);
+
 bml_matrix_distributed2d_t *bml_zero_matrix_distributed2d(
     bml_matrix_type_t matrix_type,
     bml_matrix_precision_t matrix_precision,

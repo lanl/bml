@@ -37,7 +37,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 
     bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
     bml_matrix_dense_t *B =
-        TYPED_FUNC(bml_zero_matrix_dense) (matrix_dimension,
+        TYPED_FUNC(bml_noinit_matrix_dense) (matrix_dimension,
                                            A->distribution_mode);
     REAL_T *A_matrix = A->matrix;
     REAL_T *B_matrix = B->matrix;

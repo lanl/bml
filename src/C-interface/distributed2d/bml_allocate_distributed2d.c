@@ -105,6 +105,36 @@ bml_clear_distributed2d(
     bml_clear(A->matrix);
 }
 
+/** Allocate uninitialized matrix.
+ *
+ *  \ingroup allocate_group
+ *
+ *  \param matrix_precision The precision of the matrix. The default
+ *  is double precision.
+ *  \param matrix_dimension The matrix size.
+ *  \return The matrix.
+ */
+bml_matrix_distributed2d_t *
+bml_noinit_matrix_distributed2d(
+    bml_matrix_type_t matrix_type,
+    bml_matrix_precision_t matrix_precision,
+    int N,
+    int M)
+{
+    assert(N > 0);
+    assert(M > 0);
+
+    bml_matrix_distributed2d_t *A =
+        bml_noinit_allocate_memory(sizeof(bml_matrix_distributed2d_t));
+    bml_setup_distributed2d(N, A);
+    A->M = M;
+    A->matrix_precision = matrix_precision;
+    int m = M / bml_sqrtint(A->ntasks);
+    A->matrix =
+        bml_noinit_matrix(matrix_type, matrix_precision, A->n, m, sequential);
+    return A;
+}
+
 /** Allocate the zero matrix.
  *
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
