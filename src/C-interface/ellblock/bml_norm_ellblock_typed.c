@@ -97,20 +97,21 @@ double TYPED_FUNC(
     for (int ib = 0; ib < NB; ib++)
         y_ptr[ib] = calloc(maxbsize2, sizeof(REAL_T));
 
-    int ix[NB], jjb[NB];
+    int ix[NB], jjb[MB];
 
-    memset(ix, 0, NB * sizeof(int));
     memset(jjb, 0, NB * sizeof(int));
 
     for (int ib = 0; ib < NB; ib++)
     {
         int lb = 0;
+        /* reset marker ix */
+        memset(ix, 0, NB * sizeof(int));       
         for (int jp = 0; jp < A_nnzb[ib]; jp++)
         {
             int ind = ROWMAJOR(ib, jp, NB, MB);
             int jb = A_indexb[ind];
 
-            ix[jb] = ib + 1;
+            ix[jb] = 1;
 
             REAL_T *y_value = y_ptr[jb];
             REAL_T *A_value = A_ptr_value[ind];
@@ -152,7 +153,6 @@ double TYPED_FUNC(
             if (normx > threshold * threshold)
                 sum += normx;
         }
-        memset(ix, 0, NB * sizeof(int));       
     }
 
     for (int ib = 0; ib < NB; ib++)
@@ -216,13 +216,11 @@ double TYPED_FUNC(
             int ind = ROWMAJOR(ib, jp, NB, MB);
             int jb = A_indexb[ind];
             int nelements = bsize[ib] * bsize[jb];
-            if (ix[jb] == 0)
-            {
-                memset(y_ptr[jb], 0, nelements * sizeof(REAL_T));
-                ix[jb] = ib + 1;
-                jjb[lb] = jb;
-                lb++;
-            }
+
+            ix[jb] = 1;
+            jjb[lb] = jb;
+            lb++;
+
             REAL_T *y_value = y_ptr[jb];
             REAL_T *A_value = A_ptr_value[ind];
             for (int ii = 0; ii < bsize[ib]; ii++)
@@ -240,8 +238,6 @@ double TYPED_FUNC(
             int nelements = bsize[ib] * bsize[jb];
             if (ix[jb] == 0)
             {
-                memset(y_ptr[jb], 0, nelements * sizeof(REAL_T));
-                ix[jb] = ib + 1;
                 jjb[lb] = jb;
                 lb++;
             }
@@ -263,6 +259,7 @@ double TYPED_FUNC(
             if (normx > threshold * threshold)
                 sum += normx;
 
+            /* reset arrays */
             ix[jjb[jp]] = 0;
             memset(y_ptr[jjb[jp]], 0, maxbsize2 * sizeof(REAL_T));
             jjb[jp] = 0;

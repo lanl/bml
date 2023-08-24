@@ -147,11 +147,11 @@ double TYPED_FUNC(
 
 #if !(defined(__IBMC__) || defined(__ibmxl__))
     REAL_T y[A_N];
-    int ix[A_N], jjb[A_N];
+    int ix[A_N], jjb[A_M];
 
     memset(y, 0.0, A_N * sizeof(REAL_T));
     memset(ix, 0, A_N * sizeof(int));
-    memset(jjb, 0, A_N * sizeof(int));
+    memset(jjb, 0, A_M * sizeof(int));
 #endif
 
 #ifdef USE_OMP_OFFLOAD
@@ -181,16 +181,15 @@ double TYPED_FUNC(
     {
 #if defined(__IBMC__) || defined(__ibmxl__)
         REAL_T y[A_N];
-        int ix[A_N], jjb[A_N];
-
-        memset(ix, 0, A_N * sizeof(int));
+        int ix[A_N], jjb[A_M];
 #endif
-
+        /* reset marker ix */
+        memset(ix, 0, A_N * sizeof(int));
         int l = 0;
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
             int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
-            ix[k] = i + 1;
+            ix[k] = 1;
             y[k] = alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
         }
 
@@ -210,7 +209,6 @@ double TYPED_FUNC(
             if (ABS(y[jjb[jp]]) > threshold)
                 sum += y[jjb[jp]];      //* y[jjb[jp]];
         }
-        memset(ix, 0, A_N * sizeof(int));
     }
 
     return (double) REAL_PART(sum);
@@ -304,13 +302,12 @@ double TYPED_FUNC(
         for (int jp = 0; jp < A_nnz[i]; jp++)
         {
             int k = A_index[ROWMAJOR(i, jp, A_N, A_M)];
-            if (ix[k] == 0)
-            {
-                y[k] = 0.0;
-                ix[k] = i + 1;
-                jjb[l] = k;
-                l++;
-            }
+
+            y[k] = 0.0;
+            ix[k] = 1;
+            jjb[l] = k;
+            l++;
+
             y[k] += alpha_ * A_value[ROWMAJOR(i, jp, A_N, A_M)];
         }
 
@@ -320,7 +317,6 @@ double TYPED_FUNC(
             if (ix[k] == 0)
             {
                 y[k] = 0.0;
-                ix[k] = i + 1;
                 jjb[l] = k;
                 l++;
             }
@@ -332,9 +328,8 @@ double TYPED_FUNC(
             if (ABS(y[jjb[jp]]) > threshold)
                 sum += y[jjb[jp]] * y[jjb[jp]];
 
+            /* reset marker array */
             ix[jjb[jp]] = 0;
-            y[jjb[jp]] = 0.0;
-            jjb[jp] = 0;
         }
     }
 
