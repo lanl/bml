@@ -207,6 +207,7 @@ bml_mpi_recv_matrix_ellpack(
 #endif
         default:
             LOG_ERROR("unknown precision\n");
+            return NULL;
             break;
     }
 }

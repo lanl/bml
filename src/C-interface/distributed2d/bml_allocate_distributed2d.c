@@ -12,8 +12,6 @@
 
 /* MPI communicator for all the distributed2d matrices */
 static MPI_Comm s_comm = MPI_COMM_NULL;
-static MPI_Comm r_comm = MPI_COMM_NULL;
-static MPI_Comm c_comm = MPI_COMM_NULL;
 
 void
 bml_setcomm_distributed2d(

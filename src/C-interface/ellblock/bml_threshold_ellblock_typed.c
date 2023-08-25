@@ -105,8 +105,6 @@ void TYPED_FUNC(
     int *A_nnzb = A->nnzb;
     int *bsize = A->bsize;
 
-    int rlen;
-
     for (int ib = 0; ib < NB; ib++)
     {
         for (int jp = 0; jp < A_nnzb[ib]; jp++)

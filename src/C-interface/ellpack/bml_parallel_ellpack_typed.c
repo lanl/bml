@@ -31,8 +31,9 @@ void TYPED_FUNC(
     bml_allGatherVParallel_ellpack) (
     bml_matrix_ellpack_t * A)
 {
-    int myRank = bml_getMyRank();
-    int nRanks = bml_getNRanks();
+#ifdef BML_USE_MPI
+    //int myRank = bml_getMyRank();
+    //int nRanks = bml_getNRanks();
 
     int N = A->N;
     int M = A->M;
@@ -43,7 +44,6 @@ void TYPED_FUNC(
 
     REAL_T *A_value = (REAL_T *) A->value;
 
-#ifdef BML_USE_MPI
 /*
     for (int i = 0; i < nRanks; i++)
     {

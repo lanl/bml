@@ -33,8 +33,6 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A)
 {
 #ifdef BML_USE_MPI
-    int myRank = bml_getMyRank();
-
     int N = A->N;
 
     REAL_T *A_matrix = A->matrix;

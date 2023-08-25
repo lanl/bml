@@ -220,8 +220,8 @@ void TYPED_FUNC(
     int ione = 1;
     int izero = 0;
     int np0 = NUMROC(&m, &mb, &my_prow, &izero, &np_rows);
-    int nq0 = NUMROC(&m, &mb, &my_pcol, &izero, &np_cols);
 #if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+    int nq0 = NUMROC(&m, &mb, &my_pcol, &izero, &np_cols);
     int lwork = MAX(1 + 6 * m + 2 * np0 * nq0,
                     3 * m + MAX(mb * (np0 + 1), 3 * mb)) + 2 * m;
 #else

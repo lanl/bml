@@ -44,8 +44,6 @@ bml_matrix_ellpack_t
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
-    int *A_localRowMin = A->domain->localRowMin;
-    int *A_localRowMax = A->domain->localRowMax;
 
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = B->index;
@@ -53,8 +51,6 @@ bml_matrix_ellpack_t
 
     int N = A->N;
     int M = A->M;
-
-    int myRank = bml_getMyRank();
 
 #if defined(BML_USE_CUSPARSE)
     TYPED_FUNC(bml_copy_ellpack) (A, B);
@@ -108,15 +104,10 @@ bml_matrix_ellpack_t
 #endif
     return B;
     /*
-       int Alrmin = A_localRowMin[myRank];
-       int Alrmax = A_localRowMax[myRank];
-
        #pragma omp parallel for               \
        shared(N, M, B_index, B_value, B_nnz) \
-       shared(A_index, A_value, A_nnz,Alrmin,Alrmax)
-       //for (int i = 0; i < N; i++)
-
-       for (int i = Alrmin; i < Alrmax; i++)
+       shared(A_index, A_value, A_nnz)
+       for (int i = 0; i < N; i++)
        {
        for (int j = 0; j < N; j++)
        {

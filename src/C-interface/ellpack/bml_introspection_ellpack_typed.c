@@ -28,8 +28,6 @@ double TYPED_FUNC(
     double threshold)
 {
     int nnzs = 0;
-    int i;
-    int j;
     double sparsity;
     REAL_T *A_value = (REAL_T *) A->value;
     int A_N = A->N;

@@ -21,8 +21,6 @@ csr_noinit_table(
     int i, lwr;
     const int alloc_size =
         INIT_SLOT_STORAGE_SIZE >= tsize ? INIT_SLOT_STORAGE_SIZE : tsize;
-    static int powers[] =
-        { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
     static int powersof2[] =
         { 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
         65536, 131072, 262144

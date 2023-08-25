@@ -46,7 +46,7 @@ void *TYPED_FUNC(
     }
     for (int j_index = 0; j_index < A->nnz[i]; j_index++)
     {
-        if (A->index[ROWMAJOR(i, j_index, A->N, A->M)] == j)
+        if (A_index[ROWMAJOR(i, j_index, A->N, A->M)] == j)
         {
             return &A_value[ROWMAJOR(i, j_index, A->N, A->M)];
         }

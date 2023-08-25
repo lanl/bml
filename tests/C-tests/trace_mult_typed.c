@@ -21,8 +21,7 @@ int TYPED_FUNC(
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
 
-    double trace, trace_mult, diff, threshold;
-    threshold = 0.0;
+    double trace, trace_mult, diff;
 
     A = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);
     B = bml_random_matrix(matrix_type, matrix_precision, N, M, sequential);

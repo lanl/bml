@@ -33,6 +33,7 @@ bml_accumulate_offdiag_dense(
 #endif
         default:
             LOG_ERROR("unknown precision\n");
+            return NULL;
             break;
     }
 }

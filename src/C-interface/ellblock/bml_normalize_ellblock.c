@@ -30,6 +30,7 @@ bml_accumulate_offdiag_ellblock(
 #endif
         default:
             LOG_ERROR("unknown precision\n");
+            return NULL;
             break;
     }
 }

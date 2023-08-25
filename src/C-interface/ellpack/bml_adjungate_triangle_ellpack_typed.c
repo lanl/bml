@@ -34,7 +34,6 @@ void TYPED_FUNC(
     int A_M = A->M;
     int l;
     int ll;
-    int j;
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
