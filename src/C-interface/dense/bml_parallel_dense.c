@@ -208,6 +208,7 @@ bml_mpi_recv_matrix_dense(
 #endif
         default:
             LOG_ERROR("unknown precision\n");
+            return NULL;
             break;
     }
 }

@@ -144,6 +144,7 @@ bml_mpi_recv_matrix_csr(
 #endif
         default:
             LOG_ERROR("unknown precision\n");
+            return NULL;
             break;
     }
 }

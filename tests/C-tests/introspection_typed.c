@@ -29,8 +29,6 @@ int TYPED_FUNC(
 
     bml_matrix_type_t deep_type = bml_get_deep_type(A);
 
-    bml_matrix_type_t type = bml_get_type(A);
-
 #ifdef BML_USE_MPI
     switch (deep_type)
     {
@@ -57,6 +55,7 @@ int TYPED_FUNC(
     }
 
 #else
+    bml_matrix_type_t type = bml_get_type(A);
     if (deep_type != type)
     {
         LOG_ERROR("type and deep_type not equal!\n");

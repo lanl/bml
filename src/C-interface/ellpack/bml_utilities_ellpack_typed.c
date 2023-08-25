@@ -27,7 +27,9 @@ void TYPED_FUNC(
     FILE *hFile;
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol, ind;
+#if (defined(SINGLE_COMPLEX)||defined(DOUBLE_COMPLEX))
     double real_part, imaginary_part;
+#endif
     REAL_T value;
 
     int N = A->N;

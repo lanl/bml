@@ -328,7 +328,6 @@ bml_update_domain_ellpack(
 {
     bml_domain_t *A_domain = A->domain;
 
-    int myRank = bml_getMyRank();
     int nprocs = bml_getNRanks();
 
     for (int i = 0; i < nprocs; i++)

@@ -32,15 +32,12 @@ void TYPED_FUNC(
 {
     int A_N = A->N;
     int A_M = A->M;
-    int l;
-    int ll;
 
     REAL_T *A_value = (REAL_T *) A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
 
 #ifdef USE_OMP_OFFLOAD
-//#pragma omp target
 #pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 #endif
     A_value[ROWMAJOR(i, A_nnz[i], A_N, A_M)] = *((REAL_T *) element);

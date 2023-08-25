@@ -33,7 +33,10 @@ void TYPED_FUNC(
     char header1[20], header2[20], header3[20], header4[20], header5[20];
     int hdimx, nnz, irow, icol;
     int values_read;
-    double real_part, imaginary_part;
+    double real_part;
+#if (defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX))
+    double imaginary_part;
+#endif
 
     int N = A->N;
 

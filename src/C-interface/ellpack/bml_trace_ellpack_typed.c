@@ -44,9 +44,9 @@ double TYPED_FUNC(
     int myRank = bml_getMyRank();
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
-    int numrows = rowMax - rowMin;
 
 #ifdef USE_OMP_OFFLOAD
+    int numrows = rowMax - rowMin;
     REAL_T *diag;
     diag = (REAL_T *) calloc(numrows, sizeof(REAL_T));
 #pragma omp target enter data map(to:diag[:numrows])
@@ -130,10 +130,10 @@ double TYPED_FUNC(
     int B_N = B->N;
     int B_M = B->M;
 
+#ifdef USE_OMP_OFFLOAD
     REAL_T *B_value = (REAL_T *) B->value;
     int *B_index = (int *) B->index;
     int *B_nnz = (int *) B->nnz;
-#ifdef USE_OMP_OFFLOAD
 #pragma omp target update from(A_nnz[:A_N], A_index[:A_N*A_M], A_value[:A_N*A_M])
 #pragma omp target update from(B_nnz[:B_N], B_index[:B_N*B_M], B_value[:B_N*B_M])
 #endif

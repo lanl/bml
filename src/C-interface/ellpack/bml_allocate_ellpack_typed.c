@@ -123,7 +123,7 @@ void TYPED_FUNC(
 #else
     memset(A->nnz, 0, A->N * sizeof(int));
     memset(A->index, 0, A->N * A->M * sizeof(int));
-    memset(A->value, 0.0, A->N * A->M * sizeof(REAL_T));
+    memset(A_value, 0.0, A->N * A->M * sizeof(REAL_T));
 #endif
 
 #endif // conditional for offload
@@ -226,12 +226,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->csrRowPtr = bml_allocate_memory(sizeof(int) * (N + 1));
     A->csrVal = bml_allocate_memory(sizeof(REAL_T) * N * M);
 #endif
-    REAL_T *A_value = A->value;
 
     A->domain = bml_default_domain(N, M, distrib_mode);
     A->domain2 = bml_default_domain(N, M, distrib_mode);
 
 #if defined(USE_OMP_OFFLOAD)
+    REAL_T *A_value = A->value;
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int NM = N * M;

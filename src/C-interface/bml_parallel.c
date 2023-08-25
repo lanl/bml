@@ -322,6 +322,7 @@ bml_mpi_recv_matrix(
             break;
         default:
             LOG_ERROR("unknown matrix type\n");
+            return NULL;
             break;
     }
 }

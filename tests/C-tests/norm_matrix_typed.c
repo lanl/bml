@@ -20,7 +20,6 @@ int TYPED_FUNC(
 {
     bml_matrix_t *A = NULL;
     bml_matrix_t *B = NULL;
-    bml_matrix_t *C = NULL;
     REAL_T *A_dense = NULL;
     REAL_T *B_dense = NULL;
 

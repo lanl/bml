@@ -89,7 +89,6 @@ void TYPED_FUNC(
         const int annz = A->data_[i]->NNZ_;
         for (int pos = 0; pos < annz; pos++)
         {
-            const int j = cols[pos];
             if (is_above_threshold(vals[pos], threshold))
             {
                 if (rlen < pos)
