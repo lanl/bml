@@ -3,6 +3,7 @@
 #include "../bml_allocate.h"
 #include "../bml_copy.h"
 #include "../bml_types.h"
+#include "../bml_domain.h"
 #include "bml_allocate_ellpack.h"
 #include "bml_copy_ellpack.h"
 #include "bml_types_ellpack.h"
@@ -72,7 +73,6 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     }
 #endif
     bml_copy_domain(A->domain, B->domain);
-    bml_copy_domain(A->domain2, B->domain2);
     return B;
 }
 
@@ -143,7 +143,6 @@ void TYPED_FUNC(
     if (A->distribution_mode == B->distribution_mode)
     {
         bml_copy_domain(A->domain, B->domain);
-        bml_copy_domain(A->domain2, B->domain2);
     }
 }
 

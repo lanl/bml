@@ -2,6 +2,7 @@
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
 #include "../bml_types.h"
+#include "../bml_domain.h"
 #include "bml_copy_ellblock.h"
 #include "bml_types_ellblock.h"
 
@@ -125,7 +126,7 @@ void
 bml_save_domain_ellblock(
     bml_matrix_ellblock_t * A)
 {
-    bml_copy_domain(A->domain, A->domain2);
+    LOG_ERROR("bml_save_domain_ellblock not implemented");
 }
 
 /** Restore the domain for an ellblock matrix.
@@ -138,20 +139,5 @@ void
 bml_restore_domain_ellblock(
     bml_matrix_ellblock_t * A)
 {
-    bml_copy_domain(A->domain2, A->domain);
-
-/*
-    if (bml_printRank() == 1)
-    {
-      int nprocs = bml_getNRanks();
-      printf("Restored Domain\n");
-      for (int i = 0; i < nprocs; i++)
-      {
-        printf("rank %d localRow %d %d %d localElem %d localDispl %d\n",
-          i, A->domain->localRowMin[i], A->domain->localRowMax[i],
-          A->domain->localRowExtent[i], A->domain->localElements[i],
-          A->domain->localDispl[i]);
-      }
-    }
-*/
+    LOG_ERROR("bml_restore_domain_ellblock not implemented");
 }
