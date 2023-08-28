@@ -81,8 +81,6 @@ struct bml_matrix_csr_t
 
     /** The domain decomposition when running in parallel. */
     bml_domain_t *domain;
-    /** A copy of the domain decomposition. */
-    bml_domain_t *domain2;
 #ifdef BML_USE_MPI
     /** Buffer for communications */
     void *buffer;

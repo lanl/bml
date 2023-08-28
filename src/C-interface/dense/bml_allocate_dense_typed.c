@@ -3,6 +3,7 @@
 #include "../bml_allocate.h"
 #include "../bml_logger.h"
 #include "../bml_types.h"
+#include "../bml_domain.h"
 #include "bml_allocate_dense.h"
 #include "bml_types_dense.h"
 #include "bml_utilities_dense.h"
@@ -36,7 +37,6 @@ void TYPED_FUNC(
     bml_matrix_dense_t * A)
 {
     bml_deallocate_domain(A->domain);
-    bml_deallocate_domain(A->domain2);
 #ifdef BML_USE_MAGMA
     magma_int_t ret = magma_free(A->matrix);
     assert(ret == MAGMA_SUCCESS);
@@ -125,9 +125,6 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->domain =
         bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
                            distrib_mode);
-    A->domain2 =
-        bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
-                           distrib_mode);
     return A;
 }
 
@@ -182,9 +179,6 @@ bml_matrix_dense_t *TYPED_FUNC(
 
 #endif
     A->domain =
-        bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
-                           distrib_mode);
-    A->domain2 =
         bml_default_domain(matrix_dimension.N_rows, matrix_dimension.N_rows,
                            distrib_mode);
     return A;

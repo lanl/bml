@@ -1,4 +1,5 @@
 #include "../bml_copy.h"
+#include "../bml_domain.h"
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
 #include "../bml_types.h"
@@ -125,6 +126,8 @@ void
 bml_save_domain_ellpack(
     bml_matrix_ellpack_t * A)
 {
+    A->domain2 = bml_default_domain(A->N, A->M, A->distribution_mode);
+
     bml_copy_domain(A->domain, A->domain2);
 }
 
@@ -154,4 +157,5 @@ bml_restore_domain_ellpack(
       }
     }
 */
+    bml_deallocate_domain(A->domain2);
 }

@@ -2,6 +2,7 @@
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
 #include "../bml_types.h"
+#include "../bml_domain.h"
 #include "bml_types_csr.h"
 #include "bml_copy_csr.h"
 
@@ -125,7 +126,7 @@ void
 bml_save_domain_csr(
     bml_matrix_csr_t * A)
 {
-    bml_copy_domain(A->domain, A->domain2);
+    LOG_ERROR("bml_save_domain_csr not implemented");
 }
 
 /** Restore the domain for a csr matrix.
@@ -138,5 +139,5 @@ void
 bml_restore_domain_csr(
     bml_matrix_csr_t * A)
 {
-    bml_copy_domain(A->domain2, A->domain);
+    LOG_ERROR("bml_restore_domain_csr not implemented");
 }

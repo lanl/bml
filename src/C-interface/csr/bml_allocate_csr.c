@@ -195,7 +195,6 @@ bml_deallocate_csr(
     bml_free_memory(A->data_);
 //    bml_free_memory(A->lvarsgid_);
 //    bml_deallocate_domain(A->domain);
-//    bml_deallocate_domain(A->domain2);
     bml_free_memory(A);
 }
 
