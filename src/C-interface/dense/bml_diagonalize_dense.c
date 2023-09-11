@@ -21,7 +21,14 @@
 #include <rocsolver.h>
 #endif
 #endif
+
+#ifdef MKL_GPU
+#include "stdio.h"
+#include "mkl.h"
+#include "mkl_omp_offload.h"
+#else
 #include "../lapack.h"
+#endif
 
 #include <string.h>
 #include <complex.h>
@@ -85,6 +92,126 @@ bml_diagonalize_dense_magma_single_real(
 }
 #endif
 
+#ifdef MKL_GPU
+void
+bml_diagonalize_dense_gpu_single_real(
+    bml_matrix_dense_t * A,
+    void *eigenvalues,
+    bml_matrix_dense_t * eigenvectors)
+{
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
+
+    int dnum = 0;
+    MKL_INT info;
+    MKL_INT N = A->N;
+    float *A_matrix = (float*) A->matrix;
+    float *typed_eigenvalues = (float *) eigenvalues;
+
+    float *evecs = (float*) malloc(A->N * A->N * sizeof(float));
+    float *evals = (float*) malloc(A->N * sizeof(float));
+
+#pragma omp target enter data map(alloc:evecs[0:N*N])
+#pragma omp target enter data map(alloc:evals[0:N])
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+    printf("Checking A matrix values \n");
+    for (int i =0; i<N; i++) {
+        for (int j =0; j<N; j++) {
+            printf(" %6.3f", A_matrix[i*N + j]);
+        }
+        printf("\n");
+    }
+    // copy A to evecs on GPU
+#pragma omp target teams distribute parallel for
+    for (int i = 0; i < N*N; i++) {
+        evecs[i] = A_matrix[i];
+    }
+#pragma omp target teams distribute parallel for
+    for (int i =0; i<N; i++) {
+        evals[i] = 1.0;
+    }
+
+#pragma omp target update from(evecs[0:N*N])
+#pragma omp target update from(evals[0:N])
+    // Check values before syev
+    printf("Checking evecs input values \n");
+    for (int i =0; i<N; i++) {
+        for (int j =0; j<N; j++) {
+            printf(" %6.3f,", evecs[i*N + j]);
+        }
+        printf("\n");
+    }
+    for (int i =0; i<N; i++) {
+        printf("%d, %f \n", i, evals[i]);
+    }
+#ifdef BML_SYEVD
+    // Divide and conquer solver
+    MKL_INT lwork = 1 + 6 * N + 2 * N * N;
+    float *work = (float*) malloc(lwork * sizeof(float));
+    MKL_INT liwork = 3 + 5 * N;
+    MKL_INT *iwork = (MKL_INT*) malloc(liwork * sizeof(MKL_INT));
+#pragma omp target enter data map(alloc:work[0:lwork])
+#pragma omp target enter data map(alloc:iwork[0:liwork])
+
+#pragma omp target variant dispatch use_device_ptr(evecs, evals, work, iwork)
+    ssyevd("V", "U", &N, evecs, &N, evals, work, &lwork, iwork, &liwork, &info);
+    free(iwork);
+#else
+    MKL_INT lwork = 3 * N;
+    float *work = (float*) mkl_malloc(lwork * sizeof(float), 64);
+#pragma omp target enter data map(alloc:work[0:lwork])
+#pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work)
+    ssyev("V", "U", &N, evecs, &N, evals, work, &lwork, &info);
+#endif // BML_SYEVD
+
+#ifdef MKL_GPU_DEBUG
+#pragma omp target update from(evecs[0:N*N])
+#pragma omp target update from(evals[0:N])
+
+    printf("After SYEV \n");
+    for (int i =0; i<N; i++) {
+        for (int j =0; j<N; j++) {
+            printf(" %6.3f", evecs[i*N + j]);
+        }
+        printf("\n");
+    }
+    for (int i =0; i<N; i++) {
+        printf("%d, %f \n", i, evals[i]);
+    }
+#endif 
+
+// need typed_eigenvalues on CPU
+#pragma omp target update from(evals[0:N])
+    for (int i = 0; i < N; i++)
+    {
+        typed_eigenvalues[i] = (float) evals[i];
+    }
+
+// leave eigenvectors on GPU
+    float* e_matrix = (float *) eigenvectors->matrix;
+#pragma omp target enter data map(alloc:e_matrix[0:N*N])
+#pragma omp target teams distribute parallel for
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            e_matrix[ROWMAJOR(i, j, N, N)] =
+                evecs[COLMAJOR(i, j, N, N)];
+        }
+    }
+
+// push eigenvectors back from GPU
+// #pragma omp target update from(e_matrix[0:N*N])
+
+    free(evecs);
+    free(evals);
+    free(work);
+#endif // NOBLAS
+}
+#endif // MKL_GPU
+
 void
 bml_diagonalize_dense_cpu_single_real(
     bml_matrix_dense_t * A,
@@ -95,32 +222,30 @@ bml_diagonalize_dense_cpu_single_real(
     LOG_ERROR("No BLAS library");
 #else
     int info;
+    int N = A->N;
     float *A_matrix;
     float *typed_eigenvalues = (float *) eigenvalues;
 
     float *evecs = calloc(A->N * A->N, sizeof(float));
     float *evals = calloc(A->N, sizeof(float));
 
-#ifdef MKL_GPU
-// pull from GPU
-#pragma omp target update from(A_matrix[0:N*N])
-#endif
-
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(float));
 
 #ifdef BML_SYEVD
     // Divide and conquer solver
-    int lwork = 1 + 6 * A->N + 2 * A->N * A->N;
+    const int lwork = 1 + 6 * N + 2 * N * N;
     float *work = malloc(lwork * sizeof(float));
-    int liwork = 3 + 5 * A->N;
+    const int liwork = 3 + 5 * N;
     int *iwork = malloc(liwork * sizeof(int));
-    C_SSYEVD("V", "U", &A->N, evecs, &A->N, evals, work, &lwork,
+    printf("%d, %d \n", lwork, liwork);
+
+    C_SSYEVD("V", "U", &N, evecs, &N, evals, work, &lwork,
              iwork, &liwork, &info);
     free(iwork);
 #else
-    int lwork = 3 * A->N;
+    const int lwork = 3 * A->N;
     float *work = calloc(lwork, sizeof(float));
-    C_SSYEV("V", "U", &A->N, evecs, &A->N, evals, work, &lwork, &info);
+    C_SSYEV("V", "U", &N, evecs, &N, evals, work, &lwork, &info);
 #endif // BML_SYEVD
 
     A_matrix = (float *) eigenvectors->matrix;
@@ -133,10 +258,6 @@ bml_diagonalize_dense_cpu_single_real(
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
-#ifdef MKL_GPU
-// push back to GPU
-#pragma omp target update to(A_matrix[0:N*N])
-#endif
 
     free(evecs);
     free(evals);
@@ -152,6 +273,8 @@ bml_diagonalize_dense_single_real(
 {
 #ifdef BML_USE_MAGMA
     bml_diagonalize_dense_magma_single_real(A, eigenvalues, eigenvectors);
+#elif MKL_GPU
+    bml_diagonalize_dense_gpu_single_real(A, eigenvalues, eigenvectors);
 #else
     bml_diagonalize_dense_cpu_single_real(A, eigenvalues, eigenvectors);
 #endif
@@ -326,6 +449,135 @@ bml_diagonalize_dense_magma_double_real(
 }
 #endif
 
+#ifdef MKL_GPU
+void
+bml_diagonalize_dense_gpu_double_real(
+    bml_matrix_dense_t * A,
+    void *eigenvalues,
+    bml_matrix_dense_t * eigenvectors)
+{
+#ifdef NOBLAS
+    LOG_ERROR("No BLAS library");
+#else
+
+    int dnum = 0;
+    MKL_INT info;
+    const MKL_INT N = A->N;
+    double *A_matrix = A->matrix;
+    double *typed_eigenvalues = (double *) eigenvalues;
+
+    double *evecs = (double*) calloc(A->N * A->N, sizeof(double));
+    double *evals = (double*) calloc(A->N, sizeof(double));
+
+#pragma omp target enter data map(alloc:evecs[0:N*N])
+#pragma omp target enter data map(alloc:evals[0:N])
+
+// pull from GPU
+#pragma omp target update from(A_matrix[0:N*N])
+    printf("Checking A matrix values \n");
+    for (int i =0; i<N; i++) {
+        for (int j =0; j<N; j++) {
+            printf(" %6.3f,", A_matrix[i*N + j]);
+        }
+        printf("\n");
+    }
+    // copy A to evecs on GPU
+#pragma omp target teams distribute parallel for
+    for (int i = 0; i < N*N; i++)
+    {
+        evecs[i] = A_matrix[i];
+    }
+/*
+#pragma omp target teams distribute parallel for
+    for (int i =0; i<N; i++) {
+        evals[i] = 1.0;
+    }
+
+#ifdef MKL_GPU_DEBUG
+
+#pragma omp target update from(evecs[0:N*N])
+#pragma omp target update from(evals[0:N])
+    // Check values before syev
+    printf("Checking evecs input values \n");
+    for (int i =0; i<N; i++) {
+        for (int j =0; j<N; j++) {
+            printf(" %6.3f,", evecs[i*N + j]);
+        }
+        printf("\n");
+    }
+    for (int i =0; i<N; i++) {
+        printf("%d, %f \n", i, evals[i]);
+    }
+#endif // debug
+*/
+#ifdef BML_SYEVD
+    // Divide and conquer solver
+    const MKL_INT lwork = 1 + 6 * N + 2 * N * N;
+    double *work = malloc(lwork * sizeof(double));
+    const MKL_INT liwork = 3 + 5 * N;
+    MKL_INT *iwork = malloc(liwork * sizeof(MKL_INT));
+#pragma omp target enter data map(alloc:work[0:lwork])
+#pragma omp target enter data map(alloc:iwork[0:liwork])
+
+#pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work, iwork)
+    dsyevd("V", "U", &N, evecs, &N, evals, work, &lwork,
+             iwork, &liwork, &info);
+    free(iwork);
+#else
+    const MKL_INT lwork = 3 * N;
+    double *work = calloc(lwork, sizeof(double));
+#pragma omp target enter data map(alloc:work[0:lwork])
+#pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work)
+    dsyev("V", "U", &N, evecs, &N, evals, work, &lwork, &info);
+#endif // BML_SYEVD
+
+#ifdef MKL_GPU
+       // pull evecs, evals back from GPU
+#pragma omp target update from(evecs[0:N*N])
+#pragma omp target update from(evals[0:N])
+
+    printf("After SYEV \n");
+    for (int i =0; i<N; i++) {
+        for (int j =0; j<N; j++) {
+            printf(" %6.3f,", evecs[i*N + j]);
+        }
+        printf("\n");
+    }
+    for (int i =0; i<N; i++) {
+        printf("%d, %f \n", i, evals[i]);
+    }
+#endif 
+
+// need typed_eigenvalues on CPU
+#pragma omp target update from(evals[0:N])
+    for (int i = 0; i < A->N; i++)
+    {
+        typed_eigenvalues[i] = (double) evals[i];
+    }
+
+// leave eigenvectors on GPU
+    double* e_matrix = (double *) eigenvectors->matrix;
+#pragma omp target enter data map(alloc:e_matrix[0:N*N])
+#pragma omp target teams distribute parallel for
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            e_matrix[ROWMAJOR(i, j, N, N)] =
+                evecs[COLMAJOR(i, j, N, N)];
+        }
+    }
+
+// push eigenvectors back from GPU
+// #pragma omp target update from(e_matrix[0:N*N])
+
+    free(evecs);
+    free(evals);
+    free(work);
+#endif // NOBLAS
+}
+#endif // MKL_GPU
+
 void
 bml_diagonalize_dense_cpu_double_real(
     bml_matrix_dense_t * A,
@@ -336,15 +588,13 @@ bml_diagonalize_dense_cpu_double_real(
     LOG_ERROR("No BLAS library");
 #else
     int info;
-    double *A_matrix;
+    int N = A->N;
+    double *A_matrix = A->matrix;
     double *typed_eigenvalues = (double *) eigenvalues;
 
     double *evecs = calloc(A->N * A->N, sizeof(double));
     double *evals = calloc(A->N, sizeof(double));
-#ifdef MKL_GPU
-// pull from GPU
-#pragma omp target update from(A_matrix[0:N*N])
-#endif
+
     memcpy(evecs, A->matrix, A->N * A->N * sizeof(double));
 
 #ifdef BML_SYEVD
@@ -372,10 +622,6 @@ bml_diagonalize_dense_cpu_double_real(
                 evecs[COLMAJOR(i, j, A->N, A->N)];
         }
     }
-#ifdef MKL_GPU
-// push back to GPU
-#pragma omp target update to(A_matrix[0:N*N])
-#endif
     free(evecs);
     free(evals);
     free(work);
@@ -390,6 +636,8 @@ bml_diagonalize_dense_double_real(
 {
 #ifdef BML_USE_MAGMA
     bml_diagonalize_dense_magma_double_real(A, eigenvalues, eigenvectors);
+#elif MKL_GPU
+    bml_diagonalize_dense_gpu_double_real(A, eigenvalues, eigenvectors);
 #else // CPU code
     bml_diagonalize_dense_cpu_double_real(A, eigenvalues, eigenvectors);
 #endif
@@ -402,6 +650,7 @@ bml_diagonalize_dense_single_complex(
     bml_matrix_dense_t * eigenvectors)
 {
     int info;
+    int N = A->N;
     float complex *typed_eigenvalues = (float complex *) eigenvalues;
 
 #ifdef BML_USE_MAGMA
@@ -460,6 +709,7 @@ bml_diagonalize_dense_single_complex(
 
 #ifdef MKL_GPU
 // pull from GPU
+    
 #pragma omp target update from(A_matrix[0:N*N])
 #endif
     memcpy(A_copy, A->matrix, A->N * A->N * sizeof(float complex));
@@ -509,6 +759,7 @@ bml_diagonalize_dense_double_complex(
     bml_matrix_dense_t * eigenvectors)
 {
     int info;
+    int N = A->N;
     double complex *typed_eigenvalues = (double complex *) eigenvalues;
 
 #ifdef BML_USE_MAGMA
