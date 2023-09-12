@@ -106,30 +106,34 @@ bml_diagonalize_dense_gpu_single_real(
     int dnum = 0;
     MKL_INT info;
     MKL_INT N = A->N;
-    float *A_matrix = (float*) A->matrix;
+    float *A_matrix = (float *) A->matrix;
     float *typed_eigenvalues = (float *) eigenvalues;
 
-    float *evecs = (float*) malloc(A->N * A->N * sizeof(float));
-    float *evals = (float*) malloc(A->N * sizeof(float));
+    float *evecs = (float *) malloc(A->N * A->N * sizeof(float));
+    float *evals = (float *) malloc(A->N * sizeof(float));
 
 #pragma omp target enter data map(alloc:evecs[0:N*N])
 #pragma omp target enter data map(alloc:evals[0:N])
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
     printf("Checking A matrix values \n");
-    for (int i =0; i<N; i++) {
-        for (int j =0; j<N; j++) {
+    for (int i =0; i<N; i++)
+    {
+        for (int j =0; j<N; j++)
+        {
             printf(" %6.3f", A_matrix[i*N + j]);
         }
         printf("\n");
     }
     // copy A to evecs on GPU
 #pragma omp target teams distribute parallel for
-    for (int i = 0; i < N*N; i++) {
+    for (int i = 0; i < N*N; i++)
+    {
         evecs[i] = A_matrix[i];
     }
 #pragma omp target teams distribute parallel for
-    for (int i =0; i<N; i++) {
+    for (int i =0; i<N; i++)
+    {
         evals[i] = 1.0;
     }
 
@@ -137,21 +141,24 @@ bml_diagonalize_dense_gpu_single_real(
 #pragma omp target update from(evals[0:N])
     // Check values before syev
     printf("Checking evecs input values \n");
-    for (int i =0; i<N; i++) {
-        for (int j =0; j<N; j++) {
+    for (int i =0; i<N; i++)
+    {
+        for (int j =0; j<N; j++)
+        {
             printf(" %6.3f,", evecs[i*N + j]);
         }
         printf("\n");
     }
-    for (int i =0; i<N; i++) {
+    for (int i =0; i<N; i++)
+    {
         printf("%d, %f \n", i, evals[i]);
     }
 #ifdef BML_SYEVD
     // Divide and conquer solver
     MKL_INT lwork = 1 + 6 * N + 2 * N * N;
-    float *work = (float*) malloc(lwork * sizeof(float));
+    float *work = (float *) malloc(lwork * sizeof(float));
     MKL_INT liwork = 3 + 5 * N;
-    MKL_INT *iwork = (MKL_INT*) malloc(liwork * sizeof(MKL_INT));
+    MKL_INT *iwork = (MKL_INT *) malloc(liwork * sizeof(MKL_INT));
 #pragma omp target enter data map(alloc:work[0:lwork])
 #pragma omp target enter data map(alloc:iwork[0:liwork])
 
@@ -160,7 +167,7 @@ bml_diagonalize_dense_gpu_single_real(
     free(iwork);
 #else
     MKL_INT lwork = 3 * N;
-    float *work = (float*) mkl_malloc(lwork * sizeof(float), 64);
+    float *work = (float *) mkl_malloc(lwork * sizeof(float), 64);
 #pragma omp target enter data map(alloc:work[0:lwork])
 #pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work)
     ssyev("V", "U", &N, evecs, &N, evals, work, &lwork, &info);
@@ -171,16 +178,19 @@ bml_diagonalize_dense_gpu_single_real(
 #pragma omp target update from(evals[0:N])
 
     printf("After SYEV \n");
-    for (int i =0; i<N; i++) {
-        for (int j =0; j<N; j++) {
+    for (int i =0; i<N; i++)
+    {
+        for (int j =0; j<N; j++)
+        {
             printf(" %6.3f", evecs[i*N + j]);
         }
         printf("\n");
     }
-    for (int i =0; i<N; i++) {
+    for (int i =0; i<N; i++)
+    {
         printf("%d, %f \n", i, evals[i]);
     }
-#endif 
+#endif
 
 // need typed_eigenvalues on CPU
 #pragma omp target update from(evals[0:N])
@@ -466,8 +476,8 @@ bml_diagonalize_dense_gpu_double_real(
     double *A_matrix = A->matrix;
     double *typed_eigenvalues = (double *) eigenvalues;
 
-    double *evecs = (double*) calloc(A->N * A->N, sizeof(double));
-    double *evals = (double*) calloc(A->N, sizeof(double));
+    double *evecs = (double *) calloc(A->N * A->N, sizeof(double));
+    double *evals = (double *) calloc(A->N, sizeof(double));
 
 #pragma omp target enter data map(alloc:evecs[0:N*N])
 #pragma omp target enter data map(alloc:evals[0:N])
@@ -475,8 +485,10 @@ bml_diagonalize_dense_gpu_double_real(
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
     printf("Checking A matrix values \n");
-    for (int i =0; i<N; i++) {
-        for (int j =0; j<N; j++) {
+    for (int i =0; i<N; i++)
+    {
+        for (int j =0; j<N; j++)
+        {
             printf(" %6.3f,", A_matrix[i*N + j]);
         }
         printf("\n");
@@ -489,7 +501,8 @@ bml_diagonalize_dense_gpu_double_real(
     }
 /*
 #pragma omp target teams distribute parallel for
-    for (int i =0; i<N; i++) {
+    for (int i =0; i<N; i++)
+    {
         evals[i] = 1.0;
     }
 
@@ -499,13 +512,16 @@ bml_diagonalize_dense_gpu_double_real(
 #pragma omp target update from(evals[0:N])
     // Check values before syev
     printf("Checking evecs input values \n");
-    for (int i =0; i<N; i++) {
-        for (int j =0; j<N; j++) {
+    for (int i =0; i<N; i++)
+    {
+        for (int j =0; j<N; j++)
+        {
             printf(" %6.3f,", evecs[i*N + j]);
         }
         printf("\n");
     }
-    for (int i =0; i<N; i++) {
+    for (int i =0; i<N; i++)
+    {
         printf("%d, %f \n", i, evals[i]);
     }
 #endif // debug
@@ -537,16 +553,19 @@ bml_diagonalize_dense_gpu_double_real(
 #pragma omp target update from(evals[0:N])
 
     printf("After SYEV \n");
-    for (int i =0; i<N; i++) {
-        for (int j =0; j<N; j++) {
+    for (int i =0; i<N; i++)
+    {
+        for (int j =0; j<N; j++)
+        {
             printf(" %6.3f,", evecs[i*N + j]);
         }
         printf("\n");
     }
-    for (int i =0; i<N; i++) {
+    for (int i =0; i<N; i++)
+    {
         printf("%d, %f \n", i, evals[i]);
     }
-#endif 
+#endif
 
 // need typed_eigenvalues on CPU
 #pragma omp target update from(evals[0:N])
