@@ -488,7 +488,7 @@ bml_diagonalize_dense_gpu_double_real(
 #pragma omp target enter data map(alloc:evecs[0:N*N])
 #pragma omp target enter data map(alloc:evals[0:N])
 
-#ifdef MKL_GOU_DEBUG
+#ifdef MKL_GPU_DEBUG
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
     printf("Checking A matrix values \n");
@@ -550,7 +550,7 @@ bml_diagonalize_dense_gpu_double_real(
     dsyev("V", "U", &N, evecs, &N, evals, work, &lwork, &info);
 #endif // BML_SYEVD
 
-#ifdef MKL_GPU
+#ifdef MKL_GPU_DEBUG
     // pull evecs, evals back from GPU
 #pragma omp target update from(evecs[0:N*N])
 #pragma omp target update from(evals[0:N])
@@ -568,7 +568,7 @@ bml_diagonalize_dense_gpu_double_real(
     {
         printf("%d, %f \n", i, evals[i]);
     }
-#endif
+#endif // DEBUG
 
 // need typed_eigenvalues on CPU
 #pragma omp target update from(evals[0:N])
