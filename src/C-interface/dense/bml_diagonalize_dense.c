@@ -488,6 +488,7 @@ bml_diagonalize_dense_gpu_double_real(
 #pragma omp target enter data map(alloc:evecs[0:N*N])
 #pragma omp target enter data map(alloc:evals[0:N])
 
+#ifdef MKL_GOU_DEBUG
 // pull from GPU
 #pragma omp target update from(A_matrix[0:N*N])
     printf("Checking A matrix values \n");
@@ -499,17 +500,12 @@ bml_diagonalize_dense_gpu_double_real(
         }
         printf("\n");
     }
+#endif // DEBUG
     // copy A to evecs on GPU
 #pragma omp target teams distribute parallel for
     for (int i = 0; i < N * N; i++)
     {
         evecs[i] = A_matrix[i];
-    }
-/*
-#pragma omp target teams distribute parallel for
-    for (int i = 0; i < N; i++)
-    {
-        evals[i] = 1.0;
     }
 
 #ifdef MKL_GPU_DEBUG
@@ -530,8 +526,8 @@ bml_diagonalize_dense_gpu_double_real(
     {
         printf("%d, %f \n", i, evals[i]);
     }
-#endif // debug
-*/
+#endif // DEBUG
+
 #ifdef BML_SYEVD
     // Divide and conquer solver
     const MKL_INT lwork = 1 + 6 * N + 2 * N * N;
@@ -544,6 +540,7 @@ bml_diagonalize_dense_gpu_double_real(
 #pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work, iwork)
     dsyevd("V", "U", &N, evecs, &N, evals, work, &lwork,
            iwork, &liwork, &info);
+#pragma omp target exit data map(release:iwork)
     free(iwork);
 #else
     const MKL_INT lwork = 3 * N;
@@ -582,7 +579,6 @@ bml_diagonalize_dense_gpu_double_real(
 
 // leave eigenvectors on GPU
     double *e_matrix = (double *) eigenvectors->matrix;
-#pragma omp target enter data map(alloc:e_matrix[0:N*N])
 #pragma omp target teams distribute parallel for
     for (int i = 0; i < N; i++)
     {
@@ -592,8 +588,9 @@ bml_diagonalize_dense_gpu_double_real(
         }
     }
 
-// push eigenvectors back from GPU
-// #pragma omp target update from(e_matrix[0:N*N])
+#pragma omp target exit data map(release:evecs)
+#pragma omp target exit data map(release:evals)
+#pragma omp target exit data map(release:work)
 
     free(evecs);
     free(evals);
