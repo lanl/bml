@@ -177,7 +177,8 @@ bml_diagonalize_dense_gpu_single_real(
     float *work = (float *) mkl_malloc(lwork * sizeof(float), 64);
 #pragma omp target enter data map(alloc:work[0:lwork])
 #pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work)
-    ssyev("V", "U", &N, evecs, &N, evals, work, &lwork, &info);
+    ssyev("V", "U", &N, evecs, &N, evals, work, &lwork,
+          &info);
 #endif // BML_SYEVD
 
 #ifdef MKL_GPU_DEBUG
@@ -542,7 +543,7 @@ bml_diagonalize_dense_gpu_double_real(
 
 #pragma omp target variant dispatch device(dnum) use_device_ptr(evecs, evals, work, iwork)
     dsyevd("V", "U", &N, evecs, &N, evals, work, &lwork,
-             iwork, &liwork, &info);
+           iwork, &liwork, &info);
     free(iwork);
 #else
     const MKL_INT lwork = 3 * N;
@@ -553,7 +554,7 @@ bml_diagonalize_dense_gpu_double_real(
 #endif // BML_SYEVD
 
 #ifdef MKL_GPU
-       // pull evecs, evals back from GPU
+    // pull evecs, evals back from GPU
 #pragma omp target update from(evecs[0:N*N])
 #pragma omp target update from(evals[0:N])
 
