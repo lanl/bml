@@ -127,7 +127,7 @@ bml_diagonalize_dense_gpu_single_real(
     }
     // copy A to evecs on GPU
 #pragma omp target teams distribute parallel for
-    for (int i = 0; i < N*N; i++)
+    for (int i = 0; i < N * N; i++)
     {
         evecs[i] = A_matrix[i];
     }
