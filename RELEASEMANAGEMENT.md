@@ -19,6 +19,14 @@ When creating a new release, make sure to update the following files:
     release = 'v2.3.0'
     ```
 
+- Updated API documentation
+
+    ```console
+    ./scripts/run-local-docker-container.sh ./build.sh docs
+    ```
+
+  and commit any changes.
+
 Create an annotated tag:
 
 ```console
