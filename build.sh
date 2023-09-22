@@ -281,7 +281,7 @@ docs() {
     make -C "${BUILD_DIR}/docs/latex" 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
     if test -f "${BUILD_DIR}/docs/latex/refman.pdf"; then
-      cp -v "${BUILD_DIR}/docs/latex/refman.pdf" "${TOP_DIR}/bml-manual.pdf"
+        cp -v "${BUILD_DIR}/docs/latex/refman.pdf" "${TOP_DIR}/bml-manual.pdf"
     fi
 }
 
