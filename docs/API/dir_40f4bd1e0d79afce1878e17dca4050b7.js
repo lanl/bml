@@ -8,6 +8,7 @@ var dir_40f4bd1e0d79afce1878e17dca4050b7 =
     [ "bml_convert.h", "bml__convert_8h.html", "bml__convert_8h" ],
     [ "bml_copy.h", "bml__copy_8h.html", "bml__copy_8h" ],
     [ "bml_diagonalize.h", "bml__diagonalize_8h_source.html", null ],
+    [ "bml_domain.h", "bml__domain_8h_source.html", null ],
     [ "bml_element_multiply.h", "bml__element__multiply_8h.html", "bml__element__multiply_8h" ],
     [ "bml_elemental.h", "bml__elemental_8h_source.html", null ],
     [ "bml_export.h", "bml__export_8h.html", "bml__export_8h" ],

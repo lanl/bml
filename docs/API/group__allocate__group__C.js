@@ -15,6 +15,6 @@ var group__allocate__group__C =
     [ "bml_noinit_rectangular_matrix", "group__allocate__group__C.html#gab01d44950e5fe6e57deedfe6c386bbfe", null ],
     [ "bml_random_matrix", "group__allocate__group__C.html#ga5526b653e3bee9064caa6d9ed3a2a298", null ],
     [ "bml_reallocate_memory", "group__allocate__group__C.html#gaafb1484decc24bb0e1c20b9dfe7bfe11", null ],
-    [ "bml_update_domain", "group__allocate__group__C.html#ga1c157462f6aae21159412d8c9bf5e3f3", null ],
+    [ "bml_update_domain_matrix", "group__allocate__group__C.html#ga0e6e5e7cc1449b285b55a6696a61f85f", null ],
     [ "bml_zero_matrix", "group__allocate__group__C.html#ga1db50ac5b32a15d261d36da2c6415898", null ]
 ];
