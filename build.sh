@@ -278,11 +278,11 @@ compile() {
 docs() {
     ${CMAKE} --build "${BUILD_DIR}" --target docs 2>&1 | tee -a "${LOG_FILE}"
     check_pipe_error
-    #make -C "${BUILD_DIR}/doc/latex" 2>&1 | tee -a "${LOG_FILE}"
-    #check_pipe_error
-    #if test -f "${BUILD_DIR}/doc/latex/refman.pdf"; then
-    #cp -v "${BUILD_DIR}/doc/latex/refman.pdf" "${TOP_DIR}/bml-manual.pdf"
-    #fi
+    make -C "${BUILD_DIR}/docs/latex" 2>&1 | tee -a "${LOG_FILE}"
+    check_pipe_error
+    if test -f "${BUILD_DIR}/docs/latex/refman.pdf"; then
+      cp -v "${BUILD_DIR}/docs/latex/refman.pdf" "${TOP_DIR}/bml-manual.pdf"
+    fi
 }
 
 install() {

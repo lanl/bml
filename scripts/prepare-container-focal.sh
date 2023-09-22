@@ -100,6 +100,8 @@ install_base_packages() {
         python python3-pip python3-wheel python3-pkg-resources \
         sudo \
         texlive \
+        texlive-latex-extra \
+        texlive-plain-generic \
         valgrind \
         vim
 }
