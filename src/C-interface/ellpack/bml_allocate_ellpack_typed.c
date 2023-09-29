@@ -474,7 +474,10 @@ void TYPED_FUNC(
     size_t lworkInBytes = 0;
     char *dwork = NULL;
 
-    nnz = csrRowPtr[N];
+#pragma omp target map(to:N) map(from:nnz)
+    {
+      nnz = csrRowPtr[N];
+    }
     // Temporary array for sorting
     
     csrVal_tmp = (REAL_T *) malloc(sizeof(REAL_T)* nnz);
@@ -573,7 +576,7 @@ void TYPED_FUNC(
 
     REAL_T threshold = (REAL_T)threshold_in;
 
-#pragma omp target map(from:nnz)
+#pragma omp target map(to:N) map(from:nnz)
     {
       nnz = csrRowPtr[N];
     }
