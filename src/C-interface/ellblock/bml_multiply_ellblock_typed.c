@@ -234,6 +234,9 @@ void TYPED_FUNC(
  *
  * \f$ X^{2} \leftarrow X \, X \f$
  *
+ * Note: the matrix X2 is overwritten with the result.
+ * Since X2 and X may have different non-zero patterns, we need to clear X2 before overwriting.
+ *
  * \ingroup multiply_group
  *
  * \param X Matrix X
@@ -252,12 +255,14 @@ void *TYPED_FUNC(
     int *X_nnzb = X->nnzb;
     int *bsize = X->bsize;
 
+    REAL_T traceX = 0.0;
+    REAL_T **X_ptr_value = (REAL_T **) X->ptr_value;
+
+    /* clear X2 and set pointers to data */
+    TYPED_FUNC(bml_clear_ellblock) (X2);
     int *X2_indexb = X2->indexb;
     int *X2_nnzb = X2->nnzb;
-
-    REAL_T traceX = 0.0;
     REAL_T traceX2 = 0.0;
-    REAL_T **X_ptr_value = (REAL_T **) X->ptr_value;
     REAL_T **X2_ptr_value = (REAL_T **) X2->ptr_value;
 
     double *trace = bml_allocate_memory(sizeof(double) * 2);
@@ -411,10 +416,9 @@ void *TYPED_FUNC(
                 int nelements = bsize[ib] * bsize[jp];
                 int ind = ROWMAJOR(ib, ll, NB, MB);
                 assert(ind < NB * MB);
-                if (X2_ptr_value[ind] == NULL)
-                    X2_ptr_value[ind] =
-                        TYPED_FUNC(bml_allocate_block_ellblock) (X2, ib,
-                                                                 nelements);
+                /* Allocate memory to hold block */
+                X2_ptr_value[ind] =
+                    TYPED_FUNC(bml_allocate_block_ellblock) (X2, ib, nelements);
                 REAL_T *X2_value = X2_ptr_value[ind];
                 assert(X2_value != NULL);
                 memcpy(X2_value, xtmp, nelements * sizeof(REAL_T));

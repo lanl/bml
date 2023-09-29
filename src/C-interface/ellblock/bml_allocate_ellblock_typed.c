@@ -375,7 +375,8 @@ bml_matrix_ellblock_t *TYPED_FUNC(
                 bcol_marker[bcol] = 1;
                 bnnz_row++;
             }
-            bcol = rand() % (NB + 1);
+            /* generate random column index 0 >= bcol < NB */
+            bcol = rand() % NB;
         }
         A_nnzb[ib] = bnnz_row;
         /* reset col_marker */

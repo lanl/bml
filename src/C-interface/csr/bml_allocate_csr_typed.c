@@ -326,8 +326,9 @@ bml_matrix_csr_t *TYPED_FUNC(
                 /* mark column index position */
                 col_marker[col] = 1;
                 nnz_row++;
-            }
-            col = rand() % (N + 1);
+            }            
+            /* generate random column index 0 >= col < N */
+            col = rand() % N;
         }
         /* update nnz of row */
         row->NNZ_ = nnz_row;
@@ -348,6 +349,10 @@ bml_matrix_csr_t *TYPED_FUNC(
         A->table_ = NULL;
     }
 
+    /* free memory */
+    bml_free_memory(col_marker);
+    bml_free_memory(col_marker_pos);
+    
     return A;
 }
 

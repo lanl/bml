@@ -373,7 +373,8 @@ bml_matrix_ellpack_t *TYPED_FUNC(
                 col_marker[col] = 1;
                 nnz_row++;
             }
-            col = rand() % (N + 1);
+            /* generate random column index 0 >= col < N */
+            col = rand() % N;
         }
         /* update nnz of row */
         A_nnz[i] = nnz_row;
