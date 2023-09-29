@@ -330,35 +330,65 @@ bml_matrix_ellblock_t *TYPED_FUNC(
     //now fill with random values
     int NB = A->NB;
     int MB = A->MB;
-
     REAL_T **A_ptr_value = (REAL_T **) A->ptr_value;
     int *A_indexb = A->indexb;
     int *A_nnzb = A->nnzb;
 
+    const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+
+    int *bcol_marker = bml_allocate_memory(sizeof(int) * NB );
+    int *bcol_marker_pos = bml_allocate_memory(sizeof(int) * MB );
+/* initialize bcol_marker */
+    for (int j = 0; j < NB; j++)
+    {
+        bcol_marker[j] = -1;
+    }
+
     for (int ib = 0; ib < NB; ib++)
     {
-        for (int jp = 0; jp < MB; jp++)
+        int bcol = ib;
+        int bnnz_row = 0;
+        for (int jb = 0; jb < MB; jb++)
         {
-            int ind = ROWMAJOR(ib, jp, NB, MB);
-            A_indexb[ind] = jp;
-            int jb = A_indexb[ind];
+            if(bcol_marker[bcol] == -1)
+            {
+                int ind = ROWMAJOR(ib, bnnz_row, NB, MB);
+                A_indexb[ind] = bcol; 
+                //allocate storage
+                int nelements = bsize[ib] * bsize[bcol];
+                A_ptr_value[ind] =
+                    TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
 
-            //allocate storage
-            int nelements = bsize[ib] * bsize[jb];
-            A_ptr_value[ind] =
-                TYPED_FUNC(bml_allocate_block_ellblock) (A, ib, nelements);
-
-            REAL_T *A_value = A_ptr_value[ind];
-            assert(A_value != NULL);
-            for (int ii = 0; ii < bsize[ib]; ii++)
-                for (int jj = 0; jj < bsize[jb]; jj++)
-                {
-                    A_value[ROWMAJOR(ii, jj, bsize[ib], bsize[jb])] =
-                        rand() / (REAL_T) RAND_MAX;
+                REAL_T *A_value = A_ptr_value[ind];
+                assert(A_value != NULL);
+                for (int ii = 0; ii < bsize[ib]; ii++)
+                { 
+                    for (int jj = 0; jj < bsize[bcol]; jj++)
+                    {
+                        A_value[ROWMAJOR(ii, jj, bsize[ib], bsize[bcol])] =
+                            rand() / (REAL_T) RAND_MAX;
+                    }
                 }
+                /* save position of col_marker */
+                bcol_marker_pos[bnnz_row] = bcol;
+                /* mark column index position */
+                bcol_marker[bcol] = 1;
+                bnnz_row++;
+            }
+            /* generate random column index 0 >= bcol < NB */
+            bcol = rand() % NB;
         }
-        A_nnzb[ib] = MB;
+        A_nnzb[ib] = bnnz_row;
+        /* reset col_marker */
+        for (int j = 0; j < bnnz_row; j++)
+        {
+            bcol_marker[bcol_marker_pos[j]] = -1; 
+        }        
     }
+    /* free memory */
+    bml_free_memory(bcol_marker);
+    bml_free_memory(bcol_marker_pos);
+
     return A;
 }
 

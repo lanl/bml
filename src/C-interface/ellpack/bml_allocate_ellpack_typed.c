@@ -316,6 +316,12 @@ bml_matrix_ellpack_t *TYPED_FUNC(
  *  Note that the matrix \f$ a \f$ will be newly allocated. If it is
  *  already allocated then the matrix will be deallocated in the
  *  process.
+ * 
+ * NOTE: 
+ *  The resulting nonzero structure is not necessarily uniform since we 
+ *  are sampling between [0, N], N << RAND_MAX. The diagonal entry is 
+ *  stored first.
+ *  
  *
  *  \ingroup allocate_group
  *
@@ -338,21 +344,50 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     bml_matrix_ellpack_t *A =
         TYPED_FUNC(bml_zero_matrix_ellpack) (N, M, distrib_mode);
 
+    int *col_marker = bml_allocate_memory(sizeof(int) * N );
+    int *col_marker_pos = bml_allocate_memory(sizeof(int) * M );
+    
     REAL_T *A_value = A->value;
     int *A_index = A->index;
     int *A_nnz = A->nnz;
     const REAL_T INV_RAND_MAX = 1.0 / (REAL_T) RAND_MAX;
+
+/* initialize col_marker */
+    for (int j = 0; j < N; j++)
+    {
+        col_marker[j] = -1;
+    }
     for (int i = 0; i < N; i++)
     {
-        int jind = 0;
+        int col = i;
+        int nnz_row = 0;
         for (int j = 0; j < M; j++)
         {
-            A_value[ROWMAJOR(i, jind, N, M)] = rand() * INV_RAND_MAX;
-            A_index[ROWMAJOR(i, jind, N, M)] = j;
-            jind++;
+            if(col_marker[col] == -1)
+            {
+                A_value[ROWMAJOR(i, nnz_row, N, M)] = rand() * INV_RAND_MAX;
+                A_index[ROWMAJOR(i, nnz_row, N, M)] = col;
+                /* save position of col_marker */
+                col_marker_pos[nnz_row] = col;
+                /* mark column index position */
+                col_marker[col] = 1;
+                nnz_row++;
+            }
+            /* generate random column index 0 >= col < N */
+            col = rand() % N;
         }
-        A_nnz[i] = jind;
+        /* update nnz of row */
+        A_nnz[i] = nnz_row;
+        /* reset col_marker */
+        for (int j = 0; j < nnz_row; j++)
+        {
+            col_marker[col_marker_pos[j]] = -1; 
+        }
     }
+    /* free memory */
+    bml_free_memory(col_marker);
+    bml_free_memory(col_marker_pos);
+
 #if defined(USE_OMP_OFFLOAD)
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #endif
