@@ -50,6 +50,7 @@ bml_matrix_dense_t *TYPED_FUNC(
 #ifdef BML_USE_MAGMA
     MAGMABLAS(transpose) (A->N, A->N, A->matrix, A->ld,
                           B->matrix, B->ld, bml_queue());
+    magma_queue_sync(bml_queue());
 #else
 #ifdef MKL_GPU
 #pragma omp target update from(A_matrix[0:N*N])
