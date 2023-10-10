@@ -68,6 +68,7 @@ void TYPED_FUNC(
     MAGMA(gemm) (MagmaNoTrans, MagmaNoTrans,
                  A->N, A->N, A->N, alpha_, B->matrix, B->ld,
                  A->matrix, A->ld, beta_, C->matrix, C->ld, bml_queue());
+    magma_queue_sync(bml_queue());
 #elif defined(MKL_GPU)
     int sizea = A->N * A->N;
     int dnum = 0;
