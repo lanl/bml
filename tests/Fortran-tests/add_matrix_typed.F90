@@ -33,7 +33,7 @@ contains
     DUMMY_KIND(DUMMY_PREC), allocatable :: c_dense(:, :)
     DUMMY_KIND(DUMMY_PREC), allocatable :: d_dense(:, :)
 
-    real(DUMMY_PREC) :: expected, rel_diff, tol
+    real(DUMMY_PREC) :: expected, diff, tol
 
     integer :: i, j
 
@@ -69,9 +69,9 @@ contains
     do i = 1, n
       do j = 1, n
         expected = alpha * a_dense(i, j) + beta * c_dense(i, j)
-        rel_diff = abs((expected - b_dense(i, j)) / expected)
-        if(rel_diff > tol) then
-          print *, "rel. diff = ", rel_diff
+        diff = abs((expected - b_dense(i, j)))
+        if(diff > tol) then
+          print *, "diff = ", diff
           call bml_error(__FILE__, __LINE__, &
                &  "add() matrices are not identical")
         end if
@@ -81,9 +81,9 @@ contains
         else
           expected = a_dense(i, j)
         end if
-        rel_diff = abs((expected - d_dense(i, j)) / expected)
-        if(rel_diff > tol) then
-          print *, "rel. diff = ", rel_diff
+        diff = abs((expected - d_dense(i, j)))
+        if(diff > tol) then
+          print *, "rel. diff = ", diff
           call bml_error(__FILE__, __LINE__, &
                &  "add_identity() matrices are not identical")
         end if
