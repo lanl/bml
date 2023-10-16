@@ -380,7 +380,7 @@ void TYPED_FUNC(
     elpa_set(handle, "solver", ELPA_SOLVER_2STAGE, &error_elpa);
     assert(error_elpa == ELPA_OK);
 
-    elpa_set(handle, "gpu", 1, &error_elpa);
+    elpa_set(handle, "nvidia-gpu", 1, &error_elpa);
     assert(error_elpa == ELPA_OK);
 
     bml_matrix_t *Alocal = A->matrix;
