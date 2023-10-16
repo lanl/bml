@@ -37,7 +37,7 @@ export SCALAPACK_LIBRARIES=${SCALAPACK_LIBRARIES:="-L$OLCF_NETLIB_SCALAPACK_ROOT
 
 export BML_CUDA=${BML_CUDA:=yes}
 export BML_ELPA=${BML_ELPA:=yes}
-export ELPA_DIR=${ELPA_DIR:=/ccs/proj/csc304/elpa}
+export ELPA_DIR=${ELPA_DIR:=/ccs/proj/csc304/elpa/nvidia-gcc}
 export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:="-lgfortran"}
 
 #use jsrun to run tests on a compute node
