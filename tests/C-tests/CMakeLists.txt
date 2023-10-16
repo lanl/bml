@@ -11,6 +11,17 @@ if(BML_OMP_OFFLOAD)
            ${CMAKE_CURRENT_BINARY_DIR}/test-openmp_offload)
 endif()
 
+if(BML_MAGMA)
+  add_executable(test-magma test_magma.c)
+  target_link_libraries(test-magma ${LINK_LIBRARIES})
+  set_target_properties(test-magma
+    PROPERTIES
+    COMPILE_FLAGS ${OpenMP_C_FLAGS}
+    LINK_FLAGS ${OpenMP_C_FLAGS})
+  add_test(test-magma ${BML_NONMPI_PRECOMMAND} ${BML_NONMPI_PRECOMMAND_ARGS}
+           ${CMAKE_CURRENT_BINARY_DIR}/test-magma)
+endif()
+
 set(SOURCES_TYPED
   add_matrix_typed.c
   adjacency_matrix_typed.c
