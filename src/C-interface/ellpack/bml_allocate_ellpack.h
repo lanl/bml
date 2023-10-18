@@ -179,7 +179,7 @@ void bml_update_domain_ellpack(
     int *localPartMax,
     int *nnodesInPart);
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
 void bml_ellpack2cucsr_ellpack(
     bml_matrix_ellpack_t * A);
 void bml_ellpack2cucsr_ellpack_single_real(
