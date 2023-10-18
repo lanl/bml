@@ -203,4 +203,41 @@ void bml_multiply_rocsparse_ellpack_double_complex(
     double beta1,
     double threshold);
 #endif
+#if defined(BML_USE_HYPRE)
+void bml_multiply_hypre_ellpack(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold);
+void bml_multiply_hypre_ellpack_single_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold);
+void bml_multiply_hypre_ellpack_double_real(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold);
+void bml_multiply_hypre_ellpack_single_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold);
+void bml_multiply_hypre_ellpack_double_complex(
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold);
+#endif
 #endif

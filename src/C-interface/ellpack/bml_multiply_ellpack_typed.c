@@ -147,7 +147,7 @@ void *TYPED_FUNC(
     int rowMin = X_localRowMin[myRank];
     int rowMax = X_localRowMax[myRank];
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     double alpha = 1.0;
     double beta = 0.0;
 
@@ -159,6 +159,9 @@ void *TYPED_FUNC(
 
     TYPED_FUNC(bml_multiply_rocsparse_ellpack) (X, X, X2, alpha, beta,
                                                 threshold);
+#elif defined(BML_USE_HYPRE)
+    TYPED_FUNC(bml_multiply_hypre_ellpack) (X, X, X2, alpha, beta,
+                                               threshold);
 #endif
 
     traceX = TYPED_FUNC(bml_trace_ellpack) (X);
@@ -377,7 +380,7 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     double alpha = 1.0;
     double beta = 0.0;
 
@@ -387,6 +390,9 @@ void TYPED_FUNC(
 #elif defined(BML_USE_ROCSPARSE)
     TYPED_FUNC(bml_multiply_rocsparse_ellpack) (A, B, C, alpha, beta,
                                                 threshold);
+#elif defined(BML_USE_HYPRE)
+    TYPED_FUNC(bml_multiply_hypre_ellpack) (A, B, C, alpha, beta,
+                                               threshold);
 #endif
 
 #else
@@ -1270,5 +1276,224 @@ void TYPED_FUNC(
         BML_CHECK_ROCSPARSE(rocsparse_destroy_spmat_descr(matC_tmp));
     }
     BML_CHECK_ROCSPARSE(rocsparse_destroy_handle(handle));
+}
+
+#elif defined(BML_USE_HYPRE)
+#include "_hypre_utilities.h"
+//#include "_hypre_utilities.hpp"
+#include "HYPRE.h"
+#include "seq_mv.h"
+
+//#include "HYPRE_IJ_mv.h"
+//#include "_hypre_IJ_mv.h"
+//#include "HYPRE_parcsr_ls.h"
+//#include "_hypre_parcsr_mv.h"
+
+
+void TYPED_FUNC(
+    bml_multiply_hypre_ellpack) (
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold1)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+
+    int B_N = B->N;
+    int B_M = B->M;
+
+    int C_N = C->N;
+    int C_M = C->M;
+
+    REAL_T *A_value = (REAL_T *) A->value;
+    REAL_T *B_value = (REAL_T *) B->value;
+    REAL_T *C_value = (REAL_T *) C->value;
+
+    int *csrColIndA = A->csrColInd;
+    int *csrColIndB = B->csrColInd;
+    int *csrColIndC = C->csrColInd;
+    int *csrColIndC_tmp = NULL;
+    int *csrRowPtrA = A->csrRowPtr;
+    int *csrRowPtrB = B->csrRowPtr;
+    int *csrRowPtrC = C->csrRowPtr;
+    int *csrRowPtrC_tmp = NULL;
+    REAL_T *csrValA = (REAL_T *) A->csrVal;
+    REAL_T *csrValB = (REAL_T *) B->csrVal;
+    REAL_T *csrValC = (REAL_T *) C->csrVal;
+    REAL_T *csrValC_tmp = NULL;
+
+    /* temporary arrays to hold initial C values */
+    int *d_ccols = NULL;
+    int *d_rptr = NULL;
+    REAL_T *d_cvals = NULL;
+    
+    /* hypre CSR matrix objects */
+    hypre_CSRMatrix  *matA;
+    hypre_CSRMatrix  *matB;
+    hypre_CSRMatrix  *matC;
+        
+    REAL_T alpha = (REAL_T) alpha1;
+    REAL_T beta = (REAL_T) beta1;
+    // force beta = 0. (See Note!! above) -DOK
+    beta = 0.;
+    REAL_T threshold = (REAL_T) threshold1;
+
+    void *dBuffer1 = NULL, *dBuffer2 = NULL;
+    size_t bufferSize1 = 0, bufferSize2 = 0;
+
+    // convert ellpack to cucsr
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (B);
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (C);
+
+    // Create hypre csr matrices A and B
+    // Note: The following update is not necessary since the ellpack2cucsr
+    // routine updates the csr rowpointers on host and device
+#pragma omp target update from(csrRowPtrA[:A_N+1])
+#pragma omp target update from(csrRowPtrB[:B_N+1])
+#pragma omp target update from(csrRowPtrC[:C_N+1])
+    int nnzA = csrRowPtrA[A_N];
+    int nnzB = csrRowPtrB[B_N];
+    int nnzC_in = csrRowPtrC[C_N];
+
+     HYPRE_Init();    
+    /* create hypre csr matrix */
+    matA = hypre_CSRMatrixCreate( A_N,A_N,nnzA );
+//    hypre_CSRMatrixMemoryLocation(matA) = HYPRE_MEMORY_DEVICE;    
+    hypre_CSRMatrixOwnsData(matA) = 0;
+    matB = hypre_CSRMatrixCreate( B_N,B_N,nnzB );
+//    hypre_CSRMatrixMemoryLocation(matB) = HYPRE_MEMORY_DEVICE;    
+    hypre_CSRMatrixOwnsData(matB) = 0;
+/*
+HYPRE_Int *d_rptrA=hypre_TAlloc(HYPRE_Int, (A_N+1), HYPRE_MEMORY_DEVICE);
+HYPRE_Int *d_ccolA=hypre_TAlloc(HYPRE_Int, nnzA, HYPRE_MEMORY_DEVICE);
+HYPRE_Real *d_valsA=hypre_TAlloc(HYPRE_Real, nnzA, HYPRE_MEMORY_DEVICE);
+
+HYPRE_Int *d_rptrB=hypre_TAlloc(HYPRE_Int, (B_N+1), HYPRE_MEMORY_DEVICE);
+HYPRE_Int *d_ccolB=hypre_TAlloc(HYPRE_Int, nnzB, HYPRE_MEMORY_DEVICE);
+HYPRE_Real *d_valsB=hypre_TAlloc(HYPRE_Real, nnzB, HYPRE_MEMORY_DEVICE);
+*/
+
+HYPRE_Real *d_valsA=hypre_CTAlloc(HYPRE_Real, A_N, HYPRE_MEMORY_DEVICE);
+hypre_Vector *d_vec = hypre_SeqVectorCreate(A_N);
+HYPRE_Real *d_valsA1=hypre_CTAlloc(HYPRE_Real, A_N, HYPRE_MEMORY_DEVICE);
+hypre_Vector *d_vec1 = hypre_SeqVectorCreate(A_N);
+
+#pragma omp target data use_device_ptr(csrRowPtrA,csrColIndA,csrValA, \
+		csrRowPtrB,csrColIndB,csrValB)
+    {
+/*
+    hypre_TMemcpy(d_rptrA, csrRowPtrA, HYPRE_Int, A_N + 1, HYPRE_MEMORY_HOST, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(d_ccolA, csrColIndA, HYPRE_Int, nnzA, HYPRE_MEMORY_HOST, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(d_valsA, csrValA, HYPRE_Real, nnzA, HYPRE_MEMORY_HOST, HYPRE_MEMORY_DEVICE);
+    
+    hypre_TMemcpy(d_rptrB, csrRowPtrB, HYPRE_Int, B_N + 1, HYPRE_MEMORY_HOST, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(d_ccolB, csrColIndB, HYPRE_Int, nnzB, HYPRE_MEMORY_HOST, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(d_valsB, csrValB, HYPRE_Real, nnzB, HYPRE_MEMORY_HOST, HYPRE_MEMORY_DEVICE);    
+*/
+
+       hypre_CSRMatrixI(matA) = csrRowPtrA;
+       hypre_CSRMatrixJ(matA) = csrColIndA;
+       hypre_CSRMatrixData(matA) = csrValA;
+
+       hypre_CSRMatrixI(matB) = csrRowPtrB;
+       hypre_CSRMatrixJ(matB) = csrColIndB;
+       hypre_CSRMatrixData(matB) = csrValB;
+       
+       hypre_VectorData(d_vec) = d_valsA;
+       hypre_VectorData(d_vec1) = d_valsA1;
+       /* Call hypre matrix multiplication */
+//       matC  = hypre_CSRMatrixMultiplyDevice(matA, matB);
+    }
+/*
+       hypre_CSRMatrixI(matA) = d_rptrA;
+       hypre_CSRMatrixJ(matA) = d_ccolA;
+       hypre_CSRMatrixData(matA) = d_valsA;
+
+       hypre_CSRMatrixI(matB) = d_rptrB;
+       hypre_CSRMatrixJ(matB) = d_ccolB;
+       hypre_CSRMatrixData(matB) = d_valsB;
+*/
+
+printf("%p, %p, %p, %p\n", hypre_CSRMatrixI(matA), hypre_CSRMatrixJ(matA), hypre_CSRMatrixData(matA), hypre_VectorData(d_vec));
+
+      hypre_CSRMatrixMatvecDevice( 0, 1.0, matA, d_vec, 0.0, d_vec1, d_vec1, 0);
+exit(0);
+     //HYPRE_SetSpGemmUseVendor(0);
+       matC  = hypre_CSRMatrixMultiplyDevice(matA, matB);
+
+    /* allow CSR data to remain when matC is deleted -- give ownership to ellpack */
+//    hypre_CSRMatrixOwnsData(matC) = 0;
+    /* scale matrix */
+//    hypre_CSRMatrixScale(matC, alpha);   
+    
+    /* threshold -  drop small entries */
+//    if (is_above_threshold(threshold, BML_REAL_MIN))
+//    {
+//       hypre_CSRMatrixDropSmallEntriesDevice( matC, threshold, NULL);
+//    }
+    // Done with matrix multiplication.
+    // Update ellpack C matrix (on device): copy from csr to ellpack format
+
+//printf("nnz_C_in = %d, %d, %d, %d, %d\n", C_N, nnzC_in, hypre_CSRMatrixNumRows(matC), hypre_CSRMatrixNumCols(matC),hypre_CSRMatrixNumNonzeros(matC));
+//printf("memoryLocation(C) = %d, %d\n", hypre_GetActualMemLocation(hypre_CSRMatrixMemoryLocation(matA)), hypre_GetActualMemLocation(hypre_CSRMatrixOwnsData(matA)));
+
+///*
+#pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
+{
+    hypre_TMemcpy(csrRowPtrC, hypre_CSRMatrixI(matA), HYPRE_Int, A_N + 1, HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(csrColIndC, hypre_CSRMatrixJ(matA), HYPRE_Int, nnzA, HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(csrValC, hypre_CSRMatrixData(matA), HYPRE_Real, nnzA, HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
+}
+//*/
+/*
+#pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
+{
+    omp_target_memcpy(csrRowPtrC, hypre_CSRMatrixI(matA),
+       (A_N + 1) * sizeof(int), 0, 0, 
+       omp_get_default_device(), 
+       omp_get_default_device());
+
+    omp_target_memcpy(csrColIndC, hypre_CSRMatrixJ(matA),
+       nnzA * sizeof(int), 0, 0, 
+       omp_get_default_device(), 
+       omp_get_default_device());
+
+    omp_target_memcpy(csrValC, hypre_CSRMatrixData(matA),
+       nnzA * sizeof(REAL_T), 0, 0, 
+       omp_get_default_device(), 
+       omp_get_default_device());
+}
+//*/
+
+///*
+// DEBUG:
+int N1 = hypre_CSRMatrixNumRows(matA);
+int C_nnz1 = hypre_CSRMatrixNumNonzeros(matA);
+#pragma omp target update from(csrRowPtrC[:N1])
+#pragma omp target update from(csrValC[:C_nnz1])
+#pragma omp target update from(csrColIndC[:C_nnz1])
+for(int k=0; k<N1; k++)
+{
+   printf("%d, %d, %f \n", csrRowPtrC[k], csrColIndC[k], csrValC[k]);
+}
+//*/
+
+
+//    csrRowPtrC = hypre_CSRMatrixI(matC);
+//    csrColIndC = hypre_CSRMatrixJ(matC);
+//    csrValC = hypre_CSRMatrixData(matC);
+    
+    /* copy from csr to ellpack */
+    TYPED_FUNC(bml_cucsr2ellpack_ellpack) (C);
+
+    // destroy hypre data structures
+//    hypre_CSRMatrixDestroy(matA);
+//    hypre_CSRMatrixDestroy(matB);
+//    hypre_CSRMatrixDestroy(matC);
+    HYPRE_Finalize();
 }
 #endif
