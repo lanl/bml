@@ -44,7 +44,7 @@ void TYPED_FUNC(
 
 #pragma omp target exit data map(delete: A_nnz[:N], A_index[:N*M], A_value[:N*M])
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     int *csrColInd = A->csrColInd;
     int *csrRowPtr = A->csrRowPtr;
     REAL_T *csrVal = A->csrVal;
@@ -57,7 +57,7 @@ void TYPED_FUNC(
     bml_free_memory(A->index);
     bml_free_memory(A->nnz);
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     bml_free_memory(A->csrRowPtr);
     bml_free_memory(A->csrColInd);
     bml_free_memory(A->csrVal);
@@ -170,7 +170,7 @@ bml_matrix_ellpack_t
 
 #pragma omp target enter data map(alloc:A_value[:N*M], A_index[:N*M], A_nnz[:N])
 #pragma omp target update to(A_value[:N*M], A_index[:N*M], A_nnz[:N])
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     A->csrColInd = bml_noinit_allocate_memory(sizeof(int) * N * M);
     A->csrRowPtr = bml_allocate_memory(sizeof(int) * (N + 1));
     A->csrVal = bml_noinit_allocate_memory(sizeof(REAL_T) * N * M);
@@ -220,7 +220,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     A->index = bml_allocate_memory(sizeof(int) * N * M);
     A->nnz = bml_allocate_memory(sizeof(int) * N);
     A->value = bml_allocate_memory(sizeof(REAL_T) * N * M);
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     A->csrColInd = bml_allocate_memory(sizeof(int) * N * M);
     A->csrRowPtr = bml_allocate_memory(sizeof(int) * (N + 1));
     A->csrVal = bml_allocate_memory(sizeof(REAL_T) * N * M);
@@ -233,7 +233,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
     int *A_nnz = A->nnz;
     int *A_index = A->index;
     int NM = N * M;
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     int *csrColInd = A->csrColInd;
     int *csrRowPtr = A->csrRowPtr;
     REAL_T *csrVal = A->csrVal;
@@ -256,7 +256,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
         }
     }
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
 #pragma omp target enter data map(to:csrVal[:N*M], csrColInd[:N*M], csrRowPtr[:N+1])
 #endif
 #endif

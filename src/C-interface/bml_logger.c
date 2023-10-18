@@ -192,4 +192,7 @@ bml_print_version(
 #ifdef BML_USE_ROCSPARSE
     fprintf(stdout, "BML uses AMD rocSparse\n");
 #endif
+#ifdef BML_USE_HYPRE
+    fprintf(stdout, "BML uses hypre library\n");
+#endif
 }
