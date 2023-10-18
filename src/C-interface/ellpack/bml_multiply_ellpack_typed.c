@@ -33,6 +33,12 @@
 //#include <hip/hip_runtime.h> // needed for hipDeviceSynchronize()
 #endif
 
+#if defined(BML_USE_HYPRE)
+#include "_hypre_utilities.h"
+#include "HYPRE.h"
+#include "seq_mv.h"
+#endif
+
 /** Matrix multiply.
  *
  * \f$ C \leftarrow \alpha A \, B + \beta C \f$
@@ -71,6 +77,10 @@ void TYPED_FUNC(
 #if defined(BML_USE_ROCSPARSE)
     TYPED_FUNC(bml_multiply_rocsparse_ellpack) (A, B, C, alpha, beta,
                                                 threshold);
+#elif defined(BML_USE_HYPRE)
+    TYPED_FUNC(bml_multiply_hypre_ellpack) (A, B, C, alpha, beta,
+                                                threshold);
+  
 #else
     if (A == B && alpha == ONE && beta == ZERO)
     {
@@ -147,7 +157,7 @@ void *TYPED_FUNC(
     int rowMin = X_localRowMin[myRank];
     int rowMax = X_localRowMax[myRank];
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     double alpha = 1.0;
     double beta = 0.0;
 
@@ -159,6 +169,9 @@ void *TYPED_FUNC(
 
     TYPED_FUNC(bml_multiply_rocsparse_ellpack) (X, X, X2, alpha, beta,
                                                 threshold);
+#elif defined(BML_USE_HYPRE)
+    TYPED_FUNC(bml_multiply_hypre_ellpack) (X, X, X2, alpha, beta,
+                                               threshold);
 #endif
 
     traceX = TYPED_FUNC(bml_trace_ellpack) (X);
@@ -378,7 +391,7 @@ void TYPED_FUNC(
     int rowMin = A_localRowMin[myRank];
     int rowMax = A_localRowMax[myRank];
 
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
     double alpha = 1.0;
     double beta = 0.0;
 
@@ -388,6 +401,9 @@ void TYPED_FUNC(
 #elif defined(BML_USE_ROCSPARSE)
     TYPED_FUNC(bml_multiply_rocsparse_ellpack) (A, B, C, alpha, beta,
                                                 threshold);
+#elif defined(BML_USE_HYPRE)
+    TYPED_FUNC(bml_multiply_hypre_ellpack) (A, B, C, alpha, beta,
+                                               threshold);
 #endif
 
 #else
@@ -1271,5 +1287,182 @@ void TYPED_FUNC(
         BML_CHECK_ROCSPARSE(rocsparse_destroy_spmat_descr(matC_tmp));
     }
     BML_CHECK_ROCSPARSE(rocsparse_destroy_handle(handle));
+}
+
+#elif defined(BML_USE_HYPRE)
+void TYPED_FUNC(
+    bml_multiply_hypre_ellpack) (
+    bml_matrix_ellpack_t * A,
+    bml_matrix_ellpack_t * B,
+    bml_matrix_ellpack_t * C,
+    double alpha1,
+    double beta1,
+    double threshold1)
+{
+    int A_N = A->N;
+    int A_M = A->M;
+
+    int B_N = B->N;
+    int B_M = B->M;
+
+    int C_N = C->N;
+    int C_M = C->M;
+
+    int *csrColIndA = A->csrColInd;
+    int *csrColIndB = B->csrColInd;
+    int *csrColIndC = C->csrColInd;
+    int *csrRowPtrA = A->csrRowPtr;
+    int *csrRowPtrB = B->csrRowPtr;
+    int *csrRowPtrC = C->csrRowPtr;
+    REAL_T *csrValA = (REAL_T *) A->csrVal;
+    REAL_T *csrValB = (REAL_T *) B->csrVal;
+    REAL_T *csrValC = (REAL_T *) C->csrVal;
+    
+    /* hypre CSR matrix objects */
+    hypre_CSRMatrix  *matA;
+    hypre_CSRMatrix  *matB;
+    hypre_CSRMatrix  *matC;
+        
+    REAL_T alpha = (REAL_T) alpha1;
+    REAL_T beta = (REAL_T) beta1;
+
+    REAL_T threshold = (REAL_T) threshold1;
+
+    // convert ellpack to cucsr
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (A);
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (B);
+    TYPED_FUNC(bml_ellpack2cucsr_ellpack) (C);
+
+    int nnzA = csrRowPtrA[A_N];
+    int nnzB = csrRowPtrB[B_N];
+    int nnzC_in = csrRowPtrC[C_N];
+
+//     HYPRE_Init();    
+//     HYPRE_SetExecutionPolicy(HYPRE_EXEC_DEVICE);
+     int use_vendor = 0;
+     int spgemm_alg = 1;
+     int spgemm_binned = 0;
+     HYPRE_SetSpGemmUseVendor(use_vendor);
+     hypre_SetSpGemmAlgorithm(spgemm_alg);
+     hypre_SetSpGemmBinned(spgemm_binned);
+    /* create hypre csr matrix */
+    matA = hypre_CSRMatrixCreate( A_N,A_N,nnzA );
+    matB = hypre_CSRMatrixCreate( B_N,B_N,nnzB );
+    matC = hypre_CSRMatrixCreate( C_N,C_N,nnzC_in );
+
+#pragma omp target data use_device_ptr(csrRowPtrA,csrColIndA,csrValA, \
+		csrRowPtrB,csrColIndB,csrValB, \
+		csrRowPtrC,csrColIndC,csrValC)
+    {
+       hypre_CSRMatrixI(matA) = csrRowPtrA;
+       hypre_CSRMatrixJ(matA) = csrColIndA;
+       hypre_CSRMatrixData(matA) = csrValA;
+
+       hypre_CSRMatrixI(matB) = csrRowPtrB;
+       hypre_CSRMatrixJ(matB) = csrColIndB;
+       hypre_CSRMatrixData(matB) = csrValB;
+
+       hypre_CSRMatrixI(matC) = csrRowPtrC;
+       hypre_CSRMatrixJ(matC) = csrColIndC;
+       hypre_CSRMatrixData(matC) = csrValC;
+    }
+ 
+    hypre_CSRMatrix *matD  = hypre_CSRMatrixMultiplyDevice(matA, matB);
+
+    /* add matrices */
+    int spadd_use_vendor=0;
+    HYPRE_SetSpAddUseVendor(spadd_use_vendor);
+    hypre_SetSpAddAlgorithm(1);
+    hypre_CSRMatrix *matE = hypre_CSRMatrixAddDevice(alpha, matD, beta, matC);
+
+        // Place the resulting matrix in C
+    if (is_above_threshold(threshold, BML_REAL_MIN))
+    {
+       int nnzE = hypre_CSRMatrixNumNonzeros(matE);
+       REAL_T *elmt_tol =
+               (REAL_T *) malloc(sizeof(REAL_T) * nnzE);
+        // Allocate the working arrays on the device
+#pragma omp target enter data map(alloc:elmt_tol[:nnzE])
+
+#pragma omp target teams distribute parallel for
+        for(int i = 0; i<nnzE; i++) {
+          elmt_tol[i] = threshold;
+        }
+#pragma omp target data use_device_ptr(elmt_tol)
+        {
+        hypre_CSRMatrixDropSmallEntriesDevice( matE, threshold, elmt_tol);
+        }
+
+#pragma omp target exit data map(delete:elmt_tol[:hypre_CSRMatrixNumNonzeros(matE)])
+free(elmt_tol);
+
+    }    
+
+    // Done with matrix multiplication.
+    // Update ellpack C matrix (on device): copy from csr to ellpack format
+/*
+// The following copy is supported by AMD + offload (and not NVIDIA + offload)
+#pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
+{
+    hypre_TMemcpy(csrRowPtrC, hypre_CSRMatrixI(matE), HYPRE_Int, C_N + 1, HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(csrColIndC, hypre_CSRMatrixJ(matE), HYPRE_Int, hypre_CSRMatrixNumNonzeros(matE), HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
+    hypre_TMemcpy(csrValC, hypre_CSRMatrixData(matE), HYPRE_Real, hypre_CSRMatrixNumNonzeros(matE), HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
+}
+*/
+
+// The following copy is supported by NVIDIA + offload (and not AMD + offload)
+#pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
+{
+    omp_target_memcpy(csrRowPtrC, hypre_CSRMatrixI(matE),
+       (C_N + 1) * sizeof(int), 0, 0, 
+       omp_get_default_device(), 
+       omp_get_default_device());
+
+    omp_target_memcpy(csrColIndC, hypre_CSRMatrixJ(matE),
+       hypre_CSRMatrixNumNonzeros(matE) * sizeof(int), 0, 0, 
+       omp_get_default_device(), 
+       omp_get_default_device());
+
+    omp_target_memcpy(csrValC, hypre_CSRMatrixData(matE),
+       hypre_CSRMatrixNumNonzeros(matE) * sizeof(REAL_T), 0, 0, 
+       omp_get_default_device(), 
+       omp_get_default_device());
+}
+
+
+/*
+// DEBUG:
+int N1 = hypre_CSRMatrixNumRows(matA);
+int C_nnz1 = hypre_CSRMatrixNumNonzeros(matA);
+#pragma omp target update from(csrRowPtrC[:N1])
+#pragma omp target update from(csrValC[:C_nnz1])
+#pragma omp target update from(csrColIndC[:C_nnz1])
+for(int k=0; k<N1; k++)
+{
+   printf("%d, %d, %f \n", csrRowPtrC[k], csrColIndC[k], csrValC[k]);
+}
+*/
+    /* copy from csr to ellpack */
+    TYPED_FUNC(bml_cucsr2ellpack_ellpack) (C);
+
+    // destroy hypre data structures
+    // Ellpack owns the csr data structure for hypre's matA and matB
+    // so we first set hypre's pointers to NULL before destroying the hypre matrices.
+    hypre_CSRMatrixI(matA) = NULL;    
+    hypre_CSRMatrixJ(matA) = NULL;
+    hypre_CSRMatrixData(matA) = NULL;
+    hypre_CSRMatrixI(matB) = NULL;
+    hypre_CSRMatrixJ(matB) = NULL;
+    hypre_CSRMatrixData(matB) = NULL;
+    hypre_CSRMatrixI(matC) = NULL;
+    hypre_CSRMatrixJ(matC) = NULL;
+    hypre_CSRMatrixData(matC) = NULL;
+    // destroy 
+    hypre_CSRMatrixDestroy(matA);
+    hypre_CSRMatrixDestroy(matB);
+    hypre_CSRMatrixDestroy(matC);
+    hypre_CSRMatrixDestroy(matD);
+    hypre_CSRMatrixDestroy(matE);
+//    HYPRE_Finalize();
 }
 #endif
