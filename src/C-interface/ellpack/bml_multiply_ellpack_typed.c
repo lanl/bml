@@ -280,14 +280,6 @@ void *TYPED_FUNC(
             }
         }
 
-        // Check for number of non-zeroes per row exceeded
-        if (l > X2_M)
-        {
-#ifndef USE_OMP_OFFLOAD
-            LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
-#endif
-        }
-
 #ifdef INTEL_OPT
         __assume_aligned(X2_nnz, MALLOC_ALIGNMENT);
         __assume_aligned(X2_index, MALLOC_ALIGNMENT);
@@ -296,7 +288,6 @@ void *TYPED_FUNC(
         int ll = 0;
         for (int j = 0; j < l; j++)
         {
-            //int jp = X2_index[ROWMAJOR(i, j, N, M)];
             int jp = jx[j];
             REAL_T xtmp = x[jp];
             if (jp == i)
@@ -315,6 +306,16 @@ void *TYPED_FUNC(
             ix[jp] = 0;
             x[jp] = 0.0;
         }
+        // Check for number of non-zeroes per row exceeded
+        // We should do it before assigning values to X2_value above,
+        // but that would be a lot of checks
+        if (ll > X2_M)
+        {
+#ifndef USE_OMP_OFFLOAD
+            LOG_ERROR("Number of non-zeroes per row > M, Increase M\n");
+#endif
+        }
+
         X2_nnz[i] = ll;
     }
 
