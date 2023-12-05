@@ -89,6 +89,7 @@ EOF
     echo "BML_MAGMA                  Build with MAGMA            (default is ${BML_MAGMA})"
     echo "BML_CUSOLVER               Build with cuSOLVER         (default is ${BML_CUSOLVER})"
     echo "BML_CUSPARSE               Build with cuSPARSE         (default is ${BML_CUSPARSE})"
+    echo "BML_HYPRE                  Build with HYPRE            (default is ${BML_HYPRE})"
     echo "BML_ROCSOLVER              Build with rocSOLVER        (default is ${BML_ROCSOLVER})"
     echo "BML_ROCSPARSE              Build with rocSPARSE        (default is ${BML_ROCSPARSE})"
     echo "BML_SYEVD                  Build with SYEVD            (default is ${BML_SYEVD})"
@@ -144,6 +145,7 @@ set_defaults() {
     : ${BML_MAGMA:=no}
     : ${BML_CUSOLVER:=no}
     : ${BML_CUSPARSE:=no}
+    : ${BML_HYPRE:=no}
     : ${BML_ROCSOLVER:=no}
     : ${BML_ROCSPARSE:=no}
     : ${BML_SYEVD:=yes}
@@ -205,8 +207,8 @@ is_enabled() {
 }
 
 sanity_check() {
-    if (is_enabled ${BML_CUSPARSE} || is_enabled ${BML_ROCSPARSE}) && ! is_enabled ${BML_OMP_OFFLOAD}; then
-        die "In order to enable BML_CUSPARSE or BML_ROCSPARSE, BML_OMP_OFFLOAD needs to be enabled as well"
+    if (is_enabled ${BML_CUSPARSE} || is_enabled ${BML_ROCSPARSE} || is_enabled ${BML_HYPRE}) && ! is_enabled ${BML_OMP_OFFLOAD}; then
+        die "In order to enable BML_CUSPARSE or BML_ROCSPARSE or BML_HYPRE, BML_OMP_OFFLOAD needs to be enabled as well"
     fi
 }
 
@@ -256,6 +258,7 @@ configure() {
         -DBML_MAGMA="${BML_MAGMA}" \
         -DBML_CUSOLVER="${BML_CUSOLVER}" \
         -DBML_CUSPARSE="${BML_CUSPARSE}" \
+        -DBML_HYPRE="${BML_HYPRE}" \
         -DBML_ROCSOLVER="${BML_ROCSOLVER}" \
         -DBML_ROCSPARSE="${BML_ROCSPARSE}" \
         -DBML_SYEVD="${BML_SYEVD}" \

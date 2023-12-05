@@ -373,7 +373,7 @@ bml_matrix_ellpack_t *TYPED_FUNC(
                 col_marker[col] = 1;
                 nnz_row++;
             }
-            /* generate random column index 0 >= col < N */
+            /* generate random column index 0 <= col < N */
             col = rand() % N;
         }
         /* update nnz of row */
@@ -654,7 +654,7 @@ void TYPED_FUNC(
     BML_CHECK_ROCSPARSE(rocsparse_destroy_mat_descr(mat_tmp));
 }
 #endif
-#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE)
+#if defined(BML_USE_CUSPARSE) || defined(BML_USE_ROCSPARSE) || defined(BML_USE_HYPRE)
 /** Ellpack to cuCSR conversion.
  *
  *  Convert from Ellpack format to cusparse csr format.
