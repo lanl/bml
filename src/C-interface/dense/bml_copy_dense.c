@@ -1,6 +1,5 @@
 #include "../bml_allocate.h"
 #include "../bml_copy.h"
-#include "../bml_domain.h"
 #include "../bml_logger.h"
 #include "../bml_types.h"
 #include "bml_allocate_dense.h"
@@ -127,8 +126,6 @@ void
 bml_save_domain_dense(
     bml_matrix_dense_t * A)
 {
-    A->domain2 = bml_default_domain(A->N, A->N, A->distribution_mode);
-
     bml_copy_domain(A->domain, A->domain2);
 }
 
@@ -143,6 +140,4 @@ bml_restore_domain_dense(
     bml_matrix_dense_t * A)
 {
     bml_copy_domain(A->domain2, A->domain);
-
-    bml_deallocate_domain(A->domain2);
 }
