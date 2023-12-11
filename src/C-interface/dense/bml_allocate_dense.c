@@ -2,7 +2,6 @@
 #include "../bml_logger.h"
 #include "../bml_parallel.h"
 #include "../bml_types.h"
-#include "../bml_domain.h"
 #include "bml_allocate_dense.h"
 #include "bml_types_dense.h"
 
@@ -339,5 +338,41 @@ bml_update_domain_dense(
 {
     bml_domain_t *A_domain = A->domain;
 
-    bml_update_domain(A_domain, localPartMin, localPartMax, nnodesInPart);
+    int nprocs = bml_getNRanks();
+
+    for (int i = 0; i < nprocs; i++)
+    {
+        int rtotal = 0;
+        for (int j = localPartMin[i]; j <= localPartMax[i]; j++)
+        {
+            rtotal += nnodesInPart[j - 1];
+        }
+
+        if (i == 0)
+            A_domain->localRowMin[0] = A_domain->globalRowMin;
+        else
+            A_domain->localRowMin[i] = A_domain->localRowMax[i - 1];
+
+        A_domain->localRowMax[i] = A_domain->localRowMin[i] + rtotal;
+        A_domain->localRowExtent[i] =
+            A_domain->localRowMax[i] - A_domain->localRowMin[i];
+        A_domain->localElements[i] =
+            A_domain->localRowExtent[i] * A_domain->totalCols;
+
+        if (i == 0)
+            A_domain->localDispl[0] = 0;
+        else
+            A_domain->localDispl[i] =
+                A_domain->localDispl[i - 1] + A_domain->localElements[i - 1];
+    }
+
+    A_domain->minLocalExtent = A_domain->localRowExtent[0];
+    A_domain->maxLocalExtent = A_domain->localRowExtent[0];
+    for (int i = 1; i < nprocs; i++)
+    {
+        if (A_domain->localRowExtent[i] < A_domain->minLocalExtent)
+            A_domain->minLocalExtent = A_domain->localRowExtent[i];
+        if (A_domain->localRowExtent[i] > A_domain->maxLocalExtent)
+            A_domain->maxLocalExtent = A_domain->localRowExtent[i];
+    }
 }

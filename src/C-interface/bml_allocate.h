@@ -29,6 +29,9 @@ void bml_free_ptr(
 void bml_deallocate(
     bml_matrix_t ** A);
 
+void bml_deallocate_domain(
+    bml_domain_t * D);
+
 void bml_clear(
     bml_matrix_t * A);
 
@@ -73,7 +76,12 @@ bml_matrix_t *bml_identity_matrix(
     int M,
     bml_distribution_mode_t distrib_mode);
 
-void bml_update_domain_matrix(
+bml_domain_t *bml_default_domain(
+    int N,
+    int M,
+    bml_distribution_mode_t distrib_mode);
+
+void bml_update_domain(
     bml_matrix_t * A,
     int *localPartMin,
     int *localPartMax,

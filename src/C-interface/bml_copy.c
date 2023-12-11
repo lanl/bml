@@ -142,6 +142,26 @@ bml_reorder(
     }
 }
 
+/** Copy a domain.
+ *
+ * \param A Domain to copy
+ * \param B Copy of Domain A
+ */
+void
+bml_copy_domain(
+    bml_domain_t * A,
+    bml_domain_t * B)
+{
+    int nRanks = bml_getNRanks();
+
+    memcpy(B->localRowMin, A->localRowMin, nRanks * sizeof(int));
+    memcpy(B->localRowMax, A->localRowMax, nRanks * sizeof(int));
+    memcpy(B->localRowExtent, A->localRowExtent, nRanks * sizeof(int));
+    memcpy(B->localDispl, A->localDispl, nRanks * sizeof(int));
+    memcpy(B->localElements, A->localElements, nRanks * sizeof(int));
+}
+
+
 /** Save current domain for bml matrix.
  *
  * \param A Matrix with domain
