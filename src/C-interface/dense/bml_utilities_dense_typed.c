@@ -138,7 +138,7 @@ void TYPED_FUNC(
     FILE *matrix_file;
 
     int N = A->N;
-    int msum = N * N;
+    int msum = 0;
 
 #ifdef BML_USE_MAGMA
     REAL_T *A_matrix = bml_noinit_allocate_memory(N * N * sizeof(REAL_T));
@@ -164,6 +164,17 @@ void TYPED_FUNC(
             "%%%%%%MatrixMarket matrix coordinate complex general\n");
 #endif
 
+    // count number of non-zero elements
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            REAL_T value = A_matrix[ROWMAJOR(i, j, N, N)];
+            if (ABS(value) > 0.)
+                msum++;
+        }
+    }
+
     // Write out matrix size as dense and number of non-zero elements
     fprintf(matrix_file, "%d %d %d\n", N, N, msum);
 
@@ -172,23 +183,18 @@ void TYPED_FUNC(
     {
         for (int j = 0; j < N; j++)
         {
-#if defined(SINGLE_REAL)
-            fprintf(matrix_file, "%d %d %20.15g\n", i + 1, j + 1,
-                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
-#elif defined(DOUBLE_REAL)
-            fprintf(matrix_file, "%d %d %20.15lg\n", i + 1, j + 1,
-                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
-#elif defined(SINGLE_COMPLEX)
-            fprintf(matrix_file, "%d %d %20.15g %20.15g\n", i + 1, j + 1,
-                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]),
-                    IMAGINARY_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
-#elif defined(DOUBLE_COMPLEX)
-            fprintf(matrix_file, "%d %d %20.15lg %20.15lg\n", i + 1, j + 1,
-                    REAL_PART(A_matrix[ROWMAJOR(i, j, N, N)]),
-                    IMAGINARY_PART(A_matrix[ROWMAJOR(i, j, N, N)]));
+            REAL_T value = A_matrix[ROWMAJOR(i, j, N, N)];
+            if (ABS(value) > 0.)
+            {
+#if defined(SINGLE_REAL) || defined(DOUBLE_REAL)
+                fprintf(matrix_file, "%d %d %20.15g\n", i + 1, j + 1, value);
+#elif defined(SINGLE_COMPLEX) || defined(DOUBLE_COMPLEX)
+                fprintf(matrix_file, "%d %d %20.15g %20.15g\n", i + 1, j + 1,
+                        REAL_PART(value), IMAGINARY_PART(value));
 #else
-            LOG_ERROR("unknown precision\n");
+                LOG_ERROR("unknown precision\n");
 #endif
+            }
         }
     }
 
