@@ -498,7 +498,7 @@ endif()
 
 #check for functions in Lapack
 #(or OpenBLAS since OpenBLAS typically contains Lapack)
-if(LAPACK_FOUND OR (BLAS_VENDOR STREQUAL "OpenBLAS"))
+if(LAPACK_FOUND OR (BLAS_VENDOR STREQUAL "OpenBLAS") OR (BLAS_VENDOR MATCHES "Intel"))
   add_definitions(-DHAVE_LAPACK)
 
   set(CMAKE_REQUIRED_LIBRARIES
