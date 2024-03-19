@@ -11,7 +11,7 @@ MY_PATH=$(pwd)
 
 HYPRE_INSTALL_PATH="/usr/WS1/osei/soft/CoPA/lassen/gpu/fork/bml-hypre/hypre/src/hypre"
 
-export CC=${CC:=xlc-gpu}
+export CC=${CC:=xlc++-gpu}
 export FC=${FC:=xlf2003-gpu}
 export CXX=${CXX:=xlc++-gpu}
 export BLAS_VENDOR=${BLAS_VENDOR:=Auto}
