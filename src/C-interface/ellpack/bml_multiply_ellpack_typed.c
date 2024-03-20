@@ -1333,12 +1333,6 @@ void TYPED_FUNC(
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (B);
     TYPED_FUNC(bml_ellpack2cucsr_ellpack) (C);
 
-    // Create hypre csr matrices A and B
-    // Note: The following update is not necessary since the ellpack2cucsr
-    // routine updates the csr rowpointers on host and device
-//#pragma omp target update from(csrRowPtrA[:A_N+1])
-//#pragma omp target update from(csrRowPtrB[:B_N+1])
-//#pragma omp target update from(csrRowPtrC[:C_N+1])
     int nnzA = csrRowPtrA[A_N];
     int nnzB = csrRowPtrB[B_N];
     int nnzC_in = csrRowPtrC[C_N];
@@ -1407,6 +1401,7 @@ free(elmt_tol);
     // Done with matrix multiplication.
     // Update ellpack C matrix (on device): copy from csr to ellpack format
 /*
+// The following copy is supported by AMD + offload (and not NVIDIA + offload)
 #pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
 {
     hypre_TMemcpy(csrRowPtrC, hypre_CSRMatrixI(matE), HYPRE_Int, C_N + 1, HYPRE_MEMORY_DEVICE, HYPRE_MEMORY_DEVICE);
@@ -1415,6 +1410,7 @@ free(elmt_tol);
 }
 */
 
+// The following copy is supported by NVIDIA + offload (and not AMD + offload)
 #pragma omp target data use_device_ptr(csrRowPtrC,csrColIndC,csrValC)
 {
     omp_target_memcpy(csrRowPtrC, hypre_CSRMatrixI(matE),
