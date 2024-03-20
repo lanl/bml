@@ -229,6 +229,7 @@ set(BML_ROCSPARSE FALSE CACHE BOOL "Whether to compile with rocSPARSE support")
 set(BML_CUDA FALSE CACHE BOOL "Whether to compile with CUDA support")
 set(BML_CUSOLVER FALSE CACHE BOOL "Whether to compile with cuSolver support")
 set(BML_MAGMA FALSE CACHE BOOL "Whether to use MAGMA library")
+set(BML_HYPRE FALSE CACHE BOOL "Whether to use HYPRE library")
 set(BML_OMP_OFFLOAD OFF CACHE BOOL "Compile with OpenMP GPU Offload support")
 set(BML_OFFLOAD_ARCH "NVIDIA" CACHE STRING "Offload architecture")
 set_property(CACHE BML_OFFLOAD_ARCH PROPERTY STRINGS "NVIDIA" "AMD")
@@ -306,7 +307,7 @@ if(BML_OMP_OFFLOAD)
   endif()
 endif()
 
-set(BML_USE_DEVICE (BML_CUDA OR BML_MAGMA OR BML_CUSOLVER OR BML_ROCSOLVER OR BML_CUSPARSE OR BML_ROCSPARSE))
+set(BML_USE_DEVICE (BML_CUDA OR BML_MAGMA OR BML_CUSOLVER OR BML_ROCSOLVER OR BML_CUSPARSE OR BML_ROCSPARSE OR BML_HYPRE))
 if(BML_USE_DEVICE)
   message(STATUS "Will use device libraries for some solvers")
   if (CUDAToolkit_FOUND)
@@ -387,6 +388,53 @@ if(BML_MAGMA)
     endif()
   else()
     message(FATAL_ERROR "MAGMA was not found")
+  endif()
+endif()
+
+if(BML_HYPRE)
+  message(STATUS "Search for HYPRE...")
+  find_package(HYPRE REQUIRED)
+
+  if (${HYPRE_FOUND})
+    add_definitions(-DBML_USE_HYPRE)
+    message(STATUS
+      "HYPRE was found:\n"
+      "  HYPRE_INCLUDE_DIRS: ${HYPRE_INCLUDE_DIRS}\n"
+      "  HYPRE_LIBRARY_DIRS: ${HYPRE_LIBRARY_DIRS}\n"
+      "  HYPRE_LIBRARIES: ${HYPRE_LIBRARIES}"
+    )
+    include_directories(${HYPRE_INCLUDE_DIRS})
+
+    list(APPEND LINK_LIBRARIES "-L${HYPRE_LIBRARY_DIRS}")
+    list(APPEND LINK_LIBRARIES ${HYPRE_LIBRARIES})
+    
+    if (CUDAToolkit_FOUND)
+       list(APPEND LINK_LIBRARIES "-L${CUDAToolkit_LIBRARY_DIR}")
+       list(APPEND LINK_LIBRARIES ${CUDA_cublas_LIBRARY})
+       list(APPEND LINK_LIBRARIES ${CUDA_cudart_LIBRARY})
+       include_directories(${CUDAToolkit_INCLUDE_DIR})
+
+#      add_definitions(-DBML_USE_CUSPARSE)
+      list(APPEND LINK_LIBRARIES ${CUDA_cusparse_LIBRARY})
+      list(APPEND LINK_LIBRARIES ${CUDA_curand_LIBRARY})
+    elseif(hip_FOUND)
+      find_package(rocblas REQUIRED)
+      list(APPEND LINK_LIBRARIES ${rocblas_LIBRARIES})
+      include_directories(${rocblas_INCLUDE_DIRS})
+
+#      add_definitions(-DBML_USE_rocSPARSE)
+      find_package(rocsparse REQUIRED)
+      include_directories(${rocsparse_INCLUDE_DIRS})
+      list(APPEND LINK_LIBRARIES ${rocsparse_LIBRARIES})
+      find_package(rocrand REQUIRED)
+      list(APPEND LINK_LIBRARIES ${rocrand_LIBRARIES})
+      
+      include_directories(${hip_INCLUDE_DIRS})
+    endif()
+    list(APPEND LINK_LIBRARIES -lstdc++)
+    message(STATUS "LINK_LIBRARIES: ${LINK_LIBRARIES}")
+  else()
+    message(FATAL_ERROR "HYPRE was not found")
   endif()
 endif()
 
