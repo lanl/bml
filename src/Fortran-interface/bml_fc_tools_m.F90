@@ -5,7 +5,7 @@ module bml_fc_tools_m
   implicit none
   private
 
-  public :: f_c_string
+  public :: bml_f_c_string
 
   integer, parameter :: LEN_C_NULL_CHAR = len(C_NULL_CHAR)
 
@@ -25,13 +25,13 @@ contains
   !!
   !! \param fstr  Fortran string.
   !! \return cstr  The Fortran string terminated with C NULL.
-  pure function f_c_string(fstr) result(cstr)
+  pure function bml_f_c_string(fstr) result(cstr)
 
     character(len=*, kind=C_CHAR), intent(in) :: fstr
     character(len=len_f_c_string(fstr), kind=C_CHAR) :: cstr
 
     cstr = trim(fstr)//C_NULL_CHAR
 
-  end function f_c_string
+  end function bml_f_c_string
 
 end module bml_fc_tools_m
