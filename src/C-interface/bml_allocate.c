@@ -53,7 +53,7 @@ bml_allocate_memory(
         __assume_aligned(ptr, MALLOC_ALIGNMENT);
         ptr[i] = 0;
     }
-#elif defined(HAVE_POSIX_MEMALIGN)
+#elif defined(BML_USE_POSIX_MEMALIGN)
     char *ptr;
     posix_memalign((void **) &ptr, MALLOC_ALIGNMENT, size);
 #pragma omp simd
@@ -86,7 +86,7 @@ bml_noinit_allocate_memory(
 {
 #if defined(INTEL_OPT)
     void *ptr = _mm_malloc(size, MALLOC_ALIGNMENT);
-#elif defined(HAVE_POSIX_MEMALIGN)
+#elif defined(BML_USE_POSIX_MEMALIGN)
     void *ptr;
     posix_memalign(&ptr, MALLOC_ALIGNMENT, size);
 #else
