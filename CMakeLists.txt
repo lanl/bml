@@ -671,9 +671,14 @@ endif()
 
 add_definitions(-D_POSIX_C_SOURCE=200112L)
 
-check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
-if(HAVE_POSIX_MEMALIGN)
-  add_definitions(-DHAVE_POSIX_MEMALIGN)
+option(BML_POSIX_MEMALIGN "Use posix_memalign() for allocations if available" ON)
+
+if(BML_POSIX_MEMALIGN)
+  check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
+  if(HAVE_POSIX_MEMALIGN)
+    add_definitions(-DBML_USE_POSIX_MEMALIGN)
+    message(STATUS "Will use posix_memalign() for allocations")
+  endif()
 endif()
 
 set(INTEL_OPT FALSE

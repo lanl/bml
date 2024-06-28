@@ -83,6 +83,7 @@ EOF
     echo "EXTRA_FFLAGS               Extra fortran flags         (default is '${EXTRA_FFLAGS}')"
     echo "EXTRA_LINK_FLAGS           Add extra link flags        (default is '${EXTRA_LINK_FLAGS}')"
     echo "BML_OMP_OFFLOAD            {yes,no}                    (default is ${BML_OMP_OFFLOAD})"
+    echo "BML_POSIX_MEMALIGN         Use if available {yes,no}   (default is ${BML_POSIX_MEMALIGN})"
     echo "BML_OFFLOAD_ARCH           {NVIDIA, AMD}               (default is ${BML_OFFLOAD_ARCH})"
     echo "GPU_ARCH                   GPU architecture            (default is '${GPU_ARCH}')"
     echo "BML_CUDA                   Build with CUDA             (default is ${BML_CUDA})"
@@ -139,6 +140,7 @@ set_defaults() {
     : ${FORTRAN_FLAGS:=}
     : ${EXTRA_LINK_FLAGS:=}
     : ${BML_OMP_OFFLOAD:=no}
+    : ${BML_POSIX_MEMALIGN:=yes}
     : ${BML_OFFLOAD_ARCH:=NVIDIA}
     : ${GPU_ARCH:=}
     : ${BML_CUDA:=no}
@@ -232,6 +234,7 @@ configure() {
         -DSCALAPACK_LIBRARIES="${SCALAPACK_LIBRARIES}" \
         -DBML_ELPA="${BML_ELPA}" \
         -DBML_OPENMP="${BML_OPENMP}" \
+        -DBML_POSIX_MEMALIGN="${BML_POSIX_MEMALIGN}" \
         -DMKL_GPU="${MKL_GPU}" \
         -DBML_MPI="${BML_MPI}" \
         -DBML_MPIEXEC_EXECUTABLE="${BML_MPIEXEC_EXECUTABLE}" \
