@@ -52,9 +52,18 @@ module bml_setters_m
   public :: bml_set_diagonal
   public :: bml_set_element
   public :: bml_set_element_new
-
+  public :: bml_set_N_dense
+  
 contains
 
+  subroutine bml_set_N_dense(a,n)
+    type(bml_matrix_t), intent(inout) :: a
+    integer(C_INT), intent(in) :: n
+
+    call bml_set_N_dense_C(a%ptr,n)
+
+  end subroutine bml_set_N_dense
+  
   !Setters for element new
   subroutine bml_set_element_new_single_real(a,i,j,element)
 

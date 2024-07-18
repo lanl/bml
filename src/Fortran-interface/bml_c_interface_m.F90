@@ -448,6 +448,12 @@ module bml_c_interface_m
       type(C_PTR), value :: a
     end subroutine bml_scale_inplace_C
 
+    subroutine bml_set_N_dense_C(a,n) bind(C, name="bml_set_N_dense")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT), value, intent(in) :: n
+    end subroutine bml_set_N_dense_C
+    
     subroutine bml_set_row_C(a, i, row, threshold) bind(C, name="bml_set_row")
       import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a

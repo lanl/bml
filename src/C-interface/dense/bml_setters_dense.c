@@ -3,6 +3,13 @@
 #include "bml_setters_dense.h"
 #include "bml_types_dense.h"
 
+void bml_set_N_dense(
+    bml_matrix_dense_t * A,
+    int N)
+{
+  A->N = N;
+}
+
 void
 bml_set_element_dense(
     bml_matrix_dense_t * A,
