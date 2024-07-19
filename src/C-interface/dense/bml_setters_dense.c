@@ -3,11 +3,20 @@
 #include "bml_setters_dense.h"
 #include "bml_types_dense.h"
 
+#ifdef BML_USE_MAGMA
+#include "magma_v2.h"
+#endif
+
 void bml_set_N_dense(
     bml_matrix_dense_t * A,
     int N)
 {
   A->N = N;
+#ifdef BML_USE_MAGMA
+  A->ld = magma_roundup(A->N, 32);
+#else
+  A->ld = A->N;
+#endif
 }
 
 void

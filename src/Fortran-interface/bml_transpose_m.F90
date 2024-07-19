@@ -7,7 +7,7 @@ module bml_transpose_m
   implicit none
   private
 
-  public :: bml_transpose
+  public :: bml_transpose, bml_transpose_inplace
 
 contains
 
@@ -24,5 +24,13 @@ contains
     a_t%ptr = bml_transpose_new_C(a%ptr)
 
   end subroutine bml_transpose
+
+  subroutine bml_transpose_inplace(a)
+
+    type(bml_matrix_t), intent(in) :: a
+
+    call bml_transpose_inplace_C(a%ptr)
+
+  end subroutine bml_transpose_inplace
 
 end module bml_transpose_m
