@@ -622,10 +622,10 @@ module bml_c_interface_m
       type(C_PTR) :: bml_transpose_new_C
     end function bml_transpose_new_C
 
-    subroutine bml_transpose_inplace_C(a) bind(C, name="bml_transpose")
+    subroutine bml_transpose_C(a) bind(C, name="bml_transpose")
       import :: C_PTR
       type(C_PTR), value, intent(in) :: a
-    end subroutine bml_transpose_inplace_C
+    end subroutine bml_transpose_C
 
     subroutine bml_write_bml_matrix_C(a, filename) &
          & bind(C, name="bml_write_bml_matrix")
