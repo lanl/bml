@@ -25,7 +25,9 @@ export CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:=Release}
 export MAGMA_ROOT=${MAGMA_ROOT:="/usr/projects/icapt/mewall/venado/packages/magma-2.7.2/install"}
 export BML_MAGMA=${BML_MAGMA:=yes}
 #export BML_POSIX_MEMALIGN=${BML_POSIX_MEMALIGN:=no}
-export CMAKE_PREFIX_PATH=$CUDA_HOME/../../math_libs/$CRAY_CUDATOOLKIT_VERSION:$CMAKE_PREFIX_PATH
+export CMAKE_PREFIX_PATH=$CUDA_HOME/../../math_libs/lib64:$CMAKE_PREFIX_PATH
+export EXTRA_FFLAGS=${EXTRA_CFLAGS:="-mcpu=neoverse-v2"}
+export EXTRA_CFLAGS=${EXTRA_CFLAGS:="-mcpu=neoverse-v2"}
 #export EXTRA_CFLAGS=${EXTRA_CFLAGS:="-DCRAY_SDK -I${CUDA_ROOT}/include -lcudart"}
 #export EXTRA_LINK_FLAGS=${EXTRA_LINK_FLAGS:="-DCRAY_SDK -L${CUDA_ROOT}/lib64 -lcudart"}
 
