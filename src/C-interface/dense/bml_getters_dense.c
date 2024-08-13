@@ -86,3 +86,10 @@ bml_get_diagonal_dense(
     }
     return NULL;
 }
+
+void *
+bml_get_ptr_dense(
+    bml_matrix_dense_t * A)
+{
+  return (void *)A->matrix;
+}

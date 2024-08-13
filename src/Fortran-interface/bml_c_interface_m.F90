@@ -370,6 +370,12 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       integer(C_INT) :: bml_get_bandwidth_C
     end function bml_get_bandwidth_C
+    
+    function bml_get_ptr_dense_C(a) bind(C, name="bml_get_ptr_dense")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR) :: bml_get_ptr_dense_C
+    end function bml_get_ptr_dense_C
 
     function bml_get_sparsity_C(a, threshold) bind(C, name="bml_get_sparsity")
       import :: C_PTR, C_DOUBLE, C_INT

@@ -21,7 +21,7 @@ module bml_getters_m
     module procedure bml_get_diagonal_double_complex
   end interface bml_get_diagonal
 
-  public :: bml_get_row, bml_get_diagonal
+  public :: bml_get_row, bml_get_diagonal, bml_get_ptr_dense
 
 contains
 
@@ -188,5 +188,13 @@ contains
     call bml_free(ptr)
 
   end subroutine bml_get_row_double_complex
+
+  function bml_get_ptr_dense(a)
+    type(bml_matrix_t), intent(inout) :: a
+    type(C_PTR) :: bml_get_ptr_dense
+
+    bml_get_ptr_dense = bml_get_ptr_dense_C(a%ptr)
+
+  end function bml_get_ptr_dense
 
 end module bml_getters_m
