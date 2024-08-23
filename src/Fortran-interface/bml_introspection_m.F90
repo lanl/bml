@@ -18,6 +18,8 @@ module bml_introspection_m
   public :: bml_get_bandwidth
   public :: bml_get_distribution_mode
   public :: bml_get_sparsity
+  public :: bml_get_data_ptr_dense
+  public :: bml_get_ld_dense
 
 contains
 
@@ -246,5 +248,26 @@ contains
     sparsity = bml_get_sparsity_C(a%ptr, threshold)
 
   end function bml_get_sparsity
+
+  function bml_get_data_ptr_dense(a)
+    type(bml_matrix_t), intent(inout) :: a
+    type(C_PTR) :: bml_get_data_ptr_dense
+
+    bml_get_data_ptr_dense = bml_get_data_ptr_dense_C(a%ptr)
+
+  end function bml_get_data_ptr_dense
+
+    !> Return the dense matrix ld parameter.
+  !!
+  !!\param a The matrix.
+  !!\return The matrix ld parameter.
+  function bml_get_ld_dense(a)
+
+    type(bml_matrix_t), intent(in) :: a
+    integer :: bml_get_ld_dense
+
+    bml_get_ld_dense = bml_get_ld_dense_C(a%ptr)
+
+  end function bml_get_ld_dense
 
 end module bml_introspection_m
