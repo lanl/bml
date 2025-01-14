@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Prepare container
         run: ./scripts/prepare-container-focal.sh
       - run: bundle install
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Prepare container
         run: ./scripts/prepare-container-focal.sh
       - name: Build docs
@@ -76,7 +76,7 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-gcc-11-Fortran-double-complex.sh
     steps:
       - name: Check out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Prepare container
@@ -141,7 +141,7 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-10-C-double-complex.sh
     steps:
       - name: Check out sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Prepare container
