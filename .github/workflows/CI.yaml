@@ -3,7 +3,7 @@
 name: CI
 on:
   release:
-    type:
+    types:
       - created
   push:
     branches:
