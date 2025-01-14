@@ -6,6 +6,7 @@
 				"fortran-lang.linter-gfortran",
 				"GitHub.vscode-pull-request-github",
 				"ms-vscode.cmake-tools",
+				"ms-vscode.cpptools-extension-pack",
 				"ms-vscode.cpptools",
 				"twxs.cmake"
 			]
