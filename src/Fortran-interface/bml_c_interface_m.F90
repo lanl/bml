@@ -370,6 +370,18 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       integer(C_INT) :: bml_get_bandwidth_C
     end function bml_get_bandwidth_C
+    
+    function bml_get_data_ptr_dense_C(a) bind(C, name="bml_get_data_ptr_dense")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+      type(C_PTR) :: bml_get_data_ptr_dense_C
+    end function bml_get_data_ptr_dense_C
+    
+    function bml_get_ld_dense_C(a) bind(C, name="bml_get_ld_dense")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT) :: bml_get_ld_dense_C
+    end function bml_get_ld_dense_C
 
     function bml_get_sparsity_C(a, threshold) bind(C, name="bml_get_sparsity")
       import :: C_PTR, C_DOUBLE, C_INT
@@ -448,6 +460,12 @@ module bml_c_interface_m
       type(C_PTR), value :: a
     end subroutine bml_scale_inplace_C
 
+    subroutine bml_set_N_dense_C(a,n) bind(C, name="bml_set_N_dense")
+      import :: C_PTR, C_INT
+      type(C_PTR), value, intent(in) :: a
+      integer(C_INT), value, intent(in) :: n
+    end subroutine bml_set_N_dense_C
+    
     subroutine bml_set_row_C(a, i, row, threshold) bind(C, name="bml_set_row")
       import :: C_PTR, C_INT, C_DOUBLE
       type(C_PTR), value, intent(in) :: a
@@ -615,6 +633,11 @@ module bml_c_interface_m
       type(C_PTR), value, intent(in) :: a
       type(C_PTR) :: bml_transpose_new_C
     end function bml_transpose_new_C
+
+    subroutine bml_transpose_C(a) bind(C, name="bml_transpose")
+      import :: C_PTR
+      type(C_PTR), value, intent(in) :: a
+    end subroutine bml_transpose_C
 
     subroutine bml_write_bml_matrix_C(a, filename) &
          & bind(C, name="bml_write_bml_matrix")

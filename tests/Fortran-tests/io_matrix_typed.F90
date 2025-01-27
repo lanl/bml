@@ -12,7 +12,7 @@ module io_matrix_typed
 
   public :: test_io_matrix_typed
 
-#ifdef CRAY_SDK
+#if defined(CRAY_SDK) || defined(NVHPC_SDK)
   interface
     integer(c_int) function getpid() bind(c,name="getpid")
       use iso_c_binding
