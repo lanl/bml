@@ -11,12 +11,16 @@ void bml_set_N_dense(
     bml_matrix_dense_t * A,
     int N)
 {
-  A->N = N;
+  if (A->N <= A->N_allocated) {
+    A->N = N;
 #ifdef BML_USE_MAGMA
-  A->ld = magma_roundup(A->N, 32);
+    A->ld = magma_roundup(A->N, 32);
 #else
-  A->ld = A->N;
+    A->ld = A->N;
 #endif
+  } else {
+    LOG_ERROR("N exceeds N_allocated (%d > %d)",A->N,A->N_allocated);
+  }
 }
 
 void
