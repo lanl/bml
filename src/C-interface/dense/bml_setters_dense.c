@@ -2,6 +2,7 @@
 #include "../bml_logger.h"
 #include "bml_setters_dense.h"
 #include "bml_types_dense.h"
+#include "bml_allocate_dense.h"
 
 #ifdef BML_USE_MAGMA
 #include "magma_v2.h"
@@ -19,7 +20,12 @@ void bml_set_N_dense(
     A->ld = A->N;
 #endif
   } else {
-    LOG_ERROR("N exceeds N_allocated (%d > %d)",A->N,A->N_allocated);
+    bml_matrix_dense_t * B;
+    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
+
+    B = bml_noinit_matrix_dense(A->matrix_precision,matrix_dimension,A->distribution_mode);
+    bml_deallocate_dense(A);
+    A = B;
   }
 }
 
