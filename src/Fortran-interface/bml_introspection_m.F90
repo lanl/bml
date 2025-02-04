@@ -257,7 +257,7 @@ contains
 
   end function bml_get_data_ptr_dense
 
-    !> Return the dense matrix ld parameter.
+  !> Return the dense matrix ld parameter.
   !!
   !!\param a The matrix.
   !!\return The matrix ld parameter.

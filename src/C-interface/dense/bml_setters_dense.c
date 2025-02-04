@@ -8,30 +8,35 @@
 #include "magma_v2.h"
 #endif
 
-void bml_set_N_dense(
-    bml_matrix_dense_t * A,
+void
+bml_set_N_dense(
+    bml_matrix_dense_t *A,
     int N)
 {
-  if (A->N <= A->N_allocated) {
-    A->N = N;
+    if (A->N <= A->N_allocated)
+    {
+        A->N = N;
 #ifdef BML_USE_MAGMA
-    A->ld = magma_roundup(A->N, 32);
+        A->ld = magma_roundup(A->N, 32);
 #else
-    A->ld = A->N;
+        A->ld = A->N;
 #endif
-  } else {
-    bml_matrix_dense_t * B;
-    bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
+    }
+    else
+    {
+        bml_matrix_dense_t *B;
+        bml_matrix_dimension_t matrix_dimension = { A->N, A->N, A->N };
 
-    B = bml_noinit_matrix_dense(A->matrix_precision,matrix_dimension,A->distribution_mode);
-    bml_deallocate_dense(A);
-    A = B;
-  }
+        B = bml_noinit_matrix_dense(A->matrix_precision, matrix_dimension,
+                                    A->distribution_mode);
+        bml_deallocate_dense(A);
+        A = B;
+    }
 }
 
 void
 bml_set_element_dense(
-    bml_matrix_dense_t * A,
+    bml_matrix_dense_t *A,
     int i,
     int j,
     void *value)
@@ -60,7 +65,7 @@ bml_set_element_dense(
 
 void
 bml_set_row_dense(
-    bml_matrix_dense_t * A,
+    bml_matrix_dense_t *A,
     int i,
     void *row)
 {
@@ -93,7 +98,7 @@ bml_set_row_dense(
  */
 void
 bml_set_diagonal_dense(
-    bml_matrix_dense_t * A,
+    bml_matrix_dense_t *A,
     void *diagonal)
 {
     switch (bml_get_precision(A))

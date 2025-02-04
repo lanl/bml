@@ -53,7 +53,7 @@ module bml_setters_m
   public :: bml_set_element
   public :: bml_set_element_new
   public :: bml_set_N_dense
-  
+
 contains
 
   subroutine bml_set_N_dense(a,n)
@@ -63,7 +63,7 @@ contains
     call bml_set_N_dense_C(a%ptr,n)
 
   end subroutine bml_set_N_dense
-  
+
   !Setters for element new
   subroutine bml_set_element_new_single_real(a,i,j,element)
 
