@@ -200,3 +200,22 @@ bml_get_data_ptr_dense(
 {
     return A->matrix;
 }
+
+/** Return the dense matrix ld parameter.
+ *
+ * \param A The dense matrix.
+ * \return The matrix ld parameter.
+ */
+int
+bml_get_ld_dense(
+    bml_matrix_dense_t * A)
+{
+    if (A != NULL)
+    {
+        return A->ld;
+    }
+    else
+    {
+        return -1;
+    }
+}

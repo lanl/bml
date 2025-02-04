@@ -22,6 +22,8 @@ struct bml_matrix_dense_t
     bml_distribution_mode_t distribution_mode;
     /** The number of rows/columns. */
     int N;
+    /** The number of rows/columns originally allocated. */
+    int N_allocated;
     /** The dense matrix. */
     void *matrix;
     /** The leading dimension of the array matrix. */
