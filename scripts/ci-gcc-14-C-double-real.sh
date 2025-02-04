@@ -10,9 +10,9 @@ done
 
 basedir=$(${READLINK} --canonicalize $(dirname $0)/..)
 
-export CC=${CC:-gcc-11}
-export CXX=${CXX:-g++-11}
-export FC=${FC:-gfortran-11}
+export CC=${CC:-gcc-14}
+export CXX=${CXX:-g++-14}
+export FC=${FC:-gfortran-14}
 export BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS:-no}
 export BML_OPENMP=${BML_OPENMP:-no}
 export BML_INTERNAL_BLAS=${BML_INTERNAL_BLAS:-no}
