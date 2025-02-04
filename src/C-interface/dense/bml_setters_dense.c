@@ -10,7 +10,7 @@
 
 void
 bml_set_N_dense(
-    bml_matrix_dense_t *A,
+    bml_matrix_dense_t * A,
     int N)
 {
     if (A->N <= A->N_allocated)
@@ -36,7 +36,7 @@ bml_set_N_dense(
 
 void
 bml_set_element_dense(
-    bml_matrix_dense_t *A,
+    bml_matrix_dense_t * A,
     int i,
     int j,
     void *value)
@@ -65,7 +65,7 @@ bml_set_element_dense(
 
 void
 bml_set_row_dense(
-    bml_matrix_dense_t *A,
+    bml_matrix_dense_t * A,
     int i,
     void *row)
 {
@@ -98,7 +98,7 @@ bml_set_row_dense(
  */
 void
 bml_set_diagonal_dense(
-    bml_matrix_dense_t *A,
+    bml_matrix_dense_t * A,
     void *diagonal)
 {
     switch (bml_get_precision(A))
