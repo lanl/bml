@@ -7,6 +7,10 @@
 
 #include <complex.h>
 
+void bml_set_N_dense(
+    bml_matrix_dense_t * A,
+    int N);
+
 void bml_set_element_dense(
     bml_matrix_dense_t * A,
     int i,

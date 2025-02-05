@@ -98,6 +98,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->matrix_type = dense;
     A->matrix_precision = MATRIX_PRECISION;
     A->N = matrix_dimension.N_rows;
+    A->N_allocated = A->N;
     A->distribution_mode = distrib_mode;
 #ifdef BML_USE_MAGMA
     A->ld = magma_roundup(matrix_dimension.N_rows, 32);
@@ -154,6 +155,7 @@ bml_matrix_dense_t *TYPED_FUNC(
     A->matrix_type = dense;
     A->matrix_precision = MATRIX_PRECISION;
     A->N = matrix_dimension.N_rows;
+    A->N_allocated = A->N;
     A->distribution_mode = distrib_mode;
 #ifdef BML_USE_MAGMA
     A->ld = magma_roundup(matrix_dimension.N_rows, 32);

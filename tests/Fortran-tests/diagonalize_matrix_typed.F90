@@ -35,7 +35,7 @@ contains
     call bml_random_matrix(matrix_type, element_kind, element_precision, n, m, &
          & a)
     call bml_print_matrix("A", a, 1, n, 1, n)
-    call bml_transpose(a, a_t)
+    call bml_transpose_new(a, a_t)
     call bml_print_matrix("A_t", a_t, 1, n, 1, n)
     call bml_add(a, a_t, 0.5d0, 0.5d0, threshold)
     call bml_print_matrix("A", a, 1, n, 1, n)
@@ -44,7 +44,7 @@ contains
          & eigenvectors)
     !! \todo Fixme: diagonalization routine is not respecting precision
     call bml_diagonalize(a, eigenvalues, eigenvectors)
-    call bml_transpose(eigenvectors, eigenvectors_t)
+    call bml_transpose_new(eigenvectors, eigenvectors_t)
     call bml_zero_matrix(matrix_type, element_kind, element_precision, n, m, b)
     call bml_zero_matrix(matrix_type, element_kind, element_precision, n, m, c)
     call bml_multiply(eigenvectors_t, eigenvectors, b)
