@@ -1,4 +1,5 @@
 #ifdef BML_USE_MAGMA
+#include <stdbool.h>
 #include "magma_v2.h"
 #include "../bml_allocate.h"
 #endif

@@ -8,6 +8,7 @@
 #include "bml_utilities_dense.h"
 
 #ifdef BML_USE_MAGMA
+#include <stdbool.h>
 #include "magma_v2.h"
 #endif
 

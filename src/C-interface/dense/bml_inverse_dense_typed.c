@@ -1,4 +1,5 @@
 #ifdef BML_USE_MAGMA
+#include <stdbool.h>
 #include "magma_v2.h"
 //#elif (MKL_GPU)
 //#include "stdio.h"
