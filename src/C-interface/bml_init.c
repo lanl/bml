@@ -2,7 +2,7 @@
 #include "bml_parallel.h"
 
 #ifdef BML_USE_MAGMA
-#include <stdbool.h>
+#include <stdbool.h> //define boolean data type for magma 
 #include "magma_v2.h"
 #endif
 #ifdef BML_USE_XSMM
