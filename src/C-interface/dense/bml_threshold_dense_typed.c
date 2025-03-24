@@ -1,5 +1,6 @@
 #ifdef BML_USE_MAGMA
-#include <stdbool.h> //define boolean data type for magma
+//define boolean data type needed by magma
+#include <stdbool.h>
 #include "magma_v2.h"
 #include "../bml_export.h"
 #include "bml_export_dense.h"

@@ -10,7 +10,8 @@
 #include <float.h>
 
 #ifdef BML_USE_MAGMA
-#include <stdbool.h> //define boolean data type for magma 
+//define boolean data type needed by magma
+#include <stdbool.h>
 #include "magma_v2.h"
 #ifdef BML_USE_CUSOLVER
 #include <cuda_runtime.h>
