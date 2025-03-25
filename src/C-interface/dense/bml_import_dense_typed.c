@@ -8,6 +8,8 @@
 #include "bml_types_dense.h"
 
 #ifdef BML_USE_MAGMA
+//define boolean data type needed by magma
+#include <stdbool.h>
 #include "magma_v2.h"
 #endif
 

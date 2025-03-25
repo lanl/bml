@@ -2,6 +2,8 @@
 #include "bml_parallel.h"
 
 #ifdef BML_USE_MAGMA
+//define boolean data type needed by magma
+#include <stdbool.h>
 #include "magma_v2.h"
 #endif
 #ifdef BML_USE_XSMM
