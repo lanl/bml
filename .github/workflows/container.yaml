@@ -32,7 +32,7 @@ jobs:
           context: .
           file: Dockerfile-focal
           push: true
-          tags: nicolasbock/bml:latest, nicolasbock/bml:focal
+          tags: nicolasbock/bml:focal
       - name: Image digest
         run: |
           echo "Focal image: ${{ steps.docker_build_focal.outputs.digest }}"
@@ -56,7 +56,7 @@ jobs:
           context: .
           file: Dockerfile-jammy
           push: true
-          tags: nicolasbock/bml:jammy
+          tags: nicolasbock/bml:latest, nicolasbock/bml:jammy
       - name: Image digest
         run: |
           echo "Jammy image: ${{ steps.docker_build_jammy.outputs.digest }}"
