@@ -50,7 +50,8 @@ if (MACRO_PREFIX_MAP_FLAG_WORKS)
 endif()
 
 set(GNU_C_FLAGS_DEBUG -O0 -g -Wall -Wimplicit -Werror=implicit
-  -Wunused-variable -Wno-unknown-pragmas -save-temps -std=c99
+  -Wunused-variable -Wno-unknown-pragmas -save-temps -gno-record-gcc-switches
+  -std=c99 -gdwarf-4
   ${MACRO_PREFIX_MAP_FLAG})
 set(GNU_C_FLAGS_RELEASE -O3 -g -std=c99 -DNDEBUG
   ${MACRO_PREFIX_MAP_FLAG})
@@ -79,7 +80,7 @@ set(XL_Fortran_FLAGS_DEBUG -O0 -g)
 set(XL_Fortran_FLAGS_RELEASE -O3 -g)
 set(XL_Fortran_FLAGS_RELWITHDEBINFO -O3 -g -DNDEBUG)
 
-set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=gnu99)
+set(Clang_C_FLAGS_DEBUG -O0 -g -save-temps -std=gnu99 -gno-record-gcc-switches -gdwarf-4)
 set(Clang_C_FLAGS_RELEASE -O2 -g -DNDEBUG -std=gnu99)
 set(Clang_C_FLAGS_RELWITHDEBINFO -O2 -g -DNDEBUG -std=gnu99)
 
