@@ -59,4 +59,28 @@ jobs:
           tags: nicolasbock/bml:jammy
       - name: Image digest
         run: |
-          echo "jammy image: ${{ steps.docker_build_jammy.outputs.digest }}"
+          echo "Jammy image: ${{ steps.docker_build_jammy.outputs.digest }}"
+
+  container-noble:
+    name: Update Noble CI container image
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'lanl/bml' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push experimental Noble Docker image
+        uses: docker/build-push-action@v4
+        id: docker_build_noble
+        with:
+          context: .
+          file: Dockerfile-noble
+          push: true
+          tags: nicolasbock/bml:noble
+      - name: Image digest
+        run: |
+          echo "Noble image: ${{ steps.docker_build_noble.outputs.digest }}"
