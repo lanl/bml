@@ -23,12 +23,12 @@ env:
 jobs:
   lint:
     name: Lint sources
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out sources
         uses: actions/checkout@v4
       - name: Prepare container
-        run: ./scripts/prepare-container-focal.sh
+        run: ./scripts/prepare-container-jammy.sh
       - run: bundle install
       - run: bundle exec danger || true
       - run: BML_OPENMP=no EMACS=emacs27 ./build.sh --debug check_indent
@@ -42,12 +42,12 @@ jobs:
 
   docs:
     name: Build docs
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out sources
         uses: actions/checkout@v4
       - name: Prepare container
-        run: ./scripts/prepare-container-focal.sh
+        run: ./scripts/prepare-container-jammy.sh
       - name: Build docs
         run: ./build.sh --debug docs
 
@@ -90,7 +90,7 @@ jobs:
 
   build:
     name: Build and test the library (${{ matrix.JOBNAME }})
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -145,7 +145,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Prepare container
-        run: ./scripts/prepare-container-focal.sh
+        run: ./scripts/prepare-container-jammy.sh
       - name: Build and test library
         env:
           BLAS_VENDOR: ${{ matrix.BLAS_VENDOR || env.BLAS_VENDOR }}
