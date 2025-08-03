@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "magma_v2.h"
 
 #include <stdio.h>
