@@ -55,17 +55,6 @@ EOF
     fi
 }
 
-configure_emacs() {
-    cat <<EOF | ${SUDO} tee /etc/apt/sources.list.d/emacs.list
-    deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu noble main
-    # deb-src http://ppa.launchpad.net/kelleyk/emacs/ubuntu noble main
-EOF
-    gpg --keyserver keyserver.ubuntu.com \
-        --recv-keys 873503A090750CDAEB0754D93FF0E01EEAAFC9CD
-    gpg --armor --export 873503A090750CDAEB0754D93FF0E01EEAAFC9CD | ${SUDO} tee /etc/apt/trusted.gpg.d/emacs.asc
-    update
-}
-
 set_timezone() {
     ${SUDO} ln -fs /usr/share/zoneinfo/UTC /etc/localtime
     ${SUDO} apt-get install --assume-yes tzdata
