@@ -23,15 +23,15 @@ env:
 jobs:
   lint:
     name: Lint sources
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out sources
         uses: actions/checkout@v4
       - name: Prepare container
-        run: ./scripts/prepare-container-jammy.sh
-      - run: bundle install
+        run: ./scripts/prepare-container-noble.sh
+      - run: sudo bundle install
       - run: bundle exec danger || true
-      - run: BML_OPENMP=no EMACS=emacs27 ./build.sh --debug check_indent
+      - run: BML_OPENMP=no ./build.sh --debug check_indent
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -42,12 +42,12 @@ jobs:
 
   docs:
     name: Build docs
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out sources
         uses: actions/checkout@v4
       - name: Prepare container
-        run: ./scripts/prepare-container-jammy.sh
+        run: ./scripts/prepare-container-noble.sh
       - name: Build docs
         run: ./build.sh --debug docs
 
@@ -90,39 +90,39 @@ jobs:
 
   build:
     name: Build and test the library (${{ matrix.JOBNAME }})
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         include:
-          - JOBNAME: gcc-10 C single real
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-single-real.sh
-          - JOBNAME: gcc-10 C double real
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-double-real.sh
-          - JOBNAME: gcc-10 C single complex
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-single-complex.sh
-          - JOBNAME: gcc-10 C double complex
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-double-complex.sh
-          - JOBNAME: gcc-10 C single real (OpenBLAS)
+          - JOBNAME: gcc-14 C single real
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-single-real.sh
+          - JOBNAME: gcc-14 C double real
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-double-real.sh
+          - JOBNAME: gcc-14 C single complex
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-single-complex.sh
+          - JOBNAME: gcc-14 C double complex
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-double-complex.sh
+          - JOBNAME: gcc-14 C single real (OpenBLAS)
             BLAS_VENDOR: OpenBLAS
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-single-real.sh
-          - JOBNAME: gcc-10 C double real (OpenBLAS)
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-single-real.sh
+          - JOBNAME: gcc-14 C double real (OpenBLAS)
             BLAS_VENDOR: OpenBLAS
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-double-real.sh
-          - JOBNAME: gcc-10 C single complex (OpenBLAS)
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-double-real.sh
+          - JOBNAME: gcc-14 C single complex (OpenBLAS)
             BLAS_VENDOR: OpenBLAS
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-single-complex.sh
-          - JOBNAME: gcc-10 C double complex (OpenBLAS)
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-single-complex.sh
+          - JOBNAME: gcc-14 C double complex (OpenBLAS)
             BLAS_VENDOR: OpenBLAS
-            TEST_SCRIPT: ./scripts/ci-gcc-10-C-double-complex.sh
-          - JOBNAME: gcc-10 Fortran single real
-            TEST_SCRIPT: ./scripts/ci-gcc-10-Fortran-single-real.sh
-          - JOBNAME: gcc-10 Fortran double real
-            TEST_SCRIPT: ./scripts/ci-gcc-10-Fortran-double-real.sh
-          - JOBNAME: gcc-10 Fortran single complex
-            TEST_SCRIPT: ./scripts/ci-gcc-10-Fortran-single-complex.sh
-          - JOBNAME: gcc-10 Fortran double complex
-            TEST_SCRIPT: ./scripts/ci-gcc-10-Fortran-double-complex.sh
+            TEST_SCRIPT: ./scripts/ci-gcc-14-C-double-complex.sh
+          - JOBNAME: gcc-14 Fortran single real
+            TEST_SCRIPT: ./scripts/ci-gcc-14-Fortran-single-real.sh
+          - JOBNAME: gcc-14 Fortran double real
+            TEST_SCRIPT: ./scripts/ci-gcc-14-Fortran-double-real.sh
+          - JOBNAME: gcc-14 Fortran single complex
+            TEST_SCRIPT: ./scripts/ci-gcc-14-Fortran-single-complex.sh
+          - JOBNAME: gcc-14 Fortran double complex
+            TEST_SCRIPT: ./scripts/ci-gcc-14-Fortran-double-complex.sh
           - JOBNAME: MPI single real
             TEST_SCRIPT: ./scripts/ci-MPI-single-real.sh
           - JOBNAME: MPI double real
@@ -131,21 +131,21 @@ jobs:
             TEST_SCRIPT: ./scripts/ci-MPI-single-complex.sh
           - JOBNAME: MPI double complex
             TEST_SCRIPT: ./scripts/ci-MPI-double-complex.sh
-          - JOBNAME: clang-16 / gfortran-10 C single real
-            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-10-C-single-real.sh
-          - JOBNAME: clang-16 / gfortran-10 C double real
-            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-10-C-double-real.sh
-          - JOBNAME: clang-16 / gfortran-10 C single complex
-            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-10-C-single-complex.sh
-          - JOBNAME: clang-16 / gfortran-10 C double complex
-            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-10-C-double-complex.sh
+          - JOBNAME: clang-16 / gfortran-14 C single real
+            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-14-C-single-real.sh
+          - JOBNAME: clang-16 / gfortran-14 C double real
+            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-14-C-double-real.sh
+          - JOBNAME: clang-16 / gfortran-14 C single complex
+            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-14-C-single-complex.sh
+          - JOBNAME: clang-16 / gfortran-14 C double complex
+            TEST_SCRIPT: ./scripts/ci-clang-16-gfortran-14-C-double-complex.sh
     steps:
       - name: Check out sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Prepare container
-        run: ./scripts/prepare-container-jammy.sh
+        run: ./scripts/prepare-container-noble.sh
       - name: Build and test library
         env:
           BLAS_VENDOR: ${{ matrix.BLAS_VENDOR || env.BLAS_VENDOR }}

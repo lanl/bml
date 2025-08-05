@@ -1,0 +1,19 @@
+FROM ubuntu:noble
+LABEL org.opencontainers.image.authors="nicolasbock@gmail.com"
+
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install --yes sudo
+# RUN useradd --create-home --shell /bin/bash --user-group --groups sudo ubuntu
+# RUN sed --in-place --expression '/^%sudo/ s/ALL$/NOPASSWD: ALL/' /etc/sudoers
+
+COPY scripts/prepare-container-noble.sh /usr/sbin
+
+RUN /usr/sbin/prepare-container-noble.sh install_base
+RUN /usr/sbin/prepare-container-noble.sh configure_llvm
+RUN /usr/sbin/prepare-container-noble.sh configure_gcc
+RUN /usr/sbin/prepare-container-noble.sh set_timezone
+RUN /usr/sbin/prepare-container-noble.sh install_base_packages
+RUN /usr/sbin/prepare-container-noble.sh install_compilers
+RUN /usr/sbin/prepare-container-noble.sh install_linters
+
+WORKDIR /root
