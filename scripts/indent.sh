@@ -1,7 +1,7 @@
 #!/bin/bash
 
 : ${EMACS:=$(command -v emacs)}
-: ${INDENT_ARGS:="-gnu -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda -par"}
+: ${INDENT_ARGS:="-kr -bl -nut -i4 -bli0 -cli4 -ppi0 -cbi0 -npcs -bfda -nfc1 -nfca -ncp1"}
 
 declare -a SH_FILES
 declare -a C_FILES
@@ -98,7 +98,7 @@ if (( ${#FAILED_FILES[@]} > 0 )); then
             bashate "${file}"
             if (( check_only == 0 )); then
                 mv "${file}" "${file}.backup"
-                bashat "${file}.backup" > "${file}"
+                bashate "${file}.backup" > "${file}"
             fi
         else
             echo "diff -Naur ${file} ${file}.indented"
