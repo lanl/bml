@@ -14,7 +14,7 @@ on:
   schedule:
     # Weekly on Sundays:
     - cron: '00 04 * * 0'
-
+  merge_group:
   workflow_dispatch:
 
 env:
