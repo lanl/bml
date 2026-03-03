@@ -364,6 +364,31 @@ Another citation source is the following journal article (`DOI:
     publisher = {Springer}
   }
 
+This more recent article focuses on the GPU implementation (`DOI:
+10.1063/5.0198797 <https://doi.org/10.1063/5.0198797>`_):
+
+.. code-block:: bibtex
+
+  @article{jcp2024,
+    title   = {Hybrid programming-model strategies for GPU offloading of electronic
+               structure calculation kernels},
+    author  = {Fattebert, Jean-Luc and
+               Negre, Christian F. A. and
+               Finkelstein, Joshua and
+               Mohd-Yusof, Jamaludin and
+               Osei-Kuffuor, Daniel and
+               Wall, Michael E. and
+               Zhang, Yu and
+               Bock, Nicolas and
+               Mniszewski, Susan M.},
+    journal = {The Journal of Chemical Physics},
+    volume  = {160},
+    number  = {12},
+    pages   = {122501},
+    year    = {2024},
+    doi     = {10.1063/5.0198797}
+  }
+
 Authors
 =======
 
